@@ -33,6 +33,7 @@ test('order examples issue session-bound quotes and retain one exact request wit
  const stores=[...objects.values()].map(o=>o.storage);for(const storage of stores){const records=await storage.list({prefix:'demo/orders/received/',limit:200});assert.equal(records.size,storage===stores[0]?3:0);}
  const denied=await serveHost(req('/demo/orders/mixed/quote'),env);assert.equal(denied.status,409);
 });
+test('demo navigation keeps its overview and public exits within the bounded sidebar',async()=>{const {adminPresentation}=await import('../admin-presentation.mjs'),links=adminPresentation('/demo/admin').navigation;assert.ok(links.length<=12);for(const path of ['/demo/admin','/demo/admin/orders','/examples','/website-privacy'])assert.ok(links.some(link=>link.href===path),path);});
 test('visitors receive independent seeded DO databases while operational admin stays protected',async()=>{
  const {env,objects}=environment(),a=await session(env),b=await session(env);assert.notEqual(a.cookie,b.cookie);assert.equal(objects.size,2);
  assert.match(a.response.headers.get('Set-Cookie'),/^__Host-notabenda_demo=[a-f0-9]{64}\.[a-f0-9]{64}; Path=\/; HttpOnly; SameSite=Lax; Secure$/);assert.equal(a.response.headers.get('Vary'),'Cookie');assert.equal(a.response.headers.get('Cache-Control'),'private, no-store, no-transform');
