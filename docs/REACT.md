@@ -100,6 +100,8 @@ Hooks use React's [external-store subscription API](https://react.dev/reference/
 
 `<ConsentControls preferencesLabel="Privacy choices" className="your-wrapper" />` mounts the existing compact nonmodal notice and user-opened native drawer after React commits. Mount one controls component per controller. Use additional `<PreferencesButton>` components wherever visitors should reopen preferences.
 
+`PreferencesButton` defaults to dialog-popup and current expanded-state attributes. Hosts using a different custom preference interface can override those ARIA attributes to describe that interface accurately. Native-control focus and label behavior is shared across both React entries; see [verification](verification/consent-focus.md).
+
 The button accepts ordinary button attributes, children and classes; its type and click action are supplied by the adapter. It disables itself when its controller is destroyed. Controls use the same optional stylesheet and tokens as the vanilla interface; no framework-specific theme is required.
 
 Control cleanup removes its UI without changing shared `preferencesOpen` state. If the host deliberately removes controls and wants preferences closed, call `closePreferences()` as part of that host action. Headless consumers can supply their own notice, draft selection and accessible dialog while using the same controller actions. Full keyboard/screen-reader/platform review remains necessary.

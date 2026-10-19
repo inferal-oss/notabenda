@@ -2691,9 +2691,12 @@
         "docs/verification/design-pass.md",
         "site/test/host.test.mjs",
         "docs/verification/ux-review.md",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/controls.test.mjs",
+        "packages/notabenda/test/consent-delivery.test.mjs",
+        "docs/verification/consent-focus.md"
       ],
-      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending."
+      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending."
     },
     {
       "id": "REQ-PRODUCT-MOBILE",
@@ -2738,9 +2741,12 @@
         "docs/verification/website-browser.md",
         "docs/verification/design-pass.md",
         "docs/verification/ux-review.md",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/controls.test.mjs",
+        "packages/notabenda/test/consent-delivery.test.mjs",
+        "docs/verification/consent-focus.md"
       ],
-      "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending."
+      "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending."
     },
     {
       "id": "REQ-PRODUCT-CONFIG",
@@ -3156,7 +3162,8 @@
         "docs/verification/consent-evidence-browser.md",
         "scripts/check-site-runtime.mjs",
         "packages/notabenda/test/consent-delivery.test.mjs",
-        "packages/notabenda/test/consent-runtime.test.mjs"
+        "packages/notabenda/test/consent-runtime.test.mjs",
+        "docs/verification/consent-focus.md"
       ],
       "implementationNote": "Immutable notices, transactional stream revisions, restrictive revoke-all and historical receipts/current heads are implemented. Optional construction-time browser gating, exact-response validation, bounded single-command retries, immediate local withdrawal, reload/resume confirmation, storage-failure barriers and stale-generation retirement are covered by tests. Default browser mode remains local-only."
     },
@@ -3248,7 +3255,8 @@
         "site/test/host.test.mjs",
         "docs/verification/react-browser.md",
         "packages/notabenda/test/react-form-permission.test.mjs",
-        "packages/notabenda/test/react-consent.test.mjs"
+        "packages/notabenda/test/react-consent.test.mjs",
+        "docs/verification/consent-focus.md"
       ],
       "implementationNote": "Optional React 19 provider/hooks use cached immutable core snapshots and pure effective permissions, deterministic conservative SSR/hydration, host-owned controller lifecycle and one native controls bridge. Static legal wrappers have a separate server-safe subpath. Light/dark example, packed consumer checks, lifecycle/hydration tests and initial real Chromium flows pass; broader framework/platform review remains separate. Ordinary form-permission provider/hooks/native field share the core controller and optional journal, perform no mount-time transport, preserve host ownership through StrictMode, and keep SSR and form submission conservative. A separate react/consent entry accepts compiled or full controllers with an honestly narrower getter; the compatibility entry retains its full public getter. Both use one binding implementation with separate typed contexts and shared controls ownership. Prompt decisions and nested reference arrays are deeply immutable. Light/dark cookie examples use bounded compiled descriptors and explicit legal-link metadata."
     },

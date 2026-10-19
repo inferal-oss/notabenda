@@ -33,7 +33,8 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   const accept=button(wording.acceptLabel, () => { consent.acceptAll(); finishNoticeAction(); });
   actions.append(button(wording.rejectLabel, reject), accept);
   const secondary = element('div', 'nb-choice-secondary');
-  secondary.append(button(wording.preferencesLabel, () => consent.openPreferences(), 'nb-text-button'), button(wording.dismissLabel, () => { consent.dismiss(); finishNoticeAction(); }, 'nb-text-button'));
+  const preferences = button(wording.preferencesLabel, () => consent.openPreferences(), 'nb-text-button');
+  secondary.append(preferences, button(wording.dismissLabel, () => { consent.dismiss(); finishNoticeAction(); }, 'nb-text-button'));
   const cookieLink = element('a', undefined, 'Cookie policy'); cookieLink.href = archivedNotice?.documents.cookies.url??config.documents.cookies.route; secondary.append(cookieLink);
   const noticeMessage = element('p', 'nb-control-status'); noticeMessage.setAttribute('role', 'status');
   const retryButtons:HTMLButtonElement[]=[];
@@ -44,6 +45,8 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   if (typeof drawer.showModal !== 'function') throw new Error('Built-in controls require native dialog support. Use the headless controller for a custom interface.');
   const heading = element('h2', undefined, wording.preferencesTitle); heading.tabIndex = -1;
   const headingId = `nb-preferences-${config.site.id}-${++controlId}`; heading.id = headingId; drawer.setAttribute('aria-labelledby', headingId);
+  drawer.id = `${headingId}-dialog`;
+  for (const entry of [trigger, preferences]) { entry.setAttribute('aria-haspopup', 'dialog'); entry.setAttribute('aria-controls', drawer.id); }
   const header = element('div', 'nb-preferences-header'); header.append(heading, button(wording.closeLabel, () => consent.closePreferences(), 'nb-text-button'));
   const body = element('div', 'nb-preferences-body');
   body.append(element('p', undefined, wording.preferencesIntro));
@@ -53,15 +56,20 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     const fact = config.purposes.find(item => item.id === purpose.id)!;
     const row = element('label', 'nb-purpose');
     const input = element('input'); input.type = 'checkbox'; input.name = purpose.id;input.disabled=consent.getSnapshot().scopeGuards.blockedPurposeIds.includes(purpose.id);
-    const copy = element('span'); copy.append(element('strong', undefined, fact.name), element('span', 'nb-purpose-description', fact.description));
+    const copy = element('span');
+    const label = element('strong', undefined, fact.name); label.id = `${headingId}-${purpose.id}-label`;
+    const description = element('span', 'nb-purpose-description', fact.description); description.id = `${headingId}-${purpose.id}-description`;
+    copy.append(label, description);
     const providers = config.services.filter(service => policy.services.some(s => s.id === service.id) && service.purposeIds.includes(purpose.id)).map(service => `${service.name} (${service.provider})`);
-    copy.append(element('span', 'nb-purpose-description', `Services: ${providers.join(', ')}`));
-    if(input.disabled)copy.append(element('span','nb-purpose-description','This option needs a separate supported process and stays off here.'));
+    const services = element('span', 'nb-purpose-description', `Services: ${providers.join(', ')}`); services.id = `${headingId}-${purpose.id}-services`; copy.append(services);
+    input.setAttribute('aria-labelledby', label.id); input.setAttribute('aria-describedby', `${description.id} ${services.id}`);
+    if(input.disabled){const guard=element('span','nb-purpose-description','This option needs a separate supported process and stays off here.');guard.id=`${headingId}-${purpose.id}-guard`;copy.append(guard);input.setAttribute('aria-describedby', `${description.id} ${services.id} ${guard.id}`);}
     row.append(input, copy); body.append(row); inputs.set(purpose.id, input);
   }
   const links = element('nav', 'nb-legal-links'); links.setAttribute('aria-label', 'Privacy information');
   for (const kind of ['privacy','cookies'] as const) { const link = element('a', undefined, config.documents[kind].title); link.href = archivedNotice?.documents[kind].url??config.documents[kind].route; links.append(link); }
   const drawerMessage = element('p', 'nb-control-status'); drawerMessage.setAttribute('role', 'status');
+  for (const status of [message, noticeMessage, drawerMessage]) status.tabIndex = -1;
   body.append(links, drawerMessage,retry());
   const footer = element('div', 'nb-preferences-footer');
   const save=button(wording.saveLabel, () => {
@@ -75,6 +83,9 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   let opener: HTMLElement | undefined; let opened = false; let previousChoices = ''; let removed = false;
   function update(state: ConsentSnapshot): void {
     if (removed) return;
+    // Remember ownership before disabling/hiding anything; native browsers can move focus to body.
+    const focused = doc.activeElement; const ownedFocus = focused !== null && root.contains(focused);
+    const keyboardFocus = ownedFocus && focused.matches(':focus-visible');
     const choices = JSON.stringify(state.purposes);
     const storageMessage = state.persistence === 'unavailable' ? 'Preferences cannot be saved in this browser. Optional services stay off. A previous saved choice may return on a later visit if browser storage cannot be cleared.' : '';
     const reloadMessage = Object.values(state.services).includes('reload-required') ? 'An optional service could not be stopped or initialized safely. Reload this page to finish resetting it.' : '';
@@ -82,11 +93,12 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     // @requirements REQ-PRODUCT-PRIVACY-SIGNALS Cookie grants do not override processing restrictions.
     const signalMessage=state.privacySignals?.globalPrivacyControl==='observed'?'Global Privacy Control is active. Services covered by this site’s signal policy stay off in this browser. Cookie choices do not override this restriction.':state.privacySignals?.globalPrivacyControl==='unavailable'?'Global Privacy Control could not be checked. Services covered by this site’s signal policy stay off in this browser.':'';
     const processingMessage=state.processingChoices?(state.processingChoices.status==='recorded'?'A processing restriction is recorded for this context. Cookie choices do not remove it.':state.processingChoices.blockedActivities.length?'Processing restrictions are pending or could not be confirmed. Covered services stay off; cookie choices do not override them.':''):'';
-    message.textContent = [storageMessage, reloadMessage,receiptMessage,signalMessage,processingMessage].filter(Boolean).join(' ');
+    message.textContent = [state.destroyed ? 'Privacy choices are unavailable.' : '',storageMessage, reloadMessage,receiptMessage,signalMessage,processingMessage].filter(Boolean).join(' ');
     notice.hidden = state.destroyed || state.preferencesOpen || !state.shouldPrompt || !policy.purposes.length;
     message.hidden = !message.textContent || !notice.hidden || state.preferencesOpen;
     noticeMessage.textContent = message.textContent; noticeMessage.hidden = !noticeMessage.textContent;
     trigger.disabled = state.destroyed;
+    for (const entry of [trigger, preferences]) entry.setAttribute('aria-expanded', String(state.preferencesOpen));
     accept.disabled=state.destroyed||policy.purposes.every(p=>state.scopeGuards.blockedPurposeIds.includes(p.id))||!!state.evidence&&!state.evidence.canGrant;
     for(const b of retryButtons)b.hidden=!state.evidence?.canRetry;
     outsideRetry.hidden=outsideRetry.hidden||!notice.hidden||state.preferencesOpen;
@@ -105,6 +117,13 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     }
     previousChoices = choices;
     syncSave();
+    // Background updates must not steal focus from the page or another choice control.
+    if (ownedFocus && (doc.activeElement === focused || doc.activeElement === doc.body) &&
+        (focused.closest('[hidden]') || ('disabled' in focused && focused.disabled))) {
+      const destination = opened ? (drawerMessage.hidden ? heading : drawerMessage) :
+        !notice.hidden ? (noticeMessage.hidden ? actions.querySelector('button')! : noticeMessage) : message.hidden ? trigger : message;
+      destination.focus({preventScroll: !keyboardFocus});
+    }
   }
   trigger.addEventListener('click', () => consent.openPreferences());
   drawer.addEventListener('cancel', event => { event.preventDefault(); consent.closePreferences(); });

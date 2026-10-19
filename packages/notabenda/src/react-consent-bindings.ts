@@ -92,7 +92,7 @@ export function createReactConsentBindings<Controller extends ConsentStateContro
  }
  function PreferencesButton({children,disabled,...props}:PreferencesButtonProps):ReactElement {
    const controller=useConsentController();const state=useConsentSnapshot();
-   return createElement('button',{...props,type:'button',disabled:disabled||state.destroyed,onClick:()=>controller.openPreferences()},children??'Privacy choices');
+   return createElement('button',{'aria-haspopup':'dialog','aria-expanded':state.preferencesOpen,...props,type:'button',disabled:disabled||state.destroyed,onClick:()=>controller.openPreferences()},children??'Privacy choices');
  }
 
  return {ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed};

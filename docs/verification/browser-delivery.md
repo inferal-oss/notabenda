@@ -18,13 +18,13 @@ Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 
 | Import/profile | Gzip | Target | Result |
 | --- | ---: | ---: | --- |
-| `createConsentRuntime` + `mountControls`, compiled local | 11.89 KiB | 15 KiB | Within target |
-| Same plus `requiredConsentEvidence` | 15.38 KiB | Report separately | Optional receipt implementation |
-| Compiled runtime + React consent bindings, React peer external | 12.86 KiB | Report separately | Excludes React and React DOM |
+| `createConsentRuntime` + `mountControls`, compiled local | 12.18 KiB | 15 KiB | Within target |
+| Same plus `requiredConsentEvidence` | 15.68 KiB | Report separately | Optional receipt implementation |
+| Compiled runtime + React consent bindings, React peer external | 13.20 KiB | Report separately | Excludes React and React DOM |
 | `createConsent` from `notabenda/headless` | 16.59 KiB | Report only | Same existing engine |
-| `createConsent` + `mountControls` | 19.19 KiB | 15 KiB | Over target |
+| `createConsent` + `mountControls` | 19.50 KiB | 15 KiB | Over target |
 | `notabenda/consent.css` | 2.21 KiB | 5 KiB | Within target |
-| `notabenda/styles.css`, all components | 9.35 KiB | Report separately | Includes document/operator/form layouts |
+| `notabenda/styles.css`, all components | 9.36 KiB | Report separately | Includes document/operator/form layouts |
 
 The transfer figures exclude a site’s configuration payload, page layout/theme, sample integration code and framework adapters. The cookie example’s actual browser entry bundles its own UI/example code as well; it does not represent the library-only size profile.
 
@@ -37,3 +37,5 @@ Project checks include package and site tests, catalog consistency, website buil
 Compiled-runtime browser check on 19 October 2026: the rebuilt local `/choices/` example loaded the bounded descriptor, started measurement only after its explicit granular choice, kept suggestions blocked, and returned both services to blocked after rejection without starting another request. [Compiled entry, granular choice](../assets/screenshots/compiled-consent-granular-desktop.png). The visible layout and controls continue to use the same canonical CSS. This check does not add a cross-browser or mobile performance claim.
 
 This milestone passed 417 package tests and 60 site tests (477 total), catalog validation, the website build and Worker dry run. A development build initially caught three stale hashed Astro outputs; those generated files were retained outside deployment output and the asset guard remains unchanged.
+
+The current measurement includes the native-control focus/accessibility refinement in [consent focus verification](consent-focus.md). That refinement preserves the compiled local target; the compatibility entry remains above target.

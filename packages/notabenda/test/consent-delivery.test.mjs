@@ -39,6 +39,27 @@ async function createSetup(createConsent) {
 for(const [profile,createConsent] of consentProfiles){
  const test=(name,run)=>nodeTest(`${profile}: ${name}`,run);
  const setup=()=>createSetup(createConsent);
+// @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
+for(const surface of ['page','drawer'])test(`recording retry on ${surface} preserves a visible focus destination without stealing later page focus`,async()=>{
+ const f=await setup(),ack=deferred();let attempts=0;
+ f.setWrite(async body=>{if(++attempts===1)throw new Error('offline');await ack.promise;return recordConsentChoice(f.storage,body,f.context);});
+ const c=f.controller();await c.settled();c.acceptAll();await c.settled();assert.equal(c.getSnapshot().evidence.status,'error');
+ const dom=new JSDOM('<input aria-label="Site search"><div id="controls"></div>'),doc=dom.window.document;
+ dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
+ const ui=mountControls(doc.querySelector('#controls'),{consent:c});
+ try{
+  if(surface==='drawer')c.openPreferences();
+  const scope=doc.querySelector(surface==='drawer'?'.nb-preferences-body':'.nb-controls');
+  const retry=[...scope.querySelectorAll('button')].find(b=>b.textContent==='Try recording again'&&!b.hidden);
+  assert.ok(retry);retry.focus();assert.equal(doc.activeElement,retry);retry.click();
+  const status=doc.querySelector(surface==='drawer'?'.nb-preferences-body > [role=status]':'.nb-controls > [role=status]');
+  assert.equal(retry.hidden,true);assert.equal(status.hidden,false);assert.equal(doc.activeElement,status);assert.match(status.textContent,/Saving your choice/);
+  // A user can move away while delivery is pending. Its acknowledgment is not a new focus request.
+  if(surface==='drawer')c.closePreferences();
+  const search=doc.querySelector('input[aria-label="Site search"]');search.focus();ack.resolve();await c.settled();
+  assert.equal(c.getSnapshot().evidence.status,'recorded');assert.equal(doc.activeElement,search);
+ }finally{ack.resolve();ui.destroy();c.destroy();dom.window.close();}
+});
 test('required mode starts closed, records before starting optional work, and aborts immediately on withdrawal',async()=>{
   const f=await setup();const ack=deferred();const c=f.controller();const service=f.service(c);await c.settled();assert.equal(service.starts(),0);
   f.setWrite(async body=>{const result=await recordConsentChoice(f.storage,body,f.context);await ack.promise;return result;});

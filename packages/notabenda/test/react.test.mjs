@@ -111,11 +111,11 @@ test('controller replacement and resubscription cannot retain an old permission,
   a.controller.subscribe=listener=>{subscriptions++;const remove=subscribe(listener);return ()=>{subscriptions--;remove();};};
   await domTest(async(container,window)=>{
     const root=createRoot(container);const tree=(controller,show=true)=>h(ConsentProvider,{controller},show?h(Probe,{purpose:a.purpose}):null,h(PreferencesButton,null,'Review choices'));
-    await act(async()=>root.render(tree(a.controller)));assert.equal(container.querySelector('output').dataset.permission,'allowed');
+    await act(async()=>root.render(tree(a.controller)));assert.equal(container.querySelector('output').dataset.permission,'allowed');assert.equal(container.querySelector('button').getAttribute('aria-haspopup'),'dialog');assert.equal(container.querySelector('button').getAttribute('aria-expanded'),'false');
     await act(async()=>root.render(tree(a.controller,false)));await act(async()=>a.controller.rejectAll());
     await act(async()=>root.render(tree(a.controller)));assert.equal(container.querySelector('output').dataset.permission,'blocked');
     await act(async()=>a.controller.acceptAll());await act(async()=>root.render(tree(b.controller)));assert.equal(subscriptions,0);assert.equal(container.querySelector('output').dataset.permission,'blocked');
-    await act(async()=>container.querySelector('button').dispatchEvent(new window.MouseEvent('click',{bubbles:true})));assert.equal(b.controller.getSnapshot().preferencesOpen,true);
+    await act(async()=>container.querySelector('button').dispatchEvent(new window.MouseEvent('click',{bubbles:true})));assert.equal(b.controller.getSnapshot().preferencesOpen,true);assert.equal(container.querySelector('button').getAttribute('aria-expanded'),'true');
     await act(async()=>b.controller.destroy());assert.equal(container.querySelector('button').disabled,true);assert.equal(container.querySelector('output').dataset.permission,'blocked');
     await act(async()=>root.unmount());
   });a.controller.destroy();b.controller.destroy();
