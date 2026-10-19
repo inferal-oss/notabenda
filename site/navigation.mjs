@@ -95,6 +95,10 @@ export function guideOrientation(route){
 export function stageDirectory(kind='examples'){
  return `<div class="stage-directory">${siteStages.map((stage,index)=>`<section class="directory-stage" aria-labelledby="stage-${stage.id}"><header><span class="path-step">0${index+1}</span><div><h3 id="stage-${stage.id}">${e(stage.title)}</h3><p>${e(stage.description)}</p></div></header>${sectionDirectory(kind,stage.areaIds.map(id=>siteSections.find(s=>s.id===id)),4)}</section>`).join('')}</div>`;
 }
+// The landing page summarizes stages; the example directory carries the full descriptions.
+export function stageOverview(){
+ return `<div class="stage-overview">${siteStages.map((stage,i)=>`<article class="directory-stage"><header><span class="path-step">0${i+1}</span><div><h3>${e(stage.title)}</h3><p>${e(stage.description)}</p></div></header><nav class="stage-links" aria-label="${e(stage.title)}">${stage.areaIds.map(id=>siteSections.find(s=>s.id===id)).map(section=>`<a href="${exampleSectionUrl(section)}">${e(section.title)} <span aria-hidden="true">→</span></a>`).join('')}</nav></article>`).join('')}</div>`;
+}
 export function areaContinuation(section,kind='guide'){
  const index=orderedSiteSections.indexOf(section),next=orderedSiteSections[index+1];if(index<0||!next)return '';
  const href=kind==='examples'?exampleSectionUrl(next):guideSectionUrl(next);

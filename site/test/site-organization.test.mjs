@@ -57,7 +57,7 @@ test('shared stages preserve a single primary home and an ordered path through a
  const primary=siteSections.flatMap(s=>s.guides.map(g=>g.href));assert.equal(new Set(primary).size,primary.length,'a guide has one primary navigation home');
  for(const route of ['/','/examples','/guide']){
   const document=await page(route),stages=document.querySelectorAll('.directory-stage,.guide-stage');assert.equal(stages.length,3,route);
-  const areas=[...document.querySelectorAll('.topic-destination,.guide-topic .guide-group-all')].map(a=>a.getAttribute('href'));
+  const areas=[...document.querySelectorAll('.topic-destination,.guide-topic .guide-group-all,.stage-links a')].map(a=>a.getAttribute('href'));
   assert.deepEqual(areas,orderedSiteSections.map(s=>route==='/guide'?guideSectionUrl(s):exampleSectionUrl(s)),route);
  }
  for(const [index,section] of orderedSiteSections.entries()){
