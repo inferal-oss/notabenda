@@ -1,6 +1,7 @@
 ---
+// @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-PRODUCT-ASTRO
 export interface Props {class?:string}
 const {class:className}=Astro.props;
 ---
-<button type="button" class={className} data-notabenda-preferences hidden><slot>Privacy choices</slot></button>
+<button type="button" class={className} data-notabenda-preferences data-notabenda-default-label={!Astro.slots.has('default')?'true':undefined} hidden><slot>Privacy choices</slot></button>

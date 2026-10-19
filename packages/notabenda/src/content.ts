@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {requireEnglishSurface,consentLocalization} from './document-localization.js';
 export {compileConsentRuntimeConfig} from './consent-compile.js';
 export type {ConsentRuntimeConfig,ConsentRuntimeInventory} from './consent-runtime-config.js';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-DE-CANCEL REQ-DE-WITHDRAWAL REQ-EU-WITHDRAWAL REQ-BR-CONTRACT
@@ -40,6 +42,7 @@ export const sha256 = (value: string): string => createHash('sha256').update(val
 
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES Pin a separate opt-out action to its privacy release. */
 export function createProcessingNotice(artifact:LegalArtifact,settings:{scopeId:string;activities:ProcessingActivity[];wording:ProcessingNotice['wording']},options:ValidationOptions={}):ProcessingNotice {
+  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
   const config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
   if(config.services.some(service=>!service.processingActivities))throw new Error('Explicitly classify every service before building processing choices.');
   const d=artifact.manifest.documents.find(doc=>doc.kind==='privacy');if(!d)throw new Error('The release needs a privacy document.');
@@ -59,7 +62,8 @@ export function createConsentNotice(artifact: LegalArtifact, settings:{scopeId:s
     const {title,version,effectiveDate,sha256,contentSha256,reviewStatus} = doc;
     return [kind,{title,version,effectiveDate,sha256,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/${kind}.html`}];
   }));
-  const notice = normalizeConsentNotice({schemaVersion:1,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,scopes,scopeDigest:sha256(canonicalJson(scopes)),wording:applyPromptPolicyWording(config,{...defaultConsentWording(config),...settings.wording}),documents,policy:{grantLifetimeDays:config.consent.grantLifetimeDays,refusalLifetimeDays:config.consent.refusalLifetimeDays,deliveryWindowSeconds:settings.deliveryWindowSeconds ?? 300,...(config.consent.promptPolicy?{promptPolicy:config.consent.promptPolicy}:{})}}, {allowPreview:options.mode === 'preview'});
+  if(config.localization&&settings.wording!==undefined)throw new Error('Revise localization.consent to change versioned notice wording. Localized releases do not accept wording overrides.');
+  const notice = normalizeConsentNotice({schemaVersion:config.localization?2:1,...(config.localization?{localization:consentLocalization(config.localization)}:{}),noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,scopes,scopeDigest:sha256(canonicalJson(scopes)),wording:applyPromptPolicyWording(config,{...defaultConsentWording(config),...settings.wording}),documents,policy:{grantLifetimeDays:config.consent.grantLifetimeDays,refusalLifetimeDays:config.consent.refusalLifetimeDays,deliveryWindowSeconds:settings.deliveryWindowSeconds ?? 300,...(config.consent.promptPolicy?{promptPolicy:config.consent.promptPolicy}:{})}}, {allowPreview:options.mode === 'preview'});
   const {noticeId:_,...descriptor} = notice;
   return {...notice,noticeId:sha256(canonicalJson(descriptor))};
 }
@@ -154,6 +158,7 @@ export function compileLegalDocuments(input: unknown, options: ValidationOptions
 
 /** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE: pin the exact terms document AND interface wording. */
 export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:string; statement:string; actionLabel:string }, options: ValidationOptions = {}): TermsOffer {
+  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
   const d = artifact.manifest.documents.find(item=>item.kind === 'terms');
   if (!d) throw new Error('The release has no terms document.');
   const offer = normalizeTermsOffer({ schemaVersion:1, offerId:'0'.repeat(64), artifactId:artifact.manifest.artifactId, siteId:artifact.manifest.siteId, mode:artifact.manifest.mode, scopeId:wording.scopeId, statement:wording.statement, actionLabel:wording.actionLabel, document:{ title:d.title, url:`/artifacts/${artifact.manifest.artifactId}/terms.html`, version:d.version, effectiveDate:d.effectiveDate, sha256:d.sha256, contentSha256:d.contentSha256, reviewStatus:d.reviewStatus } }, { allowPreview:options.mode === 'preview' });
@@ -165,6 +170,7 @@ export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:str
  * Create a display descriptor from a trusted public compiler artifact, never from form values.
  */
 export function createCollectionNotice(artifact:LegalArtifact,settings:CollectionNoticeSettings,options:ValidationOptions={}):CollectionNotice {
+  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
   const bad=():never=>{throw new Error('Select declared direct-collection purposes from an intact public legal release.');};
   if(options.mode!==undefined&&!['production','preview'].includes(options.mode))return bad();
   if(!artifact||!settings||!settings.wording||!Array.isArray(settings.purposeIds)||!settings.purposeIds.length||settings.purposeIds.length>8||new Set(settings.purposeIds).size!==settings.purposeIds.length)return bad();
@@ -187,6 +193,7 @@ export function createCollectionNotice(artifact:LegalArtifact,settings:Collectio
  * Does not determine lawful collection, exceptions, notification timing or delivery.
  */
 export function createIndirectCollectionNotice(artifact:LegalArtifact,input:IndirectCollectionNoticeSettings,options:ValidationOptions={}):IndirectCollectionNotice {
+  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
   const s=normalizeIndirectCollectionNoticeSettings(input);
   const bad=():never=>{throw Error('Select declared indirect-collection facts from an intact public privacy release.');};
   if(options.mode!==undefined&&options.mode!=='production'&&options.mode!=='preview')return bad();

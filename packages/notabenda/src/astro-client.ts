@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
 import {mountControls} from './controls.js';
 import type {MountedControls} from './controls.js';
 import type {ConsentStateController} from './consent.js';
@@ -22,7 +23,7 @@ export function mountAstroConsent(options:AstroConsentOptions):MountedAstroConse
   const buttons=()=>Array.from(doc.querySelectorAll<HTMLButtonElement>('button[data-notabenda-preferences]'));
   function syncButtons():void {
     const unavailable=disposed||!controls||consent.getSnapshot().destroyed;
-    for(const button of buttons()){button.hidden=unavailable;button.disabled=unavailable;}
+    for(const button of buttons()){const l=consent.getNotice()?.localization??consent.getConfig().localization;if(l){button.lang=l.locale;button.dir=l.direction;if(button.hasAttribute('data-notabenda-default-label'))button.textContent=l.consent.triggerLabel;}button.hidden=unavailable;button.disabled=unavailable;}
   }
   function detach():void {
     const previous=controls;controls=undefined;container=undefined;

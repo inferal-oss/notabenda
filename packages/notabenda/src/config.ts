@@ -1,3 +1,4 @@
+import {normalizeSiteLocalization} from './document-localization.js';
 // @requirements REQ-UK-EXCEPTIONS
 import {normalizeStorageExceptionPolicy} from './storage-exception-policy.js';
 import type {ExceptionInventory} from './storage-exception-policy.js';
@@ -66,8 +67,13 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
     catch { error('site.url', 'Use an absolute HTTPS site URL without credentials, query, or fragment.'); }
   }
   if (text(site.locale)) {
-    try { if (!Intl.getCanonicalLocales(site.locale).length || !/^en(?:-|$)/iu.test(site.locale)) throw new Error(); }
-    catch { error('site.locale', 'This initial renderer supports English locales (en or en-*).', 'unsupported-locale'); }
+    try { if (config.localization===undefined?(!Intl.getCanonicalLocales(site.locale).length||!/^en(?:-|$)/iu.test(site.locale)):Intl.getCanonicalLocales(site.locale)[0]!==site.locale) throw new Error(); }
+    catch { error('site.locale', 'Use a canonical locale. Non-English output requires a complete localization declaration.', 'unsupported-locale'); }
+  }
+  if(config.localization!==undefined){
+    try{const localization=normalizeSiteLocalization(config.localization,{locale:String(site.locale),allowPreview:options.mode!=='production'});
+      for(const [kind,document] of Object.entries(record(config.documents)))if(['privacy','cookies'].includes(kind)&&record(document).source==='generated'&&!localization.generatedDocuments)error('localization.generatedDocuments','Generated legal pages need a complete template set. Supply reviewed sections instead, or provide all generated-document messages.','missing-localization',['REQ-PRODUCT-LOCALIZATION']);
+    }catch{error('localization','Provide complete plain-text messages, canonical matching locale, direction and reviewed revisions.','invalid-localization',['REQ-PRODUCT-LOCALIZATION']);}
   }
   const controller = contact(config.controller, 'controller');
   required(controller, 'address', 'controller', ['REQ-EU-NOTICE', 'REQ-NZ-NOTICE']);
@@ -253,6 +259,7 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
       ...(config.controller.dpo === undefined ? {} : { dpo: contact(config.controller.dpo)! }),
       ...(config.controller.representative === undefined ? {} : { representative: contact(config.controller.representative)! }) },
     jurisdictions: [...config.jurisdictions],
+    ...(config.localization===undefined?{}:{localization:normalizeSiteLocalization(config.localization,{locale:config.site.locale,allowPreview:options.mode!=='production'})}),
     ...(config.rightsCenter===undefined?{}:{rightsCenter:normalizeRightsCenter(config.rightsCenter)}),
     ...(config.scopeGuards===undefined?{}:{scopeGuards:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>p.id))}),
     purposes: config.purposes.map(p => ({ id: p.id, name: p.name, description: p.description, legalBasis: p.legalBasis, dataCategories: [...p.dataCategories], retention: p.retention, collection: { source: p.collection.source, description: p.collection.description, required: p.collection.required, consequences: p.collection.consequences } })),

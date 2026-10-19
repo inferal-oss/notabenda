@@ -37,3 +37,6 @@ export type {FormPermissionOffer,FormPermissionSettings,FormPermissionCommand,Fo
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS
 export {createIndexedDBFormPermissionJournal} from './form-permission-journal.js';
 export type {FormPermissionJournal,IndexedDBFormPermissionJournal} from './form-permission-journal.js';
+
+export type {SiteLocalization,DocumentMessages,GeneratedDocumentMessages} from './document-localization.js';
+export type {ConsentLocalization,ConsentMessages} from './localization-policy.js';

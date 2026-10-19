@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {normalizeConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
+import type {ConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 import {scopeGuardContext,scopeGuardBlocked} from './scope-guard-policy.js';
 // @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
@@ -13,7 +16,7 @@ export function consentScopes(config: ConsentRuntimeInventory): Record<string, s
     const services = config.consent!.services.map(s => ({ scope:s.scope, service:config.services.find(item => item.id === s.id)! }))
       .filter(s => s.service.purposeIds.includes(p.id)).sort((a,b) => a.service.id < b.service.id ? -1 : a.service.id > b.service.id ? 1 : 0);
     const scopeGuard=scopeGuardContext(config.scopeGuards,p.id);
-    return [p.id, JSON.stringify({ scope:p.scope, purpose, services,...(scopeGuard?{scopeGuard}:{}) })];
+    return [p.id, JSON.stringify({ scope:p.scope, purpose, services,...(scopeGuard?{scopeGuard}:{}),...(config.localization?{localization:{locale:config.localization.locale,disclosureRevision:config.localization.disclosureRevision}}:{}) })];
   }));
 }
 export interface ConsentWording {
@@ -24,7 +27,7 @@ export interface ConsentWording {
 export function applyPromptPolicyWording(config:ConsentRuntimeInventory,wording:ConsentWording):ConsentWording {
   const summary=config.consent?.promptPolicy?.materialChange?.summary;
   if(!summary)return wording;
-  const disclosure=`Changes to optional processing: ${summary}`;
+  const disclosure=config.localization?formatMessage(config.localization.consent.materialChange,{summary}):`Changes to optional processing: ${summary}`;
   const append=(text:string)=>text.endsWith(disclosure)?text:`${text} ${disclosure}`;
   return {...wording,summary:append(wording.summary),preferencesIntro:append(wording.preferencesIntro)};
 }
@@ -34,6 +37,7 @@ export function defaultConsentWording(config: ConsentRuntimeInventory): ConsentW
   const available=config.consent.purposes.filter(p=>!scopeGuardBlocked(config.scopeGuards,p.id));
   const exceptions=config.storage.some(s=>s.classification==='exception');
   const restricted=available.length!==config.consent.purposes.length;
+  if(config.localization)return localizedConsentWording(config.localization,{available:available.length>0,restricted,exceptions,...(config.consent.promptPolicy?.materialChange?{changeSummary:config.consent.promptPolicy.materialChange.summary}:{})});
   return applyPromptPolicyWording(config,{
     title:'Optional cookies',
     summary:available.length?`Allow optional cookies and storage for ${available.map(p => config.purposes.find(item => item.id === p.id)!.name.toLocaleLowerCase('en')).join(' and ')}?${restricted?' Other purposes need a separate process and stay off here.':''}${exceptions?' Other storage settings have separate on/off controls.':''}`:'Optional purposes need a separate supported process and stay off here.',
@@ -49,7 +53,7 @@ export interface ConsentNoticeDocument {
  * An immutable descriptor of declared disclosures, not a claim that this UI was displayed or consent was valid.
  */
 export interface ConsentNotice {
-  schemaVersion:1; noticeId:string; siteId:string; scopeId:string; artifactId:string; mode:'preview'|'production';
+  schemaVersion:1|2; localization?:ConsentLocalization; noticeId:string; siteId:string; scopeId:string; artifactId:string; mode:'preview'|'production';
   scopeDigest:string; scopes:Record<string,string>; wording:ConsentWording;
   documents:{privacy:ConsentNoticeDocument; cookies:ConsentNoticeDocument};
   policy:{grantLifetimeDays:number; refusalLifetimeDays:number; deliveryWindowSeconds:number;promptPolicy?:PromptPolicy};
@@ -65,13 +69,14 @@ export function normalizeConsentNotice(input:unknown, options:{allowPreview?:boo
   let n:unknown;
   try { const serialized = JSON.stringify(input); if (new TextEncoder().encode(serialized).length > 32768) throw new Error(); n = JSON.parse(serialized); } catch { throw new Error('Invalid or oversized consent notice.'); }
   const invalid = () => { throw new Error('Invalid consent notice.'); };
-  if (!object(n) || !exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy']) || n.schemaVersion !== 1 || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || !slug(n.siteId) || !slug(n.scopeId) || typeof n.mode !== 'string' || !['preview','production'].includes(n.mode)) return invalid();
+  if (!object(n) || !exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy',...(n.schemaVersion===2?['localization']:[])]) || (n.schemaVersion!==1&&n.schemaVersion!==2) || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || !slug(n.siteId) || !slug(n.scopeId) || typeof n.mode !== 'string' || !['preview','production'].includes(n.mode)) return invalid();
+  if(n.schemaVersion===2)n.localization=normalizeConsentLocalization(n.localization,{allowPreview:options.allowPreview===true});
   if (!object(n.scopes) || Object.keys(n.scopes).length < 1 || Object.keys(n.scopes).length > 40 || Object.entries(n.scopes).some(([id,value])=>!slug(id) || !text(value,30000))) return invalid();
   const wordingKeys = ['title','summary','preferencesTitle','preferencesIntro','essentialNote','acceptLabel','rejectLabel','saveLabel','preferencesLabel','dismissLabel','closeLabel'];
   if (!object(n.wording) || !exact(n.wording,wordingKeys) || Object.entries(n.wording).some(([key,value])=>!text(value, key.endsWith('Label') ? 120 : 2000))) return invalid();
   if (!object(n.policy) || !exact(n.policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(n.policy.promptPolicy===undefined?[]:['promptPolicy'])]) || ![n.policy.grantLifetimeDays,n.policy.refusalLifetimeDays].every(v=>Number.isInteger(v) && Number(v)>=1 && Number(v)<=730) || !Number.isInteger(n.policy.deliveryWindowSeconds) || Number(n.policy.deliveryWindowSeconds)<30 || Number(n.policy.deliveryWindowSeconds)>86400 || n.policy.promptPolicy!==undefined&&!isPromptPolicy(n.policy.promptPolicy)) return invalid();
   if(isPromptPolicy(n.policy.promptPolicy)&&n.policy.promptPolicy.materialChange){
-    const disclosure=`Changes to optional processing: ${n.policy.promptPolicy.materialChange.summary}`;
+    const disclosure=n.schemaVersion===2?formatMessage((n.localization as unknown as ConsentLocalization).consent.materialChange,{summary:n.policy.promptPolicy.materialChange.summary}):`Changes to optional processing: ${n.policy.promptPolicy.materialChange.summary}`;
     if(!(n.wording.summary as string).endsWith(disclosure)||!(n.wording.preferencesIntro as string).endsWith(disclosure))return invalid();
   }
   if (!object(n.documents) || !exact(n.documents,['privacy','cookies'])) return invalid();

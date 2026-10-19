@@ -1,0 +1,51 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+// Kept byte-identical in notabenda-cf: its standalone validator has no frontend dependency.
+export const consentMessageFields = {
+ title:[],summary:[],preferencesTitle:[],preferencesIntro:[],essentialNote:[],
+ acceptLabel:[],rejectLabel:[],saveLabel:[],preferencesLabel:[],dismissLabel:[],closeLabel:[],
+ triggerLabel:[],noticeLabel:[],cookiePolicy:[],retryLabel:[],services:['services'],
+ scopeUnavailable:[],privacyInformation:[],storageUnavailable:[],reloadRequired:[],
+ checking:[],saving:[],recorded:[],error:[],review:[],stale:[],expired:[],unavailable:[],retired:[],
+ signalObserved:[],signalUnavailable:[],processingRecorded:[],processingPending:[],destroyed:[],choicesChanged:[],
+ restrictedSummary:[],exceptionsSummary:[],unavailableSummary:[],restrictedIntro:[],materialChange:['summary'],
+} as const;
+export type ConsentMessages = {[K in keyof typeof consentMessageFields]:string};
+export interface ConsentLocalization {
+ schemaVersion:1;locale:string;direction:'ltr'|'rtl';revision:string;disclosureRevision:string;
+ reviewStatus:'draft'|'reviewed';consent:ConsentMessages;
+}
+const fail=():never=>{throw new Error('Invalid localization: supply a canonical locale, direction, revisions and a complete plain-text message set with the documented placeholders.');};
+function record(input:unknown,keys:string[]):Record<string,unknown>{
+ if(!input||typeof input!=='object'||Array.isArray(input))return fail();
+ const descriptors=Object.getOwnPropertyDescriptors(input);
+ if(Reflect.ownKeys(input).length!==keys.length||keys.some(k=>!Object.hasOwn(descriptors,k)||!Object.hasOwn(descriptors[k]!,'value')))return fail();
+ return Object.fromEntries(keys.map(k=>[k,descriptors[k]!.value]));
+}
+export function normalizeMessages<T extends Record<string,readonly string[]>>(input:unknown,fields:T):{[K in keyof T]:string}{
+ const value=record(input,Object.keys(fields));let bytes=0;
+ for(const [key,args] of Object.entries(fields)){
+  const message=value[key];
+  if(typeof message!=='string'||!message.trim()||/[<>\u0000-\u001f\u007f]/u.test(message))return fail();
+  const size=new TextEncoder().encode(message).length;bytes+=size;
+  if(size>(key.endsWith('Label')?120:2000)||bytes>20000)return fail();
+  const placeholders=[...message.matchAll(/\{([a-zA-Z]+)\}/gu)].map(m=>m[1]!);
+  if(message.replace(/\{[a-zA-Z]+\}/gu,'').match(/[{}]/u)||placeholders.some(p=>!args.includes(p))||args.some(p=>!placeholders.includes(p)))return fail();
+ }
+ return value as {[K in keyof T]:string};
+}
+/** Fixed named placeholders only. Replacement values remain text and are never recursively parsed. */
+export function formatMessage(template:string,values:Record<string,string|number>):string{
+ return template.replace(/\{([a-zA-Z]+)\}/gu,(_,key:string)=>String(values[key]));
+}
+export function normalizeConsentLocalization(input:unknown,options:{locale?:string;allowPreview?:boolean}={}):ConsentLocalization{
+ const v=record(input,['schemaVersion','locale','direction','revision','disclosureRevision','reviewStatus','consent']);
+ const revision=(x:unknown)=>typeof x==='string'&&/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$/u.test(x);
+ let locale:string;try{if(typeof v.locale!=='string')return fail();locale=Intl.getCanonicalLocales(v.locale)[0]!;if(locale!==v.locale||options.locale!==undefined&&locale!==options.locale)return fail();}catch{return fail();}
+ if(v.schemaVersion!==1||(v.direction!=='ltr'&&v.direction!=='rtl')||!revision(v.revision)||!revision(v.disclosureRevision)||(v.reviewStatus!=='draft'&&v.reviewStatus!=='reviewed')||!options.allowPreview&&v.reviewStatus!=='reviewed')return fail();
+ return {schemaVersion:1,locale,direction:v.direction as 'ltr'|'rtl',revision:v.revision as string,disclosureRevision:v.disclosureRevision as string,reviewStatus:v.reviewStatus as 'draft'|'reviewed',consent:normalizeMessages(v.consent,consentMessageFields)};
+}
+export function localizedConsentWording(localization:ConsentLocalization,context:{available:boolean;restricted:boolean;exceptions:boolean;changeSummary?:string}){
+ const m=localization.consent;
+ const change=context.changeSummary?formatMessage(m.materialChange,{summary:context.changeSummary}):'';
+ return {title:m.title,summary:[context.available?m.summary:m.unavailableSummary,context.available&&context.restricted?m.restrictedSummary:'',context.exceptions?m.exceptionsSummary:'',change].filter(Boolean).join(' '),preferencesTitle:m.preferencesTitle,preferencesIntro:[m.preferencesIntro,context.restricted?m.restrictedIntro:'',change].filter(Boolean).join(' '),essentialNote:m.essentialNote,acceptLabel:m.acceptLabel,rejectLabel:m.rejectLabel,saveLabel:m.saveLabel,preferencesLabel:m.preferencesLabel,dismissLabel:m.dismissLabel,closeLabel:m.closeLabel};
+}

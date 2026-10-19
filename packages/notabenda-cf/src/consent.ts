@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {normalizeConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
+import type {ConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 import {normalizeScopeGuardPolicy,scopeGuardContext,scopeGuardBlocked} from './scope-guard-policy.js';
 // @requirements REQ-EU-RETENTION-ERASURE
@@ -52,7 +55,7 @@ const iso = (v:unknown):v is string => typeof v === 'string' && /^\d{4}-\d{2}-\d
 function object(v:JsonValue|undefined):ObjectValue { return v && typeof v === 'object' && !Array.isArray(v) ? v : fail('invalid-record'); }
 function exact(v:ObjectValue,keys:string[]):boolean { return Object.keys(v).length === keys.length && keys.every(k=>Object.hasOwn(v,k)); }
 /** @requirements REQ-IT-REPROMPT Independently validate public policy/disclosure without a frontend dependency. */
-function validPromptPolicy(value:JsonValue|undefined,wording:ObjectValue):boolean {
+function validPromptPolicy(value:JsonValue|undefined,wording:ObjectValue,localization?:ConsentLocalization):boolean {
   if(value===undefined)return true;
   if(!value||typeof value!=='object'||Array.isArray(value))return false;
   const revision=(v:JsonValue|undefined)=>typeof v==='string'&&/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$/u.test(v);
@@ -60,7 +63,7 @@ function validPromptPolicy(value:JsonValue|undefined,wording:ObjectValue):boolea
   if(value.materialChange===undefined)return true;
   const change=value.materialChange;
   if(!change||typeof change!=='object'||Array.isArray(change)||!exact(change,['fromRevision','summary'])||!revision(change.fromRevision)||change.fromRevision===value.processingRevision||!text(change.summary,1000))return false;
-  const disclosure=`Changes to optional processing: ${change.summary}`;
+  const disclosure=localization?formatMessage(localization.consent.materialChange,{summary:String(change.summary)}):`Changes to optional processing: ${change.summary}`;
   return typeof wording.summary==='string'&&wording.summary.endsWith(disclosure)&&typeof wording.preferencesIntro==='string'&&wording.preferencesIntro.endsWith(disclosure);
 }
 function normalized(input:unknown,bytes:number,code:ConsentRecordError['code']):ObjectValue {
@@ -75,12 +78,14 @@ function options(storage:HistoryStorage,context:ConsentStoreOptions):{prefix:str
 }
 async function noticeValue(input:unknown,context:ConsentStoreOptions):Promise<ObjectValue> {
   const n = normalized(input,32768,'invalid-notice');
-  if (!exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy']) || n.schemaVersion!==1 || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || n.siteId!==context.siteId || !slug(n.scopeId) || (typeof n.mode!=='string'||!['preview','production'].includes(n.mode))) return fail('invalid-notice');
+  if (!exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy',...(n.schemaVersion===2?['localization']:[])]) || (n.schemaVersion!==1&&n.schemaVersion!==2) || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || n.siteId!==context.siteId || !slug(n.scopeId) || (typeof n.mode!=='string'||!['preview','production'].includes(n.mode))) return fail('invalid-notice');
+  let localization:ConsentLocalization|undefined;
+  if(n.schemaVersion===2){try{localization=normalizeConsentLocalization(n.localization,{allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   const scopes=object(n.scopes); const wording=object(n.wording); const policy=object(n.policy); const docs=object(n.documents);
   if (Object.keys(scopes).length<1 || Object.keys(scopes).length>40 || Object.entries(scopes).some(([id,v])=>!slug(id)||!text(v,30000)) || await sha256(canonicalJson(scopes))!==n.scopeDigest) return fail('invalid-notice');
   const labels=['acceptLabel','rejectLabel','saveLabel','preferencesLabel','dismissLabel','closeLabel'];
   if (!exact(wording,['title','summary','preferencesTitle','preferencesIntro','essentialNote',...labels]) || Object.entries(wording).some(([k,v])=>!text(v,labels.includes(k)?120:2000))) return fail('invalid-notice');
-  if (!exact(policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(policy.promptPolicy===undefined?[]:['promptPolicy'])]) || !validPromptPolicy(policy.promptPolicy,wording) || ![policy.grantLifetimeDays,policy.refusalLifetimeDays].every(v=>Number.isInteger(v)&&Number(v)>=1&&Number(v)<=730) || !Number.isInteger(policy.deliveryWindowSeconds) || Number(policy.deliveryWindowSeconds)<30 || Number(policy.deliveryWindowSeconds)>86400 || !exact(docs,['privacy','cookies'])) return fail('invalid-notice');
+  if (!exact(policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(policy.promptPolicy===undefined?[]:['promptPolicy'])]) || !validPromptPolicy(policy.promptPolicy,wording,localization) || ![policy.grantLifetimeDays,policy.refusalLifetimeDays].every(v=>Number.isInteger(v)&&Number(v)>=1&&Number(v)<=730) || !Number.isInteger(policy.deliveryWindowSeconds) || Number(policy.deliveryWindowSeconds)<30 || Number(policy.deliveryWindowSeconds)>86400 || !exact(docs,['privacy','cookies'])) return fail('invalid-notice');
   for (const kind of ['privacy','cookies']) {
     const d=object(docs[kind]);
     if (!exact(d,['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus']) || !text(d.title,300) || !text(d.version,200) || !hash(d.sha256) || !hash(d.contentSha256) || d.url!==`/artifacts/${n.artifactId}/${kind}.html` || (typeof d.reviewStatus!=='string'||!['draft','reviewed'].includes(d.reviewStatus)) || typeof d.effectiveDate!=='string' || !/^\d{4}-\d{2}-\d{2}$/u.test(d.effectiveDate) || !Number.isFinite(Date.parse(d.effectiveDate)) || new Date(d.effectiveDate).toISOString().slice(0,10)!==d.effectiveDate) return fail('invalid-notice');
@@ -95,6 +100,9 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
   if (release.kind!=='document-release') return fail('invalid-notice');
   const artifact=await validateStoredLegalRelease(release); const m=object(artifact.manifest); const config=object(artifact.publicConfig);
   if (m.siteId!==context.siteId || m.artifactId!==n.artifactId || m.mode!==n.mode || object(config.site).id!==context.siteId) return fail('scope-mismatch');
+  let localization:ConsentLocalization|undefined;
+  if(config.localization!==undefined){try{const {documents:_,generatedDocuments:__,...selected}=object(config.localization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
+  if(canonicalJson((localization??null) as unknown as JsonValue)!==canonicalJson(n.localization??null))return fail('invalid-notice');
   const policy=object(config.consent); const declared=object(n.policy);
   if (policy.grantLifetimeDays!==declared.grantLifetimeDays || policy.refusalLifetimeDays!==declared.refusalLifetimeDays || canonicalJson(policy.promptPolicy??null)!==canonicalJson(declared.promptPolicy??null) || !Array.isArray(policy.purposes) || !Array.isArray(policy.services) || !Array.isArray(config.purposes) || !Array.isArray(config.services)) return fail('invalid-notice');
   let guards;try{guards=config.scopeGuards===undefined?undefined:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>String(object(p).id)));}catch{return fail('invalid-notice');}
@@ -109,8 +117,9 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
       .filter(s=>{const ids=object(s.service).purposeIds; return Array.isArray(ids)&&ids.includes(p.id!);})
       .sort((a,b)=>String(object(a.service).id)<String(object(b.service).id)?-1:String(object(a.service).id)>String(object(b.service).id)?1:0);
     const scopeGuard=scopeGuardContext(guards,p.id);if(scopeGuardBlocked(guards,p.id))blocked.push(p.id);
-    scopes[p.id]=JSON.stringify({scope:p.scope,purpose,services,...(scopeGuard?{scopeGuard}:{})});
+    scopes[p.id]=JSON.stringify({scope:p.scope,purpose,services,...(scopeGuard?{scopeGuard}:{}),...(localization?{localization:{locale:localization.locale,disclosureRevision:localization.disclosureRevision}}:{})});
   }
+  if(localization){const change=policy.promptPolicy?object(policy.promptPolicy).materialChange:undefined;const expected=localizedConsentWording(localization,{available:policy.purposes.length>blocked.length,restricted:blocked.length>0,exceptions:Array.isArray(config.storage)&&config.storage.some(s=>object(s).classification==='exception'),...(change?{changeSummary:String(object(change).summary)}:{})});if(canonicalJson(expected)!==canonicalJson(n.wording??null))return fail('invalid-notice');}
   // Archives may be serialized canonically, changing object key order. Verify the disclosed facts
   // structurally while preserving the notice's exact strings for the browser's material-scope identity.
   const suppliedScopes=object(n.scopes);
@@ -241,7 +250,7 @@ export function createConsentEvidenceStore(storage:HistoryStorage,context:Consen
       const services=Array.isArray(parsed.services)?parsed.services.map(raw=>{const s=object(object(raw).service); return {name:typeof s.name==='string'?s.name:'Not recorded',provider:typeof s.provider==='string'?s.provider:'Not recorded'};}):[];
       return [id,{description:typeof p.description==='string'?p.description:'Not recorded',services,...(parsed.scopeGuard===undefined?{}:{scopeGuard:parsed.scopeGuard})}];
     }));
-    return normalizeRecord({id:String(e.id),data:{...e,notice:{mode:n.mode!,wording:n.wording!,documents:n.documents!,purposes,purposeDetails}}}).data;
+    return normalizeRecord({id:String(e.id),data:{...e,notice:{mode:n.mode!,...(n.localization===undefined?{}:{localization:n.localization}),wording:n.wording!,documents:n.documents!,purposes,purposeDetails}}}).data;
   };
   const scoped:DurableStorage={
     async get<T>(key:string) { const v=await storage.get(key); return v===undefined?undefined:await inspect(v,key) as T; },

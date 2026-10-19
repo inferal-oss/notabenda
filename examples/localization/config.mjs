@@ -1,0 +1,18 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {readFile} from 'node:fs/promises';
+const messages=JSON.parse(await readFile(new URL('./messages.json',import.meta.url),'utf8'));
+/** Draft host-supplied wording, not a reviewed Brazilian compliance pack. */
+export function localizedExampleConfig(base){
+ const c=structuredClone(base);c.site={id:'juniper-pt',name:'Juniper',url:'https://juniper.example.test',locale:'pt-BR',description:'Um espaço para leitura.'};c.localization=structuredClone(messages);c.jurisdictions=['BR'];
+ c.controller={name:'Juniper',email:'privacy@example.test',address:'Endereço ilustrativo para revisão'};
+ c.purposes=[{id:'suggestions',name:'Sugestões de leitura',description:'Mostrar uma sugestão local de leitura, sem enviar dados pela rede.',legalBasis:'Permissão para o recurso opcional; declaração de exemplo para revisão.',dataCategories:['Estado do recurso neste navegador'],retention:'Até a retirada da permissão ou a limpeza do navegador.',collection:{source:'direct',description:'Sua escolha nesta página.',required:false,consequences:'As sugestões permanecem desativadas.'}}];
+ c.purposes.push({id:'remember-choices',name:'Memória das escolhas',description:'Lembrar suas preferências de privacidade neste navegador.',legalBasis:'Armazenamento de preferências; classificação de exemplo para revisão.',dataCategories:['Finalidade e escopo da escolha','Data da escolha e prazo de validade'],retention:'Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos.',collection:{source:'direct',description:'Sua escolha ou adiamento do aviso.',required:false,consequences:'Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências.'}});
+ c.services=[{id:'reading',name:'Sugestões Juniper',provider:'Juniper',purposeIds:['suggestions'],location:'Este navegador'},{id:'choices-memory',name:'Memória das escolhas',provider:'Juniper',purposeIds:['remember-choices'],location:'Este navegador'}];
+ c.storage=[{id:'choices',name:'notabenda:choices:v1:juniper-pt',type:'localStorage',serviceId:'choices-memory',duration:'Permissões: 30 dias. Recusas: 180 dias.',classification:'necessary',necessityReason:'Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável.'}];
+ c.storage.push({id:'prompt-memory',name:'notabenda:choices:v1:juniper-pt:prompt',type:'localStorage',serviceId:'choices-memory',duration:'30 minutos',classification:'necessary',necessityReason:'Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável.'});
+ c.privacy={rights:['Entre em contato para consultar suas informações e apresentar uma solicitação.'],transfers:'Este exemplo não envia os dados do recurso para outro servidor.',automatedDecisions:'Este exemplo não toma decisões automatizadas sobre pessoas.',complaints:{description:'Entre em contato pelo endereço indicado nesta página.'}};
+ c.terms={audience:'consumer',serviceType:'informational'};
+ for(const [kind,title] of Object.entries({privacy:'Política de privacidade',cookies:'Política de cookies',terms:'Termos de uso'}))c.documents[kind]={title,route:'/localization/'+kind,version:'1',effectiveDate:'2026-10-19',source:kind==='terms'?'supplied':'generated',review:{status:'draft'},...(kind==='terms'?{sections:[{id:'reading',heading:'Sobre este espaço',paragraphs:['Este espaço apresenta textos e sugestões de leitura.']},{id:'contact',heading:'Contato',paragraphs:['Entre em contato se tiver dúvidas sobre o conteúdo.'],links:[{label:'Fale com a Juniper',href:'mailto:privacy@example.test'}]}]}:{})};
+ c.consent={purposes:[{id:'suggestions',scope:'reading-1'}],services:[{id:'reading',scope:'reading-1'}],grantLifetimeDays:30,refusalLifetimeDays:180,dismissalMinutes:30};
+ return c;
+}

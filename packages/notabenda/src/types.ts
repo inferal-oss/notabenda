@@ -1,3 +1,4 @@
+import type {SiteLocalization} from './document-localization.js';
 // @requirements REQ-UK-EXCEPTIONS
 import type {StorageExceptionPolicy} from './storage-exception-policy.js';
 export type {StorageExceptionPolicy,StorageExceptionEntry} from './storage-exception-policy.js';
@@ -105,6 +106,7 @@ export interface ConsentConfig {
 export interface SiteConfig {
   schemaVersion: 1;
   site: { id: string; name: string; url: string; locale: string; description: string };
+  localization?:SiteLocalization;
   controller: Contact & { address: string; representative?: Contact; dpo?: Contact };
   jurisdictions: string[];
   purposes: Purpose[];

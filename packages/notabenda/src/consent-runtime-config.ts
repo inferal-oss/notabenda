@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {normalizeConsentLocalization} from './localization-policy.js';
+import type {ConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-CONFIG REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-CONSENT-RUNTIME
 import type {PublicSiteConfig,DocumentConfig,BuildMode} from './types.js';
 import {isResourceOrigin,isSafeLink} from './safe-links.js';
@@ -6,7 +9,7 @@ import {normalizeScopeGuardPolicy} from './scope-guard-policy.js';
 import {isPromptPolicy} from './prompt-policy.js';
 /** Material inventory remains public; authoring bodies, operator contacts and other workflows are omitted. */
 export type ConsentRuntimeInventory=Pick<PublicSiteConfig,'schemaVersion'|'site'|'purposes'|'services'|'storage'|'consent'|'scopeGuards'|'privacySignals'>&{
- documents:Record<'privacy'|'cookies',Omit<DocumentConfig,'sections'>>;
+ documents:Record<'privacy'|'cookies',Omit<DocumentConfig,'sections'>>;localization?:ConsentLocalization;
 };
 export interface ConsentRuntimeConfig {
  schemaVersion:1;
@@ -33,9 +36,10 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
  shape(value,['schemaVersion','kind','mode','evidence','inventory']);
  need(value.schemaVersion===1&&value.kind==='notabenda-consent-runtime'&&member(value.mode,['preview','production'])&&member(value.evidence,['local','required']));
  const c=value.inventory;
- shape(c,['schemaVersion','site','purposes','services','storage','consent','documents'],['scopeGuards','privacySignals']);need(c.schemaVersion===1);
+ shape(c,['schemaVersion','site','purposes','services','storage','consent','documents'],['scopeGuards','privacySignals','localization']);need(c.schemaVersion===1);
  shape(c.site,['id','name','url','locale','description']);const site=c.site;need(slug(site.id)&&['name','url','locale','description'].every(k=>text(site[k])));
- try{const url=new URL(String(c.site.url));need(isSafeLink(c.site.url)&&url.protocol==='https:'&&!url.search&&!url.hash&&/^en(?:-|$)/iu.test(String(c.site.locale))&&Intl.getCanonicalLocales(String(c.site.locale)).length);}catch{return fail();}
+ try{const url=new URL(String(c.site.url));need(isSafeLink(c.site.url)&&url.protocol==='https:'&&!url.search&&!url.hash&&(c.localization===undefined?Intl.getCanonicalLocales(String(c.site.locale)).length&&/^en(?:-|$)/iu.test(String(c.site.locale)):Intl.getCanonicalLocales(String(c.site.locale))[0]===c.site.locale));}catch{return fail();}
+ const localization=c.localization===undefined?undefined:normalizeConsentLocalization(c.localization,{locale:String(site.locale),allowPreview:value.mode==='preview'});
  entries(c.purposes,256);entries(c.services,256);entries(c.storage,512);
  const purposes=c.purposes.map(p=>{
   shape(p,['id','name','description','legalBasis','dataCategories','retention','collection']);need(['name','description','legalBasis','retention'].every(k=>text(p[k])));strings(p.dataCategories,1);
@@ -80,5 +84,5 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
   need(typeof d.effectiveDate==='string'&&/^\d{4}-\d{2}-\d{2}$/u.test(d.effectiveDate)&&Number.isFinite(Date.parse(d.effectiveDate))&&new Date(d.effectiveDate).toISOString().slice(0,10)===d.effectiveDate);routes.add(d.route.toLowerCase());
   documents[kind]={title:d.title,route:d.route,version:d.version,effectiveDate:d.effectiveDate,source:d.source,review:{status:d.review.status}};
  }
- return {schemaVersion:1,kind:'notabenda-consent-runtime',mode:value.mode,evidence:value.evidence,inventory:{schemaVersion:1,site:c.site,purposes,services,storage,consent,documents,...(scopeGuards===undefined?{}:{scopeGuards}),...(privacySignals===undefined?{}:{privacySignals})}} as ConsentRuntimeConfig;
+ return {schemaVersion:1,kind:'notabenda-consent-runtime',mode:value.mode,evidence:value.evidence,inventory:{schemaVersion:1,site:c.site,...(localization===undefined?{}:{localization}),purposes,services,storage,consent,documents,...(scopeGuards===undefined?{}:{scopeGuards}),...(privacySignals===undefined?{}:{privacySignals})}} as ConsentRuntimeConfig;
 }

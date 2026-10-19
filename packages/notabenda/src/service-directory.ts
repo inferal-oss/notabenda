@@ -1,3 +1,4 @@
+import {requireEnglishSurface} from './document-localization.js';
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
 import {toPublicConfig,isSafeLink} from './config.js';
 import {escapeHtml} from './documents.js';
@@ -49,10 +50,11 @@ function render(model:ServiceDirectory,options:ServiceDirectoryOptions):string {
 }
 /** Script-free HTML. Custom host filters may call this on a server or during build. */
 export function renderServiceDirectory(input:unknown,options:ServiceDirectoryOptions):string {
-  return render(createServiceDirectory(input,options),options);
+  const model=createServiceDirectory(input,options);requireEnglishSurface(model,'Service directory');return render(model,options);
 }
 export function renderServiceDirectoryPage(input:unknown,options:ServiceDirectoryOptions&{stylesheetUrl?:string}):string {
   const model=createServiceDirectory(input,options),body=render(model,{...options,headingLevel:1});
+  requireEnglishSurface(model,'Service directory');
   if(options.stylesheetUrl!==undefined&&!isSafeLink(options.stylesheetUrl))throw Error('Unsafe directory stylesheet URL.');
   return `<!doctype html><html lang="${escapeHtml(model.site.locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(options.title??'Service directory')} · ${escapeHtml(model.site.name)}</title>${options.stylesheetUrl?`<link rel="stylesheet" href="${escapeHtml(options.stylesheetUrl)}">`:''}</head><body class="nb-page nb-service-page"><a class="nb-service-skip" href="#main">Skip to content</a><header class="nb-site-header nb-service-sitebar"><a href="${escapeHtml(model.site.url)}">${escapeHtml(model.site.name)}</a><span>Services used by this site</span></header><main id="main">${body}</main><footer class="nb-service-footer"><p>Describes the services declared for this site. Viewing this directory does not change your privacy choices.</p></footer></body></html>`;
 }
@@ -63,6 +65,7 @@ export function mountServiceDirectory(container:HTMLElement,input:unknown,option
   if(!container?.ownerDocument||mounts.has(container))throw Error('Use an unmounted browser element.');
   // Search all declared services; supplied filters only set the initial control values.
   const model=createServiceDirectory(input,{...(options.mode?{mode:options.mode}:{})});
+  requireEnglishSurface(model,'Service directory');
   filterServices(model,options);
   const html=render(model,options),document=container.ownerDocument,template=document.createElement('template');template.innerHTML=html;
   const existing=container.firstElementChild,comparison=existing?.cloneNode(true) as Element|undefined;

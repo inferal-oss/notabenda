@@ -1,3 +1,6 @@
+import {localizedSections} from './localized-documents.js';
+import {formatMessage} from './localization-policy.js';
+import type {SiteLocalization} from './document-localization.js';
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
 import { documentKinds, isSafeLink, toPublicConfig } from './config.js';
 import {declaredServices} from './service-inventory.js';
@@ -58,20 +61,20 @@ export function createLegalDocument(input: unknown, kind: DocumentKind, options:
   const config = toPublicConfig(input, options);
   const document = config.documents[kind];
   const supplied = document.sections ?? [];
-  const generated = kind === 'privacy' ? privacySections(config) : kind === 'cookies' ? cookieSections(config) : [];
+  const generated = document.source==='supplied'||kind==='terms'?[]:config.localization?localizedSections(config,kind):kind==='privacy'?privacySections(config):cookieSections(config);
   return {
     kind, title: document.title, route: document.route, version: document.version,
     effectiveDate: document.effectiveDate, reviewStatus: document.review.status,
     sections: document.source === 'supplied' ? supplied : [...generated, ...supplied.map(s => ({ ...s, id: `additional-${s.id}` }))],
-    requirementIds: [...documentRequirements[kind]],
+    requirementIds: [...documentRequirements[kind],...(config.localization?['REQ-PRODUCT-LOCALIZATION' as const]:[])],
   };
 }
 
-function renderSection(section: LegalSection, kind: DocumentKind): string {
+function renderSection(section: LegalSection, kind: DocumentKind, localization?:SiteLocalization): string {
   const table = section.table;
   const tableHtml = table ? `<div class="nb-table-scroll" role="region" aria-label="${escapeHtml(table.caption)}" tabindex="0"><table><caption>${escapeHtml(table.caption)}</caption><thead><tr>${table.columns.map(c => `<th scope="col">${escapeHtml(c)}</th>`).join('')}</tr></thead><tbody>${table.rows.map(row => `<tr>${row.map((cell, i) => i === 0 ? `<th scope="row">${escapeHtml(cell)}</th>` : `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : '';
   const foldout=kind==='cookies'&&section.id==='storage'&&!!table;
-  return `<section id="nb-${kind}-section-${escapeHtml(section.id)}">${foldout ? '<details class="nb-storage-foldout"><summary>' : ''}<h2>${escapeHtml(section.heading)}</h2>${foldout ? `<span class="nb-storage-count">${table!.rows.length} ${table!.rows.length===1?'item':'items'}</span></summary>` : ''}${(section.paragraphs ?? []).map(p => `<p>${escapeHtml(p)}</p>`).join('')}${section.items?.length ? `<ul>${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}${section.links?.length ? `<ul class="nb-document-links">${section.links.map(item => `<li>${link(item.label, item.href)}</li>`).join('')}</ul>` : ''}${tableHtml}${foldout?'</details>':''}</section>`;
+  return `<section id="nb-${kind}-section-${escapeHtml(section.id)}">${foldout ? '<details class="nb-storage-foldout"><summary>' : ''}<h2>${escapeHtml(section.heading)}</h2>${foldout ? `<span class="nb-storage-count">${localization?escapeHtml(formatMessage(localization.documents[table!.rows.length===1?'storageItem':'storageItems'],{count:table!.rows.length})):`${table!.rows.length} ${table!.rows.length===1?'item':'items'}`}</span></summary>` : ''}${(section.paragraphs ?? []).map(p => `<p>${escapeHtml(p)}</p>`).join('')}${section.items?.length ? `<ul>${section.items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>` : ''}${section.links?.length ? `<ul class="nb-document-links">${section.links.map(item => `<li>${link(item.label, item.href)}</li>`).join('')}</ul>` : ''}${tableHtml}${foldout?'</details>':''}</section>`;
 }
 
 /** @requirements REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-SAFE-CONTENT REQ-PRODUCT-A11Y */
@@ -79,10 +82,11 @@ export function renderLegalDocument(input: unknown, kind: DocumentKind, options:
   const config = toPublicConfig(input, options);
   const doc = createLegalDocument(config, kind, options);
   const titleId = `nb-${kind}-title`;
+  const l=config.localization,m=l?.documents;
   const contents = doc.sections.map(s => `<li><a href="#nb-${kind}-section-${escapeHtml(s.id)}">${escapeHtml(s.heading)}</a></li>`).join('');
-  let html = `<article class="nb-document" aria-labelledby="${titleId}" data-document-kind="${kind}" data-document-version="${escapeHtml(doc.version)}"><header><p class="nb-eyebrow">${escapeHtml(config.site.name)} · Legal</p><h1 id="${titleId}">${escapeHtml(doc.title)}</h1><p class="nb-document-meta">Version ${escapeHtml(doc.version)} <span aria-hidden="true">·</span> Effective <time datetime="${escapeHtml(doc.effectiveDate)}">${escapeHtml(doc.effectiveDate)}</time></p>${doc.reviewStatus === 'draft' ? '<p class="nb-draft" role="note">Draft — for review. This document is not approved for production use.</p>' : ''}</header><nav class="nb-contents" aria-label="On this page"><p>On this page</p><ol>${contents}</ol></nav>`;
+  let html = `<article class="nb-document"${l?` lang="${escapeHtml(l.locale)}" dir="${l.direction}"`: ''} aria-labelledby="${titleId}" data-document-kind="${kind}" data-document-version="${escapeHtml(doc.version)}"><header><p class="nb-eyebrow">${m?escapeHtml(formatMessage(m.legalEyebrow,{siteName:config.site.name})):`${escapeHtml(config.site.name)} · Legal`}</p><h1 id="${titleId}">${escapeHtml(doc.title)}</h1><p class="nb-document-meta">${escapeHtml(m?.versionLabel??'Version')} ${escapeHtml(doc.version)} <span aria-hidden="true">·</span> ${escapeHtml(m?.effectiveLabel??'Effective')} <time datetime="${escapeHtml(doc.effectiveDate)}">${escapeHtml(doc.effectiveDate)}</time></p>${doc.reviewStatus === 'draft' ? `<p class="nb-draft" role="note">${escapeHtml(m?.draft??'Draft — for review. This document is not approved for production use.')}</p>` : ''}</header><nav class="nb-contents" aria-label="${escapeHtml(m?.contents??'On this page')}"><p>${escapeHtml(m?.contents??'On this page')}</p><ol>${contents}</ol></nav>`;
   for (const section of doc.sections) {
-    html += renderSection(section, kind);
+    html += renderSection(section, kind,l);
   }
   return html + '</article>';
 }
@@ -90,13 +94,15 @@ export function renderLegalDocument(input: unknown, kind: DocumentKind, options:
 /** Optional footer fragment; never includes consent or acceptance checkboxes. */
 export function renderLegalLinks(input: unknown): string {
   const config = toPublicConfig(input);
-  return `<nav class="nb-legal-links" aria-label="Legal">${documentKinds.map(kind => link(config.documents[kind].title, config.documents[kind].route)).join('')}${config.rightsCenter?link('Privacy requests',config.rightsCenter.route):''}</nav>`;
+  const l=config.localization,m=l?.documents;
+  return `<nav class="nb-legal-links"${l?` lang="${escapeHtml(l.locale)}" dir="${l.direction}"`:''} aria-label="${escapeHtml(m?.legalLabel??'Legal')}">${documentKinds.map(kind => link(config.documents[kind].title, config.documents[kind].route)).join('')}${config.rightsCenter?link(m?.privacyRequests??'Privacy requests',config.rightsCenter.route):''}</nav>`;
 }
 
 /** A no-JS full page, or use renderLegalDocument inside a host framework layout. */
 export function renderLegalPage(input: unknown, kind: DocumentKind, options: ValidationOptions & { stylesheetUrl?: string } = {}): string {
   const config = toPublicConfig(input, options);
   const stylesheet = options.stylesheetUrl;
+  const l=config.localization,m=l?.documents;
   if (stylesheet !== undefined && !isSafeLink(stylesheet)) throw new Error('Unsafe stylesheet URL.');
-  return `<!doctype html><html lang="${escapeHtml(config.site.locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(config.documents[kind].title)} · ${escapeHtml(config.site.name)}</title>${stylesheet ? `<link rel="stylesheet" href="${escapeHtml(stylesheet)}">` : ''}</head><body class="nb-page"><a class="nb-skip-link" href="#main">Skip to content</a><header class="nb-site-header">${link(config.site.name, config.site.url)}<span>Legal information</span></header><main id="main">${renderLegalDocument(config, kind, options)}</main><footer class="nb-site-footer">${renderLegalLinks(config)}<p>© ${escapeHtml(config.site.name)}</p></footer></body></html>`;
+  return `<!doctype html><html lang="${escapeHtml(config.site.locale)}"${l?` dir="${l.direction}"`:''}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(config.documents[kind].title)} · ${escapeHtml(config.site.name)}</title>${stylesheet ? `<link rel="stylesheet" href="${escapeHtml(stylesheet)}">` : ''}</head><body class="nb-page"><a class="nb-skip-link" href="#main">${escapeHtml(m?.skipToContent??'Skip to content')}</a><header class="nb-site-header">${link(config.site.name, config.site.url)}<span>${escapeHtml(m?.legalInformation??'Legal information')}</span></header><main id="main">${renderLegalDocument(config, kind, options)}</main><footer class="nb-site-footer">${renderLegalLinks(config)}<p>© ${escapeHtml(config.site.name)}</p></footer></body></html>`;
 }

@@ -211,3 +211,7 @@ Use `notabenda/orders` and `notabenda/orders.css` for expanded final-order infor
 
 
 Optional [UK storage settings](../../docs/STORAGE-EXCEPTIONS.md) use `notabenda/storage-exceptions` and `notabenda/storage-exceptions/ui`. These keep explicit host-assessed exception declarations and objections separate from consent, with inline controls and atomic browser persistence. Scope and legal review remain recorded per requirement.
+
+## Bring your own language
+
+Supply complete versioned messages for legal pages and cookie-choice controls, including status and accessibility text. Set an explicit locale and direction; the compiled runtime contains only the selected consent copy. See the [localization guide](../../docs/LOCALIZATION.md) and [Portuguese example](../../examples/localization/config.mjs). Translation review, remaining interfaces and multi-language routing remain host or future work.

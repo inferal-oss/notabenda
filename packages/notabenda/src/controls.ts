@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {formatMessage} from './localization-policy.js';
+import type {ConsentMessages} from './localization-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
@@ -16,14 +19,19 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   const policy = config.consent!;
   const archivedNotice=consent.getNotice();
   const wording = archivedNotice?.wording??defaultConsentWording(config);
+  const localization=archivedNotice?.localization??config.localization;
+  if(localization&&options.preferencesLabel!==undefined)throw new Error('Revise localization.consent.triggerLabel instead of overriding localized evidence wording.');
+  const m=localization?.consent;
+  const c=(key:keyof ConsentMessages,fallback:string)=>m?.[key]??fallback;
   const doc = container.ownerDocument;
   const element = <K extends keyof HTMLElementTagNameMap>(tag: K, className?: string, text?: string): HTMLElementTagNameMap[K] => {
     const result = doc.createElement(tag); if (className) result.className = className; if (text) result.textContent = text; return result;
   };
   const root = element('div', 'nb-controls');
-  const trigger = element('button', 'nb-preferences-trigger', options.preferencesLabel ?? 'Privacy choices'); trigger.type = 'button';
+  if(localization){root.lang=localization.locale;root.dir=localization.direction;}
+  const trigger = element('button', 'nb-preferences-trigger', options.preferencesLabel ?? c('triggerLabel','Privacy choices')); trigger.type = 'button';
   const message = element('p', 'nb-control-status'); message.setAttribute('role', 'status');
-  const notice = element('section', 'nb-consent-notice'); notice.setAttribute('aria-label', 'Optional cookie choices');
+  const notice = element('section', 'nb-consent-notice'); notice.setAttribute('aria-label', c('noticeLabel','Optional cookie choices'));
   const title = element('h2', undefined, wording.title);
   const summary = element('p', undefined, wording.summary);
   const actions = element('div', 'nb-choice-actions');
@@ -35,10 +43,10 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   const secondary = element('div', 'nb-choice-secondary');
   const preferences = button(wording.preferencesLabel, () => consent.openPreferences(), 'nb-text-button');
   secondary.append(preferences, button(wording.dismissLabel, () => { consent.dismiss(); finishNoticeAction(); }, 'nb-text-button'));
-  const cookieLink = element('a', undefined, 'Cookie policy'); cookieLink.href = archivedNotice?.documents.cookies.url??config.documents.cookies.route; secondary.append(cookieLink);
+  const cookieLink = element('a', undefined, c('cookiePolicy','Cookie policy')); cookieLink.href = archivedNotice?.documents.cookies.url??config.documents.cookies.route; secondary.append(cookieLink);
   const noticeMessage = element('p', 'nb-control-status'); noticeMessage.setAttribute('role', 'status');
   const retryButtons:HTMLButtonElement[]=[];
-  const retry=()=>{const b=button('Try recording again',()=>{void consent.retryEvidence();},'nb-text-button');b.hidden=true;retryButtons.push(b);return b;};
+  const retry=()=>{const b=button(c('retryLabel','Try recording again'),()=>{void consent.retryEvidence();},'nb-text-button');b.hidden=true;retryButtons.push(b);return b;};
   notice.append(title, summary, noticeMessage, retry(), actions, secondary);
 
   const drawer = element('dialog', 'nb-preferences');
@@ -61,13 +69,13 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     const description = element('span', 'nb-purpose-description', fact.description); description.id = `${headingId}-${purpose.id}-description`;
     copy.append(label, description);
     const providers = config.services.filter(service => policy.services.some(s => s.id === service.id) && service.purposeIds.includes(purpose.id)).map(service => `${service.name} (${service.provider})`);
-    const services = element('span', 'nb-purpose-description', `Services: ${providers.join(', ')}`); services.id = `${headingId}-${purpose.id}-services`; copy.append(services);
+    const services = element('span', 'nb-purpose-description', m?formatMessage(m.services,{services:providers.join(', ')}):`Services: ${providers.join(', ')}`); services.id = `${headingId}-${purpose.id}-services`; copy.append(services);
     input.setAttribute('aria-labelledby', label.id); input.setAttribute('aria-describedby', `${description.id} ${services.id}`);
-    if(input.disabled){const guard=element('span','nb-purpose-description','This option needs a separate supported process and stays off here.');guard.id=`${headingId}-${purpose.id}-guard`;copy.append(guard);input.setAttribute('aria-describedby', `${description.id} ${services.id} ${guard.id}`);}
+    if(input.disabled){const guard=element('span','nb-purpose-description',c('scopeUnavailable','This option needs a separate supported process and stays off here.'));guard.id=`${headingId}-${purpose.id}-guard`;copy.append(guard);input.setAttribute('aria-describedby', `${description.id} ${services.id} ${guard.id}`);}
     row.append(input, copy); body.append(row); inputs.set(purpose.id, input);
   }
-  const links = element('nav', 'nb-legal-links'); links.setAttribute('aria-label', 'Privacy information');
-  for (const kind of ['privacy','cookies'] as const) { const link = element('a', undefined, config.documents[kind].title); link.href = archivedNotice?.documents[kind].url??config.documents[kind].route; links.append(link); }
+  const links = element('nav', 'nb-legal-links'); links.setAttribute('aria-label', c('privacyInformation','Privacy information'));
+  for (const kind of ['privacy','cookies'] as const) { const link = element('a', undefined, archivedNotice?.documents[kind].title??config.documents[kind].title); link.href = archivedNotice?.documents[kind].url??config.documents[kind].route; links.append(link); }
   const drawerMessage = element('p', 'nb-control-status'); drawerMessage.setAttribute('role', 'status');
   for (const status of [message, noticeMessage, drawerMessage]) status.tabIndex = -1;
   body.append(links, drawerMessage,retry());
@@ -109,13 +117,13 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     const focused = doc.activeElement; const ownedFocus = focused !== null && root.contains(focused);
     const keyboardFocus = ownedFocus && focused.matches(':focus-visible');
     const choices = JSON.stringify(state.purposes);
-    const storageMessage = state.persistence === 'unavailable' ? 'Preferences cannot be saved in this browser. Optional services stay off. A previous saved choice may return on a later visit if browser storage cannot be cleared.' : '';
-    const reloadMessage = Object.values(state.services).includes('reload-required') ? 'An optional service could not be stopped or initialized safely. Reload this page to finish resetting it.' : '';
-    const receiptMessage=state.evidence?({checking:'Checking your saved choice… Optional services stay off.',saving:'Saving your choice… Optional services stay off until confirmed.',recorded:'Your choices have been recorded.',error:"We couldn't confirm your choice was recorded. Optional services stay off.",review:'Review your choices before allowing optional services.',stale:'This notice has changed. Reload to review the current version.',expired:'This choice was not confirmed in time or has expired. Choose again to allow optional services.',unavailable:'A choice record could not be created. Optional services stay off. You can still reject optional purposes.',retired:'This choice context has closed. Optional services stay off. Contact the site operator if you need a new privacy workflow.',idle:'',destroyed:''}[state.evidence.status]):'';
+    const storageMessage = state.persistence === 'unavailable' ? c('storageUnavailable','Preferences cannot be saved in this browser. Optional services stay off. A previous saved choice may return on a later visit if browser storage cannot be cleared.') : '';
+    const reloadMessage = Object.values(state.services).includes('reload-required') ? c('reloadRequired','An optional service could not be stopped or initialized safely. Reload this page to finish resetting it.') : '';
+    const receiptMessage=state.evidence?({checking:c('checking','Checking your saved choice… Optional services stay off.'),saving:c('saving','Saving your choice… Optional services stay off until confirmed.'),recorded:c('recorded','Your choices have been recorded.'),error:c('error',"We couldn't confirm your choice was recorded. Optional services stay off."),review:c('review','Review your choices before allowing optional services.'),stale:c('stale','This notice has changed. Reload to review the current version.'),expired:c('expired','This choice was not confirmed in time or has expired. Choose again to allow optional services.'),unavailable:c('unavailable','A choice record could not be created. Optional services stay off. You can still reject optional purposes.'),retired:c('retired','This choice context has closed. Optional services stay off. Contact the site operator if you need a new privacy workflow.'),idle:'',destroyed:''}[state.evidence.status]):'';
     // @requirements REQ-PRODUCT-PRIVACY-SIGNALS Cookie grants do not override processing restrictions.
-    const signalMessage=state.privacySignals?.globalPrivacyControl==='observed'?'Global Privacy Control is active. Services covered by this site’s signal policy stay off in this browser. Cookie choices do not override this restriction.':state.privacySignals?.globalPrivacyControl==='unavailable'?'Global Privacy Control could not be checked. Services covered by this site’s signal policy stay off in this browser.':'';
-    const processingMessage=state.processingChoices?(state.processingChoices.status==='recorded'?'A processing restriction is recorded for this context. Cookie choices do not remove it.':state.processingChoices.blockedActivities.length?'Processing restrictions are pending or could not be confirmed. Covered services stay off; cookie choices do not override them.':''):'';
-    message.textContent = [state.destroyed ? 'Privacy choices are unavailable.' : '',storageMessage, reloadMessage,receiptMessage,signalMessage,processingMessage].filter(Boolean).join(' ');
+    const signalMessage=state.privacySignals?.globalPrivacyControl==='observed'?c('signalObserved','Global Privacy Control is active. Services covered by this site’s signal policy stay off in this browser. Cookie choices do not override this restriction.'):state.privacySignals?.globalPrivacyControl==='unavailable'?c('signalUnavailable','Global Privacy Control could not be checked. Services covered by this site’s signal policy stay off in this browser.'):'';
+    const processingMessage=state.processingChoices?(state.processingChoices.status==='recorded'?c('processingRecorded','A processing restriction is recorded for this context. Cookie choices do not remove it.'):state.processingChoices.blockedActivities.length?c('processingPending','Processing restrictions are pending or could not be confirmed. Covered services stay off; cookie choices do not override them.'):''):'';
+    message.textContent = [state.destroyed ? c('destroyed','Privacy choices are unavailable.') : '',storageMessage, reloadMessage,receiptMessage,signalMessage,processingMessage].filter(Boolean).join(' ');
     notice.hidden = state.destroyed || state.preferencesOpen || !state.shouldPrompt || !policy.purposes.length;
     message.hidden = !message.textContent || !notice.hidden || state.preferencesOpen;
     noticeMessage.textContent = message.textContent; noticeMessage.hidden = !noticeMessage.textContent;
@@ -131,7 +139,7 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
       opened = true; drawer.showModal(); measureDrawer(); heading.focus();
     } else if (opened && state.preferencesOpen) {
       if (choices !== previousChoices) for (const [id, input] of inputs) input.checked = state.purposes[id] === 'granted';
-      drawerMessage.textContent = [message.textContent, choices !== previousChoices ? 'Current choices changed. Review the selections before saving.' : ''].filter(Boolean).join(' '); drawerMessage.hidden = !drawerMessage.textContent;
+      drawerMessage.textContent = [message.textContent, choices !== previousChoices ? c('choicesChanged','Current choices changed. Review the selections before saving.') : ''].filter(Boolean).join(' '); drawerMessage.hidden = !drawerMessage.textContent;
     } else if (opened) {
       opened = false; drawer.close();
       const destination = opener?.isConnected && opener.getClientRects().length ? opener : trigger;

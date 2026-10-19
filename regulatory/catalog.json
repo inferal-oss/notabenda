@@ -631,6 +631,37 @@
         "site/order-confirmation-seed.mjs",
         "site/order-demo-admin.mjs"
       ]
+    },
+    {
+      "id": "FEAT-LOCALIZATION",
+      "priority": "P1",
+      "title": "Versioned host-supplied localization",
+      "status": "partial",
+      "deliverables": [
+        "Complete versioned host-supplied messages for legal documents and consent controls, including status/accessibility text, selected language and explicit direction.",
+        "Archived selected consent copy, independent presentation/disclosure revisions, exact material scopes and frontend/backend validation parity.",
+        "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
+        "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open."
+      ],
+      "implementationRefs": [
+        "packages/notabenda/src/localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/localized-documents.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/documents.ts",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/consent-notice.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-evidence.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "packages/notabenda-cf/src/localization-policy.ts",
+        "examples/localization/config.mjs",
+        "examples/localization/build.mjs",
+        "packages/notabenda/src/react-consent-bindings.ts",
+        "packages/notabenda/src/astro-client.ts",
+        "packages/notabenda/src/astro/PreferencesButton.astro"
+      ]
     }
   ],
   "sources": [
@@ -1817,7 +1848,8 @@
         "REQ-PRODUCT-GUARANTEE-NOTICE",
         "REQ-PRODUCT-PAID-ORDER-ARCHIVES",
         "REQ-PRODUCT-ORDER-CONFIRMATION",
-        "REQ-PRODUCT-STORAGE-EXCEPTIONS"
+        "REQ-PRODUCT-STORAGE-EXCEPTIONS",
+        "REQ-PRODUCT-LOCALIZATION"
       ]
     }
   ],
@@ -5782,6 +5814,53 @@
         "docs/verification/storage-exceptions.md",
         "site/test/storage-exceptions.test.mjs"
       ]
+    },
+    {
+      "id": "REQ-PRODUCT-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Complete versioned messages for legal pages and consent controls",
+      "kind": "product-standard",
+      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts.",
+      "appliesWhen": "An operator supplies the optional localization declaration for legal pages or cookie-choice controls.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-LOCALIZATION",
+        "FEAT-CONTROLS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages and cookie-choice controls; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent.",
+      "implementationRefs": [
+        "packages/notabenda/src/localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/localized-documents.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/documents.ts",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/consent-notice.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-evidence.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "packages/notabenda-cf/src/localization-policy.ts",
+        "examples/localization/config.mjs",
+        "examples/localization/build.mjs",
+        "packages/notabenda/src/react-consent-bindings.ts",
+        "packages/notabenda/src/astro-client.ts",
+        "packages/notabenda/src/astro/PreferencesButton.astro"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/localization.test.mjs",
+        "docs/verification/localization.md",
+        "site/test/localization.test.mjs"
+      ]
     }
   ],
   "verification": [
@@ -6918,6 +6997,19 @@
         "packages/notabenda/test/storage-exceptions.test.mjs",
         "docs/verification/storage-exceptions.md",
         "site/test/storage-exceptions.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently.",
+      "testRefs": [
+        "packages/notabenda/test/localization.test.mjs",
+        "docs/verification/localization.md",
+        "site/test/localization.test.mjs"
       ]
     }
   ],

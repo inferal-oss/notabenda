@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
 'use client';
@@ -92,7 +93,8 @@ export function createReactConsentBindings<Controller extends ConsentStateContro
  }
  function PreferencesButton({children,disabled,...props}:PreferencesButtonProps):ReactElement {
    const controller=useConsentController();const state=useConsentSnapshot();
-   return createElement('button',{'aria-haspopup':'dialog','aria-expanded':state.preferencesOpen,...props,type:'button',disabled:disabled||state.destroyed,onClick:()=>controller.openPreferences()},children??'Privacy choices');
+   const localization=controller.getNotice()?.localization??controller.getConfig().localization;
+   return createElement('button',{'aria-haspopup':'dialog','aria-expanded':state.preferencesOpen,...props,...(localization&&children===undefined?{lang:localization.locale,dir:localization.direction}:{}),type:'button',disabled:disabled||state.destroyed,onClick:()=>controller.openPreferences()},children??localization?.consent.triggerLabel??'Privacy choices');
  }
 
  return {ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed};

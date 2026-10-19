@@ -18,3 +18,5 @@ export function createConsentRuntime(input:unknown,environment?:ConsentEnvironme
  if(descriptor.evidence==='local'&&options.evidence!==undefined)throw new Error('Local consent mode does not accept a required evidence adapter.');
  return createConsentEngine(descriptor.inventory,environment,{...options,...(factory?{evidence:factory}:{evidence:undefined})});
 }
+
+export type {ConsentLocalization,ConsentMessages} from './localization-policy.js';
