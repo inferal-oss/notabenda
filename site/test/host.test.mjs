@@ -496,5 +496,5 @@ test('catalog-reference releases keep public legal bytes unchanged and private c
   const env={ASSETS:{fetch:async()=>new Response(html,{headers:{'Content-Type':'text/html'}})},WORKSPACE:{get(){throw Error('Static product information must not open an evidence store.');}}};
   const response=await serveHost(request('/'+path),env);assert.equal(response.status,200);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);
  }
- const gallery=new JSDOM(await readFile(new URL('examples/index.html',root),'utf8')).window.document;assert.ok(gallery.querySelector('a[href="/guarantees/product/"]'));
+ const gallery=new JSDOM(await readFile(new URL('examples/index.html',root),'utf8')).window.document;assert.ok(gallery.querySelector('a[href="/examples/contracts/"]'));const contracts=new JSDOM(await readFile(new URL('examples/contracts/index.html',root),'utf8')).window.document;assert.ok(contracts.querySelector('a[href="/guarantees/product/"]'));
  });

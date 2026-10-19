@@ -3701,15 +3701,20 @@
         "site/worker.mjs",
         "site/build.mjs",
         "site/website-notice.mjs",
-        "site/website-notice.css"
+        "site/website-notice.css",
+        "site/navigation.mjs",
+        "site/guide-pages.mjs",
+        "site/examples-page.mjs",
+        "site/style.css"
       ],
       "testRefs": [
         "site/test/host.test.mjs",
         "docs/verification/website-browser.md",
         "scripts/check-site-runtime.mjs",
-        "site/test/website-notice.test.mjs"
+        "site/test/website-notice.test.mjs",
+        "site/test/site-organization.test.mjs"
       ],
-      "implementationNote": "Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms. Public asset cache directives now append no-transform; protected/session responses remain private/no-store and add no-transform. This preserves built/archived representations against intermediary rewriting without admitting external script origins. Actual edge/browser verification remains distinct from build checks."
+      "implementationNote": "Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms. Public asset cache directives now append no-transform; protected/session responses remain private/no-store and add no-transform. This preserves built/archived representations against intermediary rewriting without admitting external script origins. Actual edge/browser verification remains distinct from build checks. Public website entry points, examples and guides share task groups; a complete reference index retains all guide/report routes."
     },
     {
       "id": "REQ-PRODUCT-CONSENT-EVIDENCE",

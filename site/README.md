@@ -19,6 +19,12 @@ Open `http://127.0.0.1:4179`. `site:dev` builds the site and runs Wrangler local
 - Demo writes require POST, exact same origin, JSON content type, a custom header, and an actual body limit of 2 KiB. Subject and operation are synthetic host-owned values bound to the demo generation. Old tabs cannot write through a replacement session. These are not real visitor consent records, accounts or purchases.
 - The public homepage and guide have no JavaScript, external fonts, analytics or automatic cookie prompt. The public cookie example deliberately demonstrates browser-local storage and synthetic same-origin requests. Sample disclosure pages describe fictional examples; they are **not** the host operator's production privacy/terms documents.
 
+## Website organization
+
+`navigation.mjs` defines shared task groups for the homepage, example directory and documentation. Start here, privacy information, privacy choices, terms and purchases, records, and integration have separate example category pages. Each example family has one category home; theme, framework and payment-scenario variants remain beside that topic. Consumer-contract flows have their own subsection rather than appearing among privacy-consent controls. Existing example routes stay unchanged.
+
+The guide overview introduces those same groups. Desktop navigation opens the current group and marks its page; mobile has one native menu with flat group headings. The complete `/guide/all` index keeps every guide and verification/provenance report reachable, including pages outside the primary navigation. Detailed reports remain in a collapsed reference section. Website/category pages remain unmarked; the Demo ribbon belongs to the actual examples and demo admin.
+
 ## Build and verify
 
 ```sh
