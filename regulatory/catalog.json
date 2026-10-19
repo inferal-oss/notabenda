@@ -5295,12 +5295,28 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": "2026-09-27",
       "timingNote": "2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.",
-      "caveats": "Producer offer must cover entire good at no additional cost for more than two years and information must be supplied to trader. Missing information is not a no-guarantee decision. Producer-prepared complete asset, eligibility, actual font rendering and product association remain unimplemented.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Finished-file ingestion and static product-specific rendering exist. Qualifying facts and a reviewed flag are explicit host declarations, not producer identity/offer or visual conformity verification. A complete producer-prepared example, actual asset delivery/legibility/QR acceptance, order placement and durable confirmation remain open. Original-file retention is host-owned and not integrated into the DO archive.",
+      "implementationRefs": [
+        "packages/notabenda/src/guarantee-label.ts",
+        "packages/notabenda/src/guarantee-notice-json.ts",
+        "packages/notabenda-authoring/src/guarantee-label-build.ts",
+        "packages/notabenda-authoring/src/guarantee-label-image.ts",
+        "packages/notabenda/src/guarantees.css",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/DurabilityGuaranteeLabel.astro",
+        "docs/GUARANTEE-LABELS.md"
+      ],
+      "testRefs": [
+        "packages/notabenda-authoring/test/guarantee-label.test.mjs",
+        "packages/notabenda-authoring/test/package.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "docs/verification/guarantees.md"
+      ],
+      "implementationNote": "Optional build-only bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes, requires all four true eligibility declarations, binds product/producer/duration/review/wording and file identity, and emits a content-addressed local asset. Dependency-free static frontend plus React/Astro wrappers. No preparation, automatic no-guarantee inference, final payment action or confirmation."
     },
     {
       "id": "REQ-PRODUCT-GUARANTEE-NOTICE",
@@ -6380,9 +6396,15 @@
       "requirementIds": [
         "REQ-EU-GUARANTEE-LABEL"
       ],
-      "status": "planned",
-      "expected": "Qualifying producer facts bind the complete correctly prepared asset to a specific good and applicable order surface; unknown eligibility and missing assets stay unresolved.",
-      "testRefs": []
+      "status": "automated",
+      "expected": "Mechanism tests bind explicit qualifying declarations to a product and unchanged finished-file bytes; bounded decoders reject unsupported/unsafe inputs and frontend graphs exclude build parsers. Complete-artwork acceptance, actual delivery/placement and order integration remain open.",
+      "testRefs": [
+        "packages/notabenda-authoring/test/guarantee-label.test.mjs",
+        "packages/notabenda-authoring/test/package.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "docs/verification/guarantees.md"
+      ]
     },
     {
       "id": "VERIFY-PRODUCT-GUARANTEE-NOTICE",

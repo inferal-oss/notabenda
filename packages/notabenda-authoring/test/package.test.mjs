@@ -1,7 +1,7 @@
-// @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-PACKAGE
+// @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-PACKAGE REQ-EU-GUARANTEE-LABEL
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,writeFile,rm} from 'node:fs/promises';
+import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -16,7 +16,7 @@ test('authoring tarball installs offline, compiles documents and exposes usable 
   try{
     const pack=spawnSync('npm',['pack','--workspace','notabenda','--workspace','notabenda-authoring','--json','--ignore-scripts','--pack-destination',cwd],{cwd:root,encoding:'utf8',env});assert.equal(pack.status,0,pack.stderr);
     const packages=JSON.parse(pack.stdout);const authoring=packages.find(p=>p.name==='notabenda-authoring');
-    for(const path of ['LICENSE','README.md','dist/index.js','dist/index.d.ts'])assert.ok(authoring.files.some(f=>f.path===path),path);
+    for(const path of ['LICENSE','README.md','dist/index.js','dist/index.d.ts','dist/guarantee-label-build.js','dist/guarantee-label-build.d.ts','dist/guarantee-label-image.js'])assert.ok(authoring.files.some(f=>f.path===path),path);
     assert.equal(authoring.files.some(f=>/^(?:src|test|examples)\//u.test(f.path)),false);
     await writeFile(join(cwd,'package.json'),'{"private":true,"type":"module"}');
     const install=spawnSync('npm',['install','--offline','--ignore-scripts','--no-audit','--no-fund',...packages.map(p=>join(cwd,p.filename))],{cwd,encoding:'utf8',env});assert.equal(install.status,0,install.stderr);
@@ -24,6 +24,10 @@ test('authoring tarball installs offline, compiles documents and exposes usable 
     await writeFile(join(cwd,'site.json'),JSON.stringify(await fixture({reviewed:true})));
     const run=spawnSync(process.execPath,['--input-type=module','-e',`import {readFile} from 'node:fs/promises';import {compileAuthoredDocuments} from 'notabenda-authoring';const config=JSON.parse(await readFile('./site.json','utf8'));const release=await compileAuthoredDocuments(config,{terms:{format:'md',source:${JSON.stringify(source)}}});if(!release.fragments.terms.includes('Fictional terms.'))process.exit(1);`],{cwd,encoding:'utf8'});assert.equal(run.status,0,run.stderr);
     await writeFile(join(cwd,'consumer.ts'),`import {compileAuthoredDocuments,readDocumentSource,type DocumentSource} from 'notabenda-authoring';\nconst source:DocumentSource={format:'md',source:${JSON.stringify(source)}};\nconst file=await readDocumentSource('./legal/terms.mdx');\nconst build=await compileAuthoredDocuments({}, {terms:source},{mode:'preview'});\nconst text:string=build.archive.sourceAttachments.terms!.source;\nvoid file;void text;`);
+    // Structural geometry fixture, not prescribed label artwork. Exercises installed decoders without workspace resolution.
+    const labelCode=`import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';import {renderDurabilityGuaranteeLabel} from 'notabenda/guarantees/label';const bytes=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#ffffff"/></svg>');const result=buildDurabilityGuaranteeLabel({product:{id:'one',name:'Example product'},producer:{brand:'Example brand',model:'One'},durationYears:5,qualification:{offeredByProducer:true,noAdditionalCost:true,coversEntireGood:true,informationProvidedToTrader:true},reviewStatus:'draft',locale:'en',allowPreview:true},bytes);verifyDurabilityGuaranteeLabel(result.label,bytes,{allowPreview:true});if(!renderDurabilityGuaranteeLabel(result.label,{idPrefix:'label',allowPreview:true}).includes('data-guarantee-label-id')||Buffer.compare(Buffer.from(Object.values(result.files)[0]),bytes)!==0)process.exit(1);`;
+    const labelRun=spawnSync(process.execPath,['--input-type=module','-e',labelCode],{cwd,encoding:'utf8'});assert.equal(labelRun.status,0,labelRun.stderr);
+    await writeFile(join(cwd,'consumer.ts'),(await readFile(join(cwd,'consumer.ts'),'utf8'))+`\nimport {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel,type DurabilityGuaranteeBuildOptions} from 'notabenda-authoring/guarantees';\nimport {renderDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from 'notabenda/guarantees/label';\ndeclare const settings:DurabilityGuaranteeBuildOptions;declare const bytes:Uint8Array;const result=buildDurabilityGuaranteeLabel(settings,bytes);const label:DurabilityGuaranteeLabel=verifyDurabilityGuaranteeLabel(result.label,bytes);const imageBytes:Uint8Array=Object.values(result.files)[0];renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n// @ts-expect-error unknown eligibility is not a qualifying declaration\nconst unknownEligibility:DurabilityGuaranteeBuildOptions['qualification']={offeredByProducer:true,noAdditionalCost:true,coversEntireGood:true,informationProvidedToTrader:false};`);
     const types=spawnSync(process.execPath,[resolve(root,'node_modules/typescript/bin/tsc'),'--strict','--noEmit','--module','nodenext','--moduleResolution','nodenext','--target','es2022',join(cwd,'consumer.ts')],{cwd,encoding:'utf8'});assert.equal(types.status,0,types.stdout+types.stderr);
   }finally{await rm(cwd,{recursive:true,force:true});}
 });

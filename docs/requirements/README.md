@@ -1919,7 +1919,7 @@ Distinguish qualifying producer durability guarantees and show the prescribed pr
 
 **Applies when:** Applicable goods consumer contracts and relevant EU/national implementing law require this guarantee information.
 
-**Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
 **Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Articles 6(1)(la), 8(2) and 22a (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)); [Commission Implementing Regulation (EU) 2025/1960](https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj) — Article 2; Annex II (read; [SRC-EU-GUARANTEE-REG](SOURCES.md#src-eu-guarantee-reg)); [Commission practical guidelines on the guarantee notice and GARAN label, April 2026](https://commission.europa.eu/document/download/3e4dbee6-8184-4256-923d-c52551c7e9f0_en?filename=Practical%20guidelines%20Harmonised%20Label%26Notice%20product%20guarantees_ARES%2027042026.pdf) — Sections 3.1-3.3 (read; [SRC-EU-GUARANTEE-GUIDE](SOURCES.md#src-eu-guarantee-guide)).
 
@@ -1927,13 +1927,15 @@ Distinguish qualifying producer durability guarantees and show the prescribed pr
 
 <a id="verify-eu-guarantee-label"></a>
 
-**VERIFY-EU-GUARANTEE-LABEL (planned):** Qualifying producer facts bind the complete correctly prepared asset to a specific good and applicable order surface; unknown eligibility and missing assets stay unresolved.
+**VERIFY-EU-GUARANTEE-LABEL (automated):** Mechanism tests bind explicit qualifying declarations to a product and unchanged finished-file bytes; bounded decoders reject unsupported/unsafe inputs and frontend graphs exclude build parsers. Complete-artwork acceptance, actual delivery/placement and order integration remain open.
 
 **Timing:** 2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.
 
-**Limits/open review:** Producer offer must cover entire good at no additional cost for more than two years and information must be supplied to trader. Missing information is not a no-guarantee decision. Producer-prepared complete asset, eligibility, actual font rendering and product association remain unimplemented.
+**Implementation boundary:** Optional build-only bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes, requires all four true eligibility declarations, binds product/producer/duration/review/wording and file identity, and emits a content-addressed local asset. Dependency-free static frontend plus React/Astro wrappers. No preparation, automatic no-guarantee inference, final payment action or confirmation.
 
-**Code/test references:** None yet; nothing implemented.
+**Limits/open review:** Finished-file ingestion and static product-specific rendering exist. Qualifying facts and a reviewed flag are explicit host declarations, not producer identity/offer or visual conformity verification. A complete producer-prepared example, actual asset delivery/legibility/QR acceptance, order placement and durable confirmation remain open. Original-file retention is host-owned and not integrated into the DO archive.
+
+**Code/test references:** [packages/notabenda/src/guarantee-label.ts](../../packages/notabenda/src/guarantee-label.ts), [packages/notabenda/src/guarantee-notice-json.ts](../../packages/notabenda/src/guarantee-notice-json.ts), [packages/notabenda-authoring/src/guarantee-label-build.ts](../../packages/notabenda-authoring/src/guarantee-label-build.ts), [packages/notabenda-authoring/src/guarantee-label-image.ts](../../packages/notabenda-authoring/src/guarantee-label-image.ts), [packages/notabenda/src/guarantees.css](../../packages/notabenda/src/guarantees.css), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/DurabilityGuaranteeLabel.astro](../../packages/notabenda/src/astro/DurabilityGuaranteeLabel.astro), [docs/GUARANTEE-LABELS.md](../../docs/GUARANTEE-LABELS.md), [packages/notabenda-authoring/test/guarantee-label.test.mjs](../../packages/notabenda-authoring/test/guarantee-label.test.mjs), [packages/notabenda-authoring/test/package.test.mjs](../../packages/notabenda-authoring/test/package.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/astro-package.test.mjs](../../packages/notabenda/test/astro-package.test.mjs), [docs/verification/guarantees.md](../../docs/verification/guarantees.md)
 
 <a id="req-product-guarantee-notice"></a>
 

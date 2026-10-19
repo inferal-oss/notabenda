@@ -1,3 +1,4 @@
+// @requirements REQ-EU-GUARANTEE-LABEL
 // @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
 // @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
 // @requirements REQ-PRODUCT-SERVICE-PROFILES
@@ -44,6 +45,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     assert.ok(manifest.files.some(f => f.path === 'dist/styles.css'));
     assert.ok(manifest.files.some(f=>f.path==='dist/consent.css'));
     assert.ok(manifest.files.some(f=>f.path==='dist/headless.js'));
+    assert.ok(manifest.files.some(f=>f.path==='dist/guarantee-label.js'));assert.ok(manifest.files.some(f=>f.path==='dist/astro/DurabilityGuaranteeLabel.astro'));assert.ok(!manifest.files.some(f=>/guarantee-label-(?:build|image)/u.test(f.path)));
     const headlessPackage=JSON.parse(await readFile(join(root,'packages/notabenda/package.json'),'utf8'));assert.equal(headlessPackage.exports['./consent.css'],'./dist/consent.css');
     assert.equal(manifest.files.some(f => /(?:test|regulatory|notabenda.config)/.test(f.path)), false);
     await writeFile(join(cwd, 'package.json'), '{"private":true,"type":"module"}');
@@ -248,6 +250,7 @@ verifyLegalGuaranteeNotice(guarantee.notice,{allowPreview:true});
 // @ts-expect-error selected official languages only
 buildLegalGuaranteeNotice({language:'zz',reviewStatus:'reviewed'});
 `);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderDurabilityGuaranteeLabel,normalizeDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from 'notabenda/guarantees/label';\ndeclare const label:DurabilityGuaranteeLabel;normalizeDurabilityGuaranteeLabel(label);renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n`);
     const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from 'notabenda/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

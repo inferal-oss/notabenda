@@ -1,6 +1,6 @@
 # EU legal guarantee notices
 
-The shop-level legal guarantee notice and a producer’s product-specific GARAN label are different displays. The optional notice component implements the former. It does not decide applicability or assert that a product has a commercial durability guarantee. Try the [light example](/guarantees) or [midnight example](/dark/guarantees).
+The shop-level legal guarantee notice and a producer’s product-specific GARAN label are different displays. The optional notice component implements the former; the [producer label importer and renderer](GUARANTEE-LABELS.md) cover finished product files separately. It does not decide applicability or assert that a product has a commercial durability guarantee. Try the [light example](/guarantees) or [midnight example](/dark/guarantees).
 
 The current Consumer Rights Directive distinguishes the general goods notice in Article 6(1)(l), the conditional product label in (la), and pre-order information in Article 8(2). The latter now includes (la). The separate designs and online colour rules are prescribed in [Regulation 2025/1960, Annexes I–II](https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj). Application and national implementation still need review.
 
@@ -44,10 +44,10 @@ React uses `LegalGuaranteeNotice` from `notabenda/react/documents`; Astro uses `
 
 ## Product labels and the order component
 
-GARAN support remains planned. The producer’s qualifying offer, entire-good coverage, no additional cost, duration and information supplied to the trader must be explicit; missing information cannot mean “no guarantee”. A finished producer asset must remain associated with the particular good. The unfilled official template has live Inter text without embedded fonts, so displaying that template through `<img>` is not a finished label. The [Commission’s practical guide](https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en) describes editing and display.
+The [GARAN importer and renderer](GUARANTEE-LABELS.md) now require explicit producer offer, entire-good coverage, no additional cost, duration and information supplied to the trader. They preserve a finished producer file and bind it to the particular good. Missing information cannot mean “no guarantee”. Producer preparation, complete-artwork review, checkout placement and durable confirmation remain separate work. The unfilled official template has live Inter text without embedded fonts and cannot be used as a finished label.
 
 The later paid-order component must cover main characteristics, price/cost details, the conditional label, duration/termination and minimum commitment beside the final payment-obligation action. Generic terms acceptance, a shop notice and an acknowledgment each leave that work unfinished. Checkout execution, stale quote rejection, idempotency and durable contract confirmation also remain separate.
 
 ## Traceability
 
-`REQ-EU-GUARANTEE-NOTICE` connects the current Directive, prescribed design and practical guidance to this mechanism. `REQ-PRODUCT-GUARANTEE-NOTICE` covers source-preserving build/render behavior. `REQ-EU-GUARANTEE-LABEL` and `REQ-EU-ORDER-ACTION` retain their planned status. See [verification](verification/guarantees.md).
+`REQ-EU-GUARANTEE-NOTICE` connects the current Directive, prescribed design and practical guidance to this mechanism. `REQ-PRODUCT-GUARANTEE-NOTICE` covers source-preserving build/render behavior. `REQ-EU-GUARANTEE-LABEL` is partial: finished-file ingestion and static display exist; producer/artwork acceptance and order integration remain open. `REQ-EU-ORDER-ACTION` remains planned. See [verification](verification/guarantees.md).

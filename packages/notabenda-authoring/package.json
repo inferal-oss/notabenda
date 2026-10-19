@@ -18,6 +18,11 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./guarantees": {
+      "types": "./dist/guarantee-label-build.d.ts",
+      "import": "./dist/guarantee-label-build.js",
+      "default": "./dist/guarantee-label-build.js"
     }
   },
   "scripts": {
@@ -35,10 +40,14 @@
     "rehype-sanitize": "6.0.0",
     "rehype-stringify": "10.0.1",
     "remark-gfm": "4.0.1",
-    "@types/react": "19.3.0"
+    "@types/react": "19.3.0",
+    "@xmldom/xmldom": "0.9.12",
+    "jpeg-js": "0.4.4",
+    "pngjs": "7.0.0"
   },
   "devDependencies": {
     "@types/react-dom": "19.3.0",
-    "@types/hast": "3.0.5"
+    "@types/hast": "3.0.5",
+    "@types/pngjs": "6.0.5"
   }
 }

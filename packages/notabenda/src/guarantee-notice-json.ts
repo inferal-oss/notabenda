@@ -1,4 +1,4 @@
-// @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
+// @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE REQ-EU-GUARANTEE-LABEL
 /** Bounded JSON data inspection before serialization; never invokes getters or inherited toJSON. */
 export function copyGuaranteeNoticeData(input:unknown):unknown {
   const seen=new Set<object>();let nodes=0,bytes=0;

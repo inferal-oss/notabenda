@@ -39,3 +39,7 @@ For MDX, pass `components` and `componentsRevision` to `readDocumentSource`. Com
 Source limit: 24 KiB per document. Rendered body: 48 KiB. Combined private archive: 124 KiB. Markdown, MDX, metadata, component output, source integrity and private inspection are covered by tests.
 
 Full guide: [docs/AUTHORING.md](../../docs/AUTHORING.md). Working example: [examples/authoring](../../examples/authoring/build.mjs). Legal review, applicability, reproducible builds and host security remain the adopter's responsibility.
+
+## Finished producer guarantee labels
+
+The optional `notabenda-authoring/guarantees` entry imports finished producer PNG/JPEG/outlined-SVG files without changing their bytes. `buildDurabilityGuaranteeLabel` requires explicit qualifying facts and binds a product to its file; `verifyDurabilityGuaranteeLabel` checks the descriptor and supplied original bytes. Image parsers remain build-only. Preparation of the prescribed artwork, offer review, host retention and actual display acceptance remain the adopter’s work. See [product labels](../../docs/GUARANTEE-LABELS.md). **REQ-EU-GUARANTEE-LABEL**.

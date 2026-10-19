@@ -1,0 +1,8 @@
+---
+// @requirements REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-ASTRO
+import {renderDurabilityGuaranteeLabel} from '../guarantee-label.js';
+export interface Props {label:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;class?:string}
+const {label,idPrefix,headingLevel,allowPreview=false,class:className}=Astro.props;
+const html=renderDurabilityGuaranteeLabel(label,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})});
+---
+<div class={className} set:html={html} />

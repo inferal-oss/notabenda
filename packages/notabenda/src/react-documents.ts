@@ -5,6 +5,7 @@ import type {ReactElement} from 'react';
 import {renderCollectionNotice} from './collection.js';
 import {renderIndirectCollectionNotice} from './indirect-collection.js';
 import {renderLegalGuaranteeNotice} from './guarantee-notice.js';
+import {renderDurabilityGuaranteeLabel} from './guarantee-label.js';
 import {renderLegalDocument,renderLegalLinks} from './documents.js';
 import type {DocumentKind,ValidationOptions} from './types.js';
 import {renderServiceDirectory} from './service-directory.js';
@@ -50,4 +51,10 @@ export function LegalGuaranteeNotice({notice,idPrefix,headingLevel,allowPreview=
 export interface RightsCenterProps extends RightsCenterRenderOptions {config:unknown;className?:string}
 export function RightsCenter({config,className,...options}:RightsCenterProps):ReactElement {
  return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderRightsCenter(config,options)}});
+}
+
+/** @requirements REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-REACT */
+export interface DurabilityGuaranteeLabelProps {label:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;className?:string}
+export function DurabilityGuaranteeLabel({label,idPrefix,headingLevel,allowPreview=false,className}:DurabilityGuaranteeLabelProps):ReactElement {
+ return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderDurabilityGuaranteeLabel(label,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})})}});
 }

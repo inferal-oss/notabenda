@@ -186,7 +186,12 @@
       "import": "./dist/guarantee-notice-build.js",
       "default": "./dist/guarantee-notice-build.js"
     },
-    "./guarantees.css": "./dist/guarantees.css"
+    "./guarantees.css": "./dist/guarantees.css",
+    "./guarantees/label": {
+      "types": "./dist/guarantee-label.d.ts",
+      "import": "./dist/guarantee-label.js",
+      "default": "./dist/guarantee-label.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"
