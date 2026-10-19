@@ -23,6 +23,11 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./collection/indirect": {
+      "types": "./dist/indirect-collection.d.ts",
+      "import": "./dist/indirect-collection.js",
+      "default": "./dist/indirect-collection.js"
+    },
     "./content": {
       "types": "./dist/content.d.ts",
       "import": "./dist/content.js",

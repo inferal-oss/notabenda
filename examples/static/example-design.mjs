@@ -17,6 +17,7 @@ const profiles={
  'agreement/index.html':['agreement','terms'], 'dark/agreement/index.html':['agreement','terms'],
  'react/index.html':['react','react'], 'dark/react/index.html':['react','react'],
  'collection/index.html':['collection','collection'],'dark/collection/index.html':['collection','collection'],
+ 'indirect-collection/index.html':['indirect-collection','indirect-collection'],'dark/indirect-collection/index.html':['indirect-collection','indirect-collection'],
  'embeds/index.html':['embeds','embeds'],'embeds/frame/index.html':['frame','embeds'],
  'privacy-signals/index.html':['signals','privacy-signals'], 'processing-choices/index.html':['processing','processing-choices'],
  'storage-cleanup/index.html':['storage','storage-cleanup'],'releases/index.html':['releases','releases'],

@@ -30,3 +30,13 @@
  .nb-demo-rights .nb-rights-heading{max-width:50rem}.nb-demo-rights .nb-rights-heading h1{white-space:pre-line;font-size:clamp(2.5rem,4.5vw,3.75rem);letter-spacing:-.04em;font-weight:560;line-height:1.01}
  @media(max-width:760px){.nb-demo-rights .nb-rights-heading h1{font-size:clamp(2.3rem,9vw,3rem)}}
 }
+
+/* @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE */
+@layer example-pages {
+ .nb-demo-indirect-collection main.nb-document>.nb-indirect-notice{grid-column:span 7;background:var(--nb-surface)}
+ .nb-demo-indirect-collection main.nb-document>.indirect-example-notes{grid-column:span 5;background:var(--nb-soft)}
+ .nb-demo-indirect-collection main.nb-document>.nb-indirect-notice>section{padding-block:1rem;border-top:1px solid var(--nb-line)}
+ .nb-demo-indirect-collection main.nb-document>.nb-indirect-notice>section>h3{font-size:.85rem;letter-spacing:-.015em;margin:0 0 .5rem;font-weight:600}
+ .nb-demo-indirect-collection main.nb-document>.nb-indirect-notice p{color:var(--nb-text)}
+ @media(max-width:760px){.nb-demo-indirect-collection main.nb-document>.nb-indirect-notice,.nb-demo-indirect-collection main.nb-document>.indirect-example-notes{grid-column:1/-1}}
+}

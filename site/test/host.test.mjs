@@ -17,6 +17,18 @@ const auth={Authorization:'Basic '+btoa('admin:'+key)};
 const request=(path,init={})=>new Request('https://example.test'+path,init);
 const state=storage=>({storage,blockConcurrencyWhile:callback=>callback()});
 
+// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
+test('indirect collection examples share the modern frame, expose usable text and stay script-free without records',async()=>{
+ const root=new URL('../dist/public/',import.meta.url),env={ASSETS:{fetch:async()=>new Response('Static notice')},WORKSPACE:{get(){throw Error('A notice does not open an evidence store.');}}};
+ for(const prefix of ['','dark/']){
+  const path=prefix+'indirect-collection/',html=await readFile(new URL(path+'index.html',root),'utf8'),n=JSON.parse(await readFile(new URL(path+'notice.json',root),'utf8')),text=await readFile(new URL(path+'notice.txt',root),'utf8');
+  assert.match(html,/example-pages\.css/);assert.match(html,/nb-demo-indirect-collection/);assert.match(html,/data-indirect-notice-id=/);assert.doesNotMatch(html,/<script|<form|<input/);assert.match(text,/We have collected/);assert.match(text,/https:\/\/[^\s]+\/artifacts\/[a-f0-9]{64}\/privacy.html/);
+  assert.ok(html.includes('href="'+n.document.url+'"'));const privacy=await readFile(new URL(n.document.url.slice(1),root),'utf8');const {sha256}=await import('notabenda/content');assert.equal(sha256(privacy),n.document.sha256);
+  assert.match(await readFile(new URL(path+'advance.txt',root),'utf8'),/We plan to collect/);
+  const response=await serveHost(request('/'+path),env);assert.equal(response.status,200);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);
+ }
+});
+
 // @requirements REQ-PRODUCT-CF-HOST
 test('simple development credentials require the explicit local flag and an exact loopback URL',async()=>{
  const basic={Authorization:'Basic '+btoa('admin:admin')},dev={NOTABENDA_LOCAL_DEV_AUTH:'1'};

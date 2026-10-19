@@ -150,7 +150,19 @@ Full regulator page retrieved. Lists collection awareness, purpose/use, recipien
 
 [NZ OPC: indirect-collection notification](https://www.privacy.org.nz/resources-and-learning/a-z-topics/ipp3a/)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** search-result.
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Full regulator guidance read. Covers notification content, reasonable steps, timing, collector/holder roles, lawful indirect collection and exceptions. Implementation remains legally unreviewed.
+
+<a id="src-nz-ipp3a-principle"></a>
+
+## SRC-NZ-IPP3A-PRINCIPLE
+
+[NZ OPC: Principle 3A and reproduced principle text](https://www.privacy.org.nz/privacy-principles/3a/)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Full regulator page read, including reproduced IPP3A(1)-(7). Particulars, timing and exceptions are separately assessed; not independent legal review.
 
 <a id="src-za-dm"></a>
 

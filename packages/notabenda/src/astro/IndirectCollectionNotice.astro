@@ -1,0 +1,8 @@
+---
+// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE REQ-PRODUCT-ASTRO
+import {renderIndirectCollectionNotice} from '../indirect-collection.js';
+export interface Props {notice:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;class?:string}
+const {notice,idPrefix,headingLevel,allowPreview=false,class:className}=Astro.props;
+const html=renderIndirectCollectionNotice(notice,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})});
+---
+<div class={className} set:html={html} />

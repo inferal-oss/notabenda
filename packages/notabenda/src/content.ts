@@ -13,6 +13,9 @@ import {renderRightsPage} from './rights.js';
 /** Build-time entry point. @requirements REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CONFIG REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-AUTHORING */
 import {normalizeCollectionNotice} from './collection.js';
 import type {CollectionNotice,CollectionNoticeSettings} from './collection.js';
+// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
+import {normalizeIndirectCollectionNotice,normalizeIndirectCollectionNoticeSettings} from './indirect-collection.js';
+import type {IndirectCollectionNotice,IndirectCollectionNoticeSettings} from './indirect-collection.js';
 import { createHash } from 'node:crypto';
 import { documentKinds, toPublicConfig } from './config.js';
 import { createLegalDocument, renderLegalPage } from './documents.js';
@@ -177,6 +180,40 @@ export function createCollectionNotice(artifact:LegalArtifact,settings:Collectio
   const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
   const n=normalizeCollectionNotice({schemaVersion:1,renderingPolicy:'collection-v1',locale:config.site.locale,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId,mode:manifest.mode,reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:settings.wording.privacyLinkLabel??'Read the privacy policy'},controller:config.controller,purposes,recipients,privacy:{rights:config.privacy.rights,transfers:config.privacy.transfers,automatedDecisions:config.privacy.automatedDecisions,complaints:config.privacy.complaints,...(config.privacy.rightsUrl?{rightsUrl:config.privacy.rightsUrl}:{})},document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
   const {noticeId:_,...noticeDescriptor}=n;return {...n,noticeId:sha256(canonicalJson(noticeDescriptor))};
+}
+
+/** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
+ * Pin reviewed indirect-collection particulars to an intact public privacy release.
+ * Does not determine lawful collection, exceptions, notification timing or delivery.
+ */
+export function createIndirectCollectionNotice(artifact:LegalArtifact,input:IndirectCollectionNoticeSettings,options:ValidationOptions={}):IndirectCollectionNotice {
+  const s=normalizeIndirectCollectionNoticeSettings(input);
+  const bad=():never=>{throw Error('Select declared indirect-collection facts from an intact public privacy release.');};
+  if(options.mode!==undefined&&options.mode!=='production'&&options.mode!=='preview')return bad();
+  const manifest=artifact?.manifest;
+  if(!manifest||manifest.schemaVersion!==1||!Array.isArray(manifest.documents)||(manifest.mode!=='production'&&manifest.mode!=='preview'))return bad();
+  const {artifactId,...descriptor}=manifest;
+  if(sha256(canonicalJson(descriptor))!==artifactId)return bad();
+  const config=toPublicConfig(artifact.publicConfig,{mode:manifest.mode});
+  if(config.site.id!==manifest.siteId||config.site.locale!==manifest.locale||sha256(canonicalJson(config))!==manifest.configSha256||canonicalJson(config)!==canonicalJson(artifact.publicConfig))return bad();
+  const docs=manifest.documents.filter(d=>d?.kind==='privacy');if(docs.length!==1)return bad();
+  const d=docs[0]!,model=artifact.documents?.privacy,page=artifact.pages?.[d.file],configured=config.documents.privacy;
+  if(!model||model.kind!=='privacy'||typeof page!=='string'||sha256(page)!==d.sha256||sha256(canonicalJson({title:model.title,sections:model.sections}))!==d.contentSha256||d.file!==`${configured.route.slice(1)}/index.html`||d.route!==configured.route||d.title!==configured.title||d.version!==configured.version||d.effectiveDate!==configured.effectiveDate||d.reviewStatus!==configured.review.status||model.title!==d.title||model.version!==d.version||model.route!==d.route||model.effectiveDate!==d.effectiveDate||model.reviewStatus!==d.reviewStatus)return bad();
+  const collections=s.collections.map(c=>{const purpose=config.purposes.find(p=>p.id===c.purposeId);if(!purpose||purpose.collection.source==='direct'||c.dataCategories.some(category=>!purpose.dataCategories.includes(category)))return bad();return {...c,purpose};});
+  const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
+  const notice=normalizeIndirectCollectionNotice({...s,schemaVersion:1,kind:'indirect-collection-notice',renderingPolicy:'indirect-collection-v1',noticeId:'0'.repeat(64),siteId:config.site.id,siteUrl:config.site.url,locale:config.site.locale,artifactId,mode:manifest.mode,collector:{name:config.controller.name,email:config.controller.email,address:config.controller.address},collections,document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
+  const {noticeId:_,...noticeDescriptor}=notice;
+  return {...notice,noticeId:sha256(canonicalJson(noticeDescriptor))};
+}
+
+/** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
+ * Recompute identity and compare selected facts with a trusted release. This does not authenticate either author.
+ */
+export function verifyIndirectCollectionNotice(input:unknown,artifact:LegalArtifact,options:ValidationOptions={}):IndirectCollectionNotice {
+  const n=normalizeIndirectCollectionNotice(input,{allowPreview:options.mode==='preview'});
+  const expected=createIndirectCollectionNotice(artifact,{profile:n.profile,scopeId:n.scopeId,phase:n.phase,reviewStatus:n.reviewStatus,wording:n.wording,collections:n.collections.map(({purpose:_,...selection})=>selection),recipientStatement:n.recipientStatement,accessCorrection:n.accessCorrection},options);
+  if(canonicalJson(n)!==canonicalJson(expected))throw Error('The indirect notice does not match its identity and pinned release facts.');
+  return expected;
 }
 
 /** @requirements REQ-PRODUCT-FORM-PERMISSIONS Pin one stable purpose/channel permission to a reviewed privacy release. */

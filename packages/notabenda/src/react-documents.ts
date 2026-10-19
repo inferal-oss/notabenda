@@ -3,6 +3,7 @@ import type {RightsCenterRenderOptions} from './rights.js';
 import {createElement} from 'react';
 import type {ReactElement} from 'react';
 import {renderCollectionNotice} from './collection.js';
+import {renderIndirectCollectionNotice} from './indirect-collection.js';
 import {renderLegalDocument,renderLegalLinks} from './documents.js';
 import type {DocumentKind,ValidationOptions} from './types.js';
 import {renderServiceDirectory} from './service-directory.js';
@@ -32,6 +33,11 @@ export function LegalLinks({config,className}:LegalLinksProps):ReactElement {
 export interface CollectionNoticeProps {notice:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;className?:string}
 export function CollectionNotice({notice,idPrefix,headingLevel,allowPreview=false,className}:CollectionNoticeProps):ReactElement {
   return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderCollectionNotice(notice,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})})}});
+}
+
+/** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE REQ-PRODUCT-REACT */
+export function IndirectCollectionNotice({notice,idPrefix,headingLevel,allowPreview=false,className}:CollectionNoticeProps):ReactElement {
+  return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderIndirectCollectionNotice(notice,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})})}});
 }
 
 /** @requirements REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-REACT */

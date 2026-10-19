@@ -2,6 +2,8 @@
 
 Put information about a form's declared purposes beside the fields, with a link to the exact privacy-policy revision. The collection notice is static HTML: it needs no JavaScript, sets no storage and attaches no submit handler. Try the [light example](/collection) or [dark example](/dark/collection).
 
+For information obtained from another source, use the separate [indirect collection notice](INDIRECT-COLLECTION.md). The direct component below keeps its original purpose selection and form semantics.
+
 The distinction matters for the requirements catalog. GDPR Article 13 addresses information provided when collecting directly from a person, including purpose, basis, recipients, retention and applicable rights. The NZ Privacy Commissioner's guidance highlights purpose, recipients, whether information must be provided, consequences and access/correction. These sources guide the disclosure mechanism; they do not make every example or inventory sufficient for every jurisdiction. [GDPR Article 13](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng), [NZ privacy statements](https://www.privacy.org.nz/resources-and-learning/knowledge-base/view/312/).
 
 ## Build and render

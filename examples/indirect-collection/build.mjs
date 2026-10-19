@@ -1,0 +1,23 @@
+// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
+import {compileLegalDocuments,createIndirectCollectionNotice} from 'notabenda/content';
+import {renderIndirectCollectionNotice,formatIndirectCollectionNotice} from 'notabenda/collection/indirect';
+import {renderLegalLinks} from 'notabenda';
+
+export async function indirectCollectionFiles(base){
+  const files={};
+  for(const prefix of ['','/dark']){
+    const config=structuredClone(base),root=prefix+'/indirect-collection';
+    config.site.id='juniper-indirect-collection';config.site.locale='en-NZ';config.purposes=config.purposes.filter(p=>p.id==='enquiries');config.services=[];config.storage=[];
+    const purpose=config.purposes[0];purpose.name='Responding to a referral';purpose.description='We use your reply address and the topic of your enquiry to contact you about the writing work you asked a partner studio about.';purpose.dataCategories=['Reply address','Enquiry topic'];purpose.collection={source:'indirect',description:'An enquiry referred by a partner studio.',required:false,consequences:'The referred enquiry cannot be followed up without contact information.'};
+    for(const [kind,doc] of Object.entries(config.documents))doc.route=root+'/'+kind;
+    const build=compileLegalDocuments(config,{mode:'preview',stylesheetUrl:prefix?'/assets/dark.css':'/assets/notabenda.css'});
+    const settings={profile:'nz-ipp3a',scopeId:'studio-referral',phase:'collected',reviewStatus:'draft',wording:{title:'About your referral',intro:'A partner studio has passed your enquiry to Juniper Notes so we can follow up with you.'},collections:[{purposeId:purpose.id,dataCategories:['Reply address','Enquiry topic'],sourceDescription:'The partner studio you contacted about writing work.',authority:{kind:'not-relied-on'}}],recipientStatement:'Our enquiries team uses the referral to respond. We do not pass the referral to other organisations.',accessCorrection:{statement:'You can ask for access to your personal information or ask us to correct it. Contact our privacy team using the link below.',url:'mailto:'+config.controller.email}};
+    const notice=createIndirectCollectionNotice(build.artifact,settings,{mode:'preview'}),advance=createIndirectCollectionNotice(build.artifact,{...settings,phase:'advance',wording:{title:'Before your referral',intro:'A partner studio plans to pass your enquiry to Juniper Notes so we can follow up with you.'}},{mode:'preview'});
+    Object.assign(files,build.files);
+    const path=root.slice(1);
+    files[path+'/notice.json']=JSON.stringify(notice,null,2)+'\n';files[path+'/notice.txt']=formatIndirectCollectionNotice(notice,{allowPreview:true});
+    files[path+'/advance.json']=JSON.stringify(advance,null,2)+'\n';files[path+'/advance.txt']=formatIndirectCollectionNotice(advance,{allowPreview:true});
+    files[path+'/index.html']=`<!doctype html><html lang="en-NZ"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A referred enquiry · Juniper Notes</title><link rel="stylesheet" href="${prefix?'/assets/dark.css':'/assets/notabenda.css'}"></head><body class="nb-page"><header class="nb-site-header"><a href="/">Juniper Notes</a><span>Indirect collection</span></header><main id="main" class="nb-document"><p class="nb-eyebrow">Notabenda · Information from another source</p><h1>An enquiry<br>passed on.</h1><p>When a partner passes on an enquiry, explain what you received and how you will use it.</p>${renderIndirectCollectionNotice(notice,{idPrefix:'referral',allowPreview:true})}<section class="indirect-example-notes"><p class="nb-eyebrow">NEW ZEALAND / IPP3A</p><h2>Tell people what happened</h2><p>The notice names the collecting and holding agency, explains the purpose and source, and gives a route to access or correct information.</p><p>Choose the phase that matches the collection. The host decides when and how to notify the person.</p><nav class="nb-legal-links" aria-label="Notice formats"><a href="${root}/notice.txt" download>Plain-text notice ↗</a><a href="${root}/notice.json" download>Notice descriptor ↗</a></nav><details><summary>Before collection instead?</summary><p>The advance version uses future tense and has its own content identity.</p><p><a href="${root}/advance.txt">Read the advance notice</a></p></details><p><a href="${prefix?'/indirect-collection':'/dark/indirect-collection'}">${prefix?'Light':'Midnight'} theme ↗</a></p><p class="hint">Showing a page does not establish notification or permission. This component sends and stores nothing.</p></section></main><footer class="nb-site-footer">${renderLegalLinks(build.publicConfig)}</footer></body></html>`;
+  }
+  return files;
+}

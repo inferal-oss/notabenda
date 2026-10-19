@@ -66,7 +66,11 @@
         "packages/notabenda/src/react-documents.ts",
         "packages/notabenda/src/astro-client.ts",
         "packages/notabenda/src/astro/LegalDocument.astro",
-        "packages/notabenda/src/release-files.ts"
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/indirect-collection.ts",
+        "packages/notabenda/src/astro/IndirectCollectionNotice.astro",
+        "packages/notabenda/src/setup.ts",
+        "examples/indirect-collection/build.mjs"
       ]
     },
     {
@@ -211,7 +215,8 @@
       "deliverables": [
         "Inline collection notice, optional permission field/group, notice link, and explicit terms action.",
         "Purpose/channel-specific choices and versioned form text; no forced privacy-policy acceptance checkbox.",
-        "Trusted application API for consent and withdrawal records; no email-sending platform."
+        "Trusted application API for consent and withdrawal records; no email-sending platform.",
+        "Separate reviewed indirect-collection particulars in static HTML and plain text, with explicit phase and no delivery claim."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -226,7 +231,11 @@
         "packages/notabenda-cf/src/lifecycle.ts",
         "packages/notabenda/src/react-form-permission.ts",
         "packages/notabenda/src/astro-form-permission.ts",
-        "packages/notabenda/src/astro/FormPermissionField.astro"
+        "packages/notabenda/src/astro/FormPermissionField.astro",
+        "packages/notabenda/src/indirect-collection.ts",
+        "packages/notabenda/src/astro/IndirectCollectionNotice.astro",
+        "packages/notabenda/src/setup.ts",
+        "examples/indirect-collection/build.mjs"
       ]
     },
     {
@@ -675,9 +684,18 @@
       "title": "NZ OPC: indirect-collection notification",
       "url": "https://www.privacy.org.nz/resources-and-learning/a-z-topics/ipp3a/",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
-      "access": "search-result",
-      "note": ""
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Full regulator guidance read. Covers notification content, reasonable steps, timing, collector/holder roles, lawful indirect collection and exceptions. Implementation remains legally unreviewed."
+    },
+    {
+      "id": "SRC-NZ-IPP3A-PRINCIPLE",
+      "title": "NZ OPC: Principle 3A and reproduced principle text",
+      "url": "https://www.privacy.org.nz/privacy-principles/3a/",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Full regulator page read, including reproduced IPP3A(1)-(7). Particulars, timing and exceptions are separately assessed; not independent legal review."
     },
     {
       "id": "SRC-ZA-DM",
@@ -1602,7 +1620,8 @@
         "REQ-PRODUCT-BUNDLE-BUDGET",
         "REQ-PRODUCT-SERVICE-CATALOG",
         "REQ-PRODUCT-SERVICE-DETECTION",
-        "REQ-PRODUCT-SERVICE-PROFILES"
+        "REQ-PRODUCT-SERVICE-PROFILES",
+        "REQ-PRODUCT-INDIRECT-NOTICE"
       ]
     }
   ],
@@ -2287,7 +2306,11 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-NZ-IPP3A",
-          "locator": "IPP3A requirements and exceptions"
+          "locator": "Requirements; reasonable steps; timing; collecting and holding agency; exceptions"
+        },
+        {
+          "sourceId": "SRC-NZ-IPP3A-PRINCIPLE",
+          "locator": "Reproduced IPP3A(1)-(7), especially particulars and timing in (1)-(2)"
         }
       ],
       "discoverySourceIds": [],
@@ -2301,12 +2324,28 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
-      "effectiveFrom": null,
+      "implementationStatus": "partial",
+      "effectiveFrom": "2026-05-01",
       "timingNote": "IPP3A came into force on 1 May 2026.",
-      "caveats": "A frontend package cannot ensure that all indirect collections or notices occur.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Mechanism coverage only. No individual delivery/awareness or deadline workflow, sector-specific notice, lawful-collection determination or exception decision. Legal coverage remains unreviewed.",
+      "implementationRefs": [
+        "packages/notabenda/src/indirect-collection.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/IndirectCollectionNotice.astro",
+        "packages/notabenda/src/setup.ts",
+        "examples/indirect-collection/build.mjs",
+        "packages/notabenda/src/styles.css"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/indirect-collection.test.mjs",
+        "packages/notabenda/test/setup.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/indirect-collection.md"
+      ],
+      "implementationNote": "Separate optional HTML/plain-text particulars pin an intact privacy release, full selected purpose facts, actual indirect category subsets and explicit source/recipient/law/access decisions. Advance/collected wording stays distinct. Hosts assess lawful collection, applicability, prior awareness, exceptions, timing and real notification; no delivery, consent or exemption evidence is created."
     },
     {
       "id": "REQ-ZA-MARKETING",
@@ -5055,6 +5094,47 @@
         "docs/verification/catalog-profiles.md"
       ],
       "implementationNote": "Version-1 optional closed-schema profiles, static escaped renderer and terminal inspection; explicit picker copying preserves entered URLs and clears confirmation on edits. Selected source/profile revisions survive private setup pins, renewed comparison and separately authorized retained-release views. No external fetch, automatic setting, consent grant or public policy prose insertion."
+    },
+    {
+      "id": "REQ-PRODUCT-INDIRECT-NOTICE",
+      "jurisdiction": "PRODUCT",
+      "title": "Version-bound indirect-collection particulars",
+      "kind": "product-standard",
+      "summary": "Provide optional static HTML and plain-text indirect-collection notices with explicit reviewed context and pinned privacy facts, separate from direct forms, consent and delivery.",
+      "appliesWhen": "A host explicitly chooses the NZ IPP3A profile for reviewed indirect or mixed-source collection facts.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-FORMS",
+        "FEAT-DOCUMENTS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-INDIRECT-NOTICE"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "No recipient case data, delivery receipts, legal applicability, timing or exception assessment. Structural normalization alone does not verify identity; digest/fact comparison does not authenticate the author.",
+      "implementationRefs": [
+        "packages/notabenda/src/indirect-collection.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/IndirectCollectionNotice.astro",
+        "packages/notabenda/src/setup.ts",
+        "examples/indirect-collection/build.mjs",
+        "packages/notabenda/src/styles.css"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/indirect-collection.test.mjs",
+        "packages/notabenda/test/setup.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/indirect-collection.md"
+      ],
+      "implementationNote": "Bounded strict inputs require selected categories, recipient wording, particular-law review and usable rights route. The collecting/holding agency comes from the privacy release; neither source nor storage provider replaces it. Phase, reviewed wording and full purpose facts affect identity. Framework wrappers share the same script-free renderer."
     }
   ],
   "verification": [
@@ -5242,9 +5322,16 @@
       "requirementIds": [
         "REQ-NZ-INDIRECT"
       ],
-      "status": "planned",
-      "expected": "Inventory distinguishes direct and indirect sources; applicable indirect-collection notification is an explicit application task, not merely a footer policy.",
-      "testRefs": []
+      "status": "automated",
+      "expected": "Mechanism checks cover explicit notification particulars, advance/collected wording, exact selected categories, usable links, release integrity and no permission/delivery side effects. Host notification, exceptions and legal acceptance remain unverified.",
+      "testRefs": [
+        "packages/notabenda/test/indirect-collection.test.mjs",
+        "packages/notabenda/test/setup.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/indirect-collection.md"
+      ]
     },
     {
       "id": "VERIFY-ZA-MARKETING",
@@ -6048,6 +6135,22 @@
         "packages/notabenda/test/catalog-profile.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/catalog-profiles.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-INDIRECT-NOTICE",
+      "requirementIds": [
+        "REQ-PRODUCT-INDIRECT-NOTICE"
+      ],
+      "status": "automated",
+      "expected": "Deterministic scoped identity and trusted-release comparison, strict bounded non-executable inputs, all core particulars visible, absolute text links, safe server-side framework rendering and no changes to direct notices or permissions.",
+      "testRefs": [
+        "packages/notabenda/test/indirect-collection.test.mjs",
+        "packages/notabenda/test/setup.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/indirect-collection.md"
       ]
     }
   ],

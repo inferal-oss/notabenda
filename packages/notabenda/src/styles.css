@@ -151,6 +151,9 @@
   :where(.nb-collection-details summary){min-height:44px;display:list-item;align-content:center;cursor:pointer;font-weight:600;font-size:.85rem;padding-block:.5rem}
   :where(.nb-collection-details ul){padding-inline-start:1.2rem}
   :where(.nb-collection-notice :focus-visible){outline:3px solid var(--nb-focus,#6562b5);outline-offset:3px}
+  /* @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE */
+  :where(.nb-indirect-notice>section){border-top:1px solid var(--nb-line,#e5e5e8);padding-block:.8rem}
+  :where(.nb-indirect-notice>section>h3,.nb-indirect-notice>section>h4,.nb-indirect-notice>section>h5,.nb-indirect-notice>section>h6){font-size:.9rem;line-height:1.4;letter-spacing:-.01em;margin:0 0 .5rem}
   @media(forced-colors:active){:where(.nb-collection-notice,.nb-collection-details){border-color:CanvasText}}
 }
 

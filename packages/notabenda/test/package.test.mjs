@@ -1,3 +1,4 @@
+// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
 // @requirements REQ-PRODUCT-SERVICE-PROFILES
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 // @requirements REQ-PRODUCT-CF-DOCTOR
@@ -225,6 +226,17 @@ smallInventory.controller.email;
 compileConsentRuntimeConfig(config,{});
 // @ts-expect-error arbitrary objects cannot replace the required receipt adapter
 createConsentRuntime(runtimeConfig,undefined,{evidence:{}});
+`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createIndirectCollectionNotice,verifyIndirectCollectionNotice} from 'notabenda/content';
+import {renderIndirectCollectionNotice,formatIndirectCollectionNotice,type IndirectCollectionNoticeSettings} from 'notabenda/collection/indirect';
+const indirectSettings:IndirectCollectionNoticeSettings={profile:'nz-ipp3a',scopeId:'referrals',phase:'advance',reviewStatus:'reviewed',wording:{title:'Referral',intro:'Partner referral context.'},collections:[{purposeId:'enquiries',dataCategories:['Reply address'],sourceDescription:'A partner studio.',authority:{kind:'not-relied-on'}}],recipientStatement:'Our enquiries team.',accessCorrection:{statement:'Ask for access or correction.',url:'mailto:privacy@example.test'}};
+const indirectNotice=createIndirectCollectionNotice(release.artifact,indirectSettings);
+verifyIndirectCollectionNotice(indirectNotice,release.artifact);
+renderIndirectCollectionNotice(indirectNotice,{idPrefix:'referral'});
+formatIndirectCollectionNotice(indirectNotice);
+// @ts-expect-error collection phase is explicit
+const invalidPhase:IndirectCollectionNoticeSettings={...indirectSettings,phase:'sent'};
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

@@ -22,7 +22,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | CA-FED | [REQ-CA-MEANINGFUL](#req-ca-meaningful), [REQ-CA-OBA](#req-ca-oba), [REQ-CA-CASL-OPTIN](#req-ca-casl-optin) | Selected items: partial |
 | CA-QC | [REQ-QC-PROFILING](#req-qc-profiling) | Selected items: planned |
 | AU | [REQ-AU-PIXELS](#req-au-pixels) | Selected items: partial |
-| NZ | [REQ-NZ-NOTICE](#req-nz-notice), [REQ-NZ-INDIRECT](#req-nz-indirect) | Selected items: partial, planned |
+| NZ | [REQ-NZ-NOTICE](#req-nz-notice), [REQ-NZ-INDIRECT](#req-nz-indirect) | Selected items: partial |
 | ZA | [REQ-ZA-MARKETING](#req-za-marketing) | Selected items: planned |
 | US-CA | [REQ-US-CA-CHOICES](#req-us-ca-choices), [REQ-US-CA-GPC](#req-us-ca-gpc), [REQ-US-CA-UI](#req-us-ca-ui) | Selected items: partial, planned |
 | US-CO | [REQ-US-CO-GPC](#req-us-co-gpc) | Selected items: partial |
@@ -31,7 +31,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-FED | [REQ-US-COPPA-SCOPE](#req-us-coppa-scope) | Selected items: partial |
 | TR | [REQ-TR-BASIS](#req-tr-basis) | Selected items: planned |
 | PLATFORM | [REQ-GOOGLE-MODE](#req-google-mode), [REQ-GOOGLE-CMP](#req-google-cmp) | Selected items: partial, planned |
-| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles) | Selected items: implemented, partial |
+| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice) | Selected items: implemented, partial |
 
 ## Individual requirements
 
@@ -467,21 +467,23 @@ Assess and provide applicable notification when information is collected from an
 
 **Applies when:** An agency collects personal information indirectly under IPP3A, subject to exceptions.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [NZ OPC: indirect-collection notification](https://www.privacy.org.nz/resources-and-learning/a-z-topics/ipp3a/) — IPP3A requirements and exceptions (search-result; [SRC-NZ-IPP3A](SOURCES.md#src-nz-ipp3a)).
+**Sources:** [NZ OPC: indirect-collection notification](https://www.privacy.org.nz/resources-and-learning/a-z-topics/ipp3a/) — Requirements; reasonable steps; timing; collecting and holding agency; exceptions (read; [SRC-NZ-IPP3A](SOURCES.md#src-nz-ipp3a)); [NZ OPC: Principle 3A and reproduced principle text](https://www.privacy.org.nz/privacy-principles/3a/) — Reproduced IPP3A(1)-(7), especially particulars and timing in (1)-(2) (read; [SRC-NZ-IPP3A-PRINCIPLE](SOURCES.md#src-nz-ipp3a-principle)).
 
 **Features:** [FEAT-INVENTORY](../FEATURES.md#feat-inventory), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents), [FEAT-RIGHTS](../FEATURES.md#feat-rights).
 
 <a id="verify-nz-indirect"></a>
 
-**VERIFY-NZ-INDIRECT (planned):** Inventory distinguishes direct and indirect sources; applicable indirect-collection notification is an explicit application task, not merely a footer policy.
+**VERIFY-NZ-INDIRECT (automated):** Mechanism checks cover explicit notification particulars, advance/collected wording, exact selected categories, usable links, release integrity and no permission/delivery side effects. Host notification, exceptions and legal acceptance remain unverified.
 
 **Timing:** IPP3A came into force on 1 May 2026.
 
-**Limits/open review:** A frontend package cannot ensure that all indirect collections or notices occur.
+**Implementation boundary:** Separate optional HTML/plain-text particulars pin an intact privacy release, full selected purpose facts, actual indirect category subsets and explicit source/recipient/law/access decisions. Advance/collected wording stays distinct. Hosts assess lawful collection, applicability, prior awareness, exceptions, timing and real notification; no delivery, consent or exemption evidence is created.
 
-**Code/test references:** None yet; nothing implemented.
+**Limits/open review:** Mechanism coverage only. No individual delivery/awareness or deadline workflow, sector-specific notice, lawful-collection determination or exception decision. Legal coverage remains unreviewed.
+
+**Code/test references:** [packages/notabenda/src/indirect-collection.ts](../../packages/notabenda/src/indirect-collection.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/IndirectCollectionNotice.astro](../../packages/notabenda/src/astro/IndirectCollectionNotice.astro), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [examples/indirect-collection/build.mjs](../../examples/indirect-collection/build.mjs), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda/test/indirect-collection.test.mjs](../../packages/notabenda/test/indirect-collection.test.mjs), [packages/notabenda/test/setup.test.mjs](../../packages/notabenda/test/setup.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/astro-package.test.mjs](../../packages/notabenda/test/astro-package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/indirect-collection.md](../../docs/verification/indirect-collection.md)
 
 <a id="req-za-marketing"></a>
 
@@ -1860,6 +1862,28 @@ Keep bounded, optional product notes, document links and site-specific review qu
 **Limits/open review:** Documentation can change and describes provider claims or options. Source retrieval is not independent practice verification, a signed agreement or legal approval. Requirement links are conditional review context. Initial profiles cover four products; other entries may have no profile. Actual entity, location, purpose, basis, retention and settings remain operator-supplied.
 
 **Code/test references:** [catalog/product-profiles.json](../../catalog/product-profiles.json), [catalog/schema.json](../../catalog/schema.json), [scripts/build-service-catalog.py](../../scripts/build-service-catalog.py), [packages/notabenda/src/catalog-reference.ts](../../packages/notabenda/src/catalog-reference.ts), [packages/notabenda-cf/src/catalog-reference.ts](../../packages/notabenda-cf/src/catalog-reference.ts), [packages/notabenda/src/catalog-profile.ts](../../packages/notabenda/src/catalog-profile.ts), [packages/notabenda-cf/src/catalog-profile.ts](../../packages/notabenda-cf/src/catalog-profile.ts), [packages/notabenda/src/catalog-ui.ts](../../packages/notabenda/src/catalog-ui.ts), [packages/notabenda/src/catalog-review-ui.ts](../../packages/notabenda/src/catalog-review-ui.ts), [packages/notabenda/src/catalog-cli.ts](../../packages/notabenda/src/catalog-cli.ts), [packages/notabenda/src/setup-catalog-cli.ts](../../packages/notabenda/src/setup-catalog-cli.ts), [packages/notabenda-cf/src/catalog-render.ts](../../packages/notabenda-cf/src/catalog-render.ts), [packages/notabenda/test/catalog-profile.test.mjs](../../packages/notabenda/test/catalog-profile.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [docs/verification/catalog-profiles.md](../../docs/verification/catalog-profiles.md)
+
+<a id="req-product-indirect-notice"></a>
+
+### REQ-PRODUCT-INDIRECT-NOTICE — Version-bound indirect-collection particulars
+
+Provide optional static HTML and plain-text indirect-collection notices with explicit reviewed context and pinned privacy facts, separate from direct forms, consent and delivery.
+
+**Applies when:** A host explicitly chooses the NZ IPP3A profile for reviewed indirect or mixed-source collection facts.
+
+**Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** implemented.
+
+**Features:** [FEAT-FORMS](../FEATURES.md#feat-forms), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents).
+
+<a id="verify-product-indirect-notice"></a>
+
+**VERIFY-PRODUCT-INDIRECT-NOTICE (automated):** Deterministic scoped identity and trusted-release comparison, strict bounded non-executable inputs, all core particulars visible, absolute text links, safe server-side framework rendering and no changes to direct notices or permissions.
+
+**Implementation boundary:** Bounded strict inputs require selected categories, recipient wording, particular-law review and usable rights route. The collecting/holding agency comes from the privacy release; neither source nor storage provider replaces it. Phase, reviewed wording and full purpose facts affect identity. Framework wrappers share the same script-free renderer.
+
+**Limits/open review:** No recipient case data, delivery receipts, legal applicability, timing or exception assessment. Structural normalization alone does not verify identity; digest/fact comparison does not authenticate the author.
+
+**Code/test references:** [packages/notabenda/src/indirect-collection.ts](../../packages/notabenda/src/indirect-collection.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/IndirectCollectionNotice.astro](../../packages/notabenda/src/astro/IndirectCollectionNotice.astro), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [examples/indirect-collection/build.mjs](../../examples/indirect-collection/build.mjs), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda/test/indirect-collection.test.mjs](../../packages/notabenda/test/indirect-collection.test.mjs), [packages/notabenda/test/setup.test.mjs](../../packages/notabenda/test/setup.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/astro-package.test.mjs](../../packages/notabenda/test/astro-package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/indirect-collection.md](../../docs/verification/indirect-collection.md)
 
 ## Research gaps
 
