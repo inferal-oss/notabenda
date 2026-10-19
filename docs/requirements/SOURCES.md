@@ -601,3 +601,23 @@ Article 5 addresses the same contracting tool, immediate acknowledgement and app
 **Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
 
 Read the at-least-once alarm contract, finite automatic failure retries and host-managed continuation. The dispatch helpers return outcome data; they do not install an alarm, queue, scheduler or retry policy.
+
+<a id="src-open-cookie-database"></a>
+
+## SRC-OPEN-COOKIE-DATABASE
+
+[Open Cookie Database: cookie metadata CSV](https://github.com/jkwakman/Open-Cookie-Database)
+
+**Type:** dataset. **Checked:** 2026-10-19. **Access:** read.
+
+Seed candidate for cookie metadata. No dataset imported. Cookie-level categories do not establish actual site use, legal basis, necessity or a complete provider/product profile.
+
+<a id="src-open-cookie-license"></a>
+
+## SRC-OPEN-COOKIE-LICENSE
+
+[Open Cookie Database repository license](https://github.com/jkwakman/Open-Cookie-Database/blob/master/LICENSE)
+
+**Type:** license. **Checked:** 2026-10-19. **Access:** read.
+
+Apache License 2.0. Any future import must pin its exact source revision, preserve applicable notices/attribution and identify modifications.

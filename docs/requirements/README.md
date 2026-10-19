@@ -31,7 +31,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-FED | [REQ-US-COPPA-SCOPE](#req-us-coppa-scope) | Selected items: partial |
 | TR | [REQ-TR-BASIS](#req-tr-basis) | Selected items: planned |
 | PLATFORM | [REQ-GOOGLE-MODE](#req-google-mode), [REQ-GOOGLE-CMP](#req-google-cmp) | Selected items: partial, planned |
-| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget) | Selected items: implemented, partial |
+| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection) | Selected items: implemented, partial |
 
 ## Individual requirements
 
@@ -1780,6 +1780,52 @@ Measure actual browser bundles and published CSS; target 15 KiB gzip for core pl
 **Limits/open review:** The compiled local consent-plus-controls profile meets 15 KiB gzip; the fully validating compatibility entry remains above target. Optional required-receipt code is reported separately. Transfer size is not startup/interaction timing or a full performance audit. Adopters choose whether to gate on the optional measurement tool.
 
 **Code/test references:** [scripts/measure-bundles.mjs](../../scripts/measure-bundles.mjs), [packages/notabenda/scripts/consent-styles.mjs](../../packages/notabenda/scripts/consent-styles.mjs), [examples/static/build.mjs](../../examples/static/build.mjs), [examples/static/choices-build.mjs](../../examples/static/choices-build.mjs), [examples/static/choices-page.mjs](../../examples/static/choices-page.mjs), [examples/static/consent.mjs](../../examples/static/consent.mjs), [packages/notabenda/src/consent-runtime-config.ts](../../packages/notabenda/src/consent-runtime-config.ts), [packages/notabenda/src/consent-compile.ts](../../packages/notabenda/src/consent-compile.ts), [packages/notabenda/src/consent-runtime.ts](../../packages/notabenda/src/consent-runtime.ts), [packages/notabenda/src/consent-evidence-factory.ts](../../packages/notabenda/src/consent-evidence-factory.ts), [packages/notabenda/src/consent-runtime-evidence.ts](../../packages/notabenda/src/consent-runtime-evidence.ts), [packages/notabenda/src/react-consent.ts](../../packages/notabenda/src/react-consent.ts), [packages/notabenda/test/delivery.test.mjs](../../packages/notabenda/test/delivery.test.mjs), [docs/verification/browser-delivery.md](../../docs/verification/browser-delivery.md), [site/test/delivery.test.mjs](../../site/test/delivery.test.mjs), [packages/notabenda/test/consent-runtime.test.mjs](../../packages/notabenda/test/consent-runtime.test.mjs), [packages/notabenda/test/react-consent.test.mjs](../../packages/notabenda/test/react-consent.test.mjs)
+
+<a id="req-product-service-catalog"></a>
+
+### REQ-PRODUCT-SERVICE-CATALOG — Source-backed third-party catalog and resolved disclosures
+
+Standardize provider/product identities and source-backed facts, resolve reviewed site-specific use into shared public rendering, and pin revisions for immutable release history.
+
+**Applies when:** Confirmed service selection or catalog-backed legal/preference/directory rendering.
+
+**Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** partial.
+
+**Sources:** [Open Cookie Database: cookie metadata CSV](https://github.com/jkwakman/Open-Cookie-Database) — README: download formats, wildcard matching and contributions (read; [SRC-OPEN-COOKIE-DATABASE](SOURCES.md#src-open-cookie-database)); [Open Cookie Database repository license](https://github.com/jkwakman/Open-Cookie-Database/blob/master/LICENSE) — Apache-2.0 sections 2 and 4; candidate reuse and attribution (read; [SRC-OPEN-COOKIE-LICENSE](SOURCES.md#src-open-cookie-license)).
+
+**Features:** [FEAT-SERVICE-CATALOG](../FEATURES.md#feat-service-catalog), [FEAT-INVENTORY](../FEATURES.md#feat-inventory), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents), [FEAT-SETUP](../FEATURES.md#feat-setup).
+
+<a id="verify-product-service-catalog"></a>
+
+**VERIFY-PRODUCT-SERVICE-CATALOG (partial):** Schema and source/version validation, operator overrides/custom entries, selected-only browser graphs, shared renderer parity and unchanged pinned historical documents.
+
+**Implementation boundary:** Versioned pure normalization/search, detached explicit service proposal and a separately imported offline seed with licensed source hashes are implemented. Public directory/render integration, wizard/admin selection, reviewed product profiles and automatic release-provenance archival remain open.
+
+**Limits/open review:** Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. The seed is unreviewed; integrated public directory rendering and automatic provenance archival remain planned.
+
+**Code/test references:** [packages/notabenda/src/catalog.ts](../../packages/notabenda/src/catalog.ts), [packages/notabenda/src/catalog-seed.ts](../../packages/notabenda/src/catalog-seed.ts), [packages/notabenda/src/catalog-cli.ts](../../packages/notabenda/src/catalog-cli.ts), [scripts/build-service-catalog.py](../../scripts/build-service-catalog.py), [docs/SERVICE-CATALOG.md](../../docs/SERVICE-CATALOG.md), [packages/notabenda/test/catalog.test.mjs](../../packages/notabenda/test/catalog.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [docs/verification/service-catalog.md](../../docs/verification/service-catalog.md)
+
+<a id="req-product-service-detection"></a>
+
+### REQ-PRODUCT-SERVICE-DETECTION — Explainable passive third-party recognition
+
+Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes.
+
+**Applies when:** An authorized operator explicitly invokes catalog-backed service discovery.
+
+**Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** partial.
+
+**Features:** [FEAT-SERVICE-CATALOG](../FEATURES.md#feat-service-catalog), [FEAT-DISCOVERY](../FEATURES.md#feat-discovery), [FEAT-SETUP](../FEATURES.md#feat-setup).
+
+<a id="verify-product-service-detection"></a>
+
+**VERIFY-PRODUCT-SERVICE-DETECTION (partial):** Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, no raw identifiers/values in ordinary captures, old-version compatibility, unknown/blocked coverage and review-before-apply.
+
+**Implementation boundary:** Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Catalog-backed browser/path/global, combined/regex and broader project detectors remain planned.
+
+**Limits/open review:** A matched signature is a candidate, not execution, ownership, permission, legal classification or absence-of-tracking proof. Existing version-1 captures remain origin/name-only. Advanced code never arrives as executable catalog data.
+
+**Code/test references:** [packages/notabenda/src/catalog-project.ts](../../packages/notabenda/src/catalog-project.ts), [packages/notabenda/src/catalog-cli.ts](../../packages/notabenda/src/catalog-cli.ts), [packages/notabenda/src/discovery-cli.ts](../../packages/notabenda/src/discovery-cli.ts), [packages/notabenda/test/catalog.test.mjs](../../packages/notabenda/test/catalog.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [docs/verification/service-catalog.md](../../docs/verification/service-catalog.md)
 
 ## Research gaps
 

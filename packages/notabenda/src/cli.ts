@@ -10,7 +10,7 @@ import { compileLegalDocuments,createRetainedReleaseFiles } from './content.js';
 import { writeBuildFiles } from './files.js';
 import { createStarterConfig } from './starter.js';
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
@@ -28,6 +28,10 @@ Private MD/MDX source archives are not publication inputs. Preview remains expli
 Discovery: --capture FILE (repeat up to 20) supplies explicit browser capture JSON.
 --config FILE selects the inventory; --json prints the private review. Optional
 --out-dir DIRECTORY writes a new private review directory and never overwrites.
+Catalog: catalog search QUERY [--delivery backend] [--limit 20] [--json].
+Project discovery: discover --project DIRECTORY [--catalog FILE] [--json]
+[--out-dir NEW_DIRECTORY] statically finds reviewable SDK/infrastructure candidates.
+No project code, installers or network probes run.
 Discovery --capture-origin ORIGIN explicitly binds staging/loopback observations;
 the review preserves both that observed origin and the configured deployment.
 `;
@@ -36,6 +40,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='catalog'){await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
   let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined;

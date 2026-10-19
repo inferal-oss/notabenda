@@ -16,7 +16,7 @@ Features link to specific obligations and their planned verification scenarios. 
 - Requirement-linked recommendations, unknowns/conflicts and private justifications; reviewable draft config exports with no automatic activation.
 - Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling.
 
-**Requirement links:** [REQ-PRODUCT-SETUP](requirements/README.md#req-product-setup), [REQ-PRODUCT-SCOPE-GUARDS](requirements/README.md#req-product-scope-guards), [REQ-PRODUCT-CF-STARTER](requirements/README.md#req-product-cf-starter).
+**Requirement links:** [REQ-PRODUCT-SETUP](requirements/README.md#req-product-setup), [REQ-PRODUCT-SCOPE-GUARDS](requirements/README.md#req-product-scope-guards), [REQ-PRODUCT-CF-STARTER](requirements/README.md#req-product-cf-starter), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
 
 **Code references:** [packages/notabenda/src/setup.ts](../packages/notabenda/src/setup.ts), [packages/notabenda/src/setup-cli.ts](../packages/notabenda/src/setup-cli.ts), [packages/notabenda/src/setup-ui.ts](../packages/notabenda/src/setup-ui.ts), [packages/notabenda-cf/src/setup.ts](../packages/notabenda-cf/src/setup.ts)
 
@@ -32,7 +32,7 @@ Features link to specific obligations and their planned verification scenarios. 
 - Separate public bundle facts from private operator metadata.
 - Completeness checks with requirement IDs and actionable missing-field messages.
 
-**Requirement links:** [REQ-EU-NOTICE](requirements/README.md#req-eu-notice), [REQ-CH-PROFILING](requirements/README.md#req-ch-profiling), [REQ-QC-PROFILING](requirements/README.md#req-qc-profiling), [REQ-NZ-INDIRECT](requirements/README.md#req-nz-indirect), [REQ-TR-BASIS](requirements/README.md#req-tr-basis), [REQ-EU-TERMS](requirements/README.md#req-eu-terms), [REQ-PRODUCT-CONFIG](requirements/README.md#req-product-config), [REQ-PRODUCT-EMBEDS](requirements/README.md#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](requirements/README.md#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](requirements/README.md#req-product-processing-choices), [REQ-PRODUCT-SCOPE-GUARDS](requirements/README.md#req-product-scope-guards).
+**Requirement links:** [REQ-EU-NOTICE](requirements/README.md#req-eu-notice), [REQ-CH-PROFILING](requirements/README.md#req-ch-profiling), [REQ-QC-PROFILING](requirements/README.md#req-qc-profiling), [REQ-NZ-INDIRECT](requirements/README.md#req-nz-indirect), [REQ-TR-BASIS](requirements/README.md#req-tr-basis), [REQ-EU-TERMS](requirements/README.md#req-eu-terms), [REQ-PRODUCT-CONFIG](requirements/README.md#req-product-config), [REQ-PRODUCT-EMBEDS](requirements/README.md#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](requirements/README.md#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](requirements/README.md#req-product-processing-choices), [REQ-PRODUCT-SCOPE-GUARDS](requirements/README.md#req-product-scope-guards), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog).
 
 **Code references:** [packages/notabenda/src/types.ts](../packages/notabenda/src/types.ts), [packages/notabenda/src/config.ts](../packages/notabenda/src/config.ts), [packages/notabenda/src/embeds.ts](../packages/notabenda/src/embeds.ts), [packages/notabenda/src/privacy-signals.ts](../packages/notabenda/src/privacy-signals.ts), [packages/notabenda/src/scope-guards.ts](../packages/notabenda/src/scope-guards.ts)
 
@@ -48,7 +48,7 @@ Features link to specific obligations and their planned verification scenarios. 
 - Reviewed supplied content plus an original clause pipeline with explicit review and licensing status.
 - Versioned artifacts and material-change diffs; readable pages without JavaScript.
 
-**Requirement links:** [REQ-EU-NOTICE](requirements/README.md#req-eu-notice), [REQ-CA-MEANINGFUL](requirements/README.md#req-ca-meaningful), [REQ-AU-PIXELS](requirements/README.md#req-au-pixels), [REQ-NZ-NOTICE](requirements/README.md#req-nz-notice), [REQ-NZ-INDIRECT](requirements/README.md#req-nz-indirect), [REQ-US-CA-CHOICES](requirements/README.md#req-us-ca-choices), [REQ-US-CO-GPC](requirements/README.md#req-us-co-gpc), [REQ-PRODUCT-DOCUMENTS](requirements/README.md#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](requirements/README.md#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](requirements/README.md#req-product-artifacts), [REQ-PRODUCT-AUTHORING](requirements/README.md#req-product-authoring), [REQ-PRODUCT-REACT](requirements/README.md#req-product-react), [REQ-PRODUCT-ASTRO](requirements/README.md#req-product-astro), [REQ-PRODUCT-RETAINED-RELEASES](requirements/README.md#req-product-retained-releases), [REQ-PRODUCT-COLLECTION-NOTICE](requirements/README.md#req-product-collection-notice), [REQ-PRODUCT-RIGHTS-CENTER](requirements/README.md#req-product-rights-center).
+**Requirement links:** [REQ-EU-NOTICE](requirements/README.md#req-eu-notice), [REQ-CA-MEANINGFUL](requirements/README.md#req-ca-meaningful), [REQ-AU-PIXELS](requirements/README.md#req-au-pixels), [REQ-NZ-NOTICE](requirements/README.md#req-nz-notice), [REQ-NZ-INDIRECT](requirements/README.md#req-nz-indirect), [REQ-US-CA-CHOICES](requirements/README.md#req-us-ca-choices), [REQ-US-CO-GPC](requirements/README.md#req-us-co-gpc), [REQ-PRODUCT-DOCUMENTS](requirements/README.md#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](requirements/README.md#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](requirements/README.md#req-product-artifacts), [REQ-PRODUCT-AUTHORING](requirements/README.md#req-product-authoring), [REQ-PRODUCT-REACT](requirements/README.md#req-product-react), [REQ-PRODUCT-ASTRO](requirements/README.md#req-product-astro), [REQ-PRODUCT-RETAINED-RELEASES](requirements/README.md#req-product-retained-releases), [REQ-PRODUCT-COLLECTION-NOTICE](requirements/README.md#req-product-collection-notice), [REQ-PRODUCT-RIGHTS-CENTER](requirements/README.md#req-product-rights-center), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog).
 
 **Code references:** [packages/notabenda/src/documents.ts](../packages/notabenda/src/documents.ts), [packages/notabenda/src/content.ts](../packages/notabenda/src/content.ts), [packages/notabenda/src/react.ts](../packages/notabenda/src/react.ts), [packages/notabenda/src/react-documents.ts](../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro-client.ts](../packages/notabenda/src/astro-client.ts), [packages/notabenda/src/astro/LegalDocument.astro](../packages/notabenda/src/astro/LegalDocument.astro), [packages/notabenda/src/release-files.ts](../packages/notabenda/src/release-files.ts)
 
@@ -101,6 +101,24 @@ Features link to specific obligations and their planned verification scenarios. 
 **Requirement links:** Product foundation; see deliverables and milestone acceptance criteria..
 
 **Code references:** [scripts/regulatory.py](../scripts/regulatory.py), [regulatory/catalog.json](../regulatory/catalog.json)
+
+<a id="feat-service-catalog"></a>
+
+## P1 · FEAT-SERVICE-CATALOG — Shared third-party catalog and passive recognition
+
+**Status:** partial.
+
+**Deliverables:**
+
+- Versioned provider/product schema, source-backed service facts, custom entries and operator-confirmed site use.
+- Shared public third-party rendering and pinned release provenance; large data stays outside normal consent bundles.
+- Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.
+- Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.
+- Initial optional reference seed: 363 provider identities, 399 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references; all entries unreviewed.
+
+**Requirement links:** [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
+
+**Code references:** [packages/notabenda/src/catalog.ts](../packages/notabenda/src/catalog.ts), [packages/notabenda/src/catalog-project.ts](../packages/notabenda/src/catalog-project.ts), [packages/notabenda/src/catalog-cli.ts](../packages/notabenda/src/catalog-cli.ts), [scripts/build-service-catalog.py](../scripts/build-service-catalog.py)
 
 <a id="feat-controls"></a>
 
@@ -310,7 +328,7 @@ Features link to specific obligations and their planned verification scenarios. 
 - Human-readable and JSON findings with route, scenario, evidence, and candidate purpose/service mappings.
 - Adopters choose when to run it, whether to use CI, and which findings should block their deployments.
 
-**Requirement links:** [REQ-AU-PIXELS](requirements/README.md#req-au-pixels), [REQ-PRODUCT-DISCOVERY](requirements/README.md#req-product-discovery).
+**Requirement links:** [REQ-AU-PIXELS](requirements/README.md#req-au-pixels), [REQ-PRODUCT-DISCOVERY](requirements/README.md#req-product-discovery), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
 
 **Code references:** [packages/notabenda/src/discovery.ts](../packages/notabenda/src/discovery.ts), [packages/notabenda/src/discovery-ui.ts](../packages/notabenda/src/discovery-ui.ts), [packages/notabenda/src/discovery-cli.ts](../packages/notabenda/src/discovery-cli.ts), [examples/discovery/build.mjs](../examples/discovery/build.mjs), [examples/discovery/client.mjs](../examples/discovery/client.mjs)
 

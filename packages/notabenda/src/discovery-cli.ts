@@ -1,4 +1,4 @@
-/** @requirements REQ-PRODUCT-DISCOVERY */
+/** @requirements REQ-PRODUCT-DISCOVERY REQ-PRODUCT-SERVICE-DETECTION */
 import {createReadStream} from 'node:fs';
 import {mkdir,lstat,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
@@ -9,6 +9,7 @@ async function readJson(path:string,max:number):Promise<unknown>{
  catch{throw new Error('A discovery input could not be read as bounded UTF-8 JSON.');}
 }
 export async function runDiscoveryCli(args:string[]):Promise<void>{
+ if(args.includes('--project')){await (await import('./catalog-cli.js')).runCatalogCli(args,'project');return;}
  let config='notabenda.config.json',out:string|undefined,captureOrigin:string|undefined,json=false;const captures:string[]=[],seen=new Set<string>();
  while(args.length){const flag=args.shift()!;if(seen.has(flag)&&flag!=='--capture')throw new Error('Duplicate discovery option.');seen.add(flag);
   if(flag==='--json'){json=true;continue;}

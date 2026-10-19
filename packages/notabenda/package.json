@@ -95,7 +95,23 @@
       "types": "./dist/react-consent.d.ts",
       "import": "./dist/react-consent.js",
       "default": "./dist/react-consent.js"
-    }
+    },
+    "./catalog": {
+      "types": "./dist/catalog.d.ts",
+      "import": "./dist/catalog.js",
+      "default": "./dist/catalog.js"
+    },
+    "./catalog/seed": {
+      "types": "./dist/catalog-seed.d.ts",
+      "import": "./dist/catalog-seed.js",
+      "default": "./dist/catalog-seed.js"
+    },
+    "./catalog/project": {
+      "types": "./dist/catalog-project.d.ts",
+      "import": "./dist/catalog-project.js",
+      "default": "./dist/catalog-project.js"
+    },
+    "./catalog/schema.json": "./dist/catalog/schema.json"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

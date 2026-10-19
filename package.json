@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "test": "npm run build && node --test packages/*/test/*.test.mjs",
-    "check": "npm test && python3 scripts/regulatory.py --check && node site/build.mjs && node --test site/test/*.test.mjs && node scripts/site-wrangler.mjs deploy --dry-run --config site/wrangler.jsonc --outdir dist/site-worker",
+    "check": "npm test && python3 scripts/regulatory.py --check && python3 scripts/build-service-catalog.py --check && node site/build.mjs && node --test site/test/*.test.mjs && node scripts/site-wrangler.mjs deploy --dry-run --config site/wrangler.jsonc --outdir dist/site-worker",
     "example": "npm run build && node examples/static/build.mjs",
     "dev": "npm run site:build && node scripts/serve-example.mjs",
     "site:build": "npm run build && node site/build.mjs",

@@ -5,3 +5,7 @@ await writeFile(new URL('../dist/consent.css',import.meta.url),createConsentStyl
 await chmod(new URL('../dist/cli.js', import.meta.url), 0o755);
 await mkdir(new URL('../dist/astro/',import.meta.url),{recursive:true});
 for(const file of await readdir(new URL('../src/astro/',import.meta.url)))if(file.endsWith('.astro'))await copyFile(new URL('../src/astro/'+file,import.meta.url),new URL('../dist/astro/'+file,import.meta.url));
+
+// @requirements REQ-PRODUCT-SERVICE-CATALOG
+await mkdir(new URL('../dist/catalog/',import.meta.url),{recursive:true});
+for(const [source,target] of [['schema.json','schema.json'],['NOTICE','NOTICE.txt'],['sources/open-cookie-database/LICENSE','open-cookie-database-LICENSE.txt']])await copyFile(new URL('../../../catalog/'+source,import.meta.url),new URL('../dist/catalog/'+target,import.meta.url));

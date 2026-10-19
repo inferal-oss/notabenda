@@ -1,0 +1,432 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "notabenda-service-catalog"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,119}$"
+    },
+    "revision": {
+      "type": "string",
+      "maxLength": 120,
+      "minLength": 1,
+      "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "maxItems": 1000,
+      "minItems": 0
+    },
+    "providers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/provider"
+      },
+      "maxItems": 5000,
+      "minItems": 0
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/product"
+      },
+      "maxItems": 10000,
+      "minItems": 0
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "id",
+    "revision",
+    "sources",
+    "providers",
+    "products"
+  ],
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://notabenda.org/schemas/service-catalog-v1.json",
+  "title": "Notabenda service catalog version 1",
+  "$comment": "The package additionally validates plain JSON, byte/node limits, source/provider references, unique IDs and canonical dates. Reference-only URLs are not verified provider facts.",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,119}$"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "maxLength": 2048
+        },
+        "revision": {
+          "type": "string",
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "checkedOn": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "access": {
+          "enum": [
+            "read",
+            "reference-only"
+          ]
+        },
+        "license": {
+          "type": "string",
+          "maxLength": 100,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 0,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        }
+      },
+      "required": [
+        "id",
+        "url",
+        "revision",
+        "checkedOn",
+        "access",
+        "license",
+        "note"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "access": {
+                "const": "read"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "checkedOn": {
+                "type": "string"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "checkedOn": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "provider": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,119}$"
+        },
+        "revision": {
+          "type": "string",
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+          },
+          "maxItems": 40,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "website": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "maxLength": 2048
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,119}$"
+          },
+          "maxItems": 40,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "review": {
+          "enum": [
+            "unreviewed",
+            "technical-reference"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "name",
+        "aliases",
+        "sourceIds",
+        "review"
+      ]
+    },
+    "product": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,119}$"
+        },
+        "revision": {
+          "type": "string",
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "providerId": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,119}$"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 300,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "aliases": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+          },
+          "maxItems": 40,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,119}$"
+          },
+          "maxItems": 40,
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "delivery": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "browser",
+              "backend",
+              "infrastructure"
+            ]
+          },
+          "maxItems": 3,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,119}$"
+          },
+          "maxItems": 40,
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "review": {
+          "enum": [
+            "unreviewed",
+            "technical-reference"
+          ]
+        },
+        "identifiers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/identifier"
+          },
+          "maxItems": 100,
+          "minItems": 0
+        },
+        "storageHints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/storageHint"
+          },
+          "maxItems": 5000,
+          "minItems": 0
+        }
+      },
+      "required": [
+        "id",
+        "revision",
+        "providerId",
+        "name",
+        "aliases",
+        "description",
+        "categories",
+        "delivery",
+        "sourceIds",
+        "review",
+        "identifiers",
+        "storageHints"
+      ]
+    },
+    "identifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,119}$"
+        },
+        "ecosystem": {
+          "enum": [
+            "npm",
+            "python",
+            "terraform",
+            "docker"
+          ]
+        },
+        "match": {
+          "enum": [
+            "exact",
+            "prefix"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9@_./:+-]+$",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "explanation": {
+          "type": "string",
+          "maxLength": 1000,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "sourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9-]{0,119}$"
+          },
+          "maxItems": 40,
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "id",
+        "ecosystem",
+        "match",
+        "value",
+        "explanation",
+        "sourceIds"
+      ]
+    },
+    "storageHint": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sourceRowId": {
+          "type": "string",
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 256,
+          "minLength": 1,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "wildcard": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 0,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "reportedCategory": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 0,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "retentionHint": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 0,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        },
+        "domainHint": {
+          "type": "string",
+          "maxLength": 4000,
+          "minLength": 0,
+          "pattern": "^[^\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+        }
+      },
+      "required": [
+        "sourceRowId",
+        "name",
+        "wildcard",
+        "description",
+        "reportedCategory",
+        "retentionHint",
+        "domainHint"
+      ]
+    }
+  }
+}

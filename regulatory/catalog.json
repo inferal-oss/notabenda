@@ -79,6 +79,25 @@
       ]
     },
     {
+      "id": "FEAT-SERVICE-CATALOG",
+      "priority": "P1",
+      "title": "Shared third-party catalog and passive recognition",
+      "status": "partial",
+      "deliverables": [
+        "Versioned provider/product schema, source-backed service facts, custom entries and operator-confirmed site use.",
+        "Shared public third-party rendering and pinned release provenance; large data stays outside normal consent bundles.",
+        "Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.",
+        "Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.",
+        "Initial optional reference seed: 363 provider identities, 399 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references; all entries unreviewed."
+      ],
+      "implementationRefs": [
+        "packages/notabenda/src/catalog.ts",
+        "packages/notabenda/src/catalog-project.ts",
+        "packages/notabenda/src/catalog-cli.ts",
+        "scripts/build-service-catalog.py"
+      ]
+    },
+    {
       "id": "FEAT-CONTROLS",
       "priority": "P1",
       "title": "Consent and preference widgets",
@@ -1054,6 +1073,24 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Read the at-least-once alarm contract, finite automatic failure retries and host-managed continuation. The dispatch helpers return outcome data; they do not install an alarm, queue, scheduler or retry policy."
+    },
+    {
+      "id": "SRC-OPEN-COOKIE-DATABASE",
+      "title": "Open Cookie Database: cookie metadata CSV",
+      "url": "https://github.com/jkwakman/Open-Cookie-Database",
+      "kind": "dataset",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Seed candidate for cookie metadata. No dataset imported. Cookie-level categories do not establish actual site use, legal basis, necessity or a complete provider/product profile."
+    },
+    {
+      "id": "SRC-OPEN-COOKIE-LICENSE",
+      "title": "Open Cookie Database repository license",
+      "url": "https://github.com/jkwakman/Open-Cookie-Database/blob/master/LICENSE",
+      "kind": "license",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Apache License 2.0. Any future import must pin its exact source revision, preserve applicable notices/attribution and identify modifications."
     }
   ],
   "jurisdictions": [
@@ -1282,7 +1319,9 @@
         "REQ-PRODUCT-CF-DOCTOR",
         "REQ-PRODUCT-CONTRACT-ACTIONS",
         "REQ-PRODUCT-SYNTAX-HIGHLIGHTING",
-        "REQ-PRODUCT-BUNDLE-BUDGET"
+        "REQ-PRODUCT-BUNDLE-BUDGET",
+        "REQ-PRODUCT-SERVICE-CATALOG",
+        "REQ-PRODUCT-SERVICE-DETECTION"
       ]
     }
   ],
@@ -4366,6 +4405,88 @@
         "packages/notabenda/test/react-consent.test.mjs"
       ],
       "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target."
+    },
+    {
+      "id": "REQ-PRODUCT-SERVICE-CATALOG",
+      "jurisdiction": "PRODUCT",
+      "title": "Source-backed third-party catalog and resolved disclosures",
+      "kind": "product-standard",
+      "summary": "Standardize provider/product identities and source-backed facts, resolve reviewed site-specific use into shared public rendering, and pin revisions for immutable release history.",
+      "appliesWhen": "Confirmed service selection or catalog-backed legal/preference/directory rendering.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-OPEN-COOKIE-DATABASE",
+          "locator": "README: download formats, wildcard matching and contributions"
+        },
+        {
+          "sourceId": "SRC-OPEN-COOKIE-LICENSE",
+          "locator": "Apache-2.0 sections 2 and 4; candidate reuse and attribution"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SERVICE-CATALOG",
+        "FEAT-INVENTORY",
+        "FEAT-DOCUMENTS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-SERVICE-CATALOG"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. The seed is unreviewed; integrated public directory rendering and automatic provenance archival remain planned.",
+      "implementationRefs": [
+        "packages/notabenda/src/catalog.ts",
+        "packages/notabenda/src/catalog-seed.ts",
+        "packages/notabenda/src/catalog-cli.ts",
+        "scripts/build-service-catalog.py",
+        "docs/SERVICE-CATALOG.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/catalog.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/service-catalog.md"
+      ],
+      "implementationNote": "Versioned pure normalization/search, detached explicit service proposal and a separately imported offline seed with licensed source hashes are implemented. Public directory/render integration, wizard/admin selection, reviewed product profiles and automatic release-provenance archival remain open."
+    },
+    {
+      "id": "REQ-PRODUCT-SERVICE-DETECTION",
+      "jurisdiction": "PRODUCT",
+      "title": "Explainable passive third-party recognition",
+      "kind": "product-standard",
+      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes.",
+      "appliesWhen": "An authorized operator explicitly invokes catalog-backed service discovery.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SERVICE-CATALOG",
+        "FEAT-DISCOVERY",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-SERVICE-DETECTION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "A matched signature is a candidate, not execution, ownership, permission, legal classification or absence-of-tracking proof. Existing version-1 captures remain origin/name-only. Advanced code never arrives as executable catalog data.",
+      "implementationRefs": [
+        "packages/notabenda/src/catalog-project.ts",
+        "packages/notabenda/src/catalog-cli.ts",
+        "packages/notabenda/src/discovery-cli.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/catalog.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/service-catalog.md"
+      ],
+      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Catalog-backed browser/path/global, combined/regex and broader project detectors remain planned."
     }
   ],
   "verification": [
@@ -5283,6 +5404,32 @@
         "docs/verification/browser-delivery.md",
         "site/test/delivery.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-SERVICE-CATALOG",
+      "requirementIds": [
+        "REQ-PRODUCT-SERVICE-CATALOG"
+      ],
+      "status": "partial",
+      "expected": "Schema and source/version validation, operator overrides/custom entries, selected-only browser graphs, shared renderer parity and unchanged pinned historical documents.",
+      "testRefs": [
+        "packages/notabenda/test/catalog.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/service-catalog.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-SERVICE-DETECTION",
+      "requirementIds": [
+        "REQ-PRODUCT-SERVICE-DETECTION"
+      ],
+      "status": "partial",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, no raw identifiers/values in ordinary captures, old-version compatibility, unknown/blocked coverage and review-before-apply.",
+      "testRefs": [
+        "packages/notabenda/test/catalog.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/service-catalog.md"
       ]
     }
   ],

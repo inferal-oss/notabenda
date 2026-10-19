@@ -1,0 +1,17 @@
+# Service catalog and project discovery verification
+
+Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`.
+
+The version-1 catalog preview provides bounded normalization, reference search, an explicit ordinary-service draft plus detached selection snapshot, an offline seed, and static Node project discovery. Shared public directory rendering, wizard/admin selection, richer browser detection, combined/regex rules, automated provenance archival and broad language/infrastructure coverage remain incomplete.
+
+The seed imports a pinned Apache-2.0 CSV with preserved source/license hashes. Its 2,279 rows produce 2,278 storage hints; one row lacks a named platform/controller. Original backend/provider references bring the seed to 363 provider identities and 399 product/reference entries. All entries remain unreviewed. Backend homepages are reference-only with no asserted source verification date. A driver/SDK match can represent self-hosted software or an unused dependency.
+
+Tests cover source/count/provenance preservation, detached results, missing actual site-use fields, malformed closed-schema data, unknown references and identities, accessor/cyclic input rejection without executing getters, safe text/link input, candidate search filters and ordinary browser graphs excluding the catalog and Node scanner. Source normalization is separate from legal validity and verified vendor facts.
+
+Temporary project fixtures exercise npm/development dependencies, source imports, Python requirements and Terraform names. Findings retain file/rule/known-identifier references and omit source lines, dependency values, resource names and test secret sentinels. Secret-named files, generated/dependency directories, symlinks, oversized files and prefix confusers are checked. A Git fixture verifies ignored-file selection and configures a filesystem-monitor script whose marker remains absent after scanning. Project scripts are not invoked. A project-controlled PATH shim cannot replace the canonical system Git. Invalid package-name controls are rejected, prefix evidence retains only the known rule prefix, and array-valued enums/references cannot broaden matching or bypass normalization.
+
+CLI fixtures search the offline seed and scan a directory without a site config. Private output is exclusive, includes its own ignore file, and repeated/mixed arguments are rejected. Packed installation checks include the optional seed, schema, attribution/license files, CLI operation, subpath imports and strict consumer declarations.
+
+Project selection is limited to 5,000 files, 256 KiB per file, 32 MiB of read data and 20,000 unique observed identifier tokens; coverage is reported explicitly. JSON catalogs have byte, node, depth, text, array and reference limits. Paths and names remain private project metadata. Stable project files and ordinary Git behavior are assumed; this is not a sandbox or a comprehensive audit of adversarial concurrent filesystem changes.
+
+Static text scanning can find commented/unused imports and miss dynamic code, additional languages, unsupported deployment formats or provider settings. It does not prove deployment, data transfers, necessity, exemption, lawful basis, provider identity, DPA scope or no tracking. No network/provider probe, browser scan, project-code execution, automatic config update, consent grant or CI policy is supplied by project discovery.

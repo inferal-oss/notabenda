@@ -1,0 +1,2348 @@
+{
+  "sources": [
+    {
+      "id": "aws-reference",
+      "url": "https://aws.amazon.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "google-cloud-reference",
+      "url": "https://cloud.google.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "microsoft-azure-reference",
+      "url": "https://azure.microsoft.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "cloudflare-reference",
+      "url": "https://www.cloudflare.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "vercel-reference",
+      "url": "https://vercel.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "netlify-reference",
+      "url": "https://www.netlify.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "digitalocean-reference",
+      "url": "https://www.digitalocean.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "hetzner-reference",
+      "url": "https://www.hetzner.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "render-reference",
+      "url": "https://render.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "fly-reference",
+      "url": "https://fly.io/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "railway-reference",
+      "url": "https://railway.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "supabase-reference",
+      "url": "https://supabase.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "neon-reference",
+      "url": "https://neon.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "planetscale-reference",
+      "url": "https://planetscale.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "mongodb-reference",
+      "url": "https://www.mongodb.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "upstash-reference",
+      "url": "https://upstash.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "turso-reference",
+      "url": "https://turso.tech/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "redis-reference",
+      "url": "https://redis.io/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "resend-reference",
+      "url": "https://resend.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "postmark-reference",
+      "url": "https://postmarkapp.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "sendgrid-reference",
+      "url": "https://sendgrid.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "mailgun-reference",
+      "url": "https://www.mailgun.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "brevo-reference",
+      "url": "https://www.brevo.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "clerk-reference",
+      "url": "https://clerk.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "auth0-reference",
+      "url": "https://auth0.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "workos-reference",
+      "url": "https://workos.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "stripe-reference",
+      "url": "https://stripe.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "paddle-reference",
+      "url": "https://www.paddle.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "paypal-reference",
+      "url": "https://www.paypal.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "sentry-reference",
+      "url": "https://sentry.io/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "datadog-reference",
+      "url": "https://www.datadoghq.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "new-relic-reference",
+      "url": "https://newrelic.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "posthog-reference",
+      "url": "https://posthog.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "segment-reference",
+      "url": "https://segment.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "intercom-reference",
+      "url": "https://www.intercom.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "zendesk-reference",
+      "url": "https://www.zendesk.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "twilio-reference",
+      "url": "https://www.twilio.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "algolia-reference",
+      "url": "https://www.algolia.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    },
+    {
+      "id": "meilisearch-reference",
+      "url": "https://www.meilisearch.com/",
+      "revision": "identity-seed-1",
+      "checkedOn": null,
+      "license": "original-factual-reference",
+      "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+      "access": "reference-only"
+    }
+  ],
+  "providers": [
+    {
+      "id": "aws",
+      "revision": "1",
+      "name": "Amazon Web Services",
+      "aliases": [],
+      "website": "https://aws.amazon.com/",
+      "sourceIds": [
+        "aws-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "google-cloud",
+      "revision": "1",
+      "name": "Google Cloud",
+      "aliases": [],
+      "website": "https://cloud.google.com/",
+      "sourceIds": [
+        "google-cloud-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "microsoft-azure",
+      "revision": "1",
+      "name": "Microsoft Azure",
+      "aliases": [],
+      "website": "https://azure.microsoft.com/",
+      "sourceIds": [
+        "microsoft-azure-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "cloudflare",
+      "revision": "1",
+      "name": "Cloudflare",
+      "aliases": [],
+      "website": "https://www.cloudflare.com/",
+      "sourceIds": [
+        "cloudflare-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "vercel",
+      "revision": "1",
+      "name": "Vercel",
+      "aliases": [],
+      "website": "https://vercel.com/",
+      "sourceIds": [
+        "vercel-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "netlify",
+      "revision": "1",
+      "name": "Netlify",
+      "aliases": [],
+      "website": "https://www.netlify.com/",
+      "sourceIds": [
+        "netlify-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "digitalocean",
+      "revision": "1",
+      "name": "DigitalOcean",
+      "aliases": [],
+      "website": "https://www.digitalocean.com/",
+      "sourceIds": [
+        "digitalocean-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "hetzner",
+      "revision": "1",
+      "name": "Hetzner",
+      "aliases": [],
+      "website": "https://www.hetzner.com/",
+      "sourceIds": [
+        "hetzner-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "render",
+      "revision": "1",
+      "name": "Render",
+      "aliases": [],
+      "website": "https://render.com/",
+      "sourceIds": [
+        "render-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "fly",
+      "revision": "1",
+      "name": "Fly.io",
+      "aliases": [],
+      "website": "https://fly.io/",
+      "sourceIds": [
+        "fly-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "railway",
+      "revision": "1",
+      "name": "Railway",
+      "aliases": [],
+      "website": "https://railway.com/",
+      "sourceIds": [
+        "railway-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "supabase",
+      "revision": "1",
+      "name": "Supabase",
+      "aliases": [],
+      "website": "https://supabase.com/",
+      "sourceIds": [
+        "supabase-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "neon",
+      "revision": "1",
+      "name": "Neon",
+      "aliases": [],
+      "website": "https://neon.com/",
+      "sourceIds": [
+        "neon-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "planetscale",
+      "revision": "1",
+      "name": "PlanetScale",
+      "aliases": [],
+      "website": "https://planetscale.com/",
+      "sourceIds": [
+        "planetscale-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "mongodb",
+      "revision": "1",
+      "name": "MongoDB",
+      "aliases": [],
+      "website": "https://www.mongodb.com/",
+      "sourceIds": [
+        "mongodb-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "upstash",
+      "revision": "1",
+      "name": "Upstash",
+      "aliases": [],
+      "website": "https://upstash.com/",
+      "sourceIds": [
+        "upstash-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "turso",
+      "revision": "1",
+      "name": "Turso",
+      "aliases": [],
+      "website": "https://turso.tech/",
+      "sourceIds": [
+        "turso-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "redis",
+      "revision": "1",
+      "name": "Redis",
+      "aliases": [],
+      "website": "https://redis.io/",
+      "sourceIds": [
+        "redis-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "resend",
+      "revision": "1",
+      "name": "Resend",
+      "aliases": [],
+      "website": "https://resend.com/",
+      "sourceIds": [
+        "resend-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "postmark",
+      "revision": "1",
+      "name": "Postmark",
+      "aliases": [],
+      "website": "https://postmarkapp.com/",
+      "sourceIds": [
+        "postmark-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "sendgrid",
+      "revision": "1",
+      "name": "SendGrid",
+      "aliases": [],
+      "website": "https://sendgrid.com/",
+      "sourceIds": [
+        "sendgrid-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "mailgun",
+      "revision": "1",
+      "name": "Mailgun",
+      "aliases": [],
+      "website": "https://www.mailgun.com/",
+      "sourceIds": [
+        "mailgun-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "brevo",
+      "revision": "1",
+      "name": "Brevo",
+      "aliases": [],
+      "website": "https://www.brevo.com/",
+      "sourceIds": [
+        "brevo-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "clerk",
+      "revision": "1",
+      "name": "Clerk",
+      "aliases": [],
+      "website": "https://clerk.com/",
+      "sourceIds": [
+        "clerk-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "auth0",
+      "revision": "1",
+      "name": "Auth0",
+      "aliases": [],
+      "website": "https://auth0.com/",
+      "sourceIds": [
+        "auth0-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "workos",
+      "revision": "1",
+      "name": "WorkOS",
+      "aliases": [],
+      "website": "https://workos.com/",
+      "sourceIds": [
+        "workos-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "stripe",
+      "revision": "1",
+      "name": "Stripe",
+      "aliases": [],
+      "website": "https://stripe.com/",
+      "sourceIds": [
+        "stripe-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "paddle",
+      "revision": "1",
+      "name": "Paddle",
+      "aliases": [],
+      "website": "https://www.paddle.com/",
+      "sourceIds": [
+        "paddle-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "paypal",
+      "revision": "1",
+      "name": "PayPal",
+      "aliases": [],
+      "website": "https://www.paypal.com/",
+      "sourceIds": [
+        "paypal-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "sentry",
+      "revision": "1",
+      "name": "Sentry",
+      "aliases": [],
+      "website": "https://sentry.io/",
+      "sourceIds": [
+        "sentry-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "datadog",
+      "revision": "1",
+      "name": "Datadog",
+      "aliases": [],
+      "website": "https://www.datadoghq.com/",
+      "sourceIds": [
+        "datadog-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "new-relic",
+      "revision": "1",
+      "name": "New Relic",
+      "aliases": [],
+      "website": "https://newrelic.com/",
+      "sourceIds": [
+        "new-relic-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "posthog",
+      "revision": "1",
+      "name": "PostHog",
+      "aliases": [],
+      "website": "https://posthog.com/",
+      "sourceIds": [
+        "posthog-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "segment",
+      "revision": "1",
+      "name": "Segment",
+      "aliases": [],
+      "website": "https://segment.com/",
+      "sourceIds": [
+        "segment-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "intercom",
+      "revision": "1",
+      "name": "Intercom",
+      "aliases": [],
+      "website": "https://www.intercom.com/",
+      "sourceIds": [
+        "intercom-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "zendesk",
+      "revision": "1",
+      "name": "Zendesk",
+      "aliases": [],
+      "website": "https://www.zendesk.com/",
+      "sourceIds": [
+        "zendesk-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "twilio",
+      "revision": "1",
+      "name": "Twilio",
+      "aliases": [],
+      "website": "https://www.twilio.com/",
+      "sourceIds": [
+        "twilio-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "algolia",
+      "revision": "1",
+      "name": "Algolia",
+      "aliases": [],
+      "website": "https://www.algolia.com/",
+      "sourceIds": [
+        "algolia-reference"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "meilisearch",
+      "revision": "1",
+      "name": "Meilisearch",
+      "aliases": [],
+      "website": "https://www.meilisearch.com/",
+      "sourceIds": [
+        "meilisearch-reference"
+      ],
+      "review": "unreviewed"
+    }
+  ],
+  "products": [
+    {
+      "id": "aws-sdk",
+      "revision": "1",
+      "providerId": "aws",
+      "name": "AWS SDK",
+      "aliases": [
+        "Amazon Web Services"
+      ],
+      "description": "Integration reference for Amazon Web Services. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "cloud-infrastructure"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "aws-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "aws-sdk-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@aws-sdk/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "aws-reference"
+          ]
+        },
+        {
+          "id": "aws-sdk-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "boto3",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "aws-reference"
+          ]
+        },
+        {
+          "id": "aws-terraform",
+          "ecosystem": "terraform",
+          "match": "prefix",
+          "value": "aws_",
+          "explanation": "An AWS Terraform declaration is a configuration candidate, not proof of deployed infrastructure.",
+          "sourceIds": [
+            "aws-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "google-cloud",
+      "revision": "1",
+      "providerId": "google-cloud",
+      "name": "Google Cloud SDKs",
+      "aliases": [
+        "Google Cloud"
+      ],
+      "description": "Integration reference for Google Cloud. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "cloud-infrastructure"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "google-cloud-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "google-cloud-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@google-cloud/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "google-cloud-reference"
+          ]
+        },
+        {
+          "id": "google-cloud-2",
+          "ecosystem": "python",
+          "match": "prefix",
+          "value": "google-cloud-",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "google-cloud-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "azure-sdk",
+      "revision": "1",
+      "providerId": "microsoft-azure",
+      "name": "Azure SDKs",
+      "aliases": [
+        "Microsoft Azure"
+      ],
+      "description": "Integration reference for Microsoft Azure. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "cloud-infrastructure"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "microsoft-azure-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "azure-sdk-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@azure/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "microsoft-azure-reference"
+          ]
+        },
+        {
+          "id": "azure-sdk-2",
+          "ecosystem": "python",
+          "match": "prefix",
+          "value": "azure-",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "microsoft-azure-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "cloudflare-workers",
+      "revision": "1",
+      "providerId": "cloudflare",
+      "name": "Cloudflare Workers tooling",
+      "aliases": [
+        "Cloudflare"
+      ],
+      "description": "Integration reference for Cloudflare. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "cloudflare-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "cloudflare-workers-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "wrangler",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "cloudflare-reference"
+          ]
+        },
+        {
+          "id": "cloudflare-workers-2",
+          "ecosystem": "terraform",
+          "match": "prefix",
+          "value": "cloudflare_",
+          "explanation": "A matching terraform identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "cloudflare-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "vercel-platform",
+      "revision": "1",
+      "providerId": "vercel",
+      "name": "Vercel tooling",
+      "aliases": [
+        "Vercel"
+      ],
+      "description": "Integration reference for Vercel. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "vercel-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "vercel-platform-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "vercel",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "vercel-reference"
+          ]
+        },
+        {
+          "id": "vercel-platform-2",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@vercel/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "vercel-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "netlify-platform",
+      "revision": "1",
+      "providerId": "netlify",
+      "name": "Netlify tooling",
+      "aliases": [
+        "Netlify"
+      ],
+      "description": "Integration reference for Netlify. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "netlify-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "netlify-platform-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "netlify-cli",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "netlify-reference"
+          ]
+        },
+        {
+          "id": "netlify-platform-2",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@netlify/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "netlify-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "digitalocean-platform",
+      "revision": "1",
+      "providerId": "digitalocean",
+      "name": "DigitalOcean infrastructure",
+      "aliases": [
+        "DigitalOcean"
+      ],
+      "description": "Integration reference for DigitalOcean. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "digitalocean-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "digitalocean-platform-1",
+          "ecosystem": "terraform",
+          "match": "prefix",
+          "value": "digitalocean_",
+          "explanation": "A matching terraform identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "digitalocean-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "hetzner-cloud",
+      "revision": "1",
+      "providerId": "hetzner",
+      "name": "Hetzner Cloud infrastructure",
+      "aliases": [
+        "Hetzner"
+      ],
+      "description": "Integration reference for Hetzner. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "hetzner-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "hetzner-cloud-1",
+          "ecosystem": "terraform",
+          "match": "prefix",
+          "value": "hcloud_",
+          "explanation": "A matching terraform identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "hetzner-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "render-platform",
+      "revision": "1",
+      "providerId": "render",
+      "name": "Render infrastructure",
+      "aliases": [
+        "Render"
+      ],
+      "description": "Integration reference for Render. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "render-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "fly-platform",
+      "revision": "1",
+      "providerId": "fly",
+      "name": "Fly.io infrastructure",
+      "aliases": [
+        "Fly.io"
+      ],
+      "description": "Integration reference for Fly.io. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "fly-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "railway-platform",
+      "revision": "1",
+      "providerId": "railway",
+      "name": "Railway tooling",
+      "aliases": [
+        "Railway"
+      ],
+      "description": "Integration reference for Railway. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "hosting"
+      ],
+      "delivery": [
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "railway-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "railway-platform-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "@railway/cli",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "railway-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "supabase-platform",
+      "revision": "1",
+      "providerId": "supabase",
+      "name": "Supabase client libraries",
+      "aliases": [
+        "Supabase"
+      ],
+      "description": "Integration reference for Supabase. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "supabase-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "supabase-platform-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "@supabase/supabase-js",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "supabase-reference"
+          ]
+        },
+        {
+          "id": "supabase-platform-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "supabase",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "supabase-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "neon-database",
+      "revision": "1",
+      "providerId": "neon",
+      "name": "Neon database client",
+      "aliases": [
+        "Neon"
+      ],
+      "description": "Integration reference for Neon. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "neon-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "neon-database-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "@neondatabase/serverless",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "neon-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "planetscale-database",
+      "revision": "1",
+      "providerId": "planetscale",
+      "name": "PlanetScale database client",
+      "aliases": [
+        "PlanetScale"
+      ],
+      "description": "Integration reference for PlanetScale. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "planetscale-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "planetscale-database-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "@planetscale/database",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "planetscale-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "mongodb-client",
+      "revision": "1",
+      "providerId": "mongodb",
+      "name": "MongoDB drivers",
+      "aliases": [
+        "MongoDB"
+      ],
+      "description": "Integration reference for MongoDB. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "mongodb-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "mongodb-client-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "mongodb",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "mongodb-reference"
+          ]
+        },
+        {
+          "id": "mongodb-client-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "pymongo",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "mongodb-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "upstash-platform",
+      "revision": "1",
+      "providerId": "upstash",
+      "name": "Upstash client libraries",
+      "aliases": [
+        "Upstash"
+      ],
+      "description": "Integration reference for Upstash. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "upstash-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "upstash-platform-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@upstash/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "upstash-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "libsql-client",
+      "revision": "1",
+      "providerId": "turso",
+      "name": "libSQL clients",
+      "aliases": [
+        "Turso"
+      ],
+      "description": "Integration reference for Turso. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "turso-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "libsql-client-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "@libsql/client",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "turso-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "redis-client",
+      "revision": "1",
+      "providerId": "redis",
+      "name": "Redis clients",
+      "aliases": [
+        "Redis"
+      ],
+      "description": "Integration reference for Redis. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "database"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "redis-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "redis-client-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "redis",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "redis-reference"
+          ]
+        },
+        {
+          "id": "redis-client-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "redis",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "redis-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "resend-email",
+      "revision": "1",
+      "providerId": "resend",
+      "name": "Resend email API",
+      "aliases": [
+        "Resend"
+      ],
+      "description": "Integration reference for Resend. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "email"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "resend-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "resend-email-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "resend",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "resend-reference"
+          ]
+        },
+        {
+          "id": "resend-email-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "resend",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "resend-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "postmark-email",
+      "revision": "1",
+      "providerId": "postmark",
+      "name": "Postmark email API",
+      "aliases": [
+        "Postmark"
+      ],
+      "description": "Integration reference for Postmark. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "email"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "postmark-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "postmark-email-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "postmark",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "postmark-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "sendgrid-email",
+      "revision": "1",
+      "providerId": "sendgrid",
+      "name": "SendGrid email API",
+      "aliases": [
+        "SendGrid"
+      ],
+      "description": "Integration reference for SendGrid. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "email"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "sendgrid-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "sendgrid-email-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@sendgrid/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "sendgrid-reference"
+          ]
+        },
+        {
+          "id": "sendgrid-email-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "sendgrid",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "sendgrid-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "mailgun-email",
+      "revision": "1",
+      "providerId": "mailgun",
+      "name": "Mailgun email API",
+      "aliases": [
+        "Mailgun"
+      ],
+      "description": "Integration reference for Mailgun. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "email"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "mailgun-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "mailgun-email-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "mailgun.js",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "mailgun-reference"
+          ]
+        },
+        {
+          "id": "mailgun-email-2",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "mailgun-js",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "mailgun-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "brevo-email",
+      "revision": "1",
+      "providerId": "brevo",
+      "name": "Brevo messaging libraries",
+      "aliases": [
+        "Brevo"
+      ],
+      "description": "Integration reference for Brevo. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "email"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "brevo-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "brevo-email-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "@getbrevo/brevo",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "brevo-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "clerk-identity",
+      "revision": "1",
+      "providerId": "clerk",
+      "name": "Clerk identity libraries",
+      "aliases": [
+        "Clerk"
+      ],
+      "description": "Integration reference for Clerk. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "identity"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "clerk-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "clerk-identity-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@clerk/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "clerk-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "auth0-identity",
+      "revision": "1",
+      "providerId": "auth0",
+      "name": "Auth0 identity libraries",
+      "aliases": [
+        "Auth0"
+      ],
+      "description": "Integration reference for Auth0. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "identity"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "auth0-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "auth0-identity-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "auth0",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "auth0-reference"
+          ]
+        },
+        {
+          "id": "auth0-identity-2",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@auth0/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "auth0-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "workos-identity",
+      "revision": "1",
+      "providerId": "workos",
+      "name": "WorkOS identity libraries",
+      "aliases": [
+        "WorkOS"
+      ],
+      "description": "Integration reference for WorkOS. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "identity"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "workos-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "workos-identity-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@workos-inc/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "workos-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "stripe-payments",
+      "revision": "1",
+      "providerId": "stripe",
+      "name": "Stripe payment libraries",
+      "aliases": [
+        "Stripe"
+      ],
+      "description": "Integration reference for Stripe. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "payments"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "stripe-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "stripe-payments-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "stripe",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "stripe-reference"
+          ]
+        },
+        {
+          "id": "stripe-payments-2",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@stripe/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "stripe-reference"
+          ]
+        },
+        {
+          "id": "stripe-payments-3",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "stripe",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "stripe-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "paddle-payments",
+      "revision": "1",
+      "providerId": "paddle",
+      "name": "Paddle payment libraries",
+      "aliases": [
+        "Paddle"
+      ],
+      "description": "Integration reference for Paddle. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "payments"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "paddle-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "paddle-payments-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@paddle/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "paddle-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "paypal-payments",
+      "revision": "1",
+      "providerId": "paypal",
+      "name": "PayPal integration libraries",
+      "aliases": [
+        "PayPal"
+      ],
+      "description": "Integration reference for PayPal. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "payments"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "paypal-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "paypal-payments-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@paypal/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "paypal-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "sentry-monitoring",
+      "revision": "1",
+      "providerId": "sentry",
+      "name": "Sentry SDKs",
+      "aliases": [
+        "Sentry"
+      ],
+      "description": "Integration reference for Sentry. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "monitoring"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "sentry-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "sentry-monitoring-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@sentry/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "sentry-reference"
+          ]
+        },
+        {
+          "id": "sentry-monitoring-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "sentry-sdk",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "sentry-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "datadog-monitoring",
+      "revision": "1",
+      "providerId": "datadog",
+      "name": "Datadog libraries",
+      "aliases": [
+        "Datadog"
+      ],
+      "description": "Integration reference for Datadog. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "monitoring"
+      ],
+      "delivery": [
+        "browser",
+        "backend",
+        "infrastructure"
+      ],
+      "sourceIds": [
+        "datadog-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "datadog-monitoring-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "dd-trace",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "datadog-reference"
+          ]
+        },
+        {
+          "id": "datadog-monitoring-2",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@datadog/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "datadog-reference"
+          ]
+        },
+        {
+          "id": "datadog-monitoring-3",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "ddtrace",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "datadog-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "new-relic-monitoring",
+      "revision": "1",
+      "providerId": "new-relic",
+      "name": "New Relic agent",
+      "aliases": [
+        "New Relic"
+      ],
+      "description": "Integration reference for New Relic. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "monitoring"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "new-relic-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "new-relic-monitoring-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "newrelic",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "new-relic-reference"
+          ]
+        },
+        {
+          "id": "new-relic-monitoring-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "newrelic",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "new-relic-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "posthog-analytics",
+      "revision": "1",
+      "providerId": "posthog",
+      "name": "PostHog libraries",
+      "aliases": [
+        "PostHog"
+      ],
+      "description": "Integration reference for PostHog. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "posthog-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "posthog-analytics-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "posthog-js",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "posthog-reference"
+          ]
+        },
+        {
+          "id": "posthog-analytics-2",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "posthog-node",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "posthog-reference"
+          ]
+        },
+        {
+          "id": "posthog-analytics-3",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "posthog",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "posthog-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "segment-analytics",
+      "revision": "1",
+      "providerId": "segment",
+      "name": "Segment libraries",
+      "aliases": [
+        "Segment"
+      ],
+      "description": "Integration reference for Segment. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "segment-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "segment-analytics-1",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@segment/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "segment-reference"
+          ]
+        },
+        {
+          "id": "segment-analytics-2",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "analytics-node",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "segment-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "intercom-support",
+      "revision": "1",
+      "providerId": "intercom",
+      "name": "Intercom integration libraries",
+      "aliases": [
+        "Intercom"
+      ],
+      "description": "Integration reference for Intercom. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "support"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "intercom-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "intercom-support-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "intercom-client",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "intercom-reference"
+          ]
+        },
+        {
+          "id": "intercom-support-2",
+          "ecosystem": "npm",
+          "match": "prefix",
+          "value": "@intercom/",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "intercom-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "zendesk-support",
+      "revision": "1",
+      "providerId": "zendesk",
+      "name": "Zendesk integration libraries",
+      "aliases": [
+        "Zendesk"
+      ],
+      "description": "Integration reference for Zendesk. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "support"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "zendesk-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "zendesk-support-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "node-zendesk",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "zendesk-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "twilio-messaging",
+      "revision": "1",
+      "providerId": "twilio",
+      "name": "Twilio messaging libraries",
+      "aliases": [
+        "Twilio"
+      ],
+      "description": "Integration reference for Twilio. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "messaging"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "twilio-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "twilio-messaging-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "twilio",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "twilio-reference"
+          ]
+        },
+        {
+          "id": "twilio-messaging-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "twilio",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "twilio-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "algolia-search",
+      "revision": "1",
+      "providerId": "algolia",
+      "name": "Algolia search clients",
+      "aliases": [
+        "Algolia"
+      ],
+      "description": "Integration reference for Algolia. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "search"
+      ],
+      "delivery": [
+        "browser",
+        "backend"
+      ],
+      "sourceIds": [
+        "algolia-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "algolia-search-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "algoliasearch",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "algolia-reference"
+          ]
+        },
+        {
+          "id": "algolia-search-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "algoliasearch",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "algolia-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "meilisearch-client",
+      "revision": "1",
+      "providerId": "meilisearch",
+      "name": "Meilisearch clients",
+      "aliases": [
+        "Meilisearch"
+      ],
+      "description": "Integration reference for Meilisearch. Confirm actual use, deployment and provider relationship.",
+      "categories": [
+        "search"
+      ],
+      "delivery": [
+        "backend"
+      ],
+      "sourceIds": [
+        "meilisearch-reference"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "id": "meilisearch-client-1",
+          "ecosystem": "npm",
+          "match": "exact",
+          "value": "meilisearch",
+          "explanation": "A matching npm identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "meilisearch-reference"
+          ]
+        },
+        {
+          "id": "meilisearch-client-2",
+          "ecosystem": "python",
+          "match": "exact",
+          "value": "meilisearch",
+          "explanation": "A matching python identifier suggests this integration; it does not prove live use or a hosted provider relationship.",
+          "sourceIds": [
+            "meilisearch-reference"
+          ]
+        }
+      ],
+      "storageHints": []
+    }
+  ]
+}
