@@ -44,9 +44,9 @@ React uses `LegalGuaranteeNotice` from `notabenda/react/documents`; Astro uses `
 
 ## Product labels and the order component
 
-The [GARAN importer and renderer](GUARANTEE-LABELS.md) now require explicit producer offer, entire-good coverage, no additional cost, duration and information supplied to the trader. They preserve a finished producer file and bind it to the particular good. Missing information cannot mean “no guarantee”. Producer preparation, complete-artwork review, checkout placement and durable confirmation remain separate work. The unfilled official template has live Inter text without embedded fonts and cannot be used as a finished label.
+The [GARAN importer and renderer](GUARANTEE-LABELS.md) now require explicit producer offer, entire-good coverage, no additional cost, duration and information supplied to the trader. They preserve a finished producer file and bind it to the particular good. Missing information cannot mean “no guarantee”. Producer preparation and complete-artwork review remain host work. Continue with the [paid-order review](PAID-ORDERS.md) for checkout placement and [customer confirmations](ORDER-CONFIRMATIONS.md) for retained copies and delivery. The unfilled official template has live Inter text without embedded fonts and cannot be used as a finished label.
 
-The later paid-order component must cover main characteristics, price/cost details, the conditional label, duration/termination and minimum commitment beside the final payment-obligation action. Generic terms acceptance, a shop notice and an acknowledgment each leave that work unfinished. Checkout execution, stale quote rejection, idempotency and durable contract confirmation also remain separate.
+The [paid-order review guide](PAID-ORDERS.md) covers the final payment-obligation action and its review, including item characteristics, price details, applicable labels and commitments. A shop notice or terms acknowledgment alone does not supply that review. Payment, fulfillment and contract formation remain host work.
 
 ## Traceability
 
