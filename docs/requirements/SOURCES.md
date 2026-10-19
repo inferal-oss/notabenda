@@ -530,9 +530,9 @@ Checked JSON/JSONC configuration, Worker entry, worker-first assets, bindings an
 
 [Cloudflare: SQLite-backed Durable Object storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/)
 
-**Type:** platform-documentation. **Checked:** 2026-10-18. **Access:** read.
+**Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
 
-Checked the SQLite-backed storage and asynchronous KV interface used by the existing scoped adapters. No universal retention or locality claim is inferred.
+Read SQLite-backed storage, asynchronous KV and transaction semantics used by scoped adapters and paid-order local admission. The host callback must use local transaction reads and return writes; external payment/network side effects are excluded. No universal retention or locality claim is inferred.
 
 <a id="src-eu-eprivacy-marketing"></a>
 
@@ -973,3 +973,13 @@ Full primary judgment retrieved and read, including paragraphs 42–56 and the o
 **Type:** court-judgment. **Checked:** 2026-10-19. **Access:** search-result.
 
 Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; official press release also read. The wording on the button itself must unambiguously express payment obligation. Full judgment retrieval remains open; direct requests show a JavaScript verification challenge.
+
+<a id="src-cf-do-limits"></a>
+
+## SRC-CF-DO-LIMITS
+
+[Cloudflare: Durable Object storage limits](https://developers.cloudflare.com/durable-objects/platform/limits/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Read SQLite combined key/value 2 MB and legacy KV value 128 KiB limits. The paid-order archive uses its own portable 64 KiB chunk profile; these bounds are engineering constraints, not legal deadlines or retention rules.

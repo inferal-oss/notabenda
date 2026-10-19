@@ -558,7 +558,7 @@
       "deliverables": [
         "Reviewed item and commitment definitions bound to host-calculated quotes, exact money, total/due-now prices, recurring and conditional charges, and product-specific guarantee labels.",
         "Static vanilla/React/Astro information and a native/headless final action with uncertainty recovery. No implicit terms agreement, payment execution or durable contract confirmation.",
-        "Mixed, deferred and conditional examples with session-isolated DO admission and searchable retained reviews are implemented. Reusable production Cloudflare admission/asset archives, host payment/stock integration, durable confirmation and legal/national review remain open."
+        "Reusable Cloudflare chunked review/original-file archives, CAS quote activation, one admission per checkout intent with atomic host mutation plans, recovery, scoped admin inspection and retirement are implemented and used by the isolated demo. External payment/stock-system acceptance, durable confirmation and legal/national review remain open."
       ],
       "implementationRefs": [
         "packages/notabenda/src/paid-order-policy.ts",
@@ -573,7 +573,21 @@
         "examples/orders/client.mjs",
         "site/order-demo.mjs",
         "site/order-demo-admin.mjs",
-        "site/order-admin.css"
+        "site/order-admin.css",
+        "packages/notabenda-cf/src/orders.ts",
+        "packages/notabenda-cf/src/order-context.ts",
+        "packages/notabenda-cf/src/order-blobs.ts",
+        "packages/notabenda-cf/src/order-render.ts",
+        "packages/notabenda-cf/src/order-admin-style.ts",
+        "packages/notabenda-cf/src/order-review.ts",
+        "packages/notabenda-cf/src/order-review-style.ts",
+        "packages/notabenda-cf/src/order-policy.ts",
+        "packages/notabenda-cf/src/lifecycle.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "site/order-demo-legacy.mjs",
+        "site/order-demo-admin-legacy.mjs"
       ]
     }
   ],
@@ -1096,9 +1110,9 @@
       "title": "Cloudflare: SQLite-backed Durable Object storage",
       "url": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/",
       "kind": "platform-documentation",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Checked the SQLite-backed storage and asynchronous KV interface used by the existing scoped adapters. No universal retention or locality claim is inferred."
+      "note": "Read SQLite-backed storage, asynchronous KV and transaction semantics used by scoped adapters and paid-order local admission. The host callback must use local transaction reads and return writes; external payment/network side effects are excluded. No universal retention or locality claim is inferred."
     },
     {
       "id": "SRC-EU-EPRIVACY-MARKETING",
@@ -1495,6 +1509,15 @@
       "checkedOn": "2026-10-19",
       "access": "search-result",
       "note": "Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; official press release also read. The wording on the button itself must unambiguously express payment obligation. Full judgment retrieval remains open; direct requests show a JavaScript verification challenge."
+    },
+    {
+      "id": "SRC-CF-DO-LIMITS",
+      "title": "Cloudflare: Durable Object storage limits",
+      "url": "https://developers.cloudflare.com/durable-objects/platform/limits/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Read SQLite combined key/value 2 MB and legacy KV value 128 KiB limits. The paid-order archive uses its own portable 64 KiB chunk profile; these bounds are engineering constraints, not legal deadlines or retention rules."
     }
   ],
   "jurisdictions": [
@@ -1730,7 +1753,8 @@
         "REQ-PRODUCT-SERVICE-DETECTION",
         "REQ-PRODUCT-SERVICE-PROFILES",
         "REQ-PRODUCT-INDIRECT-NOTICE",
-        "REQ-PRODUCT-GUARANTEE-NOTICE"
+        "REQ-PRODUCT-GUARANTEE-NOTICE",
+        "REQ-PRODUCT-PAID-ORDER-ARCHIVES"
       ]
     }
   ],
@@ -3450,11 +3474,14 @@
         "packages/notabenda-cf/src/presentation.ts",
         "site/admin-presentation.mjs",
         "packages/notabenda-cf/src/setup.ts",
-        "packages/notabenda/src/setup-ui.ts"
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda-cf/src/order-render.ts",
+        "packages/notabenda-cf/src/order-admin-style.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
-        "packages/notabenda-cf/test/export.test.mjs"
+        "packages/notabenda-cf/test/export.test.mjs",
+        "packages/notabenda-cf/test/orders.test.mjs"
       ]
     },
     {
@@ -3565,7 +3592,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": "Current consolidation reread on 19 October 2026. Conditional harmonised durability label is now included in the pre-order cross-references.",
-      "caveats": "Selected frontend mechanics and website-only DO examples are implemented. Applicability, national/linguistic review, complete pre-contract information, early-performance/digital-content permissions, original-asset archives, production host payment/stock admission and durable-medium confirmation remain separate open work. A received request does not mean payment, fulfillment or contract confirmation.",
+      "caveats": "Selected frontend mechanics and reusable Cloudflare archives/local admission are implemented. Applicability, national/linguistic review, complete pre-contract information, early-performance/digital-content permissions, real payment/stock-system acceptance and durable-medium confirmation remain separate open work. A received request does not mean payment, fulfillment or contract confirmation.",
       "implementationRefs": [
         "packages/notabenda/src/paid-order-policy.ts",
         "packages/notabenda/src/paid-order.ts",
@@ -3579,13 +3606,29 @@
         "examples/orders/client.mjs",
         "site/order-demo.mjs",
         "site/order-demo-admin.mjs",
-        "site/order-admin.css"
+        "site/order-admin.css",
+        "packages/notabenda-cf/src/orders.ts",
+        "packages/notabenda-cf/src/order-context.ts",
+        "packages/notabenda-cf/src/order-blobs.ts",
+        "packages/notabenda-cf/src/order-render.ts",
+        "packages/notabenda-cf/src/order-admin-style.ts",
+        "packages/notabenda-cf/src/order-review.ts",
+        "packages/notabenda-cf/src/order-review-style.ts",
+        "packages/notabenda-cf/src/order-policy.ts",
+        "packages/notabenda-cf/src/lifecycle.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "site/order-demo-legacy.mjs",
+        "site/order-demo-admin-legacy.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/paid-order.test.mjs",
         "site/test/order-demo.test.mjs",
         "site/test/demo.test.mjs",
-        "docs/verification/paid-orders.md"
+        "docs/verification/paid-orders.md",
+        "packages/notabenda-cf/test/orders.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "scripts/check-order-archive-runtime.mjs"
       ]
     },
     {
@@ -4334,7 +4377,8 @@
         "examples/lifecycle.mjs",
         "packages/notabenda-cf/src/records.ts",
         "packages/notabenda-cf/src/contract-dispatch.ts",
-        "packages/notabenda/src/consent-engine.ts"
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda-cf/src/orders.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/lifecycle.test.mjs",
@@ -4346,7 +4390,8 @@
         "scripts/check-site-runtime.mjs",
         "docs/verification/evidence-lifecycle.md",
         "packages/notabenda-cf/test/contract-dispatch.test.mjs",
-        "docs/verification/contract-dispatch.md"
+        "docs/verification/contract-dispatch.md",
+        "packages/notabenda-cf/test/orders.test.mjs"
       ],
       "implementationNote": "Atomic retirement precedes retries and empty-head reads. Exact family/site/context event matching, transactional bounded scans, CAS holds and restartable manifests preserve restrictions. Browser controllers close terminal contexts. Read-only admin cards show holds, scan counters, timestamps and retained-data limitations."
     },
@@ -5394,7 +5439,9 @@
         "examples/guarantees/producer/verify.py",
         "examples/guarantees/producer/manifest.json",
         "docs/GUARANTEE-PRODUCER-EXAMPLE.md",
-        "packages/notabenda/src/files.ts"
+        "packages/notabenda/src/files.ts",
+        "packages/notabenda-cf/src/order-blobs.ts",
+        "packages/notabenda-cf/src/orders.ts"
       ],
       "testRefs": [
         "packages/notabenda-authoring/test/guarantee-label.test.mjs",
@@ -5404,7 +5451,8 @@
         "docs/verification/guarantees.md",
         "packages/notabenda-authoring/test/guarantee-producer.test.mjs",
         "packages/notabenda/test/cli.test.mjs",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "packages/notabenda-cf/test/orders.test.mjs"
       ],
       "implementationNote": "Optional bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes and binds explicit qualifying facts, product, producer, duration, review and wording. A fixed maintainer fixture fills only the official template’s three fields with pinned Inter outlines, records source/font provenance and compares fixed artwork. Light/dark examples include optional enlarged inspection; software QR decoding uses development-only tools. No public template generator, automatic no-guarantee inference, payment action or confirmation."
     },
@@ -5448,6 +5496,61 @@
         "site/test/host.test.mjs",
         "docs/verification/guarantees.md"
       ]
+    },
+    {
+      "id": "REQ-PRODUCT-PAID-ORDER-ARCHIVES",
+      "jurisdiction": "PRODUCT",
+      "title": "Retained paid-order reviews, original files and atomic local admission",
+      "kind": "product-standard",
+      "summary": "Retain exact reviews and original producer files separately from small searchable receipts; bind one admission to a host checkout intent across quote revisions, with local host writes and replay protection in the same transaction.",
+      "appliesWhen": "An adopter opts into notabenda-cf/orders.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-CF-DO-SQLITE",
+          "locator": "Asynchronous KV transaction contract and local atomicity"
+        },
+        {
+          "sourceId": "SRC-CF-DO-LIMITS",
+          "locator": "SQLite combined key/value and legacy KV value limits; package chunk profile is separate"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-PAID-ORDERS",
+        "FEAT-BACKOFFICE",
+        "FEAT-RECORDS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PAID-ORDER-ARCHIVES"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host authorization, commercial correctness and external operations remain host-owned. No payment, fulfillment, contract formation or durable-medium confirmation is performed. Hashes do not provide WORM storage or prove customer presentation. Production/regional legal acceptance remains separate.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/orders.ts",
+        "packages/notabenda-cf/src/order-context.ts",
+        "packages/notabenda-cf/src/order-blobs.ts",
+        "packages/notabenda-cf/src/order-render.ts",
+        "packages/notabenda-cf/src/order-admin-style.ts",
+        "packages/notabenda-cf/src/lifecycle.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "site/order-demo.mjs",
+        "site/order-demo-admin.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/orders.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "scripts/check-order-archive-runtime.mjs",
+        "site/test/order-demo.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/paid-orders.md"
+      ],
+      "implementationNote": "64 KiB sealed chunks, bounded review/files, CAS activation, intent-level consumption, fresh post-decision clock, local mutation plans, scoped private archives, safe admin rendering/downloads and resumable retirement. Existing demo receipts retain their compatibility path."
     }
   ],
   "verification": [
@@ -5967,12 +6070,15 @@
         "REQ-EU-ORDER-ACTION"
       ],
       "status": "partial",
-      "expected": "Verify exact mixed/deferred/recurring/conditional price and commitment facts, product label binding/readiness, reviewed native action, quote identities/expiry, uncertainty recovery, atomic demo admission and isolated searchable history. Durable contract confirmation and production/regional acceptance remain separate open checks.",
+      "expected": "Verify exact mixed/deferred/recurring/conditional facts and payment action, readiness/recovery, immutable review/original-byte archives, production document gates, CAS activation, one admission across intent revisions, atomic local host plans, private admin/file inspection, retirement/restore and isolated SQLite demo integration. Durable confirmation and real production/regional acceptance remain open.",
       "testRefs": [
         "packages/notabenda/test/paid-order.test.mjs",
         "site/test/order-demo.test.mjs",
         "site/test/demo.test.mjs",
-        "docs/verification/paid-orders.md"
+        "docs/verification/paid-orders.md",
+        "packages/notabenda-cf/test/orders.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "scripts/check-order-archive-runtime.mjs"
       ]
     },
     {
@@ -6522,6 +6628,22 @@
         "packages/notabenda/test/astro-package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/guarantees.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PAID-ORDER-ARCHIVES",
+      "requirementIds": [
+        "REQ-PRODUCT-PAID-ORDER-ARCHIVES"
+      ],
+      "status": "automated",
+      "expected": "Exercise file/review hash reconstruction and corruption, draft-document gates, activation/nonce races, one admission across revisions, exact recovery before clock/current checks, atomic host writes and rollback, near-budget reviews, separate archive/file permissions, scoped export exclusion, lifecycle purge/restore and a packed CF-only type/runtime consumer. Local SQLite HTTP/restart and Chromium mobile review supplement automation.",
+      "testRefs": [
+        "packages/notabenda-cf/test/orders.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "scripts/check-order-archive-runtime.mjs",
+        "site/test/order-demo.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/paid-orders.md"
       ]
     }
   ],

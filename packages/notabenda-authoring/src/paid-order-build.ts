@@ -29,7 +29,7 @@ function verifiedDefinition(input:unknown,options:Options):PaidOrderDefinition {
 /** Bind a trusted host quote to the reviewed definition and verify all supplied original label files. No fetching or publication. */
 export function createPaidOrderReview(input:unknown,hostQuote:PaidOrderQuote,assets:Record<string,Uint8Array>={},options:Options={}):PaidOrderReview {
  const definition=verifiedDefinition(input,options),quote=normalizePaidOrderQuote(hostQuote,definition);assetsFor(definition,assets,options);
- const content={schemaVersion:1 as const,kind:'paid-order-review' as const,definition,quote};return {...content,reviewId:digest(content)};
+ const content={schemaVersion:1 as const,kind:'paid-order-review' as const,definition,quote};return normalizePaidOrderReview({...content,reviewId:digest(content)},options);
 }
 /** Structural normalization alone is insufficient: verify both identities and the exact original asset files. */
 export function verifyPaidOrderReview(input:unknown,assets:Record<string,Uint8Array>={},options:Options={}):PaidOrderReview {

@@ -1,7 +1,10 @@
+// @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 /** @requirements REQ-PRODUCT-EVIDENCE-EXPORT */
 /** @requirements REQ-PRODUCT-CF-ADMIN */
 export type JsonValue = null | boolean | number | string | JsonValue[] | { [key: string]: JsonValue };
 export interface EvidenceRecord { id: string; data: JsonValue }
+/** Retained review is separate from the small generic record/export projection. */
+export interface PaidOrderArchive {id:string;review:import('./order-policy.js').PaidOrderReview}
 export interface RecordQuery {
   query: string;
   kind: string;
@@ -26,6 +29,9 @@ export interface RecordStore {
   getSource?(releaseId:string,kind:'privacy'|'cookies'|'terms'):Promise<EvidenceRecord|undefined>;
   /** Separate private selected-reference view; never traversed by ordinary list/get/export. */
   getCatalogReview?(releaseId:string):Promise<EvidenceRecord|undefined>;
+  /** Private admission-bound archive. The same authorized record ID selects all original files. */
+  getOrderArchive?(id:string):Promise<PaidOrderArchive|undefined>;
+  getOrderAsset?(id:string,sha256:string):Promise<Uint8Array|undefined>;
 }
 /** Minimal structural subset of the asynchronous Durable Object storage API. */
 export interface DurableStorage {
@@ -40,6 +46,8 @@ export interface AuthorizationGrant {
   allowExport?: boolean;
   /** Explicit per-request permission for retained selected-reference inspection/comparison. */
   allowCatalogReview?:boolean;
+  /** Explicit permission for complete paid-order review and original-file inspection. */
+  allowOrderArchive?:boolean;
 }
 export interface ExecutionContextLike { waitUntil(promise: Promise<unknown>): void }
 /** Navigation is presentation only. Every destination must authorize its own requests. */

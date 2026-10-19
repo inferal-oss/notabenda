@@ -84,12 +84,88 @@ Concurrent client calls share one attempt. A timeout, failed transport or mismat
 
 Persist `getRecoveryRequest()` together with the exact review before transmission if your flow must survive navigation. Supply it as `recovery` to resume. The mounted view offers a recovery button only when a recovery hook exists. Destroying a view revokes its permission to start an order; it does not cancel an admitted order. Destroying the controller retains a recovery copy but ignores late callbacks.
 
-The website’s [demo host](../site/order-demo.mjs) shows a transaction, one admission per issued quote and retained request in its session DO. It is website-specific and does not implement a reusable payment processor, production admission service, stock reservation or confirmation service in `notabenda-cf` yet.
+## Cloudflare archives and admission
+
+`notabenda-cf/orders` supplies a dependency-free backend for the review, original files, checkout activation and request receipt. Authentication, CSRF protection and checkout authorization stay in your host. Resolve `siteId`, `scopeId` and `checkoutId` there; never copy them from browser JSON. A checkout ID identifies one purchase intent and remains stable across quote revisions. Issue a fresh ID only for a separately authorized new order. Its public digest is not a credential.
+
+```ts
+import {
+  paidOrderCheckoutRef, archivePaidOrderAsset, archivePaidOrderReview,
+  activatePaidOrderReview, admitPaidOrder, getPaidOrderAttempt,
+} from 'notabenda-cf/orders';
+
+const context = {
+  siteId: 'your-shop', scopeId: 'checkout', checkoutId: checkout.intentId,
+};
+const contextRef = await paidOrderCheckoutRef(context);
+// Your pricing system binds the quote to contextRef and definitionId.
+// Your authoring process verifies the complete review and original artwork.
+for (const {label, bytes} of originalFiles) {
+  await archivePaidOrderAsset(ctx.storage, label, bytes, context);
+}
+await archivePaidOrderReview(ctx.storage, review, context);
+await activatePaidOrderReview(ctx.storage, {
+  reviewId: review.reviewId,
+  expectedRevision: checkout.activationRevision,
+}, context);
+
+// In your authenticated, CSRF-protected checkout handler:
+const outcome = await admitPaidOrder(ctx.storage, request, context, {
+  hostPrefix: 'shop/reservations/',
+  decide: ({review, request, get}) =>
+    hostPrepareReservation({review, request, get}),
+});
+
+// A separate recovery endpoint can look up the exact retained attempt.
+const recovered = await getPaidOrderAttempt(ctx.storage, request, context);
+```
+
+`checkout`, `originalFiles` and `hostPrepareReservation` are your application data and code. `decide` is mandatory: check current prices, stock and applicable host conditions through its scoped `get(relativeKey)` accessor. Return `{status:'admit', writes:[{key, value}]}` or `{status:'reject', reason:'stale-quote'|'unavailable'}`. The relative writes, consumed-checkout marker, small admission event and exact retry outcome commit in one local transaction. A failed write rolls them all back. The package checks the quote again after awaited host work, so an expired decision cannot reserve stock.
+
+The callback is local transaction work and may be retried. Do not charge a card, send a message, fetch a pricing service or make other external changes inside it. If external work is needed, include your own durable job in the returned mutation plan, then run it separately with its own idempotency and recovery rules. `received` confirms this local admission only. The package does not execute payment, fulfillment, contract formation or confirmation.
+
+Archival does not activate a review. Activation uses a monotonic compare-and-swap revision, separate from the opaque quote revision; `getPaidOrderCheckoutState` returns the current revision/review and any admission ID. A stale activation fails, and a superseded review cannot be reactivated. Once admitted, an intent cannot be reopened with a new nonce or quote. Exact prior outcomes remain recoverable before expiry and current-version checks. An unknown recovery result does not establish that an external effect failed.
+
+Production is the default. Both the order definition and producer labels must be reviewed. Every linked legal document must match its retained artifact ID, site, version, title and page hash, and belong to a reviewed production release. Draft order information or preview legal releases require independent `allowPreview:true` backend configuration. The website examples use that explicit preview mode.
+
+Original files are retained in 64 KiB binary chunks, with a sealed manifest and hashes checked during reconstruction. A review has a 256 KiB data-inspection/JSON bound; each original file is limited to 2 MiB; an intent can retain at most 128 review revisions. These are package engineering bounds. [Cloudflare’s current SQLite limits](https://developers.cloudflare.com/durable-objects/platform/limits/) permit a 2 MB combined key/value; the older KV backend has a 128 KiB value limit. Chunking avoids requiring either backend to hold a complete producer file in one value. The backend verifies identities, byte lengths and hashes; artwork, format and product-association review remain in the authoring process.
+
+The host callback allows at most 32 reads, 256 KiB of returned read data, and 16 unique relative writes with a 64 KiB total plan and 32 KiB per value. Use a fixed host-owned namespace disjoint from the order/release archives. Larger application operations need their own reviewed integration.
+
+### Inspect orders in admin
+
+```ts
+import {createAdminWorker} from 'notabenda-cf';
+import {createPaidOrderStore} from 'notabenda-cf/orders';
+
+const admin = createAdminWorker({
+  basePath: '/backoffice/orders', title: 'Order requests',
+  async authorize(request) {
+    const permission = await hostAuthorizeOrders(request);
+    if (!permission) return null;
+    return {
+      store: createPaidOrderStore(ctx.storage, {
+        siteId: permission.siteId, scopeId: permission.scopeId,
+      }),
+      allowOrderArchive: permission.canInspectOriginals,
+      allowExport: permission.canExport,
+    };
+  },
+});
+```
+
+Search/detail records contain product names, recorded prices, request and review references, and separate operation statuses. `allowOrderArchive` enables the retained-review page, canonical review JSON and admission-bound original-file routes. It defaults to false and is checked on every request, including images and HEAD. The original file download is an attachment; image inspection uses its declared image type with a sandbox CSP. Stored SVG/HTML is never inserted into the admin document. Generic exports do not traverse review or file hooks.
+
+The store can cover a whole site or one host-selected scope. Scoped IDs are admission hashes; site-wide IDs include their scope prefix. Pages scan at most 200 keys and return at most 50 matches, in key order. They do not provide a complete snapshot of a changing store. Retained hashes are integrity checks; direct storage writes can still alter the underlying data.
+
+Use `createEvidenceLifecycle` with `{family:'orders', siteId, scopeId, streamId:checkoutId}` and the same prefix to retire an intent. The host must first stop or fence its external jobs and assert `externalWorkStopped:true`, alongside eligibility and legal-hold assessment. Retirement blocks archive reads, activation, admission and retries; bounded purge removes that intent’s private files, reviews, attempts and admission event. Its retirement marker remains, including after a restore. Host reservation data and shared legal releases need their own lifecycle. See [evidence lifecycle](EVIDENCE-LIFECYCLE.md).
+
+The website’s [demo host](../site/order-demo.mjs) uses these helpers in its isolated session DO. Quote publication and the host’s pointer commit together. Previously issued demo requests keep their original recovery and inspection paths after the upgrade. Demo admissions do not charge money or form contracts.
 
 ## What still needs separate work
 
 This implements selected frontend mechanics for [REQ-EU-ORDER-ACTION](requirements/README.md#req-eu-order-action). It does not establish that a transaction falls within the Directive or satisfy all consumer-law requirements. Digital-content or early-service-performance permissions, withdrawal information and acknowledgments need their own reviewed flows. A generic terms checkbox cannot substitute for them.
 
-Contract confirmation on a durable medium is separate under Article 8(7). It includes broader required information; a received-request message or mutable page link is insufficient. Your host must supply and retain the complete confirmation, applicable permissions and original assets, and track delivery separately from payment and fulfillment. Production legal/linguistic review, national implementation, physical-device label legibility and a reusable Cloudflare order/confirmation archive remain open.
+Contract confirmation on a durable medium is separate under Article 8(7). It includes broader required information; a received-request message or mutable page link is insufficient. Your host must supply and retain the complete confirmation and applicable permissions, and track delivery separately from payment and fulfillment. Production legal/linguistic review, national implementation, physical-device label legibility, real payment/stock-system acceptance and reusable confirmation/delivery helpers remain open.
 
 The [verification record](verification/paid-orders.md) links tests and remaining checks. The examples use explicit draft previews; do not mark their product facts or documents reviewed for a real shop.

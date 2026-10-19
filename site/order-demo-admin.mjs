@@ -1,20 +1,31 @@
-// @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
-import {renderWorkspaceShell,escapeHtml as e} from '../packages/notabenda-cf/dist/render.js';
-import {renderPaidOrderReview,normalizePaidOrderReview,formatPaidOrderMoney} from 'notabenda/orders';
+// @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
+// @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
+import {createAdminWorker,matchesRecord} from 'notabenda-cf';
+import {createPaidOrderStore} from 'notabenda-cf/orders';
+import {normalizeRecordQuery,compareRecordKeys} from '../packages/notabenda-cf/dist/export.js';
+import {legacyOrderDemoAdmin} from './order-demo-admin-legacy.mjs';
+import {orderDemoSite,orderDemoScope} from './order-demo.mjs';
 import {adminPresentation} from './admin-presentation.mjs';
+import data from './dist/server-data.json' with {type:'json'};
 const base='/demo/admin/orders',prefix='demo/orders/received/';
+function legacyProjection(id,raw){
+ const review=raw.review,pricing=review.quote.pricing;return {id,data:{schemaVersion:1,kind:'paid-order-admission',id,siteId:review.definition.siteId,scopeId:'checkout',streamRef:raw.request.contextRef,occurredAt:raw.receivedAt,reviewId:review.reviewId,request:raw.request,items:review.quote.lines.map(line=>{const item=review.definition.items.find(i=>i.id===line.itemId);return {productId:item.productId,name:item.name,quantity:line.quantity};}),pricing:{currency:pricing.currency,fractionDigits:pricing.fractionDigits,totalPrice:pricing.totalPrice,dueNow:pricing.dueNow},legacy:true}};
+}
 export async function orderDemoAdmin(request,storage){
- const url=new URL(request.url);if(request.method!=='GET')return new Response('Method not allowed.',{status:405});
- const nonce=crypto.randomUUID().replaceAll('-',''),query=url.searchParams.get('q')??'';if(query.length>200)return new Response('Search is too long.',{status:400});
- let body;
- if(url.pathname===base+'/record'){
-  const id=url.searchParams.get('id');if(!/^[a-f0-9]{64}$/u.test(id??''))return new Response('Invalid record.',{status:400});const record=await storage.get(prefix+id);if(!record)return new Response('Not found.',{status:404});
-  const review=normalizePaidOrderReview(record.review,{allowPreview:true});
-  body=`<div class="order-admin"><a class="order-back" href="${base}">← Order requests</a><header><p class="eyebrow">REQUEST RECEIVED</p><h1>Order request</h1><p><time datetime="${e(record.receivedAt)}">${e(new Date(record.receivedAt).toUTCString())}</time></p></header><div class="order-statuses"><div><span>Request</span><strong>Received</strong></div><div><span>Payment</span><strong>Not performed</strong></div><div><span>Contract</span><strong>Not formed</strong></div><div><span>Confirmation</span><strong>Not sent</strong></div></div><section class="order-context"><h2>Request context</h2><dl>${[['Request ID',record.request.requestId],['Quote',record.request.quoteId],['Quote revision',record.request.quoteRevision],['Review ID',record.request.reviewId],['Definition ID',record.request.definitionId],['Quote expires',review.quote.expiresAt],['Payment action shown',review.definition.wording.paymentActionLabel]].map(([label,value])=>`<div><dt>${label}</dt><dd>${e(value)}</dd></div>`).join('')}</dl></section><section class="order-stored-review"><h2>Information presented</h2><p>The exact definition and quote retained with this request. Receipt is separate from payment, fulfillment and contract confirmation.</p>${renderPaidOrderReview(review,{idPrefix:'stored-order',headingLevel:3,allowPreview:true})}</section></div>`;
- }else if(url.pathname===base||url.pathname===base+'/'){
-  const stored=await storage.list({prefix,limit:200}),records=[...stored].map(([key,data])=>({id:key.slice(prefix.length),...data})).filter(r=>{const values=[r.request.requestId,r.request.quoteId,r.request.reviewId,...r.review.definition.items.map(i=>i.name)];return values.some(v=>v.toLocaleLowerCase('en').includes(query.toLocaleLowerCase('en')));}).sort((a,b)=>b.receivedAt.localeCompare(a.receivedAt));
-  body=`<div class="order-admin"><header><p class="eyebrow">CHECKOUT HISTORY</p><h1>Order requests</h1><p>Inspect the information and quote associated with each received request.</p></header><form method="get" action="${base}" class="order-search"><label for="order-search">Find a product, quote, request or review ID</label><div><input id="order-search" type="search" name="q" value="${e(query)}" maxlength="200"><button type="submit">Search</button></div></form><p class="order-count">${records.length} ${records.length===1?'request':'requests'}</p><div class="order-records">${records.length?records.map(r=>{const p=r.review.quote.pricing,total=p.totalPrice.kind==='fixed'?formatPaidOrderMoney(p.totalPrice.amountMinor,p,'en'):'Variable total',due=p.dueNow.kind==='fixed'?formatPaidOrderMoney(p.dueNow.amountMinor,p,'en'):'Calculated';return `<a class="order-record" href="${base}/record?id=${r.id}"><div><span class="order-record-state">Received</span><h2>${e(r.review.definition.items.map(i=>i.name).join(' + '))}</h2><p>${e(new Date(r.receivedAt).toUTCString())}</p><small>Request ${e(r.request.requestId)}</small></div><div class="order-record-price"><strong>${e(total)}</strong><span>${e(due)} due now</span><span aria-hidden="true">↗</span></div></a>`;}).join(''):'<div class="order-empty"><h2>No matching requests</h2><p>Try an order example, or search for another product or request ID.</p><a href="/orders/mixed/">Open the order example ↗</a></div>'}</div></div>`;
- }else return new Response('Not found.',{status:404});
- const html=renderWorkspaceShell(body,{...adminPresentation('/demo/admin'),basePath:base,title:'Order requests',scopeLabel:'Your demo workspace',nonce},'<link rel="stylesheet" href="/assets/order-admin.css"><link rel="stylesheet" href="/assets/orders.css"><link rel="stylesheet" href="/assets/guarantees.css">');
- return new Response(html,{headers:{'Content-Type':'text/html; charset=utf-8','Content-Security-Policy':`default-src 'none'; style-src 'self' 'nonce-${nonce}'; img-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'`}});
+ const url=new URL(request.url),id=url.searchParams.get('id');
+ if(url.pathname===base+'/record'&&/^[a-f0-9]{64}$/u.test(id??'')&&await storage.get(prefix+id))return legacyOrderDemoAdmin(request,storage);
+ const current=createPaidOrderStore(storage,{siteId:orderDemoSite,scopeId:orderDemoScope,allowPreview:true}),store={
+  ...current,
+  async get(id){const record=await current.get(id);if(record)return record;const old=await storage.get(prefix+id);return old?legacyProjection(id,old):undefined;},
+  async list(input){
+   const query=normalizeRecordQuery(input),all=[];let after;
+   do{const page=await current.list({query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50,...(after?{after}:{})});all.push(...page.records);after=page.nextAfter;}while(after&&all.length<200);
+   const old=await storage.list({prefix,limit:200});for(const [key,value] of old)all.push(legacyProjection(key.slice(prefix.length),value));
+   const candidates=all.sort((a,b)=>compareRecordKeys(a.id,b.id)).filter(r=>r.id.startsWith(query.keyPrefix)&&(query.after===undefined||compareRecordKeys(r.id,query.after)>0)),records=[];let scanned=0;
+   for(const record of candidates){scanned++;if(matchesRecord(record,query))records.push(record);if(records.length===query.limit)return {records,nextAfter:record.id,scanned};}return {records,scanned};
+  },
+ };
+ const response=await createAdminWorker({...adminPresentation('/demo/admin'),basePath:base,title:'Order requests',authorize:()=>({store,scopeLabel:'Your demo workspace',allowExport:true,allowOrderArchive:true})}).fetch(request,{});
+ if(url.pathname===base+'/order-review'&&request.method==='GET'&&response.ok){const html=await response.text(),asset=data.paidOrders.mixed.definition.items.find(i=>i.guarantee?.status==='label-provided').guarantee.label.asset,notice=asset.url.replace(/\.svg$/u,'.NOTICE.txt');return new Response(html.replace('</main>',(html.includes('class="nb-guarantee-artwork"')?`<p class="footnote">Guarantee artwork © European Union. <a href="${notice}">Source and use conditions</a>.</p>`:'')+'</main>'),{status:response.status,headers:response.headers});}
+ return response;
 }

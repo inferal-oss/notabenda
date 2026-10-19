@@ -1,3 +1,5 @@
+// @requirements REQ-EU-ORDER-ACTION
+// @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS
 // @requirements REQ-EU-CONSENT REQ-CA-MEANINGFUL REQ-EU-MARKETING REQ-CA-CASL-OPTIN
@@ -6,6 +8,7 @@
 /** @requirements REQ-PRODUCT-CONSENT-EVIDENCE
  * Trusted host operations. No public routes, identity resolution, or legal-retention inference.
  */
+import {paidOrderCheckoutRef,paidOrderAdmissionId} from './order-context.js';
 import {canonicalJson,sha256} from './history.js';
 import type {HistoryStorage,HistoryTransaction} from './history.js';
 import {createDurableObjectStore} from './store.js';
@@ -13,8 +16,8 @@ import {normalizeRecord,boundedText} from './records.js';
 import {compareRecordKeys} from './export.js';
 import type {JsonValue,RecordStore,DurableStorage} from './types.js';
 
-export type EvidenceFamily = 'consent'|'processing'|'terms'|'permissions'|'contracts';
-export type EvidenceLifecycleTarget = {family:'consent'|'processing'|'permissions'|'contracts';siteId:string;scopeId:string;streamId:string;prefix?:string} | {family:'terms';siteId:string;subjectId:string;prefix?:string};
+export type EvidenceFamily = 'consent'|'processing'|'terms'|'permissions'|'contracts'|'orders';
+export type EvidenceLifecycleTarget = {family:'consent'|'processing'|'permissions'|'contracts'|'orders';siteId:string;scopeId:string;streamId:string;prefix?:string} | {family:'terms';siteId:string;subjectId:string;prefix?:string};
 export interface LifecycleTransaction extends HistoryTransaction {
   list<T=unknown>(options:{prefix:string;startAfter?:string;limit:number}):Promise<Map<string,T>>;
   delete(key:string):Promise<boolean>;
@@ -34,6 +37,8 @@ export interface EvidenceRetirementDecision {
   requestId:string;reason:'retention-expired'|'operator-erasure';eligibleAt:string;
   /** Fresh host assessment, separate from the stored hold checked in the same transaction. */
   legalHold:false;
+  /** Orders require actual fencing of host payment/stock/fulfillment work before retirement. */
+  externalWorkStopped?:true;
 }
 export interface EvidenceLifecycle {
   readonly contextRef:string;
@@ -56,15 +61,16 @@ const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{
 const text=(v:unknown):v is string=>boundedText(v,200)&&v.trim().length>0;
 const integer=(v:unknown):v is number=>Number.isSafeInteger(v)&&Number(v)>=0;
 const iso=(v:unknown):v is string=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString()===v;
-const family=(v:unknown):v is EvidenceFamily=>typeof v==='string'&&['consent','processing','terms','permissions','contracts'].includes(v);
-const kindFor={consent:'consent-choice',processing:'processing-restriction',terms:'terms-acceptance',permissions:'form-permission',contracts:'contract-declaration'} as const;
+const family=(v:unknown):v is EvidenceFamily=>typeof v==='string'&&['consent','processing','terms','permissions','contracts','orders'].includes(v);
+const kindFor={consent:'consent-choice',processing:'processing-restriction',terms:'terms-acceptance',permissions:'form-permission',contracts:'contract-declaration',orders:'paid-order-admission'} as const;
+const orderPayloadKey=(v:unknown):v is string=>typeof v==='string'&&/^(?:active|consumed|review-count|activated\/[a-f0-9]{64}|attempts\/[a-f0-9-]{36}|(?:assets|reviews)\/[a-f0-9]{64}\/(?:manifest|chunks\/[0-9]{4}))$/u.test(v);
 const markerKey=(prefix:string,f:EvidenceFamily,ref:string)=>`${prefix}lifecycle/${f}/${ref}`;
 
 function normalizeState(input:unknown,siteId:string,f:EvidenceFamily,ref:string):EvidenceLifecycleState {
   let s:unknown;try{s=normalizeRecord({id:ref,data:input},8192).data;}catch{return fail('invalid-state');}
   if(!object(s)||!exact(s,['schemaVersion','id','kind','siteId','family','contextRef','phase','occurredAt','updatedAt','hold','retirement','progress','restoredAt'])||s.schemaVersion!==1||s.id!==ref||s.kind!=='evidence-lifecycle'||s.siteId!==siteId||s.family!==f||s.contextRef!==ref||typeof s.phase!=='string'||!['retained','purging','complete'].includes(s.phase)||!iso(s.occurredAt)||!iso(s.updatedAt)||!(s.restoredAt===null||iso(s.restoredAt)))return fail('invalid-state');
   const h=s.hold,p=s.progress,r=s.retirement;
-  if(!object(h)||!exact(h,['active','revision','updatedAt','reviewAt'])||typeof h.active!=='boolean'||!integer(h.revision)||!iso(h.updatedAt)||!(h.reviewAt===null||iso(h.reviewAt))||h.active&&h.reviewAt===null||!object(p)||!exact(p,['scanned','deleted','batches','after','completedAt'])||![p.scanned,p.deleted,p.batches].every(integer)||Number(p.deleted)>Number(p.scanned)||!(p.after===null||hash(p.after))||!(p.completedAt===null||iso(p.completedAt)))return fail('invalid-state');
+  if(!object(h)||!exact(h,['active','revision','updatedAt','reviewAt'])||typeof h.active!=='boolean'||!integer(h.revision)||!iso(h.updatedAt)||!(h.reviewAt===null||iso(h.reviewAt))||h.active&&h.reviewAt===null||!object(p)||!exact(p,['scanned','deleted','batches','after','completedAt'])||![p.scanned,p.deleted,p.batches].every(integer)||Number(p.deleted)>Number(p.scanned)||!(p.after===null||(f==='orders'?orderPayloadKey(p.after):hash(p.after)))||!(p.completedAt===null||iso(p.completedAt)))return fail('invalid-state');
   if(r!==null&&(!object(r)||!exact(r,['requestId','reason','eligibleAt','startedAt'])||!uuid(r.requestId)||typeof r.reason!=='string'||!['retention-expired','operator-erasure'].includes(r.reason)||!iso(r.eligibleAt)||!iso(r.startedAt)||Date.parse(r.eligibleAt)>Date.parse(r.startedAt)))return fail('invalid-state');
   if(s.phase==='retained'&&(r!==null||p.scanned!==0||p.deleted!==0||p.batches!==0||p.after!==null||p.completedAt!==null)||s.phase!=='retained'&&r===null||s.phase==='complete'&&p.completedAt===null||s.phase!=='complete'&&p.completedAt!==null)return fail('invalid-state');
   return s as unknown as EvidenceLifecycleState;
@@ -106,7 +112,7 @@ export async function createEvidenceLifecycle(storage:LifecycleStorage,target:Ev
   if(f==='terms'?!exact(target,['family','siteId','subjectId',...(target.prefix===undefined?[]:['prefix'])])||!text((target as {subjectId?:unknown}).subjectId):!exact(target,['family','siteId','scopeId','streamId',...(target.prefix===undefined?[]:['prefix'])])||!slug((target as {scopeId?:unknown}).scopeId)||!text((target as {streamId?:unknown}).streamId))return fail('invalid-target');
   if(target.family==='contracts'&&!uuid(target.streamId))return fail('invalid-target');
   const t=target;
-  const ref=await sha256(canonicalJson(t.family==='terms'?[siteId,t.subjectId]:[siteId,t.scopeId,t.streamId]));
+  const ref=t.family==='orders'?await paidOrderCheckoutRef({siteId,scopeId:t.scopeId,checkoutId:t.streamId}):await sha256(canonicalJson(t.family==='terms'?[siteId,t.subjectId]:[siteId,t.scopeId,t.streamId]));
   const key=markerKey(prefix,f,ref);
   if(typeof storage.transaction!=='function')return fail('unsupported-storage');
   await storage.transaction(async tx=>{checkedTx(tx);});
@@ -128,7 +134,7 @@ export async function createEvidenceLifecycle(storage:LifecycleStorage,target:Ev
       return storage.transaction(async tx=>{checkedTx(tx);const state=await read(tx)??initial(siteId,f,ref,at);if(state.hold.revision!==request.expectedRevision)return fail('revision-conflict');state.hold={active:request.active,reviewAt:request.reviewAt,revision:state.hold.revision+1,updatedAt:at};state.updatedAt=at;return save(tx,state);});
     },
     async retire(input){
-      if(!object(input)||!exact(input,['requestId','reason','eligibleAt','legalHold'])||!uuid(input.requestId)||typeof input.reason!=='string'||!['retention-expired','operator-erasure'].includes(input.reason)||!iso(input.eligibleAt)||input.legalHold!==false)return fail('invalid-decision');
+      if(!object(input)||!exact(input,['requestId','reason','eligibleAt','legalHold',...(t.family==='orders'?['externalWorkStopped']:[])])||!uuid(input.requestId)||typeof input.reason!=='string'||!['retention-expired','operator-erasure'].includes(input.reason)||!iso(input.eligibleAt)||input.legalHold!==false||t.family==='orders'&&input.externalWorkStopped!==true)return fail('invalid-decision');
       const decision={...input},at=clock(now);if(Date.parse(decision.eligibleAt)>Date.parse(at))return fail('not-eligible');
       return storage.transaction(async tx=>{
         checkedTx(tx);const state=await read(tx)??initial(siteId,f,ref,at);
@@ -139,6 +145,10 @@ export async function createEvidenceLifecycle(storage:LifecycleStorage,target:Ev
           // Pending/uncertain/leased work must be drained or explicitly quiesced by trusted host code.
           const eventId=await sha256(canonicalJson([ref,t.streamId])),raw=await tx.get(prefix+'events/'+eventId);
           if(raw!==undefined){const event=normalizeRecord({id:eventId,data:raw}).data;if(!object(event)||!targetMatches(event,eventId)||!object(event.delivery))return fail('invalid-record');for(const channel of ['application','acknowledgement']){const job=event.delivery[channel];if(!object(job)||typeof job.status!=='string'||!['accepted','cancelled'].includes(job.status)||job.lease!==null)return fail('pending-delivery');}}
+        }
+        if(t.family==='orders'){
+          const id=await paidOrderAdmissionId(ref),raw=await tx.get(prefix+'events/'+t.scopeId+'/'+id);
+          if(raw!==undefined){const event=normalizeRecord({id,data:raw}).data;if(!object(event)||!targetMatches(event,id)||!object(event.confirmation)||typeof event.confirmation.status!=='string'||!['not-prepared','accepted','cancelled'].includes(event.confirmation.status))return fail('pending-delivery');}
         }
         state.phase='purging';state.retirement={requestId:decision.requestId,reason:decision.reason,eligibleAt:decision.eligibleAt,startedAt:at};state.updatedAt=at;return save(tx,state);
       });
@@ -151,6 +161,14 @@ export async function createEvidenceLifecycle(storage:LifecycleStorage,target:Ev
         if(Date.parse(state.retirement.eligibleAt)>Date.parse(at))return fail('not-eligible');
         if(Date.parse(state.retirement.startedAt)>Date.parse(at))return fail('invalid-clock');
         if(state.phase==='complete')return state;
+        if(t.family==='orders'){
+          const payloadPrefix=prefix+'intents/'+ref+'/',after=state.progress.after,batch=await tx.list({prefix:payloadPrefix,...(after===null?{}:{startAfter:payloadPrefix+after}),limit});
+          if(!(batch instanceof Map)||batch.size>limit)return fail('invalid-record');let previous=after===null?undefined:payloadPrefix+after;
+          for(const [key] of batch){const relative=key.slice(payloadPrefix.length);if(!key.startsWith(payloadPrefix)||!orderPayloadKey(relative)||previous!==undefined&&compareRecordKeys(key,previous)<=0)return fail('invalid-record');previous=key;if(await tx.delete(key)!==true)return fail('invalid-record');state.progress.scanned++;state.progress.deleted++;state.progress.after=relative;}
+          state.progress.batches++;state.updatedAt=at;
+          if(batch.size<limit){const id=await paidOrderAdmissionId(ref),key=prefix+'events/'+t.scopeId+'/'+id,event=await tx.get(key);if(event!==undefined){const value=normalizeRecord({id,data:event}).data;if(!object(value)||!targetMatches(value,id))return fail('invalid-record');if(await tx.delete(key)!==true)return fail('invalid-record');state.progress.scanned++;state.progress.deleted++;}state.phase='complete';state.progress.completedAt=at;}
+          return save(tx,state);
+        }
         const eventPrefix=prefix+'events/',after=state.progress.after;
         const batch=await tx.list({prefix:eventPrefix,...(after===null?{}:{startAfter:eventPrefix+after}),limit});
         if(!(batch instanceof Map)||batch.size>limit)return fail('invalid-record');

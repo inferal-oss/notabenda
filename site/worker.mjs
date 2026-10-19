@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 import {orderDemoAdmin} from './order-demo-admin.mjs';
-import {serveOrderDemo} from './order-demo.mjs';
+import {serveOrderDemo,hasOrderDemoAttempt} from './order-demo.mjs';
 import {registerContractActionDefinition,recordContractDeclaration,createContractDeclarationStore,ContractActionRecordError} from 'notabenda-cf';
 import {contractContext} from './contract-context.mjs';
 import {seedContractDeclarations} from './contract-seed.mjs';
@@ -172,10 +172,10 @@ export class DemoWorkspace extends EvidenceWorkspace {
       let body;try{body=await request.clone().json();}catch{return protectedResponse(new Response('Invalid request.',{status:400}));}
       if(typeof body.requestId==='string'&&/^[a-f0-9-]{36}$/u.test(body.requestId))commandKey='demo/commands/'+path+'/'+body.requestId;
       const count=await storage.get('demo/command-count')??0;
-      if(count>=200&&(!commandKey||!await storage.get(commandKey)))return protectedResponse(Response.json({code:'demo-limit-reached'},{status:429}));
+      if(count>=200&&(!commandKey||!await storage.get(commandKey))&&!(path.startsWith('/demo/orders/')&&await hasOrderDemoAttempt(storage,path.split('/')[3],body,this.generation)))return protectedResponse(Response.json({code:'demo-limit-reached'},{status:429}));
     }
     if(/^\/demo\/admin\/orders(?:\/|$)/u.test(path))return decorateDemoAdmin(protectedResponse(await orderDemoAdmin(request,storage)),path);
-    const response=path.startsWith('/demo/orders/')?protectedResponse(await serveOrderDemo(request,{storage,generation:this.generation,templates:data.paidOrders,readBody:readDemoRequest})):await super.fetch(request);
+    const response=path.startsWith('/demo/orders/')?protectedResponse(await serveOrderDemo(request,{storage,generation:this.generation,templates:data.paidOrders,readBody:readDemoRequest,readAsset:async asset=>{const response=await this.env.ASSETS.fetch(new Request(new URL(asset.url,request.url)));if(!response.ok)throw Error('Original file unavailable.');return new Uint8Array(await response.arrayBuffer());}})):await super.fetch(request);
     if(commandKey&&response.ok&&!await storage.get(commandKey))await storage.transaction(async tx=>{await tx.put(commandKey,true);await tx.put('demo/command-count',(await tx.get('demo/command-count')??0)+1);});
     return decorateDemoAdmin(response,path);
   }

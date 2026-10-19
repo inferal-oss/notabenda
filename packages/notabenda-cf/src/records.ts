@@ -96,6 +96,7 @@ function lifecycleSearchLabels(record:EvidenceRecord):string {
   if(data.family==='terms')labels.push('terms agreement evidence');
   if(data.family==='permissions')labels.push('form permission evidence');
   if(data.family==='contracts')labels.push('contract declaration evidence');
+  if(data.family==='orders')labels.push('paid order evidence');
   if(object(data.hold).active===true)labels.push('on hold held');
   if(data.phase==='purging')labels.push('retired purge pending');
   if(data.phase==='complete')labels.push('retired purge recorded complete');
