@@ -70,7 +70,15 @@
         "packages/notabenda/src/indirect-collection.ts",
         "packages/notabenda/src/astro/IndirectCollectionNotice.astro",
         "packages/notabenda/src/setup.ts",
-        "examples/indirect-collection/build.mjs"
+        "examples/indirect-collection/build.mjs",
+        "packages/notabenda/src/guarantee-notice.ts",
+        "packages/notabenda/src/guarantee-notice-build.ts",
+        "packages/notabenda/src/guarantee-notice-json.ts",
+        "packages/notabenda/src/guarantee-notice-data.ts",
+        "packages/notabenda/src/guarantees.css",
+        "packages/notabenda/src/astro/LegalGuaranteeNotice.astro",
+        "packages/notabenda/assets/guarantees/manifest.json",
+        "examples/guarantees/build.mjs"
       ]
     },
     {
@@ -89,7 +97,16 @@
         "packages/notabenda/src/terms.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda-cf/src/terms.ts",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/guarantee-notice.ts",
+        "packages/notabenda/src/guarantee-notice-build.ts",
+        "packages/notabenda/src/guarantee-notice-json.ts",
+        "packages/notabenda/src/guarantee-notice-data.ts",
+        "packages/notabenda/src/guarantees.css",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/LegalGuaranteeNotice.astro",
+        "packages/notabenda/assets/guarantees/manifest.json",
+        "examples/guarantees/build.mjs"
       ]
     },
     {
@@ -945,9 +962,9 @@
       "title": "Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026",
       "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927",
       "kind": "primary-law",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Article 8(2) covers paid electronic orders; Article 8(7) separately addresses durable-medium confirmation. Consolidation and national implementation require applicability review."
+      "note": "Selected current Articles 6, 8 and 22a reread in browser after direct tool retrieval encountered a challenge. Article 8(2) now includes 6(1)(la), the conditional durability label, alongside (a), (e), (o), (p). Consolidation, scope and national implementation still require review."
     },
     {
       "id": "SRC-EU-EDPB-CONSENT",
@@ -1389,6 +1406,51 @@
       "checkedOn": null,
       "access": "blocked",
       "note": "Public reference URL recorded. Two retrieval attempts failed (timeout/internal error); its contents were not reviewed. Follow the link to review the current agreement."
+    },
+    {
+      "id": "SRC-EU-GUARANTEE-REG",
+      "title": "Commission Implementing Regulation (EU) 2025/1960",
+      "url": "https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj",
+      "kind": "primary-law",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Articles 1-3 and Annexes I-II read in browser. Prescribed unchanged notice and limited editable label fields, online colour, optional nested display; applies from 27 September 2026."
+    },
+    {
+      "id": "SRC-EU-GUARANTEE-GUIDE",
+      "title": "Commission practical guidelines on the guarantee notice and GARAN label, April 2026",
+      "url": "https://commission.europa.eu/document/download/3e4dbee6-8184-4256-923d-c52551c7e9f0_en?filename=Practical%20guidelines%20Harmonised%20Label%26Notice%20product%20guarantees_ARES%2027042026.pdf",
+      "kind": "official-guidance",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Selected sections 2-3 read, including digital display, producer edits, durations, font, QR destinations and product/order placement. Preliminary Commission-services guidance, not an authoritative Court interpretation."
+    },
+    {
+      "id": "SRC-EU-GUARANTEE-ASSETS",
+      "title": "Commission official guarantee notice and label source files",
+      "url": "https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en",
+      "kind": "official-assets",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Page read and SVG/PDF notice archives plus GARAN template downloaded. Source archive and per-file hashes recorded. Notice SVGs contain outlined text and embedded PNG QR; GARAN template has live Inter text without embedded fonts. Actual source colours differ from statutory reference HEX values; no silent correction or conformity claim."
+    },
+    {
+      "id": "SRC-EU-REUSE",
+      "title": "European Commission legal and reuse notice",
+      "url": "https://commission.europa.eu/legal-notice_en",
+      "kind": "official-guidance",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Reuse/copyright section read. General CC BY 4.0 policy has exceptions for logos/names/third-party rights. Prescribed artwork is not relicensed as Apache or represented as project branding."
+    },
+    {
+      "id": "SRC-EU-ORDER-CONNY-SUMMARY",
+      "title": "CJEU C-400/22 Conny: official press summary",
+      "url": "https://curia.europa.eu/jcms/upload/docs/application/pdf/2024-05/cp240090en.pdf",
+      "kind": "court-summary",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Two-page official press summary read. Payment action also concerns obligations conditional on a later event. This is expressly not the binding judgment; full judgment review remains open."
     }
   ],
   "jurisdictions": [
@@ -1405,7 +1467,9 @@
         "REQ-EU-WITHDRAWAL",
         "REQ-EU-ORDER-ACTION",
         "REQ-EU-RETENTION-ERASURE",
-        "REQ-EU-MARKETING"
+        "REQ-EU-MARKETING",
+        "REQ-EU-GUARANTEE-NOTICE",
+        "REQ-EU-GUARANTEE-LABEL"
       ]
     },
     {
@@ -1621,7 +1685,8 @@
         "REQ-PRODUCT-SERVICE-CATALOG",
         "REQ-PRODUCT-SERVICE-DETECTION",
         "REQ-PRODUCT-SERVICE-PROFILES",
-        "REQ-PRODUCT-INDIRECT-NOTICE"
+        "REQ-PRODUCT-INDIRECT-NOTICE",
+        "REQ-PRODUCT-GUARANTEE-NOTICE"
       ]
     }
   ],
@@ -3430,7 +3495,11 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-CRD-20260927",
-          "locator": "Article 8(2), with Article 6(1) cross-references; Article 8(7) confirmation"
+          "locator": "Current Article 8(2): Article 6(1)(a), (e), (la), (o), (p); Article 8(7) confirmation"
+        },
+        {
+          "sourceId": "SRC-EU-ORDER-CONNY-SUMMARY",
+          "locator": "Conditional payment obligation; full judgment review remains open"
         }
       ],
       "discoverySourceIds": [],
@@ -3445,8 +3514,8 @@
       "legalReviewStatus": "unreviewed",
       "implementationStatus": "planned",
       "effectiveFrom": null,
-      "timingNote": "Consolidated text read as of 18 October 2026; national transposition and sector exclusions need review.",
-      "caveats": "A generic terms checkbox or stored receipt does not implement the paid-order button, all pre-contract information, or durable-medium confirmation.",
+      "timingNote": "Current consolidation reread on 19 October 2026. Conditional harmonised durability label is now included in the pre-order cross-references.",
+      "caveats": "A generic terms checkbox or stored receipt does not implement the paid-order button, all pre-contract information, or durable-medium confirmation. Shop notice implementation is a prerequisite only; it does not implement the conditional product label or final order action.",
       "implementationRefs": [],
       "testRefs": []
     },
@@ -5135,6 +5204,144 @@
         "docs/verification/indirect-collection.md"
       ],
       "implementationNote": "Bounded strict inputs require selected categories, recipient wording, particular-law review and usable rights route. The collecting/holding agency comes from the privacy release; neither source nor storage provider replaces it. Phase, reviewed wording and full purpose facts affect identity. Framework wrappers share the same script-free renderer."
+    },
+    {
+      "id": "REQ-EU-GUARANTEE-NOTICE",
+      "jurisdiction": "EU-EEA",
+      "title": "Prominent harmonised goods legal-guarantee notice",
+      "kind": "primary-law",
+      "summary": "Use the prescribed shop-level goods notice with appropriate language and online colour, preserving its contents and QR information.",
+      "appliesWhen": "Applicable goods consumer contracts and relevant EU/national implementing law require this guarantee information.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-EU-CRD-20260927",
+          "locator": "Articles 6(1)(l) and 22a"
+        },
+        {
+          "sourceId": "SRC-EU-GUARANTEE-REG",
+          "locator": "Articles 1 and 3; Annex I"
+        },
+        {
+          "sourceId": "SRC-EU-GUARANTEE-GUIDE",
+          "locator": "Sections 2.1 and 2.3"
+        },
+        {
+          "sourceId": "SRC-EU-GUARANTEE-ASSETS",
+          "locator": "Colour SVG notice archive and corresponding colour PDF page 1"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-DOCUMENTS"
+      ],
+      "verificationIds": [
+        "VERIFY-EU-GUARANTEE-NOTICE"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": "2026-09-27",
+      "timingNote": "2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.",
+      "caveats": "Source integrity is not legal conformity, linguistic review or proof of prominent/legible placement. Actual source colour discrepancy remains open. No product guarantee, checkout action or confirmation is implied.",
+      "implementationRefs": [
+        "packages/notabenda/src/guarantee-notice.ts",
+        "packages/notabenda/src/guarantee-notice-build.ts",
+        "packages/notabenda/src/guarantee-notice-json.ts",
+        "packages/notabenda/src/guarantee-notice-data.ts",
+        "packages/notabenda/src/guarantees.css",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/LegalGuaranteeNotice.astro",
+        "packages/notabenda/assets/guarantees/manifest.json",
+        "examples/guarantees/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/guarantee-notice.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/guarantees.md"
+      ],
+      "implementationNote": "Optional static vanilla/React/Astro renderer with 24 unchanged official colour assets, selected-file content-addressed output, fixed QR information destination, PDF-extracted text alternative and explicit review. Colour/reference discrepancy, actual prominence, linguistic/legal review and device/QR acceptance remain open."
+    },
+    {
+      "id": "REQ-EU-GUARANTEE-LABEL",
+      "jurisdiction": "EU-EEA",
+      "title": "Conditional product durability-guarantee label",
+      "kind": "primary-law",
+      "summary": "Distinguish qualifying producer durability guarantees and show the prescribed product-specific label, including directly before applicable electronic ordering.",
+      "appliesWhen": "Applicable goods consumer contracts and relevant EU/national implementing law require this guarantee information.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-EU-CRD-20260927",
+          "locator": "Articles 6(1)(la), 8(2) and 22a"
+        },
+        {
+          "sourceId": "SRC-EU-GUARANTEE-REG",
+          "locator": "Article 2; Annex II"
+        },
+        {
+          "sourceId": "SRC-EU-GUARANTEE-GUIDE",
+          "locator": "Sections 3.1-3.3"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-DOCUMENTS"
+      ],
+      "verificationIds": [
+        "VERIFY-EU-GUARANTEE-LABEL"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "planned",
+      "effectiveFrom": "2026-09-27",
+      "timingNote": "2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.",
+      "caveats": "Producer offer must cover entire good at no additional cost for more than two years and information must be supplied to trader. Missing information is not a no-guarantee decision. Producer-prepared complete asset, eligibility, actual font rendering and product association remain unimplemented.",
+      "implementationRefs": [],
+      "testRefs": []
+    },
+    {
+      "id": "REQ-PRODUCT-GUARANTEE-NOTICE",
+      "jurisdiction": "PRODUCT",
+      "title": "Source-preserving multilingual guarantee notice display",
+      "kind": "product-standard",
+      "summary": "Build and render one selected unchanged official notice with traceable asset/text provenance and a readable static alternative.",
+      "appliesWhen": "A host explicitly selects the sourced EU goods legal-guarantee notice.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-DOCUMENTS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-GUARANTEE-NOTICE"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Source integrity is not legal conformity, linguistic review or proof of prominent/legible placement. Actual source colour discrepancy remains open. No product guarantee, checkout action or confirmation is implied.",
+      "implementationRefs": [
+        "packages/notabenda/src/guarantee-notice.ts",
+        "packages/notabenda/src/guarantee-notice-build.ts",
+        "packages/notabenda/src/guarantee-notice-json.ts",
+        "packages/notabenda/src/guarantee-notice-data.ts",
+        "packages/notabenda/src/guarantees.css",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/LegalGuaranteeNotice.astro",
+        "packages/notabenda/assets/guarantees/manifest.json",
+        "examples/guarantees/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/guarantee-notice.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/guarantees.md"
+      ]
     }
   ],
   "verification": [
@@ -6152,6 +6359,45 @@
         "site/test/host.test.mjs",
         "docs/verification/indirect-collection.md"
       ]
+    },
+    {
+      "id": "VERIFY-EU-GUARANTEE-NOTICE",
+      "requirementIds": [
+        "REQ-EU-GUARANTEE-NOTICE"
+      ],
+      "status": "automated",
+      "expected": "Mechanism checks preserve all source bytes, language binding, fixed destination and text alternatives. Legal/linguistic/design acceptance remains open.",
+      "testRefs": [
+        "packages/notabenda/test/guarantee-notice.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/guarantees.md"
+      ]
+    },
+    {
+      "id": "VERIFY-EU-GUARANTEE-LABEL",
+      "requirementIds": [
+        "REQ-EU-GUARANTEE-LABEL"
+      ],
+      "status": "planned",
+      "expected": "Qualifying producer facts bind the complete correctly prepared asset to a specific good and applicable order surface; unknown eligibility and missing assets stay unresolved.",
+      "testRefs": []
+    },
+    {
+      "id": "VERIFY-PRODUCT-GUARANTEE-NOTICE",
+      "requirementIds": [
+        "REQ-PRODUCT-GUARANTEE-NOTICE"
+      ],
+      "status": "automated",
+      "expected": "All 24 selected-file builds preserve known source hashes and provenance; bounded safe static renderers expose image, text, source attribution and QR information without a checkout or consent action.",
+      "testRefs": [
+        "packages/notabenda/test/guarantee-notice.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/host.test.mjs",
+        "docs/verification/guarantees.md"
+      ]
     }
   ],
   "researchBacklog": [
@@ -6216,6 +6462,21 @@
       ],
       "status": "not-researched",
       "question": "Expand to further jurisdictions and sector/marketing/consumer laws according to explicit scope; including India commencement phases, South Korea, and additional national regimes."
+    },
+    {
+      "id": "GAP-EU-GUARANTEE-ASSETS",
+      "jurisdiction": "EU-EEA",
+      "sourceIds": [
+        "SRC-EU-GUARANTEE-REG",
+        "SRC-EU-GUARANTEE-ASSETS",
+        "SRC-EU-GUARANTEE-GUIDE"
+      ],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-DOCUMENTS"
+      ],
+      "status": "needs-source-verification",
+      "question": "Resolve the official SVG/reference-colour discrepancy and independently review PDF text equivalents and actual digital legibility/QR usability. Do not silently recolour supplied files or claim statutory design conformity from source hashes."
     }
   ]
 }

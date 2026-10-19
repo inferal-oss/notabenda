@@ -10,12 +10,14 @@
   "sideEffects": [
     "./dist/styles.css",
     "./dist/consent.css",
-    "./dist/services.css"
+    "./dist/services.css",
+    "./dist/guarantees.css"
   ],
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "assets/guarantees"
   ],
   "exports": {
     ".": {
@@ -173,7 +175,18 @@
       "types": "./dist/catalog-profile.d.ts",
       "import": "./dist/catalog-profile.js",
       "default": "./dist/catalog-profile.js"
-    }
+    },
+    "./guarantees": {
+      "types": "./dist/guarantee-notice.d.ts",
+      "import": "./dist/guarantee-notice.js",
+      "default": "./dist/guarantee-notice.js"
+    },
+    "./guarantees/content": {
+      "types": "./dist/guarantee-notice-build.d.ts",
+      "import": "./dist/guarantee-notice-build.js",
+      "default": "./dist/guarantee-notice-build.js"
+    },
+    "./guarantees.css": "./dist/guarantees.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

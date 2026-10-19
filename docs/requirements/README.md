@@ -10,7 +10,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 
 | Scope | Requirements | Coverage |
 | --- | --- | --- |
-| EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing) | Selected items: partial, planned |
+| EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing), [REQ-EU-GUARANTEE-NOTICE](#req-eu-guarantee-notice), [REQ-EU-GUARANTEE-LABEL](#req-eu-guarantee-label) | Selected items: partial, planned |
 | FR | [REQ-FR-SCOPE](#req-fr-scope) | Selected items: planned |
 | DE | [REQ-DE-DEVICE](#req-de-device), [REQ-DE-CANCEL](#req-de-cancel), [REQ-DE-WITHDRAWAL](#req-de-withdrawal) | Selected items: partial, planned |
 | IT | [REQ-IT-REPROMPT](#req-it-reprompt) | Selected items: partial |
@@ -31,7 +31,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-FED | [REQ-US-COPPA-SCOPE](#req-us-coppa-scope) | Selected items: partial |
 | TR | [REQ-TR-BASIS](#req-tr-basis) | Selected items: planned |
 | PLATFORM | [REQ-GOOGLE-MODE](#req-google-mode), [REQ-GOOGLE-CMP](#req-google-cmp) | Selected items: partial, planned |
-| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice) | Selected items: implemented, partial |
+| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice), [REQ-PRODUCT-GUARANTEE-NOTICE](#req-product-guarantee-notice) | Selected items: implemented, partial |
 
 ## Individual requirements
 
@@ -1113,7 +1113,7 @@ For applicable paid electronic distance contracts, present the required pre-orde
 
 **Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
 
-**Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Article 8(2), with Article 6(1) cross-references; Article 8(7) confirmation (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)).
+**Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Current Article 8(2): Article 6(1)(a), (e), (la), (o), (p); Article 8(7) confirmation (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)); [CJEU C-400/22 Conny: official press summary](https://curia.europa.eu/jcms/upload/docs/application/pdf/2024-05/cp240090en.pdf) — Conditional payment obligation; full judgment review remains open (read; [SRC-EU-ORDER-CONNY-SUMMARY](SOURCES.md#src-eu-order-conny-summary)).
 
 **Features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-CONTRACT-ACTIONS](../FEATURES.md#feat-contract-actions).
 
@@ -1121,9 +1121,9 @@ For applicable paid electronic distance contracts, present the required pre-orde
 
 **VERIFY-EU-ORDER-ACTION (planned):** Applicable paid-checkout fixtures expose the required pre-order facts and a reviewed unambiguous payment action, with durable contract confirmation checked separately.
 
-**Timing:** Consolidated text read as of 18 October 2026; national transposition and sector exclusions need review.
+**Timing:** Current consolidation reread on 19 October 2026. Conditional harmonised durability label is now included in the pre-order cross-references.
 
-**Limits/open review:** A generic terms checkbox or stored receipt does not implement the paid-order button, all pre-contract information, or durable-medium confirmation.
+**Limits/open review:** A generic terms checkbox or stored receipt does not implement the paid-order button, all pre-contract information, or durable-medium confirmation. Shop notice implementation is a prerequisite only; it does not implement the conditional product label or final order action.
 
 **Code/test references:** None yet; nothing implemented.
 
@@ -1885,6 +1885,76 @@ Provide optional static HTML and plain-text indirect-collection notices with exp
 
 **Code/test references:** [packages/notabenda/src/indirect-collection.ts](../../packages/notabenda/src/indirect-collection.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/IndirectCollectionNotice.astro](../../packages/notabenda/src/astro/IndirectCollectionNotice.astro), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [examples/indirect-collection/build.mjs](../../examples/indirect-collection/build.mjs), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda/test/indirect-collection.test.mjs](../../packages/notabenda/test/indirect-collection.test.mjs), [packages/notabenda/test/setup.test.mjs](../../packages/notabenda/test/setup.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/astro-package.test.mjs](../../packages/notabenda/test/astro-package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/indirect-collection.md](../../docs/verification/indirect-collection.md)
 
+<a id="req-eu-guarantee-notice"></a>
+
+### REQ-EU-GUARANTEE-NOTICE — Prominent harmonised goods legal-guarantee notice
+
+Use the prescribed shop-level goods notice with appropriate language and online colour, preserving its contents and QR information.
+
+**Applies when:** Applicable goods consumer contracts and relevant EU/national implementing law require this guarantee information.
+
+**Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Articles 6(1)(l) and 22a (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)); [Commission Implementing Regulation (EU) 2025/1960](https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj) — Articles 1 and 3; Annex I (read; [SRC-EU-GUARANTEE-REG](SOURCES.md#src-eu-guarantee-reg)); [Commission practical guidelines on the guarantee notice and GARAN label, April 2026](https://commission.europa.eu/document/download/3e4dbee6-8184-4256-923d-c52551c7e9f0_en?filename=Practical%20guidelines%20Harmonised%20Label%26Notice%20product%20guarantees_ARES%2027042026.pdf) — Sections 2.1 and 2.3 (read; [SRC-EU-GUARANTEE-GUIDE](SOURCES.md#src-eu-guarantee-guide)); [Commission official guarantee notice and label source files](https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en) — Colour SVG notice archive and corresponding colour PDF page 1 (read; [SRC-EU-GUARANTEE-ASSETS](SOURCES.md#src-eu-guarantee-assets)).
+
+**Features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents).
+
+<a id="verify-eu-guarantee-notice"></a>
+
+**VERIFY-EU-GUARANTEE-NOTICE (automated):** Mechanism checks preserve all source bytes, language binding, fixed destination and text alternatives. Legal/linguistic/design acceptance remains open.
+
+**Timing:** 2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.
+
+**Implementation boundary:** Optional static vanilla/React/Astro renderer with 24 unchanged official colour assets, selected-file content-addressed output, fixed QR information destination, PDF-extracted text alternative and explicit review. Colour/reference discrepancy, actual prominence, linguistic/legal review and device/QR acceptance remain open.
+
+**Limits/open review:** Source integrity is not legal conformity, linguistic review or proof of prominent/legible placement. Actual source colour discrepancy remains open. No product guarantee, checkout action or confirmation is implied.
+
+**Code/test references:** [packages/notabenda/src/guarantee-notice.ts](../../packages/notabenda/src/guarantee-notice.ts), [packages/notabenda/src/guarantee-notice-build.ts](../../packages/notabenda/src/guarantee-notice-build.ts), [packages/notabenda/src/guarantee-notice-json.ts](../../packages/notabenda/src/guarantee-notice-json.ts), [packages/notabenda/src/guarantee-notice-data.ts](../../packages/notabenda/src/guarantee-notice-data.ts), [packages/notabenda/src/guarantees.css](../../packages/notabenda/src/guarantees.css), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/LegalGuaranteeNotice.astro](../../packages/notabenda/src/astro/LegalGuaranteeNotice.astro), [packages/notabenda/assets/guarantees/manifest.json](../../packages/notabenda/assets/guarantees/manifest.json), [examples/guarantees/build.mjs](../../examples/guarantees/build.mjs), [packages/notabenda/test/guarantee-notice.test.mjs](../../packages/notabenda/test/guarantee-notice.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/astro-package.test.mjs](../../packages/notabenda/test/astro-package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/guarantees.md](../../docs/verification/guarantees.md)
+
+<a id="req-eu-guarantee-label"></a>
+
+### REQ-EU-GUARANTEE-LABEL — Conditional product durability-guarantee label
+
+Distinguish qualifying producer durability guarantees and show the prescribed product-specific label, including directly before applicable electronic ordering.
+
+**Applies when:** Applicable goods consumer contracts and relevant EU/national implementing law require this guarantee information.
+
+**Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+
+**Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Articles 6(1)(la), 8(2) and 22a (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)); [Commission Implementing Regulation (EU) 2025/1960](https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj) — Article 2; Annex II (read; [SRC-EU-GUARANTEE-REG](SOURCES.md#src-eu-guarantee-reg)); [Commission practical guidelines on the guarantee notice and GARAN label, April 2026](https://commission.europa.eu/document/download/3e4dbee6-8184-4256-923d-c52551c7e9f0_en?filename=Practical%20guidelines%20Harmonised%20Label%26Notice%20product%20guarantees_ARES%2027042026.pdf) — Sections 3.1-3.3 (read; [SRC-EU-GUARANTEE-GUIDE](SOURCES.md#src-eu-guarantee-guide)).
+
+**Features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents).
+
+<a id="verify-eu-guarantee-label"></a>
+
+**VERIFY-EU-GUARANTEE-LABEL (planned):** Qualifying producer facts bind the complete correctly prepared asset to a specific good and applicable order surface; unknown eligibility and missing assets stay unresolved.
+
+**Timing:** 2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.
+
+**Limits/open review:** Producer offer must cover entire good at no additional cost for more than two years and information must be supplied to trader. Missing information is not a no-guarantee decision. Producer-prepared complete asset, eligibility, actual font rendering and product association remain unimplemented.
+
+**Code/test references:** None yet; nothing implemented.
+
+<a id="req-product-guarantee-notice"></a>
+
+### REQ-PRODUCT-GUARANTEE-NOTICE — Source-preserving multilingual guarantee notice display
+
+Build and render one selected unchanged official notice with traceable asset/text provenance and a readable static alternative.
+
+**Applies when:** A host explicitly selects the sourced EU goods legal-guarantee notice.
+
+**Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** implemented.
+
+**Features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents).
+
+<a id="verify-product-guarantee-notice"></a>
+
+**VERIFY-PRODUCT-GUARANTEE-NOTICE (automated):** All 24 selected-file builds preserve known source hashes and provenance; bounded safe static renderers expose image, text, source attribution and QR information without a checkout or consent action.
+
+**Limits/open review:** Source integrity is not legal conformity, linguistic review or proof of prominent/legible placement. Actual source colour discrepancy remains open. No product guarantee, checkout action or confirmation is implied.
+
+**Code/test references:** [packages/notabenda/src/guarantee-notice.ts](../../packages/notabenda/src/guarantee-notice.ts), [packages/notabenda/src/guarantee-notice-build.ts](../../packages/notabenda/src/guarantee-notice-build.ts), [packages/notabenda/src/guarantee-notice-json.ts](../../packages/notabenda/src/guarantee-notice-json.ts), [packages/notabenda/src/guarantee-notice-data.ts](../../packages/notabenda/src/guarantee-notice-data.ts), [packages/notabenda/src/guarantees.css](../../packages/notabenda/src/guarantees.css), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/LegalGuaranteeNotice.astro](../../packages/notabenda/src/astro/LegalGuaranteeNotice.astro), [packages/notabenda/assets/guarantees/manifest.json](../../packages/notabenda/assets/guarantees/manifest.json), [examples/guarantees/build.mjs](../../examples/guarantees/build.mjs), [packages/notabenda/test/guarantee-notice.test.mjs](../../packages/notabenda/test/guarantee-notice.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/astro-package.test.mjs](../../packages/notabenda/test/astro-package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/guarantees.md](../../docs/verification/guarantees.md)
+
 ## Research gaps
 
 ### GAP-SG — SG
@@ -1924,3 +1994,11 @@ Provide optional static HTML and plain-text indirect-collection notices with exp
 **not-researched:** Expand to further jurisdictions and sector/marketing/consumer laws according to explicit scope; including India commencement phases, South Korea, and additional national regimes.
 
 **Planned features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-SCOPE-GUARDS](../FEATURES.md#feat-scope-guards).
+
+### GAP-EU-GUARANTEE-ASSETS — EU-EEA
+
+**needs-source-verification:** Resolve the official SVG/reference-colour discrepancy and independently review PDF text equivalents and actual digital legibility/QR usability. Do not silently recolour supplied files or claim statutory design conformity from source hashes.
+
+**Planned features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents).
+
+**Starting sources:** [SRC-EU-GUARANTEE-REG](SOURCES.md#src-eu-guarantee-reg), [SRC-EU-GUARANTEE-ASSETS](SOURCES.md#src-eu-guarantee-assets), [SRC-EU-GUARANTEE-GUIDE](SOURCES.md#src-eu-guarantee-guide).

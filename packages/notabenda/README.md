@@ -200,3 +200,5 @@ For optional browser recognition, import `notabenda/catalog/browser` and the sep
 `notabenda/catalog/release` provides `attachCatalogReview` to bind current selected catalog facts to a compiled static/MDX release. Public files carry only a descriptor; the separate archive is for authorized history storage. Finalize before creating notices/offers. [Release workflow](../../docs/SERVICE-CATALOG.md#retain-selections-with-policy-releases).
 
 For information obtained from another source, the optional [indirect collection notice](../../docs/INDIRECT-COLLECTION.md) renders reviewed New Zealand IPP3A particulars in static HTML or plain text. It keeps the collection phase and privacy revision explicit; your application handles notification and any delivery records.
+
+The optional [EU guarantee notice](../../docs/GUARANTEES.md) supplies the unchanged official shop-level artwork in 24 languages, with selected-file build output and text alternatives. Code is Apache-2.0; official graphics keep their own source/use conditions. Product labels and paid ordering remain separate work.

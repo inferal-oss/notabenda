@@ -1,3 +1,4 @@
+// @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
 // @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
 // @requirements REQ-PRODUCT-SERVICE-PROFILES
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -238,6 +239,16 @@ formatIndirectCollectionNotice(indirectNotice);
 // @ts-expect-error collection phase is explicit
 const invalidPhase:IndirectCollectionNoticeSettings={...indirectSettings,phase:'sent'};
 `);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {buildLegalGuaranteeNotice,verifyLegalGuaranteeNotice} from 'notabenda/guarantees/content';
+import {renderLegalGuaranteeNotice,guaranteeNoticeLanguages} from 'notabenda/guarantees';
+const guarantee=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true});
+renderLegalGuaranteeNotice(guarantee.notice,{idPrefix:'guarantee',allowPreview:true});
+verifyLegalGuaranteeNotice(guarantee.notice,{allowPreview:true});
+// @ts-expect-error selected official languages only
+buildLegalGuaranteeNotice({language:'zz',reviewStatus:'reviewed'});
+`);
+    const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from 'notabenda/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);
   } finally { await rm(cwd, { recursive: true, force: true }); }

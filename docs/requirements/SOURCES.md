@@ -410,9 +410,9 @@ Index links a 2023 consolidated translation; linked law fetch returned 403. A se
 
 [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927)
 
-**Type:** primary-law. **Checked:** 2026-10-18. **Access:** read.
+**Type:** primary-law. **Checked:** 2026-10-19. **Access:** read.
 
-Article 8(2) covers paid electronic orders; Article 8(7) separately addresses durable-medium confirmation. Consolidation and national implementation require applicability review.
+Selected current Articles 6, 8 and 22a reread in browser after direct tool retrieval encountered a challenge. Article 8(2) now includes 6(1)(la), the conditional durability label, alongside (a), (e), (o), (p). Consolidation, scope and national implementation still require review.
 
 <a id="src-eu-edpb-consent"></a>
 
@@ -903,3 +903,53 @@ Public technical/legal reference read for these original notes. No provider prac
 **Type:** technical-documentation. **Checked:** None. **Access:** blocked.
 
 Public reference URL recorded. Two retrieval attempts failed (timeout/internal error); its contents were not reviewed. Follow the link to review the current agreement.
+
+<a id="src-eu-guarantee-reg"></a>
+
+## SRC-EU-GUARANTEE-REG
+
+[Commission Implementing Regulation (EU) 2025/1960](https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj)
+
+**Type:** primary-law. **Checked:** 2026-10-19. **Access:** read.
+
+Articles 1-3 and Annexes I-II read in browser. Prescribed unchanged notice and limited editable label fields, online colour, optional nested display; applies from 27 September 2026.
+
+<a id="src-eu-guarantee-guide"></a>
+
+## SRC-EU-GUARANTEE-GUIDE
+
+[Commission practical guidelines on the guarantee notice and GARAN label, April 2026](https://commission.europa.eu/document/download/3e4dbee6-8184-4256-923d-c52551c7e9f0_en?filename=Practical%20guidelines%20Harmonised%20Label%26Notice%20product%20guarantees_ARES%2027042026.pdf)
+
+**Type:** official-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Selected sections 2-3 read, including digital display, producer edits, durations, font, QR destinations and product/order placement. Preliminary Commission-services guidance, not an authoritative Court interpretation.
+
+<a id="src-eu-guarantee-assets"></a>
+
+## SRC-EU-GUARANTEE-ASSETS
+
+[Commission official guarantee notice and label source files](https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en)
+
+**Type:** official-assets. **Checked:** 2026-10-19. **Access:** read.
+
+Page read and SVG/PDF notice archives plus GARAN template downloaded. Source archive and per-file hashes recorded. Notice SVGs contain outlined text and embedded PNG QR; GARAN template has live Inter text without embedded fonts. Actual source colours differ from statutory reference HEX values; no silent correction or conformity claim.
+
+<a id="src-eu-reuse"></a>
+
+## SRC-EU-REUSE
+
+[European Commission legal and reuse notice](https://commission.europa.eu/legal-notice_en)
+
+**Type:** official-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Reuse/copyright section read. General CC BY 4.0 policy has exceptions for logos/names/third-party rights. Prescribed artwork is not relicensed as Apache or represented as project branding.
+
+<a id="src-eu-order-conny-summary"></a>
+
+## SRC-EU-ORDER-CONNY-SUMMARY
+
+[CJEU C-400/22 Conny: official press summary](https://curia.europa.eu/jcms/upload/docs/application/pdf/2024-05/cp240090en.pdf)
+
+**Type:** court-summary. **Checked:** 2026-10-19. **Access:** read.
+
+Two-page official press summary read. Payment action also concerns obligations conditional on a later event. This is expressly not the binding judgment; full judgment review remains open.

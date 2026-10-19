@@ -40,3 +40,12 @@
  .nb-demo-indirect-collection main.nb-document>.nb-indirect-notice p{color:var(--nb-text)}
  @media(max-width:760px){.nb-demo-indirect-collection main.nb-document>.nb-indirect-notice,.nb-demo-indirect-collection main.nb-document>.indirect-example-notes{grid-column:1/-1}}
 }
+
+/* @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE */
+@layer example-pages {
+ .nb-demo-guarantees main.nb-document>.nb-guarantee-notice{grid-column:1/-1}
+ .nb-demo-guarantees main.nb-document>.nb-guarantee-notice>.nb-guarantee-layout{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.5rem,5vw,4rem)}
+ .nb-demo-guarantees main.nb-document>.nb-guarantee-notice .nb-guarantee-text p{font-size:1rem;line-height:1.7;color:var(--nb-text)}
+ .nb-demo-guarantees main.nb-document>section:last-child{grid-column:1/-1;background:var(--nb-soft)}
+ @media(max-width:760px){.nb-demo-guarantees main.nb-document>.nb-guarantee-notice>.nb-guarantee-layout{grid-template-columns:minmax(0,1fr)}}
+}

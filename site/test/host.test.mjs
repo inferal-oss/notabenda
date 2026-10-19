@@ -17,6 +17,13 @@ const auth={Authorization:'Basic '+btoa('admin:'+key)};
 const request=(path,init={})=>new Request('https://example.test'+path,init);
 const state=storage=>({storage,blockConcurrencyWhile:callback=>callback()});
 
+// @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
+test('guarantee examples preserve selected official bytes, show text and use no scripts or evidence store',async()=>{
+ const root=new URL('../dist/public/',import.meta.url),env={ASSETS:{fetch:async()=>new Response('Static guarantee notice')},WORKSPACE:{get(){throw Error('A static guarantee display does not open records.');}}};
+ const {sha256}=await import('notabenda/content');
+ for(const prefix of ['','dark/']){const path=prefix+'guarantees/',html=await readFile(new URL(path+'index.html',root),'utf8'),n=JSON.parse(await readFile(new URL(path+'notice.json',root),'utf8')),svg=await readFile(new URL(n.asset.url.slice(1),root),'utf8');assert.equal(sha256(svg),n.asset.sha256);assert.match(html,/nb-demo-guarantees/);assert.match(html,/guarantees\.css/);assert.match(html,/LEGAL/);assert.ok(html.includes(n.informationUrl));assert.doesNotMatch(html,/<script|<form|<input|data:image\/png/);const response=await serveHost(request('/'+path),env);assert.equal(response.status,200);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);}
+});
+
 // @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
 test('indirect collection examples share the modern frame, expose usable text and stay script-free without records',async()=>{
  const root=new URL('../dist/public/',import.meta.url),env={ASSETS:{fetch:async()=>new Response('Static notice')},WORKSPACE:{get(){throw Error('A notice does not open an evidence store.');}}};
