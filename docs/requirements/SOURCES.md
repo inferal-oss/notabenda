@@ -721,3 +721,13 @@ Official proxy guide names US and EU asset hosts. Technical endpoint reference o
 **Type:** design-reference. **Checked:** 2026-10-19. **Access:** read.
 
 March 2026 product-design reference: restrained navigation, hierarchy, compact controls, quieter separators and neutral surfaces. Visual direction only, not an accessibility or legal authority. No Linear assets are reproduced.
+
+<a id="src-cf-no-transform"></a>
+
+## SRC-CF-NO-TRANSFORM
+
+[Cloudflare Web Analytics — automatic injection and no-transform](https://developers.cloudflare.com/web-analytics/get-started/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Official technical documentation: automatic setup can inject the beacon; Cache-Control public,no-transform prevents payload modification and automatic injection. This is transport behavior, not a legal exemption or a guarantee about every hosting feature.

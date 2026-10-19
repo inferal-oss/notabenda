@@ -20,7 +20,7 @@ async function session(env){const response=await serveHost(req('/demo/admin'),en
 const headers=s=>({Cookie:s.cookie,'X-Notabenda-Demo-Generation':s.generation});
 test('visitors receive independent seeded DO databases while operational admin stays protected',async()=>{
  const {env,objects}=environment(),a=await session(env),b=await session(env);assert.notEqual(a.cookie,b.cookie);assert.equal(objects.size,2);
- assert.match(a.response.headers.get('Set-Cookie'),/^__Host-notabenda_demo=[a-f0-9]{64}\.[a-f0-9]{64}; Path=\/; HttpOnly; SameSite=Lax; Secure$/);assert.equal(a.response.headers.get('Vary'),'Cookie');assert.equal(a.response.headers.get('Cache-Control'),'private, no-store');
+ assert.match(a.response.headers.get('Set-Cookie'),/^__Host-notabenda_demo=[a-f0-9]{64}\.[a-f0-9]{64}; Path=\/; HttpOnly; SameSite=Lax; Secure$/);assert.equal(a.response.headers.get('Vary'),'Cookie');assert.equal(a.response.headers.get('Cache-Control'),'private, no-store, no-transform');
  for(const {storage} of objects.values()){
   assert.equal((await storage.list({prefix:`notabenda/consent/${data.consent.notice.siteId}/events/`,limit:100})).size,27);
   assert.equal((await storage.list({prefix:'notabenda/terms/juniper-agreement/events/',limit:100})).size,10);
@@ -56,9 +56,9 @@ test('public demo validates origin, capability, generation and provisioning budg
 test('demo example pages bind their generation without exposing the capability or operational admin',async()=>{
  const {env}=environment(),s=await session(env);
  for(const path of ['/agreement/index.html','/%61greement/index.html','/dark/agreement/index.html','/recorded-choices/','/processing-choices/']){
-  const response=await serveHost(req(path,{headers:headers(s)}),env);assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'private, no-store');assert.equal(response.headers.get('Vary'),'Cookie');assert.match(response.headers.get('Content-Security-Policy'),/frame-ancestors 'none'/);const html=await response.text();assert.match(html,new RegExp('content="'+s.generation+'"'));assert.ok(!html.includes(s.cookie.split('=')[1]));
+  const response=await serveHost(req(path,{headers:headers(s)}),env);assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'private, no-store, no-transform');assert.equal(response.headers.get('Vary'),'Cookie');assert.match(response.headers.get('Content-Security-Policy'),/frame-ancestors 'none'/);const html=await response.text();assert.match(html,new RegExp('content="'+s.generation+'"'));assert.ok(!html.includes(s.cookie.split('=')[1]));
  }
- env.ASSETS.fetch=async()=>new Response(null,{status:308,headers:{Location:'/agreement/'}});const redirect=await serveHost(req('/agreement',{headers:headers(s)}),env);assert.equal(redirect.status,308);assert.equal(redirect.headers.get('Cache-Control'),'private, no-store');
+ env.ASSETS.fetch=async()=>new Response(null,{status:308,headers:{Location:'/agreement/'}});const redirect=await serveHost(req('/agreement',{headers:headers(s)}),env);assert.equal(redirect.status,308);assert.equal(redirect.headers.get('Cache-Control'),'private, no-store, no-transform');
 });
 
 test('forged capability signatures cannot allocate objects and interrupted seeding resumes without duplication',async()=>{
@@ -99,7 +99,7 @@ test('form permissions use isolated session/contact bindings, acknowledged order
 
 test('permission example routes bind only entry pages and retain script-free public privacy documents',async()=>{
  const {env,objects}=environment(),s=await session(env);
- for(const path of ['/form-permissions','/form-permissions/','/form-permissions/index.html','/dark/form-permissions/','/form-permissions/react/','/form-permissions/react/index.html','/dark/form-permissions/react/','/form-permissions/astro/','/form-permissions/astro/review/','/form-permissions/astro/review/index.html']){const response=await serveHost(req(path,{headers:headers(s)}),env);assert.equal(response.status,200);assert.match(await response.text(),new RegExp('content="'+s.generation+'"'));assert.equal(response.headers.get('Cache-Control'),'private, no-store');}
+ for(const path of ['/form-permissions','/form-permissions/','/form-permissions/index.html','/dark/form-permissions/','/form-permissions/react/','/form-permissions/react/index.html','/dark/form-permissions/react/','/form-permissions/astro/','/form-permissions/astro/review/','/form-permissions/astro/review/index.html']){const response=await serveHost(req(path,{headers:headers(s)}),env);assert.equal(response.status,200);assert.match(await response.text(),new RegExp('content="'+s.generation+'"'));assert.equal(response.headers.get('Cache-Control'),'private, no-store, no-transform');}
  for(const path of ['/form-permissions/react/privacy','/form-permissions/not-a-route','/dark/form-permissions/astro/','/form-permissions/astro/unknown'])assert.equal((await serveHost(req(path),env)).headers.get('Set-Cookie'),null);
  const page=await serveHost(req('/form-permissions/privacy/'),env);assert.equal(page.status,200);assert.doesNotMatch(page.headers.get('Content-Security-Policy'),/script-src/);assert.equal(page.headers.get('Set-Cookie'),null);
  const entry=[...objects.values()][0],before=await entry.storage.list({prefix:`notabenda/permissions/${data.formPermissions.offer.siteId}/`,limit:1000});entry.workspace=new DemoWorkspace({storage:entry.storage,blockConcurrencyWhile:fn=>fn()},env);assert.equal((await serveHost(req('/demo/admin/permissions',{headers:headers(s)}),env)).status,200);assert.deepEqual(await entry.storage.list({prefix:`notabenda/permissions/${data.formPermissions.offer.siteId}/`,limit:1000}),before);

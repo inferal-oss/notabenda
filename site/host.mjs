@@ -17,7 +17,7 @@ export function canonicalRequest(request) {
 export const isProtected = path => /^\/(?:backoffice|agreement|dark\/agreement|recorded-choices|processing-choices|demo\/processing|demo\/agreements|demo\/choices)(?:\/|$)/u.test(path);
 export function protectedResponse(response) {
   const headers = new Headers(response.headers);
-  headers.set('Cache-Control','private, no-store'); headers.set('Vary','Authorization');
+  headers.set('Cache-Control','private, no-store, no-transform'); headers.set('Vary','Authorization');
   headers.set('Referrer-Policy','no-referrer'); headers.set('X-Content-Type-Options','nosniff');
   headers.set('X-Robots-Tag','noindex, nofollow');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});
@@ -55,6 +55,9 @@ export async function readDemoRequest(request) {
 }
 export function publicResponse(response, path) {
   const headers = new Headers(response.headers);
+  // Preserve exact built/released bytes at intermediary caches, including HTML injection.
+  const caching=headers.get('Cache-Control');
+  if(!caching?.split(',').some(value=>value.trim().toLowerCase()==='no-transform'))headers.set('Cache-Control',caching?caching+', no-transform':'no-transform');
   const embeds=/^\/embeds(?:\/|\/index\.html)?$/u.test(path);
   const sampleFrame=/^\/embeds\/frame(?:\/|\/index\.html)?$/u.test(path);
   const runtime = embeds || /^\/(?:dark\/)?(?:choices|react|google-basic|storage-cleanup|privacy-signals|discovery|repeat-prompts|scope-guards|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/astro(?:\/notes)?(?:\/|\/index\.html)?$/u.test(path);

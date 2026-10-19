@@ -1157,13 +1157,15 @@ Serve repository-built assets with a host-owned authorization boundary before pr
 
 **Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** partial.
 
+**Discovery articles:** [SRC-CF-NO-TRANSFORM](SOURCES.md#src-cf-no-transform).
+
 **Features:** [FEAT-DEPLOYMENT](../FEATURES.md#feat-deployment), [FEAT-BACKOFFICE](../FEATURES.md#feat-backoffice).
 
 <a id="verify-product-cf-host"></a>
 
 **VERIFY-PRODUCT-CF-HOST (partial):** Verify missing/bad keys before assets or DO access; normalized/direct-file routes; protected no-store responses; exact-origin bounded writes; persisted retry across object instances; allowlisted assets and a real local Workers runtime.
 
-**Implementation boundary:** Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms.
+**Implementation boundary:** Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms. Public asset cache directives now append no-transform; protected/session responses remain private/no-store and add no-transform. This preserves built/archived representations against intermediary rewriting without admitting external script origins. Actual edge/browser verification remains distinct from build checks.
 
 **Limits/open review:** Host template only; not package authentication or a multi-tenant identity provider. Stores synthetic examples, not durable visitor consent receipts. Cloud deployment, production routing, backup/retention and full browser/platform review remain separate.
 

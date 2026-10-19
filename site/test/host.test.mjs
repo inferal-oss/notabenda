@@ -81,7 +81,7 @@ test('processing opt-outs bind a host context, survive object restart and expose
   const second=await (await workspace.fetch(request('/demo/processing/record',{method:'POST',headers,body:JSON.stringify({...body,requestId:crypto.randomUUID(),activities:['sharing']})}))).json();assert.deepEqual(second.head.event.restrictions,['sale','sharing']);
   workspace=new EvidenceWorkspace(state(storage),env);const retry=await (await workspace.fetch(request('/demo/processing/record',{method:'POST',headers,body:JSON.stringify(body)}))).json();assert.deepEqual(retry.receipt,first.receipt);assert.deepEqual(retry.head,second.head);
   for(const extra of [{streamId:'victim'},{provenance:'gpc-header'},{recordedAt:'2026-01-01'}])assert.equal((await workspace.fetch(request('/demo/processing/record',{method:'POST',headers,body:JSON.stringify({...body,requestId:crypto.randomUUID(),...extra})}))).status,400);
-  const detail=await workspace.fetch(request('/backoffice/processing/record?id='+first.receipt.id,{headers:auth}));assert.equal(detail.status,200);const html=await detail.text();assert.match(html,/Requested in this event/);assert.match(html,/Retained after this event/);assert.match(html,/Current retained state at read time/);assert.match(html,/Sale · Sharing/);assert.match(html,/Action label/);assert.equal(detail.headers.get('Cache-Control'),'private, no-store');
+  const detail=await workspace.fetch(request('/backoffice/processing/record?id='+first.receipt.id,{headers:auth}));assert.equal(detail.status,200);const html=await detail.text();assert.match(html,/Requested in this event/);assert.match(html,/Retained after this event/);assert.match(html,/Current retained state at read time/);assert.match(html,/Sale · Sharing/);assert.match(html,/Action label/);assert.equal(detail.headers.get('Cache-Control'),'private, no-store, no-transform');
   const search=await workspace.fetch(request('/backoffice/processing?q=sharing+explicit-opt-out',{headers:auth}));assert.equal(search.status,200);assert.match(await search.text(),/Processing opt-out · revision/);
   let touched=false;const invalid=await serveHost(request('/demo/processing/record',{method:'POST',headers:{...headers,Origin:'https://attacker.test'},body:'{}'}),{...env,WORKSPACE:{get(){touched=true;}}});assert.equal(invalid.status,400);assert.equal(touched,false);
 });
@@ -160,7 +160,7 @@ test('host fails closed before assets or DO access for direct, normalized and en
   let accesses=0;
   const env={ADMIN_KEY:key,ASSETS:{fetch(){accesses++;throw new Error();}},WORKSPACE:{get(){accesses++;throw new Error();},idFromName(){accesses++;throw new Error();}}};
   for(const path of ['/backoffice','/backoffice/','/backoffice/history','/%62ackoffice/history','//backoffice/history','/x/../backoffice/history']) {
-    const denied=await serveHost(request(path),env); assert.equal(denied.status,401,path); assert.equal(denied.headers.get('Cache-Control'),'private, no-store'); assert.match(denied.headers.get('WWW-Authenticate'),/Basic/);
+    const denied=await serveHost(request(path),env); assert.equal(denied.status,401,path); assert.equal(denied.headers.get('Cache-Control'),'private, no-store, no-transform'); assert.match(denied.headers.get('WWW-Authenticate'),/Basic/);
   }
   for(const ADMIN_KEY of [undefined,'','weak']) assert.equal((await serveHost(request('/backoffice'),{...env,ADMIN_KEY})).status,503);
   for(const path of ['/agreement%252findex.html','/%zz','/agreement%5cindex.html']) assert.equal((await serveHost(request(path),env)).status,400);
@@ -210,7 +210,7 @@ test('invalid writes are rejected before object lookup or forwarding',async()=>{
 
 test('operational backend errors bypass shared caching',async()=>{
   const error=await serveHost(request('/backoffice',{headers:auth}),{ADMIN_KEY:key,WORKSPACE:{idFromName:()=>1,get:()=>({fetch:async()=>{throw new Error('private failure');}})}});
-  assert.equal(error.status,503); assert.equal(error.headers.get('Cache-Control'),'private, no-store'); assert.doesNotMatch(await error.text(),/private failure/);
+  assert.equal(error.status,503); assert.equal(error.headers.get('Cache-Control'),'private, no-store, no-transform'); assert.doesNotMatch(await error.text(),/private failure/);
 });
 
 test('DO rechecks auth, requires exact-origin bounded writes, and persists the same receipt across object instances',async()=>{
@@ -258,7 +258,7 @@ test('protected cookie evidence survives object restart and remains separate fro
   const detail=await restarted.fetch(request(path+'/record?id='+id,{headers:auth})); assert.equal(detail.status,200);
   const text=await detail.text(); assert.match(text,/Notice wording/); assert.match(text,/Client-reported action time/); assert.match(text,/Revision superseded/); assert.match(text,/Choice expires/);
   const events=await storage.list({prefix:`notabenda/consent/${data.consent.notice.siteId}/events/`,limit:100}); assert.equal(events.size,3);
-  assert.equal(detail.headers.get('Cache-Control'),'private, no-store');
+  assert.equal(detail.headers.get('Cache-Control'),'private, no-store, no-transform');
 });
 
 test('generated guide and example links resolve within the site or an explicit host route',async()=>{
@@ -357,7 +357,7 @@ test('lifecycle workspace explains holds and purge progress, resumes interrupted
  // Fail exactly during the restore drill, after an old event has returned but before its old head.
  const put=storage.put;let stopped=false;storage.put=async(name,value)=>{if(!stopped&&name.startsWith(lifecycleDemoPrefix+'heads/')){stopped=true;throw Error('Interrupted synthetic restore');}return put(name,value);};
  await assert.rejects(seedEvidenceLifecycle(storage,data),/Interrupted synthetic restore/);assert.equal(stopped,true);storage.put=put;
- let response=await workspace.fetch(request('/backoffice/lifecycle',{headers:auth}));assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'private, no-store');const html=await response.text();assert.match(html,/Cookie-choice evidence · on hold/);assert.match(html,/retired, purge pending/);assert.match(html,/purge recorded complete/);assert.doesNotMatch(html,/synthetic-lifecycle-subject|synthetic-lifecycle-complete/);
+ let response=await workspace.fetch(request('/backoffice/lifecycle',{headers:auth}));assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'private, no-store, no-transform');const html=await response.text();assert.match(html,/Cookie-choice evidence · on hold/);assert.match(html,/retired, purge pending/);assert.match(html,/purge recorded complete/);assert.doesNotMatch(html,/synthetic-lifecycle-subject|synthetic-lifecycle-complete/);
  const records=[...(await storage.list({prefix:lifecycleDemoPrefix+'lifecycle/',limit:100})).values()];assert.equal(records.length,5);assert.equal(records.filter(r=>r.phase==='complete').length,3);assert.equal(records.filter(r=>r.phase==='purging').length,1);assert.equal(records.filter(r=>r.hold.active).length,1);const restored=records.find(r=>r.family==='consent'&&r.phase==='complete');assert.ok(restored.restoredAt);assert.equal(restored.progress.deleted,1);
  const detail=await workspace.fetch(request('/backoffice/lifecycle/record?id=consent/'+restored.contextRef,{headers:auth}));assert.equal(detail.status,200);const view=await detail.text();for(const phrase of ['Matching events removed','Manifest reapplied after restore','Purge completion recorded','Minimal lifecycle metadata','scoped scan'])assert.match(view,new RegExp(phrase));
  const held=records.find(r=>r.hold.active);const hold=await workspace.fetch(request('/backoffice/lifecycle/record?id=consent/'+held.contextRef,{headers:auth}));assert.match(await hold.text(),/Reaching this date does not release the hold/);
@@ -375,7 +375,7 @@ test('trusted retired demo contexts return terminal 410 on reads and writes, rat
  const headers={...auth,Origin:'https://example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'};
  for(const path of ['/demo/choices/head','/demo/processing/head']){const result=await workspace.fetch(request(path,{headers:auth}));assert.equal(result.status,410);assert.deepEqual(await result.json(),{code:'context-retired'});}
  const commands=[['/demo/choices/record',{schemaVersion:1,noticeId:data.recordedConsent.notice.noticeId,requestId:crypto.randomUUID(),expectedRevision:0,action:'revoke-all',choices:Object.fromEntries(Object.keys(data.recordedConsent.notice.scopes).map(id=>[id,false])),clientAt:new Date().toISOString()}],['/demo/processing/record',{schemaVersion:1,noticeId:data.processing.notice.noticeId,requestId:crypto.randomUUID(),activities:['sale']}],['/demo/agreements/light',{schemaVersion:1,offerId:data.agreements.find(r=>r.theme==='light').offer.offerId,requestId:crypto.randomUUID(),accepted:true}]];
- for(const [path,body] of commands){const result=await workspace.fetch(request(path,{method:'POST',headers,body:JSON.stringify(body)}));assert.equal(result.status,410);assert.deepEqual(await result.json(),{code:'context-retired'});assert.equal(result.headers.get('Cache-Control'),'private, no-store');}
+ for(const [path,body] of commands){const result=await workspace.fetch(request(path,{method:'POST',headers,body:JSON.stringify(body)}));assert.equal(result.status,410);assert.deepEqual(await result.json(),{code:'context-retired'});assert.equal(result.headers.get('Cache-Control'),'private, no-store, no-transform');}
 });
 
 // @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
@@ -417,4 +417,20 @@ test('React form permission entries retain the shared design, inert server marku
   const html=await readFile(new URL(prefix+'form-permissions/react/index.html',root),'utf8');assert.match(html,/id="react-permission-root"/);assert.match(html,/nb-demo-permissions/);assert.match(html,/example-theme\.css/);assert.match(html,/assets\/react-form-permissions\.mjs/);assert.doesNotMatch(html,/type="checkbox"|notabenda-permission-stream|notabenda-demo-generation|\/backoffice/);assert.match(html,/Permission controls require JavaScript/);assert.match(html,/type="submit" disabled=""/);assert.match(html,/form-permissions\/privacy/);
  }
  const path=new URL('assets/react-form-permissions.mjs',root).pathname,source=await readFile(path,'utf8');assert.match(source,/\/demo\/permissions\/state/);assert.match(source,/\/demo\/permissions\/record/);assert.doesNotMatch(source,/from\s*["'](?:react|node:|cloudflare:)/);await parseBrowserModule({entryPoints:[path],bundle:true,write:false,platform:'browser',external:['/assets/demo-session.mjs']});
+});
+
+/** @requirements REQ-PRODUCT-CF-HOST */
+test('host cache policy preserves released bytes and caching directives while preventing intermediary transforms',async()=>{
+ const html='<!doctype html><html><body><p>Exact released wording — unchanged.</p></body></html>';
+ for(const path of ['/','/guide/setup/','/privacy/','/artifacts/'+'a'.repeat(64)+'/terms.html','/assets/notabenda.css']){
+  for(const policy of [undefined,'public, max-age=3600, must-revalidate','private, max-age=0','public, NO-TRANSFORM']){
+   const headers={'Content-Type':path.endsWith('.css')?'text/css':'text/html',ETag:'"pinned-bytes"',...(policy?{'Cache-Control':policy}:{})};
+   const response=await serveHost(request(path),{ASSETS:{fetch:async()=>new Response(html,{headers})}});
+   assert.equal(await response.text(),html);assert.equal(response.headers.get('ETag'),'"pinned-bytes"');
+   const directives=response.headers.get('Cache-Control').toLowerCase().split(',').map(v=>v.trim());assert.equal(directives.filter(v=>v==='no-transform').length,1);
+   if(policy)for(const directive of policy.toLowerCase().split(',').map(v=>v.trim()))assert.ok(directives.includes(directive));
+   assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/cloudflareinsights|unsafe-inline/);
+  }
+ }
+ const denied=await serveHost(request('/backoffice'),{ADMIN_KEY:key});assert.equal(denied.status,401);assert.equal(denied.headers.get('Cache-Control'),'private, no-store, no-transform');assert.equal(denied.headers.get('Vary'),'Authorization');
 });

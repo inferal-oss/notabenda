@@ -1207,6 +1207,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "March 2026 product-design reference: restrained navigation, hierarchy, compact controls, quieter separators and neutral surfaces. Visual direction only, not an accessibility or legal authority. No Linear assets are reproduced."
+    },
+    {
+      "id": "SRC-CF-NO-TRANSFORM",
+      "title": "Cloudflare Web Analytics — automatic injection and no-transform",
+      "url": "https://developers.cloudflare.com/web-analytics/get-started/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Official technical documentation: automatic setup can inject the beacon; Cache-Control public,no-transform prevents payload modification and automatic injection. This is transport behavior, not a legal exemption or a guarantee about every hosting feature."
     }
   ],
   "jurisdictions": [
@@ -3272,7 +3281,9 @@
       "summary": "Serve repository-built assets with a host-owned authorization boundary before protected assets and a fixed synthetic Durable Object workspace. Keep credentials outside packages, public outputs and version control.",
       "appliesWhen": "Using this repository website as an integration example for Workers Static Assets and a SQLite-backed Durable Object.",
       "sourceRefs": [],
-      "discoverySourceIds": [],
+      "discoverySourceIds": [
+        "SRC-CF-NO-TRANSFORM"
+      ],
       "featureIds": [
         "FEAT-DEPLOYMENT",
         "FEAT-BACKOFFICE"
@@ -3299,7 +3310,7 @@
         "scripts/check-site-runtime.mjs",
         "site/test/website-notice.test.mjs"
       ],
-      "implementationNote": "Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms."
+      "implementationNote": "Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms. Public asset cache directives now append no-transform; protected/session responses remain private/no-store and add no-transform. This preserves built/archived representations against intermediary rewriting without admitting external script origins. Actual edge/browser verification remains distinct from build checks."
     },
     {
       "id": "REQ-PRODUCT-CONSENT-EVIDENCE",
