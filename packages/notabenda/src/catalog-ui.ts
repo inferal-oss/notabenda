@@ -1,3 +1,5 @@
+export {mountCatalogSelectionReview} from './catalog-review-ui.js';
+export type {CatalogSelectionReviewUIOptions} from './catalog-review-ui.js';
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
 import {normalizeServiceCatalog,searchServiceCatalog} from './catalog.js';
 import type {ServiceCatalog,CatalogSearchResult} from './catalog.js';

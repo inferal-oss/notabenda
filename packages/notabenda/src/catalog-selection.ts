@@ -22,6 +22,8 @@ export function normalizeCatalogServiceSelection(input:unknown):CatalogServiceSe
  const reference=normalizeServiceCatalog(input.reference);
  if(reference.products.length!==1||reference.providers.length!==1||reference.products[0]!.identifiers.length||reference.products[0]!.storageHints.length)return fail();
  const proposed=createCatalogServiceDraft(reference,reference.products[0]!.id,{id:service.id as string,purposeIds:service.purposeIds as string[],location:service.location as string,provider:service.provider as string,...(service.privacyUrl===undefined?{}:{privacyUrl:service.privacyUrl as string})}).service;
+ // The public service label belongs to the operator; reference product naming remains separate.
+ proposed.name=service.name as string;
  if(canonical(service)!==canonical(proposed))return fail();
  const purposeConfig=createStarterConfig();purposeConfig.purposes=input.purposes as Purpose[];purposeConfig.services=[proposed];
  const purposes=toPublicConfig(purposeConfig,{mode:'preview'}).purposes;

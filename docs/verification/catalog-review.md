@@ -1,0 +1,11 @@
+# Explicit catalog re-review
+
+Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SETUP`, `REQ-PRODUCT-A11Y`.
+
+The shared comparison starts with the exact previous reference. Loading a current host-selected catalog is a separate deliberate action. A new private justification and confirmation replace only a matching selected service pin, with both pins retained in private report history. The current operator label, integration fields and unrelated inventory are preserved. The full current service and selected purposes must still match the comparison when confirmed. Source-only changes do not change public config or compiled documents. These records describe operator declarations, not independent identity/time/provider verification or immutable release provenance.
+
+Automated coverage in `packages/notabenda/test/catalog-review.test.mjs` checks changed provider/purpose facts, reference-only corrections, custom names, exact stale-snapshot rejection, malformed/accessor inputs, bounded detached history, renewed justification, failed/late reference loading, setup export and private/public separation. Focused report regeneration preserves current public facts, scope assessments and review status instead of reapplying historical answers. The package and site graph tests check new modules are shipped and the large reference/Node CLI stays outside visitor/setup browser graphs.
+
+Actual local terminal verification used separate current config and prior report inputs, explicitly confirmed a changed checkout service, and compared output config byte-equivalent as parsed data to current input. It retained old/new pins and used 0600 report files in a 0700 directory. Nothing was published or enabled by that command.
+
+Actual Chrome inspection covered importing a synthetic current config and prior private report, a stale note, before/after comparison, expanded purpose/source facts, new private reason, explicit confirmation and regenerated download links. Desktop and 390/320px comparisons had equal scroll/client widths. Mobile actions measured about 46px high. The browser download observer timed out; no manual downloaded-file readback is claimed. Automated export tests remain supporting evidence. Cross-browser, screen-reader, zoom and native forced-color verification remain open.

@@ -153,6 +153,11 @@
       "types": "./dist/catalog-ui.d.ts",
       "import": "./dist/catalog-ui.js",
       "default": "./dist/catalog-ui.js"
+    },
+    "./catalog/review": {
+      "types": "./dist/catalog-review.d.ts",
+      "import": "./dist/catalog-review.js",
+      "default": "./dist/catalog-review.js"
     }
   },
   "bin": {

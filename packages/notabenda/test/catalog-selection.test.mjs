@@ -19,7 +19,7 @@ test('explicit selection preserves restrictions and creates detached ordinary in
 test('missing confirmation, invalid actual use, collisions and executable/coerced pins fail without config mutation',async()=>{
  const config=await fixture({reviewed:true}),original=structuredClone(config);
  for(const values of [{confirmed:false},{justification:''},{provider:''},{location:''},{purposeIds:['missing']},{serviceId:config.services[0].id},{privacyUrl:'javascript:bad'},{productId:'missing'}])assert.throws(()=>createCatalogSelectionPlan(config,serviceCatalogSeed,{...choice(),...values}));assert.deepEqual(config,original);
- const result=await selected();for(const mutate of [r=>r.review=['operator-confirmed'],r=>r.service.name='Changed product',r=>r.service.processingActivities=['sale'],r=>r.reference.products.push(r.reference.products[0]),r=>r.reference.products[0].identifiers=[{id:'extra'}],r=>r.justification='x'.repeat(4001)]){const r=structuredClone(result.selection);mutate(r);assert.throws(()=>normalizeCatalogServiceSelection(r));}
+ const result=await selected();for(const mutate of [r=>r.review=['operator-confirmed'],r=>r.service.name='',r=>r.service.processingActivities=['sale'],r=>r.reference.products.push(r.reference.products[0]),r=>r.reference.products[0].identifiers=[{id:'extra'}],r=>r.justification='x'.repeat(4001)]){const r=structuredClone(result.selection);mutate(r);assert.throws(()=>normalizeCatalogServiceSelection(r));}
  let invoked=0;const hostile=structuredClone(result.selection);Object.defineProperty(hostile,'getter',{enumerable:true,get(){invoked++;return 'bad';}});assert.throws(()=>normalizeCatalogServiceSelection(hostile));assert.equal(invoked,0);
 });
 

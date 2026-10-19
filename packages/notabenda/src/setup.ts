@@ -1,3 +1,5 @@
+import {normalizeCatalogSelectionRevisions} from './catalog-review.js';
+import type {CatalogSelectionRevision} from './catalog-review.js';
 // @requirements REQ-PRODUCT-SERVICE-CATALOG
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 // @requirements REQ-US-COPPA-SCOPE
@@ -57,7 +59,7 @@ export const setupFactFields=[['siteName','Site name'],['siteId','Site ID (lower
 export type SetupFactId=typeof setupFactFields[number][0];
 export interface SetupAnswers {schemaVersion:1;publicFacts?:Partial<Record<SetupFactId,string>>;markets:string[];answers:Partial<Record<SetupQuestionId,SetupAnswer>>;storageJustifications?:Record<string,string>}
 export interface SetupRecommendation {id:string;status:'recommended'|'investigate'|'review'|'declared-no';title:string;reason:string;configPaths:readonly string[];requirementIds:readonly RequirementId[];guide:string}
-export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'3';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[]}}
+export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'3';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
 const object=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const exact=(value:Record<string,unknown>,allowed:string[])=>Object.keys(value).every(k=>allowed.includes(k));
 const text=(value:unknown):value is string=>typeof value==='string'&&value.length<=4000&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u.test(value);
@@ -74,17 +76,18 @@ export function normalizeSetupAnswers(input:unknown):SetupAnswers {
   if(new TextEncoder().encode(JSON.stringify(normalized)).length>128*1024)return invalid();
   return normalized;
 }
-export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSelections?:unknown}={}):SetupPlan {
+export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSelections?:unknown;catalogSelectionRevisions?:unknown;preserveConfig?:true}={}):SetupPlan {
   const answers=normalizeSetupAnswers(input);
   // Reuse the public allowlist. No unknown properties or operator-private material enters the draft.
   const config:SiteConfig=options.config===undefined?createStarterConfig():toPublicConfig(options.config,{mode:'preview'});
-  const facts=answers.publicFacts??{};
+  if(options.preserveConfig&&options.config===undefined)throw Error('Preserving a review requires an explicit current config.');
+  const facts=options.preserveConfig?{}:answers.publicFacts??{};
   for(const [id,key] of [['siteName','name'],['siteId','id'],['siteUrl','url']] as const)if(facts[id])config.site[key]=facts[id]!;
   for(const [id,key] of [['controllerName','name'],['controllerEmail','email'],['controllerAddress','address']] as const)if(facts[id])config.controller[key]=facts[id]!;
   if(!validateSiteConfig(config,{mode:'preview'}).valid)throw new Error('Supplied public facts do not form a valid draft site config.');
-  for(const doc of Object.values(config.documents))doc.review.status='draft';
+  if(!options.preserveConfig)for(const doc of Object.values(config.documents))doc.review.status='draft';
   const recommendations:SetupRecommendation[]=[],reviewItems=['Resolve draft placeholders, verify the actual inventory and obtain appropriate content/legal review before production. No jurisdiction pack is production-supported.'];
-  if(config.rightsCenter){config.rightsCenter.reviewStatus='draft';reviewItems.push('Review the imported rights page, each action’s scope and destination, public contact fallback and next steps. Existing actions were preserved; setup has not implemented request intake or fulfillment.');}
+  if(config.rightsCenter){if(!options.preserveConfig)config.rightsCenter.reviewStatus='draft';reviewItems.push('Review the imported rights page, each action’s scope and destination, public contact fallback and next steps. Existing actions were preserved; setup has not implemented request intake or fulfillment.');}
   if(!answers.markets.length||answers.markets.includes('other'))reviewItems.push('Determine applicable jurisdictions from establishment, audience, targeting and practices; this market list is incomplete and is not an applicability decision.');
   for(const market of setupMarkets)if(answers.markets.includes(market.id))recommendations.push({id:'market-'+market.id,status:'review',title:market.label+' applicability review',reason:'Selected coverage interest. Check thresholds, territorial scope, exceptions and effective dates in the catalog. Country-specific rules and unlisted jurisdictions may also apply.',configPaths:['jurisdictions'],requirementIds:market.requirements,guide:'requirements'});
   for(const question of setupQuestions){const answer=answers.answers[question.id]??{choice:'unknown',justification:''};const status=answer.choice==='yes'?'recommended':answer.choice==='no'?'declared-no':'investigate';
@@ -117,10 +120,12 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
     if(imported&&rank[proposed]<rank[site[field]]){reviewItems.push(`Conflict: ${questions[field]} answer would relax the imported scope guard. The restriction was preserved; review and explicitly revise the assessment outside setup.`);continue;}
     if(proposed!==site[field]){site[field]=proposed;changed=true;}
   }
-  config.scopeGuards={version:1,revision:current&&!changed?current.revision:'setup-draft-2',site,...(current?.purposes===undefined?{}:{purposes:structuredClone(current.purposes)})};
-  if(changed)reviewItems.push('Review scopeGuards facts and supply a new, never-reused material revision before publishing the draft. Absent is an operator declaration, not legal clearance. Purpose-specific restrictions were preserved.');
+  if(!options.preserveConfig)config.scopeGuards={version:1,revision:current&&!changed?current.revision:'setup-draft-2',site,...(current?.purposes===undefined?{}:{purposes:structuredClone(current.purposes)})};
+  if(options.preserveConfig)reviewItems.push('Historical questionnaire answers remain context only. Current public facts, review status and scope assessments were preserved; reconcile any disagreement separately.');
+  if(changed&&!options.preserveConfig)reviewItems.push('Review scopeGuards facts and supply a new, never-reused material revision before publishing the draft. Absent is an operator declaration, not legal clearance. Purpose-specific restrictions were preserved.');
   const catalogSelections=options.catalogSelections===undefined?[]:normalizeSetupCatalogSelections(options.catalogSelections,config);
-  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'3',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{})}};
+  const catalogSelectionRevisions=normalizeCatalogSelectionRevisions(options.catalogSelectionRevisions??[]);
+  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'3',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{}),...(catalogSelectionRevisions.length?{catalogSelectionRevisions}:{})}};
   if(new TextEncoder().encode(JSON.stringify(plan.report)).length>512*1024)throw Error('Private setup report exceeds 512 KiB; reduce notes or review fewer services together.');
   return plan;
 }

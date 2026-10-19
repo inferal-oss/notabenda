@@ -1,3 +1,4 @@
+import {readSetupCatalogRevisions} from './catalog-review.js';
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 /** @requirements REQ-PRODUCT-SETUP */
@@ -21,8 +22,8 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
   if(options.catalogPath&&!options.projectDirectory)throw Error('Wizard --catalog requires an explicit --project directory.');
   if(!options.answersPath&&(!process.stdin.isTTY||!process.stdout.isTTY))throw new Error('Interactive setup needs a terminal. Supply --answers FILE for noninteractive use.');
   const directory=resolve(options.outDir);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
-  let base=options.configPath?toPublicConfig(await readJson(options.configPath),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];
-  if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);catalogSelections=readSetupCatalogSelections(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections});}
+  let base=options.configPath?toPublicConfig(await readJson(options.configPath),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];let catalogSelectionRevisions:ReturnType<typeof readSetupCatalogRevisions>=[];
+  if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);catalogSelections=readSetupCatalogSelections(input);catalogSelectionRevisions=readSetupCatalogRevisions(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});}
   let project: {catalog:ServiceCatalog;report:ProjectServiceReport}|undefined;
   if(options.projectDirectory){const catalog=await loadServiceCatalog(options.catalogPath);console.log('Scanning the explicitly selected project locally; no project code, installers or network probes run.');project={catalog,report:await scanProjectServices(options.projectDirectory,catalog)};}
   if(!options.answersPath){
@@ -41,7 +42,7 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       answers=result;
     }finally{ui.close();}
   }
-  const plan=createSetupPlan(readSetupAnswers(answers),{...(base===undefined?{}:{config:base}),catalogSelections});
+  const plan=createSetupPlan(readSetupAnswers(answers),{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});
   // A new directory is the write boundary: never overwrite an existing config or report, including symlinks.
   await mkdir(directory,{mode:0o700});
   await writeFile(join(directory,'notabenda.config.json'),JSON.stringify(plan.config,null,2)+'\n',{flag:'wx',mode:0o600});
