@@ -353,7 +353,8 @@
         "One frontend npm package with optional subpath exports and no runtime framework dependency.",
         "Vanilla, React, static HTML, and Astro examples with fictional operators and data.",
         "Optional Cloudflare deployment commands, same-origin configuration, and install/uninstall instructions.",
-        "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Remote provisioning and operational rollout verification remain separate."
+        "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Remote provisioning and operational rollout verification remain separate.",
+        "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -1280,7 +1281,8 @@
         "REQ-PRODUCT-FORM-PERMISSIONS",
         "REQ-PRODUCT-CF-DOCTOR",
         "REQ-PRODUCT-CONTRACT-ACTIONS",
-        "REQ-PRODUCT-SYNTAX-HIGHLIGHTING"
+        "REQ-PRODUCT-SYNTAX-HIGHLIGHTING",
+        "REQ-PRODUCT-BUNDLE-BUDGET"
       ]
     }
   ],
@@ -2891,11 +2893,16 @@
       "caveats": "Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.",
       "implementationRefs": [
         "packages/notabenda/src/cli.ts",
-        "packages/notabenda/package.json"
+        "packages/notabenda/package.json",
+        "packages/notabenda/src/headless.ts",
+        "packages/notabenda/scripts/consent-styles.mjs",
+        "scripts/measure-bundles.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/package.test.mjs",
-        "packages/notabenda/test/cli.test.mjs"
+        "packages/notabenda/test/cli.test.mjs",
+        "packages/notabenda/test/delivery.test.mjs",
+        "site/test/delivery.test.mjs"
       ]
     },
     {
@@ -4291,6 +4298,43 @@
         "docs/verification/syntax-highlighting.md"
       ],
       "implementationNote": "Build-time Shiki grammars emit escaped text spans and external contrast-adjusted theme CSS. No runtime highlighting scripts or inline styles."
+    },
+    {
+      "id": "REQ-PRODUCT-BUNDLE-BUDGET",
+      "jurisdiction": "PRODUCT",
+      "title": "Measured browser delivery and optional component styles",
+      "kind": "product-standard",
+      "summary": "Measure actual browser bundles and published CSS; target 15 KiB gzip for core plus vanilla controls and 5 KiB for default consent CSS, reporting broader optional surfaces separately. Preserve validation and effective-permission behavior.",
+      "appliesWhen": "Documenting or releasing browser runtime and stylesheet entry points.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DEPLOYMENT",
+        "FEAT-CONTROLS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-BUNDLE-BUDGET"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Measured transfer size is not startup/interaction timing or a full performance audit. The compatibility core-controls bundle currently exceeds its target; it must not be described as compliant with the budget. Adopters choose whether to run or gate on the optional measurement tool.",
+      "implementationRefs": [
+        "scripts/measure-bundles.mjs",
+        "packages/notabenda/scripts/consent-styles.mjs",
+        "examples/static/build.mjs",
+        "examples/static/choices-build.mjs",
+        "examples/static/choices-page.mjs",
+        "examples/static/consent.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/delivery.test.mjs",
+        "docs/verification/browser-delivery.md",
+        "site/test/delivery.test.mjs"
+      ],
+      "implementationNote": "A headless public entry and derived consent-only CSS provide explicit delivery choices. Existing all-component styles and full validation/receipt behavior remain available. Deterministic reports expose missed budgets instead of raising the limit."
     }
   ],
   "verification": [
@@ -5193,6 +5237,19 @@
       "testRefs": [
         "site/test/syntax.test.mjs",
         "docs/verification/syntax-highlighting.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-BUNDLE-BUDGET",
+      "requirementIds": [
+        "REQ-PRODUCT-BUNDLE-BUDGET"
+      ],
+      "status": "partial",
+      "expected": "Actual entry graphs exclude backend/build/framework code; published consent CSS preserves selected canonical cascade and accessibility rules below 5 KiB gzip. Core-controls stays under 15 KiB gzip when complete; missed targets are reported honestly.",
+      "testRefs": [
+        "packages/notabenda/test/delivery.test.mjs",
+        "docs/verification/browser-delivery.md",
+        "site/test/delivery.test.mjs"
       ]
     }
   ],

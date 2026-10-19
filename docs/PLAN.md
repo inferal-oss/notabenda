@@ -284,6 +284,8 @@ Order matters: prove enforcement and artifact identity before expanding document
 
 Ship milestones 1–2 as a clearly labeled frontend preview if useful. Milestone 3b is needed only for deployments that use the applicable contract actions. A production claim involving recorded evidence waits for milestone 3 and its operational checks. Full regional support waits for the corresponding review, regardless of engineering completion. Research across the broader catalog starts with milestone 0 and continues through every phase; it is not deferred until regional runtime work.
 
+Browser delivery now has an explicit `notabenda/headless` export, a consent-only stylesheet derived from canonical styles and a self-contained bundled cookie example. Optional `npm run size` / `size:check` tooling reports real entry graphs and gzip sizes. Consent CSS is below its 5 KiB target; the existing fully validating core-plus-controls entry remains above 15 KiB. The next runtime-size work must preserve validation, exact material scope derivation, required evidence and synchronous construction semantics; a separate compiled runtime boundary and optional evidence import are proposed, while the existing API stays compatible. See [delivery verification](verification/browser-delivery.md).
+
 ## 10. Tests that determine whether this works
 
 - **Network/storage:** fresh browser, reject, granular grant, reload, withdrawal, expired scope, newly added purpose, unavailable storage, disabled JS, and a blocked evidence endpoint. Assert both requests and storage effects, including embedded content and resource hints.

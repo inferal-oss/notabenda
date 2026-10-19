@@ -168,3 +168,19 @@ Declare `service.googleBasic` with explicit targets and all four signal mappings
 ## Contract actions
 
 The optional `notabenda/contracts` subpath supplies explicit withdrawal/cancellation form state and native controls. Build reviewed, versioned definitions with `createContractActionDefinition` from `notabenda/content`. The separate CF API captures declarations and independent delivery jobs; actual dispatch, contract matching and regional eligibility remain host work. This is an initial mechanism. See [contract declarations](../../docs/CONTRACT-ACTIONS.md).
+
+## Choose browser delivery
+
+`notabenda/headless` exposes the same cookie-choice controller, subscriptions, service lifecycles, scope guards, signal helpers and receipt types for a custom UI. It has no DOM mounting or document-rendering exports. Construction still validates the complete site configuration and supports the existing required-evidence options; the subpath does not bypass those checks. Other form/contract controllers retain their existing entry points.
+
+```js
+import {createConsent} from 'notabenda/headless';
+import {mountControls} from 'notabenda'; // optional native UI
+import 'notabenda/consent.css';         // optional consent-only styles
+const consent = createConsent(publicConfig);
+mountControls(document.querySelector('#privacy-controls'), {consent});
+```
+
+Use `notabenda/consent.css` for cookie controls, their privacy links and the package’s opt-in `.nb-page`/skip-link foundations. It uses the same tokens, focus rules, mobile drawer, reduced-motion and forced-color styling as `notabenda/styles.css`. The latter remains the complete stylesheet for legal pages, setup, forms, contract actions and other components. The narrower stylesheet supplies no full legal-document or operator-UI layout.
+
+The repository’s `npm run size` reports measured browser/CSS sizes; `npm run size:check` additionally enforces the stated targets when you choose to run it. Current core JavaScript exceeds the 15 KiB gzip target, while consent-only CSS is below 5 KiB. See [delivery verification](../../docs/verification/browser-delivery.md). These are transfer sizes, not startup or accessibility certification.

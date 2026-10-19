@@ -83,3 +83,9 @@ The renderer is initially English. The optional [React adapter](REACT.md) connec
 The runtime connects to `REQ-EU-CONSENT`, `REQ-EU-DEVICE`, and `REQ-EU-FAIR-CHOICE`; controls connect to `REQ-ES-CHOICE`, `REQ-PRODUCT-MOBILE`, and `REQ-PRODUCT-A11Y`. Those legal/UI items remain partial, with their limitations in the catalog. See [browser verification](verification/consent-browser.md).
 
 The design reviewed [CookieConsent script management](https://cookieconsent.orestbida.com/advanced/manage-scripts.html) and [Klaro's integration model](https://github.com/kiprotect/klaro) on 18 October 2026. Both offer useful existing consent interfaces and script integrations. This implementation uses an original small state engine because its explicit per-purpose/vendor scope, async generation cleanup, failed-storage behavior, and shared headless API are core contracts here. This is a documentation/design comparison, not a benchmark or claim that those libraries cannot be adapted. No third-party source code was copied and no second consent engine is bundled.
+
+## Headless imports and component styles
+
+For a custom cookie-choice interface, import `createConsent` from `notabenda/headless`. It is the same validated controller as the root export, including required-receipt behavior. For the native controls, add `mountControls` from `notabenda` and optional `notabenda/consent.css`. The consent-only stylesheet is derived from the canonical styles and preserves the same tokens and accessibility rules. Use the complete `notabenda/styles.css` when you also need full document, setup or other component layouts.
+
+The local light/midnight cookie examples use the smaller stylesheet and a bundled browser entry. The full configuration and required-evidence implementation still contribute to the existing JavaScript controller; its measured core-plus-controls bundle remains above the 15 KiB target. [Measurements and limits](verification/browser-delivery.md) remain explicit.

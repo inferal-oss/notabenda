@@ -17,7 +17,9 @@
     "site:dev": "npm run site:build && node scripts/site-wrangler.mjs dev --config site/wrangler.jsonc --ip 127.0.0.1 --port 4179 --persist-to .local/site-state",
     "site:check": "npm run site:build && node --test site/test/*.test.mjs && node scripts/site-wrangler.mjs deploy --dry-run --config site/wrangler.jsonc --outdir dist/site-worker",
     "example:astro": "npm run build && node examples/astro/build.mjs",
-    "site:build:production": "npm run build && node site/build.mjs --production"
+    "site:build:production": "npm run build && node site/build.mjs --production",
+    "size": "npm run build && node scripts/measure-bundles.mjs",
+    "size:check": "npm run build && node scripts/measure-bundles.mjs --check"
   },
   "devDependencies": {
     "@types/node": "26.6.5",
@@ -26,6 +28,7 @@
     "fake-indexeddb": "6.2.6",
     "jsdom": "26.1.0",
     "marked": "18.1.1",
+    "postcss": "8.5.31",
     "shiki": "4.5.0",
     "typescript": "7.0.2",
     "wrangler": "4.151.1"

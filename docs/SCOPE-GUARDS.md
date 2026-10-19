@@ -67,7 +67,7 @@ The declaration applies to a configured processing context, not a per-person age
 
 ## Setup and revisions
 
-The CLI wizard and admin setup UI ask about children, sensitive information, high-risk profiling and specialized sector workflows. Questionnaire revision 2 accepts earlier revision-1 private reports; new missing answers stay unresolved.
+The CLI wizard and admin setup UI ask about children, sensitive information, high-risk profiling and specialized sector workflows. Current questionnaire revision 3 accepts revision-1/2/3 private reports; missing later questions stay unresolved. Revision 2 introduced these specialized-scope declarations.
 
 New drafts translate explicit answers into declarations, without putting their private justifications into public config. Imported `present` or `unknown` restrictions cannot be relaxed by a contradictory answer. Existing purpose restrictions are preserved. Changes remain draft recommendations requiring explicit review and a new material revision before publication. The wizard does not activate runtime features or decide legal applicability.
 

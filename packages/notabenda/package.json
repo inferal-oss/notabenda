@@ -8,7 +8,8 @@
     "node": ">=22"
   },
   "sideEffects": [
-    "./dist/styles.css"
+    "./dist/styles.css",
+    "./dist/consent.css"
   ],
   "files": [
     "dist",
@@ -73,7 +74,13 @@
       "types": "./dist/contract-action.d.ts",
       "import": "./dist/contract-action.js",
       "default": "./dist/contract-action.js"
-    }
+    },
+    "./headless": {
+      "types": "./dist/headless.d.ts",
+      "import": "./dist/headless.js",
+      "default": "./dist/headless.js"
+    },
+    "./consent.css": "./dist/consent.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

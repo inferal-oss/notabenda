@@ -31,7 +31,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-FED | [REQ-US-COPPA-SCOPE](#req-us-coppa-scope) | Selected items: partial |
 | TR | [REQ-TR-BASIS](#req-tr-basis) | Selected items: planned |
 | PLATFORM | [REQ-GOOGLE-MODE](#req-google-mode), [REQ-GOOGLE-CMP](#req-google-cmp) | Selected items: partial, planned |
-| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting) | Selected items: implemented, partial |
+| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget) | Selected items: implemented, partial |
 
 ## Individual requirements
 
@@ -1035,7 +1035,7 @@ Pack a dependency-free browser/SSR API and separate build-time tools without pub
 
 **Limits/open review:** Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.
 
-**Code/test references:** [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/package.json](../../packages/notabenda/package.json), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs)
+**Code/test references:** [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/package.json](../../packages/notabenda/package.json), [packages/notabenda/src/headless.ts](../../packages/notabenda/src/headless.ts), [packages/notabenda/scripts/consent-styles.mjs](../../packages/notabenda/scripts/consent-styles.mjs), [scripts/measure-bundles.mjs](../../scripts/measure-bundles.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs), [packages/notabenda/test/delivery.test.mjs](../../packages/notabenda/test/delivery.test.mjs), [site/test/delivery.test.mjs](../../site/test/delivery.test.mjs)
 
 <a id="req-product-cf-admin"></a>
 
@@ -1758,6 +1758,28 @@ Render source examples with safe static language-aware highlighting, selectable 
 **Limits/open review:** Unknown languages render as escaped plain text. This is a presentation standard, not a complete accessibility certification.
 
 **Code/test references:** [site/syntax.mjs](../../site/syntax.mjs), [site/build.mjs](../../site/build.mjs), [docs/DESIGN.md](../../docs/DESIGN.md), [site/test/syntax.test.mjs](../../site/test/syntax.test.mjs), [docs/verification/syntax-highlighting.md](../../docs/verification/syntax-highlighting.md)
+
+<a id="req-product-bundle-budget"></a>
+
+### REQ-PRODUCT-BUNDLE-BUDGET — Measured browser delivery and optional component styles
+
+Measure actual browser bundles and published CSS; target 15 KiB gzip for core plus vanilla controls and 5 KiB for default consent CSS, reporting broader optional surfaces separately. Preserve validation and effective-permission behavior.
+
+**Applies when:** Documenting or releasing browser runtime and stylesheet entry points.
+
+**Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** partial.
+
+**Features:** [FEAT-DEPLOYMENT](../FEATURES.md#feat-deployment), [FEAT-CONTROLS](../FEATURES.md#feat-controls).
+
+<a id="verify-product-bundle-budget"></a>
+
+**VERIFY-PRODUCT-BUNDLE-BUDGET (partial):** Actual entry graphs exclude backend/build/framework code; published consent CSS preserves selected canonical cascade and accessibility rules below 5 KiB gzip. Core-controls stays under 15 KiB gzip when complete; missed targets are reported honestly.
+
+**Implementation boundary:** A headless public entry and derived consent-only CSS provide explicit delivery choices. Existing all-component styles and full validation/receipt behavior remain available. Deterministic reports expose missed budgets instead of raising the limit.
+
+**Limits/open review:** Measured transfer size is not startup/interaction timing or a full performance audit. The compatibility core-controls bundle currently exceeds its target; it must not be described as compliant with the budget. Adopters choose whether to run or gate on the optional measurement tool.
+
+**Code/test references:** [scripts/measure-bundles.mjs](../../scripts/measure-bundles.mjs), [packages/notabenda/scripts/consent-styles.mjs](../../packages/notabenda/scripts/consent-styles.mjs), [examples/static/build.mjs](../../examples/static/build.mjs), [examples/static/choices-build.mjs](../../examples/static/choices-build.mjs), [examples/static/choices-page.mjs](../../examples/static/choices-page.mjs), [examples/static/consent.mjs](../../examples/static/consent.mjs), [packages/notabenda/test/delivery.test.mjs](../../packages/notabenda/test/delivery.test.mjs), [docs/verification/browser-delivery.md](../../docs/verification/browser-delivery.md), [site/test/delivery.test.mjs](../../site/test/delivery.test.mjs)
 
 ## Research gaps
 

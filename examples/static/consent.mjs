@@ -1,5 +1,7 @@
-import {paintChoices} from '/assets/choices-status.mjs';
-import { createConsent, mountControls } from '/assets/runtime/index.js';
+// @requirements REQ-PRODUCT-BUNDLE-BUDGET
+import {paintChoices} from './choices-status.mjs';
+import {createConsent} from 'notabenda/headless';
+import {mountControls} from 'notabenda';
 
 const config = await (await fetch(location.pathname.startsWith('/dark/') ? '/dark/choices/site.json' : '/choices/site.json')).json();
 const consent = createConsent(config);
