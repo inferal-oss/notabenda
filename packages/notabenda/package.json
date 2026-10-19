@@ -163,6 +163,11 @@
       "types": "./dist/catalog-release.d.ts",
       "import": "./dist/catalog-release.js",
       "default": "./dist/catalog-release.js"
+    },
+    "./catalog/profile": {
+      "types": "./dist/catalog-profile.d.ts",
+      "import": "./dist/catalog-profile.js",
+      "default": "./dist/catalog-profile.js"
     }
   },
   "bin": {

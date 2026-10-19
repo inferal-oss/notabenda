@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @requirements REQ-PRODUCT-SERVICE-PROFILES
 """Build an offline, reproducible seed from pinned public data and curated identities."""
 # @requirements REQ-PRODUCT-SERVICE-CATALOG
 import csv,hashlib,json,pathlib,re,sys
@@ -36,7 +37,17 @@ for product_id,source_ids in browser['productSourceAdditions'].items():
  products[product_id]['revision']='2026-10-19.2'
  for source_id in source_ids:
   if source_id not in products[product_id]['sourceIds']:products[product_id]['sourceIds'].append(source_id)
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision='2026-10-19.2' ,sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+profiles=json.loads((root/'catalog/product-profiles.json').read_text())
+sources+=profiles['sources']
+requirements={r['id'] for r in json.loads((root/'regulatory/catalog.json').read_text())['requirements']}
+for product_id,profile in profiles['profiles'].items():
+ if product_id not in products:raise ValueError('Unknown profile product')
+ for prompt in profile['reviewPrompts']:
+  if not set(prompt['requirementIds'])<=requirements:raise ValueError('Unknown profile review requirement')
+ product=products[product_id];product['profile']=profile;product['revision']='2026-10-19.3'
+ for source_id in [s for group in ('facts','links','reviewPrompts') for item in profile[group] for s in item['sourceIds']]:
+  if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision='2026-10-19.3' ,sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
 def emit(path,output):

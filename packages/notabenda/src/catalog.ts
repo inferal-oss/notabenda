@@ -3,7 +3,7 @@ import type {Service} from './types.js';
 import {normalizeServiceCatalog} from './catalog-reference.js';
 import type {ServiceCatalog,CatalogProduct,CatalogProvider,CatalogSource} from './catalog-reference.js';
 export {normalizeServiceCatalog} from './catalog-reference.js';
-export type {ServiceCatalog,CatalogProduct,CatalogProvider,CatalogSource,CatalogIdentifier,CatalogStorageHint} from './catalog-reference.js';
+export type {ServiceCatalog,CatalogProduct,CatalogProvider,CatalogSource,CatalogIdentifier,CatalogStorageHint,CatalogProductProfile,CatalogProfileFact,CatalogProfileLink,CatalogProfilePrompt} from './catalog-reference.js';
 const slug=(v:unknown):v is string=>typeof v==='string'&&/^[a-z][a-z0-9-]{0,119}$/u.test(v);
 const text=(v:unknown,max=4000):v is string=>typeof v==='string'&&v.length<=max&&!/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(v);
 const nonempty=(v:unknown,max=4000)=>text(v,max)&&v.trim().length>0;

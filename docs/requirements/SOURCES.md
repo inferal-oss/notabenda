@@ -731,3 +731,163 @@ March 2026 product-design reference: restrained navigation, hierarchy, compact c
 **Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
 
 Official technical documentation: automatic setup can inject the beacon; Cache-Control public,no-transform prevents payload modification and automatic injection. This is transport behavior, not a legal exemption or a guarantee about every hosting feature.
+
+<a id="src-profile-cloudflare-placement"></a>
+
+## SRC-PROFILE-CLOUDFLARE-PLACEMENT
+
+[Workers placement](https://developers.cloudflare.com/workers/configuration/placement/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-cloudflare-regional"></a>
+
+## SRC-PROFILE-CLOUDFLARE-REGIONAL
+
+[Regional Services for Workers](https://developers.cloudflare.com/data-localization/how-to/workers/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-cloudflare-privacy"></a>
+
+## SRC-PROFILE-CLOUDFLARE-PRIVACY
+
+[Cloudflare privacy policy](https://www.cloudflare.com/privacypolicy/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-cloudflare-dpa"></a>
+
+## SRC-PROFILE-CLOUDFLARE-DPA
+
+[Cloudflare customer DPA](https://www.cloudflare.com/cloudflare-customer-dpa/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-stripe-roles"></a>
+
+## SRC-PROFILE-STRIPE-ROLES
+
+[Stripe privacy center](https://stripe.com/legal/privacy-center)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-stripe-privacy"></a>
+
+## SRC-PROFILE-STRIPE-PRIVACY
+
+[Stripe privacy policy](https://stripe.com/privacy)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-stripe-dpa"></a>
+
+## SRC-PROFILE-STRIPE-DPA
+
+[Stripe DPA](https://stripe.com/legal/dpa)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Generic public DPA URL resolved to a localized page during retrieval. Check the agreement and entity for the actual account; no provider verification is implied.
+
+<a id="src-profile-supabase-regions"></a>
+
+## SRC-PROFILE-SUPABASE-REGIONS
+
+[Supabase project regions](https://supabase.com/docs/guides/platform/regions)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-supabase-residency"></a>
+
+## SRC-PROFILE-SUPABASE-RESIDENCY
+
+[Supabase residency and transfers FAQ](https://supabase.com/legal/privacy-resources/data-residency-and-transfers-faq)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-supabase-self-hosting"></a>
+
+## SRC-PROFILE-SUPABASE-SELF-HOSTING
+
+[Supabase self-hosting](https://supabase.com/docs/guides/self-hosting)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-supabase-privacy"></a>
+
+## SRC-PROFILE-SUPABASE-PRIVACY
+
+[Supabase privacy policy](https://supabase.com/privacy)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-supabase-dpa"></a>
+
+## SRC-PROFILE-SUPABASE-DPA
+
+[Supabase DPA](https://supabase.com/legal/customer-resources/data-processing-addendum)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-resend-storage"></a>
+
+## SRC-PROFILE-RESEND-STORAGE
+
+[Resend GDPR and storage FAQ](https://resend.com/security/gdpr)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-resend-domains"></a>
+
+## SRC-PROFILE-RESEND-DOMAINS
+
+[Resend domain settings](https://resend.com/docs/dashboard/domains/introduction)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-resend-privacy"></a>
+
+## SRC-PROFILE-RESEND-PRIVACY
+
+[Resend privacy policy](https://resend.com/legal/privacy-policy)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced.
+
+<a id="src-profile-resend-dpa"></a>
+
+## SRC-PROFILE-RESEND-DPA
+
+[Resend DPA](https://resend.com/legal/dpa)
+
+**Type:** technical-documentation. **Checked:** None. **Access:** blocked.
+
+Public reference URL recorded. Two retrieval attempts failed (timeout/internal error); its contents were not reviewed. Follow the link to review the current agreement.

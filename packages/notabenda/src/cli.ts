@@ -41,6 +41,7 @@ Discovery: --capture FILE (repeat up to 20) supplies explicit browser capture JS
 --config FILE selects the inventory; --json prints the private review. Optional
 --out-dir DIRECTORY writes a new private review directory and never overwrites.
 Catalog: catalog search QUERY [--delivery backend] [--limit 20] [--json].
+Catalog product: catalog show PRODUCT_ID [--catalog FILE] [--json].
 Catalog re-review: catalog review --config FILE --report FILE --service ID --out-dir NEW
 [--catalog FILE | --latest]. Interactive comparison and renewed private justification;
 without a reference flag, the prior pinned reference is preserved.
@@ -57,7 +58,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
-  if(command==='catalog'){if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
+  if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
   let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined;

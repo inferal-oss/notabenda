@@ -1,6 +1,8 @@
+// @requirements REQ-PRODUCT-SERVICE-PROFILES
 export {mountCatalogSelectionReview} from './catalog-review-ui.js';
 export type {CatalogSelectionReviewUIOptions} from './catalog-review-ui.js';
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
+import {renderCatalogProductProfile} from './catalog-profile.js';
 import {normalizeServiceCatalog,searchServiceCatalog} from './catalog.js';
 import type {ServiceCatalog,CatalogSearchResult} from './catalog.js';
 import {createCatalogSelectionPlan} from './catalog-selection.js';
@@ -8,7 +10,7 @@ import type {CatalogServiceSelection} from './catalog-selection.js';
 import {toPublicConfig} from './config.js';
 import type {SiteConfig} from './types.js';
 export interface CatalogPickerOptions {
- catalog?:unknown;loadCatalog?:()=>Promise<unknown>;
+ catalog?:unknown;loadCatalog?:()=>Promise<unknown>;documentationBase?:string;
  getConfig():unknown;
  onSelect(result:{config:SiteConfig;selection:CatalogServiceSelection}):void;
 }
@@ -40,6 +42,7 @@ export function mountCatalogPicker(container:HTMLElement,options:CatalogPickerOp
  function review(candidate:CatalogSearchResult){
   proposal.replaceChildren();proposal.hidden=false;
   const heading=node('h3','Review '+candidate.product.name);heading.tabIndex=-1;proposal.append(heading,node('p',candidate.product.description),node('p',`Reference status: ${candidate.product.review}. Confirm the actual provider entity, settings and processing locations yourself.`));
+  const notes=node('div');notes.innerHTML=renderCatalogProductProfile(catalog!,candidate.product.id,{headingLevel:4,...(options.documentationBase?{documentationBase:options.documentationBase}:{})});proposal.append(notes);
   const sources=node('details');sources.append(node('summary','Reference sources and revision'));const list=node('ul');sources.append(list);
   const ids=new Set([...candidate.product.sourceIds,...candidate.provider.sourceIds]);
   for(const source of catalog!.sources.filter(s=>ids.has(s.id))){const li=node('li'),a=node('a',source.url);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';li.append(a,node('p',`${source.access==='read'?'Source retrieved '+source.checkedOn:'Reference URL; not retrieved or verified'} · ${source.license} · ${source.revision}`));list.append(li);}
@@ -48,12 +51,18 @@ export function mountCatalogPicker(container:HTMLElement,options:CatalogPickerOp
   const provider=node('input');provider.value=candidate.provider.name;provider.maxLength=300;field('Actual provider entity',provider);
   const location=node('input');location.maxLength=4000;field('Actual processing location',location);
   const privacy=node('input');privacy.type='url';privacy.maxLength=2048;field('Provider privacy URL (optional; verify before use)',privacy);
+  const privacyLink=candidate.product.profile?.links.find(link=>link.kind==='privacy');
+  let copy:HTMLButtonElement|undefined;
+  if(privacyLink){const suggestion=node('div');suggestion.className='nb-catalog-privacy-copy';suggestion.append(node('p','Reference privacy URL: '+privacyLink.url));copy=node('button','Use reference privacy URL');copy.type='button';copy.className='nb-choice-button';suggestion.append(copy,node('p','Optional. Check that it covers the actual entity and product. Clear your current URL first to replace it.'));proposal.append(suggestion);}
   const purposes=node('div');purposes.className='nb-catalog-purpose-group';purposes.setAttribute('role','group');purposes.setAttribute('aria-label','Declared purposes used by this service');purposes.append(node('p','Declared purposes used by this service'));proposal.append(purposes);const purposeInputs:HTMLInputElement[]=[];
   const config=toPublicConfig(options.getConfig(),{mode:'preview'});
   for(const purpose of config.purposes){const label=node('label');label.className='nb-catalog-check';const input=node('input');input.type='checkbox';input.value=purpose.id;purposeInputs.push(input);label.append(input,doc.createTextNode(purpose.name+' · '+purpose.id));purposes.append(label);}
   if(!purposeInputs.length)purposes.append(node('p','Declare actual processing purposes before selecting this service, then reopen this review. In guided setup, use the Processing purposes section above.'));
   const reason=node('textarea');reason.rows=3;reason.maxLength=4000;field('Supporting facts / justification (private)',reason);
   const confirmed=node('input');confirmed.type='checkbox';const confirmation=node('label');confirmation.className='nb-catalog-check';confirmation.append(confirmed,doc.createTextNode('I reviewed the actual provider, purpose and processing location.'));proposal.append(confirmation);
+  const invalidate=()=>{confirmed.checked=false;if(copy)copy.disabled=privacy.value.trim().length>0;};
+  for(const input of [id,provider,location,privacy,reason,...purposeInputs])for(const event of ['input','change'])input.addEventListener(event,invalidate);
+  copy?.addEventListener('click',()=>{if(privacy.value.trim()||!privacyLink)return;privacy.value=privacyLink.url;invalidate();privacy.focus();});
   const error=node('p');error.setAttribute('role','alert');proposal.append(error);
   const add=node('button','Add reviewed service to draft');add.type='button';add.className='nb-choice-button';proposal.append(add);
   add.addEventListener('click',()=>{

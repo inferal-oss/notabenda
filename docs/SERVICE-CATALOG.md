@@ -171,3 +171,35 @@ Keep `private-release/release.private.json` off the public host and outside vers
 `recordLegalRelease` requires the matching catalog attachment when its descriptor is present. It also rejects undeclared, stale or altered attachments. Existing releases without a descriptor continue to work. The normal history projection and evidence export omit the selected-reference snapshot. A scoped history store exposes `getCatalogReview(releaseId)` separately; the admin worker requires an explicit `allowCatalogReview: true` grant for `/catalog-review` and `/catalog-review-diff`. Inspection, source access or export permission alone does not grant this access. The generated starter forwards the independent host permission `catalogReview`.
 
 The admin view shows selected service use, catalog/product/provider revisions and source status. Comparisons separate catalog facts, site use and purpose changes from document content/rendering changes. Both releases must belong to the same host-authorized site scope. An archive does not independently establish operator identity, review time, source accuracy or publication. Try [the catalog history example](/catalog-releases) and see [verification](verification/catalog-release.md).
+
+## Product documentation profiles
+
+A product can supply an optional version-1 `profile`: original sourced `facts`, `links` to privacy/DPA/documentation/subprocessor pages, and `reviewPrompts` with source and requirement IDs. `catalog/product-profiles.json` contains the initial four profiles: Workers, Stripe payment libraries, Supabase and Resend. Regenerate the offline seed with `python3 scripts/build-service-catalog.py`; update the product/catalog revision whenever selected facts change. Existing profile-free catalogs and historical pins stay valid.
+
+Profiles describe documented options. They do not supply the site's provider entity, deployment, purposes, legal basis, processing location or retention. Requirement links are review context, with applicability still assessed separately. All provider/product records remain unreviewed. Reading documentation does not verify provider practices or a customer's agreement. A recorded URL that could not be retrieved is marked explicitly; no fact may rely on an unread source.
+
+Inspect a product before selecting it:
+
+```sh
+npx notabenda catalog show supabase-platform
+npx notabenda catalog show resend-email --json
+```
+
+Interactive setup prints these notes before asking about actual use. The browser picker displays them before the site fields. Its optional **Use reference privacy URL** action fills only an empty field; manually entered URLs are preserved, and editing a proposal clears its review confirmation. Notes do not silently become public policy prose.
+
+Hosts can render one product without loading the bundled seed:
+
+```js
+import {renderCatalogProductProfile} from 'notabenda/catalog/profile';
+
+const html = renderCatalogProductProfile(yourCatalog, 'supabase-platform', {
+  headingLevel: 3,
+  documentationBase: '/guide',
+});
+```
+
+Use `notabenda/styles.css` for default styling. The renderer escapes text, links only validated references, and performs no requests. It creates no form controls or settings. `readCatalogProductProfile` returns detached selected-product notes and sources; `formatCatalogProductProfile` provides terminal text.
+
+A profile is bounded to 16 KiB, eight facts, six document links and eight questions. Each cited source must belong to the product; fact sources must have been retrieved. Document links must match a cited generic HTTPS URL without a query, fragment or credentials. These structural checks cannot prove a URL is public; catalog authors must review that too. Keep tenant IDs, contract copies and private answers outside reference catalogs. Questions may have no source when they are editorial prompts, rather than provider claims.
+
+Confirmed selection retains the exact profile and source revisions. Renewed review shows prior/proposed documentation; attached release reviews preserve that snapshot for authorized admin inspection and field-level comparison. A profile-only change changes reference digests without changing legal-document bytes. Combined snapshot/archive size limits still apply. See [verification](verification/catalog-profiles.md).

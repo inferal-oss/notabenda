@@ -1,4 +1,6 @@
+// @requirements REQ-PRODUCT-SERVICE-PROFILES
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION */
+import {formatCatalogProductProfile} from './catalog-profile.js';
 import {mkdir,writeFile} from 'node:fs/promises';
 import {loadServiceCatalog} from './catalog-node.js';
 import {resolve,join} from 'node:path';
@@ -18,4 +20,14 @@ export async function runCatalogCli(args:string[],mode:'project'|'search'):Promi
  const summary='findings' in report?[`Project service review · ${report.catalog.id} ${report.catalog.revision}`,`${report.coverage.filesExamined} files examined; ${report.findings.length} product candidate(s); coverage ${report.coverage.limited?'limited':'bounded'}.`,...report.findings.flatMap(f=>[`${f.providerName} / ${f.productName} [${f.productId}] · review required`,...f.evidence.map(e=>`  ${e.file} · ${e.context} · ${e.identifier}${e.match==='prefix'?'*':''} [${e.ruleId}]`)]),'',...report.notes].join('\n'):[`Service catalog · ${catalog.id} ${catalog.revision}`,...report.results.map(r=>`${r.provider.name} / ${r.product.name} [${r.product.id}] · ${r.product.delivery.join(', ')} · ${r.product.review}`)].join('\n');
  if(out){const path=resolve(out);await mkdir(path,{mode:0o700});await writeFile(join(path,'discovery.private.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx',mode:0o600});await writeFile(join(path,'review.txt'),summary+'\n',{flag:'wx',mode:0o600});await writeFile(join(path,'.gitignore'),'*\n!.gitignore\n',{flag:'wx',mode:0o600});}
  console.log(json?JSON.stringify(report,null,2):summary);
+}
+
+/** Inspect one reference without a config, scan or draft mutation. */
+export async function showCatalogProduct(args:string[]):Promise<void>{
+ const id=args.shift();if(!id||id.startsWith('--'))throw Error('Use catalog show PRODUCT_ID [--catalog FILE] [--json].');
+ let file:string|undefined,json=false;const seen=new Set<string>();
+ while(args.length){const flag=args.shift()!;if(seen.has(flag))throw Error('Duplicate catalog show option.');seen.add(flag);if(flag==='--json')json=true;else if(flag==='--catalog'){file=args.shift();if(!file||file.startsWith('--'))throw Error('Supply a catalog file.');}else throw Error('Use catalog show PRODUCT_ID [--catalog FILE] [--json].');}
+ const catalog=await loadServiceCatalog(file),product=catalog.products.find(p=>p.id===id);if(!product)throw Error('Unknown catalog product ID. Search the catalog first.');
+ const provider=catalog.providers.find(p=>p.id===product.providerId)!,ids=new Set([...product.sourceIds,...provider.sourceIds]),sources=catalog.sources.filter(s=>ids.has(s.id));
+ console.log(json?JSON.stringify({catalog:{id:catalog.id,revision:catalog.revision},product,provider,sources},null,2):[product.name+' ['+product.id+']',product.description,'Reference: '+catalog.id+' / '+catalog.revision+'; product '+product.revision,'Review status: '+product.review,formatCatalogProductProfile(catalog,id)].join('\n'));
 }

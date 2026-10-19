@@ -1,9 +1,11 @@
+// @requirements REQ-PRODUCT-SERVICE-PROFILES
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
+import {renderCatalogProductProfile} from './catalog-profile.js';
 import {prepareCatalogSelectionReview,confirmCatalogSelectionReview} from './catalog-review.js';
 import type {CatalogSelectionReview} from './catalog-review.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
 export interface CatalogSelectionReviewUIOptions {
- previous:CatalogServiceSelection;getConfig():unknown;catalog?:unknown;loadCatalog?:()=>Promise<unknown>;
+ documentationBase?:string;previous:CatalogServiceSelection;getConfig():unknown;catalog?:unknown;loadCatalog?:()=>Promise<unknown>;
  onConfirm(result:ReturnType<typeof confirmCatalogSelectionReview>):void;
 }
 /** Operator-only local comparison, with explicit reference loading and renewed confirmation. */
@@ -25,6 +27,7 @@ export function mountCatalogSelectionReview(container:HTMLElement,options:Catalo
  function panel(label:string,selection:Pick<CatalogServiceSelection,'service'|'purposes'|'reference'>){
   const section=node('section');section.append(node('h4',label));const facts=node('dl');section.append(facts);
   for(const [name,value] of [['Service',selection.service.name],['Provider',selection.service.provider],['Processing location',selection.service.location],['Privacy URL',selection.service.privacyUrl??'Not declared'],['Reference',selection.reference.id+' / '+selection.reference.revision],['Product revision',selection.reference.products[0]!.revision]]){const row=node('div');row.append(node('dt',name),node('dd',value));facts.append(row);}
+  const notes=node('div');notes.innerHTML=renderCatalogProductProfile(selection.reference,selection.reference.products[0]!.id,{headingLevel:5,...(options.documentationBase?{documentationBase:options.documentationBase}:{})});section.append(notes);
   const details=node('details');details.append(node('summary','Purposes and source facts'));section.append(details);
   for(const purpose of selection.purposes){details.append(node('h4',purpose.name+' · '+purpose.id),node('p',purpose.description),node('p','Legal basis: '+purpose.legalBasis),node('p','Data: '+purpose.dataCategories.join(', ')),node('p','Retention: '+purpose.retention),node('p',`Collection: ${purpose.collection.source} · ${purpose.collection.required?'required':'optional'}`));const all=node('details');all.append(node('summary','All pinned purpose facts'),node('pre',JSON.stringify(purpose,null,2)));details.append(all);}
   for(const source of selection.reference.sources){const a=node('a',source.url);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';details.append(a,node('p',`${source.access==='read'?'Retrieved '+source.checkedOn:'Reference URL; not retrieved'} · ${source.revision} · ${source.license} · ${source.note}`));}

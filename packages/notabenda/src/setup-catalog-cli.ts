@@ -1,4 +1,6 @@
+// @requirements REQ-PRODUCT-SERVICE-PROFILES
 /** @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION */
+import {formatCatalogProductProfile} from './catalog-profile.js';
 import {createCatalogSelectionPlan} from './catalog-selection.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
 import {searchServiceCatalog} from './catalog.js';
@@ -13,6 +15,7 @@ export async function reviewSetupCatalog(base:SiteConfig|undefined,selections:Ca
  let catalog=project?.catalog;const selected=[...selections];
  async function review(match:CatalogSearchResult):Promise<void>{
   const config=base??createStarterConfig();if(!config.purposes.length){console.log('Declare actual processing purposes in a config and import it with --config before adding a catalog service. Reference search remains available.');return;}
+  console.log(formatCatalogProductProfile(catalog!,match.product.id));
   console.log('Declared purposes: '+config.purposes.map(p=>p.id+' — '+p.name).join(', '));
   const serviceId=await ask('Unique local service ID: ',120),provider=await ask('Actual provider entity: ',300),location=await ask('Actual processing location: '),purposeIds=(await ask('Declared purpose IDs (comma-separated): ',1000)).split(',').map(s=>s.trim()).filter(Boolean),privacyUrl=await ask('Verified provider privacy HTTPS URL (optional): ',2048),justification=await ask('Supporting facts / justification (private): ');
   console.log('Reference '+catalog!.id+' / '+catalog!.revision+'; product revision '+match.product.revision+'. Source URLs are reference metadata; verify actual use.');

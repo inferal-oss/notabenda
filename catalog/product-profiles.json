@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 1,
+  "sources": [
+    {
+      "id": "profile-cloudflare-placement",
+      "title": "Workers placement",
+      "url": "https://developers.cloudflare.com/workers/configuration/placement/",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-cloudflare-regional",
+      "title": "Regional Services for Workers",
+      "url": "https://developers.cloudflare.com/data-localization/how-to/workers/",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-cloudflare-privacy",
+      "title": "Cloudflare privacy policy",
+      "url": "https://www.cloudflare.com/privacypolicy/",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-cloudflare-dpa",
+      "title": "Cloudflare customer DPA",
+      "url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-stripe-roles",
+      "title": "Stripe privacy center",
+      "url": "https://stripe.com/legal/privacy-center",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-stripe-privacy",
+      "title": "Stripe privacy policy",
+      "url": "https://stripe.com/privacy",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-stripe-dpa",
+      "title": "Stripe DPA",
+      "url": "https://stripe.com/legal/dpa",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Generic public DPA URL resolved to a localized page during retrieval. Check the agreement and entity for the actual account; no provider verification is implied."
+    },
+    {
+      "id": "profile-supabase-regions",
+      "title": "Supabase project regions",
+      "url": "https://supabase.com/docs/guides/platform/regions",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-supabase-residency",
+      "title": "Supabase residency and transfers FAQ",
+      "url": "https://supabase.com/legal/privacy-resources/data-residency-and-transfers-faq",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-supabase-self-hosting",
+      "title": "Supabase self-hosting",
+      "url": "https://supabase.com/docs/guides/self-hosting",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-supabase-privacy",
+      "title": "Supabase privacy policy",
+      "url": "https://supabase.com/privacy",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-supabase-dpa",
+      "title": "Supabase DPA",
+      "url": "https://supabase.com/legal/customer-resources/data-processing-addendum",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-resend-storage",
+      "title": "Resend GDPR and storage FAQ",
+      "url": "https://resend.com/security/gdpr",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-resend-domains",
+      "title": "Resend domain settings",
+      "url": "https://resend.com/docs/dashboard/domains/introduction",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-resend-privacy",
+      "title": "Resend privacy policy",
+      "url": "https://resend.com/legal/privacy-policy",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "profile-resend-dpa",
+      "title": "Resend DPA",
+      "url": "https://resend.com/legal/dpa",
+      "revision": "reference-2026-10-19",
+      "checkedOn": null,
+      "access": "reference-only",
+      "license": "Original metadata; documentation referenced",
+      "note": "Public reference URL recorded. Two retrieval attempts failed (timeout/internal error); its contents were not reviewed. Follow the link to review the current agreement."
+    }
+  ],
+  "profiles": {
+    "cloudflare-workers": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "placement",
+          "title": "Placement and latency",
+          "description": "Workers placement describes where request handlers execute to reduce latency. Check the configured mode and each storage binding separately when documenting processing locations.",
+          "sourceIds": [
+            "profile-cloudflare-placement"
+          ]
+        },
+        {
+          "id": "regional-scope",
+          "title": "Regional controls have a defined scope",
+          "description": "Regional Services for a configured custom domain can restrict TLS termination and Worker execution. The documentation excludes outgoing subrequests and some triggers, and says code and secrets remain globally deployed.",
+          "sourceIds": [
+            "profile-cloudflare-regional"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "kind": "privacy",
+          "label": "Privacy policy",
+          "url": "https://www.cloudflare.com/privacypolicy/",
+          "sourceIds": [
+            "profile-cloudflare-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "kind": "dpa",
+          "label": "Customer DPA",
+          "url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+          "sourceIds": [
+            "profile-cloudflare-dpa"
+          ]
+        },
+        {
+          "id": "placement",
+          "kind": "documentation",
+          "label": "Placement documentation",
+          "url": "https://developers.cloudflare.com/workers/configuration/placement/",
+          "sourceIds": [
+            "profile-cloudflare-placement"
+          ]
+        },
+        {
+          "id": "regional",
+          "kind": "documentation",
+          "label": "Regional controls",
+          "url": "https://developers.cloudflare.com/data-localization/how-to/workers/",
+          "sourceIds": [
+            "profile-cloudflare-regional"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "products",
+          "prompt": "Which Worker, storage bindings, logs and other Cloudflare products process data for this site?",
+          "sourceIds": [
+            "profile-cloudflare-placement",
+            "profile-cloudflare-regional"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "locations",
+          "prompt": "What locations and transfer arrangements apply to this deployment, including outgoing requests and excluded triggers?",
+          "sourceIds": [
+            "profile-cloudflare-regional"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "contract",
+          "prompt": "Which contracting entity, processing role, retention settings and customer agreement apply?",
+          "sourceIds": [
+            "profile-cloudflare-privacy",
+            "profile-cloudflare-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        }
+      ]
+    },
+    "stripe-payments": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "roles",
+          "title": "Processing role depends on the activity",
+          "description": "Stripe describes both controller and processor activities. Review the product and processing purpose before describing its role for your site.",
+          "sourceIds": [
+            "profile-stripe-roles",
+            "profile-stripe-dpa"
+          ]
+        },
+        {
+          "id": "entity",
+          "title": "Account and product context matter",
+          "description": "Stripe says the relevant entity can depend on account location, product and context. An SDK reference alone does not identify the entity or products used.",
+          "sourceIds": [
+            "profile-stripe-roles"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "kind": "privacy",
+          "label": "Privacy policy",
+          "url": "https://stripe.com/privacy",
+          "sourceIds": [
+            "profile-stripe-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "kind": "dpa",
+          "label": "Data processing agreement",
+          "url": "https://stripe.com/legal/dpa",
+          "sourceIds": [
+            "profile-stripe-dpa"
+          ]
+        },
+        {
+          "id": "roles",
+          "kind": "documentation",
+          "label": "Privacy center",
+          "url": "https://stripe.com/legal/privacy-center",
+          "sourceIds": [
+            "profile-stripe-roles"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "products",
+          "prompt": "Which payment, identity, fraud or connected-account products do you actually use, and which data reaches each?",
+          "sourceIds": [
+            "profile-stripe-roles",
+            "profile-stripe-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "roles",
+          "prompt": "For each activity, which Stripe entity and processing role apply under your account agreement?",
+          "sourceIds": [
+            "profile-stripe-roles",
+            "profile-stripe-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "locations",
+          "prompt": "Confirm actual processing locations, transfers and retention for the selected products. Do not infer these from an SDK import.",
+          "sourceIds": [],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        }
+      ]
+    },
+    "supabase-platform": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "deployment",
+          "title": "Hosted and self-hosted deployments differ",
+          "description": "Supabase documents both hosted projects and deployments on your own infrastructure. A client library can connect to either, so a dependency match does not identify the hosting provider.",
+          "sourceIds": [
+            "profile-supabase-self-hosting"
+          ]
+        },
+        {
+          "id": "primary-region",
+          "title": "The primary region is only part of the review",
+          "description": "Hosted projects have a primary region. Supabase distinguishes regional database data and backups from other processing, including account, support, usage and CDN activity that may occur elsewhere.",
+          "sourceIds": [
+            "profile-supabase-regions",
+            "profile-supabase-residency"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "kind": "privacy",
+          "label": "Privacy policy",
+          "url": "https://supabase.com/privacy",
+          "sourceIds": [
+            "profile-supabase-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "kind": "dpa",
+          "label": "Data processing addendum",
+          "url": "https://supabase.com/legal/customer-resources/data-processing-addendum",
+          "sourceIds": [
+            "profile-supabase-dpa"
+          ]
+        },
+        {
+          "id": "residency",
+          "kind": "documentation",
+          "label": "Residency and transfers",
+          "url": "https://supabase.com/legal/privacy-resources/data-residency-and-transfers-faq",
+          "sourceIds": [
+            "profile-supabase-residency"
+          ]
+        },
+        {
+          "id": "self-hosting",
+          "kind": "documentation",
+          "label": "Self-hosting documentation",
+          "url": "https://supabase.com/docs/guides/self-hosting",
+          "sourceIds": [
+            "profile-supabase-self-hosting"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "deployment",
+          "prompt": "Is this hosted, self-hosted or a local development stack? Name the actual operators and products used.",
+          "sourceIds": [
+            "profile-supabase-self-hosting"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "region",
+          "prompt": "Which primary project region and additional support, account, CDN or log processing locations apply?",
+          "sourceIds": [
+            "profile-supabase-regions",
+            "profile-supabase-residency"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "retention",
+          "prompt": "Review backups, logs, deletion settings and the agreement for this deployment before recording retention and transfer facts.",
+          "sourceIds": [
+            "profile-supabase-residency",
+            "profile-supabase-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE",
+            "REQ-EU-RETENTION-ERASURE"
+          ]
+        }
+      ]
+    },
+    "resend-email": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "sending-storage",
+          "title": "Sending region and storage are different",
+          "description": "Resend documents US storage for customer data, including message content, logs and webhook payloads. Choosing a sending region does not select a different storage region.",
+          "sourceIds": [
+            "profile-resend-storage"
+          ]
+        },
+        {
+          "id": "tracking",
+          "title": "Tracking is a separate setting",
+          "description": "Domain settings include optional open and click tracking. Confirm the settings actually used for each email flow before describing recipients and purposes.",
+          "sourceIds": [
+            "profile-resend-domains"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "kind": "privacy",
+          "label": "Privacy policy",
+          "url": "https://resend.com/legal/privacy-policy",
+          "sourceIds": [
+            "profile-resend-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "kind": "dpa",
+          "label": "Data processing agreement",
+          "url": "https://resend.com/legal/dpa",
+          "sourceIds": [
+            "profile-resend-dpa"
+          ]
+        },
+        {
+          "id": "storage",
+          "kind": "documentation",
+          "label": "Storage and GDPR FAQ",
+          "url": "https://resend.com/security/gdpr",
+          "sourceIds": [
+            "profile-resend-storage"
+          ]
+        },
+        {
+          "id": "settings",
+          "kind": "documentation",
+          "label": "Domain settings",
+          "url": "https://resend.com/docs/dashboard/domains/introduction",
+          "sourceIds": [
+            "profile-resend-domains"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "flows",
+          "prompt": "Which transactional or marketing flows use Resend, and what recipient data and message content do they contain?",
+          "sourceIds": [
+            "profile-resend-privacy",
+            "profile-resend-domains"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "tracking",
+          "prompt": "Are open tracking, click tracking or webhooks enabled? Review each purpose and any applicable permission separately.",
+          "sourceIds": [
+            "profile-resend-domains"
+          ],
+          "requirementIds": [
+            "REQ-EU-MARKETING",
+            "REQ-CA-CASL-OPTIN"
+          ]
+        },
+        {
+          "id": "retention",
+          "prompt": "Confirm storage, transfers, plan-specific retention and deletion of logs, payloads and backups. Review the current DPA separately; its text was not retrieved for this reference.",
+          "sourceIds": [
+            "profile-resend-storage",
+            "profile-resend-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE",
+            "REQ-EU-RETENTION-ERASURE"
+          ]
+        }
+      ]
+    }
+  }
+}

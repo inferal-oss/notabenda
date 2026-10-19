@@ -129,7 +129,9 @@
         "packages/notabenda-cf/src/history.ts",
         "packages/notabenda-cf/src/catalog-render.ts",
         "packages/notabenda-cf/src/worker.ts",
-        "examples/catalog-releases/build.mjs"
+        "examples/catalog-releases/build.mjs",
+        "catalog/product-profiles.json",
+        "packages/notabenda/src/catalog-profile.ts"
       ]
     },
     {
@@ -1225,6 +1227,150 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Official technical documentation: automatic setup can inject the beacon; Cache-Control public,no-transform prevents payload modification and automatic injection. This is transport behavior, not a legal exemption or a guarantee about every hosting feature."
+    },
+    {
+      "id": "SRC-PROFILE-CLOUDFLARE-PLACEMENT",
+      "title": "Workers placement",
+      "url": "https://developers.cloudflare.com/workers/configuration/placement/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-CLOUDFLARE-REGIONAL",
+      "title": "Regional Services for Workers",
+      "url": "https://developers.cloudflare.com/data-localization/how-to/workers/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-CLOUDFLARE-PRIVACY",
+      "title": "Cloudflare privacy policy",
+      "url": "https://www.cloudflare.com/privacypolicy/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-CLOUDFLARE-DPA",
+      "title": "Cloudflare customer DPA",
+      "url": "https://www.cloudflare.com/cloudflare-customer-dpa/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-STRIPE-ROLES",
+      "title": "Stripe privacy center",
+      "url": "https://stripe.com/legal/privacy-center",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-STRIPE-PRIVACY",
+      "title": "Stripe privacy policy",
+      "url": "https://stripe.com/privacy",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-STRIPE-DPA",
+      "title": "Stripe DPA",
+      "url": "https://stripe.com/legal/dpa",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Generic public DPA URL resolved to a localized page during retrieval. Check the agreement and entity for the actual account; no provider verification is implied."
+    },
+    {
+      "id": "SRC-PROFILE-SUPABASE-REGIONS",
+      "title": "Supabase project regions",
+      "url": "https://supabase.com/docs/guides/platform/regions",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-SUPABASE-RESIDENCY",
+      "title": "Supabase residency and transfers FAQ",
+      "url": "https://supabase.com/legal/privacy-resources/data-residency-and-transfers-faq",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-SUPABASE-SELF-HOSTING",
+      "title": "Supabase self-hosting",
+      "url": "https://supabase.com/docs/guides/self-hosting",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-SUPABASE-PRIVACY",
+      "title": "Supabase privacy policy",
+      "url": "https://supabase.com/privacy",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-SUPABASE-DPA",
+      "title": "Supabase DPA",
+      "url": "https://supabase.com/legal/customer-resources/data-processing-addendum",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-RESEND-STORAGE",
+      "title": "Resend GDPR and storage FAQ",
+      "url": "https://resend.com/security/gdpr",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-RESEND-DOMAINS",
+      "title": "Resend domain settings",
+      "url": "https://resend.com/docs/dashboard/domains/introduction",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-RESEND-PRIVACY",
+      "title": "Resend privacy policy",
+      "url": "https://resend.com/legal/privacy-policy",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+    },
+    {
+      "id": "SRC-PROFILE-RESEND-DPA",
+      "title": "Resend DPA",
+      "url": "https://resend.com/legal/dpa",
+      "kind": "technical-documentation",
+      "checkedOn": null,
+      "access": "blocked",
+      "note": "Public reference URL recorded. Two retrieval attempts failed (timeout/internal error); its contents were not reviewed. Follow the link to review the current agreement."
     }
   ],
   "jurisdictions": [
@@ -1455,7 +1601,8 @@
         "REQ-PRODUCT-SYNTAX-HIGHLIGHTING",
         "REQ-PRODUCT-BUNDLE-BUDGET",
         "REQ-PRODUCT-SERVICE-CATALOG",
-        "REQ-PRODUCT-SERVICE-DETECTION"
+        "REQ-PRODUCT-SERVICE-DETECTION",
+        "REQ-PRODUCT-SERVICE-PROFILES"
       ]
     }
   ],
@@ -4705,7 +4852,7 @@
         "site/test/host.test.mjs",
         "packages/notabenda-cf/test/starter.test.mjs"
       ],
-      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Reviewed provider profiles remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
+      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Optional documentation profiles now cover four products; independent provider-practice review and broader coverage remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -4796,6 +4943,112 @@
         "packages/notabenda/test/setup.test.mjs"
       ],
       "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project."
+    },
+    {
+      "id": "REQ-PRODUCT-SERVICE-PROFILES",
+      "jurisdiction": "PRODUCT",
+      "title": "Sourced product documentation in service review",
+      "kind": "product-standard",
+      "summary": "Keep bounded, optional product notes, document links and site-specific review questions tied to public sources, selected revisions and retained review history.",
+      "appliesWhen": "A catalog product supplies a documentation profile during explicit service review or retained-reference inspection.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-PROFILE-CLOUDFLARE-PLACEMENT",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLOUDFLARE-REGIONAL",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLOUDFLARE-PRIVACY",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLOUDFLARE-DPA",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-STRIPE-ROLES",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-STRIPE-PRIVACY",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-STRIPE-DPA",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SUPABASE-REGIONS",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SUPABASE-RESIDENCY",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SUPABASE-SELF-HOSTING",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SUPABASE-PRIVACY",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SUPABASE-DPA",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-RESEND-STORAGE",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-RESEND-DOMAINS",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-RESEND-PRIVACY",
+          "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-PROFILE-RESEND-DPA"
+      ],
+      "featureIds": [
+        "FEAT-SERVICE-CATALOG",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-SERVICE-PROFILES"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Documentation can change and describes provider claims or options. Source retrieval is not independent practice verification, a signed agreement or legal approval. Requirement links are conditional review context. Initial profiles cover four products; other entries may have no profile. Actual entity, location, purpose, basis, retention and settings remain operator-supplied.",
+      "implementationRefs": [
+        "catalog/product-profiles.json",
+        "catalog/schema.json",
+        "scripts/build-service-catalog.py",
+        "packages/notabenda/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/catalog-reference.ts",
+        "packages/notabenda/src/catalog-profile.ts",
+        "packages/notabenda-cf/src/catalog-profile.ts",
+        "packages/notabenda/src/catalog-ui.ts",
+        "packages/notabenda/src/catalog-review-ui.ts",
+        "packages/notabenda/src/catalog-cli.ts",
+        "packages/notabenda/src/setup-catalog-cli.ts",
+        "packages/notabenda-cf/src/catalog-render.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/catalog-profile.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/catalog-profiles.md"
+      ],
+      "implementationNote": "Version-1 optional closed-schema profiles, static escaped renderer and terminal inspection; explicit picker copying preserves entered URLs and clears confirmation on edits. Selected source/profile revisions survive private setup pins, renewed comparison and separately authorized retained-release views. No external fetch, automatic setting, consent grant or public policy prose insertion."
     }
   ],
   "verification": [
@@ -5772,6 +6025,19 @@
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
         "packages/notabenda/test/setup-project.test.mjs",
         "packages/notabenda/test/setup.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-SERVICE-PROFILES",
+      "requirementIds": [
+        "REQ-PRODUCT-SERVICE-PROFILES"
+      ],
+      "status": "partial",
+      "expected": "Reject malformed/source-unbound profiles; distinguish unread URLs; render escaped linked notes without network or automatic settings; preserve manual URLs, old pins and exact legal bytes while profile-only changes alter retained reference digests.",
+      "testRefs": [
+        "packages/notabenda/test/catalog-profile.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/catalog-profiles.md"
       ]
     }
   ],
