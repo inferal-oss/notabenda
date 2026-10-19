@@ -11,7 +11,11 @@ assigned stable namespaced IDs, omitted one row lacking a provider/platform,
 and retained source row IDs and reported categories/retention as unreviewed hints.
 No imported category is an adopter's legal classification or actual use declaration.
 
-The additional backend identity/reference entries and matching code are original
+The additional backend/browser identity/reference entries and matching code are original
 Notabenda contributions under Apache-2.0. Source URLs marked reference-only are
 not verified provider practices. No provider logos, policy text, guarantees about
 hosting locations, data-processing roles, retention or compliance are included.
+
+Browser recognition rules are original summaries of technical references listed
+in their source snapshots. External documentation is linked, not reproduced.
+A recorded technical-source check is not verification of provider practices.

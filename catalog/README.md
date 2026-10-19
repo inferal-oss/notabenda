@@ -1,6 +1,6 @@
 # Service reference data
 
-The optional catalog seed currently has 363 provider identities and 399 product/reference entries. It combines 2,278 cookie/storage hints imported from a pinned Open Cookie Database revision with 39 original backend/provider references. Every entry is unreviewed: this is a searchable starting point, not a list of approved vendors or a declaration of actual site use.
+The optional catalog seed currently has 363 provider identities and 402 product/reference entries. It combines 2,278 cookie/storage hints imported from a pinned Open Cookie Database revision with 39 original backend/provider references and three additional browser-product references. Nine official technical documentation sources inform seven passive browser rules for six products; these source checks do not verify provider practices. Every entry is unreviewed: this is a searchable starting point, not a list of approved vendors or a declaration of actual site use.
 
 The source dataset has 2,279 rows. One generic XSRF-TOKEN row lacks both a platform and controller, so it remains in the preserved CSV and is omitted from provider/product identities. Product identity uses the source platform/controller pair; labels are not deduplicated into assumed legal entities. Generic drivers such as MongoDB, Redis, libSQL and Meilisearch can represent self-hosted software. An SDK match does not establish a hosted provider relationship.
 

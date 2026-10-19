@@ -1,6 +1,10 @@
 # Shared service catalog and passive detection
 
-Reference catalog and static project discovery preview. Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Normalization/search, explicit service draft selection, an optional offline seed and static project discovery are implemented. Shared public directory rendering is available from the declared inventory. CLI/admin setup now offers explicit catalog selection with private pinned review notes. Browser signatures and automatic archival of catalog provenance remain planned. The existing service inventory, privacy provider lists, cookie storage table and origin/name-only browser discovery remain available.
+## Search a project with npx
+
+After installing the preview package, run `npx notabenda discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
+
+Reference catalog and static project discovery preview. Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Normalization/search, explicit service draft selection, an optional offline seed and static project discovery are implemented. Shared public directory rendering is available from the declared inventory. CLI/admin setup now offers explicit catalog selection with private pinned review notes. Optional bounded browser signatures and local review are implemented; automatic archival of catalog provenance remains planned. The existing service inventory, privacy provider lists, cookie storage table and origin/name-only browser discovery remain available.
 
 A versioned catalog should connect service selection, discovery, disclosures and operator review. A site selects and confirms its own use of a service; the catalog supplies reusable facts and technical recognition rules. It covers hosting, identity, payments, support, media and other recipients as well as analytics and advertising.
 
@@ -17,7 +21,7 @@ npx notabenda discover --project . --out-dir ./service-review
 
 From this repository after `npm run build`, use `node packages/notabenda/dist/cli.js` in place of `npx notabenda`. `--catalog FILE` selects a custom version-1 JSON catalog for either command. Catalog search accepts `--delivery browser|backend|infrastructure` and `--limit 1–100`; project scan deliberately rejects browser capture/config flags. No site config is needed for reference search or static scanning.
 
-The seed has 363 provider identities and 399 product/reference entries, including 39 backend/provider references and 2,278 imported storage hints. The imported names are reference labels, not verified legal entities. Backend sources explicitly have `access: reference-only` and `checkedOn: null`; recorded homepages do not establish provider-practice verification. Upstream cookie categories and retention are reported hints, not site configuration defaults.
+The seed has 363 provider identities and 402 product/reference entries, including 39 original backend/provider references, three additional browser-product references and 2,278 imported storage hints. The imported names are reference labels, not verified legal entities. Backend sources explicitly have `access: reference-only` and `checkedOn: null`; recorded homepages do not establish provider-practice verification. Upstream cookie categories and retention are reported hints, not site configuration defaults.
 
 ```ts
 import {
@@ -37,7 +41,7 @@ const draft = createCatalogServiceDraft(catalog, 'stripe-payments', {
 
 `notabenda/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `notabenda/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
 
-Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and Terraform resource/data names. It labels development dependencies separately. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Browser/path/global/combined signatures and additional language/config-file detectors remain planned.
+Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and Terraform resource/data names. It labels development dependencies separately. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
 
 Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files, symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
@@ -74,7 +78,7 @@ Support a bounded declarative rule language first:
 - Exact or prefix paths, exact storage names and simple wildcard/prefix patterns.
 - Passive DOM markers and own data-property presence checks for known globals; do not invoke getters, SDK methods or page functions.
 - Any/all combinations of independent signals, with a minimum evidence strength and a plain explanation of each matched clause.
-- Regex where appropriate, using a proven linear subset or non-backtracking engine. Merely limiting pattern/input lengths does not prevent catastrophic backtracking.
+- No arbitrary regex or executable rule payloads. A future regex extension would require a proven linear subset or non-backtracking engine; limiting pattern/input lengths alone does not prevent catastrophic backtracking.
 
 More complex detectors can be host-installed, reviewed modules operating on a bounded observation interface. Catalog JSON must never carry arbitrary JavaScript for evaluation. Any advanced executable/regex extension needs enforceable isolation, termination and resource limits; an asynchronous timeout cannot interrupt a synchronous main-thread loop. A detector must not load a vendor, initialize an SDK, create tracking storage, or make probe requests to see whether the service exists.
 

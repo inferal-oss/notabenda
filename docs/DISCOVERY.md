@@ -2,6 +2,42 @@
 
 Requirements: `REQ-PRODUCT-DISCOVERY`, `REQ-AU-PIXELS`.
 
+## Optional provider recognition
+
+The catalog also supports [project discovery](SERVICE-CATALOG.md) and an optional browser recognizer (`REQ-PRODUCT-SERVICE-DETECTION`). Neither changes the site's inventory automatically.
+
+```ts
+import {captureBrowserCatalog, analyzeBrowserCatalogCapture} from 'notabenda/catalog/browser';
+import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';
+
+// Invoke deliberately in an authorized operator context.
+const captured = captureBrowserCatalog(
+  {routeLabel:'Landing', scenario:'Rejected optional'}, browserCatalogSeed,
+);
+const candidates = analyzeBrowserCatalogCapture(captured);
+```
+
+The optional seed contains seven original rules for six products: Google tag, Google Tag Manager, Stripe.js, Turnstile, Intercom and PostHog. Each rule records the official technical references used to author it. All catalog entries remain unreviewed; checking a documented technical signature does not verify provider practices or determine appropriate processing purposes.
+
+Resource rules match HTTPS/default-port URLs without credentials, exact lowercase hosts (or explicitly enabled label-bound subdomains), resource type and an optional path on **the same observation**. Paths are case-sensitive parsed URL pathnames without percent-decoding. Supported patterns are exact, prefix and anchored single-wildcard matching: `*` matches zero or more characters, including `/`. Path prefixes must end with `/`. Arbitrary regex, code, selectors and probes are unsupported. Storage rules inspect accessible names only. Global rules inspect named top-level own data descriptors for object/function presence, skipping getters and never invoking SDK methods. DOM markers use a fixed tag and class token.
+
+Rules combine signals using alternatives of required conditions. Conditions can come from different observations within one bounded capture; this does not establish simultaneous activity or causality. A marker or bootstrap stub alone can be a partial hint. Google tag's shared delivery host does not identify its Analytics/Ads destinations. Custom hosts, proxies, persistence settings and backend integrations can be missed.
+
+One capture pass produces the unchanged version-1 origin/name aggregates and minimized witnesses containing only rule ID, signal ID, channel and count. Recognition retains no additional observed URL paths, query values, storage values, DOM contents or global contents. The embedded version-1 origins, storage names and operator labels can still contain identifiers. Keep downloads private and inspect before sharing.
+
+`catalog-browser-capture` is a separate kind with its complete evaluated rule/catalog/source snapshot and matcher version. Analysis uses that snapshot, preserving historical interpretation; a revision label does not authenticate it. Supply `expectedRules` to compare complete metadata against a separately trusted snapshot. Unknown versions, duplicate/dangling witnesses and incompatible channels are rejected.
+
+Snapshots are limited to 512 KiB, 100 rules, 256 total signals, 16 signals per rule and eight alternative groups per rule. Matching stops at 100,000 comparisons and skips URLs/class strings over 4,096 characters. Capture normalization is capped at 2 MiB. The baseline discovery limits still apply. Coverage reports available/limited/unavailable channels; none establishes complete visibility or absence of tracking.
+
+To add catalog review to the existing UI, pass `browserRules: browserCatalogSeed` to `mountDiscovery`. It exposes `getCatalogReport()` plus separate catalog-capture and rule-snapshot downloads. Its new local search, status filters, native condition disclosures and source links preserve the captured report. The seed remains an explicit import outside normal visitor consent bundles.
+
+```sh
+npx notabenda catalog detect --capture notabenda-catalog-capture.json --out-dir ./browser-review
+npx notabenda catalog detect --capture notabenda-catalog-capture.json --rules trusted-rules.json --json
+```
+
+The CLI reads one explicit local capture, never launches a browser, and creates a new private output directory without overwriting existing files. Old version-1 captures can be analyzed with the packaged seed or `--rules FILE`, but contain no paths, globals or DOM markers; only origin-only rules and storage-name signals can contribute. This retrospective mode is explicitly labeled. Review remains separate from setup selection, permission and publication.
+
 Discovery helps compare observations with the site inventory. It is optional standalone tooling: capture in your own browser, review locally, and decide which findings need investigation. Adopters choose whether to use CI or deployment gates. Nothing automatically changes config, grants permission, classifies a vendor as necessary or uploads a report.
 
 Try [the working example](/discovery). It uses fictional local storage: allow sample memory, capture, withdraw, and capture again. The example explicitly selects its current preview observation origin and preserves the configured fictional deployment separately; your own deployment should declare the real site origin in its config.

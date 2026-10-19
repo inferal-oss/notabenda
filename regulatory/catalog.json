@@ -95,7 +95,7 @@
         "Shared public third-party rendering and pinned release provenance; large data stays outside normal consent bundles.",
         "Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.",
         "Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.",
-        "Initial optional reference seed: 363 provider identities, 399 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references; all entries unreviewed."
+        "Initial optional reference seed: 363 provider identities, 402 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references plus three browser-product references; all entries unreviewed."
       ],
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
@@ -105,7 +105,16 @@
         "packages/notabenda/src/service-directory.ts",
         "packages/notabenda/src/service-inventory.ts",
         "packages/notabenda/src/catalog-selection.ts",
-        "packages/notabenda/src/catalog-ui.ts"
+        "packages/notabenda/src/catalog-ui.ts",
+        "packages/notabenda/src/catalog-browser.ts",
+        "packages/notabenda/src/catalog-browser-policy.ts",
+        "packages/notabenda/src/catalog-browser-capture.ts",
+        "packages/notabenda/src/catalog-browser-cli.ts",
+        "packages/notabenda/src/catalog-browser-ui.ts",
+        "packages/notabenda/src/discovery-capture.ts",
+        "packages/notabenda/src/discovery-ui.ts",
+        "catalog/browser-rules.json",
+        "catalog/browser-providers.json"
       ]
     },
     {
@@ -1102,6 +1111,87 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Apache License 2.0. Any future import must pin its exact source revision, preserve applicable notices/attribution and identify modifications."
+    },
+    {
+      "id": "SRC-BROWSER-GOOGLE-TAG",
+      "title": "Google Tag official technical reference",
+      "url": "https://developers.google.com/tag-platform/gtagjs",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Google tag loader path and gtag bootstrap; one tag can have multiple product destinations. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-GOOGLE-GTM",
+      "title": "Google Gtm official technical reference",
+      "url": "https://developers.google.com/tag-platform/tag-manager/protocol-relative-url?hl=en",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Tag Manager script/frame paths; only HTTPS is recognized by these rules. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-STRIPE-JS",
+      "title": "Stripe Js official technical reference",
+      "url": "https://docs.stripe.com/js",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Documented script delivery host; no payment feature or provider-practice classification. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-STRIPE-VERSION",
+      "title": "Stripe Version official technical reference",
+      "url": "https://docs.stripe.com/sdks/stripejs-versioning",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Versioned loader path and supported legacy v3 delivery. Rule is not a version recommendation. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-TURNSTILE",
+      "title": "Turnstile official technical reference",
+      "url": "https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Widget loader path, div class marker and turnstile API object. No challenge is executed. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-INTERCOM",
+      "title": "Intercom official technical reference",
+      "url": "https://developers.intercom.com/installing-intercom/web/installation",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Widget loader prefix and Intercom function; app/workspace suffix is never exported as a witness. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-POSTHOG-COOKIE",
+      "title": "Posthog Cookie official technical reference",
+      "url": "https://posthog.com/tutorials/nextjs-analytics",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Official tutorial excerpt describes a project-token-derived cookie name; only the name pattern is matched, never its value. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-POSTHOG-LOADER",
+      "title": "Posthog Loader official technical reference",
+      "url": "https://posthog.com/tutorials/framer-analytics",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Official tutorial excerpt describes asset-host rewriting and the array.js path. Custom hosts and proxies may not match. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-BROWSER-POSTHOG-REGIONS",
+      "title": "Posthog Regions official technical reference",
+      "url": "https://posthog.com/docs/advanced/proxy/nextjs-middleware",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Official proxy guide names US and EU asset hosts. Technical endpoint reference only; no inference about an operator deployment region or transfers. External documentation is not reproduced."
     }
   ],
   "jurisdictions": [
@@ -4484,7 +4574,16 @@
         "examples/setup/build.mjs",
         "packages/notabenda/src/setup-purpose.ts",
         "packages/notabenda/src/setup-purpose-ui.ts",
-        "packages/notabenda/src/setup-purpose-cli.ts"
+        "packages/notabenda/src/setup-purpose-cli.ts",
+        "packages/notabenda/src/catalog-browser.ts",
+        "packages/notabenda/src/catalog-browser-policy.ts",
+        "packages/notabenda/src/catalog-browser-capture.ts",
+        "packages/notabenda/src/catalog-browser-cli.ts",
+        "packages/notabenda/src/catalog-browser-ui.ts",
+        "packages/notabenda/src/discovery-capture.ts",
+        "packages/notabenda/src/discovery-ui.ts",
+        "catalog/browser-rules.json",
+        "catalog/browser-providers.json"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -4495,9 +4594,11 @@
         "site/test/services.test.mjs",
         "packages/notabenda/test/catalog-selection.test.mjs",
         "site/test/catalog-setup.test.mjs",
-        "packages/notabenda/test/setup-purpose.test.mjs"
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/catalog-browser.test.mjs",
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
       ],
-      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Reviewed profiles, browser recognition and automatic immutable release-provenance archival remain open."
+      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Reviewed profiles and automatic immutable release-provenance archival remain open."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -4506,7 +4607,44 @@
       "kind": "product-standard",
       "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes.",
       "appliesWhen": "An authorized operator explicitly invokes catalog-backed service discovery.",
-      "sourceRefs": [],
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-BROWSER-GOOGLE-TAG",
+          "locator": "Google tag loader path and gtag bootstrap; one tag can have multiple product destinations"
+        },
+        {
+          "sourceId": "SRC-BROWSER-GOOGLE-GTM",
+          "locator": "Tag Manager script/frame paths; only HTTPS is recognized by these rules"
+        },
+        {
+          "sourceId": "SRC-BROWSER-STRIPE-JS",
+          "locator": "Documented script delivery host; no payment feature or provider-practice classification"
+        },
+        {
+          "sourceId": "SRC-BROWSER-STRIPE-VERSION",
+          "locator": "Versioned loader path and supported legacy v3 delivery. Rule is not a version recommendation"
+        },
+        {
+          "sourceId": "SRC-BROWSER-TURNSTILE",
+          "locator": "Widget loader path, div class marker and turnstile API object. No challenge is executed"
+        },
+        {
+          "sourceId": "SRC-BROWSER-INTERCOM",
+          "locator": "Widget loader prefix and Intercom function; app/workspace suffix is never exported as a witness"
+        },
+        {
+          "sourceId": "SRC-BROWSER-POSTHOG-COOKIE",
+          "locator": "Official tutorial excerpt describes a project-token-derived cookie name; only the name pattern is matched, never its value"
+        },
+        {
+          "sourceId": "SRC-BROWSER-POSTHOG-LOADER",
+          "locator": "Official tutorial excerpt describes asset-host rewriting and the array.js path. Custom hosts and proxies may not match"
+        },
+        {
+          "sourceId": "SRC-BROWSER-POSTHOG-REGIONS",
+          "locator": "Official proxy guide names US and EU asset hosts"
+        }
+      ],
       "discoverySourceIds": [],
       "featureIds": [
         "FEAT-SERVICE-CATALOG",
@@ -4521,18 +4659,29 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "A matched signature is a candidate, not execution, ownership, permission, legal classification or absence-of-tracking proof. Existing version-1 captures remain origin/name-only. Advanced code never arrives as executable catalog data.",
+      "caveats": "A matched signature is a candidate, not execution, ownership, permission, legal classification or absence-of-tracking proof. Existing version-1 captures remain origin/name-only. Advanced code never arrives as executable catalog data. New recognition witnesses exclude observed paths/query/storage/global values; the embedded v1 origins, storage names and labels may still include identifiers. Combined signals need not be simultaneous or causal. Snapshots are unverified reports, not authenticated evidence.",
       "implementationRefs": [
         "packages/notabenda/src/catalog-project.ts",
         "packages/notabenda/src/catalog-cli.ts",
-        "packages/notabenda/src/discovery-cli.ts"
+        "packages/notabenda/src/discovery-cli.ts",
+        "packages/notabenda/src/catalog-browser.ts",
+        "packages/notabenda/src/catalog-browser-policy.ts",
+        "packages/notabenda/src/catalog-browser-capture.ts",
+        "packages/notabenda/src/catalog-browser-cli.ts",
+        "packages/notabenda/src/catalog-browser-ui.ts",
+        "packages/notabenda/src/discovery-capture.ts",
+        "packages/notabenda/src/discovery-ui.ts",
+        "catalog/browser-rules.json",
+        "catalog/browser-providers.json"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/service-catalog.md"
+        "docs/verification/service-catalog.md",
+        "packages/notabenda/test/catalog-browser.test.mjs",
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
       ],
-      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Catalog-backed browser/path/global, combined/regex and broader project detectors remain planned."
+      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned."
     }
   ],
   "verification": [
@@ -5470,7 +5619,9 @@
         "site/test/services.test.mjs",
         "packages/notabenda/test/catalog-selection.test.mjs",
         "site/test/catalog-setup.test.mjs",
-        "packages/notabenda/test/setup-purpose.test.mjs"
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/catalog-browser.test.mjs",
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
       ]
     },
     {
@@ -5479,11 +5630,13 @@
         "REQ-PRODUCT-SERVICE-DETECTION"
       ],
       "status": "partial",
-      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, no raw identifiers/values in ordinary captures, old-version compatibility, unknown/blocked coverage and review-before-apply.",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply.",
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/service-catalog.md"
+        "docs/verification/service-catalog.md",
+        "packages/notabenda/test/catalog-browser.test.mjs",
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
       ]
     }
   ],

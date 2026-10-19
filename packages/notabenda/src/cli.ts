@@ -29,6 +29,8 @@ Discovery: --capture FILE (repeat up to 20) supplies explicit browser capture JS
 --config FILE selects the inventory; --json prints the private review. Optional
 --out-dir DIRECTORY writes a new private review directory and never overwrites.
 Catalog: catalog search QUERY [--delivery backend] [--limit 20] [--json].
+Browser candidates: catalog detect --capture FILE [--rules FILE] [--out-dir NEW] [--json].
+New catalog captures retain their exact rule snapshot. V1 captures support only origin/name hints.
 Project discovery: discover --project DIRECTORY [--catalog FILE] [--json]
 [--out-dir NEW_DIRECTORY] statically finds reviewable SDK/infrastructure candidates.
 No project code, installers or network probes run.
@@ -40,7 +42,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
-  if(command==='catalog'){await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
+  if(command==='catalog'){if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
   let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined;

@@ -1,13 +1,18 @@
+/** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION */
 /** @requirements REQ-PRODUCT-DISCOVERY REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
 import {analyzeDiscovery,captureDiscovery} from './discovery.js';
 import type {DiscoveryCapture,DiscoveryReport} from './discovery.js';
 import {toPublicConfig} from './config.js';
-export interface DiscoveryUiOptions {config:unknown;captureOrigin?:string;routeLabel?:string;scenario?:string;capture?:(labels:{routeLabel:string;scenario:string})=>DiscoveryCapture}
-export interface MountedDiscovery {getReport():DiscoveryReport|undefined;destroy():void}
+import {normalizeBrowserRuleSet,captureBrowserCatalog,recognizeLegacyBrowserCapture,normalizeBrowserCatalogCapture,analyzeBrowserCatalogCapture} from './catalog-browser.js';
+import type {BrowserCatalogCapture,BrowserCatalogReview} from './catalog-browser.js';
+import {mountBrowserCatalogReview} from './catalog-browser-ui.js';
+export interface DiscoveryUiOptions {config:unknown;captureOrigin?:string;routeLabel?:string;scenario?:string;capture?:(labels:{routeLabel:string;scenario:string})=>DiscoveryCapture;browserRules?:unknown;catalogCapture?:(labels:{routeLabel:string;scenario:string})=>BrowserCatalogCapture}
+export interface MountedDiscovery {getReport():DiscoveryReport|undefined;getCatalogReport():BrowserCatalogReview|undefined;destroy():void}
 let instance=0;
 /** Developer/operator tool. No automatic capture, requests, browser persistence or uploads. */
 export function mountDiscovery(container:HTMLElement,options:DiscoveryUiOptions):MountedDiscovery {
  const config=toPublicConfig(options.config,{mode:'preview'}),doc=container.ownerDocument,prefix=`nb-discovery-${++instance}`;
+ const browserRules=options.browserRules===undefined?undefined:normalizeBrowserRuleSet(options.browserRules);if(options.capture&&options.catalogCapture)throw Error('Choose one capture hook; a catalog capture already includes its version-1 observations.');
  const element=<K extends keyof HTMLElementTagNameMap>(tag:K,className?:string,text?:string):HTMLElementTagNameMap[K]=>{const node=doc.createElement(tag);if(className)node.className=className;if(text)node.textContent=text;return node;};
  const root=element('section','nb-discovery'),title=element('h2',undefined,'Take a closer look.');title.id=prefix+'-title';root.setAttribute('aria-labelledby',title.id);
  const intro=element('p','nb-discovery-intro','Capture what this document currently exposes, then compare it with your declared inventory. Nothing is scanned until you ask.');
@@ -21,18 +26,21 @@ export function mountDiscovery(container:HTMLElement,options:DiscoveryUiOptions)
  const status=element('p','nb-discovery-status');status.setAttribute('role','status');status.textContent='Ready for an explicit capture.';
  const result=element('div','nb-discovery-result');result.hidden=true;
  root.append(title,intro,form,scope,status,result);container.append(root);
- let report:DiscoveryReport|undefined,destroyed=false;const urls:string[]=[];
+ let report:DiscoveryReport|undefined,catalogReport:BrowserCatalogReview|undefined,catalogMount:{destroy():void}|undefined,destroyed=false;const urls:string[]=[];
  const urlApi=doc.defaultView?.URL;
  function revoke(){for(const url of urls)try{urlApi?.revokeObjectURL(url);}catch{/* Releasing a preview must not write browser data. */}urls.length=0;}
- function reset(){revoke();report=undefined;result.replaceChildren();result.hidden=true;status.textContent='Review cleared. Page activity and stored data were not changed.';}
+ function reset(){revoke();report=undefined;catalogReport=undefined;catalogMount?.destroy();catalogMount=undefined;result.replaceChildren();result.hidden=true;status.textContent='Review cleared. Page activity and stored data were not changed.';}
  function invalidate(){if(report){reset();status.textContent='Labels changed. Capture again to create a current review.';}}
  route.input.addEventListener('input',invalidate);scenario.input.addEventListener('input',invalidate);clear.addEventListener('click',reset);
- form.addEventListener('submit',event=>{event.preventDefault();if(destroyed)return;revoke();report=undefined;result.replaceChildren();result.hidden=true;
+ form.addEventListener('submit',event=>{event.preventDefault();if(destroyed)return;revoke();report=undefined;catalogReport=undefined;catalogMount?.destroy();catalogMount=undefined;result.replaceChildren();result.hidden=true;
   try{
    const labels={routeLabel:route.input.value.trim(),scenario:scenario.input.value.trim()};
    const view=doc.defaultView;
-   const raw=options.capture?options.capture(labels):captureDiscovery(labels,{document:doc,...(view?{performance:view.performance,localStorage:()=>view.localStorage,sessionStorage:()=>view.sessionStorage}:{}),cookies:()=>doc.cookie});
+   const environment={document:doc,...(view?{performance:view.performance,localStorage:()=>view.localStorage,sessionStorage:()=>view.sessionStorage}:{}),cookies:()=>doc.cookie};
+   const catalogCapture=options.catalogCapture?normalizeBrowserCatalogCapture(options.catalogCapture(labels),browserRules?{expectedRules:browserRules}:{}):browserRules?(options.capture?recognizeLegacyBrowserCapture(options.capture(labels),browserRules):captureBrowserCatalog(labels,browserRules,environment)):undefined;
+   const raw=catalogCapture?.capture??(options.capture?options.capture(labels):captureDiscovery(labels,environment));
    const current=analyzeDiscovery(config,[raw],options.captureOrigin===undefined?{}:{captureOrigin:options.captureOrigin}),capture=current.captures[0]!;report=current;
+   if(catalogCapture)catalogReport=analyzeBrowserCatalogCapture(catalogCapture);
    const stats=element('dl','nb-discovery-stats');
    for(const [label,value] of [['Observation groups',current.findings.length],['Unmapped groups',current.unmappedCount],['Captures',1]] as const){const group=element('div');group.append(element('dt',undefined,label),element('dd',undefined,String(value)));stats.append(group);}
    const coverage=element('details','nb-discovery-coverage');coverage.append(element('summary',undefined,'Readability and capture limits'));const coverageList=element('dl');
@@ -40,7 +48,8 @@ export function mountDiscovery(container:HTMLElement,options:DiscoveryUiOptions)
    coverage.append(coverageList,element('p',undefined,`Omitted non-HTTP references: ${capture.omitted.nonHttpReferences}. Omitted long or invalid names: ${capture.omitted.oversizedNames}. “Available” means this API could be read; it never means complete visibility.`));
    const downloads=element('div','nb-discovery-downloads');
    let downloadable=true;
-   try{for(const [label,file,value] of [['Download capture','notabenda-capture.json',capture],['Download private review','notabenda-discovery-review.json',current]] as const){if(!urlApi?.createObjectURL)throw new Error();const blob=new (doc.defaultView?.Blob??Blob)([JSON.stringify(value,null,2)+'\n'],{type:'application/json'});const url=urlApi.createObjectURL(blob);urls.push(url);const link=element('a','nb-discovery-download',label);link.href=url;link.download=file;downloads.append(link);}}
+   const exports:[string,string,unknown][]=[['Download capture','notabenda-capture.json',capture],['Download private review','notabenda-discovery-review.json',current]];if(catalogCapture)exports.push(['Download catalog capture','notabenda-catalog-capture.json',catalogCapture],['Download rule snapshot','notabenda-browser-rules.json',catalogCapture.ruleSet]);
+   try{for(const [label,file,value] of exports){if(!urlApi?.createObjectURL)throw new Error();const blob=new (doc.defaultView?.Blob??Blob)([JSON.stringify(value,null,2)+'\n'],{type:'application/json'});const url=urlApi.createObjectURL(blob);urls.push(url);const link=element('a','nb-discovery-download',label);link.href=url;link.download=file;downloads.append(link);}}
    catch{downloadable=false;revoke();downloads.replaceChildren(element('p',undefined,'Downloads are unavailable in this browser. The review is still shown below.'));}
    const filters=element('div','nb-discovery-filters'),searchGroup=element('div'),searchLabel=element('label',undefined,'Find observations'),search=element('input');search.type='search';search.id=prefix+'-search';search.placeholder='Origin, name, service or purpose';searchLabel.htmlFor=search.id;searchGroup.append(searchLabel,search);
    const kindGroup=element('div'),kindLabel=element('label',undefined,'Observation type'),kind=element('select');kind.id=prefix+'-kind';kindLabel.htmlFor=kind.id;
@@ -64,8 +73,8 @@ export function mountDiscovery(container:HTMLElement,options:DiscoveryUiOptions)
    const notes=element('details','nb-discovery-notes');notes.append(element('summary',undefined,'What this review can and cannot tell you'));const noteList=element('ul');for(const text of current.reviewNotes)noteList.append(element('li',undefined,text));notes.append(noteList);
    result.append(element('p','nb-discovery-caveat',`Observed origin: ${current.observedOrigin}. Configured deployment: ${current.configuredOrigin}. Reported capture time: ${capture.capturedAt}.`),stats,downloads,element('p','nb-discovery-caveat','Origin and exact-name matches are candidates for investigation. They do not establish a legal purpose, necessity, exemption or permission. Names and labels may still be sensitive; review downloads before sharing.'),coverage,filters,filteredCount,list);
    if(!current.findings.length)result.append(element('p',undefined,'No observations returned. This does not establish absence of tracking. Check API readability and inspect the network separately.'));
-   result.append(notes);result.hidden=false;status.textContent=`Capture ready: ${current.findings.length} observation groups, ${current.unmappedCount} unmapped.${downloadable?' Downloads stay in this browser.':''}`;
-  }catch{revoke();report=undefined;result.replaceChildren();result.hidden=true;status.textContent='Capture could not be reviewed. Check the labels, browser access and configured site origin. No current download is available.';}
+   result.append(notes);if(catalogCapture){const catalogSection=element('div');result.insertBefore(catalogSection,coverage);catalogMount=mountBrowserCatalogReview(catalogSection,catalogCapture);}result.hidden=false;status.textContent=`Capture ready: ${current.findings.length} observation groups, ${current.unmappedCount} unmapped.${catalogReport?' '+catalogReport.findings.length+' catalog candidates need review.':''}${downloadable?' Downloads stay in this browser.':''}`;
+  }catch{revoke();report=undefined;catalogReport=undefined;catalogMount?.destroy();catalogMount=undefined;result.replaceChildren();result.hidden=true;status.textContent='Capture could not be reviewed. Check the labels, browser access, rule snapshot and configured site origin. No current download is available.';}
  });
- return {getReport(){return report?JSON.parse(JSON.stringify(report)) as DiscoveryReport:undefined;},destroy(){if(destroyed)return;destroyed=true;revoke();report=undefined;root.remove();}};
+ return {getReport(){return report?JSON.parse(JSON.stringify(report)) as DiscoveryReport:undefined;},getCatalogReport(){return catalogReport?JSON.parse(JSON.stringify(catalogReport)) as BrowserCatalogReview:undefined;},destroy(){if(destroyed)return;destroyed=true;revoke();report=undefined;catalogReport=undefined;catalogMount?.destroy();root.remove();}};
 }

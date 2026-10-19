@@ -1,0 +1,161 @@
+{
+  "sources": [
+    {
+      "id": "browser-google-tag",
+      "url": "https://developers.google.com/tag-platform/gtagjs",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Google tag loader path and gtag bootstrap; one tag can have multiple product destinations. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-google-gtm",
+      "url": "https://developers.google.com/tag-platform/tag-manager/protocol-relative-url?hl=en",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Tag Manager script/frame paths; only HTTPS is recognized by these rules. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-stripe-js",
+      "url": "https://docs.stripe.com/js",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Documented script delivery host; no payment feature or provider-practice classification. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-stripe-version",
+      "url": "https://docs.stripe.com/sdks/stripejs-versioning",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Versioned loader path and supported legacy v3 delivery. Rule is not a version recommendation. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-turnstile",
+      "url": "https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Widget loader path, div class marker and turnstile API object. No challenge is executed. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-intercom",
+      "url": "https://developers.intercom.com/installing-intercom/web/installation",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Widget loader prefix and Intercom function; app/workspace suffix is never exported as a witness. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-posthog-cookie",
+      "url": "https://posthog.com/tutorials/nextjs-analytics",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official tutorial excerpt describes a project-token-derived cookie name; only the name pattern is matched, never its value. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-posthog-loader",
+      "url": "https://posthog.com/tutorials/framer-analytics",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official tutorial excerpt describes asset-host rewriting and the array.js path. Custom hosts and proxies may not match. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+    },
+    {
+      "id": "browser-posthog-regions",
+      "url": "https://posthog.com/docs/advanced/proxy/nextjs-middleware",
+      "revision": "retrieved-2026-10-19",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official proxy guide names US and EU asset hosts. Technical endpoint reference only; no inference about an operator deployment region or transfers. External documentation is not reproduced."
+    }
+  ],
+  "products": [
+    {
+      "id": "google-tag",
+      "revision": "2026-10-19.1",
+      "providerId": "ocdb-provider-ce770667e5f9b0d8",
+      "name": "Google tag (gtag.js)",
+      "aliases": [],
+      "description": "Browser tag reference; destinations and actual site use need separate review.",
+      "categories": [
+        "measurement"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-google-tag"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "google-tag-manager",
+      "revision": "2026-10-19.1",
+      "providerId": "ocdb-provider-ce770667e5f9b0d8",
+      "name": "Google Tag Manager",
+      "aliases": [],
+      "description": "Tag-container reference; finding a container does not identify its configured tags.",
+      "categories": [
+        "tag-management"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-google-gtm"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "cloudflare-turnstile",
+      "revision": "2026-10-19.1",
+      "providerId": "cloudflare",
+      "name": "Cloudflare Turnstile",
+      "aliases": [],
+      "description": "Browser challenge integration reference. Technical recognition does not establish necessity, consent treatment or a successful challenge.",
+      "categories": [
+        "challenge"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-turnstile"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    }
+  ],
+  "productSourceAdditions": {
+    "stripe-payments": [
+      "browser-stripe-js",
+      "browser-stripe-version"
+    ],
+    "intercom-support": [
+      "browser-intercom"
+    ],
+    "posthog-analytics": [
+      "browser-posthog-cookie",
+      "browser-posthog-loader",
+      "browser-posthog-regions"
+    ]
+  }
+}

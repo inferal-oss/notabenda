@@ -117,6 +117,21 @@
       "import": "./dist/catalog-seed.js",
       "default": "./dist/catalog-seed.js"
     },
+    "./catalog/browser": {
+      "types": "./dist/catalog-browser.d.ts",
+      "import": "./dist/catalog-browser.js",
+      "default": "./dist/catalog-browser.js"
+    },
+    "./catalog/browser/seed": {
+      "types": "./dist/catalog-browser-seed.d.ts",
+      "import": "./dist/catalog-browser-seed.js",
+      "default": "./dist/catalog-browser-seed.js"
+    },
+    "./catalog/browser/ui": {
+      "types": "./dist/catalog-browser-ui.d.ts",
+      "import": "./dist/catalog-browser-ui.js",
+      "default": "./dist/catalog-browser-ui.js"
+    },
     "./catalog/project": {
       "types": "./dist/catalog-project.d.ts",
       "import": "./dist/catalog-project.js",

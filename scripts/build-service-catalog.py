@@ -27,10 +27,30 @@ for provider in curated['providers']:
 for product in curated['products']:
  if product['id'] in products:raise ValueError('Product collision')
  products[product['id']]=product
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision='2026-10-19.1',sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+browser=json.loads((root/'catalog/browser-providers.json').read_text())
+sources+=browser['sources']
+for product in browser['products']:
+ if product['id'] in products:raise ValueError('Browser product collision')
+ products[product['id']]=product
+for product_id,source_ids in browser['productSourceAdditions'].items():
+ products[product_id]['revision']='2026-10-19.2'
+ for source_id in source_ids:
+  if source_id not in products[product_id]['sourceIds']:products[product_id]['sourceIds'].append(source_id)
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision='2026-10-19.2' ,sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
-if '--check' in sys.argv:
- if path.read_text()!=output:raise ValueError('Catalog seed is stale; run scripts/build-service-catalog.py')
-else:path.write_text(output)
+def emit(path,output):
+ if '--check' in sys.argv:
+  if path.read_text()!=output:raise ValueError('Catalog seed is stale; run scripts/build-service-catalog.py')
+ else:path.write_text(output)
+emit(path,output)
+# Browser rules retain a compact exact reference snapshot, not the full imported database.
+rule_set=json.loads((root/'catalog/browser-rules.json').read_text())
+product_ids={r['productId'] for r in rule_set['rules']}
+selected=[dict(p,identifiers=[],storageHints=[]) for p in result['products'] if p['id'] in product_ids]
+provider_ids={p['providerId'] for p in selected}
+selected_providers=[p for p in result['providers'] if p['id'] in provider_ids]
+source_ids={i for r in rule_set['rules'] for i in r['sourceIds']}|{i for p in selected+selected_providers for i in p['sourceIds']}
+rule_set['catalog']=dict(result,products=selected,providers=selected_providers,sources=[s for s in sources if s['id'] in source_ids])
+emit(root/'packages/notabenda/src/catalog-browser-data.json',json.dumps(rule_set,ensure_ascii=False,separators=(',',':'))+'\n')
 print(f"Catalog seed: {len(providers)} providers, {len(products)} products, {sum(len(p['storageHints']) for p in products.values())} imported storage hints; imported facts remain unreviewed.")

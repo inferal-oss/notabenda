@@ -58,4 +58,4 @@ Production rendering defaults to full configuration validation and reviewed-docu
 
 For a historical inventory, render from the exact retained `artifact.publicConfig`, not the current reference seed or current site configuration. Config changes already change legal-release identity. The directory is an additional view of those facts, not a fourth legal document or a separately archived HTML page. Catalog-selection snapshots are still separate; automatically archiving their source and entry provenance remains planned.
 
-Requirements and tests: `REQ-PRODUCT-SERVICE-CATALOG`, [verification](verification/service-catalog.md). Public directory rendering is implemented; wizard/admin catalog selection, browser recognition rules and provenance archival remain open.
+Requirements and tests: `REQ-PRODUCT-SERVICE-CATALOG`, [verification](verification/service-catalog.md). Public directory rendering is implemented; wizard/admin catalog selection and optional browser recognition are implemented previews; automatic legal-release provenance archival remains open.

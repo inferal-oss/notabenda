@@ -621,3 +621,93 @@ Seed candidate for cookie metadata. No dataset imported. Cookie-level categories
 **Type:** license. **Checked:** 2026-10-19. **Access:** read.
 
 Apache License 2.0. Any future import must pin its exact source revision, preserve applicable notices/attribution and identify modifications.
+
+<a id="src-browser-google-tag"></a>
+
+## SRC-BROWSER-GOOGLE-TAG
+
+[Google Tag official technical reference](https://developers.google.com/tag-platform/gtagjs)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Google tag loader path and gtag bootstrap; one tag can have multiple product destinations. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-google-gtm"></a>
+
+## SRC-BROWSER-GOOGLE-GTM
+
+[Google Gtm official technical reference](https://developers.google.com/tag-platform/tag-manager/protocol-relative-url?hl=en)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Tag Manager script/frame paths; only HTTPS is recognized by these rules. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-stripe-js"></a>
+
+## SRC-BROWSER-STRIPE-JS
+
+[Stripe Js official technical reference](https://docs.stripe.com/js)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Documented script delivery host; no payment feature or provider-practice classification. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-stripe-version"></a>
+
+## SRC-BROWSER-STRIPE-VERSION
+
+[Stripe Version official technical reference](https://docs.stripe.com/sdks/stripejs-versioning)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Versioned loader path and supported legacy v3 delivery. Rule is not a version recommendation. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-turnstile"></a>
+
+## SRC-BROWSER-TURNSTILE
+
+[Turnstile official technical reference](https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Widget loader path, div class marker and turnstile API object. No challenge is executed. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-intercom"></a>
+
+## SRC-BROWSER-INTERCOM
+
+[Intercom official technical reference](https://developers.intercom.com/installing-intercom/web/installation)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Widget loader prefix and Intercom function; app/workspace suffix is never exported as a witness. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-posthog-cookie"></a>
+
+## SRC-BROWSER-POSTHOG-COOKIE
+
+[Posthog Cookie official technical reference](https://posthog.com/tutorials/nextjs-analytics)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Official tutorial excerpt describes a project-token-derived cookie name; only the name pattern is matched, never its value. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-posthog-loader"></a>
+
+## SRC-BROWSER-POSTHOG-LOADER
+
+[Posthog Loader official technical reference](https://posthog.com/tutorials/framer-analytics)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Official tutorial excerpt describes asset-host rewriting and the array.js path. Custom hosts and proxies may not match. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced.
+
+<a id="src-browser-posthog-regions"></a>
+
+## SRC-BROWSER-POSTHOG-REGIONS
+
+[Posthog Regions official technical reference](https://posthog.com/docs/advanced/proxy/nextjs-middleware)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Official proxy guide names US and EU asset hosts. Technical endpoint reference only; no inference about an operator deployment region or transfers. External documentation is not reproduced.

@@ -190,3 +190,6 @@ The repository’s `npm run size` reports measured browser/CSS sizes; `npm run s
 The optional [service catalog](../../docs/SERVICE-CATALOG.md) supplies offline provider/product search and static project discovery, including backend SDKs. Use `notabenda catalog search email --delivery backend` or `notabenda discover --project .` after installing the local preview. Results remain candidates for review; reference data and Node scanning stay outside ordinary consent bundles.
 
 [Service directories](https://notabenda.org/guide/services) render the declared inventory as native, React or Astro cards with optional local search. Import `notabenda/services` and `notabenda/services.css`; no reference dataset is loaded by the visitor view.
+
+
+For optional browser recognition, import `notabenda/catalog/browser` and the separately selected `notabenda/catalog/browser/seed`; pass that seed as `browserRules` to `mountDiscovery`, or capture explicitly with `captureBrowserCatalog`. `notabenda catalog detect --capture FILE` reviews rich pinned captures or origin/name-only legacy hints. Source snapshots, partial matches and coverage remain visible; no result activates a service. See [discovery](../../docs/DISCOVERY.md) for rule semantics, privacy limits and private exports.

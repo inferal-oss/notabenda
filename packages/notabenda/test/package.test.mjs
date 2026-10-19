@@ -65,6 +65,8 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
     for(const file of ['dist/catalog-plain.js','dist/catalog-selection.js','dist/catalog-ui.js','dist/service-directory.js','dist/services.css','dist/astro/ServiceDirectory.astro','dist/catalog-data.json','dist/catalog/schema.json','dist/catalog/NOTICE.txt','dist/catalog/open-cookie-database-LICENSE.txt'])assert.ok(manifest.files.some(f=>f.path===file),file);
     const catalogImport=spawnSync(process.execPath,['--input-type=module','-e',"import {normalizeServiceCatalog,searchServiceCatalog} from 'notabenda/catalog';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {scanProjectServices} from 'notabenda/catalog/project';if(normalizeServiceCatalog(serviceCatalogSeed).providers.length!==363||!searchServiceCatalog(serviceCatalogSeed,'email',{delivery:'backend'}).length||typeof scanProjectServices!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(catalogImport.status,0,catalogImport.stderr);
+    for(const file of ['dist/catalog-browser.js','dist/catalog-browser-policy.js','dist/catalog-browser-capture.js','dist/catalog-browser-cli.js','dist/catalog-browser-ui.js','dist/catalog-browser-data.json','dist/discovery-capture.js'])assert.ok(manifest.files.some(f=>f.path===file),file);
+    const browserImport=spawnSync(process.execPath,['--input-type=module','-e',"import {normalizeBrowserRuleSet,captureBrowserCatalog,analyzeBrowserCatalogCapture} from 'notabenda/catalog/browser';import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';import {mountBrowserCatalogReview} from 'notabenda/catalog/browser/ui';if(normalizeBrowserRuleSet(browserCatalogSeed).rules.length!==7||[captureBrowserCatalog,analyzeBrowserCatalogCapture,mountBrowserCatalogReview].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(browserImport.status,0,browserImport.stderr);
     const catalogCli=spawnSync(process.execPath,[join(cwd,'node_modules/notabenda/dist/cli.js'),'catalog','search','stripe','--delivery','backend','--json'],{cwd,encoding:'utf8'});assert.equal(catalogCli.status,0,catalogCli.stderr);assert.equal(JSON.parse(catalogCli.stdout).results[0].product.id,'stripe-payments');
     for(const file of ['dist/setup-purpose.js','dist/setup-purpose-ui.js','dist/setup-purpose-cli.js'])assert.ok(manifest.files.some(f=>f.path===file),file);
     const setupImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createSetupPlan} from 'notabenda/setup';import {mountSetup} from 'notabenda/setup/ui';import {createPurposeDraftPlan,normalizeDraftPurpose} from 'notabenda/setup/purposes';import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';import {registerStorageService} from 'notabenda';import {createSetupWorker} from 'notabenda-cf';if([mountSetup,createPurposeDraftPlan,normalizeDraftPurpose,mountPurposeEditor,registerStorageService,createSetupWorker].some(f=>typeof f!=='function')||createSetupPlan({schemaVersion:1,markets:[],answers:{}}).report.productionReady!==false)process.exit(1)"],{cwd,encoding:'utf8'});assert.equal(setupImport.status,0,setupImport.stderr);
@@ -88,6 +90,14 @@ const selected=createCatalogSelectionPlan(config,serviceCatalogSeed,{productId:'
 readSetupCatalogSelections(selected);mountCatalogPicker(container,{catalog:serviceCatalogSeed,getConfig:()=>config,onSelect:result=>result.config});
 import {createServiceDirectory,renderServiceDirectory,mountServiceDirectory} from 'notabenda/services';
 createServiceDirectory(config);renderServiceDirectory(config,{idPrefix:'services'});mountServiceDirectory(container,config,{idPrefix:'services'});
+import {captureBrowserCatalog,analyzeBrowserCatalogCapture,normalizeBrowserRuleSet,type BrowserCatalogCapture} from 'notabenda/catalog/browser';
+import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';
+import {mountBrowserCatalogReview} from 'notabenda/catalog/browser/ui';
+const rules=normalizeBrowserRuleSet(browserCatalogSeed);
+const browserCapture:BrowserCatalogCapture=captureBrowserCatalog({routeLabel:'Landing',scenario:'Rejected'},rules);
+analyzeBrowserCatalogCapture(browserCapture,{expectedRules:rules});mountBrowserCatalogReview(container,browserCapture);
+// @ts-expect-error capture requires deliberate scenario context
+captureBrowserCatalog({routeLabel:'Landing'},rules);
 import {scanProjectServices} from 'notabenda/catalog/project';
 const catalog:ServiceCatalog=normalizeServiceCatalog(serviceCatalogSeed);
 searchServiceCatalog(catalog,'stripe',{delivery:'backend'});
