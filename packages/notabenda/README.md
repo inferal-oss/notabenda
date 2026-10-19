@@ -2,9 +2,9 @@
 
 Reusable site configuration and legal pages for your own website. Render privacy, cookie, and supplied terms documents as ordinary HTML, with optional styles and no runtime dependencies.
 
-Optional [repeat-prompt policy](../../docs/REGIONAL-PROMPTS.md) keeps solicitation separate from permission expiry, with explicit applicability, public change explanations and catalog-linked decisions.
+Optional [repeat-prompt policy](../../docs/REGIONAL-PROMPTS.md) keeps solicitation separate from permission expiry, with configured applicability, public change explanations and linked requirements.
 
-This is an early implementation. The package has not been published to npm yet; build/pack it from the repository and install the resulting tarball locally. Requires Node.js 22 or newer for the CLI and build-time API. The root renderer is browser/SSR-safe.
+Developer preview. The package has not been published to npm yet; build/pack it from the repository and install the resulting tarball locally. Requires Node.js 22 or newer for the CLI and build-time API. The root renderer is browser/SSR-safe.
 
 ## Start with the CLI
 

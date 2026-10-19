@@ -1,6 +1,6 @@
 # Dispatch contract declarations
 
-The optional `notabenda-cf` runners connect an already captured declaration to **your** acknowledgement provider and application. They claim the two durable jobs, bound each asynchronous attempt and record its outcome. They add no public route, authentication, provider, scheduler or automatic retry.
+Use the `notabenda-cf` runners to dispatch a captured declaration to your acknowledgement provider and application. Each runner leases a job, limits the callback to the remaining lease time and records the result. Your host supplies authorization, scheduling and retry policy.
 
 First [register the form and capture the declaration](CONTRACT-ACTIONS.md). Keep dispatch behind trusted application code or private bindings. The host resolves the site/action context; a visitor cannot select another store, job or provider destination.
 

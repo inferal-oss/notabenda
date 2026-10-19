@@ -242,7 +242,7 @@ test('deployment config runs auth before all assets and the asset tree contains 
   assert.ok(actual.includes('index.html')); assert.ok(actual.includes('guide/requirements/index.html')); assert.ok(actual.includes('assets/runtime/consent.js'));
   await parseBrowserModule({entryPoints:[new URL('assets/runtime/index.js',root).pathname],bundle:true,platform:'browser',write:false});
   assert.equal(actual.some(path=>/(?:\.dev\.vars|\.env|\.local|server-data|wrangler)/u.test(path)),false);
-  const home=await readFile(new URL('index.html',root),'utf8'); assert.match(home,/A clearer choice/); assert.match(home,/not a compliance score/); assert.doesNotMatch(home,/<script|https:\/\/fonts/);
+  const home=await readFile(new URL('index.html',root),'utf8'); assert.match(home,/Legal pages and/); assert.match(home,/not a compliance score/); assert.doesNotMatch(home,/<script|https:\/\/fonts/);
 });
 
 test('protected cookie evidence survives object restart and remains separate from public local choices',async()=>{

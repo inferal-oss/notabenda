@@ -1,6 +1,8 @@
-# Discovery, on your terms
+# Inspect browser resources and storage
 
 Requirements: `REQ-PRODUCT-DISCOVERY`, `REQ-AU-PIXELS`.
+
+Capture the current page's resource references and accessible storage names, then compare them with your declared inventory. For dependency and infrastructure references, run `npx notabenda discover --project . --out-dir ./service-review` from your project folder. Use both views when reviewing providers: a browser capture cannot inspect your backend source, and a source match does not prove that a service runs in production.
 
 ## Optional provider recognition
 
@@ -10,7 +12,7 @@ The catalog also supports [project discovery](SERVICE-CATALOG.md) and an optiona
 import {captureBrowserCatalog, analyzeBrowserCatalogCapture} from 'notabenda/catalog/browser';
 import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';
 
-// Invoke deliberately in an authorized operator context.
+// Run from an operator tool, after choosing the scenario to capture.
 const captured = captureBrowserCatalog(
   {routeLabel:'Landing', scenario:'Rejected optional'}, browserCatalogSeed,
 );

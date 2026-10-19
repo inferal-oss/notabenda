@@ -93,4 +93,7 @@ body{font-size:.875rem}.brand{font-size:1rem;letter-spacing:-.035em}.brand-mark,
 @media(max-width:700px){.nb-setup .nb-setup-practice-card{padding:16px}.nb-setup .nb-setup-practice-notes textarea{font-size:1rem}}
 @media(forced-colors:active){.nb-setup .nb-setup-choice:has(input:checked){border:2px solid Highlight}.nb-setup .nb-setup-choice:focus-within{outline:2px solid CanvasText}}
 
+/* @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
+.nb-setup .nb-setup-discovery{margin:24px 0;padding:20px;border:1px solid var(--nb-line,#e5e5e8);border-radius:8px;background:var(--nb-soft,#f5f5f7)}.nb-setup-discovery h3{font-size:.9375rem;line-height:1.5;margin:0 0 8px}.nb-setup-discovery p{font-size:.8125rem;line-height:1.65;color:var(--nb-muted,#686970)}.nb-setup .nb-setup-command{margin:14px 0;padding:12px 14px;border:1px solid var(--nb-line,#e5e5e8);border-radius:6px;background:var(--nb-surface,#fff);white-space:pre-wrap;overflow-wrap:anywhere;font:.8125rem/1.8 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--nb-text,#25262b)}.nb-setup-command code{font:inherit}.nb-setup-command-flag{color:var(--nb-accent,#5b51b5)}.nb-setup-command-name{font-weight:600}.nb-setup-discovery>a{display:inline-flex;align-items:center;min-height:44px;font-size:.8125rem;color:var(--nb-accent,#5b51b5)}
+
 `;

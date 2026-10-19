@@ -1,6 +1,6 @@
 # notabenda-cf
 
-Optional, dependency-free Cloudflare integration for **read-only evidence inspection** and **immutable legal-document archives**. It is independent of the public legal pages. The host supplies authentication and authorization; this package adds no login or credential system. Optional recording helpers remain explicit host calls.
+Optional, dependency-free Cloudflare integration for **read-only evidence inspection** and **immutable legal-document archives**. The host supplies authentication and authorization. Recording helpers run through host-owned calls, separately from public document rendering.
 
 ## Start a project
 
@@ -8,7 +8,7 @@ After installing the local preview package, run `npx notabenda-cf init --out-dir
 
 The generated project supplies `build`, `doctor` (read-only local checks), `check` (Wrangler dry run), `dev` and explicit `deploy` scripts. The packages remain unpublished; its README explains installing local tarballs. See [the starter guide](../../docs/CLOUDFLARE-STARTER.md) for project files, permission separation, private archive RPC, deployment and removal.
 
-`npx notabenda-cf doctor [--directory PATH] [--config wrangler.jsonc] [--env staging] [--json]` reports bounded local starter issues and separate manual reviews. It never executes project code, loads credentials, installs, builds or deploys. Exit zero is not production readiness; actual host authorization and lifecycle acceptance remain separate. See [doctor scope and report format](../../docs/CLOUDFLARE-DOCTOR.md).
+`npx notabenda-cf doctor [--directory PATH] [--config wrangler.jsonc] [--env staging] [--json]` reports bounded local starter issues and separate manual reviews. It never executes project code, loads credentials, installs, builds or deploys. A successful check still needs to be followed by host authorization and lifecycle testing. See [doctor scope and report format](../../docs/CLOUDFLARE-DOCTOR.md).
 
 ## Host-owned authorization
 

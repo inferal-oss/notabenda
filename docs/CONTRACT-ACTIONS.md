@@ -1,6 +1,6 @@
 # Contract declarations
 
-The optional `notabenda/contracts` module records a visitor's explicit contract cancellation or withdrawal declaration. It is separate from cookie choices, privacy withdrawal, marketing permission and terms agreement. Native/headless forms, isolated light/midnight examples and private operator inspection/search work locally. Regional legal review and actual host delivery operations remain open.
+Use `notabenda/contracts` to capture a cancellation or withdrawal declaration through a native form or your own interface. The backend stores the declaration and creates separate acknowledgement and application jobs. Your host must dispatch those jobs and determine which regional rules apply. Cookie choices, marketing permissions and terms agreements use separate workflows.
 
 The host decides where the action is applicable and provides a usable entry route. Nothing infers a withdrawal deadline, contract existence, identity, cancellation date, refund, sector exception or applicable original terms. The document references below identify the form's archived disclosures, not which terms governed an earlier contract.
 

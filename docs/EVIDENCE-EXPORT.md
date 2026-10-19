@@ -2,7 +2,7 @@
 
 Requirements: `REQ-PRODUCT-EVIDENCE-EXPORT`, `REQ-PRODUCT-CF-ADMIN`.
 
-The optional Cloudflare backoffice can prepare and download a filtered JSON segment from a host-authorized store. It uses the same search words, kind, key prefix, recorded UTC date range, page limit and incoming cursor as evidence search. It adds no public ingestion endpoint, automatic export job or storage service.
+The Cloudflare backoffice exports one filtered JSON segment from the authorized store. Export uses the current search terms, record kind, key prefix, UTC dates, page limit and cursor. Follow the continuation link to export more records.
 
 ## Enable export in the host
 

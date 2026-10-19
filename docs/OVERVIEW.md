@@ -1,12 +1,12 @@
 # Notabenda
 
-**An open-source toolkit for legal pages, privacy choices, and consent that fits the site it is installed in.**
+**An open-source toolkit for self-hosted legal pages, privacy controls and evidence storage.**
 
 The intended install is an npm package. Most work happens in the frontend or at build time: describe processing, generate or render documents, mount controls, and gate optional services. The optional **notabenda-cf** package provides mountable Cloudflare workers, Durable Object storage adapters, an evidence backoffice, and document-release history. The host application supplies authentication and authorization. Distinct evidence ingestion and optional bounded contract handoff runners are implemented; provider connections, scheduling and operational acceptance belong to the host.
 
 Status: developer preview, **19 October 2026**. Document/configuration tools, controls, evidence APIs, history, framework integrations and isolated examples are implemented, with remaining regional, operational and release work tracked per feature. No package has been published to npm. The npm registry returned “not found” for `notabenda` and `notabenda-cf` on this date; names are not reserved.
 
-## What we actually build, in priority order
+## Build areas, in priority order
 
 P0 establishes useful legal pages and integration basics. P1 adds browser consent and enforcement. P2 adds durable evidence and applicable regional/contract controls. P3 adds discovery and specialist integrations. P4 remains deferred. Regional research begins alongside P0 and informs every area.
 
@@ -16,7 +16,7 @@ Build a typed inventory of the site's controller details, purposes, vendors/serv
 
 The first useful output is ordinary **privacy, cookie, and terms pages**, plus a legal footer and an optional legal-center page. Pages use the site's layout, fonts, and navigation, work without JavaScript, and can be statically generated. The cookie page includes declared purposes, services, and storage details.
 
-Support existing reviewed documents from the beginning. Add an original clause assembler with explicit scope, licensing, and review status; start with privacy/cookie documents and narrowly scoped terms packs. Validate missing facts and incompatible choices. Archive exact versions and show meaningful diffs rather than silently editing live content.
+Support existing reviewed documents from the beginning. Add an original clause assembler with explicit scope, licensing, and review status; start with privacy/cookie documents and narrowly scoped terms packs. Validate missing facts and incompatible choices. Archive exact versions and compare released versions.
 
 **Build:** configuration schema, document renderer/compiler, completeness diagnostics, legal links, document artifacts, and vanilla/React/Astro examples. Terms acceptance is a separate, optional component linked to an exact version; reading a privacy policy is not a blanket permission.
 

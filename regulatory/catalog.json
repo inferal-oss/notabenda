@@ -3682,14 +3682,16 @@
         "packages/notabenda/src/release-files.ts",
         "packages/notabenda/src/cli.ts",
         "examples/releases/build.mjs",
-        "examples/authoring/build.mjs"
+        "examples/authoring/build.mjs",
+        "examples/rights/build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/retained-releases.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/retained-releases.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "packages/notabenda/test/rights.test.mjs"
       ],
       "implementationNote": "A bounded build-time API and repeatable CLI input emit only immutable artifact paths. Exact historical bytes and rich bodies are preserved without source evaluation. Clean-build tests and a two-version example connect public pinned URLs to private authorized comparison."
     },
@@ -3885,16 +3887,18 @@
         "packages/notabenda/src/discovery-ui.ts",
         "packages/notabenda/src/discovery-cli.ts",
         "examples/discovery/build.mjs",
-        "examples/discovery/client.mjs"
+        "examples/discovery/client.mjs",
+        "packages/notabenda/src/setup-ui.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/discovery.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/discovery.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "packages/notabenda/test/setup.test.mjs"
       ],
-      "implementationNote": "Explicit point-in-time ResourceTiming/DOM/storage-name capture with bounded strict JSON normalization; optional browser UI and local CLI preserve per-scenario observations and public-inventory candidates. Source paths, URL credentials/queries/fragments, storage values, headers and bodies are excluded."
+      "implementationNote": "Explicit point-in-time ResourceTiming/DOM/storage-name capture with bounded strict JSON normalization; optional browser UI and local CLI preserve per-scenario observations and public-inventory candidates. Source paths, URL credentials/queries/fragments, storage values, headers and bodies are excluded. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project."
     },
     {
       "id": "REQ-PRODUCT-REGIONAL-PROMPTS",
@@ -4742,7 +4746,8 @@
         "packages/notabenda/src/setup-catalog-cli.ts",
         "packages/notabenda/src/cli-json.ts",
         "packages/notabenda/src/catalog-node.ts",
-        "packages/notabenda/src/setup-cli.ts"
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/setup-ui.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -4750,9 +4755,10 @@
         "docs/verification/service-catalog.md",
         "packages/notabenda/test/catalog-browser.test.mjs",
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
-        "packages/notabenda/test/setup-project.test.mjs"
+        "packages/notabenda/test/setup-project.test.mjs",
+        "packages/notabenda/test/setup.test.mjs"
       ],
-      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable."
+      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project."
     }
   ],
   "verification": [
@@ -5399,7 +5405,8 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/retained-releases.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "packages/notabenda/test/rights.test.mjs"
       ]
     },
     {
@@ -5474,7 +5481,8 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/discovery.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "packages/notabenda/test/setup.test.mjs"
       ]
     },
     {
@@ -5714,7 +5722,8 @@
         "docs/verification/service-catalog.md",
         "packages/notabenda/test/catalog-browser.test.mjs",
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
-        "packages/notabenda/test/setup-project.test.mjs"
+        "packages/notabenda/test/setup-project.test.mjs",
+        "packages/notabenda/test/setup.test.mjs"
       ]
     }
   ],

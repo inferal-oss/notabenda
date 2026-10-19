@@ -1,6 +1,6 @@
 # Evidence lifecycle
 
-`notabenda-cf` provides host-callable retirement, legal-hold and bounded payload-purge operations for consent reports, processing restrictions and terms acceptances. The backoffice explains the recorded state and offers the existing scoped search/export tools. It remains read-only; the package supplies no deletion HTTP endpoint or authentication system.
+Use `notabenda-cf` to retire an evidence context, apply a legal hold or purge its matching payloads in resumable batches. The backoffice displays progress and supports search and export. Run lifecycle commands through your authorized backend; the admin UI is read-only.
 
 Start from [REQ-PRODUCT-EVIDENCE-LIFECYCLE](requirements/README.md#req-product-evidence-lifecycle). The related [REQ-EU-RETENTION-ERASURE](requirements/README.md#req-eu-retention-erasure) remains partial and legally unreviewed. The research locators are [GDPR Articles 5, 17 and 19](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng). Engineering tests do not decide legal necessity, retention periods, applicable exceptions or recipient duties.
 

@@ -2,9 +2,9 @@
   <img src="docs/assets/logo.svg" alt="notabenda" width="380">
 </p>
 
-<p align="center">Legal pages that feel like part of your site.</p>
+<p align="center">Self-hosted legal pages and privacy controls.</p>
 
-Notabenda gives you reusable site configuration and privacy, cookie, and terms pages you can host yourself. Your facts and content stay yours. The pages use your design, work without JavaScript, and don't depend on a remote policy service.
+Notabenda generates privacy, cookie and terms pages from your site configuration. Host the HTML yourself and style it with your CSS. The same inventory connects consent controls, permission records and document history.
 
 **Developer preview.** The packages have not been published to npm yet. Document rendering, build tooling, local consent state, vanilla cookie controls, and version-bound terms agreement work. Broader regional features remain in development. See the [current scope](docs/SCOPE.md) and [feature status](docs/FEATURES.md).
 
@@ -61,7 +61,7 @@ npx notabenda build --preview
 
 One config describes the operator, processing purposes, services, storage, retention, rights, and document versions. It produces ordinary static pages, public configuration, and a versioned artifact for your own history/evidence backend.
 
-Prefer a guided start? Run `npx notabenda wizard` or use the [setup screen](https://notabenda.org/demo/admin/setup). Describe your processing purposes, review providers and keep private reasons alongside the resulting draft. Unknown legal basis or retention stays unresolved for review. [Setup guide](docs/SETUP.md).
+For guided setup, run `npx notabenda wizard` or use the [setup screen](https://notabenda.org/demo/admin/setup). Describe your processing purposes, review providers and keep private reasons alongside the resulting draft. Unknown legal basis or retention stays unresolved for review. [Setup guide](docs/SETUP.md).
 
 Use the renderer inside your own layout, too:
 
@@ -75,11 +75,11 @@ const legalFooter = renderLegalLinks(siteConfig);
 
 No framework or runtime dependencies are required. The build-time API lives separately at `notabenda/content`. See the [package guide](packages/notabenda/README.md) for configuration, rendering, review declarations, and artifacts.
 
-Prefer files for your legal content? The optional [`notabenda-authoring`](packages/notabenda-authoring/README.md) build package accepts **Markdown and MDX with YAML frontmatter**, including your own static components. Publish the HTML and keep source revisions in the authenticated history workspace. [Authoring guide](docs/AUTHORING.md) · [Working example](http://127.0.0.1:4178/authored/terms).
+The optional [`notabenda-authoring`](packages/notabenda-authoring/README.md) build package accepts **Markdown and MDX with YAML frontmatter**, including your own static components. Publish the HTML and keep source revisions in the authenticated history workspace. [Authoring guide](docs/AUTHORING.md) · [Working example](http://127.0.0.1:4178/authored/terms).
 
-Using React? Import the optional `notabenda/react` provider, hooks and controls, or `notabenda/react/documents` for server-rendered legal content. They use the same consent engine. [React guide](docs/REACT.md) · [Live example](http://127.0.0.1:4178/react).
+For React, import the optional `notabenda/react` provider, hooks and controls, or `notabenda/react/documents` for server-rendered legal content. They use the same consent engine. [React guide](docs/REACT.md) · [Live example](http://127.0.0.1:4178/react).
 
-Using Astro? Packaged `.astro` components render static legal pages, and `notabenda/astro/client` keeps controls connected through client navigation. [Astro guide](docs/ASTRO.md) · [Real Astro example](http://127.0.0.1:4178/astro/).
+For Astro, packaged `.astro` components render static legal pages, and `notabenda/astro/client` keeps controls connected through client navigation. [Astro guide](docs/ASTRO.md) · [Real Astro example](http://127.0.0.1:4178/astro/).
 
 Give visitors a clear next step with an optional [privacy request page](docs/RIGHTS.md). Supply the actions, scope and links to your actual workflows, plus a public contact. The static page works without JavaScript and shares the same theme tokens. [Light example](http://127.0.0.1:4179/rights/) · [Midnight example](http://127.0.0.1:4179/dark/rights/). Request handling belongs to your application.
 
@@ -87,15 +87,15 @@ The [scope guard laboratory](http://127.0.0.1:4179/scope-guards/) shows ordinary
 
 ## Make it yours
 
-Inherit your fonts. Change a handful of CSS variables. Or skip the stylesheet and render the semantic HTML inside your design system. The example includes a crisp light theme and a midnight theme.
+Components inherit the host font and expose CSS variables for colors, spacing and layout. You can omit the stylesheet and style the HTML yourself. Examples include light and dark themes.
 
 Public content is escaped, links and routes are checked, and private operator metadata is excluded from generated outputs. Drafts stay visibly marked; production builds reject draft declarations and unresolved placeholders. These checks don't verify that your facts or legal wording are correct.
 
-## Evidence you can follow
+## Evidence and document history
 
 The [requirements catalog](docs/requirements/README.md) connects sources to individual obligations, planned features, implementation files, and tests. Regional behavior is recorded item by item. Research, legal review, and implementation have separate statuses.
 
-The optional [`notabenda-cf` component](packages/notabenda-cf/README.md) adds host-authorized, scoped access to stored evidence and document history. Authentication belongs to your application. The backoffice is designed around finding evidence, reading what happened, and comparing policy/terms versions. Its Durable Object adapter and history APIs power the website's isolated demo and can be plugged into your own host integration.
+The optional [`notabenda-cf` component](packages/notabenda-cf/README.md) adds host-authorized, scoped access to stored evidence and document history. Authentication belongs to your application. The backoffice provides evidence search, record details and policy/terms comparisons. Its Durable Object adapter and history APIs power the website's isolated demo and can be plugged into your own host integration.
 
 Start your own backend with `npx notabenda-cf init`. It creates a local Worker project with SQLite storage, the admin and guided setup; you supply your existing authorization hook. Nothing is installed or deployed automatically. [Cloudflare starter guide](docs/CLOUDFLARE-STARTER.md).
 

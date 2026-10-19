@@ -24,11 +24,11 @@ test('public website builds require explicit operator/contact facts and never in
 test('website privacy is distinct from sample policies and stays script-free without allocating a demo session',async()=>{
  const html=await readFile(new URL('../dist/public/website-privacy/index.html',import.meta.url),'utf8'),home=await readFile(new URL('../dist/public/index.html',import.meta.url),'utf8'),sample=await readFile(new URL('../dist/public/privacy/index.html',import.meta.url),'utf8');
  const dom=new JSDOM(html),document=dom.window.document;
- assert.equal(document.querySelectorAll('script,form').length,0);assert.match(document.querySelector('h1').textContent,/Privacy, in plain view/);assert.ok(document.querySelector('.website-notice-draft')||document.querySelector('#website-operator'));
+ assert.equal(document.querySelectorAll('script,form').length,0);assert.match(document.querySelector('h1').textContent,/Website privacy/);assert.ok(document.querySelector('.website-notice-draft')||document.querySelector('#website-operator'));
  for(const phrase of ['__Host-notabenda_demo','Cloudflare','one day without use','not immediately delete','not uploaded','not advertising','sample details']){
   assert.ok(document.body.textContent.includes(phrase),phrase);
  }
- assert.match(home,/href="\/website-privacy">Website privacy/);assert.match(sample,/Juniper/);assert.doesNotMatch(sample,/Privacy, in plain view/);dom.window.close();
+ assert.match(home,/href="\/website-privacy">Website privacy/);assert.match(sample,/Juniper/);assert.doesNotMatch(sample,/Website privacy/);dom.window.close();
  const env={ASSETS:{fetch:async()=>new Response(html,{headers:{'Content-Type':'text/html'}})},DEMO_WORKSPACES:{get(){throw Error('Privacy does not allocate a database');}},WORKSPACE:{get(){throw Error('Privacy does not access operational data');}}};
  const response=await serveHost(new Request('https://example.test/website-privacy'),env);assert.equal(response.status,200);assert.equal(response.headers.get('Set-Cookie'),null);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src|'unsafe-inline'/);
  assert.equal((await serveHost(new Request('https://example.test/website-privacy',{method:'POST'}),env)).status,405);

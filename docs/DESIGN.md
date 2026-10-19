@@ -48,3 +48,5 @@ The current reference is [Linear’s March 2026 design refresh](https://linear.a
 
 
 Assessment questions use a two-column grid when the actual container can fit two readable cards; narrow layouts use one column, in the same DOM order. Full questions, explanations and equal Yes / No / Not sure radio choices are always exposed. Supporting facts are an optional private note disclosure; imported notes open initially. All questions remain available regardless of earlier answers. The summary counts yes/no assessments and unresolved choices, never legal completion. Native radio grouping, arrow keys and visible focus work without auto-advance. Enter on a radio must not move sections or prepare a report. No bulk choice or automatic note is supplied.
+
+Apply the [writing guidelines](WRITING.md) to page headings, controls, status messages, examples and documentation. Copy should identify the task or state as directly as the layout does.

@@ -11,7 +11,7 @@ import {compileLegalDocuments} from 'notabenda/content';
 import {compileAuthoredDocuments} from 'notabenda-authoring';
 import {recordLegalRelease,createDocumentHistory} from 'notabenda-cf';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
-import {rightsExampleConfig} from '../../../examples/rights/build.mjs';
+import {rightsExampleConfig,rightsFiles} from '../../../examples/rights/build.mjs';
 import {fixture} from './helpers.mjs';
 import {createSetupPlan} from 'notabenda/setup';
 const configured=async()=>rightsExampleConfig(await fixture({reviewed:true}),{reviewed:true});
@@ -26,14 +26,32 @@ test('guided setup recommends operator-owned rights entry points without inventi
 test('an optional rights center compiles a script-free supporting page, links it and binds its public declaration without changing legal artifact kinds',async()=>{
  const config=await configured(),build=compileLegalDocuments(config);assert.equal(build.publicConfig.privacy.rightsUrl,'/rights');assert.ok(build.files['rights/index.html']);assert.deepEqual(Object.keys(build.artifact.documents),['privacy','cookies','terms']);assert.equal(Object.keys(build.artifact.pages).length,3);assert.equal(build.files['rights/index.html'],renderRightsPage(config,{stylesheetUrl:'/assets/notabenda.css'}));
  assert.match(build.artifact.pages['rights/privacy/index.html'],/href="\/rights"/);assert.match(renderLegalLinks(config),/Privacy requests/);
- const storage=createSyntheticStorage([]);await recordLegalRelease(storage,build.artifact);const archived=await storage.get('notabenda/releases/'+build.manifest.artifactId);assert.equal(archived.artifact.publicConfig.rightsCenter.revision,'rights-1');assert.equal(Object.hasOwn((await createDocumentHistory(storage).get(build.manifest.artifactId)).data,'publicConfig'),false);
- const changed=structuredClone(config);changed.rightsCenter.actions[0].description='Changed operator guidance.';changed.rightsCenter.revision='rights-2';assert.notEqual(compileLegalDocuments(changed).manifest.artifactId,build.manifest.artifactId);
+ const storage=createSyntheticStorage([]);await recordLegalRelease(storage,build.artifact);const archived=await storage.get('notabenda/releases/'+build.manifest.artifactId);assert.equal(archived.artifact.publicConfig.rightsCenter.revision,'rights-2');assert.equal(Object.hasOwn((await createDocumentHistory(storage).get(build.manifest.artifactId)).data,'publicConfig'),false);
+ const changed=structuredClone(config);changed.rightsCenter.actions[0].description='Changed operator guidance.';changed.rightsCenter.revision='rights-3';assert.notEqual(compileLegalDocuments(changed).manifest.artifactId,build.manifest.artifactId);
+});
+
+// @requirements REQ-PRODUCT-RETAINED-RELEASES
+test('revised rights example keeps previous artifact URLs and their exact legal HTML',async()=>{
+ const base=await fixture(),files=await rightsFiles(base);
+ const retained=JSON.parse(await (await import('node:fs/promises')).readFile(new URL('../../../examples/rights/retained-artifacts.json',import.meta.url),'utf8'));
+ assert.equal(retained.length,2);
+ for(const artifact of retained){
+  assert.equal(artifact.publicConfig.rightsCenter.revision,'rights-1');
+  assert.deepEqual(JSON.parse(files[`artifacts/${artifact.manifest.artifactId}.json`]),artifact);
+  for(const document of artifact.manifest.documents)assert.equal(files[`artifacts/${artifact.manifest.artifactId}/${document.kind}.html`],artifact.pages[document.file]);
+ }
+ for(const prefix of ['','/dark']){
+  const current=compileLegalDocuments(rightsExampleConfig(base,{prefix}),{mode:'preview',stylesheetUrl:prefix?'/assets/dark.css':'/assets/notabenda.css'});
+  assert.equal(current.publicConfig.rightsCenter.revision,'rights-2');
+  assert.ok(retained.every(a=>a.manifest.artifactId!==current.manifest.artifactId));
+  assert.equal(files[prefix.slice(1)+(prefix?'/':'')+'rights/index.html'],current.files[prefix.slice(1)+(prefix?'/':'')+'rights/index.html']);
+ }
 });
 
 test('no rights actions are inferred from jurisdictions, published claims or a consent choice',async()=>{
  const config=await fixture({reviewed:true});assert.equal(toPublicConfig(config).rightsCenter,undefined);assert.throws(()=>renderRightsCenter(config));assert.doesNotMatch(renderLegalLinks(config),/Privacy requests/);
  const phone=await configured();phone.rightsCenter.contact.href='tel:+12025550123';assert.match(renderRightsCenter(phone),/href="tel:\+12025550123"/);
- const supplied=await configured();supplied.rightsCenter.actions=[supplied.rightsCenter.actions[0]];supplied.jurisdictions=['EU-EEA','US-VA'];const dom=new JSDOM(renderRightsCenter(supplied));assert.equal(dom.window.document.querySelectorAll('.nb-rights-action').length,1);assert.doesNotMatch(dom.window.document.body.textContent,/appeal|erasure|withdrawal/i);dom.window.close();
+ const supplied=await configured();supplied.rightsCenter.actions=[supplied.rightsCenter.actions[0]];supplied.jurisdictions=['EU-EEA','US-VA'];const dom=new JSDOM(renderRightsCenter(supplied));assert.equal(dom.window.document.querySelectorAll('.nb-rights-action').length,1);assert.doesNotMatch(dom.window.document.querySelector('.nb-rights-grid').textContent,/appeal|erasure|withdrawal/i);dom.window.close();
 });
 
 test('rights navigation has no collection fields, implicit submission, storage writes or consent/terms mutation',async()=>{

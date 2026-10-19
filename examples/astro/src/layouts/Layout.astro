@@ -16,7 +16,7 @@ const {title,demo=false}=Astro.props;
   </head>
   <body class={demo?'nb-page nb-demo-page nb-demo-astro':'nb-page'}>
     <a class="nb-skip-link" href="#main">Skip to content</a>
-    {demo ? <header class="nb-site-header"><a class="demo-brand" href="/"><svg viewBox="0 0 32 32" width="27" height="27" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg><span>juniper<span class="demo-brand-separator">/</span>notes</span></a><nav aria-label="Example navigation"><a href="/examples" data-astro-reload>← All examples</a><a href="/guide/astro" data-astro-reload>Integration guide ↗</a></nav></header> : <header class="nb-site-header"><a href="/astro/">Juniper Notes</a><span>Independent words. Considered details.</span></header>}
+    {demo ? <header class="nb-site-header"><a class="demo-brand" href="/"><svg viewBox="0 0 32 32" width="27" height="27" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg><span>juniper<span class="demo-brand-separator">/</span>notes</span></a><nav aria-label="Example navigation"><a href="/examples" data-astro-reload>← All examples</a><a href="/guide/astro" data-astro-reload>Integration guide ↗</a></nav></header> : <header class="nb-site-header"><a href="/astro/">Juniper Notes</a><span>Juniper Notes examples</span></header>}
     <slot />
     <footer class="nb-site-footer">
       <slot name="controls" />

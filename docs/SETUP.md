@@ -1,8 +1,8 @@
 # Guided setup
 
-Run `npx notabenda wizard` after installing the package, or use the [demo setup screen](/demo/admin/setup). The npm package remains a local developer preview and has not been published from this workspace; here, run `node packages/notabenda/dist/cli.js wizard` after `npm run build`.
+Run `npx notabenda wizard` after installing the package, or use the [demo setup screen](/demo/admin/setup). The packages are unpublished. From this repository, run `node packages/notabenda/dist/cli.js wizard` after `npm run build`.
 
-The wizard asks for public site facts, markets to investigate, actual practices and supporting justifications. It covers personal-data processing, optional browser storage, embeds, sale/sharing/targeted advertising, explicit terms agreement, paid consumer workflows, distance contracts, continuing paid contracts, children, transfers, durable records and Markdown/MDX authoring. Every practice supports **yes**, **no** and **not sure**. Existing necessary-storage inventory items get individual private justification fields.
+The wizard collects site details, processing practices and supporting notes, then produces a draft configuration and private report. Every practice supports **Yes**, **No** and **Not sure**. Necessary-storage items have separate justification fields.
 
 One versioned engine powers the CLI and browser UI. Recommendations name the relevant configuration fields or host integration, explain what to enable or investigate, and link to catalog requirements. A selected market starts an applicability review; the catalog supplies sources, dates, caveats and current implementation status. The market list is incomplete, and no jurisdiction pack is production-supported. The wizard does not infer an exemption, legal basis, adequacy, age or compliance from a checkbox.
 
@@ -18,7 +18,7 @@ npx notabenda wizard --answers ./setup-review/setup.private.json \
   --config ./setup-review/notabenda.config.json --out-dir ./setup-review-3
 ```
 
-The directory must not exist, including through a symlink. The wizard writes `notabenda.config.json`, `setup.private.json` and a local `.gitignore` excluding the report. On supported systems the directory and JSON files use private permissions. Input files are explicit JSON up to 512 KiB; normalized answers are bounded to 128 KiB. Noninteractive use requires `--answers`; there is no silent answer default that activates collection. Imported configs are validated before interactive questions.
+The directory must not exist, including through a symlink. The wizard writes `notabenda.config.json`, `setup.private.json` and a local `.gitignore` excluding the report. On supported systems the directory and JSON files use private permissions. Input files must be JSON no larger than 512 KiB; normalized answers have a 128 KiB limit. Noninteractive use requires `--answers`; there is no silent answer default that activates collection. Imported configs are validated before interactive questions.
 
 A minimal answers file:
 
@@ -205,3 +205,5 @@ Headless integrations use `prepareCatalogSelectionReview(config, previous, optio
 The Practices section groups all 15 questions into Data and tools, Customers and contracts, Sensitive contexts, and Evidence and publishing. Answer each card directly with Yes, No or Not sure; no disclosure or select menu is needed to answer. Explanations stay visible. Add supporting facts through the private notes disclosure; imported notes open automatically. The two-column layout becomes a single column in a narrow container, with 44px choice targets.
 
 Native radio groups support keyboard arrow navigation. Answering never advances the section or moves focus; Enter on a radio does not submit or navigate. A No answer does not hide independent questions. The summary counts yes/no assessments, Not sure answers and supporting notes separately; neither an answer nor a count establishes legal readiness. Unknowns and missing reasons remain review items, with the same advisory engine and saved-report schema.
+
+The browser setup also displays the project-discovery command beside service selection. Run it in your project directory for dependency/import and infrastructure candidates, then review the findings before adding services. The browser UI cannot read the project tree or run that command. Project discovery is optional; your team chooses when to run it and whether to use CI.

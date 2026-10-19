@@ -1,6 +1,6 @@
 # Start a Cloudflare backend
 
-`npx notabenda-cf init` creates a small project you can inspect and own: one Worker, a SQLite-backed Durable Object, the evidence admin and local setup assets. Authentication comes from your application. The generated hook denies all access until you implement it.
+`npx notabenda-cf init` creates a Worker project with a SQLite-backed Durable Object, the evidence admin and setup assets. Authentication comes from your application. The generated hook denies all access until you implement it.
 
 The packages are currently unpublished developer previews. Build/pack them from this repository and install their local tarballs first. The installed CLI is then available as `npx notabenda-cf`.
 

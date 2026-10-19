@@ -1,6 +1,6 @@
 # Privacy request entry points
 
-A rights center gives people a clear route to the operator's workflows for information access, correction, erasure, portability, restriction, objection, consent withdrawal, an applicable appeal or another question. The operator chooses the actions and their wording; jurisdictions, cookie choices and published rights text never create actions automatically.
+A rights page links visitors to the operator's request workflows. Configure the actions, explanations and destinations for access, correction, erasure, portability, restriction, objection, consent withdrawal or appeals as applicable. Selecting a jurisdiction or publishing policy text does not configure these routes.
 
 The first implementation is navigation and public information. It does not collect request contents, verify identity, submit or acknowledge a request, produce a personal-data export, delete application data or process an appeal. The [feature remains partial](FEATURES.md#feat-rights); those application workflows remain separate.
 

@@ -1,6 +1,6 @@
 # Cookie choices and service integration
 
-The first local consent runtime and vanilla controls are implemented. They use the same site inventory as the legal pages. Optional services stay off until all their declared purposes have a current explicit grant. This is a cooperative integration API: an application must put optional work behind its registered loaders.
+Register optional services with the consent controller. Their loaders run only while every declared purpose has a current grant. The controls use the same site inventory as the legal pages; the application must route optional work through those loaders.
 
 ## Configure optional purposes and services
 

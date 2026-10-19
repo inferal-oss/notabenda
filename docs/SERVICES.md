@@ -1,6 +1,6 @@
 # A directory of declared services
 
-Use one inventory for privacy disclosures and a readable service directory. Each service shows its provider, declared purposes and processing location. Native expandable details show purpose-specific data categories, legal basis, retention and linked browser-storage items. A missing provider privacy link or storage declaration stays explicit.
+Use one inventory for privacy disclosures and a readable service directory. Each service shows its provider, declared purposes and processing location. Native expandable details show purpose-specific data categories, legal basis, retention and linked browser-storage items. The directory identifies missing privacy links and storage declarations.
 
 The directory reads only the site's declared `services`, `purposes` and `storage`. It supports entirely custom services and ordinary services proposed by the [catalog](SERVICE-CATALOG.md). Detection never publishes an entry. Confirm actual use and review the configuration before production rendering. Reference datasets, catalog provenance, private reasoning, integration scopes and resource origins are absent from the display model.
 
