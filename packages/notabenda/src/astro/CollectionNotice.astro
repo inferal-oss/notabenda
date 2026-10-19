@@ -1,0 +1,8 @@
+---
+// @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-PRODUCT-ASTRO
+import {renderCollectionNotice} from '../collection.js';
+export interface Props {notice:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;class?:string}
+const {notice,idPrefix,headingLevel,allowPreview=false,class:className}=Astro.props;
+const html=renderCollectionNotice(notice,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})});
+---
+<div class={className} set:html={html} />

@@ -1,0 +1,145 @@
+// @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
+import type { BuildMode } from './types.js';
+
+export interface TermsOffer {
+  schemaVersion: 1;
+  offerId: string;
+  siteId: string;
+  scopeId: string;
+  artifactId: string;
+  mode: BuildMode;
+  document: { title: string; url: string; version: string; effectiveDate: string; sha256: string; contentSha256: string; reviewStatus: 'draft' | 'reviewed' };
+  statement: string;
+  actionLabel: string;
+}
+export interface TermsAcceptanceRequest { schemaVersion: 1; offerId: string; requestId: string; accepted: true }
+export interface TermsAcceptanceReceipt {
+  schemaVersion: 1;
+  id: string;
+  offerId: string;
+  requestId: string;
+  operationId: string;
+  artifactId: string;
+  documentSha256: string;
+  documentVersion: string;
+  recordedAt: string;
+}
+export type TermsAcceptanceStatus = 'idle' | 'submitting' | 'recorded' | 'error' | 'stale' | 'retired' | 'destroyed';
+export interface TermsAcceptanceSnapshot {
+  checked: boolean;
+  status: TermsAcceptanceStatus;
+  requestId?: string;
+  receipt?: TermsAcceptanceReceipt;
+  error?: 'unavailable' | 'recording-failed' | 'invalid-receipt' | 'stale-offer' | 'context-retired';
+}
+export interface TermsAcceptanceOptions {
+  /** Opaque workflow/order reference supplied by the host; the server independently binds the same operation. */
+  operationId: string;
+  submit(request: TermsAcceptanceRequest, context: { signal: AbortSignal }): Promise<unknown>;
+  allowPreview?: boolean;
+  /** Host-managed recovery of an uncertain attempt. This is an idempotency key, never an authorization credential. */
+  requestId?: string;
+}
+export interface TermsAcceptanceController {
+  getOffer(): TermsOffer;
+  getSnapshot(): TermsAcceptanceSnapshot;
+  subscribe(listener: (state: TermsAcceptanceSnapshot) => void): () => void;
+  setChecked(value: boolean): void;
+  submit(): Promise<TermsAcceptanceReceipt>;
+  destroy(): void;
+}
+export class TermsAcceptanceError extends Error {
+  constructor(readonly code: 'not-checked' | 'unavailable' | 'recording-failed' | 'invalid-receipt' | 'stale-offer' | 'context-retired' | 'destroyed') { super(code); this.name = 'TermsAcceptanceError'; }
+}
+const hash = (value: unknown): value is string => typeof value === 'string' && /^[a-f0-9]{64}$/u.test(value);
+const plain = (value: unknown, max: number): value is string => typeof value === 'string' && value.trim().length > 0 && value.length <= max && new TextEncoder().encode(value).length <= max && !/[\u0000-\u001f\u007f]/u.test(value);
+const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
+export const validTermsRequestId = (value: unknown): value is string => typeof value === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(value);
+const date = (value: unknown): value is string => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/u.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0,10) === value;
+
+/** Shape validation does not authenticate the offer. Backend registration verifies the digests and archive. */
+export function normalizeTermsOffer(input: unknown, options: { allowPreview?: boolean } = {}): TermsOffer {
+  if (!object(input) || input.schemaVersion !== 1 || !hash(input.offerId) || !hash(input.artifactId) || !plain(input.siteId,120) || !/^[a-z][a-z0-9-]*$/u.test(input.siteId) || !plain(input.scopeId,120) || !/^[a-z][a-z0-9-]*$/u.test(input.scopeId) || !['production','preview'].includes(String(input.mode)) || !plain(input.statement,2000) || !plain(input.actionLabel,120) || !object(input.document)) throw new Error('Invalid terms offer.');
+  const d = input.document;
+  if (!plain(d.title,300) || !plain(d.version,200) || !date(d.effectiveDate) || !hash(d.sha256) || !hash(d.contentSha256) || !['draft','reviewed'].includes(String(d.reviewStatus)) || d.url !== `/artifacts/${input.artifactId}/terms.html`) throw new Error('Invalid terms document reference.');
+  if (!options.allowPreview && (input.mode !== 'production' || d.reviewStatus !== 'reviewed')) throw new Error('Production acceptance requires a reviewed production release.');
+  return { schemaVersion:1, offerId:input.offerId, artifactId:input.artifactId, siteId:input.siteId, scopeId:input.scopeId, mode:input.mode as BuildMode, statement:input.statement, actionLabel:input.actionLabel, document:{ title:d.title, url:d.url as string, version:d.version, effectiveDate:d.effectiveDate, sha256:d.sha256, contentSha256:d.contentSha256, reviewStatus:d.reviewStatus as 'draft'|'reviewed' } };
+}
+
+/** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE
+ * Explicit version-bound assertion with no optimistic success and no cookie/marketing side effects.
+ */
+export function createTermsAcceptance(input: unknown, options: TermsAcceptanceOptions): TermsAcceptanceController {
+  const offer = normalizeTermsOffer(input, options);
+  if (!plain(options.operationId,200) || typeof options.submit !== 'function' || options.requestId !== undefined && !validTermsRequestId(options.requestId)) throw new Error('Provide a host operation, submit transport, and valid recovery request ID.');
+  const operationId = options.operationId; const transport = options.submit;
+  let state: TermsAcceptanceSnapshot = { checked:false, status:'idle', ...(options.requestId ? { requestId:options.requestId } : {}) };
+  let pending: Promise<TermsAcceptanceReceipt> | undefined; let abort: AbortController | undefined;
+  const listeners = new Set<(state: TermsAcceptanceSnapshot) => void>();
+  const snapshot = () => structuredClone(state);
+  const emit = () => { for (const listener of [...listeners]) try { listener(snapshot()); } catch {} };
+  function receipt(input: unknown): TermsAcceptanceReceipt {
+    if (!object(input) || input.schemaVersion !== 1 || !hash(input.id) || input.offerId !== offer.offerId || input.requestId !== state.requestId || input.operationId !== operationId || input.artifactId !== offer.artifactId || input.documentSha256 !== offer.document.sha256 || input.documentVersion !== offer.document.version || typeof input.recordedAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(input.recordedAt) || !Number.isFinite(Date.parse(input.recordedAt)) || new Date(input.recordedAt).toISOString() !== input.recordedAt) throw new TermsAcceptanceError('invalid-receipt');
+    return { schemaVersion:1, id:input.id, offerId:offer.offerId, requestId:state.requestId!, operationId, artifactId:offer.artifactId, documentSha256:offer.document.sha256, documentVersion:offer.document.version, recordedAt:input.recordedAt };
+  }
+  function submit(): Promise<TermsAcceptanceReceipt> {
+    if (state.status === 'destroyed') return Promise.reject(new TermsAcceptanceError('destroyed'));
+    if (state.status === 'retired') return Promise.reject(new TermsAcceptanceError('context-retired'));
+    if (pending) return pending;
+    if (state.receipt) return Promise.resolve(structuredClone(state.receipt));
+    if (!state.checked) return Promise.reject(new TermsAcceptanceError('not-checked'));
+    if (state.status === 'stale') return Promise.reject(new TermsAcceptanceError('stale-offer'));
+    let requestId = state.requestId;
+    try { requestId ??= crypto.randomUUID(); } catch {}
+    if (!validTermsRequestId(requestId)) {
+      state = { checked:true, status:'error', error:'unavailable' }; emit();
+      return Promise.reject(new TermsAcceptanceError('unavailable'));
+    }
+    const request: TermsAcceptanceRequest = { schemaVersion:1, offerId:offer.offerId, requestId, accepted:true };
+    abort = new AbortController(); const signal = abort.signal;
+    state = { checked:true, status:'submitting', requestId };
+    pending = Promise.resolve().then(() => { if (signal.aborted) throw new TermsAcceptanceError('destroyed'); return transport(structuredClone(request), { signal }); }).then(value => {
+      if (signal.aborted) throw new TermsAcceptanceError('destroyed');
+      const result = receipt(value); state = { checked:true, status:'recorded', requestId, receipt:result }; emit(); return structuredClone(result);
+    }).catch(error => {
+      if (state.status === 'destroyed') throw new TermsAcceptanceError('destroyed');
+      const code = error instanceof TermsAcceptanceError && ['invalid-receipt','stale-offer','context-retired'].includes(error.code) ? error.code as 'invalid-receipt'|'stale-offer'|'context-retired' : 'recording-failed';
+      state = { checked:true, status:code === 'context-retired' ? 'retired' : code === 'stale-offer' ? 'stale' : 'error', requestId, error:code }; emit(); throw new TermsAcceptanceError(code);
+    }).finally(() => { pending = undefined; });
+    emit();
+    return pending;
+  }
+  return {
+    getOffer:()=>structuredClone(offer), getSnapshot:snapshot,
+    subscribe(listener) { listeners.add(listener); try { listener(snapshot()); } catch {} return ()=>listeners.delete(listener); },
+    setChecked(value) { if (typeof value !== 'boolean' || !['idle','error'].includes(state.status)) throw new Error('The current acceptance attempt cannot be edited.'); state = { checked:value, status:'idle', ...(state.requestId ? { requestId:state.requestId } : {}) }; emit(); },
+    submit,
+    destroy() { if (state.status === 'destroyed') return; state = { ...state, status:'destroyed' }; abort?.abort(); emit(); listeners.clear(); },
+  };
+}
+
+/** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-A11Y */
+export function mountTermsAcceptance(container: HTMLElement, options: { acceptance: TermsAcceptanceController }): { destroy(): void } {
+  const { acceptance } = options; const offer = acceptance.getOffer(); const doc = container.ownerDocument;
+  const root = doc.createElement('section'); root.className = 'nb-terms-acceptance'; root.setAttribute('aria-label','Terms agreement');
+  const heading = doc.createElement('h2'); heading.textContent = 'Review the terms';
+  const link = doc.createElement('a'); link.href = offer.document.url; link.textContent = `${offer.document.title} · version ${offer.document.version}`; link.target = '_blank'; link.rel = 'noopener';
+  const metadata = doc.createElement('p'); metadata.className = 'nb-document-meta'; metadata.textContent = `Effective ${offer.document.effectiveDate} · opens in a new tab`;
+  const label = doc.createElement('label'); label.className = 'nb-terms-statement';
+  const checkbox = doc.createElement('input'); checkbox.type = 'checkbox';
+  const statement = doc.createElement('span'); statement.textContent = offer.statement; label.append(checkbox,statement);
+  const action = doc.createElement('button'); action.type = 'button'; action.className = 'nb-choice-button'; action.textContent = offer.actionLabel;
+  const message = doc.createElement('p'); message.className = 'nb-control-status'; message.setAttribute('role','status');
+  root.append(heading,link,metadata);
+  if (offer.mode === 'preview' || offer.document.reviewStatus !== 'reviewed') { const draft = doc.createElement('p'); draft.className = 'nb-draft'; draft.textContent = 'Preview · Draft terms'; root.append(draft); }
+  root.append(label,action,message); container.append(root);
+  checkbox.addEventListener('change',()=>acceptance.setChecked(checkbox.checked));
+  action.addEventListener('click',()=>{ void acceptance.submit().catch(()=>{}); });
+  const unsubscribe = acceptance.subscribe(state=>{
+    checkbox.checked = state.checked; checkbox.disabled = !['idle','error'].includes(state.status);
+    action.disabled = !state.checked || !['idle','error'].includes(state.status);
+    root.setAttribute('aria-busy',String(state.status === 'submitting'));
+    message.textContent = state.status === 'recorded' ? `Agreement recorded for version ${offer.document.version}.` : state.status === 'submitting' ? 'Recording your agreement…' : state.status === 'stale' ? 'The terms have changed. Reload to review the current version.' : state.status === 'retired' ? 'This agreement context has closed. Contact the site operator to start a new workflow.' : state.error === 'unavailable' ? 'This browser cannot start a secure agreement request. Try a supported browser over HTTPS.' : state.status === 'error' ? "We couldn't confirm your agreement was saved. Please try again." : '';
+  });
+  return { destroy() { unsubscribe(); root.remove(); } };
+}

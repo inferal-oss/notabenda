@@ -1,0 +1,8 @@
+---
+// @requirements REQ-PRODUCT-ASTRO
+import {renderLegalLinks} from '../documents.js';
+export interface Props {config:unknown;class?:string}
+const {config,class:className}=Astro.props;
+const html=renderLegalLinks(config);
+---
+<div class={className} set:html={html} />

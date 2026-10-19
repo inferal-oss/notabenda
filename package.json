@@ -1,0 +1,35 @@
+{
+  "name": "notabenda-workspace",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "test": "npm run build && node --test packages/*/test/*.test.mjs",
+    "check": "npm test && python3 scripts/regulatory.py --check && node site/build.mjs && node --test site/test/*.test.mjs && node scripts/site-wrangler.mjs deploy --dry-run --config site/wrangler.jsonc --outdir dist/site-worker",
+    "example": "npm run build && node examples/static/build.mjs",
+    "dev": "npm run site:build && node scripts/serve-example.mjs",
+    "site:build": "npm run build && node site/build.mjs",
+    "site:key": "node scripts/init-site-key.mjs",
+    "site:dev": "npm run site:build && node scripts/site-wrangler.mjs dev --config site/wrangler.jsonc --ip 127.0.0.1 --port 4179 --persist-to .local/site-state",
+    "site:check": "npm run site:build && node --test site/test/*.test.mjs && node scripts/site-wrangler.mjs deploy --dry-run --config site/wrangler.jsonc --outdir dist/site-worker",
+    "example:astro": "npm run build && node examples/astro/build.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.5",
+    "astro": "7.4.0",
+    "esbuild": "0.28.2",
+    "fake-indexeddb": "6.2.6",
+    "jsdom": "26.1.0",
+    "marked": "18.1.1",
+    "shiki": "4.5.0",
+    "typescript": "7.0.2",
+    "wrangler": "4.151.1"
+  },
+  "engines": {
+    "node": ">=22.22.0"
+  }
+}

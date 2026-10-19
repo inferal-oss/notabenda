@@ -1,0 +1,182 @@
+// @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-DE-CANCEL REQ-DE-WITHDRAWAL REQ-EU-WITHDRAWAL REQ-BR-CONTRACT
+import {normalizeContractActionDefinition,contractActionDefaults} from './contract-action-policy.js';
+import type {ContractActionDefinition,ContractActionProfile} from './contract-action-policy.js';
+// @requirements REQ-EU-CONSENT REQ-CA-MEANINGFUL REQ-EU-MARKETING REQ-CA-CASL-OPTIN
+import {normalizeFormPermissionOffer} from './form-permission.js';
+import type {FormPermissionOffer,FormPermissionSettings} from './form-permission.js';
+import {scopeGuardContext} from './scope-guard-policy.js';
+// @requirements REQ-PRODUCT-RIGHTS-CENTER
+import {renderRightsPage} from './rights.js';
+// @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
+/** Build-time entry point. @requirements REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CONFIG REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-AUTHORING */
+import {normalizeCollectionNotice} from './collection.js';
+import type {CollectionNotice,CollectionNoticeSettings} from './collection.js';
+import { createHash } from 'node:crypto';
+import { documentKinds, toPublicConfig } from './config.js';
+import { createLegalDocument, renderLegalPage } from './documents.js';
+import type { DocumentKind, LegalDocument, PublicSiteConfig, RequirementId, ValidationOptions } from './types.js';
+import { normalizeTermsOffer } from './terms.js';
+import type { TermsOffer } from './terms.js';
+import { consentScopes, defaultConsentWording, normalizeConsentNotice, applyPromptPolicyWording } from './consent-notice.js';
+import type { ConsentNotice, ConsentWording } from './consent-notice.js';
+import {normalizeProcessingNotice,processingServiceScope} from './processing.js';
+import type {ProcessingNotice} from './processing.js';
+import type {ProcessingActivity} from './types.js';
+export {createRetainedReleaseFiles} from './release-files.js';
+
+export function canonicalJson(value: unknown): string {
+  if (value === null || typeof value !== 'object') return JSON.stringify(value);
+  if (Array.isArray(value)) return `[${value.map(canonicalJson).join(',')}]`;
+  const record = value as Record<string, unknown>;
+  return `{${Object.keys(record).sort().map(key => `${JSON.stringify(key)}:${canonicalJson(record[key])}`).join(',')}}`;
+}
+export const sha256 = (value: string): string => createHash('sha256').update(value, 'utf8').digest('hex');
+
+/** @requirements REQ-PRODUCT-PROCESSING-CHOICES Pin a separate opt-out action to its privacy release. */
+export function createProcessingNotice(artifact:LegalArtifact,settings:{scopeId:string;activities:ProcessingActivity[];wording:ProcessingNotice['wording']},options:ValidationOptions={}):ProcessingNotice {
+  const config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
+  if(config.services.some(service=>!service.processingActivities))throw new Error('Explicitly classify every service before building processing choices.');
+  const d=artifact.manifest.documents.find(doc=>doc.kind==='privacy');if(!d)throw new Error('The release needs a privacy document.');
+  const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
+  const n=normalizeProcessingNotice({schemaVersion:1,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,activities:settings.activities,services:processingServiceScope(config.services),wording:settings.wording,document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
+  const {noticeId:_,...descriptor}=n;return {...n,noticeId:sha256(canonicalJson(descriptor))};
+}
+
+/** @requirements REQ-PRODUCT-CONSENT-EVIDENCE: pin UI wording, material purposes and the exact privacy/cookie releases. */
+export function createConsentNotice(artifact: LegalArtifact, settings:{scopeId:string; wording?:Partial<ConsentWording>; deliveryWindowSeconds?:number}, options:ValidationOptions = {}): ConsentNotice {
+  const config = toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
+  if (!config.consent) throw new Error('Declare the optional consent scope first.');
+  const scopes = consentScopes(config);
+  const documents = Object.fromEntries(['privacy','cookies'].map(kind=>{
+    const doc = artifact.manifest.documents.find(d=>d.kind === kind);
+    if (!doc) throw new Error('The release has no privacy/cookie document.');
+    const {title,version,effectiveDate,sha256,contentSha256,reviewStatus} = doc;
+    return [kind,{title,version,effectiveDate,sha256,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/${kind}.html`}];
+  }));
+  const notice = normalizeConsentNotice({schemaVersion:1,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,scopes,scopeDigest:sha256(canonicalJson(scopes)),wording:applyPromptPolicyWording(config,{...defaultConsentWording(config),...settings.wording}),documents,policy:{grantLifetimeDays:config.consent.grantLifetimeDays,refusalLifetimeDays:config.consent.refusalLifetimeDays,deliveryWindowSeconds:settings.deliveryWindowSeconds ?? 300,...(config.consent.promptPolicy?{promptPolicy:config.consent.promptPolicy}:{})}}, {allowPreview:options.mode === 'preview'});
+  const {noticeId:_,...descriptor} = notice;
+  return {...notice,noticeId:sha256(canonicalJson(descriptor))};
+}
+
+/** Versioned collection/action wording; referenced terms do not establish the visitor's original contract terms. */
+export function createContractActionDefinition(artifact:LegalArtifact,settings:{actionId:string;revision:string;profile:ContractActionProfile;reviewStatus:'draft'|'reviewed';wording?:Partial<ContractActionDefinition['wording']>},options:ValidationOptions={}):ContractActionDefinition {
+ const config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
+ const documents=Object.fromEntries(['terms','privacy'].map(kind=>{const d=artifact.manifest.documents.find(item=>item.kind===kind);if(!d)throw Error('Contract actions need terms and privacy references.');const {title,version,effectiveDate,sha256,contentSha256,reviewStatus}=d;return [kind,{title,version,effectiveDate,sha256,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/${kind}.html`}];}));
+ const definition=normalizeContractActionDefinition({schemaVersion:1,definitionId:'0'.repeat(64),siteId:config.site.id,actionId:settings.actionId,revision:settings.revision,profile:settings.profile,locale:settings.profile.startsWith('de-')?'de-DE':settings.profile==='br-withdrawal'?'pt-BR':'en',renderingPolicy:'contract-form-v1',mode:artifact.manifest.mode,reviewStatus:settings.reviewStatus,artifactId:artifact.manifest.artifactId,wording:{...contractActionDefaults[settings.profile],...settings.wording},documents},{allowPreview:options.mode==='preview'});
+ const {definitionId:_,...descriptor}=definition;return {...definition,definitionId:sha256(canonicalJson(descriptor))};
+}
+
+export interface CompiledDocument {
+  kind: DocumentKind;
+  route: string;
+  file: string;
+  title: string;
+  version: string;
+  effectiveDate: string;
+  reviewStatus: 'draft' | 'reviewed';
+  sha256: string;
+  contentSha256: string;
+  requirementIds: RequirementId[];
+  authoring?:AuthoredDocumentDescriptor;
+}
+/** Public provenance only: never a source filename, import path, component code or raw authored source. */
+export interface AuthoredDocumentDescriptor {
+  schemaVersion:1; format:'md'|'mdx'; sourceSha256:string; sourceBytes:number; bodySha256:string;
+  renderer:'notabenda-authoring@0.1.0'; policy:'static-html-v1'; componentsRevision:string;
+}
+export interface LegalBuild {
+  publicConfig: PublicSiteConfig;
+  artifact: LegalArtifact;
+  manifest: {
+    schemaVersion: 1;
+    artifactId: string;
+    siteId: string;
+    locale: string;
+    mode: 'preview' | 'production';
+    configSha256: string;
+    documents: CompiledDocument[];
+    requirementIds: RequirementId[];
+  };
+  files: Record<string, string>;
+}
+
+/** Portable release data for an operator's history/evidence backend. Requirement IDs are traceability links, not fulfilled-obligation certificates. */
+export interface LegalArtifact {
+  manifest: LegalBuild['manifest'];
+  publicConfig: PublicSiteConfig;
+  pages: Record<string, string>;
+  documents: Record<DocumentKind, LegalDocument>;
+  /** Final static rich bodies from an optional build-time authoring adapter. */
+  renderedBodies?:Partial<Record<DocumentKind,string>>;
+}
+/** Private archive envelope. Pass this to the backend; never upload it as a public asset. */
+export interface LegalSourceArchive {
+  schemaVersion:1;
+  artifact:LegalArtifact;
+  sourceAttachments:Partial<Record<DocumentKind,{format:'md'|'mdx';source:string}>>;
+}
+
+/** Deterministic output; does not access the filesystem, network, clock, or operator-only metadata. */
+export function compileLegalDocuments(input: unknown, options: ValidationOptions & { stylesheetUrl?: string } = {}): LegalBuild {
+  const mode = options.mode ?? 'production';
+  const config = toPublicConfig(input, { mode });
+  const pages: Record<string, string> = {};
+  const models = {} as Record<DocumentKind, LegalDocument>;
+  const documents = documentKinds.map(kind => {
+    const doc = createLegalDocument(config, kind, { mode });
+    models[kind] = doc;
+    const file = `${doc.route.slice(1)}/index.html`;
+    const html = renderLegalPage(config, kind, { mode, stylesheetUrl: options.stylesheetUrl ?? '/assets/notabenda.css' });
+    pages[file] = html;
+    return { kind, route: doc.route, file, title: doc.title, version: doc.version, effectiveDate: doc.effectiveDate, reviewStatus: doc.reviewStatus, sha256: sha256(html), contentSha256: sha256(canonicalJson({ title: doc.title, sections: doc.sections })), requirementIds: doc.requirementIds };
+  });
+  const descriptor = {
+    schemaVersion: 1 as const, siteId: config.site.id, locale: config.site.locale, mode,
+    configSha256: sha256(canonicalJson(config)), documents,
+    requirementIds: [...new Set<RequirementId>(['REQ-PRODUCT-CONFIG', 'REQ-PRODUCT-ARTIFACTS', ...(config.rightsCenter?['REQ-PRODUCT-RIGHTS-CENTER' as const]:[]),...documents.flatMap(d => d.requirementIds)])],
+  };
+  const manifest = { ...descriptor, artifactId: sha256(canonicalJson(descriptor)) };
+  const artifact = { manifest, publicConfig: config, pages, documents: models };
+  return {
+    publicConfig: config, manifest, artifact,
+    files: { ...(config.rightsCenter?{[config.rightsCenter.route.slice(1)+'/index.html']:renderRightsPage(config,{mode,stylesheetUrl:options.stylesheetUrl??'/assets/notabenda.css'})}:{}),...pages, ...Object.fromEntries(documents.map(d=>[`artifacts/${manifest.artifactId}/${d.kind}.html`, pages[d.file]!])), 'notabenda.public.json': canonicalJson(config) + '\n', 'notabenda.manifest.json': canonicalJson(manifest) + '\n', [`artifacts/${manifest.artifactId}.json`]: canonicalJson(artifact) + '\n' },
+  };
+}
+
+/** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE: pin the exact terms document AND interface wording. */
+export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:string; statement:string; actionLabel:string }, options: ValidationOptions = {}): TermsOffer {
+  const d = artifact.manifest.documents.find(item=>item.kind === 'terms');
+  if (!d) throw new Error('The release has no terms document.');
+  const offer = normalizeTermsOffer({ schemaVersion:1, offerId:'0'.repeat(64), artifactId:artifact.manifest.artifactId, siteId:artifact.manifest.siteId, mode:artifact.manifest.mode, scopeId:wording.scopeId, statement:wording.statement, actionLabel:wording.actionLabel, document:{ title:d.title, url:`/artifacts/${artifact.manifest.artifactId}/terms.html`, version:d.version, effectiveDate:d.effectiveDate, sha256:d.sha256, contentSha256:d.contentSha256, reviewStatus:d.reviewStatus } }, { allowPreview:options.mode === 'preview' });
+  const { offerId:_, ...descriptor } = offer;
+  return { ...offer, offerId:sha256(canonicalJson(descriptor)) };
+}
+
+/** @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE
+ * Create a display descriptor from a trusted public compiler artifact, never from form values.
+ */
+export function createCollectionNotice(artifact:LegalArtifact,settings:CollectionNoticeSettings,options:ValidationOptions={}):CollectionNotice {
+  const bad=():never=>{throw new Error('Select declared direct-collection purposes from an intact public legal release.');};
+  if(options.mode!==undefined&&!['production','preview'].includes(options.mode))return bad();
+  if(!artifact||!settings||!settings.wording||!Array.isArray(settings.purposeIds)||!settings.purposeIds.length||settings.purposeIds.length>8||new Set(settings.purposeIds).size!==settings.purposeIds.length)return bad();
+  const {manifest}=artifact;if(!manifest||manifest.schemaVersion!==1||!Array.isArray(manifest.documents)||!['production','preview'].includes(manifest.mode))return bad();
+  const {artifactId,...descriptor}=manifest;if(sha256(canonicalJson(descriptor))!==artifactId)return bad();
+  const config=toPublicConfig(artifact.publicConfig,{mode:manifest.mode});
+  if(config.site.id!==manifest.siteId||config.site.locale!==manifest.locale||sha256(canonicalJson(config))!==manifest.configSha256||canonicalJson(config)!==canonicalJson(artifact.publicConfig))return bad();
+  const documents=manifest.documents.filter(d=>d?.kind==='privacy');if(documents.length!==1)return bad();const d=documents[0]!,model=artifact.documents?.privacy,page=artifact.pages?.[d.file];
+  const configured=config.documents.privacy;
+  if(!model||model.kind!=='privacy'||typeof page!=='string'||sha256(page)!==d.sha256||sha256(canonicalJson({title:model.title,sections:model.sections}))!==d.contentSha256||d.file!==`${configured.route.slice(1)}/index.html`||d.route!==configured.route||d.title!==configured.title||d.version!==configured.version||d.effectiveDate!==configured.effectiveDate||d.reviewStatus!==configured.review.status||model.title!==d.title||model.version!==d.version||model.route!==d.route||model.effectiveDate!==d.effectiveDate||model.reviewStatus!==d.reviewStatus)return bad();
+  const purposes=settings.purposeIds.map(id=>{const purpose=config.purposes.find(p=>p.id===id);if(!purpose||purpose.collection.source==='indirect')return bad();return purpose;});
+  const recipients=config.services.filter(s=>s.purposeIds.some(id=>settings.purposeIds.includes(id))).map(s=>({id:s.id,name:s.name,provider:s.provider,location:s.location,purposeIds:s.purposeIds.filter(id=>settings.purposeIds.includes(id)),...(s.privacyUrl?{privacyUrl:s.privacyUrl}:{})}));
+  const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
+  const n=normalizeCollectionNotice({schemaVersion:1,renderingPolicy:'collection-v1',locale:config.site.locale,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId,mode:manifest.mode,reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:settings.wording.privacyLinkLabel??'Read the privacy policy'},controller:config.controller,purposes,recipients,privacy:{rights:config.privacy.rights,transfers:config.privacy.transfers,automatedDecisions:config.privacy.automatedDecisions,complaints:config.privacy.complaints,...(config.privacy.rightsUrl?{rightsUrl:config.privacy.rightsUrl}:{})},document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
+  const {noticeId:_,...noticeDescriptor}=n;return {...n,noticeId:sha256(canonicalJson(noticeDescriptor))};
+}
+
+/** @requirements REQ-PRODUCT-FORM-PERMISSIONS Pin one stable purpose/channel permission to a reviewed privacy release. */
+export function createFormPermissionOffer(artifact:LegalArtifact,settings:FormPermissionSettings,options:ValidationOptions={}):FormPermissionOffer {
+  const notice=createCollectionNotice(artifact,{scopeId:settings.permissionId,purposeIds:[settings.purposeId],reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.statement}},options);
+  const guard=scopeGuardContext(artifact.publicConfig.scopeGuards,settings.purposeId)??null;
+  const value=normalizeFormPermissionOffer({schemaVersion:1,offerId:'0'.repeat(64),siteId:notice.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:notice.artifactId,mode:notice.mode,reviewStatus:settings.reviewStatus,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard},wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},{allowPreview:options.mode==='preview'});
+  const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))};
+}

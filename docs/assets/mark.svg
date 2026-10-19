@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" role="img" aria-labelledby="title">
+  <title id="title">Notabenda folded-note mark</title>
+  <rect x="8" y="8" width="144" height="144" rx="36" fill="#252A46"/>
+  <path d="M49 112V49h13l36 48V49h13v63H98L62 64v48H49Z" fill="#F6F7FF"/>
+  <path d="M111 8h5c20 0 36 16 36 36v5l-41-41Z" fill="#C6CBFF"/>
+  <path d="m116 14 30 30h-18c-7 0-12-5-12-12V14Z" fill="#8A94F1"/>
+</svg>

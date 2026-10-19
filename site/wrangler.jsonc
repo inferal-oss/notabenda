@@ -1,0 +1,48 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "notabenda-site",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-18",
+  "assets": {
+    "directory": "./dist/public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "404-page"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "WORKSPACE",
+        "class_name": "EvidenceWorkspace"
+      },
+      {
+        "name": "DEMO_WORKSPACES",
+        "class_name": "DemoWorkspace"
+      }
+    ]
+  },
+  "exports": {
+    "EvidenceWorkspace": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    },
+    "DemoWorkspace": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
+  },
+  "observability": {
+    "enabled": false
+  },
+  "upload_source_maps": false,
+  "ratelimits": [
+    {
+      "name": "DEMO_PROVISION_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 6,
+        "period": 60
+      }
+    }
+  ]
+}

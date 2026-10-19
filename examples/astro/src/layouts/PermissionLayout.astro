@@ -1,0 +1,29 @@
+---
+// @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-MOBILE
+import {ClientRouter} from 'astro:transitions';
+import FormPermissionField from 'notabenda/astro/FormPermissionField.astro';
+import LegalLinks from 'notabenda/astro/LegalLinks.astro';
+import {permissionExample} from '../lib/permission.mjs';
+export interface Props {review?:boolean}
+const {review=false}=Astro.props;
+const {offer,build}=permissionExample;
+---
+<!doctype html>
+<html lang="en">
+ <head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="notabenda-permission-offer" content={JSON.stringify(offer)}/><title>{review?'Review your choice':'A separate choice in Astro'} · Juniper Notes</title><link rel="stylesheet" href="/astro/site.css"/><link rel="stylesheet" href="/assets/example-pages.css"/><link rel="stylesheet" href="/assets/example-theme.css"/><link rel="stylesheet" href="/assets/form-permissions.css"/><ClientRouter fallback="none"/></head>
+ <body class="nb-page nb-demo-page nb-demo-permissions">
+  <a class="nb-skip-link" href="#main">Skip to content</a>
+  <header class="nb-site-header"><a class="demo-brand" href="/" data-astro-reload><svg viewBox="0 0 32 32" width="27" height="27" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>juniper<span class="demo-brand-separator">/</span>notes</span></a><nav aria-label="Example navigation"><a href="/examples" data-astro-reload>← All examples</a><a href="/guide/astro" data-astro-reload>Integration guide ↗</a></nav></header>
+  <main id="main" class="nb-document" data-permission-entry>
+   <p class="nb-eyebrow">Notabenda · Astro form permissions</p><h1>{review?'A little news.':'Your workspace.'}<br/>{review?'Still your choice.':'Your choice of updates.'}</h1><p>{review?'Your choice stays with you between pages. Review it, change it or leave it off. Your workspace draft remains independent.':'Prepare a reading space and choose updates separately. Moving to the review page preserves this draft without saving permission.'}</p>
+   <form class="permission-workspace" id="astro-workspace-draft" data-astro-reload>
+    <div class="permission-draft-heading"><span class="nb-eyebrow">01 / YOUR READING SPACE</span><h2>A space for good notes.</h2><label for="astro-workspace-title">Workspace title</label><input id="astro-workspace-title" name="title" value="Weekend reading" maxlength="80" required/><p class="permission-destination">Email destination <strong>reader@example.test</strong></p></div>
+    <div id="permission-field"><FormPermissionField id="product-news" offerId={offer.offerId}><p>Permission controls require JavaScript. You can read the privacy policy below.</p></FormPermissionField></div>
+    <div class="permission-draft-action"><button class="nb-choice-button" type="submit" disabled>Prepare workspace draft <span aria-hidden="true">→</span></button><p data-workspace-result role="status">A local draft. Email permission is recorded separately.</p></div>
+   </form>
+   <section class="permission-context"><p class="nb-eyebrow">02 / THE RECORDED STATE</p><h2>A choice with context.</h2><dl class="permission-state"><div><dt>Email updates</dt><dd><output data-permission-current>Not checked</output></dd></div><div><dt>Choice revision</dt><dd><output data-permission-revision>—</output></dd></div><div><dt>Permission version</dt><dd><output>{offer.revision}</output></dd></div><div><dt>Last acknowledged action</dt><dd><output data-permission-action>None this visit</output></dd></div></dl><p>A checked box is a draft. Preparing the workspace or moving between pages makes no permission write.</p><a href={review?'/form-permissions/astro/':'/form-permissions/astro/review/'}>{review?'Back to your workspace':'Continue to review'} <span aria-hidden="true">→</span></a><a data-permission-record hidden>Inspect this record ↗</a><a href="/demo/admin/permissions" data-astro-reload>Open permission history ↗</a><a href="/form-permissions/" data-astro-reload>Plain JavaScript example ↗</a><details><summary>Follow the Astro integration</summary><p>One host-owned controller connects both pages. Navigation attaches the field without saving or retrying a request. The host explicitly checks current state. This example sends no email.</p><a href="/guide/astro" data-astro-reload>Integration guide ↗</a></details></section>
+  </main>
+  <footer class="nb-site-footer"><LegalLinks config={build.publicConfig}/><a class="demo-footer-guide" href="/guide/astro" data-astro-reload>Integration guide ↗</a></footer>
+ </body>
+</html>
+<script>import '../scripts/permission-client.mjs';</script>

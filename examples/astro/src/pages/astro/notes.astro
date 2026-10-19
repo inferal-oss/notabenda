@@ -1,0 +1,16 @@
+---
+// @requirements REQ-PRODUCT-ASTRO
+import InteractiveLayout from '../../layouts/InteractiveLayout.astro';
+import Status from '../../components/Status.astro';
+---
+<InteractiveLayout title="A little room to think">
+  <main id="main" class="nb-document">
+    <p class="nb-eyebrow">Notabenda · Astro navigation</p>
+    <h1>A little room.<br />The same choice.</h1>
+    <p>Moving to another page should keep your decision. This page shares one browser controller and one set of optional service lifecycles with the previous page.</p>
+    <p class="nb-draft">A page change closes an unfinished preference draft without applying it.</p>
+    <Status />
+    <section><h2>Find your way back</h2><p><a href="/astro/">Back to the first page</a> · <a href="/astro/privacy/">Read the static privacy page</a></p></section>
+    <noscript><p>Optional services remain off without JavaScript.</p></noscript>
+  </main>
+</InteractiveLayout>

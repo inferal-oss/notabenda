@@ -1,0 +1,10 @@
+---
+// @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-FORM-PERMISSIONS
+export interface Props {id:string;offerId:string;class?:string}
+const {id,offerId,class:className}=Astro.props;
+if(!/^[a-z][a-z0-9-]{0,119}$/u.test(id)||!/^[a-f0-9]{64}$/u.test(offerId))throw new Error('Provide a valid field ID and exact form permission offer ID.');
+---
+<div class={className} data-notabenda-form-permission={id} data-notabenda-permission-offer={offerId}>
+ <div data-notabenda-permission-mount></div>
+ <div data-notabenda-permission-fallback><slot><p>Permission controls require JavaScript. Use the site’s privacy contact for help.</p></slot></div>
+</div>

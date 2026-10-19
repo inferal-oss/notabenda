@@ -1,0 +1,9 @@
+---
+// @requirements REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-ASTRO
+import {renderRightsCenter} from '../rights.js';
+import type {RightsCenterRenderOptions} from '../rights.js';
+export interface Props extends RightsCenterRenderOptions {config:unknown;class?:string}
+const {config,class:className,...options}=Astro.props;
+const html=renderRightsCenter(config,options);
+---
+<div class={className} set:html={html} />

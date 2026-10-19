@@ -1,0 +1,11 @@
+---
+// @requirements REQ-PRODUCT-ASTRO
+import LegalDocument from 'notabenda/astro/LegalDocument.astro';
+import Layout from '../../layouts/Layout.astro';
+import {publicConfig} from '../../lib/config.mjs';
+export function getStaticPaths(){return ['privacy','cookies','terms'].map(kind=>({params:{kind}}));}
+const kind=Astro.params.kind as 'privacy'|'cookies'|'terms';
+---
+<Layout title={publicConfig.documents[kind].title}>
+  <main id="main"><LegalDocument config={publicConfig} kind={kind} mode="preview" /></main>
+</Layout>

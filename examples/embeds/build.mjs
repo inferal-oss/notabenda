@@ -1,0 +1,20 @@
+// @requirements REQ-PRODUCT-EMBEDS
+import {readFile} from 'node:fs/promises';
+import {compileLegalDocuments} from 'notabenda/content';
+import {renderEmbedPlaceholder,renderLegalLinks} from 'notabenda';
+import {exampleConsentConfig} from '../static/choices-build.mjs';
+
+export async function embedFiles(base){
+  const config=exampleConsentConfig(base);config.site.id='juniper-embeds';
+  const template=config.purposes[0];
+  config.purposes=[{...template,id:'embedded-media',name:'Embedded media',description:'Load fictional first-party framed content and an illustration in this demonstration.',dataCategories:['Synthetic media request'],retention:'No application record is created by these sample media resources.'},config.purposes.find(p=>p.id==='remember-choices')];
+  config.services=[{id:'sample-media',name:'Sample embedded media',provider:'Juniper Notes (fictional)',location:'This local demonstration only',purposeIds:['embedded-media'],resourceOrigins:['self']},config.services.find(s=>s.id==='privacy-choices')];
+  config.storage=config.storage.filter(s=>s.serviceId==='privacy-choices');for(const item of config.storage)item.name=item.name.replace('juniper-choices',config.site.id);
+  config.consent.purposes=[{id:'embedded-media',scope:'sample-1'}];config.consent.services=[{id:'sample-media',scope:'sample-1'}];
+  for(const [kind,doc] of Object.entries(config.documents))doc.route=`/embeds/${kind}`;
+  const build=compileLegalDocuments(config,{mode:'preview',stylesheetUrl:'/assets/notabenda.css'});
+  const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Content can wait · Juniper Notes</title><link rel="stylesheet" href="/assets/notabenda.css"><script type="module" src="/assets/embeds.mjs"></script></head><body class="nb-page"><a class="nb-skip-link" href="#main">Skip to content</a><header class="nb-site-header"><a href="/">Juniper Notes</a><span>Independent words. Considered details.</span></header><main id="main" class="nb-document"><p class="nb-eyebrow">Notabenda · Gated media</p><h1>Good content.<br>At your discretion.</h1><p>An embedded page and an illustration share one declared service. Their resource URLs stay out of the page until you allow embedded media.</p><p>Embedded media: <output data-embed-permission aria-label="Embedded media permission">Off — awaiting your choice</output></p><p>Media requests observed this page: <output data-embed-requests aria-label="Media requests observed this page">0</output></p><div id="sample-frame">${renderEmbedPlaceholder({title:'A moment outdoors',description:'A framed page, waiting for your choice.'})}</div><div id="sample-image">${renderEmbedPlaceholder({title:'A little perspective',description:'An illustration served by the same media service.'})}</div><noscript><p>JavaScript is unavailable. The media remains unloaded; the legal pages below still work.</p></noscript></main><footer class="nb-site-footer"><div id="privacy-controls"></div>${renderLegalLinks(build.publicConfig)}</footer></body></html>`;
+  return {...build.files,'embeds/site.json':JSON.stringify(build.publicConfig),'embeds/index.html':html,'assets/embeds.mjs':await readFile(new URL('./client.mjs',import.meta.url),'utf8'),
+    'embeds/frame/index.html':'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="stylesheet" href="/assets/notabenda.css"><title>A moment outdoors</title></head><body class="nb-page"><main class="nb-document"><p class="nb-eyebrow">Embedded content</p><h1>A moment outdoors.</h1><p>A quiet little scene, loaded after your choice. No scripts, cookies or further embedded content.</p></main></body></html>',
+    'embeds/landscape.svg':'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360"><rect width="640" height="360" fill="#e9eafa"/><circle cx="490" cy="105" r="46" fill="#c7c2f1"/><path d="M0 305 180 105 400 360H0" fill="#b7bedf"/><path d="m175 360 190-210 275 210" fill="#7f8cb8"/><path d="M0 320q180-62 340 3t300-6v43H0" fill="#525f8b"/></svg>'};
+}

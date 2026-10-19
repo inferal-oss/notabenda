@@ -1,0 +1,142 @@
+// @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-EVIDENCE-LIFECYCLE
+import {claimContractDelivery, settleContractDelivery} from './contracts.js';
+import type {ContractActionContext, ContractDeliveryChannel, ContractDeliveryLease} from './contracts.js';
+import type {HistoryStorage} from './history.js';
+import {boundedText} from './records.js';
+import {contractActionIso} from './contract-action-policy.js';
+
+export interface ContractDeliveryAttempt {
+  /** Use lease.deliveryId for downstream idempotency, including after timeout/restart. */
+  lease: ContractDeliveryLease;
+  signal: AbortSignal;
+}
+export interface ContractDispatchOptions {
+  /** Resolve only after the configured endpoint durably accepts this stable job. */
+  deliver(attempt: ContractDeliveryAttempt): Promise<{providerRef: string}>;
+  leaseMs?: number;
+  timeoutMs?: number;
+  maxAttempts?: number;
+  signal?: AbortSignal;
+}
+export interface ContractDispatchResult {
+  provider: 'not-invoked' | 'accepted' | 'uncertain';
+  settlement: 'not-claimed' | 'settled' | 'lease-lost' | 'unknown';
+  deliveryId?: string;
+}
+export interface ContractDeclarationDispatchOptions {
+  acknowledgement: ContractDispatchOptions;
+  application: ContractDispatchOptions;
+}
+interface Options {
+  deliver: ContractDispatchOptions['deliver'];
+  leaseMs: number;
+  timeoutMs: number;
+  maxAttempts: number;
+  signal?: AbortSignal;
+}
+const SETTLEMENT_RESERVE_MS = 100;
+function options(value: ContractDispatchOptions): Options {
+  if (!value || typeof value !== 'object') throw new TypeError('Invalid contract dispatch options.');
+  const {deliver, signal} = value;
+  const leaseMs = value.leaseMs ?? 60000;
+  const timeoutMs = value.timeoutMs ?? Math.min(30000, leaseMs - SETTLEMENT_RESERVE_MS);
+  const maxAttempts = value.maxAttempts ?? 10;
+  if (typeof deliver !== 'function' || !Number.isInteger(leaseMs) || leaseMs < 1000 || leaseMs > 300000 ||
+      !Number.isInteger(timeoutMs) || timeoutMs < 100 || timeoutMs > leaseMs - SETTLEMENT_RESERVE_MS ||
+      !Number.isInteger(maxAttempts) || maxAttempts < 1 || maxAttempts > 100 ||
+      signal !== undefined && !(signal instanceof AbortSignal)) {
+    throw new TypeError('Invalid contract dispatch options.');
+  }
+  return {deliver, leaseMs, timeoutMs, maxAttempts, ...(signal ? {signal} : {})};
+}
+function accepted(input: unknown): string {
+  if (!input || typeof input !== 'object' || Object.getPrototypeOf(input) !== Object.prototype) throw new Error('Uncertain provider outcome.');
+  const fields = Object.getOwnPropertyDescriptors(input);
+  if (Reflect.ownKeys(fields).length !== 1 || !fields.providerRef || !('value' in fields.providerRef) ||
+      !boundedText(fields.providerRef.value, 200) || !fields.providerRef.value.trim()) throw new Error('Uncertain provider outcome.');
+  return fields.providerRef.value;
+}
+function remaining(context: ContractActionContext, lease: ContractDeliveryLease, minimum: number): {budget: number; at: number} {
+  const now = context.now?.() ?? new Date();
+  if (!(now instanceof Date) || !contractActionIso(now.toISOString())) throw new Error('Invalid dispatch clock.');
+  const at = now.getTime();
+  if (!Number.isFinite(at) || at < minimum) throw new Error('Regressing dispatch clock.');
+  return {budget: Date.parse(lease.expiresAt) - at - SETTLEMENT_RESERVE_MS, at};
+}
+
+async function run(storage: HistoryStorage, id: string, channel: ContractDeliveryChannel, context: ContractActionContext, settings: Options): Promise<ContractDispatchResult> {
+  if (settings.signal?.aborted) return {provider: 'not-invoked', settlement: 'not-claimed'};
+  let lease: ContractDeliveryLease | undefined;
+  try {
+    lease = await claimContractDelivery(storage, id, channel, context, {leaseMs: settings.leaseMs, maxAttempts: settings.maxAttempts});
+  } catch {
+    // The claim transaction may have committed before its response was lost.
+    return {provider: 'not-invoked', settlement: 'unknown'};
+  }
+  if (!lease) return {provider: 'not-invoked', settlement: 'not-claimed'};
+
+  let provider: ContractDispatchResult['provider'] = 'not-invoked';
+  let providerRef: string | undefined;
+  let started = false;
+  let highWater = Date.parse(lease.expiresAt) - settings.leaseMs;
+  const readBudget = () => {const value = remaining(context, lease!, highWater); highWater = value.at; return value.budget;};
+  const controller = new AbortController();
+  const interrupted = new Error('Contract dispatch interrupted.');
+  let rejectInterruption!: (reason: Error) => void;
+  const interruption = new Promise<never>((_, reject) => {rejectInterruption = reject;});
+  void interruption.catch(() => {});
+  const abort = () => {controller.abort(); rejectInterruption(interrupted);};
+  settings.signal?.addEventListener('abort', abort, {once: true});
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    // Install abort handling before the final check. Storage latency consumes the lease.
+    if (settings.signal?.aborted) abort();
+    const budget = Math.min(settings.timeoutMs, readBudget());
+    if (budget < 1) abort();
+    else timer = setTimeout(abort, budget);
+    const delivery = Promise.resolve().then(async () => {
+      const budget = readBudget();
+      const attempt = {lease: structuredClone(lease!), signal: controller.signal};
+      if (budget < 1 || controller.signal.aborted) throw interrupted;
+      started = true;
+      return accepted(await settings.deliver(attempt));
+    });
+    // Both branches remain observed after timeout; late results never settle again.
+    providerRef = await Promise.race([delivery, interruption]);
+    provider = 'accepted';
+  } catch {
+    provider = started ? 'uncertain' : 'not-invoked';
+  } finally {
+    clearTimeout(timer);
+    settings.signal?.removeEventListener('abort', abort);
+  }
+
+  try {
+    const result = await settleContractDelivery(storage, lease,
+      provider === 'accepted' ? {status: 'accepted', providerRef: providerRef!} : {status: 'uncertain'}, context);
+    return {provider, settlement: result.settled ? 'settled' : 'lease-lost', deliveryId: lease.deliveryId};
+  } catch {
+    // Settlement may have committed. Do not turn persistence uncertainty into provider rejection.
+    return {provider, settlement: 'unknown', deliveryId: lease.deliveryId};
+  }
+}
+
+/** One bounded provider attempt. No scheduler, auth, automatic retry, network adapter or cancellation is installed. */
+export async function dispatchContractDelivery(storage: HistoryStorage, id: string, channel: ContractDeliveryChannel, context: ContractActionContext, input: ContractDispatchOptions): Promise<ContractDispatchResult> {
+  const settings = options(input);
+  return run(storage, id, channel, {...context}, settings);
+}
+
+/** Validate both callbacks first, then start independent bounded attempts. Neither channel waits for the other. */
+export async function dispatchContractDeclaration(storage: HistoryStorage, id: string, context: ContractActionContext, input: ContractDeclarationDispatchOptions): Promise<Record<ContractDeliveryChannel, ContractDispatchResult>> {
+  const acknowledgement = options(input?.acknowledgement);
+  const application = options(input?.application);
+  context = {...context};
+  const results = await Promise.allSettled([
+    run(storage, id, 'acknowledgement', context, acknowledgement),
+    run(storage, id, 'application', context, application),
+  ]);
+  const result = (entry: PromiseSettledResult<ContractDispatchResult>): ContractDispatchResult =>
+    entry.status === 'fulfilled' ? entry.value : {provider: 'not-invoked', settlement: 'unknown'};
+  return {acknowledgement: result(results[0]!), application: result(results[1]!)};
+}

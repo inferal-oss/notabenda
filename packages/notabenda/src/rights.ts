@@ -1,0 +1,19 @@
+// @requirements REQ-EU-NOTICE REQ-US-CA-CHOICES REQ-US-VA-RIGHTS
+// @requirements REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
+import {isSafeLink,toPublicConfig} from './config.js';
+import {escapeHtml,renderLegalLinks} from './documents.js';
+import type {ValidationOptions} from './types.js';
+export type RightsCenterRenderOptions=ValidationOptions&{idPrefix?:string;headingLevel?:1|2|3|4|5};
+/** Script-free entry points. Following a link never means a request was submitted or fulfilled. */
+export function renderRightsCenter(input:unknown,options:RightsCenterRenderOptions={}):string {
+ const mode=options.mode??'production';const config=toPublicConfig(input,{...options,mode}),center=config.rightsCenter;if(!center)throw new Error('Declare a rights center before rendering it.');
+ const id=options.idPrefix??'nb-rights';if(!/^[a-z][a-z0-9-]{0,79}$/u.test(id)||options.headingLevel!==undefined&&![1,2,3,4,5].includes(options.headingLevel))throw new Error('Use a unique lowercase ID prefix and a heading level from 1 to 5.');
+ const heading='h'+(options.headingLevel??2),sub='h'+((options.headingLevel??2)+1),e=escapeHtml;
+ return `<section class="nb-rights-center" aria-labelledby="${id}-title" data-rights-revision="${e(center.revision)}"><header class="nb-rights-heading"><p class="nb-eyebrow">${e(config.site.name)} · Your information</p><${heading} id="${id}-title">${e(center.title)}</${heading}><p>${e(center.intro)}</p>${center.reviewStatus==='draft'?'<p class="nb-draft" role="note">Draft rights information — for review.</p>':''}</header><div class="nb-rights-grid">${center.actions.map((action,index)=>`<section class="nb-rights-action" aria-labelledby="${id}-${action.id}-title"><span class="nb-rights-number" aria-hidden="true">${String(index+1).padStart(2,'0')} / YOUR NEXT STEP</span><${sub} id="${id}-${action.id}-title">${e(action.title)}</${sub}><p>${e(action.description)}</p><p class="nb-rights-scope">${e(action.scope)}</p><a class="nb-rights-link" href="${e(action.link.href)}">${e(action.link.label)} <span aria-hidden="true">↗</span></a></section>`).join('')}</div><aside class="nb-rights-contact" aria-labelledby="${id}-contact"><div><${sub} id="${id}-contact">A person to talk to.</${sub}><p>${e(center.contact.description)}</p></div><a href="${e(center.contact.href)}">${e(center.contact.label)} <span aria-hidden="true">↗</span></a></aside><section class="nb-rights-next" aria-labelledby="${id}-next"><${sub} id="${id}-next">What happens next</${sub}><ol>${center.nextSteps.map(step=>`<li>${e(step)}</li>`).join('')}</ol></section></section>`;
+}
+/** Supporting navigation page, separate from the three immutable legal-document kinds. */
+export function renderRightsPage(input:unknown,options:ValidationOptions&{stylesheetUrl?:string}={}):string {
+ const mode=options.mode??'production';const config=toPublicConfig(input,{...options,mode}),center=config.rightsCenter;if(!center)throw new Error('Declare a rights center before rendering it.');
+ const stylesheet=options.stylesheetUrl;if(stylesheet!==undefined&&!isSafeLink(stylesheet))throw new Error('Unsafe stylesheet URL.');const e=escapeHtml;
+ return `<!doctype html><html lang="${e(config.site.locale)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${e(center.title)} · ${e(config.site.name)}</title>${stylesheet?`<link rel="stylesheet" href="${e(stylesheet)}">`:''}</head><body class="nb-page nb-rights-page"><a class="nb-skip-link" href="#main">Skip to content</a><header class="nb-site-header"><a href="${e(config.site.url)}">${e(config.site.name)}</a><span>Privacy requests</span></header><main class="nb-document" id="main">${renderRightsCenter(config,{...options,mode,headingLevel:1})}</main><footer class="nb-site-footer">${renderLegalLinks(config)}<p>© ${e(config.site.name)}</p></footer></body></html>`;
+}

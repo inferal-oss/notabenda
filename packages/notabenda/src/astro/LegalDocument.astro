@@ -1,0 +1,9 @@
+---
+// @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-SAFE-CONTENT
+import {renderLegalDocument} from '../documents.js';
+import type {DocumentKind,BuildMode} from '../types.js';
+export interface Props {config:unknown;kind:DocumentKind;mode?:BuildMode;class?:string}
+const {config,kind,mode='production',class:className}=Astro.props;
+const html=renderLegalDocument(config,kind,{mode});
+---
+<div class={className} set:html={html} />

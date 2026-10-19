@@ -1,0 +1,18 @@
+node_modules/
+dist/
+*.tgz
+.DS_Store
+__pycache__/
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+.local/
+
+.wrangler/
+.astro/
+examples/astro/.generated/
+
+# Operator reasoning belongs outside the public repository.
+setup.private.json

@@ -1,0 +1,101 @@
+{
+  "name": "notabenda",
+  "version": "0.1.0",
+  "description": "Reusable site configuration and static privacy, cookie, and terms documents.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": [
+    "./dist/styles.css"
+  ],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./content": {
+      "types": "./dist/content.d.ts",
+      "import": "./dist/content.js",
+      "default": "./dist/content.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json",
+    "./react": {
+      "types": "./dist/react.d.ts",
+      "import": "./dist/react.js",
+      "default": "./dist/react.js"
+    },
+    "./react/documents": {
+      "types": "./dist/react-documents.d.ts",
+      "import": "./dist/react-documents.js",
+      "default": "./dist/react-documents.js"
+    },
+    "./astro/client": {
+      "types": "./dist/astro-client.d.ts",
+      "import": "./dist/astro-client.js",
+      "default": "./dist/astro-client.js"
+    },
+    "./astro/*.astro": "./dist/astro/*.astro",
+    "./setup": {
+      "types": "./dist/setup.d.ts",
+      "import": "./dist/setup.js",
+      "default": "./dist/setup.js"
+    },
+    "./setup/ui": {
+      "types": "./dist/setup-ui.d.ts",
+      "import": "./dist/setup-ui.js",
+      "default": "./dist/setup-ui.js"
+    },
+    "./discovery": {
+      "types": "./dist/discovery.d.ts",
+      "import": "./dist/discovery.js",
+      "default": "./dist/discovery.js"
+    },
+    "./discovery/ui": {
+      "types": "./dist/discovery-ui.d.ts",
+      "import": "./dist/discovery-ui.js",
+      "default": "./dist/discovery-ui.js"
+    },
+    "./google": {
+      "types": "./dist/google-basic.d.ts",
+      "import": "./dist/google-basic.js",
+      "default": "./dist/google-basic.js"
+    },
+    "./contracts": {
+      "types": "./dist/contract-action.d.ts",
+      "import": "./dist/contract-action.js",
+      "default": "./dist/contract-action.js"
+    }
+  },
+  "bin": {
+    "notabenda": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/copy-assets.mjs",
+    "prepack": "npm run build"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "astro": "^7.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "astro": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "react": "19.3.1",
+    "@types/react": "19.3.0"
+  }
+}

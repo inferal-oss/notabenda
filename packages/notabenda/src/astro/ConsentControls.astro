@@ -1,0 +1,6 @@
+---
+// @requirements REQ-PRODUCT-ASTRO
+export interface Props {class?:string;preferencesLabel?:string}
+const {class:className,preferencesLabel}=Astro.props;
+---
+<div class={className} data-notabenda-controls data-notabenda-label={preferencesLabel}></div>
