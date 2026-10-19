@@ -188,3 +188,5 @@ Use `notabenda/consent.css` for cookie controls, their privacy links and the pac
 The repository’s `npm run size` reports measured browser/CSS sizes; `npm run size:check` additionally enforces the stated targets when you choose to run it. Current core JavaScript exceeds the 15 KiB gzip target, while consent-only CSS is below 5 KiB. See [delivery verification](../../docs/verification/browser-delivery.md). These are transfer sizes, not startup or accessibility certification.
 
 The optional [service catalog](../../docs/SERVICE-CATALOG.md) supplies offline provider/product search and static project discovery, including backend SDKs. Use `notabenda catalog search email --delivery backend` or `notabenda discover --project .` after installing the local preview. Results remain candidates for review; reference data and Node scanning stay outside ordinary consent bundles.
+
+[Service directories](https://notabenda.org/guide/services) render the declared inventory as native, React or Astro cards with optional local search. Import `notabenda/services` and `notabenda/services.css`; no reference dataset is loaded by the visitor view.

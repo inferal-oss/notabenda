@@ -5,6 +5,14 @@ import type {ReactElement} from 'react';
 import {renderCollectionNotice} from './collection.js';
 import {renderLegalDocument,renderLegalLinks} from './documents.js';
 import type {DocumentKind,ValidationOptions} from './types.js';
+import {renderServiceDirectory} from './service-directory.js';
+import type {ServiceDirectoryOptions} from './service-directory.js';
+
+/** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-REACT */
+export interface ServiceDirectoryProps extends ServiceDirectoryOptions {config:unknown;className?:string}
+export function ServiceDirectory({config,className,...options}:ServiceDirectoryProps):ReactElement {
+  return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderServiceDirectory(config,options)}});
+}
 
 export interface LegalDocumentProps extends ValidationOptions {config:unknown;kind:DocumentKind;className?:string}
 export interface LegalLinksProps {config:unknown;className?:string}

@@ -1,5 +1,6 @@
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
 import { documentKinds, isSafeLink, toPublicConfig } from './config.js';
+import {declaredServices} from './service-inventory.js';
 import type { DocumentKind, LegalDocument, LegalSection, PublicSiteConfig, RequirementId, ValidationOptions } from './types.js';
 
 export const documentRequirements: Record<DocumentKind, RequirementId[]> = {
@@ -28,7 +29,7 @@ function privacySections(config: PublicSiteConfig): LegalSection[] {
   sections.push(
     { id: 'purposes', heading: 'What we collect and why', ...(config.purposes.length ? {} : { paragraphs: ['No processing purposes are declared in this configuration.'] }), items: config.purposes.map(p => `${p.name}: ${sentence(p.description)} Data: ${p.dataCategories.join(', ')}. Legal basis: ${sentence(p.legalBasis)} Source (${p.collection.source}): ${sentence(p.collection.description)} Providing this information is ${p.collection.required ? 'required' : 'optional'}. ${p.collection.consequences}`) },
     { id: 'retention', heading: 'How long information is kept', items: config.purposes.map(p => `${p.name}: ${p.retention}`), ...(config.purposes.length ? {} : { paragraphs: ['No purpose-specific retention periods are declared.'] }) },
-    { id: 'providers', heading: 'Service providers and recipients', items: config.services.map(s => `${s.name} — ${s.provider}. Location: ${sentence(s.location)} Purposes: ${s.purposeIds.map(id => config.purposes.find(p => p.id === id)!.name).join(', ')}.`), ...(config.services.length ? {} : { paragraphs: ['No service providers are declared in this configuration.'] }), links: config.services.filter(s => s.privacyUrl).map(s => ({ label: `${s.name} privacy notice`, href: s.privacyUrl! })) },
+    { id: 'providers', heading: 'Service providers and recipients', items: declaredServices(config).map(s => `${s.name} — ${s.provider}. Location: ${sentence(s.location)} Purposes: ${s.purposes.map(p=>p.name).join(', ')}.`), ...(config.services.length ? {} : { paragraphs: ['No service providers are declared in this configuration.'] }), links: config.services.filter(s => s.privacyUrl).map(s => ({ label: `${s.name} privacy notice`, href: s.privacyUrl! })) },
     { id: 'transfers', heading: 'International transfers', paragraphs: [privacy.transfers] },
     { id: 'automated-decisions', heading: 'Automated decisions', paragraphs: [privacy.automatedDecisions] },
     { id: 'rights', heading: 'Your rights and choices', items: privacy.rights, links: [{ label: 'Contact us about your information', href: `mailto:${controller.email}` }, ...(privacy.rightsUrl ? [{ label: 'How to exercise your rights', href: privacy.rightsUrl }] : [])] },

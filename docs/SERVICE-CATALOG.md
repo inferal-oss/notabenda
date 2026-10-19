@@ -1,6 +1,6 @@
 # Shared service catalog and passive detection
 
-Reference catalog and static project discovery preview. Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Normalization/search, explicit service draft selection, an optional offline seed and static project discovery are implemented. Integrated public directory rendering, wizard/admin selection, browser signatures and automatic archival of catalog provenance remain planned. The existing service inventory, privacy provider lists, cookie storage table and origin/name-only browser discovery remain available.
+Reference catalog and static project discovery preview. Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Normalization/search, explicit service draft selection, an optional offline seed and static project discovery are implemented. Shared public directory rendering is available from the declared inventory. Wizard/admin selection, browser signatures and automatic archival of catalog provenance remain planned. The existing service inventory, privacy provider lists, cookie storage table and origin/name-only browser discovery remain available.
 
 A versioned catalog should connect service selection, discovery, disclosures and operator review. A site selects and confirms its own use of a service; the catalog supplies reusable facts and technical recognition rules. It covers hosting, identity, payments, support, media and other recipients as well as analytics and advertising.
 
@@ -42,6 +42,8 @@ Static scan recognizes declared npm dependencies, JavaScript/TypeScript module i
 Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files, symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
 `--out-dir` requires a new directory and writes a private review JSON, text and `.gitignore`. Scanning does not execute project modules, SDKs, installers or network probes. It leaves configuration unchanged, keeps findings local and leaves CI policy to the adopter. Catalog-selection snapshots are not yet automatically joined to immutable legal-release provenance. See [verification](verification/service-catalog.md).
+
+The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
 
 ## Design direction
 

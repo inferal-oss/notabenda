@@ -2,9 +2,9 @@
 
 Requirements: `REQ-PRODUCT-PACKAGE`, `REQ-PRODUCT-BUNDLE-BUDGET`.
 
-The optional `scripts/measure-bundles.mjs` measures real bundled public imports with pinned esbuild, ESM/ES2022, minification and gzip level 9. It reports compiled local controls, compiled required-receipt controls, the compatibility headless controller, core plus vanilla controls, the published consent stylesheet and the complete component stylesheet separately. `--json` emits deterministic measurements and actual contributing input files. `--check` exits nonzero for missed targets; it is an opt-in tool, not an adopter CI policy.
+The optional `scripts/measure-bundles.mjs` measures real bundled public imports with pinned esbuild, ESM/ES2022, minification and gzip level 9. It reports compiled local controls, compiled required-receipt controls, the compatibility headless controller, core plus vanilla controls, the published consent stylesheet and the main component stylesheet and optional service-directory assets separately. `--json` emits deterministic measurements and actual contributing input files. `--check` exits nonzero for missed targets; it is an opt-in tool, not an adopter CI policy.
 
-The consent stylesheet is generated from the canonical `styles.css`. Tests compare each retained rule’s declarations, relative cascade order and surrounding media/layer conditions against that source. Focus, native dialog backdrop, reduced motion, forced colors, safe areas, hidden-state and print rules remain present. The full component stylesheet remains byte-identical to its canonical source. No remote assets or CSS imports are introduced.
+The consent stylesheet is generated from the canonical `styles.css`. Tests compare each retained rule’s declarations, relative cascade order and surrounding media/layer conditions against that source. Focus, native dialog backdrop, reduced motion, forced colors, safe areas, hidden-state and print rules remain present. The main component stylesheet remains byte-identical to its canonical source. The service directory has an independent stylesheet and does not increase consent CSS. No remote assets or CSS imports are introduced.
 
 The `notabenda/headless` export uses the exact existing consent factory and contains no mounting or rendering exports. An import test installs throwing browser-global getters before loading it. Bundle graph checks exclude backend, Node build tooling and framework code; the headless graph excludes DOM-control and document-rendering modules. Packed installation/type coverage includes the new entry and CSS export.
 
@@ -24,7 +24,9 @@ Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 | `createConsent` from `notabenda/headless` | 16.59 KiB | Report only | Same existing engine |
 | `createConsent` + `mountControls` | 19.50 KiB | 15 KiB | Over target |
 | `notabenda/consent.css` | 2.21 KiB | 5 KiB | Within target |
-| `notabenda/styles.css`, all components | 9.36 KiB | Report separately | Includes document/operator/form layouts |
+| `notabenda/styles.css`, main component collection | 9.36 KiB | Report separately | Includes document/operator/form layouts |
+| `notabenda/services`, model + render + local search | 10.68 KiB | Report separately | No reference dataset, Node or backend |
+| `notabenda/services.css` | 1.73 KiB | Report separately | Independent directory styling |
 
 The transfer figures exclude a site’s configuration payload, page layout/theme, sample integration code and framework adapters. The cookie example’s actual browser entry bundles its own UI/example code as well; it does not represent the library-only size profile.
 

@@ -3,6 +3,7 @@
 import {readFile} from 'node:fs/promises';
 const leaf='<svg viewBox="0 0 32 32" width="27" height="27" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const profiles={
+ 'services/index.html':['services','services'], 'dark/services/index.html':['services','services'],
  'contract-actions/withdrawal/index.html':['contracts','contract-actions'],
  'contract-actions/cancellation/index.html':['contracts','contract-actions'],
  'dark/contract-actions/withdrawal/index.html':['contracts','contract-actions'],
@@ -31,9 +32,9 @@ export async function styleExamplePages(files){
   html=html.replace('</head>','<link rel="stylesheet" href="/assets/example-pages.css"></head>');
   html=html.replace(/<body class="nb-page([^"]*)">/u,`<body class="nb-page nb-demo-page nb-demo-${kind}${dark?' nb-demo-midnight':''}$1">`);
   // Header stays outside framework hydration roots. The framework-owned main/controls are not rewritten.
-  html=html.replace(/<header class="nb-site-header">[\s\S]*?<\/header>/u,`<header class="nb-site-header"><a class="demo-brand" href="/">${leaf}<span>juniper<span class="demo-brand-separator">/</span>notes</span></a><nav aria-label="Example navigation"><a href="/examples"><span aria-hidden="true">←</span> All examples</a><a href="/guide/${guide}">Integration guide <span aria-hidden="true">↗</span></a></nav></header>`);
+  html=html.replace(/<header class="nb-site-header(?: [^"]*)?">[\s\S]*?<\/header>/u,`<header class="nb-site-header${kind==='services'?' nb-service-sitebar':''}"><a class="demo-brand" href="/">${leaf}<span>juniper<span class="demo-brand-separator">/</span>notes</span></a><nav aria-label="Example navigation"><a href="/examples"><span aria-hidden="true">←</span> All examples</a><a href="/guide/${guide}">Integration guide <span aria-hidden="true">↗</span></a></nav></header>`);
   html=html.replace('<main class="nb-document">','<main id="main" class="nb-document">');
-  if(!html.includes('class="nb-skip-link"'))html=html.replace(/(<body[^>]*>)/u,'$1<a class="nb-skip-link" href="#main">Skip to content</a>');
+  if(!/class="[^"]*\bnb-(?:skip-link|service-skip)\b/u.test(html))html=html.replace(/(<body[^>]*>)/u,'$1<a class="nb-skip-link" href="#main">Skip to content</a>');
   if(kind!=='react')html=html.replace('</footer>',`<a class="demo-footer-guide" href="/guide/${guide}">Integration guide <span aria-hidden="true">↗</span></a></footer>`);
   result[path]=html;
  }

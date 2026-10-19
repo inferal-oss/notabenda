@@ -1,0 +1,9 @@
+---
+// @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-ASTRO
+import {renderServiceDirectory} from '../service-directory.js';
+import type {ServiceDirectoryOptions} from '../service-directory.js';
+export interface Props extends ServiceDirectoryOptions {config:unknown;class?:string}
+const {config,class:className,...options}=Astro.props;
+const html=renderServiceDirectory(config,options);
+---
+<div class={className} set:html={html} />

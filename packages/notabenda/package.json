@@ -9,7 +9,8 @@
   },
   "sideEffects": [
     "./dist/styles.css",
-    "./dist/consent.css"
+    "./dist/consent.css",
+    "./dist/services.css"
   ],
   "files": [
     "dist",
@@ -111,7 +112,13 @@
       "import": "./dist/catalog-project.js",
       "default": "./dist/catalog-project.js"
     },
-    "./catalog/schema.json": "./dist/catalog/schema.json"
+    "./catalog/schema.json": "./dist/catalog/schema.json",
+    "./services": {
+      "types": "./dist/service-directory.d.ts",
+      "import": "./dist/service-directory.js",
+      "default": "./dist/service-directory.js"
+    },
+    "./services.css": "./dist/services.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

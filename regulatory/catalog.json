@@ -94,7 +94,9 @@
         "packages/notabenda/src/catalog.ts",
         "packages/notabenda/src/catalog-project.ts",
         "packages/notabenda/src/catalog-cli.ts",
-        "scripts/build-service-catalog.py"
+        "scripts/build-service-catalog.py",
+        "packages/notabenda/src/service-directory.ts",
+        "packages/notabenda/src/service-inventory.ts"
       ]
     },
     {
@@ -4438,20 +4440,30 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. The seed is unreviewed; integrated public directory rendering and automatic provenance archival remain planned.",
+      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. The seed is unreviewed; integrated wizard/admin selection and automatic provenance archival remain planned.",
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
         "packages/notabenda/src/catalog-seed.ts",
         "packages/notabenda/src/catalog-cli.ts",
         "scripts/build-service-catalog.py",
-        "docs/SERVICE-CATALOG.md"
+        "docs/SERVICE-CATALOG.md",
+        "packages/notabenda/src/service-inventory.ts",
+        "packages/notabenda/src/service-directory.ts",
+        "packages/notabenda/src/services.css",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/ServiceDirectory.astro",
+        "examples/services/build.mjs",
+        "docs/SERVICES.md"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/service-catalog.md"
+        "docs/verification/service-catalog.md",
+        "packages/notabenda/test/services.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/services.test.mjs"
       ],
-      "implementationNote": "Versioned pure normalization/search, detached explicit service proposal and a separately imported offline seed with licensed source hashes are implemented. Public directory/render integration, wizard/admin selection, reviewed product profiles and automatic release-provenance archival remain open."
+      "implementationNote": "Versioned catalog normalization/search, explicit detached proposals, licensed offline seed, and a shared declared-service projection now feed privacy provider sections plus native/React/Astro public directory views. Local search, purpose filtering, expandable declared data/storage, separate themed CSS and light/dark examples are implemented. Wizard/admin selection, reviewed product profiles and automatic catalog provenance archival remain open."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -5416,7 +5428,10 @@
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/service-catalog.md"
+        "docs/verification/service-catalog.md",
+        "packages/notabenda/test/services.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/services.test.mjs"
       ]
     },
     {

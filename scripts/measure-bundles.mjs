@@ -11,6 +11,7 @@ export async function measureBundles(){
   ['compiled-local','notabenda/consent','createConsentRuntime,mountControls',15*1024],
   ['compiled-required','notabenda/consent','createConsentRuntime,mountControls',null],
   ['react-compiled','notabenda/react/consent','ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed',null],
+  ['service-directory','notabenda/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],
   ['headless','notabenda/headless','createConsent',null],
   ['core-controls','notabenda','createConsent,mountControls',15*1024],
  ]){
@@ -21,7 +22,7 @@ export async function measureBundles(){
   const gzipBytes=gzipSync(output,{level:9}).length;
   profiles.push({id,entry,exports:exports.split(','),imports,external,bytes:output.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs});
  }
- for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null]]){
+ for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null],['service-directory-css','services.css',null]]){
   const bytes=await readFile(new URL('../packages/notabenda/dist/'+file,import.meta.url)),gzipBytes=gzipSync(bytes,{level:9}).length;
   profiles.push({id,entry:'notabenda/'+file,bytes:bytes.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs:['packages/notabenda/dist/'+file]});
  }
