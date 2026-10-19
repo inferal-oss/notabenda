@@ -638,7 +638,7 @@
       "title": "Versioned host-supplied localization",
       "status": "partial",
       "deliverables": [
-        "Complete versioned host-supplied messages for legal documents and consent controls, including status/accessibility text, selected language and explicit direction.",
+        "Complete versioned host-supplied messages for legal documents, consent controls and ordinary terms acceptance, including status/accessibility text, selected language and explicit direction.",
         "Archived selected consent copy, independent presentation/disclosure revisions, exact material scopes and frontend/backend validation parity.",
         "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
         "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open."
@@ -660,7 +660,14 @@
         "examples/localization/build.mjs",
         "packages/notabenda/src/react-consent-bindings.ts",
         "packages/notabenda/src/astro-client.ts",
-        "packages/notabenda/src/astro/PreferencesButton.astro"
+        "packages/notabenda/src/astro/PreferencesButton.astro",
+        "packages/notabenda/src/terms-localization-policy.ts",
+        "packages/notabenda/src/terms.ts",
+        "packages/notabenda-cf/src/terms-localization-policy.ts",
+        "packages/notabenda-cf/src/terms.ts",
+        "packages/notabenda-cf/src/render.ts",
+        "examples/localization/agreement-build.mjs",
+        "examples/localization/agreement.mjs"
       ]
     }
   ],
@@ -5818,10 +5825,10 @@
     {
       "id": "REQ-PRODUCT-LOCALIZATION",
       "jurisdiction": "PRODUCT",
-      "title": "Complete versioned messages for legal pages and consent controls",
+      "title": "Complete versioned messages for legal pages, consent controls and terms acceptance",
       "kind": "product-standard",
-      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts.",
-      "appliesWhen": "An operator supplies the optional localization declaration for legal pages or cookie-choice controls.",
+      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent and terms-interface copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts.",
+      "appliesWhen": "An operator supplies the optional localization declaration for legal pages, cookie-choice controls or ordinary terms acceptance.",
       "sourceRefs": [],
       "discoverySourceIds": [],
       "featureIds": [
@@ -5836,7 +5843,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages and cookie-choice controls; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent.",
+      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages, cookie-choice controls and ordinary terms acceptance; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent or an enforceable agreement.",
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
         "packages/notabenda/src/document-localization.ts",
@@ -5854,12 +5861,21 @@
         "examples/localization/build.mjs",
         "packages/notabenda/src/react-consent-bindings.ts",
         "packages/notabenda/src/astro-client.ts",
-        "packages/notabenda/src/astro/PreferencesButton.astro"
+        "packages/notabenda/src/astro/PreferencesButton.astro",
+        "packages/notabenda/src/terms-localization-policy.ts",
+        "packages/notabenda/src/terms.ts",
+        "packages/notabenda-cf/src/terms-localization-policy.ts",
+        "packages/notabenda-cf/src/terms.ts",
+        "packages/notabenda-cf/src/render.ts",
+        "examples/localization/agreement-build.mjs",
+        "examples/localization/agreement.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
         "docs/verification/localization.md",
-        "site/test/localization.test.mjs"
+        "site/test/localization.test.mjs",
+        "packages/notabenda/test/terms-localization.test.mjs",
+        "site/test/demo.test.mjs"
       ]
     }
   ],
@@ -7005,11 +7021,13 @@
         "REQ-PRODUCT-LOCALIZATION"
       ],
       "status": "automated",
-      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently.",
+      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently. Terms offers bind complete widget copy to the retained release, require a matching receipt, preserve v1 English behavior and support private language/copy inspection.",
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
         "docs/verification/localization.md",
-        "site/test/localization.test.mjs"
+        "site/test/localization.test.mjs",
+        "packages/notabenda/test/terms-localization.test.mjs",
+        "site/test/demo.test.mjs"
       ]
     }
   ],

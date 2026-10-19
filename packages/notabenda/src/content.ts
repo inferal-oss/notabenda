@@ -1,3 +1,4 @@
+import {selectTermsLocalization} from './terms-localization-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {requireEnglishSurface,consentLocalization} from './document-localization.js';
 export {compileConsentRuntimeConfig} from './consent-compile.js';
@@ -158,10 +159,11 @@ export function compileLegalDocuments(input: unknown, options: ValidationOptions
 
 /** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE: pin the exact terms document AND interface wording. */
 export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:string; statement:string; actionLabel:string }, options: ValidationOptions = {}): TermsOffer {
-  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
+  if(!artifact.publicConfig.localization?.terms)requireEnglishSurface(artifact.publicConfig,'Terms acceptance without localization.terms');
+  const localization=artifact.publicConfig.localization?.terms?selectTermsLocalization(artifact.publicConfig.localization):undefined;
   const d = artifact.manifest.documents.find(item=>item.kind === 'terms');
   if (!d) throw new Error('The release has no terms document.');
-  const offer = normalizeTermsOffer({ schemaVersion:1, offerId:'0'.repeat(64), artifactId:artifact.manifest.artifactId, siteId:artifact.manifest.siteId, mode:artifact.manifest.mode, scopeId:wording.scopeId, statement:wording.statement, actionLabel:wording.actionLabel, document:{ title:d.title, url:`/artifacts/${artifact.manifest.artifactId}/terms.html`, version:d.version, effectiveDate:d.effectiveDate, sha256:d.sha256, contentSha256:d.contentSha256, reviewStatus:d.reviewStatus } }, { allowPreview:options.mode === 'preview' });
+  const offer = normalizeTermsOffer({ schemaVersion:localization?2:1,...(localization?{localization}:{}), offerId:'0'.repeat(64), artifactId:artifact.manifest.artifactId, siteId:artifact.manifest.siteId, mode:artifact.manifest.mode, scopeId:wording.scopeId, statement:wording.statement, actionLabel:wording.actionLabel, document:{ title:d.title, url:`/artifacts/${artifact.manifest.artifactId}/terms.html`, version:d.version, effectiveDate:d.effectiveDate, sha256:d.sha256, contentSha256:d.contentSha256, reviewStatus:d.reviewStatus } }, { allowPreview:options.mode === 'preview' });
   const { offerId:_, ...descriptor } = offer;
   return { ...offer, offerId:sha256(canonicalJson(descriptor)) };
 }

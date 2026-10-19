@@ -2,7 +2,7 @@
 
 The optional terms controller presents an unchecked agreement statement and a link to an exact released document. It reports agreement recorded only after a matching backend receipt. Cookie choices and marketing permissions are independent; this flow never changes them.
 
-Try `/agreement` and `/dark/agreement` with `npm run dev`. These fictional examples use draft documents and in-memory storage. They create no real contract or purchase. Restarting the example server clears its records.
+Try [the agreement example](https://notabenda.org/agreement/) and [its Portuguese version](https://notabenda.org/localization/agreement/). Each uses draft documents and the browser’s isolated demo workspace. Demo actions create no real contract or purchase. Local website development uses `npm run site:dev`; its Durable Object storage persists in the configured local directory.
 
 ## Build and retain the offer
 
@@ -22,6 +22,10 @@ Both APIs default to production validation. Production acceptance requires a rev
 The offer ID hashes the site, workflow scope, document metadata/digests, statement, and action label. Changing any of those creates a different offer. The compiler emits exact HTML at `/artifacts/ARTIFACT_ID/terms.html`, as well as ordinary document routes and the portable artifact JSON. Section navigation stays within that pinned document.
 
 **The host must serve and retain pinned HTML for every retained offer.** A build output contains the current release only; replacing a deployment directory can remove older files. Merge releases into retained hosting or provide a host route serving verified archived bytes. The package's admin Worker deliberately does not serve archived HTML. Keep referenced styles/assets available as needed; CSS bytes are not included in document hashes or the release archive. Author-supplied external links may change independently.
+
+## Supply the interface language
+
+Legal pages and acceptance can share the selected site language. Add the complete optional `localization.terms` message dictionary to your site configuration, then build the offer normally. The statement and action label remain explicit offer fields. Version 2 retains all widget text, language, direction and copy revision, with independent backend checks against the retained release. Version 1 English offers remain supported. See the [localization guide](LOCALIZATION.md#terms-acceptance) for the complete contract and limits.
 
 ## Register, then explicitly activate
 
@@ -56,7 +60,7 @@ const receipt = await recordTermsAcceptance(ctx.storage, browserBody, {
 
 For a new request, the current-offer check and event write happen in one transaction. An old page receives `TermsRecordError('stale-offer')` after the active offer changes. The event ID hashes `[siteId, subjectId, requestId]`; the same request returns its original receipt even after activation changes. Reusing that request ID for another operation, scope, or offer is a conflict. A different subject has a separate idempotency namespace.
 
-Offer payloads are bounded to 16 KiB, acceptance requests to 2 KiB, inspectable events to 64 KiB, and release archives to 128 KiB. The implementation uses one event as both evidence and idempotency record. Host retention/erasure must consider replay and operation expiry together: deleting an event removes its duplicate protection. No cleanup, legal-hold, export, or deletion service is implemented here. The host controls direct storage access; these are application-level immutability checks, not tamper-proof/WORM guarantees.
+Offer payloads are bounded to 16 KiB, acceptance requests to 2 KiB, inspectable events to 64 KiB, and release archives to 128 KiB. The implementation uses one event as both evidence and idempotency record. Host retention/erasure must consider replay and operation expiry together: deleting an event removes its duplicate protection. Use the separate [lifecycle](EVIDENCE-LIFECYCLE.md) and [export](EVIDENCE-EXPORT.md) APIs for authorized record management; the terms controller does not schedule those operations. The host controls direct storage access; these are application-level immutability checks, not tamper-proof/WORM guarantees.
 
 ## Mount the control
 
@@ -92,6 +96,6 @@ The detail view presents the exact statement/action label, effective date, workf
 
 ## Requirements and remaining work
 
-`REQ-PRODUCT-TERMS-ACCEPTANCE` connects the implemented mechanics to source and automated tests. `REQ-EU-TERMS` remains partial: supplied content and a checkbox do not establish consumer fairness or enforceability. `REQ-EU-ORDER-ACTION` remains planned. Its current pre-order cross-references include the conditional producer durability label; the separate [shop-level guarantee notice](GUARANTEES.md) is implemented as a prerequisite and does not replace that label or the final order interface. The applicable EU paid-order information/action and durable-medium confirmation requirements are separate from a generic terms agreement ([Consumer Rights Directive, Article 8(2) and (7)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927)). National, sector, withdrawal/cancellation, accessibility and delivery obligations need their own applicable flows and review.
+`REQ-PRODUCT-TERMS-ACCEPTANCE` connects the implemented mechanics to source and automated tests. `REQ-EU-TERMS` remains partial: supplied content and a checkbox do not establish consumer fairness or enforceability. `REQ-EU-ORDER-ACTION` remains partial; [paid-order review](PAID-ORDERS.md) and [customer confirmations](ORDER-CONFIRMATIONS.md) have separate APIs and verification. Their pre-order cross-references include the conditional producer durability label; the separate [shop-level guarantee notice](GUARANTEES.md) is implemented as a prerequisite and does not replace that label or the final order interface. The applicable EU paid-order information/action and durable-medium confirmation requirements are separate from a generic terms agreement ([Consumer Rights Directive, Article 8(2) and (7)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927)). National, sector, withdrawal/cancellation, accessibility and delivery obligations need their own applicable flows and review.
 
-The initial interface is English and vanilla DOM. Full platform/screen-reader/keyboard/zoom review, framework adapters, accessible alternative flows, durable-medium delivery, contract fulfillment and cancellation remain separate work.
+The acceptance interface uses vanilla DOM and the selected terms message set. Framework adapters for this controller and broader platform, screen-reader and zoom review remain open. Contract delivery, withdrawal and cancellation use the separate [contract-action modules](CONTRACT-ACTIONS.md); application fulfillment and provider operation remain host responsibilities.

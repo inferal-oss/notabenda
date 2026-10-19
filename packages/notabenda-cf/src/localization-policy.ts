@@ -50,3 +50,8 @@ export function localizedConsentWording(localization:ConsentLocalization,context
  const change=context.changeSummary?formatMessage(m.materialChange,{summary:context.changeSummary}):'';
  return {title:m.title,summary:[context.available?m.summary:m.unavailableSummary,context.available&&context.restricted?m.restrictedSummary:'',context.exceptions?m.exceptionsSummary:'',change].filter(Boolean).join(' '),preferencesTitle:m.preferencesTitle,preferencesIntro:[m.preferencesIntro,context.restricted?m.restrictedIntro:'',change].filter(Boolean).join(' '),essentialNote:m.essentialNote,acceptLabel:m.acceptLabel,rejectLabel:m.rejectLabel,saveLabel:m.saveLabel,preferencesLabel:m.preferencesLabel,dismissLabel:m.dismissLabel,closeLabel:m.closeLabel};
 }
+
+export function selectConsentLocalization(value:ConsentLocalization):ConsentLocalization{
+ const {schemaVersion,locale,direction,revision,disclosureRevision,reviewStatus,consent}=value;
+ return {schemaVersion,locale,direction,revision,disclosureRevision,reviewStatus,consent};
+}

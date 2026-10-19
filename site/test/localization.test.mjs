@@ -24,3 +24,9 @@ test('the actual bundled example starts, records a choice and stops its local sa
   document.querySelector('.nb-preferences-trigger').click();document.querySelector('.nb-preferences-footer button').click();await new Promise(resolve=>setImmediate(resolve));assert.equal(document.querySelector('#reading-state').textContent,'Desativadas');
  }finally{dom.window.close();for(const [key,descriptor] of Object.entries(original)){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];}}
 });
+
+// @requirements REQ-PRODUCT-TERMS-ACCEPTANCE
+test('the localized agreement has a complete offer and stays separate from cookie choices',async()=>{
+ const page=new JSDOM(await readFile(new URL('localization/agreement/index.html',root),'utf8')).window.document,offer=JSON.parse(await readFile(new URL('localization/agreement/offer.json',root),'utf8'));
+ assert.equal(page.documentElement.lang,'pt-BR');assert.ok(page.querySelector('#terms-control'));assert.equal(page.querySelector('#privacy-controls'),null);assert.ok(page.querySelector('a[href="/demo/admin/agreements"]'));assert.ok(page.querySelector('script[src="/assets/localized-agreement.mjs"]'));assert.equal(offer.schemaVersion,2);assert.equal(offer.localization.locale,'pt-BR');assert.equal(offer.localization.consent,undefined);assert.ok(offer.localization.terms.error);assert.ok(page.querySelector('link[href="/assets/example-theme.css"]'));
+});

@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-CF-HOST
-import {demoStorageNote} from './website-notice.mjs';
+import {demoStorageNote,portugueseDemoStorageNote} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 import {contractActionOperationRef} from 'notabenda-cf';
 import {contractContext} from './contract-context.mjs';
@@ -16,9 +16,9 @@ const cookieBase='notabenda_demo';
 const permissionPage=/^\/(?:(?:dark\/)?form-permissions(?:\/react)?|form-permissions\/astro(?:\/review)?)(?:\/(?:index\.html)?)?$/u;
 const contractPage=/^\/(?:dark\/)?contract-actions\/(withdrawal|cancellation)(?:\/(?:index\.html)?)?$/u;
 const orderPage=/^\/(?:dark\/)?orders\/(mixed|deferred|conditional)(?:\/(?:index\.html)?)?$/u;
-const isPage=path=>orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|recorded-choices|processing-choices)(?:\/|$)/u.test(path);
+const isPage=path=>orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/agreement|recorded-choices|processing-choices)(?:\/|$)/u.test(path);
 const admin=/^\/demo\/admin(?:\/|$)/u;
-const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark)|(?:choices|processing)\/(?:head|record)|permissions\/(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
+const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing)\/(?:head|record)|permissions\/(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
 export const isDemoRoute=path=>isPage(path)||admin.test(path)||api.test(path);
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 const digest=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
@@ -69,7 +69,7 @@ export async function serveDemo(request,env,{protect,readBody}){
     const permissionEntry=permissionPage.test(path);
     const stream=permissionEntry?`<meta name="notabenda-permission-stream" content="${await formPermissionStreamRef(permissionContext(data.formPermissions.offer,generation))}">`:'';
     const contractRoute=contractPage.exec(path)?.[1],contract=contractRoute?`<meta name="notabenda-contract-operation" content="${await contractActionOperationRef(contractContext(data.contractActions.definitions[contractRoute],generation))}">`:'';
-    content=(await response.text()).replace(/<main\b/u,demoStorageNote+'<main').replace('</head>',`<meta name="notabenda-demo-generation" content="${generation}">${stream}${contract}<link rel="stylesheet" href="/assets/website-notice.css"></head>`);
+    content=(await response.text()).replace(/<main\b/u,(path.startsWith('/localization/agreement')?portugueseDemoStorageNote:demoStorageNote)+'<main').replace('</head>',`<meta name="notabenda-demo-generation" content="${generation}">${stream}${contract}<link rel="stylesheet" href="/assets/website-notice.css"></head>`);
    }
    response=new Response(content,{status:response.status,headers:assetHeaders});
   }else if(['/demo/admin/setup','/demo/admin/setup/'].includes(path)){

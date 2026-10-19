@@ -96,10 +96,10 @@ export class EvidenceWorkspace {
         const result=path.endsWith('/head')?await getConsentHead(this.state.storage,scope):await recordConsentChoice(this.state.storage,body,scope);
         return protectedResponse(Response.json(result));
       }
-      if(/^\/demo\/agreements\/(?:light|dark)$/u.test(path)) {
+      if(/^\/demo\/agreements\/(?:light|dark|pt)$/u.test(path)) {
         const body = await readDemoRequest(request); // Validate origin/size before storage initialization.
         await this.initialize();
-        const theme = path.endsWith('/dark') ? 'dark' : 'light'; const {offer} = data.agreements.find(entry=>entry.theme === theme);
+        const theme = path.split('/').at(-1); const {offer} = data.agreements.find(entry=>entry.theme === theme);
         const receipt=await recordTermsAcceptance(this.state.storage,body,{siteId:offer.siteId,scopeId:offer.scopeId,subjectId:this.contextId('synthetic-admin-demo'),operationId:this.contextId(`synthetic-${theme}-operation`),allowPreview:true});
         return protectedResponse(Response.json(receipt));
       }

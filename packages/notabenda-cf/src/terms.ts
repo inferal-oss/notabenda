@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {normalizeTermsLocalization,selectTermsLocalization} from './terms-localization-policy.js';
+import type {TermsLocalization} from './terms-localization-policy.js';
 // @requirements REQ-EU-RETENTION-ERASURE
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import { canonicalJson, sha256, validateStoredLegalRelease } from './history.js';
@@ -43,20 +46,27 @@ function options(storage:HistoryStorage, context:TermsStoreOptions): { prefix:st
 }
 async function offerValue(input:unknown, context:TermsStoreOptions): Promise<ObjectValue> {
   const value = object(normalizeRecord({id:'offer',data:input},16384).data);
-  if (!exact(value,['schemaVersion','offerId','siteId','scopeId','artifactId','mode','document','statement','actionLabel']) || value.schemaVersion !== 1 || !hash(value.offerId) || !hash(value.artifactId) || value.siteId !== context.siteId || !slug(value.scopeId) || !['production','preview'].includes(String(value.mode)) || !text(value.statement,2000) || !text(value.actionLabel,120)) throw new TermsRecordError('invalid-offer');
+  if (!exact(value,['schemaVersion','offerId','siteId','scopeId','artifactId','mode','document','statement','actionLabel',...(value.schemaVersion===2?['localization']:[])]) || (value.schemaVersion !== 1&&value.schemaVersion!==2) || !hash(value.offerId) || !hash(value.artifactId) || value.siteId !== context.siteId || !slug(value.scopeId) || (value.mode!=='production'&&value.mode!=='preview') || !text(value.statement,2000) || !text(value.actionLabel,120)) throw new TermsRecordError('invalid-offer');
+  if(value.schemaVersion===2){try{normalizeTermsLocalization(value.localization,{allowPreview:context.allowPreview===true});}catch{throw new TermsRecordError('invalid-offer');}}
   const doc = object(value.document);
-  if (!exact(doc,['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus']) || !text(doc.title,300) || !text(doc.version,200) || !hash(doc.sha256) || !hash(doc.contentSha256) || doc.url !== `/artifacts/${value.artifactId}/terms.html` || !['draft','reviewed'].includes(String(doc.reviewStatus)) || typeof doc.effectiveDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/u.test(doc.effectiveDate) || !Number.isFinite(Date.parse(doc.effectiveDate)) || new Date(doc.effectiveDate).toISOString().slice(0,10) !== doc.effectiveDate) throw new TermsRecordError('invalid-offer');
+  if (!exact(doc,['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus']) || !text(doc.title,300) || !text(doc.version,200) || !hash(doc.sha256) || !hash(doc.contentSha256) || doc.url !== `/artifacts/${value.artifactId}/terms.html` || (doc.reviewStatus!=='draft'&&doc.reviewStatus!=='reviewed') || typeof doc.effectiveDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/u.test(doc.effectiveDate) || !Number.isFinite(Date.parse(doc.effectiveDate)) || new Date(doc.effectiveDate).toISOString().slice(0,10) !== doc.effectiveDate) throw new TermsRecordError('invalid-offer');
   if (!context.allowPreview && (value.mode !== 'production' || doc.reviewStatus !== 'reviewed')) throw new TermsRecordError('invalid-offer');
   const descriptor = {...value}; delete descriptor.offerId;
   if (await sha256(canonicalJson(descriptor)) !== value.offerId) throw new TermsRecordError('invalid-offer');
   return value;
 }
+function valueMismatch(value:JsonValue|undefined,selected:TermsLocalization):boolean{return value===undefined||canonicalJson(value)!==canonicalJson(selected as unknown as JsonValue);}
 async function verifyArchive(transaction:HistoryTransaction, offer:ObjectValue, context:TermsStoreOptions, releasePrefix:string): Promise<void> {
   const release = object(normalizeRecord({id:'release',data:await transaction.get(releasePrefix + offer.artifactId)},128*1024).data);
   if (release.kind !== 'document-release') throw new TermsRecordError('invalid-offer');
   const artifact = await validateStoredLegalRelease(release);
   const manifest = object(artifact.manifest);
   if (manifest.siteId !== context.siteId || manifest.artifactId !== offer.artifactId || manifest.mode !== offer.mode) throw new TermsRecordError('scope-mismatch');
+  const config=object(artifact.publicConfig);
+  if(config.localization!==undefined&&object(config.localization).terms!==undefined){
+    let selected:TermsLocalization;try{selected=normalizeTermsLocalization(selectTermsLocalization(object(config.localization) as unknown as TermsLocalization),{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{throw new TermsRecordError('invalid-offer');}
+    if(valueMismatch(offer.localization,selected))throw new TermsRecordError('invalid-offer');
+  }else if(offer.localization!==undefined||!/^en(?:-|$)/iu.test(String(object(config.site).locale)))throw new TermsRecordError('invalid-offer');
   const descriptors = manifest.documents as JsonValue[];
   const terms = object(descriptors.find(item=>object(item).kind === 'terms'));
   const document = object(offer.document);

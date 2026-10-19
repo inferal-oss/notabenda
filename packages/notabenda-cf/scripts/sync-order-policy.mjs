@@ -2,7 +2,7 @@
 // @requirements REQ-EU-ORDER-ACTION REQ-EU-GUARANTEE-LABEL
 // Keep the standalone backend dependency-free without maintaining divergent validators.
 import {readFile,writeFile} from 'node:fs/promises';
-const pairs=[['localization-policy.ts','localization-policy.ts',{}],['paid-order-policy.ts','order-policy.ts',{'./guarantee-label.js':'./order-guarantee-label.js'}],['guarantee-label.ts','order-guarantee-label.ts',{'./guarantee-notice-json.js':'./order-guarantee-json.js'}],['guarantee-notice-json.ts','order-guarantee-json.ts',{}],['paid-order.ts','order-review.ts',{'./paid-order-policy.js':'./order-policy.js','./guarantee-label.js':'./order-guarantee-label.js'}]];
+const pairs=[['terms-localization-policy.ts','terms-localization-policy.ts',{}],['localization-policy.ts','localization-policy.ts',{}],['paid-order-policy.ts','order-policy.ts',{'./guarantee-label.js':'./order-guarantee-label.js'}],['guarantee-label.ts','order-guarantee-label.ts',{'./guarantee-notice-json.js':'./order-guarantee-json.js'}],['guarantee-notice-json.ts','order-guarantee-json.ts',{}],['paid-order.ts','order-review.ts',{'./paid-order-policy.js':'./order-policy.js','./guarantee-label.js':'./order-guarantee-label.js'}]];
 for(const [source,target,replacements] of pairs){
  let content=await readFile(new URL('../../notabenda/src/'+source,import.meta.url),'utf8');
  for(const [from,to] of Object.entries(replacements))content=content.replaceAll(from,to);

@@ -156,3 +156,14 @@ test('permission controls mount before the first read and keep withdrawal usable
   }finally{controller?.destroy();localJournal?.close();dom.window.close();}
  }
 });
+
+// @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-TERMS-ACCEPTANCE
+test('localized agreements use session-bound storage, preserve language/copy and remain private to that demo',async()=>{
+ const {env,objects}=environment(),asset=env.ASSETS.fetch;env.ASSETS.fetch=async request=>new URL(request.url).pathname==='/localization/agreement/'?new Response(await readFile(new URL('../dist/public/localization/agreement/index.html',import.meta.url),'utf8'),{headers:{'Content-Type':'text/html'}}):asset(request);
+ const a=await session(env),b=await session(env),offer=data.agreements.find(entry=>entry.theme==='pt').offer;
+ const page=await serveHost(req('/localization/agreement/',{headers:headers(a)}),env),html=await page.text();assert.equal(page.status,200);assert.match(html,/notabenda-demo-generation/u);assert.match(html,/Esta demonstração armazena suas entradas/u);assert.match(html,/lang="pt-BR"/u);assert.match(html,/class="demo-corner"/u);
+ const body={schemaVersion:1,offerId:offer.offerId,requestId:crypto.randomUUID(),accepted:true},post=(s,payload=body)=>serveHost(req('/demo/agreements/pt',{method:'POST',headers:{...headers(s),Origin:'https://demo.example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(payload)}),env),response=await post(a);assert.equal(response.status,200);const receipt=await response.json();assert.equal(receipt.operationId,'synthetic-pt-operation-'+a.generation);assert.deepEqual(await(await post(a)).json(),receipt);
+ const detail=await serveHost(req('/demo/admin/agreements/record?id='+receipt.id,{headers:headers(a)}),env),content=await detail.text();assert.equal(detail.status,200);for(const text of ['pt-BR','Copy revision','Declared interface wording',offer.statement,offer.actionLabel,offer.localization.terms.submitting])assert.ok(content.includes(text),text);assert.equal((await serveHost(req('/demo/admin/agreements/record?id='+receipt.id,{headers:headers(b)}),env)).status,404);
+ assert.equal((await post({...a,cookie:b.cookie})).status,409);assert.equal((await post(a,{...body,requestId:crypto.randomUUID(),offerId:data.agreements.find(e=>e.theme==='light').offer.offerId})).status,400);
+ const events=await [...objects.values()][0].storage.list({prefix:'notabenda/terms/juniper-agreement/events/',limit:100});assert.equal(events.size,11);assert.equal([...events.values()].filter(e=>e.offer?.localization?.locale==='pt-BR').length,1);
+});

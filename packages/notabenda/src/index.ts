@@ -40,3 +40,5 @@ export type {FormPermissionJournal,IndexedDBFormPermissionJournal} from './form-
 
 export type {SiteLocalization,DocumentMessages,GeneratedDocumentMessages} from './document-localization.js';
 export type {ConsentLocalization,ConsentMessages} from './localization-policy.js';
+
+export type {TermsLocalization,TermsMessages} from './terms-localization-policy.js';

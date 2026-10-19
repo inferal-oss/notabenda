@@ -214,4 +214,4 @@ Optional [UK storage settings](../../docs/STORAGE-EXCEPTIONS.md) use `notabenda/
 
 ## Bring your own language
 
-Supply complete versioned messages for legal pages and cookie-choice controls, including status and accessibility text. Set an explicit locale and direction; the compiled runtime contains only the selected consent copy. See the [localization guide](../../docs/LOCALIZATION.md) and [Portuguese example](../../examples/localization/config.mjs). Translation review, remaining interfaces and multi-language routing remain host or future work.
+Supply complete versioned messages for legal pages, cookie-choice controls and terms acceptance, including status and accessibility text. Set an explicit locale and direction; the compiled runtime contains only the selected consent copy. See the [localization guide](../../docs/LOCALIZATION.md) and [Portuguese example](../../examples/localization/config.mjs). Translation review, remaining interfaces and multi-language routing remain host or future work.

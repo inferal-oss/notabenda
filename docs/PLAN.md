@@ -10,7 +10,7 @@ The optional React 19 subpaths now connect cookie and ordinary form-permission p
 
 Rights entry points now provide optional, operator-configured static navigation, scope explanations and a public contact fallback across vanilla, React and Astro. Setup recommends the mechanism and reopens imported wording/destinations for review. Request intake, identity checks, response handling, fulfillment and appeals remain application work; `FEAT-RIGHTS` stays partial. See [RIGHTS.md](RIGHTS.md).
 
-Host-supplied [localization](LOCALIZATION.md) now covers legal document chrome/generated templates and every cookie-choice control state, with versioned selected messages, explicit direction and archived consent copy. Material disclosure revisions are separate from presentation copy revisions. The remaining interfaces and broad reviewed locale catalogs remain open.
+Host-supplied [localization](LOCALIZATION.md) now covers legal document chrome/generated templates, every cookie-choice control state and ordinary terms acceptance, with versioned selected messages, explicit direction and archived consent copy. Material disclosure revisions are separate from presentation copy revisions. The remaining interfaces and broad reviewed locale catalogs remain open.
 
 ## 1. System boundaries
 

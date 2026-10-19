@@ -1,5 +1,7 @@
+import {normalizeTermsLocalization,selectTermsLocalization} from './terms-localization-policy.js';
+import type {TermsMessages} from './terms-localization-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-DOCUMENTS
-import {normalizeConsentLocalization,normalizeMessages} from './localization-policy.js';
+import {normalizeConsentLocalization,normalizeMessages,selectConsentLocalization} from './localization-policy.js';
 import type {ConsentLocalization} from './localization-policy.js';
 export const documentMessageFields={legalEyebrow:['siteName'],versionLabel:[],effectiveLabel:[],draft:[],contents:[],storageItem:['count'],storageItems:['count'],legalLabel:[],privacyRequests:[],skipToContent:[],legalInformation:[]} as const;
 export const generatedDocumentFields={
@@ -17,17 +19,19 @@ export const generatedDocumentFields={
 } as const;
 export type DocumentMessages={[K in keyof typeof documentMessageFields]:string};
 export type GeneratedDocumentMessages={[K in keyof typeof generatedDocumentFields]:string};
-export interface SiteLocalization extends ConsentLocalization {documents:DocumentMessages;generatedDocuments?:GeneratedDocumentMessages}
+export interface SiteLocalization extends ConsentLocalization {documents:DocumentMessages;generatedDocuments?:GeneratedDocumentMessages;terms?:TermsMessages}
 /** Full authoring messages stay outside the compiled consent runtime. */
 export function normalizeSiteLocalization(input:unknown,options:{locale?:string;allowPreview?:boolean}={}):SiteLocalization{
  if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Invalid site localization.');
- const fields=Object.getOwnPropertyDescriptors(input),keys=['schemaVersion','locale','direction','revision','disclosureRevision','reviewStatus','consent','documents',...(Object.hasOwn(fields,'generatedDocuments')?['generatedDocuments']:[])];
+ const fields=Object.getOwnPropertyDescriptors(input),keys=['schemaVersion','locale','direction','revision','disclosureRevision','reviewStatus','consent','documents',...(Object.hasOwn(fields,'generatedDocuments')?['generatedDocuments']:[]),...(Object.hasOwn(fields,'terms')?['terms']:[])];
  if(Reflect.ownKeys(input).length!==keys.length||keys.some(k=>!fields[k]||!Object.hasOwn(fields[k]!,'value')))throw new Error('Invalid site localization fields.');
- const v=Object.fromEntries(keys.map(k=>[k,fields[k]!.value])),{documents,generatedDocuments,...consent}=v;
- return {...normalizeConsentLocalization(consent,options),documents:normalizeMessages(documents,documentMessageFields),...(generatedDocuments===undefined?{}:{generatedDocuments:normalizeMessages(generatedDocuments,generatedDocumentFields)})};
+ const v=Object.fromEntries(keys.map(k=>[k,fields[k]!.value])),{documents,generatedDocuments,terms,...consent}=v;
+ const normalized=normalizeConsentLocalization(consent,options);
+ const localizedTerms=terms===undefined?undefined:normalizeTermsLocalization(selectTermsLocalization({...normalized,terms:terms as TermsMessages}),options).terms;
+ return {...normalized,...(localizedTerms===undefined?{}:{terms:localizedTerms}),documents:normalizeMessages(documents,documentMessageFields),...(generatedDocuments===undefined?{}:{generatedDocuments:normalizeMessages(generatedDocuments,generatedDocumentFields)})};
 }
 export function consentLocalization(localization:SiteLocalization):ConsentLocalization{
- const {documents:_,generatedDocuments:__,...selected}=localization;return selected;
+ return selectConsentLocalization(localization);
 }
 /** Components whose fixed chrome has no localization contract must fail explicitly. */
 export function requireEnglishSurface(config:{site:{locale:string}},surface:string):void{

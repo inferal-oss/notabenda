@@ -113,5 +113,17 @@
     "cookiePurpose": "{name}: {description}",
     "noCookiePurposes": "Nenhuma finalidade de tratamento foi declarada.",
     "storageQuestions": "Dúvidas sobre armazenamento"
+  },
+  "terms": {
+    "regionLabel": "Concordância com os termos",
+    "heading": "Revise os termos",
+    "metadata": "Versão {version} · vigência em {effectiveDate} · abre em outra aba",
+    "draft": "Prévia · Termos em revisão",
+    "recorded": "Concordância registrada para a versão {version}.",
+    "submitting": "Registrando sua concordância…",
+    "stale": "Os termos mudaram. Recarregue a página para revisar a versão atual.",
+    "retired": "Este contexto foi encerrado. Entre em contato com o responsável pelo site para iniciar outro processo.",
+    "unavailable": "Este navegador não conseguiu iniciar uma solicitação segura. Use um navegador compatível com HTTPS.",
+    "error": "Não foi possível confirmar o registro da sua concordância. Tente novamente."
   }
 }

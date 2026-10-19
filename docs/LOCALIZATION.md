@@ -94,10 +94,22 @@ Localized notices use consent-notice schema version 2 and include the selected c
 
 The compiled browser inventory includes only the selected consent text. Document templates, document bodies and operator contacts remain outside that runtime projection. Localized releases reject `createConsentNotice(..., {wording: ...})` and built-in `preferencesLabel` overrides; change the versioned dictionary instead.
 
+## Terms acceptance
+
+Add the optional complete `localization.terms` dictionary before building an acceptance interface. The [message file](../examples/localization/messages.json) supplies all ten fields: the region label, heading, document metadata, draft note, recording/recorded states and every failure state. `metadata` requires `{version}` and `{effectiveDate}`; `recorded` requires `{version}`. The complete selected terms-localization descriptor is limited to 8 KiB and its offer to 16 KiB.
+
+Build an offer with `createTermsOffer` as usual, supplying the statement and action label in the selected language. Localized offers use schema version 2 and pin the complete widget messages, locale, direction and copy revision. The controller and backend independently validate them; backend registration compares them with the retained release. An unchecked statement and a matching receipt are still required. Language does not select a jurisdiction or make an agreement enforceable.
+
+Terms messages stay out of the compiled cookie-consent inventory and its material scope. Updating terms copy creates a new offer and release. A retry of an already-recorded request returns its original receipt; it does not apply the new offer. Existing v1 English offers, including English-localized releases without a terms dictionary, keep their previous behavior. Non-English acceptance requires the terms dictionary.
+
+The operator detail shows the recorded language, copy revision and resolved declared interface messages. It retains the original templates in the complete JSON. This records the offered wording, not proof of which states were displayed.
+
+Try the [Portuguese agreement](https://notabenda.org/localization/agreement/). Its recorded assertion is kept in that browser’s isolated demo workspace and can be inspected from its agreement records.
+
 ## Supported interfaces
 
-This contract covers legal document pages/links, native consent controls and their React/Astro bridges. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
+This contract covers legal document pages/links, native consent controls and their React/Astro bridges, and the native terms-acceptance widget. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Service-directory UI, ordinary terms-acceptance UI, collection/form-permission UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Service-directory UI, collection/form-permission UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.

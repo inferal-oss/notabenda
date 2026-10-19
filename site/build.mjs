@@ -135,6 +135,7 @@ for(const [theme,prefix] of [['light',''],['dark','dark/']]) {
   const offer=JSON.parse(files[`${prefix}agreement/offer.json`]);
   agreements.push({theme,offer}); releases.push({artifact:JSON.parse(files[`artifacts/${offer.artifactId}.json`]),metadata:{recordedAt:'2026-10-18T10:00:00Z',changeNote:`Fictional ${theme} agreement demonstration.`}});
 }
+const localizedOffer=JSON.parse(files['localization/agreement/offer.json']);agreements.push({theme:'pt',offer:localizedOffer});releases.push({artifact:JSON.parse(files[`artifacts/${localizedOffer.artifactId}.json`]),metadata:{recordedAt:'2026-10-19T12:00:00Z',changeNote:'Localized terms agreement example.'}});
 // Seed evidence from the build-time site, never the intentionally smaller browser descriptor.
 const choiceConfig=exampleConsentConfig(config);
 for(const [kind,doc] of Object.entries(choiceConfig.documents))doc.route=`/choices/${kind}`;

@@ -1,3 +1,4 @@
+import {selectConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
@@ -72,7 +73,7 @@ function requestValue(value:unknown):ConsentChoiceRequest {
 export function createEvidenceSession(config:ConsentRuntimeInventory,options:ConsentEvidenceOptions,env:EvidenceEnvironment,changed:()=>void) {
   const notice=normalizeConsentNotice(options.notice,{allowPreview:options.allowPreview===true});
   const scopes=consentScopes(config); const timeout=options.timeoutMs??10000;
-  const selectedLocalization=config.localization?Object.fromEntries(Object.entries(config.localization).filter(([key])=>key!=='documents'&&key!=='generatedDocuments')):undefined;
+  const selectedLocalization=config.localization?selectConsentLocalization(config.localization):undefined;
   if(JSON.stringify(notice.localization)!==JSON.stringify(selectedLocalization)||config.localization&&!same({...notice.wording},{...defaultConsentWording(config)}))throw new Error('Evidence localization must match the selected release.');
   if(notice.siteId!==config.site.id||!same(notice.scopes,scopes)||!samePromptPolicy(notice.policy.promptPolicy,config.consent!.promptPolicy)||notice.policy.grantLifetimeDays!==config.consent!.grantLifetimeDays||notice.policy.refusalLifetimeDays!==config.consent!.refusalLifetimeDays||!hash(options.streamRef)||typeof options.read!=='function'||typeof options.write!=='function'||!Number.isInteger(timeout)||timeout<1000||timeout>30000) throw new Error('Evidence must match this site, material scope, prompt policy, lifetimes and a host-authorized stream.');
   const {streamRef,read,write}=options;

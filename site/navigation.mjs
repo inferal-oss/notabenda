@@ -27,7 +27,7 @@ export const siteSections=[
   topic('guards','Scope guards','/scope-guards','See how explicit site and purpose restrictions affect available controls.','scope-guards',[],'Specialist controls')
  ]},
  {id:'contracts',title:'Terms and purchases',description:'Version-bound terms agreements and separate consumer-contract information and actions.',guides:[guide('terms','Terms agreements'),guide('guarantees','Guarantee notices'),guide('guarantee-labels','Product guarantee labels'),guide('guarantee-producer-example','Producer label example'),guide('paid-orders','Paid order reviews'),guide('contract-actions','Withdrawal & cancellation'),guide('contract-dispatch','Contract delivery runners')],topics:[
-  topic('agreement','Terms agreement','/agreement','An unchecked statement tied to the exact terms version and action wording.','terms'),
+  topic('agreement','Terms agreement','/agreement','An unchecked statement tied to the exact terms version and action wording.','terms',[['Portuguese','/localization/agreement/']]),
   topic('guarantee-notice','EU guarantee notice','/guarantees','Display the shop-level legal guarantee notice and its readable wording.','guarantees',[],'Consumer contracts'),
   topic('producer-label','Product guarantee label','/guarantees/product/','Place the complete producer guarantee label beside the product it covers.','guarantee-labels',[['Preparation & source','/guide/guarantee-producer-example']],'Consumer contracts'),
   topic('orders','Paid order review','/orders/mixed/','Present items, commitments and prices immediately before an explicit payment action.','paid-orders',[['Deposit & balance','/orders/deferred/'],['Conditional fee','/orders/conditional/'],['Dark','/dark/orders/mixed/']],'Consumer contracts'),

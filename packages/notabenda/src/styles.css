@@ -475,12 +475,13 @@
  @media print{:where(.nb-document[data-document-kind]){display:block;padding:0;max-width:none}:where(.nb-document[data-document-kind]>.nb-contents){display:none}}
  :where(.nb-terms-acceptance){font:inherit;color:var(--nb-text,#25262b);overflow-wrap:anywhere;margin:0;padding:clamp(1.25rem,4vw,2rem);border:1px solid var(--nb-line,#e5e5e8);border-radius:12px;box-shadow:none;background:var(--nb-surface,#fff)}
  :where(.nb-terms-acceptance h2){font-size:1rem;font-weight:600;letter-spacing:-.02em;line-height:1.5;margin:0}
- :where(.nb-terms-document){display:flex;align-items:center;gap:1rem;padding-block:1.5rem;border-bottom:1px solid var(--nb-line,#e5e5e8);margin-bottom:1.25rem}
+ :where(.nb-terms-document){display:flex;align-items:flex-start;gap:1rem;padding-block:1.5rem;border-bottom:1px solid var(--nb-line,#e5e5e8);margin-bottom:1.25rem}
  :where(.nb-terms-document-icon){display:grid;place-items:center;width:44px;height:52px;flex:none;border:1px solid var(--nb-line,#e5e5e8);border-radius:6px;color:var(--nb-muted,#65676f)}
  :where(.nb-terms-document-copy){flex:1;min-width:0}
  :where(.nb-terms-document a){display:inline-flex;align-items:center;min-height:44px;font-size:1rem;font-weight:550;color:var(--nb-text,#25262b);text-decoration:none;gap:.7rem}
  :where(.nb-terms-document a:hover){text-decoration:underline}
  :where(.nb-terms-document .nb-document-meta){margin:.15rem 0 0;font-size:.8125rem}
+ :where(.nb-terms-date){white-space:nowrap}
  :where(.nb-terms-acceptance>.nb-draft){display:inline-block;border:1px solid var(--nb-line,#e5e5e8);border-radius:4px;background:transparent;padding:.2rem .5rem;font-size:.75rem;margin:0 0 .5rem}
  :where(.nb-terms-statement){display:flex;align-items:start;min-height:44px;cursor:pointer;padding:.5rem 0;border:0;border-radius:0;background:transparent;font-size:.9375rem;line-height:1.65;margin:0 0 1.5rem;gap:.8rem}
  :where(.nb-terms-statement input){flex:none;accent-color:var(--nb-action-bg,#303137);margin:.2rem 0 0;inline-size:1.125rem;block-size:1.125rem}

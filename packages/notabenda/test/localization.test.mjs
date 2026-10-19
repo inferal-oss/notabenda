@@ -43,7 +43,7 @@ test('native and React legal documents share localized text, language, direction
  const rtl=structuredClone(c);rtl.site.locale=rtl.localization.locale='ar';rtl.localization.direction='rtl';assert.match(renderLegalPage(rtl,'terms'),/<html lang="ar" dir="rtl">/u);
  const build=compileLegalDocuments(c),notice=createConsentNotice(build.artifact,{scopeId:'privacy'});assert.equal(notice.schemaVersion,2);assert.equal(notice.localization.locale,'pt-BR');assert.equal(notice.localization.documents,undefined);assert.equal(compileConsentRuntimeConfig(c,{evidence:'local'}).inventory.localization.generatedDocuments,undefined);
  assert.throws(()=>createConsentNotice(build.artifact,{scopeId:'privacy',wording:{summary:'Override'}}),/localization/u);
- for(const action of [()=>renderServiceDirectory(c,{idPrefix:'services'}),()=>createTermsOffer(build.artifact,{scopeId:'terms',statement:'Concordo',actionLabel:'Continuar'}),()=>createCollectionNotice(build.artifact,{})])assert.throws(action,/does not yet support localized UI/u);
+ for(const action of [()=>renderServiceDirectory(c,{idPrefix:'services'}),()=>createCollectionNotice(build.artifact,{})])assert.throws(action,/does not yet support localized UI/u);
 });
 
 for(const [profile,factory] of consentProfiles)test(`${profile}: copy revisions preserve grants, material revisions reopen grants and preserve refusals`,async()=>{
