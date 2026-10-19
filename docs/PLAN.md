@@ -306,3 +306,6 @@ Defer a hosted dashboard, automatic legal updates, broad vendor/locale catalogs,
 The first implementation task is milestone 0 followed by the smallest complete demo: reviewed supplied documents, one mock optional integration, one choice flow in two themes, and a versioned artifact. Then add the optional receipt path without changing the frontend state contract.
 
 The optional [customer confirmation module](ORDER-CONFIRMATIONS.md) retains complete host-supplied personally addressed files and a separate delivery job after host-declared contract conclusion. It preserves the original order admission, fixed destination version, exact file bytes, provider/settlement uncertainty, private inspection and lifecycle fencing. It installs no sender or scheduler. Real provision, timing, content review, corrections and regional/operational acceptance remain separate work.
+
+
+The optional [UK storage settings](STORAGE-EXCEPTIONS.md) implement declared statistical/appearance profiles as independent objection gates. They reuse the cooperative service runner, require atomic preference persistence and usable presentation, preserve objections across material revisions, and keep ordinary consent choices separate. Broader regional support and provider qualification remain open.

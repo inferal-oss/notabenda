@@ -32,13 +32,14 @@ export function applyPromptPolicyWording(config:ConsentRuntimeInventory,wording:
 export function defaultConsentWording(config: ConsentRuntimeInventory): ConsentWording {
   if (!config.consent) throw new Error('Declare the optional consent scope first.');
   const available=config.consent.purposes.filter(p=>!scopeGuardBlocked(config.scopeGuards,p.id));
+  const exceptions=config.storage.some(s=>s.classification==='exception');
   const restricted=available.length!==config.consent.purposes.length;
   return applyPromptPolicyWording(config,{
     title:'Optional cookies',
-    summary:available.length?`Allow optional cookies and storage for ${available.map(p => config.purposes.find(item => item.id === p.id)!.name.toLocaleLowerCase('en')).join(' and ')}?${restricted?' Other purposes need a separate process and stay off here.':''}`:'Optional purposes need a separate supported process and stay off here.',
+    summary:available.length?`Allow optional cookies and storage for ${available.map(p => config.purposes.find(item => item.id === p.id)!.name.toLocaleLowerCase('en')).join(' and ')}?${restricted?' Other purposes need a separate process and stay off here.':''}${exceptions?' Other storage settings have separate on/off controls.':''}`:'Optional purposes need a separate supported process and stay off here.',
     preferencesTitle:'Privacy choices', preferencesIntro:'Choose the optional purposes you allow. Closing this panel leaves your current choices unchanged.'+(restricted?' Purposes marked unavailable need a separate supported process and stay off here.':''),
     essentialNote:'Essential functions are handled by the site. Optional purposes below stay off unless you allow them.',
-    acceptLabel:restricted?'Allow available':'Accept optional', rejectLabel:'Reject optional', saveLabel:'Save choices', preferencesLabel:'Preferences', dismissLabel:'Not now', closeLabel:'Close',
+    acceptLabel:exceptions?'Allow these services':restricted?'Allow available':'Accept optional', rejectLabel:exceptions?'Reject these services':'Reject optional', saveLabel:'Save choices', preferencesLabel:'Preferences', dismissLabel:'Not now', closeLabel:'Close',
   });
 }
 export interface ConsentNoticeDocument {

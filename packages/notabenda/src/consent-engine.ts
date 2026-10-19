@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-PRIVACY-SIGNALS
+import {reconcileManagedService} from './service-runner.js';
+import type {ManagedService} from './service-runner.js';
 // @requirements REQ-PRODUCT-REACT
 // @requirements REQ-US-COPPA-SCOPE
 // @requirements REQ-US-VA-RIGHTS
@@ -27,13 +30,7 @@ const DAY = 86400000;
 const MAX_RECORD = 65536;
 interface Choice { scope: string; status: 'granted' | 'denied' | 'withdrawn'; at: number; until: number }
 interface ChoiceRecord { schemaVersion: 1; siteId: string; choices: Record<string, Choice>; dismissedUntil: number; authorizationMode?:'local'|'required'; evidence?:SavedConsentCommand; promptPolicy?:PromptPolicyMemory }
-interface RunningService {
-  lifecycle: ServiceLifecycle;
-  controller?: AbortController;
-  cleanup?: () => void | Promise<void>;
-  phase: ServiceStatus;
-  removed: boolean;
-}
+type RunningService=ManagedService;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
 
 /** Access browser capabilities only at construction, never on module import. */
@@ -135,33 +132,8 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
   }
   function emit(): void { for (const listener of [...listeners]) { try { listener(snapshot()); } catch { /* Observers cannot prevent withdrawal or corrupt the state engine. */ } } }
   function track(task: Promise<void>): void { pending.add(task); void task.finally(() => pending.delete(task)); }
-  function reconcileService(id: string, entry: RunningService): void {
-    const shouldRun = !entry.removed && serviceAllowed(id);
-    if (!shouldRun && entry.controller && !entry.controller.signal.aborted) entry.controller.abort();
-    if (entry.phase === 'reload-required' || entry.phase === 'stopping') return;
-    if (entry.phase === 'starting') return; // Its permanently retired generation will clean up when it resolves.
-    if (entry.phase === 'active' && !shouldRun) {
-      entry.phase = 'stopping'; const cleanup = entry.cleanup!; delete entry.cleanup;
-      const task = Promise.resolve().then(cleanup).then(() => { delete entry.controller; entry.phase = 'blocked'; reconcileService(id, entry); emit(); }, () => { entry.phase = 'reload-required'; emit(); });
-      track(task); return;
-    }
-    if (entry.phase !== 'blocked' || !shouldRun || entry.controller) return;
-    const generation = new AbortController(); entry.controller = generation; entry.phase = 'starting';
-    const task = Promise.resolve().then(() => {
-      // @requirements REQ-PRODUCT-PRIVACY-SIGNALS Sample immediately before invoking optional work.
-      processing?.refreshLocal();
-      if(sampleSignal())update();
-      if (generation.signal.aborted || !serviceAllowed(id)) { generation.abort(); return () => {}; }
-      return entry.lifecycle.start({ signal: generation.signal });
-    }).then(async cleanup => {
-      processing?.refreshLocal();
-      if (typeof cleanup !== 'function') throw new Error('A service must return a cleanup function.');
-      if (generation.signal.aborted || entry.removed || !serviceAllowed(id)) {
-        entry.phase = 'stopping'; emit(); await cleanup(); delete entry.controller; entry.phase = 'blocked'; reconcileService(id, entry);
-      } else { entry.cleanup = cleanup; entry.phase = 'active'; }
-      emit();
-    }).catch(() => { generation.abort(); entry.phase = 'reload-required'; emit(); });
-    track(task);
+  function reconcileService(id:string,entry:RunningService):void {
+    reconcileManagedService(id,entry,{allowed:serviceAllowed,beforeCheck(){processing?.refreshLocal();if(sampleSignal())update();},changed:emit,track});
   }
   function update(): void {
     processing?.refreshLocal();

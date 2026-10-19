@@ -78,7 +78,9 @@ Retrieved official FAQ. Accept/reject paragraph explicitly requires simultaneous
 
 [ICO: storage/access exception conditions](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/what-are-the-exceptions/)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** read.
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Read statistical/appearance qualifications and the simple objection guidance; legal applicability and actual provider behavior require separate review.
 
 <a id="src-ch-fdpic"></a>
 
@@ -993,3 +995,13 @@ Read SQLite combined key/value 2 MB and legacy KV value 128 KiB limits. The paid
 **Type:** primary-law. **Checked:** 2026-10-19. **Access:** search-result.
 
 Official indexed judgment/summary: paragraphs 35, 42–51 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review.
+
+<a id="src-uk-duaa-storage"></a>
+
+## SRC-UK-DUAA-STORAGE
+
+[Data (Use and Access) Act 2025: Schedule 12 storage/access amendments](https://www.legislation.gov.uk/ukpga/2025/18/pdfs/ukpga_20250018_en.pdf)
+
+**Type:** legislation. **Checked:** 2026-10-19. **Access:** read.
+
+Read Schedule 12 inserting PECR Schedule A1, especially paragraphs 5 and 6 (printed pages 233–234; PDF pages 243–244). This enacted source is read alongside current regulator guidance, not a complete commencement or national-applicability determination.

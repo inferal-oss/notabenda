@@ -12,7 +12,8 @@
     "./dist/consent.css",
     "./dist/services.css",
     "./dist/guarantees.css",
-    "./dist/orders.css"
+    "./dist/orders.css",
+    "./dist/storage-exceptions.css"
   ],
   "files": [
     "dist",
@@ -198,7 +199,18 @@
       "import": "./dist/paid-order.js",
       "default": "./dist/paid-order.js"
     },
-    "./orders.css": "./dist/orders.css"
+    "./orders.css": "./dist/orders.css",
+    "./storage-exceptions": {
+      "types": "./dist/storage-exceptions.d.ts",
+      "import": "./dist/storage-exceptions.js",
+      "default": "./dist/storage-exceptions.js"
+    },
+    "./storage-exceptions/ui": {
+      "types": "./dist/storage-exception-controls.d.ts",
+      "import": "./dist/storage-exception-controls.js",
+      "default": "./dist/storage-exception-controls.js"
+    },
+    "./storage-exceptions.css": "./dist/storage-exceptions.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

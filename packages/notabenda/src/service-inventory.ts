@@ -5,7 +5,7 @@ import type {PublicSiteConfig,ValidationOptions} from './types.js';
 export interface DeclaredService {
   id:string; name:string; provider:string; location:string; privacyUrl?:string;
   purposes:{id:string;name:string;description:string;dataCategories:string[];legalBasis:string;retention:string}[];
-  storage:{id:string;name:string;type:string;duration:string;classification:'necessary'|'optional';necessityReason?:string}[];
+  storage:{id:string;name:string;type:string;duration:string;classification:'necessary'|'optional'|'exception';necessityReason?:string}[];
 }
 
 /** Internal projection from already validated public configuration. No catalog or runtime scope fields. */

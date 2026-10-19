@@ -1,0 +1,25 @@
+// @requirements REQ-PRODUCT-STORAGE-EXCEPTIONS
+// @requirements REQ-UK-EXCEPTIONS REQ-PRODUCT-STORAGE-CLEANUP
+import {createStorageExceptions,createIndexedDBStorageExceptionJournal} from 'notabenda/storage-exceptions';
+import {mountStorageExceptionControls,rejectAllOptionalActivity} from 'notabenda/storage-exceptions/ui';
+import {createConsent,registerStorageService} from 'notabenda';
+const d=document,$=id=>d.getElementById(id),message=$('example-status');
+try{
+ const response=await fetch('/storage-exceptions/site.json',{credentials:'omit'});if(!response.ok)throw Error();const config=await response.json(),journal=createIndexedDBStorageExceptionJournal(),exceptions=createStorageExceptions(config,{journal,allowPreview:true}),consent=createConsent(config),adapters=[],services=[];
+ let total,compact;
+ function status(text){message.textContent=text;}
+ adapters.push(registerStorageService({exceptions,serviceId:'improvement-service',targets:[{storageId:'improvement-storage'}],start({signal}){if(total===undefined){const value=Number(localStorage.getItem('juniper-exception-improvement'));total=Number.isSafeInteger(value)&&value>=0?value:0;}localStorage.setItem('juniper-exception-improvement',String(total));$('sample-total').textContent=String(total);$('sample-interaction').disabled=false;const add=()=>{if(signal.aborted)return;localStorage.setItem('juniper-exception-improvement',String(++total));$('sample-total').textContent=String(total);};$('sample-interaction').addEventListener('click',add);return ()=>{$('sample-interaction').removeEventListener('click',add);$('sample-interaction').disabled=true;$('sample-total').textContent='Off';};}}));
+ // Layout is a retained preference: stop its producer on disposal, but delete its
+ // exact key only for an objection. The generic cleanup adapter deliberately clears
+ // on disposal too, so it is used for temporary sample markers instead.
+ services.push(exceptions.registerService('appearance-service',{purposes:['appearance'],start({signal}){const key='juniper-exception-appearance';compact??=localStorage.getItem(key)==='compact';const render=()=>{localStorage.setItem(key,compact?'compact':'comfortable');$('reading-sample').classList.toggle('compact',compact);$('sample-layout').textContent=compact?'Compact':'Comfortable';$('change-layout').textContent=compact?'Use comfortable spacing':'Use compact spacing';};render();$('change-layout').disabled=false;const change=()=>{if(signal.aborted)return;compact=!compact;render();};$('change-layout').addEventListener('click',change);return ()=>{$('change-layout').removeEventListener('click',change);$('change-layout').disabled=true;$('reading-sample').classList.remove('compact');$('sample-layout').textContent='Off';if(exceptions.getSnapshot().entries.appearance.objection==='objected')localStorage.removeItem(key);};}}));
+ exceptions.subscribe(s=>{if(s.entries.improvement.objection==='objected')total=0;if(s.entries.appearance.objection==='objected'){compact=false;try{localStorage.removeItem('juniper-exception-appearance');}catch{}}});
+ $('exception-settings').replaceChildren();const ui=mountStorageExceptionControls($('exception-settings'),exceptions,{idPrefix:'storage',title:'Your storage settings',description:'These two features can run under the declared exception profiles while you leave them on. Switch either off whenever you want.'});
+ consent.subscribe(s=>{$('recommendation-state').textContent=s.servicePermissions['recommendations-service']?'On':'Off';});
+ $('allow-recommendations').addEventListener('click',()=>{const result=consent.acceptAll();status(result.persisted?'Recommendations allowed. Your other settings are unchanged.':'The consent choice could not be saved. Recommendations stay off.');});
+ $('reject-recommendations').addEventListener('click',()=>{consent.rejectAll();status('Recommendations are off.');});
+ $('all-off').addEventListener('click',()=>{void rejectAllOptionalActivity(consent,exceptions).then(result=>status(result.consentPersisted?'All optional features are off.':'All optional features are off for this visit. The recommendations setting could not be saved.'),()=>status('Features are off. A setting could not be saved; try again.'));});
+ for(const id of ['allow-recommendations','reject-recommendations','all-off'])$(id).disabled=false;
+ adapters.push(registerStorageService({consent,serviceId:'recommendations-service',targets:[{storageId:'recommendations-storage'}],start(){localStorage.setItem('juniper-exception-recommendations','on');return ()=>{};}}));
+ window.addEventListener('pagehide',event=>{if(event.persisted)return;ui.destroy();for(const detach of services)detach();exceptions.destroy();consent.destroy();void Promise.all([...adapters.map(a=>a.destroy()),exceptions.settled()]).finally(()=>journal.close());});
+}catch{$('exception-settings').textContent='Saved settings are unavailable. These features stay off.';message.textContent='This example needs browser storage to remember your settings.';}

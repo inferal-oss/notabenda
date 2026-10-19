@@ -1,3 +1,6 @@
+// @requirements REQ-UK-EXCEPTIONS
+import {normalizeStorageExceptionPolicy} from './storage-exception-policy.js';
+import type {ExceptionInventory} from './storage-exception-policy.js';
 import {isResourceOrigin,isSafeLink} from './safe-links.js';
 export {isResourceOrigin,isSafeLink} from './safe-links.js';
 // @requirements REQ-GOOGLE-MODE
@@ -125,11 +128,14 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
     const item = record(value); const path = `storage[${i}]`;
     for (const key of ['name', 'serviceId', 'duration']) required(item, key, path);
     choice(item.type, ['cookie', 'localStorage', 'sessionStorage', 'indexedDB', 'other'], `${path}.type`);
-    choice(item.classification, ['necessary', 'optional'], `${path}.classification`);
+    choice(item.classification, ['necessary', 'optional', 'exception'], `${path}.classification`);
     if (typeof item.serviceId === 'string' && !serviceIds.has(item.serviceId)) error(`${path}.serviceId`, 'Reference a declared service.', 'unknown-service');
+    if(item.classification==='exception'&&!text(item.exceptionId)||item.classification!=='exception'&&item.exceptionId!==undefined)error(path+'.exceptionId','Only exception storage must reference its explicit declaration.','invalid-exception',['REQ-UK-EXCEPTIONS']);
     if (item.classification === 'necessary') required(item, 'necessityReason', path);
     else if (item.necessityReason !== undefined) required(item, 'necessityReason', path);
   }
+  if(config.storageExceptions!==undefined)try{normalizeStorageExceptionPolicy(config.storageExceptions,config as unknown as ExceptionInventory,{allowPreview:options.mode!=='production'});}catch{error('storageExceptions','Declare reviewed qualifying exceptions with disjoint service/purpose/storage scope and explicit scope guards.','invalid-exception',['REQ-UK-EXCEPTIONS']);}
+  else if(list(config.storage).some(s=>record(s).classification==='exception'))error('storageExceptions','Exception storage requires an explicit declaration.','missing-exception',['REQ-UK-EXCEPTIONS']);
   // @requirements REQ-EU-DEVICE REQ-EU-FAIR-CHOICE: optional runtime scope must match the declared inventory.
   if (config.consent !== undefined) {
     const consent = objectAt(config.consent, 'consent');
@@ -251,7 +257,8 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
     ...(config.scopeGuards===undefined?{}:{scopeGuards:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>p.id))}),
     purposes: config.purposes.map(p => ({ id: p.id, name: p.name, description: p.description, legalBasis: p.legalBasis, dataCategories: [...p.dataCategories], retention: p.retention, collection: { source: p.collection.source, description: p.collection.description, required: p.collection.required, consequences: p.collection.consequences } })),
     services: config.services.map(s => ({ ...(s.googleBasic===undefined?{}:{googleBasic:normalizeGoogleBasic(s.googleBasic,s.purposeIds)}),id: s.id, name: s.name, provider: s.provider, purposeIds: [...s.purposeIds], location: s.location, ...(s.privacyUrl === undefined ? {} : { privacyUrl: s.privacyUrl }), ...(s.resourceOrigins===undefined?{}:{resourceOrigins:[...s.resourceOrigins]}), ...(s.processingActivities===undefined?{}:{processingActivities:[...s.processingActivities]}) })),
-    storage: config.storage.map(s => ({ id: s.id, name: s.name, type: s.type, serviceId: s.serviceId, duration: s.duration, classification: s.classification, ...(s.necessityReason === undefined ? {} : { necessityReason: s.necessityReason }) })),
+    ...(config.storageExceptions===undefined?{}:{storageExceptions:normalizeStorageExceptionPolicy(config.storageExceptions,config,{allowPreview:options.mode!=='production'})}),
+    storage: config.storage.map(s => ({ id: s.id, name: s.name, type: s.type, serviceId: s.serviceId, duration: s.duration, classification: s.classification, ...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}), ...(s.necessityReason === undefined ? {} : { necessityReason: s.necessityReason }) })),
     privacy: { rights: [...config.privacy.rights], transfers: config.privacy.transfers, automatedDecisions: config.privacy.automatedDecisions,
       complaints: { description: config.privacy.complaints.description, ...(config.privacy.complaints.url === undefined ? {} : { url: config.privacy.complaints.url }) },
       ...(config.privacy.rightsUrl===undefined&&config.rightsCenter===undefined?{}:{rightsUrl:config.rightsCenter?.route??config.privacy.rightsUrl!}),

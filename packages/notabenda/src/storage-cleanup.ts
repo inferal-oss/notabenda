@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-STORAGE-EXCEPTIONS
+import type {StorageExceptionController} from './storage-exceptions.js';
 import type {ConsentStateController,ServiceLifecycle} from './consent.js';
 
 export interface CookieCleanupScope {path:string;domain?:string}
@@ -16,7 +18,7 @@ export interface StorageCleanupResult {
 }
 export interface StorageCleanupReport {reason:'initial'|'abort'|'teardown'|'start-failure'|'retry'|'destroy';failed:boolean;results:StorageCleanupResult[]}
 export interface StorageServiceSnapshot {serviceId:string;state:'open'|'closing'|'closed';report:StorageCleanupReport|null}
-export interface StorageServiceOptions {consent:ConsentStateController;serviceId:string;targets:readonly StorageCleanupTarget[];start:ServiceLifecycle['start']}
+export type StorageServiceOptions=({consent:ConsentStateController;exceptions?:never}|{exceptions:StorageExceptionController;consent?:never})&{serviceId:string;targets:readonly StorageCleanupTarget[];start:ServiceLifecycle['start']};
 export interface StorageServiceController {
   getSnapshot():StorageServiceSnapshot;
   subscribe(listener:(snapshot:StorageServiceSnapshot)=>void):()=>void;
@@ -36,18 +38,18 @@ function cookieScopeUsable(name:string,scope:CookieCleanupScope,cookie:NonNullab
   return (!scope.domain||host===scope.domain||host.endsWith('.'+scope.domain))&&(!name.startsWith('__Host-')||scope.path==='/'&&!scope.domain&&cookie.secure)&&(!name.startsWith('__Secure-')||cookie.secure);
 }
 
-/** @requirements REQ-PRODUCT-STORAGE-CLEANUP REQ-PRODUCT-CONSENT-RUNTIME
+/** @requirements REQ-PRODUCT-STORAGE-CLEANUP REQ-PRODUCT-CONSENT-RUNTIME REQ-UK-EXCEPTIONS
  * Opt-in exact-key cleanup within one owned service generation. Never enumerates storage or returns values.
  */
 export function registerStorageService(options:StorageServiceOptions,environment?:StorageCleanupEnvironment):StorageServiceController {
-  const {consent,serviceId,start}=options,config=consent.getConfig();const service=config.services.find(s=>s.id===serviceId);
-  if(!service||!config.consent?.services.some(s=>s.id===serviceId)||consent.getSnapshot().destroyed||typeof start!=='function'||!Array.isArray(options.targets)||!options.targets.length||options.targets.length>64)return bad();
+  const {serviceId,start}=options,consent=options.exceptions??options.consent,exception=options.exceptions!==undefined,config=consent.getConfig();const service=config.services.find(s=>s.id===serviceId);if(options.exceptions&&options.consent)return bad();
+  if(!service||!(exception?options.exceptions!.getPolicy().entries.some(e=>e.serviceIds.includes(serviceId)):config.consent?.services.some(s=>s.id===serviceId))||consent.getSnapshot().destroyed||typeof start!=='function'||!Array.isArray(options.targets)||!options.targets.length||options.targets.length>64)return bad();
   const env=environment??browserEnvironment(),ids=new Set<string>();
   // Copy and validate every target before registration or mutation.
   const targets:PreparedTarget[]=options.targets.map(raw=>{
     if(!object(raw)||!keys(raw,['storageId'],['cookieScopes'])||typeof raw.storageId!=='string'||ids.has(raw.storageId))return bad();ids.add(raw.storageId);
     const item=config.storage.find(s=>s.id===raw.storageId);
-    if(!item||item.serviceId!==serviceId||item.classification!=='optional'||!['localStorage','sessionStorage','cookie'].includes(item.type)||!item.name||item.name.length>256||item.name.startsWith('notabenda:')||/[\u0000-\u001f\u007f]/u.test(item.name)||config.storage.some(s=>s.id!==item.id&&s.type===item.type&&s.name===item.name))return bad();
+    if(!item||item.serviceId!==serviceId||item.classification!==(exception?'exception':'optional')||!['localStorage','sessionStorage','cookie'].includes(item.type)||!item.name||item.name.length>256||item.name.startsWith('notabenda:')||/[\u0000-\u001f\u007f]/u.test(item.name)||config.storage.some(s=>s.id!==item.id&&s.type===item.type&&s.name===item.name))return bad();
     if(item.type!=='cookie'){if(raw.cookieScopes!==undefined)return bad();return {id:item.id,name:item.name,type:item.type as 'localStorage'|'sessionStorage',scopes:[]};}
     if(!/^[!#$%&'*+\-.^_\x60|~0-9A-Za-z]+$/u.test(item.name)||/^__(?:Host-)?Http-/u.test(item.name)||!Array.isArray(raw.cookieScopes)||!raw.cookieScopes.length||raw.cookieScopes.length>8)return bad();
     const seen=new Set<string>();const scopes=raw.cookieScopes.map(value=>{
@@ -105,6 +107,9 @@ export function registerStorageService(options:StorageServiceOptions,environment
   }});
   let wasAllowed:boolean|undefined;
   const stopObserving=consent.subscribe(current=>{
+    // An asynchronous exception journal has not yet decided whether old feature data
+    // must be removed. Do not erase a still-allowed preference merely while hydrating.
+    if(exception&&wasAllowed===undefined&&!current.destroyed){const snapshot=options.exceptions!.getSnapshot(),entry=options.exceptions!.getPolicy().entries.find(e=>e.serviceIds.includes(serviceId))!;if(snapshot.persistence==='loading'||snapshot.persistence==='available'&&snapshot.entries[entry.id]?.reason==='waiting-for-controls')return;}
     const allowed=!current.destroyed&&current.servicePermissions[serviceId]===true,previous=wasAllowed;wasAllowed=allowed;
     // Core can cancel a queued start before our generation attaches its abort handler.
     if(!allowed&&previous!==false&&generations.size===0)clear(previous===undefined?'initial':'abort');

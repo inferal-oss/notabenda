@@ -1,3 +1,6 @@
+// @requirements REQ-UK-EXCEPTIONS
+import type {StorageExceptionPolicy} from './storage-exception-policy.js';
+export type {StorageExceptionPolicy,StorageExceptionEntry} from './storage-exception-policy.js';
 // @requirements REQ-GOOGLE-MODE
 import type {GoogleBasicConfig} from './google-basic-policy.js';
 export type {GoogleBasicConfig,GoogleConsentType,GoogleConsentState} from './google-basic-policy.js';
@@ -55,7 +58,9 @@ export interface StorageItem {
   type: 'cookie' | 'localStorage' | 'sessionStorage' | 'indexedDB' | 'other';
   serviceId: string;
   duration: string;
-  classification: 'necessary' | 'optional';
+  classification: 'necessary' | 'optional' | 'exception';
+  /** Stable declaration ID; exceptions are neither consent nor strictly necessary. */
+  exceptionId?:string;
   necessityReason?: string;
 }
 
@@ -119,6 +124,7 @@ export interface SiteConfig {
   rightsCenter?:RightsCenterConfig;
   /** Public operator scope declarations. Private reasoning belongs in private reports. */
   scopeGuards?:ScopeGuardPolicy;
+  storageExceptions?:StorageExceptionPolicy;
   /** Explicit host policy; no location or legal applicability inference. */
   privacySignals?: {globalPrivacyControl:{appliesTo:ProcessingActivity[];explanation:string}};
   /** Operator-only information. Excluded from all rendered/compiled output. Never a place for runtime credentials. */

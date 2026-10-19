@@ -16,7 +16,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | IT | [REQ-IT-REPROMPT](#req-it-reprompt) | Selected items: partial |
 | ES | [REQ-ES-CHOICE](#req-es-choice) | Selected items: partial |
 | IE | [REQ-IE-DEVICE](#req-ie-device) | Selected items: planned |
-| UK | [REQ-UK-EXCEPTIONS](#req-uk-exceptions) | Selected items: planned |
+| UK | [REQ-UK-EXCEPTIONS](#req-uk-exceptions) | Selected items: partial |
 | CH | [REQ-CH-PROFILING](#req-ch-profiling) | Selected items: partial |
 | BR | [REQ-BR-COOKIE-UI](#req-br-cookie-ui), [REQ-BR-CONTRACT](#req-br-contract) | Selected items: partial, planned |
 | CA-FED | [REQ-CA-MEANINGFUL](#req-ca-meaningful), [REQ-CA-OBA](#req-ca-oba), [REQ-CA-CASL-OPTIN](#req-ca-casl-optin) | Selected items: partial |
@@ -31,7 +31,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-FED | [REQ-US-COPPA-SCOPE](#req-us-coppa-scope) | Selected items: partial |
 | TR | [REQ-TR-BASIS](#req-tr-basis) | Selected items: planned |
 | PLATFORM | [REQ-GOOGLE-MODE](#req-google-mode), [REQ-GOOGLE-CMP](#req-google-cmp) | Selected items: partial, planned |
-| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice), [REQ-PRODUCT-GUARANTEE-NOTICE](#req-product-guarantee-notice), [REQ-PRODUCT-PAID-ORDER-ARCHIVES](#req-product-paid-order-archives), [REQ-PRODUCT-ORDER-CONFIRMATION](#req-product-order-confirmation) | Selected items: implemented, partial |
+| PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice), [REQ-PRODUCT-GUARANTEE-NOTICE](#req-product-guarantee-notice), [REQ-PRODUCT-PAID-ORDER-ARCHIVES](#req-product-paid-order-archives), [REQ-PRODUCT-ORDER-CONFIRMATION](#req-product-order-confirmation), [REQ-PRODUCT-STORAGE-EXCEPTIONS](#req-product-storage-exceptions) | Selected items: implemented, partial |
 
 ## Individual requirements
 
@@ -269,9 +269,9 @@ Only enable an exception when its conditions hold; statistical/appearance except
 
 **Applies when:** UK PECR applies and an operator opts into a qualifying exception.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [ICO: storage/access exception conditions](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/what-are-the-exceptions/) — At a glance; statistical/appearance exceptions; simple means of objecting (read; [SRC-UK-ICO](SOURCES.md#src-uk-ico)).
+**Sources:** [ICO: storage/access exception conditions](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/what-are-the-exceptions/) — At a glance; statistical/appearance exceptions; simple means of objecting (read; [SRC-UK-ICO](SOURCES.md#src-uk-ico)); [Data (Use and Access) Act 2025: Schedule 12 storage/access amendments](https://www.legislation.gov.uk/ukpga/2025/18/pdfs/ukpga_20250018_en.pdf) — Schedule 12 inserting PECR Schedule A1, paragraphs 5–6, printed pages 233–234 (read; [SRC-UK-DUAA-STORAGE](SOURCES.md#src-uk-duaa-storage)).
 
 **Discovery articles:** [SRC-IUB-COOKIES](SOURCES.md#src-iub-cookies).
 
@@ -279,13 +279,13 @@ Only enable an exception when its conditions hold; statistical/appearance except
 
 <a id="verify-uk-exceptions"></a>
 
-**VERIFY-UK-EXCEPTIONS (planned):** An exception lacks effect without configured prerequisites and an objection action; objection stops the relevant purpose.
+**VERIFY-UK-EXCEPTIONS (partial):** Software checks enforce declared prerequisites and usable objection controls. Independent review must establish actual qualification, disclosure, provider behavior and downstream data processing.
 
 **Timing:** ICO finalized updated guidance on 29 April 2026.
 
-**Limits/open review:** Default remains opt-in. Advertising does not qualify; device-access exceptions do not settle all UK GDPR obligations.
+**Limits/open review:** Optional host-assessed profiles only. Ordinary consent remains opt-in. Real qualification, downstream personal-data processing, aggregation/deletion behavior, accessibility and legal review remain open; software declarations do not prove their truth.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/storage-exception-policy.ts](../../packages/notabenda/src/storage-exception-policy.ts), [packages/notabenda/src/storage-exceptions.ts](../../packages/notabenda/src/storage-exceptions.ts), [packages/notabenda/src/storage-exception-controls.ts](../../packages/notabenda/src/storage-exception-controls.ts), [packages/notabenda/src/storage-exceptions.css](../../packages/notabenda/src/storage-exceptions.css), [packages/notabenda/src/service-runner.ts](../../packages/notabenda/src/service-runner.ts), [packages/notabenda/src/storage-cleanup.ts](../../packages/notabenda/src/storage-cleanup.ts), [examples/storage-exceptions/config.mjs](../../examples/storage-exceptions/config.mjs), [examples/storage-exceptions/build.mjs](../../examples/storage-exceptions/build.mjs), [examples/storage-exceptions/client.mjs](../../examples/storage-exceptions/client.mjs), [packages/notabenda/test/storage-exceptions.test.mjs](../../packages/notabenda/test/storage-exceptions.test.mjs), [docs/verification/storage-exceptions.md](../../docs/verification/storage-exceptions.md), [site/test/storage-exceptions.test.mjs](../../site/test/storage-exceptions.test.mjs)
 
 <a id="req-ch-profiling"></a>
 
@@ -2030,6 +2030,26 @@ Bind personally addressed complete host files, immutable destination version and
 **Limits/open review:** File retention and provider acceptance do not establish consumer receipt, legal sufficiency or timing. The host supplies reviewed complete personally addressed content, actual contract facts, frozen destination resolution, scheduling and provider/recipient reconciliation. This initial profile does not support omitting information based on prior durable provision or overwriting a mistaken confirmation.
 
 **Code/test references:** [packages/notabenda-cf/src/order-confirmations.ts](../../packages/notabenda-cf/src/order-confirmations.ts), [packages/notabenda-cf/src/order-confirmation-state.ts](../../packages/notabenda-cf/src/order-confirmation-state.ts), [packages/notabenda-cf/src/order-confirmation-dispatch.ts](../../packages/notabenda-cf/src/order-confirmation-dispatch.ts), [packages/notabenda-cf/src/order-confirmation-render.ts](../../packages/notabenda-cf/src/order-confirmation-render.ts), [packages/notabenda-cf/src/orders.ts](../../packages/notabenda-cf/src/orders.ts), [packages/notabenda-cf/src/lifecycle.ts](../../packages/notabenda-cf/src/lifecycle.ts), [packages/notabenda-cf/src/worker.ts](../../packages/notabenda-cf/src/worker.ts), [packages/notabenda-cf/src/types.ts](../../packages/notabenda-cf/src/types.ts), [site/order-confirmation-seed.mjs](../../site/order-confirmation-seed.mjs), [site/order-demo-admin.mjs](../../site/order-demo-admin.mjs), [packages/notabenda-cf/test/order-confirmations.test.mjs](../../packages/notabenda-cf/test/order-confirmations.test.mjs), [packages/notabenda-cf/test/orders-package.test.mjs](../../packages/notabenda-cf/test/orders-package.test.mjs), [site/test/order-demo.test.mjs](../../site/test/order-demo.test.mjs), [scripts/check-order-confirmation-runtime.mjs](../../scripts/check-order-confirmation-runtime.mjs), [docs/verification/order-confirmations.md](../../docs/verification/order-confirmations.md)
+
+<a id="req-product-storage-exceptions"></a>
+
+### REQ-PRODUCT-STORAGE-EXCEPTIONS — Independent and durable storage-exception objections
+
+Gate explicit statistical/appearance declarations behind hydration and usable controls, persist objections atomically across revisions, and require a current explicit action before resuming. Reuse lifecycle and exact-key cleanup without granting consent.
+
+**Applies when:** An operator opts into the optional storage-exception controller.
+
+**Type:** product-standard. **Research:** product-decision. **Legal review:** not-applicable. **Implementation:** implemented.
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-CONTROLS](../FEATURES.md#feat-controls), [FEAT-ENFORCEMENT](../FEATURES.md#feat-enforcement).
+
+<a id="verify-product-storage-exceptions"></a>
+
+**VERIFY-PRODUCT-STORAGE-EXCEPTIONS (automated):** Default activity waits for hydration and presentation; objections abort immediately, survive reload/material revisions and failed saves; stale resume cannot clear newer state; notifications cannot reopen stale results; exact-key cleanup and consent remain separate.
+
+**Limits/open review:** Engineering gate only. The host owns qualification, truthful disclosure, connected controls, producer behavior, preference storage and downstream legal obligations. No server evidence or automatic provider qualification is implied.
+
+**Code/test references:** [packages/notabenda/src/storage-exception-policy.ts](../../packages/notabenda/src/storage-exception-policy.ts), [packages/notabenda/src/storage-exceptions.ts](../../packages/notabenda/src/storage-exceptions.ts), [packages/notabenda/src/storage-exception-controls.ts](../../packages/notabenda/src/storage-exception-controls.ts), [packages/notabenda/src/storage-exceptions.css](../../packages/notabenda/src/storage-exceptions.css), [packages/notabenda/src/service-runner.ts](../../packages/notabenda/src/service-runner.ts), [packages/notabenda/src/storage-cleanup.ts](../../packages/notabenda/src/storage-cleanup.ts), [examples/storage-exceptions/config.mjs](../../examples/storage-exceptions/config.mjs), [examples/storage-exceptions/build.mjs](../../examples/storage-exceptions/build.mjs), [examples/storage-exceptions/client.mjs](../../examples/storage-exceptions/client.mjs), [packages/notabenda/test/storage-exceptions.test.mjs](../../packages/notabenda/test/storage-exceptions.test.mjs), [docs/verification/storage-exceptions.md](../../docs/verification/storage-exceptions.md), [site/test/storage-exceptions.test.mjs](../../site/test/storage-exceptions.test.mjs)
 
 ## Research gaps
 

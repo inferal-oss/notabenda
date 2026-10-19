@@ -53,9 +53,10 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
  });
  const serviceIds=services.map(s=>s.id);
  const storage=c.storage.map(s=>{
-  shape(s,['id','name','type','serviceId','duration','classification'],['necessityReason']);need(text(s.name)&&text(s.duration)&&serviceIds.includes(s.serviceId)&&member(s.type,['cookie','localStorage','sessionStorage','indexedDB','other'])&&member(s.classification,['necessary','optional']));
+  shape(s,['id','name','type','serviceId','duration','classification'],['necessityReason','exceptionId']);need(text(s.name)&&text(s.duration)&&serviceIds.includes(s.serviceId)&&member(s.type,['cookie','localStorage','sessionStorage','indexedDB','other'])&&member(s.classification,['necessary','optional','exception']));
+  need(s.classification==='exception'?slug(s.exceptionId):s.exceptionId===undefined);
   if(s.classification==='necessary'||s.necessityReason!==undefined)need(text(s.necessityReason));
-  return {id:s.id,name:s.name,type:s.type,serviceId:s.serviceId,duration:s.duration,classification:s.classification,...(s.necessityReason===undefined?{}:{necessityReason:s.necessityReason})};
+  return {id:s.id,name:s.name,type:s.type,serviceId:s.serviceId,duration:s.duration,classification:s.classification,...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}),...(s.necessityReason===undefined?{}:{necessityReason:s.necessityReason})};
  });
  const policy=c.consent;shape(policy,['purposes','services','grantLifetimeDays','refusalLifetimeDays','dismissalMinutes'],['promptPolicy']);
  entries(policy.purposes,40);entries(policy.services,80);
@@ -63,7 +64,7 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
  const optionalPurposes=policy.purposes.map(p=>p.id),optionalServices=policy.services.map(s=>s.id);
  for(const service of services){if(optionalServices.includes(service.id))need(service.purposeIds.every(id=>optionalPurposes.includes(id)));if(service.googleBasic)need(optionalServices.includes(service.id)&&service.resourceOrigins?.includes('https://www.googletagmanager.com')&&service.processingActivities!==undefined);}
  for(const id of optionalPurposes)need(services.some(s=>optionalServices.includes(s.id)&&s.purposeIds.includes(String(id))));
- for(const item of storage)if(item.classification==='optional')need(optionalServices.includes(item.serviceId));
+ for(const item of storage){if(item.classification==='optional')need(optionalServices.includes(item.serviceId));if(item.classification==='exception')need(!optionalServices.includes(item.serviceId));}
  for(const key of ['grantLifetimeDays','refusalLifetimeDays'])need(Number.isInteger(policy[key])&&Number(policy[key])>=1&&Number(policy[key])<=730);
  need(Number.isInteger(policy.dismissalMinutes)&&Number(policy.dismissalMinutes)>=0&&Number(policy.dismissalMinutes)<=43200);
  if(policy.promptPolicy!==undefined)need(isPromptPolicy(policy.promptPolicy));

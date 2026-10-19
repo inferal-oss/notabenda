@@ -175,7 +175,13 @@
         "packages/notabenda/src/astro-client.ts",
         "packages/notabenda/src/embeds.ts",
         "packages/notabenda/src/privacy-signals.ts",
-        "packages/notabenda/src/scope-guards.ts"
+        "packages/notabenda/src/scope-guards.ts",
+        "packages/notabenda/src/storage-exception-policy.ts",
+        "packages/notabenda/src/storage-exceptions.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/storage-exceptions.css",
+        "packages/notabenda/src/service-runner.ts",
+        "packages/notabenda/src/storage-cleanup.ts"
       ]
     },
     {
@@ -198,7 +204,12 @@
         "packages/notabenda/src/embeds.ts",
         "packages/notabenda/src/privacy-signals.ts",
         "packages/notabenda/src/storage-cleanup.ts",
-        "packages/notabenda/src/scope-guards.ts"
+        "packages/notabenda/src/scope-guards.ts",
+        "packages/notabenda/src/storage-exception-policy.ts",
+        "packages/notabenda/src/storage-exceptions.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/storage-exceptions.css",
+        "packages/notabenda/src/service-runner.ts"
       ]
     },
     {
@@ -292,7 +303,8 @@
       "deliverables": [
         "Explicit applicability facts and versioned rule packs; conservative fallback when applicability is unknown.",
         "Explain effective behavior using requirement IDs, sources, and active pack versions.",
-        "Conditional exemptions and purpose-specific restrictions; no inference of applicability from IP geography alone."
+        "Conditional exemptions and purpose-specific restrictions; no inference of applicability from IP geography alone.",
+        "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -303,7 +315,13 @@
         "packages/notabenda/src/consent-evidence.ts",
         "packages/notabenda-cf/src/consent.ts",
         "examples/repeat-prompts/build.mjs",
-        "examples/repeat-prompts/client.mjs"
+        "examples/repeat-prompts/client.mjs",
+        "packages/notabenda/src/storage-exception-policy.ts",
+        "packages/notabenda/src/storage-exceptions.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/storage-exceptions.css",
+        "packages/notabenda/src/service-runner.ts",
+        "packages/notabenda/src/storage-cleanup.ts"
       ]
     },
     {
@@ -693,9 +711,9 @@
       "title": "ICO: storage/access exception conditions",
       "url": "https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/what-are-the-exceptions/",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-19",
       "access": "read",
-      "note": ""
+      "note": "Read statistical/appearance qualifications and the simple objection guidance; legal applicability and actual provider behavior require separate review."
     },
     {
       "id": "SRC-CH-FDPIC",
@@ -735,7 +753,7 @@
     },
     {
       "id": "SRC-QC-CAI",
-      "title": "Québec CAI: private-sector collection and profiling functions",
+      "title": "Qu\u00e9bec CAI: private-sector collection and profiling functions",
       "url": "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises",
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
@@ -848,7 +866,7 @@
       "kind": "law",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read dates and final §312.5(a)(1)–(2) text. No parental-verification implementation or full COPPA support claim."
+      "note": "Read dates and final \u00a7312.5(a)(1)\u2013(2) text. No parental-verification implementation or full COPPA support claim."
     },
     {
       "id": "SRC-TR-KVKK",
@@ -1037,7 +1055,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read sections 3.1.3, 3.3.1, 3.4 and 5.1–5.2: purpose granularity, informed affirmative action, evidence and easy withdrawal. Scope/duration need contextual review; no prescribed software schema."
+      "note": "Read sections 3.1.3, 3.3.1, 3.4 and 5.1\u20135.2: purpose granularity, informed affirmative action, evidence and easy withdrawal. Scope/duration need contextual review; no prescribed software schema."
     },
     {
       "id": "SRC-MDN-IFRAME",
@@ -1064,7 +1082,7 @@
       "kind": "law",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read section 7025(b)–(c), pp. 44–48: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows."
+      "note": "Read section 7025(b)\u2013(c), pp. 44\u201348: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows."
     },
     {
       "id": "SRC-W3C-GPC",
@@ -1091,11 +1109,11 @@
       "kind": "law",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read definitions, §59.1-578(A)(5) sensitive-data provision and §59.1-577(C) appeals. Other provisions, including specialized minor/social-platform rules, are not implemented by the generic scope guard."
+      "note": "Read definitions, \u00a759.1-578(A)(5) sensitive-data provision and \u00a759.1-577(C) appeals. Other provisions, including specialized minor/social-platform rules, are not implemented by the generic scope guard."
     },
     {
       "id": "SRC-EU-RIGHTS-GUIDE",
-      "title": "EDPB small-business guide: respecting individuals’ rights",
+      "title": "EDPB small-business guide: respecting individuals\u2019 rights",
       "url": "https://www.edpb.europa.eu/sme/be-compliant/respect-individuals-rights_en",
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
@@ -1145,7 +1163,7 @@
       "kind": "legislation",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read Article 13(1)–(5). Selected electronic direct-marketing rules, conditioned customer exception and national choices; national transposition remains separate research."
+      "note": "Read Article 13(1)\u2013(5). Selected electronic direct-marketing rules, conditioned customer exception and national choices; national transposition remains separate research."
     },
     {
       "id": "SRC-CA-CASL-S10",
@@ -1154,7 +1172,7 @@
       "kind": "legislation",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read subsection 10(1) request purpose/identity/prescribed information, and 10(9)–(10) implied-consent conditions. Page states current to 2026-09-30; exceptions are not inferred by the toolkit."
+      "note": "Read subsection 10(1) request purpose/identity/prescribed information, and 10(9)\u2013(10) implied-consent conditions. Page states current to 2026-09-30; exceptions are not inferred by the toolkit."
     },
     {
       "id": "SRC-CA-CRTC-548",
@@ -1163,7 +1181,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read paragraphs 5–20: sender/contact information, readily performed unsubscribe, separate requests and separation from general terms. Full prescribed particulars and sending workflow remain host/regional review."
+      "note": "Read paragraphs 5\u201320: sender/contact information, readily performed unsubscribe, separate requests and separation from general terms. Full prescribed particulars and sending workflow remain host/regional review."
     },
     {
       "id": "SRC-CA-CRTC-549",
@@ -1172,7 +1190,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read paragraphs 4–8: default opt-out does not obtain express consent; positive opt-in mechanisms and confirmation guidance. No sending or confirmation delivery is supplied."
+      "note": "Read paragraphs 4\u20138: default opt-out does not obtain express consent; positive opt-in mechanisms and confirmation guidance. No sending or confirmation delivery is supplied."
     },
     {
       "id": "SRC-GOOGLE-CONSENT-SETUP",
@@ -1311,7 +1329,7 @@
     },
     {
       "id": "SRC-LINEAR-DESIGN-2026",
-      "title": "Linear — A calmer interface for a product in motion",
+      "title": "Linear \u2014 A calmer interface for a product in motion",
       "url": "https://linear.app/now/behind-the-latest-design-refresh",
       "kind": "design-reference",
       "checkedOn": "2026-10-19",
@@ -1320,7 +1338,7 @@
     },
     {
       "id": "SRC-CF-NO-TRANSFORM",
-      "title": "Cloudflare Web Analytics — automatic injection and no-transform",
+      "title": "Cloudflare Web Analytics \u2014 automatic injection and no-transform",
       "url": "https://developers.cloudflare.com/web-analytics/get-started/",
       "kind": "platform-documentation",
       "checkedOn": "2026-10-19",
@@ -1523,7 +1541,7 @@
       "kind": "court-judgment",
       "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Full primary judgment retrieved and read, including paragraphs 42–56 and the operative part. Payment-obligation action also applies where payment depends on a later condition. Current EUR-Lex direct requests can show a JavaScript verification challenge."
+      "note": "Full primary judgment retrieved and read, including paragraphs 42\u201356 and the operative part. Payment-obligation action also applies where payment depends on a later condition. Current EUR-Lex direct requests can show a JavaScript verification challenge."
     },
     {
       "id": "SRC-EU-ORDER-FUHRMANN",
@@ -1550,7 +1568,16 @@
       "kind": "primary-law",
       "checkedOn": "2026-10-19",
       "access": "search-result",
-      "note": "Official indexed judgment/summary: paragraphs 35, 42–51 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review."
+      "note": "Official indexed judgment/summary: paragraphs 35, 42\u201351 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review."
+    },
+    {
+      "id": "SRC-UK-DUAA-STORAGE",
+      "title": "Data (Use and Access) Act 2025: Schedule 12 storage/access amendments",
+      "url": "https://www.legislation.gov.uk/ukpga/2025/18/pdfs/ukpga_20250018_en.pdf",
+      "kind": "legislation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Read Schedule 12 inserting PECR Schedule A1, especially paragraphs 5 and 6 (printed pages 233\u2013234; PDF pages 243\u2013244). This enacted source is read alongside current regulator guidance, not a complete commencement or national-applicability determination."
     }
   ],
   "jurisdictions": [
@@ -1789,7 +1816,8 @@
         "REQ-PRODUCT-INDIRECT-NOTICE",
         "REQ-PRODUCT-GUARANTEE-NOTICE",
         "REQ-PRODUCT-PAID-ORDER-ARCHIVES",
-        "REQ-PRODUCT-ORDER-CONFIRMATION"
+        "REQ-PRODUCT-ORDER-CONFIRMATION",
+        "REQ-PRODUCT-STORAGE-EXCEPTIONS"
       ]
     }
   ],
@@ -1804,7 +1832,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-GDPR",
-          "locator": "Articles 12–14"
+          "locator": "Articles 12\u201314"
         },
         {
           "sourceId": "SRC-EU-RIGHTS-GUIDE",
@@ -1859,7 +1887,7 @@
         },
         {
           "sourceId": "SRC-EU-EDPB-CONSENT",
-          "locator": "Sections 5.1–5.2, paragraphs 104–120"
+          "locator": "Sections 5.1\u20135.2, paragraphs 104\u2013120"
         }
       ],
       "discoverySourceIds": [
@@ -1949,7 +1977,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-EDPB",
-          "locator": "Practices A–E and K"
+          "locator": "Practices A\u2013E and K"
         }
       ],
       "discoverySourceIds": [
@@ -2023,7 +2051,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-DE-TDDDG",
-          "locator": "Section 25(1)–(2)"
+          "locator": "Section 25(1)\u2013(2)"
         }
       ],
       "discoverySourceIds": [
@@ -2175,6 +2203,10 @@
         {
           "sourceId": "SRC-UK-ICO",
           "locator": "At a glance; statistical/appearance exceptions; simple means of objecting"
+        },
+        {
+          "sourceId": "SRC-UK-DUAA-STORAGE",
+          "locator": "Schedule 12 inserting PECR Schedule A1, paragraphs 5\u20136, printed pages 233\u2013234"
         }
       ],
       "discoverySourceIds": [
@@ -2190,12 +2222,26 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": "ICO finalized updated guidance on 29 April 2026.",
-      "caveats": "Default remains opt-in. Advertising does not qualify; device-access exceptions do not settle all UK GDPR obligations.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Optional host-assessed profiles only. Ordinary consent remains opt-in. Real qualification, downstream personal-data processing, aggregation/deletion behavior, accessibility and legal review remain open; software declarations do not prove their truth.",
+      "implementationRefs": [
+        "packages/notabenda/src/storage-exception-policy.ts",
+        "packages/notabenda/src/storage-exceptions.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/storage-exceptions.css",
+        "packages/notabenda/src/service-runner.ts",
+        "packages/notabenda/src/storage-cleanup.ts",
+        "examples/storage-exceptions/config.mjs",
+        "examples/storage-exceptions/build.mjs",
+        "examples/storage-exceptions/client.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/storage-exceptions.test.mjs",
+        "docs/verification/storage-exceptions.md",
+        "site/test/storage-exceptions.test.mjs"
+      ]
     },
     {
       "id": "REQ-CH-PROFILING",
@@ -2357,7 +2403,7 @@
       "title": "Profiling/identification/location functions off by default",
       "kind": "regulator-interpretation",
       "summary": "Notify people of covered functions and how to activate them; do not activate them by default.",
-      "appliesWhen": "Québec private-sector collection rules cover the declared technology.",
+      "appliesWhen": "Qu\u00e9bec private-sector collection rules cover the declared technology.",
       "sourceRefs": [
         {
           "sourceId": "SRC-QC-CAI",
@@ -2378,7 +2424,7 @@
       "implementationStatus": "planned",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Scope and exceptions need Québec-specific review; this is not a statement that every cookie is covered.",
+      "caveats": "Scope and exceptions need Qu\u00e9bec-specific review; this is not a statement that every cookie is covered.",
       "implementationRefs": [],
       "testRefs": []
     },
@@ -2564,7 +2610,7 @@
         },
         {
           "sourceId": "SRC-US-CA-AG-RIGHTS",
-          "locator": "Sections B–E: designated methods; account creation; verification distinctions"
+          "locator": "Sections B\u2013E: designated methods; account creation; verification distinctions"
         }
       ],
       "discoverySourceIds": [
@@ -2610,7 +2656,7 @@
         },
         {
           "sourceId": "SRC-US-CA-REGS-2026",
-          "locator": "§7025(b)–(c), pp. 44–48"
+          "locator": "\u00a77025(b)\u2013(c), pp. 44\u201348"
         }
       ],
       "discoverySourceIds": [
@@ -2759,7 +2805,7 @@
         },
         {
           "sourceId": "SRC-US-VA-CODE",
-          "locator": "§59.1-571 definitions; §59.1-578(A)(5); §59.1-577(C)"
+          "locator": "\u00a759.1-571 definitions; \u00a759.1-578(A)(5); \u00a759.1-577(C)"
         }
       ],
       "discoverySourceIds": [
@@ -2839,7 +2885,7 @@
       "title": "Separate legal basis and disclosure from explicit consent",
       "kind": "regulator-interpretation",
       "summary": "Identify an applicable processing condition; do not substitute disclosure or a blanket checkbox for required explicit consent.",
-      "appliesWhen": "Türkiye Law 6698 applies to the declared personal-data processing.",
+      "appliesWhen": "T\u00fcrkiye Law 6698 applies to the declared personal-data processing.",
       "sourceRefs": [
         {
           "sourceId": "SRC-TR-KVKK",
@@ -2960,7 +3006,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-DE-CANCEL",
-          "locator": "Section 312k(1)–(6): direct confirmation page, timing, savable declaration and electronic confirmation"
+          "locator": "Section 312k(1)\u2013(6): direct confirmation page, timing, savable declaration and electronic confirmation"
         }
       ],
       "discoverySourceIds": [
@@ -3606,7 +3652,7 @@
         },
         {
           "sourceId": "SRC-EU-ORDER-CONNY",
-          "locator": "Paragraphs 44–56 and operative part: conditional payment obligations"
+          "locator": "Paragraphs 44\u201356 and operative part: conditional payment obligations"
         },
         {
           "sourceId": "SRC-EU-ORDER-FUHRMANN",
@@ -4445,7 +4491,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-GDPR",
-          "locator": "Articles 5(1)(c),(e), 5(2), 17(1)–(3), 19"
+          "locator": "Articles 5(1)(c),(e), 5(2), 17(1)\u2013(3), 19"
         }
       ],
       "discoverySourceIds": [],
@@ -4744,11 +4790,11 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-EPRIVACY-MARKETING",
-          "locator": "Article 13(1)–(5)"
+          "locator": "Article 13(1)\u2013(5)"
         },
         {
           "sourceId": "SRC-EU-EDPB-CONSENT",
-          "locator": "Sections 3.1.3, 3.3.1, 3.4, 5.1–5.2"
+          "locator": "Sections 3.1.3, 3.3.1, 3.4, 5.1\u20135.2"
         }
       ],
       "discoverySourceIds": [],
@@ -4788,15 +4834,15 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-CA-CASL-S10",
-          "locator": "Subsection 10(1); distinguish 10(9)–(10)"
+          "locator": "Subsection 10(1); distinguish 10(9)\u2013(10)"
         },
         {
           "sourceId": "SRC-CA-CRTC-548",
-          "locator": "Paragraphs 5–20, particularly 16 and 20"
+          "locator": "Paragraphs 5\u201320, particularly 16 and 20"
         },
         {
           "sourceId": "SRC-CA-CRTC-549",
-          "locator": "Paragraphs 4–8"
+          "locator": "Paragraphs 4\u20138"
         }
       ],
       "discoverySourceIds": [],
@@ -4877,11 +4923,11 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-DE-CANCEL",
-          "locator": "Section 312k(2)–(5)"
+          "locator": "Section 312k(2)\u2013(5)"
         },
         {
           "sourceId": "SRC-DE-WITHDRAW",
-          "locator": "Section 356a(1)–(5)"
+          "locator": "Section 356a(1)\u2013(5)"
         },
         {
           "sourceId": "SRC-EU-WITHDRAWAL",
@@ -5062,7 +5108,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. Entries remain unreviewed after an operator declares actual use. Purposes must be explicitly declared through setup authoring or imported config; setup does not invent their meaning or legal basis. Private report pins do not automatically become archived legal-release evidence.",
+      "caveats": "Catalog facts and imported categories do not decide a site\u2019s legal basis, provider role, actual settings, necessity or complete disclosure. Entries remain unreviewed after an operator declares actual use. Purposes must be explicitly declared through setup authoring or imported config; setup does not invent their meaning or legal basis. Private report pins do not automatically become archived legal-release evidence.",
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
         "packages/notabenda/src/catalog-seed.ts",
@@ -5494,7 +5540,7 @@
         "site/test/host.test.mjs",
         "packages/notabenda-cf/test/orders.test.mjs"
       ],
-      "implementationNote": "Optional bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes and binds explicit qualifying facts, product, producer, duration, review and wording. A fixed maintainer fixture fills only the official template’s three fields with pinned Inter outlines, records source/font provenance and compares fixed artwork. Light/dark examples include optional enlarged inspection; software QR decoding uses development-only tools. No public template generator, automatic no-guarantee inference, payment action or confirmation."
+      "implementationNote": "Optional bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes and binds explicit qualifying facts, product, producer, duration, review and wording. A fixed maintainer fixture fills only the official template\u2019s three fields with pinned Inter outlines, records source/font provenance and compares fixed artwork. Light/dark examples include optional enlarged inspection; software QR decoding uses development-only tools. No public template generator, automatic no-guarantee inference, payment action or confirmation."
     },
     {
       "id": "REQ-PRODUCT-GUARANTEE-NOTICE",
@@ -5605,7 +5651,7 @@
         },
         {
           "sourceId": "SRC-EU-DURABLE-CONTENT-SERVICES",
-          "locator": "Paragraphs 35, 42–51 and operative part; earlier directive context"
+          "locator": "Paragraphs 35, 42\u201351 and operative part; earlier directive context"
         }
       ],
       "discoverySourceIds": [],
@@ -5657,7 +5703,7 @@
         },
         {
           "sourceId": "SRC-EU-DURABLE-CONTENT-SERVICES",
-          "locator": "Paragraphs 35, 42–51 and operative part; earlier directive context"
+          "locator": "Paragraphs 35, 42\u201351 and operative part; earlier directive context"
         }
       ],
       "discoverySourceIds": [],
@@ -5695,6 +5741,46 @@
       "id": "REQ-PRODUCT-ORDER-CONFIRMATION",
       "verificationIds": [
         "VERIFY-PRODUCT-ORDER-CONFIRMATION"
+      ]
+    },
+    {
+      "id": "REQ-PRODUCT-STORAGE-EXCEPTIONS",
+      "jurisdiction": "PRODUCT",
+      "title": "Independent and durable storage-exception objections",
+      "kind": "product-standard",
+      "summary": "Gate explicit statistical/appearance declarations behind hydration and usable controls, persist objections atomically across revisions, and require a current explicit action before resuming. Reuse lifecycle and exact-key cleanup without granting consent.",
+      "appliesWhen": "An operator opts into the optional storage-exception controller.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-CONTROLS",
+        "FEAT-ENFORCEMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-STORAGE-EXCEPTIONS"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Engineering gate only. The host owns qualification, truthful disclosure, connected controls, producer behavior, preference storage and downstream legal obligations. No server evidence or automatic provider qualification is implied.",
+      "implementationRefs": [
+        "packages/notabenda/src/storage-exception-policy.ts",
+        "packages/notabenda/src/storage-exceptions.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/storage-exceptions.css",
+        "packages/notabenda/src/service-runner.ts",
+        "packages/notabenda/src/storage-cleanup.ts",
+        "examples/storage-exceptions/config.mjs",
+        "examples/storage-exceptions/build.mjs",
+        "examples/storage-exceptions/client.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/storage-exceptions.test.mjs",
+        "docs/verification/storage-exceptions.md",
+        "site/test/storage-exceptions.test.mjs"
       ]
     }
   ],
@@ -5800,9 +5886,13 @@
       "requirementIds": [
         "REQ-UK-EXCEPTIONS"
       ],
-      "status": "planned",
-      "expected": "An exception lacks effect without configured prerequisites and an objection action; objection stops the relevant purpose.",
-      "testRefs": []
+      "status": "partial",
+      "expected": "Software checks enforce declared prerequisites and usable objection controls. Independent review must establish actual qualification, disclosure, provider behavior and downstream data processing.",
+      "testRefs": [
+        "packages/notabenda/test/storage-exceptions.test.mjs",
+        "docs/verification/storage-exceptions.md",
+        "site/test/storage-exceptions.test.mjs"
+      ]
     },
     {
       "id": "VERIFY-CH-PROFILING",
@@ -6815,6 +6905,19 @@
         "site/test/order-demo.test.mjs",
         "scripts/check-order-confirmation-runtime.mjs",
         "docs/verification/order-confirmations.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-STORAGE-EXCEPTIONS",
+      "requirementIds": [
+        "REQ-PRODUCT-STORAGE-EXCEPTIONS"
+      ],
+      "status": "automated",
+      "expected": "Default activity waits for hydration and presentation; objections abort immediately, survive reload/material revisions and failed saves; stale resume cannot clear newer state; notifications cannot reopen stale results; exact-key cleanup and consent remain separate.",
+      "testRefs": [
+        "packages/notabenda/test/storage-exceptions.test.mjs",
+        "docs/verification/storage-exceptions.md",
+        "site/test/storage-exceptions.test.mjs"
       ]
     }
   ],

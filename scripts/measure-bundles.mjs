@@ -15,6 +15,8 @@ export async function measureBundles(){
   ['service-directory','notabenda/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],
   ['paid-order-review','notabenda/orders','renderPaidOrderReview',null],
   ['paid-order-action','notabenda/orders','createPaidOrderAction,mountPaidOrderAction',null],
+  ['storage-exceptions','notabenda/storage-exceptions','createStorageExceptions,createIndexedDBStorageExceptionJournal',null],
+  ['storage-exception-controls','notabenda/storage-exceptions/ui','mountStorageExceptionControls,rejectAllOptionalActivity',null],
   ['headless','notabenda/headless','createConsent',null],
   ['core-controls','notabenda','createConsent,mountControls',15*1024],
  ]){
@@ -25,7 +27,7 @@ export async function measureBundles(){
   const gzipBytes=gzipSync(output,{level:9}).length;
   profiles.push({id,entry,exports:exports.split(','),imports,external,bytes:output.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs});
  }
- for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null],['service-directory-css','services.css',null]]){
+ for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null],['service-directory-css','services.css',null],['storage-exception-css','storage-exceptions.css',null]]){
   const bytes=await readFile(new URL('../packages/notabenda/dist/'+file,import.meta.url)),gzipBytes=gzipSync(bytes,{level:9}).length;
   profiles.push({id,entry:'notabenda/'+file,bytes:bytes.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs:['packages/notabenda/dist/'+file]});
  }

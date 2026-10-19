@@ -208,3 +208,6 @@ The optional `notabenda/guarantees/label` entry supplies `normalizeDurabilityGua
 ## Paid orders
 
 Use `notabenda/orders` and `notabenda/orders.css` for expanded final-order information and an explicit payment-obligation action. Mixed carts, deposit/balance, subscriptions and conditional/calculated charges have separate totals and commitments. Your host supplies authenticated quotes, atomic admission, payment execution and durable contract confirmation. See [paid orders](../../docs/PAID-ORDERS.md) for setup and recovery behavior.
+
+
+Optional [UK storage settings](../../docs/STORAGE-EXCEPTIONS.md) use `notabenda/storage-exceptions` and `notabenda/storage-exceptions/ui`. These keep explicit host-assessed exception declarations and objections separate from consent, with inline controls and atomic browser persistence. Scope and legal review remain recorded per requirement.
