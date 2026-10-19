@@ -90,6 +90,11 @@
       "types": "./dist/consent-runtime-evidence.d.ts",
       "import": "./dist/consent-runtime-evidence.js",
       "default": "./dist/consent-runtime-evidence.js"
+    },
+    "./react/consent": {
+      "types": "./dist/react-consent.d.ts",
+      "import": "./dist/react-consent.js",
+      "default": "./dist/react-consent.js"
     }
   },
   "bin": {

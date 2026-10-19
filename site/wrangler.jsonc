@@ -3,6 +3,7 @@
   "name": "notabenda-site",
   "main": "worker.mjs",
   "compatibility_date": "2026-10-18",
+  "preview_urls": false,
   "assets": {
     "directory": "./dist/public",
     "binding": "ASSETS",

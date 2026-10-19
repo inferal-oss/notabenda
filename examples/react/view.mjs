@@ -1,7 +1,6 @@
 // @requirements REQ-PRODUCT-REACT
 import {createElement as h,useEffect,useState} from 'react';
-import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed} from 'notabenda/react';
-import {LegalLinks} from 'notabenda/react/documents';
+import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed} from 'notabenda/react/consent';
 
 function Purpose({id,name}) {
   const allowed=usePurposeAllowed(id);
@@ -25,6 +24,6 @@ function Content({config,getRequestCount}) {
       h(PreferencesButton,{className:'nb-choice-button'},'Review your choices')),
     h('section',null,h('h2',null,'Space for your own design'),h('p',null,'The initial notice leaves this page usable. Open the drawer to choose each purpose, or reject optional features directly. You can revisit your choice at any time.'),h('p',null,h('a',{href:'/choices'},'Try the vanilla example'),' · ',h('a',{href:config.documents.privacy.route.startsWith('/dark/')?'/react':'/dark/react'},'Switch theme'))));
 }
-export function App({controller,config,getRequestCount=()=>0}) {
-  return h(ConsentProvider,{controller},h(Content,{config,getRequestCount}),h('footer',{className:'nb-site-footer'},h(ConsentControls),h(LegalLinks,{config}),h('a',{className:'demo-footer-guide',href:'/guide/react'},'Integration guide ↗')));
+export function App({controller,config,legalLinks=Object.values(config.documents).map(({title,route})=>({title,route})),getRequestCount=()=>0}) {
+  return h(ConsentProvider,{controller},h(Content,{config,getRequestCount}),h('footer',{className:'nb-site-footer'},h(ConsentControls),h('div',null,h('nav',{className:'nb-legal-links','aria-label':'Legal'},legalLinks.map(link=>h('a',{key:link.route,href:link.route},link.title)))),h('a',{className:'demo-footer-guide',href:'/guide/react'},'Integration guide ↗')));
 }

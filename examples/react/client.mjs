@@ -1,15 +1,17 @@
 // @requirements REQ-PRODUCT-REACT
 import {createElement,StrictMode} from 'react';
 import {hydrateRoot} from 'react-dom/client';
-import {createConsent} from 'notabenda';
+import {createConsentRuntime} from 'notabenda/consent';
 import {App} from './view.mjs';
 
 const container=document.getElementById('react-root');
 const response=await fetch(container.dataset.config);
 if(!response.ok)throw new Error('The example configuration could not load.');
-const config=await response.json();
+const page=await response.json();
+if(!Array.isArray(page.legalLinks)||page.legalLinks.length!==3||page.legalLinks.some(link=>!link||typeof link.title!=='string'||!link.title.trim()||link.title.length>300||typeof link.route!=='string'||!/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/u.test(link.route)))throw new Error('The example legal navigation could not load.');
 // Host-owned: create once before optional work, outside React render and StrictMode effects.
-const controller=createConsent(config);
+const controller=createConsentRuntime(page.runtime);
+const config=controller.getConfig();
 let requests=0;
 for(const service of config.consent.services)controller.registerService(service.id,{
   purposes:config.services.find(s=>s.id===service.id).purposeIds,
@@ -25,4 +27,4 @@ for(const service of config.consent.services)controller.registerService(service.
     return ()=>localStorage.removeItem(key);
   },
 });
-hydrateRoot(container,createElement(StrictMode,null,createElement(App,{controller,config,getRequestCount:()=>requests})));
+hydrateRoot(container,createElement(StrictMode,null,createElement(App,{controller,config,legalLinks:page.legalLinks,getRequestCount:()=>requests})));

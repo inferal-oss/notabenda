@@ -18,3 +18,11 @@ The adapter is not a tracking firewall. Actual optional execution must use regis
 ## Ordinary form permissions
 
 The separate provider/hooks/native-field integration now has a real light/midnight example and focused SSR/hydration, lifecycle, recovery and packed-type checks. Actual Chromium confirmed primary-form independence, acknowledged grant, reload, mobile withdrawal and shared state across themes. See [the form permission verification record](form-permissions.md#react-field-verification) for observations, screenshots and limits.
+
+## Compiled consent entry
+
+19 October 2026. Both compatibility and compiled factories run the same React consent tests, including conservative SSR/hydration, cached snapshots, signal/processing restrictions, guarded purposes, pending receipts, controller replacement, idle resubscription and StrictMode cleanup. Separate tests enforce matching contexts across entries, one controls owner even across entry points, recovery after unmount, deep prompt-decision immutability, SSR-safe import and an actual browser graph without full site validation or document/form renderers. Packed consumer checks preserve the complete compatibility getter and reject invented fields on the compiled getter.
+
+Light and midnight cookie examples compile their runtime descriptor at build time. Their React view receives only that inventory plus explicit legal-link metadata. The three legal pages remain ordinary script-free output. These changes reuse the existing controls and styles; they do not expand the previous browser/platform acceptance claim.
+
+A fresh Chromium tab verified the compiled example with saved refusals: zero optional requests and both services blocked. Allowing only Measurement started one request and left Suggestions blocked. Reload restored that granular choice with one request in the new page instance; rejecting through the reopened drawer stopped Measurement and returned focus to Review your choices. The observed warnings came from an installed browser extension. No application hydration error was observed. [Compiled-entry drawer](../assets/screenshots/react-compiled-drawer.png).

@@ -8,7 +8,7 @@ The consent stylesheet is generated from the canonical `styles.css`. Tests compa
 
 The `notabenda/headless` export uses the exact existing consent factory and contains no mounting or rendering exports. An import test installs throwing browser-global getters before loading it. Bundle graph checks exclude backend, Node build tooling and framework code; the headless graph excludes DOM-control and document-rendering modules. Packed installation/type coverage includes the new entry and CSS export.
 
-The compiled `notabenda/consent` entry validates a bounded descriptor produced by the full build-time compiler. It shares the compatibility state machine; exact material scopes are reconstructed independently of input key order. A separately imported opaque required-evidence adapter fails closed if missing or forged. The smaller local graph excludes full site validation and the receipt implementation. Native controls, media/storage/Google adapters and the Astro client bridge accept the narrower controller; React keeps its existing full-controller contract.
+The compiled `notabenda/consent` entry validates a bounded descriptor produced by the full build-time compiler. It shares the compatibility state machine; exact material scopes are reconstructed independently of input key order. A separately imported opaque required-evidence adapter fails closed if missing or forged. The smaller local graph excludes full site validation and the receipt implementation. Native controls, media/storage/Google adapters and the Astro client bridge accept the narrower controller; The optional `notabenda/react/consent` entry accepts the compiled inventory; `notabenda/react` keeps its existing full-controller contract.
 
 Local and required-receipt suites run through both public factories. Additional tests exercise malformed descriptors before browser capabilities, field-order parity, private-data projection, mandatory adapter mode, failed command preparation, unavailable UUID generation, retirement and cross-tab changes. New records always declare local/required authority; markerless and required positives cannot become local grants. Valid negatives and independently parsed regional prompt memory remain, with no storage rewrite during parsing.
 
@@ -20,6 +20,7 @@ Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 | --- | ---: | ---: | --- |
 | `createConsentRuntime` + `mountControls`, compiled local | 11.89 KiB | 15 KiB | Within target |
 | Same plus `requiredConsentEvidence` | 15.38 KiB | Report separately | Optional receipt implementation |
+| Compiled runtime + React consent bindings, React peer external | 12.86 KiB | Report separately | Excludes React and React DOM |
 | `createConsent` from `notabenda/headless` | 16.59 KiB | Report only | Same existing engine |
 | `createConsent` + `mountControls` | 19.19 KiB | 15 KiB | Over target |
 | `notabenda/consent.css` | 2.21 KiB | 5 KiB | Within target |

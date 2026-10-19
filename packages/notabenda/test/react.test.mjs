@@ -1,14 +1,16 @@
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
 // @requirements REQ-PRODUCT-REACT REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-SAFE-CONTENT
-import {test} from 'node:test';
+import {test as nodeTest} from 'node:test';
 import assert from 'node:assert/strict';
 import {createElement as h,StrictMode,act} from 'react';
 import {renderToString,renderToStaticMarkup} from 'react-dom/server';
 import {createRoot,hydrateRoot} from 'react-dom/client';
 import {JSDOM} from 'jsdom';
-import {createProcessingChoices,createConsent,renderLegalDocument,renderLegalLinks} from 'notabenda';
-import {ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed} from 'notabenda/react';
+import {createProcessingChoices,renderLegalDocument,renderLegalLinks} from 'notabenda';
+import * as compatibilityReact from 'notabenda/react';
+import * as compiledReact from 'notabenda/react/consent';
+import {consentProfiles} from './consent-profiles.mjs';
 import {LegalDocument,LegalLinks,CollectionNotice} from 'notabenda/react/documents';
 import {compileLegalDocuments,createConsentNotice,createProcessingNotice,createCollectionNotice} from 'notabenda/content';
 import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from 'notabenda-cf';
@@ -17,7 +19,7 @@ import {fixture} from './helpers.mjs';
 import {App} from '../../../examples/react/view.mjs';
 
 const instant='2026-10-18T12:00:00.000Z';
-async function setup(id='react-example') {
+async function createSetup(createConsent,id='react-example') {
   const config=await fixture({reviewed:true});config.site.id=id;
   config.services=[{id:'optional-sample',name:'Fictional optional service',provider:'Fictional operator',location:'Local test',purposeIds:config.purposes.map(p=>p.id)}];config.storage=[];
   config.consent={purposes:config.purposes.map(p=>({id:p.id,scope:'one'})),services:config.services.map(s=>({id:s.id,scope:'one'})),grantLifetimeDays:30,refusalLifetimeDays:180,dismissalMinutes:30};
@@ -34,6 +36,10 @@ async function domTest(callback,html='') {
   dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new dom.window.Event('close'));};
   try{await callback(dom.window.document.getElementById('root'),dom.window);}finally{dom.window.close();for(const [key,value] of previous)value?Object.defineProperty(globalThis,key,value):delete globalThis[key];}
 }
+for(const [index,[profile,createConsent]] of consentProfiles.entries()){
+ const test=(name,run)=>nodeTest(`${profile}: ${name}`,run);
+ const setup=id=>createSetup(createConsent,id);
+ const {ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed}=index===0?compatibilityReact:compiledReact;
 const Probe=({purpose,onSnapshot})=>{const state=useConsentSnapshot();const allowed=usePurposeAllowed(purpose);onSnapshot?.(state);return h('output',{'data-permission':allowed?'allowed':'blocked'},state.purposes[purpose]??'unknown');};
 
 // @requirements REQ-PRODUCT-PRIVACY-SIGNALS
@@ -172,3 +178,5 @@ test('React scope decisions stay deeply immutable and cannot turn a guarded serv
  const f=await setup();f.controller.destroy();f.config.scopeGuards={version:1,revision:'assessment-1',site:{children:'present',sensitiveData:'absent',highRiskProfiling:'absent',regulatedSector:'absent'}};const controller=createConsent(f.config,f.env);controller.acceptAll();let state;const GuardProbe=()=>{state=useConsentSnapshot();return h('output',{'data-allowed':useServiceAllowed('optional-sample')},state.scopeGuards.status);};const tree=h(ConsentProvider,{controller},h(GuardProbe));assert.match(renderToString(tree),/data-allowed="false"/);
  await domTest(async root=>{const app=createRoot(root);await act(async()=>app.render(tree));assert.equal(state.scopeGuards.status,'restricted');assert.throws(()=>state.scopeGuards.blockedPurposeIds.push('forged'),TypeError);const reasons=state.scopeGuards.purposeRestrictions[f.purpose];assert.throws(()=>reasons[0].requirementIds.push('forged'),TypeError);assert.throws(()=>reasons.pop(),TypeError);assert.equal(controller.isServiceAllowed('optional-sample'),false);await act(async()=>app.unmount());});controller.destroy();
 });
+
+}

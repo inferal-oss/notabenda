@@ -4,6 +4,35 @@ The optional `notabenda/react` entry point connects React 19 to the same control
 
 The default `notabenda` entry remains framework-independent and has no runtime dependencies. React is an optional peer: install your own React 19 application dependencies when using the React adapter. Packages remain an unpublished developer preview; use workspace builds or local tarballs.
 
+## Use the compiled consent entry
+
+For browser applications that already compile the site inventory, import the provider, hooks and controls from `notabenda/react/consent`:
+
+```jsx
+import {createConsentRuntime} from 'notabenda/consent';
+import {ConsentProvider, ConsentControls, PreferencesButton} from 'notabenda/react/consent';
+import 'notabenda/consent.css'; // optional
+
+// Build-time: compileConsentRuntimeConfig(siteConfig, {evidence: 'local'})
+const response = await fetch('/consent-runtime.json');
+if (!response.ok) throw new Error('Privacy choices could not load.');
+const consent = createConsentRuntime(await response.json());
+// Register optional service lifecycles once here, before mounting the application.
+root.render(<ConsentProvider controller={consent}>
+  <YourApplication />
+  <PreferencesButton />
+  <ConsentControls />
+</ConsentProvider>);
+```
+
+This entry accepts both compiled and complete-config controllers. Its `useConsentController()` returns `ConsentStateController`, whose `getConfig()` is the smaller `ConsentRuntimeInventory`. It does not promise operator contacts, terms authoring or other workflow configuration. The existing `notabenda/react` provider and hook retain their complete-config controller contract. A compiled controller cannot be passed to that compatibility provider in TypeScript.
+
+Import a provider and its hooks/components from the **same entry point**. Each entry has a separately typed context; mixing them throws an explanatory error instead of pretending that a smaller controller has a complete config. Controls ownership is shared: the same controller can have only one native controls mount, including across the two entries. Multiple preference buttons remain supported.
+
+Both entries share subscription, SSR/hydration, effective-permission and controls behavior. Required evidence is selected on the compiled descriptor and supplied through `requiredConsentEvidence` from `notabenda/consent/evidence` when constructing the controller; React never creates or downgrades that adapter. The [consent guide](CONSENT.md) covers its bounded descriptor and stored-choice migration.
+
+The consent-only entry does not import static document renderers or form-permission controls. Render legal documents with the separate server-safe `notabenda/react/documents` entry when needed, and use `notabenda/react` for ordinary form permissions. React remains an optional host-supplied peer. `npm run size` reports the compiled React integration separately with that peer external; its number excludes React and React DOM and is not an application transfer-size claim.
+
 ## Own the controller outside React
 
 Create one browser controller before optional integrations can start, register their lifecycles once, then pass it into React. Do not create a controller during render or register services inside an effect that React may repeat.
@@ -61,7 +90,7 @@ function MeasurementStatus() {
 }
 ```
 
-`useConsentSnapshot()` returns cached, immutable UI state. `purposes` describes saved choices; `permissions` describes effective permission. In required-receipt mode, a saved `granted` purpose can still have `permissions[id] === false` while checking, saving, unavailable or superseded. `usePurposeAllowed(id)` reads that effective projection; unknown purposes return false.
+`useConsentSnapshot()` returns cached, deeply immutable UI state, including prompt-policy decisions and their nested source/requirement references. `purposes` describes saved choices; `permissions` describes effective permission. In required-receipt mode, a saved `granted` purpose can still have `permissions[id] === false` while checking, saving, unavailable or superseded. `usePurposeAllowed(id)` reads that effective projection; unknown purposes return false.
 
 These values describe UI state. Use `registerService` for actual optional work; rendering a conditional component does not prevent eager imports, preloads, server-side requests or effects elsewhere. Do not call `controller.isAllowed()` during React render: it may refresh shared storage and trigger lifecycle/evidence work. The adapter reads a pure core projection instead.
 
@@ -98,11 +127,11 @@ Permission hooks return a stable conservative snapshot during server rendering a
 
 For SSR, use a fresh request-scoped controller with an empty environment (`createConsent(config, {})`), no optional lifecycles and no evidence transport; destroy it after rendering. In the browser, create the real controller once before hydration. The same server snapshot lets hydration match, then React updates to current browser state. Do not serialize browser storage or treat a browser-controlled choice as server authorization. The [React hydration guide](https://react.dev/reference/react-dom/client/hydrateRoot) describes the matching-output requirement.
 
-Required receipts are still configured at controller construction through its third argument, before any optional lifecycle is registered. The provider needs no alternative mode. See [cookie evidence](CONSENT-EVIDENCE.md) for the authority and transport contract.
+Required receipts are still configured at controller construction through its third argument, before any optional lifecycle is registered. The provider needs no alternative mode. Use the explicit adapter when constructing a compiled controller. See [cookie evidence](CONSENT-EVIDENCE.md) for the authority and transport contract.
 
 ## Working example and verification
 
-Run `npm run dev` and open the [React example](http://127.0.0.1:4178/react) or [midnight theme](http://127.0.0.1:4178/dark/react). [Example source](../examples/react/view.mjs) separates host bootstrap, shared view and the build. Only this optional example bundles React; vanilla pages do not fetch it.
+Run `npm run dev` and open the [React example](http://127.0.0.1:4178/react) or [midnight theme](http://127.0.0.1:4178/dark/react). [Example source](../examples/react/view.mjs) separates host bootstrap, shared view and the build. The light/midnight cookie example now uses the compiled controller and `notabenda/react/consent`, with a small descriptor and explicit legal-link metadata. Only this optional example bundles React; vanilla pages do not fetch it.
 
 `REQ-PRODUCT-REACT` links implementation and tests. Tests cover core escaping, conservative SSR, hydration recovery, immutable/cached snapshots, StrictMode cleanup, controller replacement, required-receipt gating, storage changes without render-time effects, and packed consumer types. DOM simulations do not replace real-browser layout, dialog and assistive-technology verification.
 

@@ -3238,16 +3238,19 @@
         "examples/form-permissions/react-build.mjs",
         "examples/form-permissions/react-client.mjs",
         "examples/form-permissions/react-view.mjs",
-        "packages/notabenda/src/consent-engine.ts"
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/react-consent-bindings.ts",
+        "packages/notabenda/src/react-consent.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/react.test.mjs",
         "packages/notabenda/test/react-package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/react-browser.md",
-        "packages/notabenda/test/react-form-permission.test.mjs"
+        "packages/notabenda/test/react-form-permission.test.mjs",
+        "packages/notabenda/test/react-consent.test.mjs"
       ],
-      "implementationNote": "Optional React 19 provider/hooks use cached immutable core snapshots and pure effective permissions, deterministic conservative SSR/hydration, host-owned controller lifecycle and one native controls bridge. Static legal wrappers have a separate server-safe subpath. Light/dark example, packed consumer checks, lifecycle/hydration tests and initial real Chromium flows pass; broader framework/platform review remains separate. Ordinary form-permission provider/hooks/native field share the core controller and optional journal, perform no mount-time transport, preserve host ownership through StrictMode, and keep SSR and form submission conservative."
+      "implementationNote": "Optional React 19 provider/hooks use cached immutable core snapshots and pure effective permissions, deterministic conservative SSR/hydration, host-owned controller lifecycle and one native controls bridge. Static legal wrappers have a separate server-safe subpath. Light/dark example, packed consumer checks, lifecycle/hydration tests and initial real Chromium flows pass; broader framework/platform review remains separate. Ordinary form-permission provider/hooks/native field share the core controller and optional journal, perform no mount-time transport, preserve host ownership through StrictMode, and keep SSR and form submission conservative. A separate react/consent entry accepts compiled or full controllers with an honestly narrower getter; the compatibility entry retains its full public getter. Both use one binding implementation with separate typed contexts and shared controls ownership. Prompt decisions and nested reference arrays are deeply immutable. Light/dark cookie examples use bounded compiled descriptors and explicit legal-link metadata."
     },
     {
       "id": "REQ-PRODUCT-ASTRO",
@@ -3383,10 +3386,10 @@
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/types.ts",
         "packages/notabenda/src/controls.ts",
-        "packages/notabenda/src/react.ts",
         "examples/privacy-signals/build.mjs",
         "examples/privacy-signals/client.mjs",
-        "packages/notabenda/src/consent-engine.ts"
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/react-consent-bindings.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/privacy-signals.test.mjs",
@@ -3431,14 +3434,14 @@
         "packages/notabenda/src/processing-choices.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda/src/controls.ts",
-        "packages/notabenda/src/react.ts",
         "packages/notabenda-cf/src/processing.ts",
         "packages/notabenda-cf/src/render.ts",
         "examples/processing-choices/build.mjs",
         "examples/processing-choices/client.mjs",
         "site/worker.mjs",
         "site/host.mjs",
-        "packages/notabenda/src/consent-engine.ts"
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/react-consent-bindings.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/processing.test.mjs",
@@ -3842,14 +3845,14 @@
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/setup.ts",
         "packages/notabenda/src/starter.ts",
-        "packages/notabenda/src/react.ts",
         "packages/notabenda-cf/src/scope-guard-policy.ts",
         "packages/notabenda-cf/src/consent.ts",
         "packages/notabenda-cf/src/history.ts",
         "packages/notabenda-cf/src/render.ts",
         "examples/scope-guards/build.mjs",
         "examples/scope-guards/client.mjs",
-        "packages/notabenda/src/consent-engine.ts"
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/react-consent-bindings.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs",
@@ -4344,13 +4347,15 @@
         "packages/notabenda/src/consent-compile.ts",
         "packages/notabenda/src/consent-runtime.ts",
         "packages/notabenda/src/consent-evidence-factory.ts",
-        "packages/notabenda/src/consent-runtime-evidence.ts"
+        "packages/notabenda/src/consent-runtime-evidence.ts",
+        "packages/notabenda/src/react-consent.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/browser-delivery.md",
         "site/test/delivery.test.mjs",
-        "packages/notabenda/test/consent-runtime.test.mjs"
+        "packages/notabenda/test/consent-runtime.test.mjs",
+        "packages/notabenda/test/react-consent.test.mjs"
       ],
       "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target."
     }
@@ -4915,13 +4920,14 @@
         "REQ-PRODUCT-REACT"
       ],
       "status": "automated",
-      "expected": "SSR emits no effective grants or remote resources; hydration matches then recovers current browser state. Required-receipt grants remain blocked until acknowledged. StrictMode leaves one controls mount, controller replacement unsubscribes old state, and optional peer imports never enter the default dependency graph. React form fields preserve conservative SSR/hydration, immutable snapshots, host ownership, form independence and explicit exact-request recovery through remount.",
+      "expected": "SSR emits no effective grants or remote resources; hydration matches then recovers current browser state. Required-receipt grants remain blocked until acknowledged. StrictMode leaves one controls mount, controller replacement unsubscribes old state, and optional peer imports never enter the default dependency graph. React form fields preserve conservative SSR/hydration, immutable snapshots, host ownership, form independence and explicit exact-request recovery through remount. Both full and compiled controller profiles pass the same consent SSR, hydration and receipt scenarios. Cross-entry hooks reject missing matching providers, controls share one ownership registry, compiled graphs exclude full config/document/form code, and packed declarations preserve both getter contracts.",
       "testRefs": [
         "packages/notabenda/test/react.test.mjs",
         "packages/notabenda/test/react-package.test.mjs",
         "site/test/host.test.mjs",
         "docs/verification/react-browser.md",
-        "packages/notabenda/test/react-form-permission.test.mjs"
+        "packages/notabenda/test/react-form-permission.test.mjs",
+        "packages/notabenda/test/react-consent.test.mjs"
       ]
     },
     {

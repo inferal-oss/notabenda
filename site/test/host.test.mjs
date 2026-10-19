@@ -335,11 +335,11 @@ test('standalone discovery examples ship local optional tools and leave legal ro
 
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-REACT
 test('shared example framing preserves the exact framework-owned SSR tree',async()=>{
- const [{JSDOM},{createElement},{renderToString},{createConsent},{App}]=await Promise.all([import('jsdom'),import('react'),import('react-dom/server'),import('notabenda'),import('../../examples/react/view.mjs')]);
+ const [{JSDOM},{createElement},{renderToString},{createConsentRuntime},{App}]=await Promise.all([import('jsdom'),import('react'),import('react-dom/server'),import('notabenda/consent'),import('../../examples/react/view.mjs')]);
  const root=new URL('../dist/public/',import.meta.url);
  for(const prefix of ['','dark/']){
-  const config=JSON.parse(await readFile(new URL(prefix+'react/site.json',root),'utf8')),controller=createConsent(config,{});
-  try{const expected=new JSDOM('<div id="expected">'+renderToString(createElement(App,{controller,config}))+'</div>').window.document.getElementById('expected');const actual=new JSDOM(await readFile(new URL(prefix+'react/index.html',root),'utf8')).window.document.getElementById('react-root');assert.equal(actual.innerHTML,expected.innerHTML);}finally{await controller.destroy();}
+  const page=JSON.parse(await readFile(new URL(prefix+'react/site.json',root),'utf8')),controller=createConsentRuntime(page.runtime,{}),config=page.runtime.inventory;
+  try{const expected=new JSDOM('<div id="expected">'+renderToString(createElement(App,{controller,config,legalLinks:page.legalLinks}))+'</div>').window.document.getElementById('expected');const actual=new JSDOM(await readFile(new URL(prefix+'react/index.html',root),'utf8')).window.document.getElementById('react-root');assert.equal(actual.innerHTML,expected.innerHTML);}finally{await controller.destroy();}
  }
 });
 
