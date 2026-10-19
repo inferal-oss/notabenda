@@ -19,6 +19,7 @@ const profiles={
  'collection/index.html':['collection','collection'],'dark/collection/index.html':['collection','collection'],
  'indirect-collection/index.html':['indirect-collection','indirect-collection'],'dark/indirect-collection/index.html':['indirect-collection','indirect-collection'],
  'guarantees/index.html':['guarantees','guarantees'],'dark/guarantees/index.html':['guarantees','guarantees'],
+ 'guarantees/product/index.html':['producer-guarantee','guarantee-labels'],'dark/guarantees/product/index.html':['producer-guarantee','guarantee-labels'],
  'embeds/index.html':['embeds','embeds'],'embeds/frame/index.html':['frame','embeds'],
  'privacy-signals/index.html':['signals','privacy-signals'], 'processing-choices/index.html':['processing','processing-choices'],
  'storage-cleanup/index.html':['storage','storage-cleanup'],'releases/index.html':['releases','releases'],

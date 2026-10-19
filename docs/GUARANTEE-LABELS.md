@@ -4,6 +4,8 @@
 
 The producer prepares the complete GARAN label. Notabenda imports that finished file and keeps its bytes unchanged. It does not fill the official template, inspect the guarantee contract, authenticate the producer, or certify the graphic. The [Commission guide](https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en) describes the permitted edits and display; [Regulation 2025/1960, Annex II](https://eur-lex.europa.eu/eli/reg_impl/2025/1960/oj) prescribes the design.
 
+A [complete sourced product example](GUARANTEE-PRODUCER-EXAMPLE.md) shows the original-file importer in light and dark themes, with pinned source/font provenance and fixed-artwork checks. It remains a draft example.
+
 ## Supply a finished file
 
 The optional `notabenda-authoring/guarantees` build entry contains the image parsers. The frontend entry `notabenda/guarantees/label` remains dependency-free. Install the preview packages from your checkout; they have not been published to npm.

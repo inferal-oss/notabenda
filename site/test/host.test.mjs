@@ -478,3 +478,23 @@ test('catalog-reference releases keep public legal bytes unchanged and private c
  const again=await markDemoResponse(new Response(html,{headers:{'Content-Type':'text/html'}}));assert.equal((await again.text()).match(/class="demo-corner"/gu).length,1);
  const json=Response.json({ok:true});assert.equal(await markDemoResponse(json),json);
  });
+
+// @requirements REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
+ test('complete producer label examples deliver unchanged artwork, bind readable product facts and offer optional keyboard inspection',async()=>{
+ const {JSDOM}=await import('jsdom'),{createHash}=await import('node:crypto'),root=new URL('../dist/public/',import.meta.url),source=await readFile(new URL('../../examples/guarantees/producer/juniper-jw-01.svg',import.meta.url));
+ let label;
+ for(const prefix of ['','dark/']){
+  const path=prefix+'guarantees/product/',html=await readFile(new URL(path+'index.html',root),'utf8'),current=JSON.parse(await readFile(new URL(path+'label.json',root),'utf8')),document=new JSDOM(html).window.document;
+  if(label)assert.deepEqual(current,label);else label=current;
+  const figure=document.querySelector('.nb-guarantee-label img');assert.equal(figure.getAttribute('src'),current.asset.url);assert.equal(document.querySelector('.nb-guarantee-label').getAttribute('data-product-id'),current.product.id);
+  for(const fact of [current.product.name,current.producer.brand,current.producer.model,current.wording.durationValue])assert.ok(document.querySelector('.nb-guarantee-label').textContent.includes(fact));
+  const bytes=await readFile(new URL(current.asset.url.slice(1),root));assert.deepEqual(bytes,source);assert.equal(createHash('sha256').update(bytes).digest('hex'),current.asset.sha256);
+  const inspection=document.querySelector('.producer-inspection');assert.equal(inspection.open,false);assert.ok(inspection.querySelector('summary'));
+  const region=inspection.querySelector('[role="region"]');assert.equal(region.getAttribute('tabindex'),'0');assert.ok(document.getElementById(region.getAttribute('aria-describedby')));
+  assert.equal(region.querySelector('img').getAttribute('src'),current.asset.url);assert.equal(region.querySelector('img').getAttribute('width'),'1080');
+  assert.equal(document.querySelectorAll('.demo-corner').length,1);assert.match(html,/example-pages\.css/);assert.match(html,/Source &amp; preparation/);assert.doesNotMatch(html,/<script|<form|<input/);
+  const env={ASSETS:{fetch:async()=>new Response(html,{headers:{'Content-Type':'text/html'}})},WORKSPACE:{get(){throw Error('Static product information must not open an evidence store.');}}};
+  const response=await serveHost(request('/'+path),env);assert.equal(response.status,200);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);
+ }
+ const gallery=new JSDOM(await readFile(new URL('examples/index.html',root),'utf8')).window.document;assert.ok(gallery.querySelector('a[href="/guarantees/product/"]'));
+ });

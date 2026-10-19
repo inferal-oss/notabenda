@@ -5310,7 +5310,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": "2026-09-27",
       "timingNote": "2025/1960 applies from 27 September 2026; applicable national transposition and scope require review.",
-      "caveats": "Finished-file ingestion and static product-specific rendering exist. Qualifying facts and a reviewed flag are explicit host declarations, not producer identity/offer or visual conformity verification. A complete producer-prepared example, actual asset delivery/legibility/QR acceptance, order placement and durable confirmation remain open. Original-file retention is host-owned and not integrated into the DO archive.",
+      "caveats": "Finished-file ingestion and static product-specific rendering include a sourced complete draft example. Qualification and review remain explicit host declarations, not producer identity/offer or statutory design verification. Software QR decoding covers selected raster sizes; physical devices, assistive technology, target placement, independent legal/design review, final order action and durable confirmation remain open. Original-file retention is host-owned and not integrated into the DO archive.",
       "implementationRefs": [
         "packages/notabenda/src/guarantee-label.ts",
         "packages/notabenda/src/guarantee-notice-json.ts",
@@ -5320,16 +5320,25 @@
         "packages/notabenda/src/react-documents.ts",
         "packages/notabenda/src/astro/DurabilityGuaranteeLabel.astro",
         "docs/GUARANTEE-LABELS.md",
-        "packages/notabenda-authoring/src/guarantee-label-clips.ts"
+        "packages/notabenda-authoring/src/guarantee-label-clips.ts",
+        "examples/guarantees/product-build.mjs",
+        "examples/guarantees/producer/prepare.py",
+        "examples/guarantees/producer/verify.py",
+        "examples/guarantees/producer/manifest.json",
+        "docs/GUARANTEE-PRODUCER-EXAMPLE.md",
+        "packages/notabenda/src/files.ts"
       ],
       "testRefs": [
         "packages/notabenda-authoring/test/guarantee-label.test.mjs",
         "packages/notabenda-authoring/test/package.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "packages/notabenda/test/astro-package.test.mjs",
-        "docs/verification/guarantees.md"
+        "docs/verification/guarantees.md",
+        "packages/notabenda-authoring/test/guarantee-producer.test.mjs",
+        "packages/notabenda/test/cli.test.mjs",
+        "site/test/host.test.mjs"
       ],
-      "implementationNote": "Optional build-only bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes, requires all four true eligibility declarations, binds product/producer/duration/review/wording and file identity, and emits a content-addressed local asset. Dependency-free static frontend plus React/Astro wrappers. No preparation, automatic no-guarantee inference, final payment action or confirmation."
+      "implementationNote": "Optional bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes and binds explicit qualifying facts, product, producer, duration, review and wording. A fixed maintainer fixture fills only the official template’s three fields with pinned Inter outlines, records source/font provenance and compares fixed artwork. Light/dark examples include optional enlarged inspection; software QR decoding uses development-only tools. No public template generator, automatic no-guarantee inference, payment action or confirmation."
     },
     {
       "id": "REQ-PRODUCT-GUARANTEE-NOTICE",
@@ -6415,13 +6424,16 @@
         "REQ-EU-GUARANTEE-LABEL"
       ],
       "status": "automated",
-      "expected": "Mechanism tests bind explicit qualifying declarations to a product and unchanged finished-file bytes; bounded decoders reject unsupported/unsafe inputs and frontend graphs exclude build parsers. Complete-artwork acceptance, actual delivery/placement and order integration remain open.",
+      "expected": "Mechanism tests bind explicit product/offer declarations to unchanged finished bytes, reject unsupported input and exclude build parsers from frontend graphs. The complete draft example verifies pinned source/fonts, unchanged fixed artwork, field bindings, binary delivery and software QR decoding at selected sizes. Physical-device, legal/design, production-placement and order acceptance remain open.",
       "testRefs": [
         "packages/notabenda-authoring/test/guarantee-label.test.mjs",
         "packages/notabenda-authoring/test/package.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "packages/notabenda/test/astro-package.test.mjs",
-        "docs/verification/guarantees.md"
+        "docs/verification/guarantees.md",
+        "packages/notabenda-authoring/test/guarantee-producer.test.mjs",
+        "packages/notabenda/test/cli.test.mjs",
+        "site/test/host.test.mjs"
       ]
     },
     {

@@ -1,0 +1,14 @@
+{
+  "product": {"id": "juniper-desk-lamp", "name": "Juniper desk lamp"},
+  "producer": {"brand": "Juniper Works", "model": "JW-01"},
+  "durationYears": 5,
+  "qualification": {
+    "offeredByProducer": true,
+    "noAdditionalCost": true,
+    "coversEntireGood": true,
+    "informationProvidedToTrader": true
+  },
+  "locale": "en",
+  "reviewStatus": "draft",
+  "allowPreview": true
+}

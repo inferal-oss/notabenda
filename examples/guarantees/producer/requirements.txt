@@ -1,0 +1,3 @@
+# Maintainer-only fixture preparation. Not required by npm builds or normal tests.
+fonttools==4.67.0
+uharfbuzz==0.56.3

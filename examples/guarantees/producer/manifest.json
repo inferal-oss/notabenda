@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "requirementIds": [
+    "REQ-EU-GUARANTEE-LABEL"
+  ],
+  "source": {
+    "page": "https://commission.europa.eu/publications/practical-guidelines-and-high-resolution-vector-files-eu-notice-and-label-product-guarantees_en",
+    "archiveSha256": "fb38533adc243094a7bfcf3d0545037c681aa5d5210b6d0c7327744921923e93",
+    "member": "GARAN Label_colour.svg",
+    "sha256": "3414c8366823db39702d2557e614f882b530487ce589e903afdc98b7225e1ab1",
+    "bytes": 294405
+  },
+  "fonts": {
+    "release": "https://github.com/rsms/inter/releases/tag/v4.1",
+    "archiveSha256": "9883fdd4a49d4fb66bd8177ba6625ef9a64aa45899767dde3d36aa425756b11e",
+    "licenseSha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a"
+  },
+  "tools": {
+    "fonttools": "4.67.0",
+    "uharfbuzz": "0.56.3"
+  },
+  "fields": [
+    {
+      "field": "brand",
+      "value": "Juniper Works",
+      "fontMember": "extras/ttf/Inter-Regular.ttf",
+      "fontSha256": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+      "fontWeight": 400,
+      "fontSize": 9,
+      "transform": "translate(6.32 74.52)",
+      "advance": 61.65966797,
+      "outlineSha256": "f3a648a54898e56662256078cd4d6e72fadcf9cb4ee0f3e4d4fd0aab18e30ad1"
+    },
+    {
+      "field": "model",
+      "value": "JW-01",
+      "fontMember": "extras/ttf/Inter-Regular.ttf",
+      "fontSha256": "40d692fce188e4471e2b3cba937be967878f631ad3ebbbdcd587687c7ebe0c82",
+      "fontWeight": 400,
+      "fontSize": 9,
+      "transform": "translate(196.75 74.52)",
+      "advance": 27.02636719,
+      "outlineSha256": "3f272fb2d2787feb6d639ec2581bd559308db389bc834b516a1f920fef01c00c"
+    },
+    {
+      "field": "duration",
+      "value": "5",
+      "fontMember": "extras/ttf/Inter-ExtraBold.ttf",
+      "fontSha256": "e6756ad5690b77606aa62249a7b420d9902d45cae4b0048a24911fd4324b0a22",
+      "fontWeight": 800,
+      "fontSize": 80,
+      "transform": "translate(5.07 150.57)",
+      "advance": 50.703125,
+      "outlineSha256": "b2003966b2f583bd763e5d214633d3076e9e674249532b8d525b8483fc1190b3"
+    }
+  ],
+  "fixedArtwork": {
+    "algorithm": "resolved-presentation-tree-v1",
+    "sha256": "d37657d71be95c3bdd279a67023337b9cfdebc9374a2b863b32969d08db4a86d",
+    "qrPayload": "https://europa.eu/youreurope/commercial-guarantee-durability"
+  },
+  "output": {
+    "file": "juniper-jw-01.svg",
+    "sha256": "6ae44f67c32ea6efa593853976c9c9c1b9d57d072bae0735487316c5e48f6f3c",
+    "bytes": 308145
+  },
+  "reviewStatus": "draft"
+}

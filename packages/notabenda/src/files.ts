@@ -2,8 +2,8 @@ import { lstat, mkdir, rename, writeFile, unlink } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve, sep } from 'node:path';
 import { randomUUID } from 'node:crypto';
 
-/** @requirements REQ-PRODUCT-SAFE-CONTENT: no traversal, symlink following, or recursive deletion. */
-export async function writeBuildFiles(outputDirectory: string, files: Record<string, string>): Promise<void> {
+/** @requirements REQ-PRODUCT-SAFE-CONTENT REQ-EU-GUARANTEE-LABEL: no traversal, symlink following, or recursive deletion. */
+export async function writeBuildFiles(outputDirectory: string, files: Record<string, string | Uint8Array>): Promise<void> {
   const root = resolve(outputDirectory);
   async function safeDirectory(directory: string): Promise<void> {
     const parent = dirname(directory);

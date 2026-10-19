@@ -66,3 +66,10 @@ test('CLI reports invalid JSON/options cleanly without echoing private configura
     for (const args of [['unknown'], ['build', '--out-dir'], ['check', '--out-dir', 'output'], ['build', '--unexpected']]) assert.equal(run(cwd, ...args).status, 1);
   } finally { await rm(cwd, { recursive: true, force: true }); }
 });
+
+// @requirements REQ-PRODUCT-SAFE-CONTENT REQ-EU-GUARANTEE-LABEL
+ test('output writer preserves binary image bytes alongside text files',async()=>{
+ const folder=await mkdtemp(join(tmpdir(),'notabenda-binary-output-'));
+ try{const bytes=Uint8Array.from([0,137,80,78,71,255,254,128,10]);await writeBuildFiles(folder,{'assets/source.png':bytes,'index.html':'<p>Image</p>'});assert.deepEqual(await readFile(join(folder,'assets/source.png')),Buffer.from(bytes));assert.equal(await readFile(join(folder,'index.html'),'utf8'),'<p>Image</p>');}
+ finally{await rm(folder,{recursive:true,force:true});}
+ });
