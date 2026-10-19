@@ -84,3 +84,14 @@ The production build command runs from the repository root; the deployment comma
 Public assets append `no-transform` to their existing `Cache-Control` directives. Protected and session responses use `private, no-store, no-transform`, retaining their authorization/cookie variation. This asks intermediate caches to preserve the generated representation, including archived legal HTML. Cloudflare documents that this directive prevents its automatic Web Analytics beacon injection. The self-only/script-free CSP remains in force; no external script origin is added. This header does not delete historical provider analytics, disable hosting request/security processing, or replace live deployment checks.
 
 When deploying your own toolkit integration, serve exact retained HTML without proxy rewrites or injected tooling. Inspect the actual browser DOM and response policy as well as the build output; a static-file check cannot detect every edge modification. See [Cloudflare’s setup documentation](https://developers.cloudflare.com/web-analytics/get-started/) and [host verification](../docs/verification/website-browser.md).
+
+
+## Keep the website organized
+
+The homepage introduces the first integration: configure the inventory, publish reviewed legal content and connect privacy choices. Detailed capabilities belong in the examples and documentation rather than adding another section to the homepage.
+
+`navigation.mjs` defines six shared task areas. Each area has smaller groups, an examples page at `/examples/<area>/` and a guide overview at `/guide/areas/<area>/`. Privacy choices separate cookie/service controls, permissions and opt-outs, and specialist controls. Contracts separate terms agreement, information before purchase, actions after purchase and producer-artwork preparation. Framework and backend variants stay with their related example.
+
+When adding a feature, give its guide and example a place in an existing group. Keep one primary guide home; links from another area are useful when the workflow crosses boundaries. Guide pages provide nearby reading and the matching example. The sidebar expands the current area; the mobile menu links directly to other area overviews without nested disclosures. All pages work without navigation JavaScript.
+
+`/guide/all` is the complete index. Verification reports sit under their related task and start collapsed; project research and maintainer material have a separate reference area. Existing guide and example URLs remain usable. The organization tests check subgroup ownership, links, route coverage and current-page context so new examples cannot disappear from the directory unnoticed.

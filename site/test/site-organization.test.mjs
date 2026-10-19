@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,readdir} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {siteSections,guideSections,exampleSectionUrl} from '../navigation.mjs';
+import {siteSections,guideSections,exampleSectionUrl,guideSectionUrl,sectionForGuide} from '../navigation.mjs';
 const root=new URL('../dist/public/',import.meta.url),page=async path=>{const route=path.replace(/^\//u,'').replace(/\/$/u,'');return new JSDOM(await readFile(new URL((route?route+'/':'')+'index.html',root),'utf8')).window.document;};
 test('example overview is a short set of task areas; every family and variant has one category home',async()=>{
  const overview=await page('/examples');assert.equal(overview.querySelectorAll('.topic-destination').length,siteSections.length);assert.equal(overview.querySelectorAll('.example-feature-grid>a').length,2);assert.equal(overview.querySelectorAll('.topic-example').length,0);assert.equal(overview.querySelectorAll('script').length,0);
@@ -32,4 +32,21 @@ test('every generated guide remains reachable from the complete grouped referenc
  const overview=await page('/guide');assert.equal(overview.querySelectorAll('.guide-breadcrumb').length,0);
  const project=await page('/guide/project');assert.match(project.querySelector('#main').textContent,/Host the HTML yourself and style it with your CSS/u);assert.ok(linked.has('/guide/project'));
  const home=await page('/');assert.equal(home.querySelectorAll('.trace').length,0);for(const section of ['privacy-information','contracts','records'])assert.ok(home.querySelector(`a[href="/examples/${section}/"]`));assert.ok(home.querySelector('a[href="/guide"]'));
+});
+
+// The hierarchy is structural: an added topic cannot silently disappear, duplicate
+// another family, or turn every guide into an ungrouped reference entry.
+test('each example appears in exactly one subgroup and area overviews connect guides to examples',async()=>{
+ for(const section of siteSections){
+  const grouped=section.groups.flatMap(group=>group.topicIds);assert.equal(new Set(grouped).size,grouped.length,section.id);assert.deepEqual([...grouped].sort(),section.topics.map(t=>t.id).sort(),section.id);
+  const examples=await page(exampleSectionUrl(section)),area=await page(guideSectionUrl(section));
+  assert.equal(examples.querySelectorAll('.topic-section').length,section.groups.filter(g=>g.topicIds.length).length);assert.ok(examples.querySelector(`a[href="${guideSectionUrl(section)}"]`));
+  assert.equal(area.querySelectorAll('.guide-area-group').length,section.groups.length);assert.ok(area.querySelector(`a[href="${exampleSectionUrl(section)}"]`));
+  for(const guide of section.guides){assert.ok(area.querySelector(`#main a[href="${guide.href}"]`),guide.href);await page(guide.href);}
+  assert.equal(area.querySelectorAll('script').length,0);
+ }
+ const producer=await page('/guide/guarantee-producer-example');assert.equal(producer.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/contracts/');assert.ok(producer.querySelector('.guide-context a[href="/guide/guarantee-labels"]'));assert.ok(producer.querySelector('.guide-context a[href="/guarantees/product/"]'));
+ assert.equal(sectionForGuide('/guide/verification/paid-orders').id,'contracts');assert.equal(sectionForGuide('/guide/verification/consent-focus').id,'privacy-choices');
+ const home=await page('/'),overview=await page('/guide');for(const document of [home,overview])assert.deepEqual([...document.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
+ assert.equal(home.querySelectorAll('.foundation,.closing').length,0);assert.equal(overview.querySelectorAll('.guide-topic').length,6);
 });
