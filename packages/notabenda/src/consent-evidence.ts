@@ -2,7 +2,7 @@
 // @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
 import { consentScopes, normalizeConsentNotice } from './consent-notice.js';
 import type { ConsentNotice } from './consent-notice.js';
-import type { PublicSiteConfig } from './types.js';
+import type {ConsentRuntimeInventory} from './consent-runtime-config.js';
 import {samePromptPolicy} from './prompt-policy.js';
 
 export interface ConsentChoiceRequest {
@@ -41,7 +41,7 @@ export interface SavedConsentCommand {
   release:{noticeId:string;artifactId:string;scopeDigest:string;mode:'preview'|'production';grantLifetimeDays:number;refusalLifetimeDays:number;deliveryWindowSeconds:number};
   request:ConsentChoiceRequest;
 }
-interface EvidenceEnvironment { now:()=>number; schedule:(callback:()=>void,delay:number)=>(()=>void) }
+export interface EvidenceEnvironment { now:()=>number; schedule:(callback:()=>void,delay:number)=>(()=>void) }
 const object=(v:unknown):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const hash=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{64}$/u.test(v);
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(v);
@@ -68,7 +68,7 @@ function requestValue(value:unknown):ConsentChoiceRequest {
 /** @requirements REQ-PRODUCT-CONSENT-EVIDENCE REQ-EU-CONSENT
  * Internal delivery engine. Acknowledgments never write browser choice storage.
  */
-export function createEvidenceSession(config:PublicSiteConfig,options:ConsentEvidenceOptions,env:EvidenceEnvironment,changed:()=>void) {
+export function createEvidenceSession(config:ConsentRuntimeInventory,options:ConsentEvidenceOptions,env:EvidenceEnvironment,changed:()=>void) {
   const notice=normalizeConsentNotice(options.notice,{allowPreview:options.allowPreview===true});
   const scopes=consentScopes(config); const timeout=options.timeoutMs??10000;
   if(notice.siteId!==config.site.id||!same(notice.scopes,scopes)||!samePromptPolicy(notice.policy.promptPolicy,config.consent!.promptPolicy)||notice.policy.grantLifetimeDays!==config.consent!.grantLifetimeDays||notice.policy.refusalLifetimeDays!==config.consent!.refusalLifetimeDays||!hash(options.streamRef)||typeof options.read!=='function'||typeof options.write!=='function'||!Number.isInteger(timeout)||timeout<1000||timeout>30000) throw new Error('Evidence must match this site, material scope, prompt policy, lifetimes and a host-authorized stream.');

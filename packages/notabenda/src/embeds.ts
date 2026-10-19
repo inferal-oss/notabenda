@@ -1,5 +1,5 @@
-import type {ConsentController,ConsentSnapshot} from './consent.js';
-import {isSafeLink} from './config.js';
+import type {ConsentStateController,ConsentSnapshot} from './consent.js';
+import {isSafeLink} from './safe-links.js';
 
 export interface EmbedPlaceholder {title:string;description:string;preferencesLabel?:string}
 export type EmbedOptions = EmbedPlaceholder & (
@@ -32,7 +32,7 @@ export function renderEmbedPlaceholder(input:EmbedPlaceholder):string {
 /** @requirements REQ-PRODUCT-EMBEDS REQ-EU-DEVICE REQ-PRODUCT-CONSENT-RUNTIME
  * One host-owned lifecycle, several media surfaces. No resource attribute exists before effective permission.
  */
-export function createEmbedService(options:{consent:ConsentController;serviceId:string}):EmbedService {
+export function createEmbedService(options:{consent:ConsentStateController;serviceId:string}):EmbedService {
   const {consent,serviceId}=options;
   const config=consent.getConfig();const service=config.services.find(s=>s.id===serviceId);
   if(!service?.resourceOrigins?.length||!config.consent?.services.some(s=>s.id===serviceId))throw new Error('Declare a consent-managed embed service with resourceOrigins first.');

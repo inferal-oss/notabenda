@@ -64,6 +64,8 @@ Build a purpose/channel offer with `createFormPermissionOffer`, then use `create
 
 ## Cookie choices
 
+For a smaller browser bundle, build a descriptor with `compileConsentRuntimeConfig(config, {evidence: 'local'})` from `notabenda/content`, then use `createConsentRuntime` and `mountControls` from `notabenda/consent` with optional `notabenda/consent.css`. Required receipts use explicit `evidence: 'required'` and `requiredConsentEvidence` from `notabenda/consent/evidence`. The [consent guide](../../docs/CONSENT.md) explains validation, adapter support and the conservative migration of older stored grants. Existing `createConsent` remains available with full config validation and its complete public getter.
+
 Add an explicit runtime scope to the site inventory. IDs refer to declared purposes and services; every purpose of a managed service must be included:
 
 ```ts

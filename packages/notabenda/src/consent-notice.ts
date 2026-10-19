@@ -1,12 +1,12 @@
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 import {scopeGuardContext,scopeGuardBlocked} from './scope-guard-policy.js';
 // @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
-import type { PublicSiteConfig } from './types.js';
+import type {ConsentRuntimeInventory} from './consent-runtime-config.js';
 import {isPromptPolicy} from './prompt-policy.js';
 import type {PromptPolicy} from './types.js';
 
 /** Shared by the local runtime and the build-time evidence descriptor. */
-export function consentScopes(config: PublicSiteConfig): Record<string, string> {
+export function consentScopes(config: ConsentRuntimeInventory): Record<string, string> {
   if (!config.consent) throw new Error('Declare the optional consent scope first.');
   return Object.fromEntries(config.consent.purposes.map(p => {
     const purpose = config.purposes.find(item => item.id === p.id)!;
@@ -21,7 +21,7 @@ export interface ConsentWording {
   acceptLabel:string; rejectLabel:string; saveLabel:string; preferencesLabel:string; dismissLabel:string; closeLabel:string;
 }
 /** @requirements REQ-IT-REPROMPT Keep significant-change information after any custom copy overrides. */
-export function applyPromptPolicyWording(config:PublicSiteConfig,wording:ConsentWording):ConsentWording {
+export function applyPromptPolicyWording(config:ConsentRuntimeInventory,wording:ConsentWording):ConsentWording {
   const summary=config.consent?.promptPolicy?.materialChange?.summary;
   if(!summary)return wording;
   const disclosure=`Changes to optional processing: ${summary}`;
@@ -29,7 +29,7 @@ export function applyPromptPolicyWording(config:PublicSiteConfig,wording:Consent
   return {...wording,summary:append(wording.summary),preferencesIntro:append(wording.preferencesIntro)};
 }
 /** Default UI copy is also archived in a consent notice; custom UIs must archive their actual copy. */
-export function defaultConsentWording(config: PublicSiteConfig): ConsentWording {
+export function defaultConsentWording(config: ConsentRuntimeInventory): ConsentWording {
   if (!config.consent) throw new Error('Declare the optional consent scope first.');
   const available=config.consent.purposes.filter(p=>!scopeGuardBlocked(config.scopeGuards,p.id));
   const restricted=available.length!==config.consent.purposes.length;

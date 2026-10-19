@@ -8,10 +8,12 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 export async function measureBundles(){
  const profiles=[];
  for(const [id,entry,exports,budgetBytes] of [
+  ['compiled-local','notabenda/consent','createConsentRuntime,mountControls',15*1024],
+  ['compiled-required','notabenda/consent','createConsentRuntime,mountControls',null],
   ['headless','notabenda/headless','createConsent',null],
   ['core-controls','notabenda','createConsent,mountControls',15*1024],
  ]){
-  const result=await build({stdin:{contents:`export {${exports}} from '${entry}';`,resolveDir:root,sourcefile:'bundle-measure.mjs'},bundle:true,minify:true,format:'esm',platform:'browser',target:'es2022',write:false,metafile:true,logLevel:'silent'});
+  const result=await build({stdin:{contents:`export {${exports}} from '${entry}';${id==='compiled-required'?"export {requiredConsentEvidence} from 'notabenda/consent/evidence';":''}`,resolveDir:root,sourcefile:'bundle-measure.mjs'},bundle:true,minify:true,format:'esm',platform:'browser',target:'es2022',write:false,metafile:true,logLevel:'silent'});
   const output=result.outputFiles[0].contents,inputs=Object.entries(Object.values(result.metafile.outputs)[0].inputs).filter(([,v])=>v.bytesInOutput>0).map(([path])=>path).sort();
   const gzipBytes=gzipSync(output,{level:9}).length;
   profiles.push({id,entry,exports:exports.split(','),bytes:output.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs});

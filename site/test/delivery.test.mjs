@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {build} from 'esbuild';
 import {JSDOM} from 'jsdom';
+import {createConsentRuntime} from 'notabenda/consent';
 
 test('cookie examples serve component styles while their legal documents retain the complete stylesheet',async()=>{
  const root=new URL('../dist/public/',import.meta.url);
@@ -20,4 +21,13 @@ test('the local cookie browser entry is an actual self-contained bundle rather t
  const script=await readFile(new URL('../dist/public/assets/consent.mjs',import.meta.url),'utf8');
  const parsed=await build({stdin:{contents:script,sourcefile:'published-consent.mjs'},bundle:false,platform:'browser',format:'esm',target:'es2022',write:false,metafile:true,logLevel:'silent'});
  assert.deepEqual(Object.values(parsed.metafile.outputs)[0].imports,[]);assert.match(script,/sample-measurements/u);assert.match(script,/\/choices\/site\.json/u);assert.doesNotMatch(script,/\/assets\/runtime\/|notabenda-cf|node:fs|localhost:|ADMIN_KEY/u);
+});
+
+
+test('both cookie themes serve independently validated compiled descriptors with no authoring bodies or private facts',async()=>{
+ const root=new URL('../dist/public/',import.meta.url);
+ for(const prefix of ['','dark/']){
+  const descriptor=JSON.parse(await readFile(new URL(prefix+'choices/site.json',root),'utf8'));assert.equal(descriptor.kind,'notabenda-consent-runtime');assert.equal(descriptor.evidence,'local');assert.equal(descriptor.mode,'preview');assert.doesNotMatch(JSON.stringify(descriptor),/"(?:controller|private|sections|rightsCenter)":/);
+  const consent=createConsentRuntime(descriptor,{});assert.equal(consent.getConfig().documents.privacy.route,'/'+prefix+'choices/privacy');assert.equal(consent.getSnapshot().permissions.measurement,false);consent.destroy();
+ }
 });

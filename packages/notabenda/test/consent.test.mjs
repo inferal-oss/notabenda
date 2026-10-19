@@ -1,6 +1,7 @@
-import { test } from 'node:test';
+import {consentProfiles} from './consent-profiles.mjs';
+import { test as nodeTest } from 'node:test';
 import assert from 'node:assert/strict';
-import { createConsent, toPublicConfig, validateSiteConfig } from 'notabenda';
+import { toPublicConfig, validateSiteConfig } from 'notabenda';
 import { fixture } from './helpers.mjs';
 // @requirements REQ-PRODUCT-CONSENT-RUNTIME
 
@@ -19,6 +20,8 @@ async function setup() {
 const deferred = () => { let resolve; let reject; const promise = new Promise((a,b) => { resolve = a; reject = b; }); return { promise, resolve, reject }; };
 
 // @requirements REQ-EU-DEVICE REQ-EU-CONSENT REQ-EU-FAIR-CHOICE
+for(const [profile,createConsent] of consentProfiles){
+ const test=(name,run)=>nodeTest(`${profile}: ${name}`,run);
 test('all declared purposes are required, registration is inert, and rejection withdraws actual started work', async () => {
   const f = await setup(); const c = createConsent(f.config, f.environment); const purposes = f.config.services[0].purposeIds;
   let starts = 0; let stops = 0; let signal;
@@ -115,7 +118,7 @@ test('configuration, choices, and lifecycle declarations cannot mint grants thro
   const missing = structuredClone(f.config); missing.consent.services = []; assert.equal(validateSiteConfig(missing).valid, false);
   const malformed = structuredClone(f.config); malformed.consent.purposes = [null]; assert.equal(validateSiteConfig(malformed).valid, false);
   const privateConfig = structuredClone(f.config); privateConfig.consent.services[0].secret = 'never-public'; assert.equal(JSON.stringify(toPublicConfig(privateConfig)).includes('never-public'), false); c.destroy();
-  const oversized = structuredClone(f.config); oversized.purposes[0].description = 'a'.repeat(65536); assert.throws(() => createConsent(oversized, f.environment), /record limit/);
+  const oversized = structuredClone(f.config); oversized.purposes[0].description = 'a'.repeat(65536); assert.throws(() => createConsent(oversized, f.environment), /record limit|runtime configuration/);
 });
 
 // @requirements REQ-EU-DEVICE REQ-PRODUCT-CONFIG
@@ -151,3 +154,5 @@ test('throwing environment disposers cannot prevent abort and service cleanup on
   c.registerService('metrics', { purposes:f.config.services[0].purposeIds, start(context) { signal = context.signal; return ()=>{stops++;}; } });
   c.acceptAll(); await c.settled(); c.destroy(); assert.equal(signal.aborted, true); await c.settled(); assert.equal(stops,1);
 });
+
+}

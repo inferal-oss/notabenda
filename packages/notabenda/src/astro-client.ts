@@ -1,10 +1,10 @@
 import {mountControls} from './controls.js';
 import type {MountedControls} from './controls.js';
-import type {ConsentController} from './consent.js';
+import type {ConsentStateController} from './consent.js';
 
-export interface AstroConsentOptions {consent:ConsentController;document?:Document}
+export interface AstroConsentOptions {consent:ConsentStateController;document?:Document}
 export interface MountedAstroConsent {refresh():void;destroy():void}
-const owners=new WeakSet<ConsentController>();
+const owners=new WeakSet<ConsentStateController>();
 const documents=new WeakSet<Document>();
 
 /** @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-CONSENT-RUNTIME

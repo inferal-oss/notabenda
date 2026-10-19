@@ -80,7 +80,17 @@
       "import": "./dist/headless.js",
       "default": "./dist/headless.js"
     },
-    "./consent.css": "./dist/consent.css"
+    "./consent.css": "./dist/consent.css",
+    "./consent": {
+      "types": "./dist/consent-runtime.d.ts",
+      "import": "./dist/consent-runtime.js",
+      "default": "./dist/consent-runtime.js"
+    },
+    "./consent/evidence": {
+      "types": "./dist/consent-runtime-evidence.d.ts",
+      "import": "./dist/consent-runtime-evidence.js",
+      "default": "./dist/consent-runtime-evidence.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

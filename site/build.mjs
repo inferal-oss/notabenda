@@ -12,6 +12,7 @@ import { compileLegalDocuments, createConsentNotice } from 'notabenda/content';
 import { writeBuildFiles } from '../packages/notabenda/dist/files.js';
 import { syntheticRecords } from '../packages/notabenda-cf/examples/synthetic.mjs';
 import { exampleFiles } from '../examples/static/build.mjs';
+import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
 import {retainedReleaseExample} from '../examples/releases/build.mjs';
 import { authoringExample } from '../examples/authoring/build.mjs';
 
@@ -101,7 +102,9 @@ for(const [theme,prefix] of [['light',''],['dark','dark/']]) {
   const offer=JSON.parse(files[`${prefix}agreement/offer.json`]);
   agreements.push({theme,offer}); releases.push({artifact:JSON.parse(files[`artifacts/${offer.artifactId}.json`]),metadata:{recordedAt:'2026-10-18T10:00:00Z',changeNote:`Fictional ${theme} agreement demonstration.`}});
 }
-const choiceConfig=JSON.parse(files['choices/site.json']);
+// Seed evidence from the build-time site, never the intentionally smaller browser descriptor.
+const choiceConfig=exampleConsentConfig(config);
+for(const [kind,doc] of Object.entries(choiceConfig.documents))doc.route=`/choices/${kind}`;
 const choiceBuild=compileLegalDocuments(choiceConfig,{mode:'preview'});
 const consent={artifact:choiceBuild.artifact,notice:createConsentNotice(choiceBuild.artifact,{scopeId:'sample-cookie-choices'},{mode:'preview'})};
 const recordedNotice=JSON.parse(files['recorded-choices/notice.json']);

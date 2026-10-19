@@ -2,7 +2,8 @@
 // @requirements REQ-PRODUCT-CONFIG REQ-US-COPPA-SCOPE REQ-CH-PROFILING REQ-CA-OBA REQ-US-VA-RIGHTS REQ-AU-PIXELS
 import {normalizeScopeGuardPolicy,scopeGuardContext,scopeGuardFields} from './scope-guard-policy.js';
 import type {ScopeGuardFacts} from './scope-guard-policy.js';
-import type {PublicSiteConfig,RequirementId} from './types.js';
+import type {RequirementId} from './types.js';
+import type {ConsentRuntimeInventory} from './consent-runtime-config.js';
 export interface ScopeGuardReason {fact:keyof ScopeGuardFacts;declaration:'present'|'unknown';path:string;requirementIds:RequirementId[]}
 export interface ScopeGuardDecision {
   status:'unassessed'|'restricted'|'no-declared-restrictions';
@@ -18,7 +19,7 @@ export class ScopeGuardError extends Error {
 }
 const references:Record<keyof ScopeGuardFacts,RequirementId[]>={children:['REQ-US-COPPA-SCOPE','REQ-CA-OBA'],sensitiveData:['REQ-US-VA-RIGHTS','REQ-AU-PIXELS','REQ-CA-OBA'],highRiskProfiling:['REQ-CH-PROFILING'],regulatedSector:['REQ-PRODUCT-CONFIG']};
 /** A support boundary, not an applicability decision, age check, or finding of lawfulness. */
-export function evaluateScopeGuards(config:PublicSiteConfig):ScopeGuardDecision {
+export function evaluateScopeGuards(config:ConsentRuntimeInventory):ScopeGuardDecision {
   const empty={coverage:'registered-optional-services' as const,purposeRestrictions:{},blockedPurposeIds:[],blockedServiceIds:[]};
   if(config.scopeGuards===undefined)return {status:'unassessed',...empty};
   const policy=normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>p.id)),purposeRestrictions:ScopeGuardDecision['purposeRestrictions']={};

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-CONSENT-RUNTIME
 /** Cookie-choice state and service lifecycle APIs without document renderers or DOM mounts. */
 export {createConsent} from './consent.js';
-export type {ConsentController,ConsentOptions,ConsentEnvironment,ConsentSnapshot,ChoiceStorage,ChoiceStatus,ServiceLifecycle,ServiceStatus} from './consent.js';
+export type {ConsentStateController,ConsentController,ConsentOptions,ConsentEnvironment,ConsentSnapshot,ChoiceStorage,ChoiceStatus,ServiceLifecycle,ServiceStatus} from './consent.js';
 export {defaultConsentWording,normalizeConsentNotice} from './consent-notice.js';
 export type {ConsentNotice,ConsentWording,ConsentNoticeDocument} from './consent-notice.js';
 export {ConsentEvidenceError} from './consent-evidence.js';

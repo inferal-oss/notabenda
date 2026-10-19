@@ -1,12 +1,12 @@
 // @requirements REQ-GOOGLE-MODE REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-PRIVACY-SIGNALS
 import {googleConsentTypes,normalizeGoogleBasic} from './google-basic-policy.js';
 import type {GoogleConsentState} from './google-basic-policy.js';
-import type {ConsentController} from './consent.js';
+import type {ConsentStateController} from './consent.js';
 export type {GoogleBasicConfig,GoogleConsentType,GoogleConsentState} from './google-basic-policy.js';
 /** Trusted execution port. connect/defaults must not fetch; load must honor signal; stop must disable synchronously. */
 export interface GoogleBasicPort {command(...args:unknown[]):void;enable():void;stop():void;load(url:string,signal:AbortSignal):Promise<void>}
 export interface GoogleBasicEnvironment {connect(tagIds:readonly string[]):GoogleBasicPort}
-export interface GoogleBasicOptions {consent:ConsentController;serviceId:string;timeoutMs?:number}
+export interface GoogleBasicOptions {consent:ConsentStateController;serviceId:string;timeoutMs?:number}
 export interface GoogleBasicSnapshot {state:'blocked'|'loading'|'active'|'reload-required'|'closed';attempted:boolean;signals:GoogleConsentState}
 export interface GoogleBasicController {getSnapshot():GoogleBasicSnapshot;subscribe(listener:(snapshot:GoogleBasicSnapshot)=>void):()=>void;event(name:string,parameters?:Record<string,string|number|boolean>):boolean;destroy():void}
 const denied=():GoogleConsentState=>Object.fromEntries(googleConsentTypes.map(type=>[type,'denied'])) as GoogleConsentState;

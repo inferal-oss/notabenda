@@ -1,14 +1,13 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {paintChoices} from './choices-status.mjs';
-import {createConsent} from 'notabenda/headless';
-import {mountControls} from 'notabenda';
+import {createConsentRuntime,mountControls} from 'notabenda/consent';
 
 const config = await (await fetch(location.pathname.startsWith('/dark/') ? '/dark/choices/site.json' : '/choices/site.json')).json();
-const consent = createConsent(config);
+const consent = createConsentRuntime(config);
 let requests = 0;
 for (const id of ['sample-measurements', 'sample-suggestions']) {
   consent.registerService(id, {
-    purposes: config.services.find(service => service.id === id).purposeIds,
+    purposes: config.inventory.services.find(service => service.id === id).purposeIds,
     start({ signal }) {
       // Synthetic, first-party integration. No external trackers or identifiers.
       localStorage.setItem(id, 'enabled');

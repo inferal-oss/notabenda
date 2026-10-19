@@ -2,20 +2,26 @@
 
 Requirements: `REQ-PRODUCT-PACKAGE`, `REQ-PRODUCT-BUNDLE-BUDGET`.
 
-The optional `scripts/measure-bundles.mjs` measures real bundled public imports with pinned esbuild, ESM/ES2022, minification and gzip level 9. It reports the headless controller, core plus vanilla controls, the published consent stylesheet and the complete component stylesheet separately. `--json` emits deterministic measurements and actual contributing input files. `--check` exits nonzero for missed targets; it is an opt-in tool, not an adopter CI policy.
+The optional `scripts/measure-bundles.mjs` measures real bundled public imports with pinned esbuild, ESM/ES2022, minification and gzip level 9. It reports compiled local controls, compiled required-receipt controls, the compatibility headless controller, core plus vanilla controls, the published consent stylesheet and the complete component stylesheet separately. `--json` emits deterministic measurements and actual contributing input files. `--check` exits nonzero for missed targets; it is an opt-in tool, not an adopter CI policy.
 
 The consent stylesheet is generated from the canonical `styles.css`. Tests compare each retained rule’s declarations, relative cascade order and surrounding media/layer conditions against that source. Focus, native dialog backdrop, reduced motion, forced colors, safe areas, hidden-state and print rules remain present. The full component stylesheet remains byte-identical to its canonical source. No remote assets or CSS imports are introduced.
 
 The `notabenda/headless` export uses the exact existing consent factory and contains no mounting or rendering exports. An import test installs throwing browser-global getters before loading it. Bundle graph checks exclude backend, Node build tooling and framework code; the headless graph excludes DOM-control and document-rendering modules. Packed installation/type coverage includes the new entry and CSS export.
 
-Measured core JavaScript still exceeds the 15 KiB target. The smaller stylesheet is not evidence that this separate runtime target is satisfied. Startup/interaction timings, cross-browser performance and the proposed compiled runtime/evidence-module split remain unfinished. Preserve current full config validation, exact material scopes, required-receipt gating and synchronous errors during that future refactor.
+The compiled `notabenda/consent` entry validates a bounded descriptor produced by the full build-time compiler. It shares the compatibility state machine; exact material scopes are reconstructed independently of input key order. A separately imported opaque required-evidence adapter fails closed if missing or forged. The smaller local graph excludes full site validation and the receipt implementation. Native controls, media/storage/Google adapters and the Astro client bridge accept the narrower controller; React keeps its existing full-controller contract.
+
+Local and required-receipt suites run through both public factories. Additional tests exercise malformed descriptors before browser capabilities, field-order parity, private-data projection, mandatory adapter mode, failed command preparation, unavailable UUID generation, retirement and cross-tab changes. New records always declare local/required authority; markerless and required positives cannot become local grants. Valid negatives and independently parsed regional prompt memory remain, with no storage rewrite during parsing.
+
+The compiled local profile meets its target. Compatibility core JavaScript still exceeds 15 KiB, and startup/interaction timing and cross-browser performance remain unfinished; the catalog keeps the overall item partial.
 
 Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 
 | Import/profile | Gzip | Target | Result |
 | --- | ---: | ---: | --- |
-| `createConsent` from `notabenda/headless` | 16.52 KiB | Report only | Same existing engine |
-| `createConsent` + `mountControls` | 19.11 KiB | 15 KiB | Over target |
+| `createConsentRuntime` + `mountControls`, compiled local | 11.89 KiB | 15 KiB | Within target |
+| Same plus `requiredConsentEvidence` | 15.38 KiB | Report separately | Optional receipt implementation |
+| `createConsent` from `notabenda/headless` | 16.59 KiB | Report only | Same existing engine |
+| `createConsent` + `mountControls` | 19.19 KiB | 15 KiB | Over target |
 | `notabenda/consent.css` | 2.21 KiB | 5 KiB | Within target |
 | `notabenda/styles.css`, all components | 9.35 KiB | Report separately | Includes document/operator/form layouts |
 
@@ -25,4 +31,8 @@ Chromium verification on 19 October 2026: at a 390px viewport, all 47 inspected 
 
 The bundled light example started only measurement after a granular grant (one sample request started; suggestions stayed blocked). Reopening and rejecting returned both services to blocked without starting another request. This is a local browser interaction check, not external provider delivery evidence. [Light drawer](../assets/screenshots/browser-delivery-light-mobile.png), [midnight drawer](../assets/screenshots/browser-delivery-midnight-mobile.png).
 
-Project validation passed 376 package tests and 59 site tests (435 total), catalog checks, website build and Worker dry run. The separate optional size check correctly reports the unresolved JavaScript target.
+Project checks include package and site tests, catalog consistency, website build and Worker dry run. The optional size check continues to report the unresolved compatibility JavaScript target.
+
+Compiled-runtime browser check on 19 October 2026: the rebuilt local `/choices/` example loaded the bounded descriptor, started measurement only after its explicit granular choice, kept suggestions blocked, and returned both services to blocked after rejection without starting another request. [Compiled entry, granular choice](../assets/screenshots/compiled-consent-granular-desktop.png). The visible layout and controls continue to use the same canonical CSS. This check does not add a cross-browser or mobile performance claim.
+
+This milestone passed 417 package tests and 60 site tests (477 total), catalog validation, the website build and Worker dry run. A development build initially caught three stale hashed Astro outputs; those generated files were retained outside deployment output and the asset guard remains unchanged.

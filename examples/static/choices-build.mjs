@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {build as bundle} from 'esbuild';
 import { readFile } from 'node:fs/promises';
-import { compileLegalDocuments,createConsentNotice } from 'notabenda/content';
+import { compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig } from 'notabenda/content';
 import {renderChoicesPage} from './choices-page.mjs';
 
 export function exampleConsentConfig(base) {
@@ -33,7 +33,7 @@ export async function choiceFiles(base) {
     for (const [kind, doc] of Object.entries(themed.documents)) doc.route = `${prefix}/choices/${kind}`;
     const build = compileLegalDocuments(themed, { mode: 'preview', stylesheetUrl: prefix ? '/assets/dark.css' : '/assets/notabenda.css' });
     Object.assign(result, Object.fromEntries(Object.entries(build.files).filter(([file]) => file.startsWith(`${prefix.slice(1)}${prefix ? '/' : ''}choices/`) || file.startsWith('artifacts/'))));
-    result[`${prefix.slice(1)}${prefix ? '/' : ''}choices/site.json`] = JSON.stringify(build.publicConfig);
+    result[`${prefix.slice(1)}${prefix ? '/' : ''}choices/site.json`] = JSON.stringify(compileConsentRuntimeConfig(themed,{mode:'preview',evidence:'local'}));
     result[`${prefix.slice(1)}${prefix ? '/' : ''}choices/index.html`] = renderChoicesPage(themed,{dark:!!prefix});
   }
   result['assets/choices-status.mjs']=await readFile(new URL('./choices-status.mjs',import.meta.url),'utf8');
@@ -48,7 +48,7 @@ export async function choiceFiles(base) {
   result['recorded-choices/index.html']=renderChoicesPage(archive.publicConfig,{notice});
   result['assets/demo-session.mjs']=await readFile(new URL('./demo-session.mjs',import.meta.url),'utf8');
   result['assets/recorded-consent.mjs']=await readFile(new URL('./recorded-consent.mjs',import.meta.url),'utf8');
-  for (const file of ['contract-action.js','contract-action-policy.js','rights.js','rights-policy.js','discovery.js','discovery-ui.js','index.js','config.js','google-basic-policy.js','google-basic.js','scope-guard-policy.js','scope-guards.js','prompt-policy.js','documents.js','consent.js','controls.js','terms.js','consent-notice.js','consent-evidence.js','embeds.js','privacy-signals.js','processing.js','processing-choices.js','storage-cleanup.js','collection.js','form-permission.js','form-permission-journal.js']) result[`assets/runtime/${file}`] = await readFile(new URL(`../../packages/notabenda/dist/${file}`, import.meta.url), 'utf8');
+  for (const file of ['consent-engine.js','privacy-signal-policy.js','safe-links.js','contract-action.js','contract-action-policy.js','rights.js','rights-policy.js','discovery.js','discovery-ui.js','index.js','config.js','google-basic-policy.js','google-basic.js','scope-guard-policy.js','scope-guards.js','prompt-policy.js','documents.js','consent.js','controls.js','terms.js','consent-notice.js','consent-evidence.js','embeds.js','privacy-signals.js','processing.js','processing-choices.js','storage-cleanup.js','collection.js','form-permission.js','form-permission-journal.js']) result[`assets/runtime/${file}`] = await readFile(new URL(`../../packages/notabenda/dist/${file}`, import.meta.url), 'utf8');
   for (const id of ['sample-measurements','sample-suggestions']) result[`demo/${id}.svg`] = '<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"><title>Synthetic optional request</title></svg>';
   return result;
 }

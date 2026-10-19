@@ -1,3 +1,5 @@
+import {isResourceOrigin,isSafeLink} from './safe-links.js';
+export {isResourceOrigin,isSafeLink} from './safe-links.js';
 // @requirements REQ-GOOGLE-MODE
 import {normalizeGoogleBasic} from './google-basic-policy.js';
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
@@ -15,21 +17,7 @@ const list = (value: unknown): unknown[] => Array.isArray(value) ? value : [];
 const text = (value: unknown): value is string => typeof value === 'string' && value.trim().length > 0;
 export const documentKinds = ['privacy', 'cookies', 'terms'] as const;
 
-/** @requirements REQ-PRODUCT-EMBEDS Canonical origins, not URL prefixes or wildcard host patterns. */
-export function isResourceOrigin(value: unknown): value is string {
-  if(value==='self')return true;
-  if(typeof value!=='string'||value.length>300)return false;
-  try{const url=new URL(value);return url.protocol==='https:'&&!url.username&&!url.password&&!url.hostname.includes('*')&&url.origin===value;}catch{return false;}
-}
-
-/** Explicit protocols prevent JavaScript/data URLs and protocol-relative navigation. */
-export function isSafeLink(value: unknown): value is string {
-  if (typeof value !== 'string' || /[\s\u0000-\u001f\u007f\\]/u.test(value)) return false;
-  if (/^\/(?!\/)/u.test(value)) return !/%(?:0[0-9a-f]|1[0-9a-f]|7f|5c)/iu.test(value);
-  if (/^mailto:[a-zA-Z0-9.!$&'*+\/=^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)+$/u.test(value)) return true;
-  try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; } catch { return false; }
-}
-
+// @requirements REQ-PRODUCT-EMBEDS Link/origin validators are shared with the bounded browser parser.
 export class SiteConfigError extends Error {
   readonly diagnostics: Diagnostic[];
   constructor(diagnostics: Diagnostic[]) {

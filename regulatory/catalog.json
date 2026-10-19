@@ -1374,14 +1374,14 @@
       "timingNote": null,
       "caveats": "Durable browser receipts do not prove human identity; consent is not the only legal basis.",
       "implementationRefs": [
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/controls.ts",
         "packages/notabenda-cf/src/consent.ts",
         "packages/notabenda/src/form-permission.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda-cf/src/permissions.ts",
         "packages/notabenda-cf/src/lifecycle.ts",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
@@ -1421,9 +1421,9 @@
       "timingNote": null,
       "caveats": "National law and exemptions require separate review; not limited to cookies.",
       "implementationRefs": [
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/config.ts",
-        "packages/notabenda/src/embeds.ts"
+        "packages/notabenda/src/embeds.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
@@ -1461,10 +1461,10 @@
       "timingNote": null,
       "caveats": "Balanced first-layer buttons are the project standard; do not claim identical statutory UI rules in every country.",
       "implementationRefs": [
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/config.ts",
-        "packages/notabenda/src/styles.css"
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
@@ -1572,14 +1572,14 @@
       "caveats": "Explicit solicitation guard only. Six calendar months run conservatively from a recorded withholding/dismissal action, not observed banner presentation. Applicability, legal review and complete regional support remain open.",
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/consent-notice.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda/src/consent-evidence.ts",
         "packages/notabenda-cf/src/consent.ts",
         "examples/repeat-prompts/build.mjs",
-        "examples/repeat-prompts/client.mjs"
+        "examples/repeat-prompts/client.mjs",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/prompt-policy.test.mjs",
@@ -1721,8 +1721,8 @@
       "caveats": "Do not equate all Swiss cookies with EU opt-in rules or assume all profiling has the same status.",
       "implementationRefs": [
         "packages/notabenda/src/scope-guards.ts",
-        "packages/notabenda/src/consent.ts",
-        "packages/notabenda/src/setup.ts"
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs"
@@ -1835,8 +1835,8 @@
       "caveats": "Any opt-out model needs review of the OPC conditions; the conservative default remains opt-in.",
       "implementationRefs": [
         "packages/notabenda/src/scope-guards.ts",
-        "packages/notabenda/src/consent.ts",
-        "packages/notabenda/src/setup.ts"
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs"
@@ -1906,8 +1906,8 @@
       "implementationRefs": [
         "packages/notabenda/src/discovery.ts",
         "packages/notabenda/src/scope-guards.ts",
-        "packages/notabenda/src/consent.ts",
-        "packages/notabenda/src/setup.ts"
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/discovery.test.mjs",
@@ -2253,10 +2253,10 @@
       "caveats": "The initial toolkit provides hooks/entry points; it does not adjudicate appeals or fully implement VCDPA workflows.",
       "implementationRefs": [
         "packages/notabenda/src/scope-guards.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/setup.ts",
         "packages/notabenda/src/rights-policy.ts",
-        "packages/notabenda/src/rights.ts"
+        "packages/notabenda/src/rights.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs",
@@ -2297,8 +2297,8 @@
       "caveats": "Do not collect birth dates or identity documents merely to activate a generic banner; no COPPA support claim.",
       "implementationRefs": [
         "packages/notabenda/src/scope-guards.ts",
-        "packages/notabenda/src/consent.ts",
-        "packages/notabenda/src/setup.ts"
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs"
@@ -2766,10 +2766,13 @@
       "caveats": "Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.",
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
-        "packages/notabenda/src/types.ts"
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-compile.ts"
       ],
       "testRefs": [
-        "packages/notabenda/test/config.test.mjs"
+        "packages/notabenda/test/config.test.mjs",
+        "packages/notabenda/test/consent-runtime.test.mjs"
       ]
     },
     {
@@ -2996,10 +2999,14 @@
       "timingNote": null,
       "caveats": "Local-only state is untrusted and is not durable consent evidence, automatic arbitrary-script blocking, or a supported regional rule pack. Browser suspension and host adapter behavior bound enforcement.",
       "implementationRefs": [
-        "packages/notabenda/src/consent.ts"
+        "packages/notabenda/src/consent.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-runtime.ts"
       ],
       "testRefs": [
-        "packages/notabenda/test/consent.test.mjs"
+        "packages/notabenda/test/consent.test.mjs",
+        "packages/notabenda/test/consent-runtime.test.mjs"
       ]
     },
     {
@@ -3138,13 +3145,18 @@
         "packages/notabenda/src/consent-evidence.ts",
         "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/controls.ts",
-        "examples/static/recorded-consent.mjs"
+        "examples/static/recorded-consent.mjs",
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/consent-runtime.ts",
+        "packages/notabenda/src/consent-evidence-factory.ts",
+        "packages/notabenda/src/consent-runtime-evidence.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/consent-evidence.test.mjs",
         "docs/verification/consent-evidence-browser.md",
         "scripts/check-site-runtime.mjs",
-        "packages/notabenda/test/consent-delivery.test.mjs"
+        "packages/notabenda/test/consent-delivery.test.mjs",
+        "packages/notabenda/test/consent-runtime.test.mjs"
       ],
       "implementationNote": "Immutable notices, transactional stream revisions, restrictive revoke-all and historical receipts/current heads are implemented. Optional construction-time browser gating, exact-response validation, bounded single-command retries, immediate local withdrawal, reload/resume confirmation, storage-failure barriers and stale-generation retirement are covered by tests. Default browser mode remains local-only."
     },
@@ -3218,7 +3230,6 @@
       "implementationRefs": [
         "packages/notabenda/src/react.ts",
         "packages/notabenda/src/react-documents.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/controls.ts",
         "examples/react/build.mjs",
         "examples/react/client.mjs",
@@ -3226,7 +3237,8 @@
         "packages/notabenda/src/react-form-permission.ts",
         "examples/form-permissions/react-build.mjs",
         "examples/form-permissions/react-client.mjs",
-        "examples/form-permissions/react-view.mjs"
+        "examples/form-permissions/react-view.mjs",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/react.test.mjs",
@@ -3368,13 +3380,13 @@
       "caveats": "Runtime observation latches within one controller, not an account-wide retained opt-out. No geographic inference, re-opt-in workflow, persistent opt-out record or origin-wide support declaration is supplied. Browser absence never establishes permission.",
       "implementationRefs": [
         "packages/notabenda/src/privacy-signals.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/types.ts",
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/react.ts",
         "examples/privacy-signals/build.mjs",
-        "examples/privacy-signals/client.mjs"
+        "examples/privacy-signals/client.mjs",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/privacy-signals.test.mjs",
@@ -3418,7 +3430,6 @@
         "packages/notabenda/src/processing.ts",
         "packages/notabenda/src/processing-choices.ts",
         "packages/notabenda/src/content.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/react.ts",
         "packages/notabenda-cf/src/processing.ts",
@@ -3426,7 +3437,8 @@
         "examples/processing-choices/build.mjs",
         "examples/processing-choices/client.mjs",
         "site/worker.mjs",
-        "site/host.mjs"
+        "site/host.mjs",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/processing.test.mjs",
@@ -3690,14 +3702,14 @@
       "caveats": "Implements the documented software guard, not legal applicability or a complete jurisdiction profile.",
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/consent-notice.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda/src/consent-evidence.ts",
         "packages/notabenda-cf/src/consent.ts",
         "examples/repeat-prompts/build.mjs",
-        "examples/repeat-prompts/client.mjs"
+        "examples/repeat-prompts/client.mjs",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/prompt-policy.test.mjs",
@@ -3733,14 +3745,14 @@
         "packages/notabenda-cf/src/terms.ts",
         "packages/notabenda-cf/src/render.ts",
         "packages/notabenda/src/consent-evidence.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/processing-choices.ts",
         "packages/notabenda/src/terms.ts",
         "site/worker.mjs",
         "examples/lifecycle.mjs",
         "packages/notabenda-cf/src/records.ts",
-        "packages/notabenda-cf/src/contract-dispatch.ts"
+        "packages/notabenda-cf/src/contract-dispatch.ts",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/lifecycle.test.mjs",
@@ -3826,7 +3838,6 @@
         "packages/notabenda/src/scope-guards.ts",
         "packages/notabenda/src/types.ts",
         "packages/notabenda/src/config.ts",
-        "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/consent-notice.ts",
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/setup.ts",
@@ -3837,7 +3848,8 @@
         "packages/notabenda-cf/src/history.ts",
         "packages/notabenda-cf/src/render.ts",
         "examples/scope-guards/build.mjs",
-        "examples/scope-guards/client.mjs"
+        "examples/scope-guards/client.mjs",
+        "packages/notabenda/src/consent-engine.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs",
@@ -4320,21 +4332,27 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Measured transfer size is not startup/interaction timing or a full performance audit. The compatibility core-controls bundle currently exceeds its target; it must not be described as compliant with the budget. Adopters choose whether to run or gate on the optional measurement tool.",
+      "caveats": "The compiled local consent-plus-controls profile meets 15 KiB gzip; the fully validating compatibility entry remains above target. Optional required-receipt code is reported separately. Transfer size is not startup/interaction timing or a full performance audit. Adopters choose whether to gate on the optional measurement tool.",
       "implementationRefs": [
         "scripts/measure-bundles.mjs",
         "packages/notabenda/scripts/consent-styles.mjs",
         "examples/static/build.mjs",
         "examples/static/choices-build.mjs",
         "examples/static/choices-page.mjs",
-        "examples/static/consent.mjs"
+        "examples/static/consent.mjs",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-compile.ts",
+        "packages/notabenda/src/consent-runtime.ts",
+        "packages/notabenda/src/consent-evidence-factory.ts",
+        "packages/notabenda/src/consent-runtime-evidence.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/browser-delivery.md",
-        "site/test/delivery.test.mjs"
+        "site/test/delivery.test.mjs",
+        "packages/notabenda/test/consent-runtime.test.mjs"
       ],
-      "implementationNote": "A headless public entry and derived consent-only CSS provide explicit delivery choices. Existing all-component styles and full validation/receipt behavior remain available. Deterministic reports expose missed budgets instead of raising the limit."
+      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target."
     }
   ],
   "verification": [
@@ -5245,11 +5263,12 @@
         "REQ-PRODUCT-BUNDLE-BUDGET"
       ],
       "status": "partial",
-      "expected": "Actual entry graphs exclude backend/build/framework code; published consent CSS preserves selected canonical cascade and accessibility rules below 5 KiB gzip. Core-controls stays under 15 KiB gzip when complete; missed targets are reported honestly.",
+      "expected": "Compiled local consent plus controls stays below 15 KiB gzip and excludes full site validation, evidence implementation and build/backend/framework modules; exact scope and lifecycle parity tests pass. Required receipt and compatibility profiles are reported separately. Consent CSS stays below 5 KiB; compatibility target and interaction timing remain open.",
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/browser-delivery.md",
-        "site/test/delivery.test.mjs"
+        "site/test/delivery.test.mjs",
+        "packages/notabenda/test/consent-runtime.test.mjs"
       ]
     }
   ],

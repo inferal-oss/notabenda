@@ -20,6 +20,58 @@ IDs refer to inventory items. Every purpose of a managed service must be consent
 
 `scope` is an explicit material-version declaration. Effective grant scope also includes the public purpose facts and related service facts/scopes. Adding a vendor or changing these disclosures invalidates affected grants. Current refusals/withdrawals stay refused until their original expiry; a material change cannot erase rejection. General document versions, CSS, and unrelated purposes do not change that scope. There is no automatic legal materiality decision.
 
+## Smaller browser entry
+
+Build the consent descriptor alongside your legal pages:
+
+```ts
+// Build/server code; defaults to reviewed production content.
+import { compileConsentRuntimeConfig } from 'notabenda/content';
+
+const runtime = compileConsentRuntimeConfig(siteConfig, { evidence: 'local' });
+// Serialize runtime to a same-origin public JSON asset.
+```
+
+```ts
+// Browser code
+import { createConsentRuntime, mountControls } from 'notabenda/consent';
+import 'notabenda/consent.css'; // optional, existing theme variables work
+
+const response = await fetch('/consent-runtime.json');
+if (!response.ok) throw new Error('Privacy choices could not be loaded.');
+const consent = createConsentRuntime(await response.json());
+mountControls(document.querySelector('#privacy-controls')!, { consent });
+// Register the same explicit service lifecycles shown below before optional work loads.
+```
+
+Choose `evidence: 'required'` when a host receipt must precede permission. The mode has no default and cannot silently downgrade when an adapter is missing:
+
+```ts
+import { requiredConsentEvidence } from 'notabenda/consent/evidence';
+
+const consent = createConsentRuntime(requiredRuntimeConfig, undefined, {
+  evidence: requiredConsentEvidence({
+    notice, streamRef,
+    read: ({ signal }) => host.readConsentHead({ signal }),
+    write: (command, { signal }) => host.recordConsent(command, { signal }),
+  }),
+});
+```
+
+The host methods above must resolve parsed evidence responses; they supply identity/context binding and authenticated transport. Keep credentials out of public JSON. Use the pinned notice for the exact archived copy actually shown. The separately imported adapter preserves synchronous binding checks, receipt gating and retries. Each controller receives its own session; a serialized or forged adapter is rejected. Local mode rejects a supplied receipt adapter to catch mismatched configuration.
+
+Compilation validates the **whole** site, including terms and operator facts, then emits only site metadata, the complete purpose/service/storage inventory, consent scopes/lifetimes, guards, signal/prompt policy and privacy/cookie document metadata. Authoring bodies, controller contacts, rights workflows, terms and private fields stay out of this descriptor. Runtime input is independently bounded and checked before browser capabilities are used; a format marker is not a trust boundary or a legal approval.
+
+The compiled profile accepts at most 256 purposes, 256 services and 512 storage entries; optional runtime scope remains limited to 40 purposes and 80 services. The descriptor is at most 256 KiB UTF-8, IDs are at most 120 characters, ordinary text fields are at most 4,096 characters and version/scope fields are at most 200. The existing 64K-character local-choice record limit also applies. Oversized inputs fail explicitly. Use `{mode: 'preview', evidence: 'local'}` only for deliberate draft previews.
+
+`getConfig()` returns `ConsentRuntimeInventory`, which contains only the fields above. Existing `createConsent`/`notabenda/headless` APIs still synchronously validate a complete configuration and return the complete public config. Native controls, media, storage cleanup, Google Basic and the Astro client bridge accept either controller. The existing React provider/hooks retain their full-controller contract; continue using `createConsent` with those adapters.
+
+The light and midnight cookie examples use this compiled entry. Optional `npm run size` reports local, required-receipt and compatibility bundles separately; adopters choose their own CI policy. See [delivery verification](verification/browser-delivery.md).
+
+## Stored-choice migration
+
+New choice records carry `authorizationMode: 'local' | 'required'`, even when a required command could not be prepared. Local controllers discard positive choices from required records, records with any evidence property, unknown modes and older markerless records. This pre-release migration closes an ambiguity in older failed-preparation records. Valid refusals/withdrawals and regional prompt memory remain; parsing does not rewrite storage. A fresh explicit local choice creates a local record. Required controllers continue to require a valid matching receipt; the local marker never replaces one.
+
 ## Register before loading
 
 ```ts

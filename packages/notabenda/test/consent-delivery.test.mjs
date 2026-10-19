@@ -1,8 +1,9 @@
+import {consentProfiles} from './consent-profiles.mjs';
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import {JSDOM} from 'jsdom';
-import {test} from 'node:test';
+import {test as nodeTest} from 'node:test';
 import assert from 'node:assert/strict';
-import {createConsent,mountControls,ConsentEvidenceError} from 'notabenda';
+import {mountControls,ConsentEvidenceError} from 'notabenda';
 import {compileLegalDocuments,createConsentNotice} from 'notabenda/content';
 import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,createConsentEvidenceStore,createEvidenceLifecycle} from 'notabenda-cf';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
@@ -11,7 +12,7 @@ import {fixture} from './helpers.mjs';
 const instant=Date.parse('2026-10-18T12:00:00.000Z');
 const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
-async function setup() {
+async function createSetup(createConsent) {
   const config=await fixture({reviewed:true});config.storage=[];
   config.services=config.purposes.map((p,i)=>({id:`optional-${i}`,name:`Fictional optional ${i}`,provider:'Fictional operator',location:'Local test',purposeIds:[p.id]}));
   config.consent={purposes:config.purposes.map(p=>({id:p.id,scope:'one'})),services:config.services.map(s=>({id:s.id,scope:'one'})),grantLifetimeDays:1,refusalLifetimeDays:180,dismissalMinutes:10};
@@ -35,6 +36,9 @@ async function setup() {
   };
 }
 
+for(const [profile,createConsent] of consentProfiles){
+ const test=(name,run)=>nodeTest(`${profile}: ${name}`,run);
+ const setup=()=>createSetup(createConsent);
 test('required mode starts closed, records before starting optional work, and aborts immediately on withdrawal',async()=>{
   const f=await setup();const ack=deferred();const c=f.controller();const service=f.service(c);await c.settled();assert.equal(service.starts(),0);
   f.setWrite(async body=>{const result=await recordConsentChoice(f.storage,body,f.context);await ack.promise;return result;});
@@ -60,9 +64,9 @@ test('reload confirms an already committed event even after its delivery deadlin
 });
 
 test('late grant acknowledgments and older reads cannot reopen permission after a newer local refusal',async()=>{
-  const f=await setup();const late=deferred();const c=f.controller();await c.settled();const service=f.service(c);
-  f.setWrite(async body=>{const result=await recordConsentChoice(f.storage,body,f.context);if(body.action==='accept-all')await late.promise;return result;});
-  c.acceptAll();await tick();c.rejectAll();await c.settled();assert.equal(c.getSnapshot().evidence.status,'recorded');assert.equal(c.isAllowed(f.ids[0]),false);
+  const f=await setup();const late=deferred(),grantRecorded=deferred();const c=f.controller();await c.settled();const service=f.service(c);
+  f.setWrite(async body=>{const result=await recordConsentChoice(f.storage,body,f.context);if(body.action==='accept-all'){grantRecorded.resolve();await late.promise;}return result;});
+  c.acceptAll();await grantRecorded.promise;c.rejectAll();await c.settled();assert.equal(c.getSnapshot().evidence.status,'recorded');assert.equal(c.isAllowed(f.ids[0]),false);
   late.resolve();await tick();assert.equal(c.isAllowed(f.ids[0]),false);assert.equal(service.starts(),0);assert.equal((await getConsentHead(f.storage,f.context)).revision,2);
   const oldRead=deferred();const snapshot=await getConsentHead(f.storage,f.context);f.setRead(()=>oldRead.promise);c.refresh();c.rejectAll();await c.settled();oldRead.resolve(snapshot);await tick();assert.equal(c.getSnapshot().evidence.revision,3);assert.equal(c.isAllowed(f.ids[0]),false);c.destroy();
 });
@@ -173,3 +177,18 @@ test('retired evidence closes read and write workflows without retries, new gran
   const dom=new JSDOM('<div></div>');dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};const ui=mountControls(dom.window.document.querySelector('div'),{consent:c});assert.match(dom.window.document.body.textContent,/context has closed/);assert.doesNotMatch(dom.window.document.body.textContent,/Retry before leaving/);ui.destroy();dom.window.close();c.destroy();
  }
 });
+
+
+// @requirements REQ-PRODUCT-CONSENT-EVIDENCE
+test('removing an adapter cannot turn pending, acknowledged or malformed evidence into local permission',async()=>{
+ for(const state of ['pending','acknowledged','malformed']){
+  const f=await setup();if(state==='pending')f.setWrite(async()=>{throw Error('offline');});
+  const required=f.controller();await required.settled();required.acceptAll();await required.settled();
+  assert.equal(required.isAllowed(f.ids[0]),state!=='pending');
+  if(state==='malformed'){const value=JSON.parse(f.values.get(f.key));value.evidence=null;f.values.set(f.key,JSON.stringify(value));}
+  const original=f.values.get(f.key),local=createConsent(f.config,f.environment);assert.equal(local.isAllowed(f.ids[0]),false);assert.equal(local.getSnapshot().purposes[f.ids[0]],'unknown');assert.equal(f.values.get(f.key),original);
+  local.acceptAll();assert.equal(local.isAllowed(f.ids[0]),true);assert.equal(required.isAllowed(f.ids[0]),false);await required.settled();assert.equal(required.isAllowed(f.ids[0]),false);local.destroy();required.destroy();
+ }
+});
+
+}

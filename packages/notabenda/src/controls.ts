@@ -1,10 +1,10 @@
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
-import type { ConsentController, ConsentSnapshot } from './consent.js';
+import type { ConsentStateController, ConsentSnapshot } from './consent.js';
 import { defaultConsentWording } from './consent-notice.js';
 
-export interface ControlsOptions { consent: ConsentController; preferencesLabel?: string }
+export interface ControlsOptions { consent: ConsentStateController; preferencesLabel?: string }
 export interface MountedControls { destroy(options?: {preservePreferences?: boolean}): void }
 
 /** @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y REQ-EU-FAIR-CHOICE REQ-ES-CHOICE REQ-EU-CONSENT REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-REACT

@@ -61,6 +61,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     const generatedAuth=await import(pathToFileURL(join(cwd,'backend/src/authorize.mjs')));assert.equal(await generatedAuth.authorizeHostRequest(new Request('https://example.test/'),{}),null);
     const cfDoctor=spawnSync(process.execPath,[join(cwd,'node_modules/notabenda-cf/bin/notabenda-cf.mjs'),'doctor','--directory',join(cwd,'backend'),'--json'],{cwd,encoding:'utf8'});assert.equal(cfDoctor.status,1,cfDoctor.stderr);const doctorReport=JSON.parse(cfDoctor.stdout);assert.equal(doctorReport.productionReadiness,'not-assessed');assert.equal(doctorReport.checks.find(item=>item.id==='AUTHORIZATION').status,'error');assert.ok(cfManifest.files.some(file=>file.path==='bin/doctor.mjs'));
     const headlessImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsent} from 'notabenda/headless';import {createConsent as legacy} from 'notabenda';if(createConsent!==legacy)process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(headlessImport.status,0,headlessImport.stderr);
+    const runtimeImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentRuntime,mountControls} from 'notabenda/consent';import {requiredConsentEvidence} from 'notabenda/consent/evidence';import {compileConsentRuntimeConfig} from 'notabenda/content';if([createConsentRuntime,mountControls,requiredConsentEvidence,compileConsentRuntimeConfig].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(runtimeImport.status,0,runtimeImport.stderr);
     const setupImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createSetupPlan} from 'notabenda/setup';import {mountSetup} from 'notabenda/setup/ui';import {registerStorageService} from 'notabenda';import {createSetupWorker} from 'notabenda-cf';if(typeof mountSetup!=='function'||typeof registerStorageService!=='function'||typeof createSetupWorker!=='function'||createSetupPlan({schemaVersion:1,markets:[],answers:{}}).report.productionReady!==false)process.exit(1)"],{cwd,encoding:'utf8'});assert.equal(setupImport.status,0,setupImport.stderr);
     const imported = spawnSync(process.execPath, ['--input-type=module', '-e', "import {validateSiteConfig, createTermsAcceptance, mountTermsAcceptance, createEmbedService, renderEmbedPlaceholder, hasGlobalPrivacyControl, getPrivacySignalRestrictions, createProcessingChoices, mountProcessingChoices} from 'notabenda'; import {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from 'notabenda/content'; import {createAdminWorker, recordTermsAcceptance, createTermsAcceptanceStore} from 'notabenda-cf'; if(validateSiteConfig(null).valid || [hasGlobalPrivacyControl,getPrivacySignalRestrictions,createProcessingChoices,mountProcessingChoices,createEmbedService,renderEmbedPlaceholder,compileLegalDocuments,createTermsOffer,createRetainedReleaseFiles,createTermsAcceptance,mountTermsAcceptance,recordTermsAcceptance,createTermsAcceptanceStore].some(value=>typeof value !== 'function') || typeof createAdminWorker({authorize:()=>null}).fetch !== 'function') process.exit(1)"], { cwd, encoding: 'utf8' });
     assert.equal(imported.status, 0, imported.stderr);
@@ -163,6 +164,25 @@ dispatchContractDelivery(storage,'a'.repeat(64),'application',dispatchContext,{d
 dispatchContractDeclaration(storage,'a'.repeat(64),dispatchContext,{application:{deliver:async()=>({providerRef:'accepted'})}});
 // @ts-expect-error no universal contract profile
 createContractActionDefinition(release.artifact,{actionId:'contract-withdrawal',revision:'one',profile:'universal',reviewStatus:'reviewed'});
+`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createConsentRuntime,mountControls as mountCompiledControls,type ConsentRuntimeInventory} from 'notabenda/consent';
+import {requiredConsentEvidence,type ConsentEvidenceOptions} from 'notabenda/consent/evidence';
+import {compileConsentRuntimeConfig} from 'notabenda/content';
+const runtimeConfig=compileConsentRuntimeConfig(config,{evidence:'local'});
+const smallController=createConsentRuntime(runtimeConfig);
+const smallInventory:ConsentRuntimeInventory=smallController.getConfig();
+mountCompiledControls(container,{consent:smallController});
+createEmbedService({consent:smallController,serviceId:'sample'});
+registerStorageService({consent:smallController,serviceId:'sample',targets:[{storageId:'sample-storage'}],start:()=>()=>{}});
+declare const requiredOptions:ConsentEvidenceOptions;
+createConsentRuntime(runtimeConfig,undefined,{evidence:requiredConsentEvidence(requiredOptions)});
+// @ts-expect-error runtime inventory deliberately omits operator contacts
+smallInventory.controller.email;
+// @ts-expect-error required mode cannot be silently chosen by omission
+compileConsentRuntimeConfig(config,{});
+// @ts-expect-error arbitrary objects cannot replace the required receipt adapter
+createConsentRuntime(runtimeConfig,undefined,{evidence:{}});
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

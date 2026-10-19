@@ -1,4 +1,4 @@
-import type {ConsentController,ServiceLifecycle} from './consent.js';
+import type {ConsentStateController,ServiceLifecycle} from './consent.js';
 
 export interface CookieCleanupScope {path:string;domain?:string}
 export interface StorageCleanupTarget {storageId:string;cookieScopes?:readonly CookieCleanupScope[]}
@@ -16,7 +16,7 @@ export interface StorageCleanupResult {
 }
 export interface StorageCleanupReport {reason:'initial'|'abort'|'teardown'|'start-failure'|'retry'|'destroy';failed:boolean;results:StorageCleanupResult[]}
 export interface StorageServiceSnapshot {serviceId:string;state:'open'|'closing'|'closed';report:StorageCleanupReport|null}
-export interface StorageServiceOptions {consent:ConsentController;serviceId:string;targets:readonly StorageCleanupTarget[];start:ServiceLifecycle['start']}
+export interface StorageServiceOptions {consent:ConsentStateController;serviceId:string;targets:readonly StorageCleanupTarget[];start:ServiceLifecycle['start']}
 export interface StorageServiceController {
   getSnapshot():StorageServiceSnapshot;
   subscribe(listener:(snapshot:StorageServiceSnapshot)=>void):()=>void;
