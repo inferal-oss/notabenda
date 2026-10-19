@@ -1,3 +1,4 @@
+import {assertPlainCatalogData as plain} from './catalog-plain.js';
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION */
 import type {Service} from './types.js';
 export interface CatalogSource {id:string;url:string;revision:string;checkedOn:string|null;access:'read'|'reference-only';license:string;note:string}
@@ -17,17 +18,6 @@ function shape(v:unknown,keys:string[],optional:string[]=[]):asserts v is Record
 function list(v:unknown,max:number):asserts v is unknown[]{need(Array.isArray(v)&&v.length<=max);}
 function strings(v:unknown,max=40){list(v,max);need(v.every(x=>nonempty(x,300))&&new Set(v).size===v.length);}
 function unique(v:unknown[],ids=new Set<string>()){for(const item of v){if(!item||typeof item!=='object'||Array.isArray(item))fail();const id=(item as Record<string,unknown>).id;need(slug(id)&&!ids.has(id));ids.add(id as string);}return ids;}
-// Inspect data descriptors before serialization: an imported object must not execute getters or toJSON.
-function plain(value:unknown,seen=new Set<object>(),depth=0,budget={nodes:0}):void {
- if(++budget.nodes>300000||depth>16)fail();
- if(value===null||typeof value==='boolean'||typeof value==='number'&&Number.isFinite(value)||typeof value==='string'&&value.length<=16384)return;
- if(!value||typeof value!=='object'||seen.has(value))fail();seen.add(value);
- if(!Array.isArray(value)&&Object.getPrototypeOf(value)!==Object.prototype&&Object.getPrototypeOf(value)!==null)fail();
- if(Reflect.ownKeys(value).some(k=>typeof k!=='string'))fail();
- if(Array.isArray(value)&&(value.length>20000||Object.keys(value).length!==value.length))fail();
- for(const [key,d] of Object.entries(Object.getOwnPropertyDescriptors(value))){if(Array.isArray(value)&&key==='length')continue;if(!Object.hasOwn(d,'value')||!d.enumerable)fail();plain(d.value,seen,depth+1,budget);}
- seen.delete(value);
-}
 /** Pure normalization. No browser, project-file, storage or network access. Unknown fields are rejected. */
 export function normalizeServiceCatalog(input:unknown):ServiceCatalog {
  plain(input);const json=JSON.stringify(input);need(new TextEncoder().encode(json).length<=8*1024*1024);const c:unknown=JSON.parse(json);

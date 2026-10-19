@@ -1,6 +1,6 @@
 # Guided setup
 
-Run `npx notabenda wizard` after installing the package, or use the host-authorized [admin setup screen](/backoffice/setup). The npm package remains a local developer preview and has not been published from this workspace; here, run `node packages/notabenda/dist/cli.js wizard` after `npm run build`.
+Run `npx notabenda wizard` after installing the package, or use the [demo setup screen](/demo/admin/setup). The npm package remains a local developer preview and has not been published from this workspace; here, run `node packages/notabenda/dist/cli.js wizard` after `npm run build`.
 
 The wizard asks for public site facts, markets to investigate, actual practices and supporting justifications. It covers personal-data processing, optional browser storage, embeds, sale/sharing/targeted advertising, explicit terms agreement, paid consumer workflows, distance contracts, continuing paid contracts, children, transfers, durable records and Markdown/MDX authoring. Every practice supports **yes**, **no** and **not sure**. Existing necessary-storage inventory items get individual private justification fields.
 
@@ -92,3 +92,28 @@ Distance-contract and continuing-paid-service questions describe actual practice
 A positive consumer-workflow answer connects the optional [contract declaration forms](CONTRACT-ACTIONS.md) with [independent application and acknowledgement handoffs](CONTRACT-DISPATCH.md). Review transaction scope, national implementation, exclusions, withdrawal windows and actual entry points before selecting a profile. Provider acceptance does not establish delivery or contract fulfillment.
 
 The CLI prints requirement IDs, guide links and configuration/integration paths for each recommendation. Paths such as `host.contractActions` and `host.contractDispatch` describe host work; they are advisory references, not fields added to `SiteConfig`. Setup never enables routes, providers, schedulers or regional profiles automatically. Public exports preserve imported facts and remain drafts; private justifications remain in the separate report.
+
+## Review services from the catalog
+
+Interactive CLI setup offers an optional reference search after the questionnaire. Search by provider/product/category, choose one of the displayed product IDs, then supply the actual provider entity, processing location, existing purpose IDs, an optional verified privacy URL and a private justification. Only an explicit confirmation adds an ordinary service entry to the draft. The reference seed loads only after choosing search. Noninteractive report resume uses its pinned metadata and does not retrieve a newer catalog.
+
+The admin setup example offers the same review in **Start → Find a service in the reference catalog**. A host opts in with `catalog` or `loadCatalog`:
+
+```js
+import {mountSetup} from 'notabenda/setup/ui';
+const setup = mountSetup(container, {
+  config: existingPublicConfig,
+  loadCatalog: () => import('notabenda/catalog/seed')
+    .then(module => module.serviceCatalogSeed),
+});
+```
+
+Bundle or serve that optional module from a host-approved source; the project example uses a same-origin lazy module with its notices/license. Reading a reference catalog is separate from uploading answers. Seed entries remain unreviewed even after an operator confirms actual site use. Catalog selection does not populate cookie/storage declarations, legal bases, processing-activity classifications or consent scopes, and never initializes a vendor.
+
+Declare the site's actual processing purposes in configuration first and import it; selection can only link to those IDs. Fresh starter configs have no purposes, so catalog search alone cannot add a service. Full purpose authoring in setup remains future work. Entirely custom services remain valid ordinary config entries.
+
+The private setup report optionally includes `catalogSelections`: each retains the selected provider/product metadata, source URLs/revisions/retrieval status, the explicit service facts, the selected purpose definitions and the private justification. Detector rules and imported storage hints are omitted because this action did not review or apply them. The snapshot is bounded to 128 KiB per entry, 32 entries, and 512 KiB for the complete report. Public config and legal/compiler output contain none of these notes.
+
+Import the matching draft config separately when resuming a report. The selected public service facts and complete purpose definitions must still match, while independently configured integration fields are not treated as reviewed by the catalog note. Changing a purpose's name, description, legal basis, data categories, retention or collection facts requires renewed review even when its ID stays the same. The picker also rejects a proposal if those purpose facts change while it is open; reopen the service review to see the current purposes. Headless clients can supply `reviewedPurposes` to enforce the same precondition. A changed provider, location or product/name cannot silently inherit an older selection review. Remove stale notes or explicitly review a new selection. Removing a catalog selection removes an unreferenced, unchanged local service added through this flow; existing changed, extended or referenced inventory is preserved. Search and unfinished proposals do not invalidate an already prepared questionnaire export; adding/removing a selection does.
+
+The browser keeps selections and notes only in memory. Download the private report before leaving. These are operator declarations and source pins, not verified identities, checked provider practices or automatic legal-release provenance archival. See [catalog design](SERVICE-CATALOG.md) and [verification](verification/service-catalog.md).

@@ -118,7 +118,17 @@
       "import": "./dist/service-directory.js",
       "default": "./dist/service-directory.js"
     },
-    "./services.css": "./dist/services.css"
+    "./services.css": "./dist/services.css",
+    "./catalog/selection": {
+      "types": "./dist/catalog-selection.d.ts",
+      "import": "./dist/catalog-selection.js",
+      "default": "./dist/catalog-selection.js"
+    },
+    "./catalog/ui": {
+      "types": "./dist/catalog-ui.d.ts",
+      "import": "./dist/catalog-ui.js",
+      "default": "./dist/catalog-ui.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

@@ -1,6 +1,6 @@
 # Shared service catalog and passive detection
 
-Reference catalog and static project discovery preview. Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Normalization/search, explicit service draft selection, an optional offline seed and static project discovery are implemented. Shared public directory rendering is available from the declared inventory. Wizard/admin selection, browser signatures and automatic archival of catalog provenance remain planned. The existing service inventory, privacy provider lists, cookie storage table and origin/name-only browser discovery remain available.
+Reference catalog and static project discovery preview. Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Normalization/search, explicit service draft selection, an optional offline seed and static project discovery are implemented. Shared public directory rendering is available from the declared inventory. CLI/admin setup now offers explicit catalog selection with private pinned review notes. Browser signatures and automatic archival of catalog provenance remain planned. The existing service inventory, privacy provider lists, cookie storage table and origin/name-only browser discovery remain available.
 
 A versioned catalog should connect service selection, discovery, disclosures and operator review. A site selects and confirms its own use of a service; the catalog supplies reusable facts and technical recognition rules. It covers hosting, identity, payments, support, media and other recipients as well as analytics and advertising.
 
@@ -44,6 +44,8 @@ Git projects use Git's ignored-file selection with filesystem monitoring disable
 `--out-dir` requires a new directory and writes a private review JSON, text and `.gitignore`. Scanning does not execute project modules, SDKs, installers or network probes. It leaves configuration unchanged, keeps findings local and leaves CI policy to the adopter. Catalog-selection snapshots are not yet automatically joined to immutable legal-release provenance. See [verification](verification/service-catalog.md).
 
 The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
+
+The [setup guide](SETUP.md) covers the CLI/admin selection flow. `notabenda/catalog/selection` exports explicit draft selection and private pin validation; `notabenda/catalog/ui` supplies the optional local picker. These are separate from automatic catalog provenance archival in legal releases, which remains planned.
 
 ## Design direction
 

@@ -118,7 +118,7 @@ Features link to specific obligations and their planned verification scenarios. 
 
 **Requirement links:** [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
 
-**Code references:** [packages/notabenda/src/catalog.ts](../packages/notabenda/src/catalog.ts), [packages/notabenda/src/catalog-project.ts](../packages/notabenda/src/catalog-project.ts), [packages/notabenda/src/catalog-cli.ts](../packages/notabenda/src/catalog-cli.ts), [scripts/build-service-catalog.py](../scripts/build-service-catalog.py), [packages/notabenda/src/service-directory.ts](../packages/notabenda/src/service-directory.ts), [packages/notabenda/src/service-inventory.ts](../packages/notabenda/src/service-inventory.ts)
+**Code references:** [packages/notabenda/src/catalog.ts](../packages/notabenda/src/catalog.ts), [packages/notabenda/src/catalog-project.ts](../packages/notabenda/src/catalog-project.ts), [packages/notabenda/src/catalog-cli.ts](../packages/notabenda/src/catalog-cli.ts), [scripts/build-service-catalog.py](../scripts/build-service-catalog.py), [packages/notabenda/src/service-directory.ts](../packages/notabenda/src/service-directory.ts), [packages/notabenda/src/service-inventory.ts](../packages/notabenda/src/service-inventory.ts), [packages/notabenda/src/catalog-selection.ts](../packages/notabenda/src/catalog-selection.ts), [packages/notabenda/src/catalog-ui.ts](../packages/notabenda/src/catalog-ui.ts)
 
 <a id="feat-controls"></a>
 

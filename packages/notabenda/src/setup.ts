@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-SERVICE-CATALOG
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 // @requirements REQ-US-COPPA-SCOPE
 // @requirements REQ-US-VA-RIGHTS
@@ -7,6 +8,8 @@
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
 /** @requirements REQ-PRODUCT-SETUP Shared, deterministic advisory setup. No network, storage, law inference or runtime activation. */
+import {normalizeSetupCatalogSelections} from './catalog-selection.js';
+import type {CatalogServiceSelection} from './catalog-selection.js';
 import {scopeGuardFields} from './scope-guard-policy.js';
 import type {ScopeGuardFacts,ScopeGuardFact} from './scope-guard-policy.js';
 import {createStarterConfig} from './starter.js';
@@ -54,7 +57,7 @@ export const setupFactFields=[['siteName','Site name'],['siteId','Site ID (lower
 export type SetupFactId=typeof setupFactFields[number][0];
 export interface SetupAnswers {schemaVersion:1;publicFacts?:Partial<Record<SetupFactId,string>>;markets:string[];answers:Partial<Record<SetupQuestionId,SetupAnswer>>;storageJustifications?:Record<string,string>}
 export interface SetupRecommendation {id:string;status:'recommended'|'investigate'|'review'|'declared-no';title:string;reason:string;configPaths:readonly string[];requirementIds:readonly RequirementId[];guide:string}
-export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'3';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false}}
+export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'3';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[]}}
 const object=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const exact=(value:Record<string,unknown>,allowed:string[])=>Object.keys(value).every(k=>allowed.includes(k));
 const text=(value:unknown):value is string=>typeof value==='string'&&value.length<=4000&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u.test(value);
@@ -71,7 +74,7 @@ export function normalizeSetupAnswers(input:unknown):SetupAnswers {
   if(new TextEncoder().encode(JSON.stringify(normalized)).length>128*1024)return invalid();
   return normalized;
 }
-export function createSetupPlan(input:unknown,options:{config?:unknown}={}):SetupPlan {
+export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSelections?:unknown}={}):SetupPlan {
   const answers=normalizeSetupAnswers(input);
   // Reuse the public allowlist. No unknown properties or operator-private material enters the draft.
   const config:SiteConfig=options.config===undefined?createStarterConfig():toPublicConfig(options.config,{mode:'preview'});
@@ -116,7 +119,10 @@ export function createSetupPlan(input:unknown,options:{config?:unknown}={}):Setu
   }
   config.scopeGuards={version:1,revision:current&&!changed?current.revision:'setup-draft-2',site,...(current?.purposes===undefined?{}:{purposes:structuredClone(current.purposes)})};
   if(changed)reviewItems.push('Review scopeGuards facts and supply a new, never-reused material revision before publishing the draft. Absent is an operator declaration, not legal clearance. Purpose-specific restrictions were preserved.');
-  return {config,report:{schemaVersion:1,questionnaireVersion:'3',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false}};
+  const catalogSelections=options.catalogSelections===undefined?[]:normalizeSetupCatalogSelections(options.catalogSelections,config);
+  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'3',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{})}};
+  if(new TextEncoder().encode(JSON.stringify(plan.report)).length>512*1024)throw Error('Private setup report exceeds 512 KiB; reduce notes or review fewer services together.');
+  return plan;
 }
 
 /** Resume only the declared answers from a private report; recommendations are always regenerated. */

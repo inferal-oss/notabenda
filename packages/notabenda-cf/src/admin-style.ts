@@ -54,4 +54,7 @@ export const adminCss = `
 
 
 .permission-history-link{display:inline-flex;align-items:center;gap:12px;min-height:44px;font-size:.78rem;text-decoration:none;color:var(--accent)}
+
+/* Catalog draft review uses the package's shared layout and host tokens. */
+.nb-setup .nb-catalog-check{display:flex;align-items:start;gap:.65rem;min-height:44px;padding-block:.6rem}.nb-setup .nb-catalog-check input{flex:none;margin:.2rem 0;width:20px;height:20px}.nb-setup .nb-catalog-result h3,.nb-setup .nb-catalog-proposal h3{font-size:1.1rem;line-height:1.5;margin:.5rem 0 1rem}
 `;

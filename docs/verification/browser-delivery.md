@@ -24,7 +24,7 @@ Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 | `createConsent` from `notabenda/headless` | 16.59 KiB | Report only | Same existing engine |
 | `createConsent` + `mountControls` | 19.50 KiB | 15 KiB | Over target |
 | `notabenda/consent.css` | 2.21 KiB | 5 KiB | Within target |
-| `notabenda/styles.css`, main component collection | 9.36 KiB | Report separately | Includes document/operator/form layouts |
+| `notabenda/styles.css`, main component collection | 9.83 KiB | Report separately | Includes document/operator/form layouts and optional catalog picker |
 | `notabenda/services`, model + render + local search | 10.68 KiB | Report separately | No reference dataset, Node or backend |
 | `notabenda/services.css` | 1.73 KiB | Report separately | Independent directory styling |
 
