@@ -22,6 +22,9 @@ All configuration is JSON; no module execution or network access is required.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
 Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config FILE
 imports an existing config. Output requires a new directory and never overwrites. --json applies to check.
+Wizard --project DIRECTORY explicitly scans supported source/dependency identifiers and
+offers actual-use review in interactive setup; --catalog FILE selects its reference catalog.
+With --answers, findings are saved privately without adding services automatically.
 --retain-artifact FILE applies to build and can be repeated. Supply trusted public
 compiler artifacts to keep old pinned document URLs in a clean deployment.
 Private MD/MDX source archives are not publication inputs. Preview remains explicit.
@@ -45,7 +48,7 @@ async function main(): Promise<void> {
   if(command==='catalog'){if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
-  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined;
+  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined;
   const retainedPaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
@@ -54,10 +57,10 @@ async function main(): Promise<void> {
     seen.add(flag);
     if (flag === '--preview') preview = true;
     else if (flag === '--json') json = true;
-    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers') {
+    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog') {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw new Error('CLI option requires a value.');
-      if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
+      if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
     } else throw new Error('Unknown CLI option. Run notabenda --help.');
   }
   if (seen.has('--out-dir') && !['build','wizard'].includes(command!)) throw new Error('--out-dir is only valid for build or wizard.');
@@ -65,7 +68,9 @@ async function main(): Promise<void> {
   if (json && command !== 'check') throw new Error('--json is only valid for check.');
   if (preview && command === 'init') throw new Error('init always creates a draft; --preview applies to check/build.');
   if(answersPath&&command!=='wizard')throw new Error('--answers is only valid for wizard.');
-  if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{})});return;}
+  if((projectDirectory||catalogPath)&&command!=='wizard')throw new Error('--project and --catalog apply only to wizard or the separate discover/catalog commands.');
+  if(catalogPath&&!projectDirectory)throw new Error('Wizard --catalog requires --project DIRECTORY.');
+  if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{}),...(projectDirectory?{projectDirectory}:{}),...(catalogPath?{catalogPath}:{})});return;}
   if (command === 'init') {
     await writeFile(resolve(configPath), JSON.stringify(createStarterConfig(), null, 2) + '\n', { flag: 'wx' });
     console.log('Created draft site configuration. Replace sample facts and supply appropriate reviewed content before production use.');

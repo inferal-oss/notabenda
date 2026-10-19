@@ -1,28 +1,31 @@
-// @requirements REQ-PRODUCT-SERVICE-CATALOG
+// @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 /** @requirements REQ-PRODUCT-SETUP */
-import {createCatalogSelectionPlan,readSetupCatalogSelections} from './catalog-selection.js';
+import {readSetupCatalogSelections} from './catalog-selection.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
-import {searchServiceCatalog} from './catalog.js';
-import {createStarterConfig} from './starter.js';
+import {reviewSetupCatalog} from './setup-catalog-cli.js';
+import {readCliJson} from './cli-json.js';
+import {loadServiceCatalog} from './catalog-node.js';
+import {scanProjectServices} from './catalog-project.js';
+import type {ProjectServiceReport} from './catalog-project.js';
+import type {ServiceCatalog} from './catalog.js';
 import {reviewSetupPurposes} from './setup-purpose-cli.js';
 import {createInterface} from 'node:readline/promises';
-import {createReadStream} from 'node:fs';
-import {mkdir,writeFile} from 'node:fs/promises';
+import {mkdir,writeFile,lstat} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {createSetupPlan,readSetupAnswers,setupQuestions,setupMarkets,setupFactFields} from './setup.js';
 import {toPublicConfig} from './config.js';
 import type {SetupAnswers,SetupChoice} from './setup.js';
-async function readJson(path:string):Promise<unknown>{
-  const chunks:Buffer[]=[];let size=0;
-  try{for await(const chunk of createReadStream(resolve(path))){size+=chunk.length;if(size>512*1024)throw new Error();chunks.push(chunk as Buffer);}return JSON.parse(Buffer.concat(chunks).toString('utf8'));}
-  catch{throw new Error('Setup input must be readable JSON no larger than 512 KiB.');}
-}
-export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string}):Promise<void>{
+const readJson=(path:string)=>readCliJson(path,512*1024,'Setup input must be ordinary UTF-8 JSON no larger than 512 KiB.');
+export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string}):Promise<void>{
+  if(options.catalogPath&&!options.projectDirectory)throw Error('Wizard --catalog requires an explicit --project directory.');
+  if(!options.answersPath&&(!process.stdin.isTTY||!process.stdout.isTTY))throw new Error('Interactive setup needs a terminal. Supply --answers FILE for noninteractive use.');
+  const directory=resolve(options.outDir);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
   let base=options.configPath?toPublicConfig(await readJson(options.configPath),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];
-  if(options.answersPath){answers=await readJson(options.answersPath);catalogSelections=readSetupCatalogSelections(answers);}
-  else{
-    if(!process.stdin.isTTY||!process.stdout.isTTY)throw new Error('Interactive setup needs a terminal. Supply --answers FILE for noninteractive use.');
+  if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);catalogSelections=readSetupCatalogSelections(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections});}
+  let project: {catalog:ServiceCatalog;report:ProjectServiceReport}|undefined;
+  if(options.projectDirectory){const catalog=await loadServiceCatalog(options.catalogPath);console.log('Scanning the explicitly selected project locally; no project code, installers or network probes run.');project={catalog,report:await scanProjectServices(options.projectDirectory,catalog)};}
+  if(!options.answersPath){
     const ui=createInterface({input:process.stdin,output:process.stdout});const result:SetupAnswers={schemaVersion:1,markets:[],answers:{},publicFacts:{},storageJustifications:{}};
     const ask=async(prompt:string,max=4000)=>{const value=await ui.question(prompt);if(value.length>max)throw new Error('Answer is too long.');return value.trim();};
     try{
@@ -34,32 +37,18 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       base=await reviewSetupPurposes(base,ask);
       const inventory=(base as {storage?:{id:string;classification:string}[]}|undefined)?.storage;
       if(Array.isArray(inventory))for(const item of inventory)if(item.classification==='necessary')result.storageJustifications![item.id]=await ask(`Private justification for necessary storage “${item.id}”: `);
-      // Explicit opt-in: the large seed is not imported until the operator asks to search.
-      if((await ask('Search the service reference catalog before review? yes / no [no]: ',16)).toLowerCase()==='yes'){
-        const {serviceCatalogSeed}=await import('./catalog-seed.js');
-        while(catalogSelections.length<32){
-          const query=await ask('Provider, product or category (blank finishes): ',120);if(!query)break;
-          const matches=searchServiceCatalog(serviceCatalogSeed,query,{limit:12});
-          for(const match of matches)console.log(`${match.product.id} — ${match.product.name} / ${match.provider.name} · ${match.product.review}`);
-          const productId=await ask('Product ID to review (blank searches again): ',120),match=matches.find(m=>m.product.id===productId);if(!match)continue;
-          const config=base??createStarterConfig();if(!config.purposes.length){console.log('Declare actual processing purposes in a config and import it with --config before adding a catalog service. Reference search remains available.');continue;}console.log('Declared purposes: '+config.purposes.map(p=>p.id+' — '+p.name).join(', '));
-          const serviceId=await ask('Unique local service ID: ',120),provider=await ask('Actual provider entity: ',300),location=await ask('Actual processing location: '),purposeIds=(await ask('Declared purpose IDs (comma-separated): ',1000)).split(',').map(s=>s.trim()).filter(Boolean),privacyUrl=await ask('Verified provider privacy HTTPS URL (optional): ',2048),justification=await ask('Supporting facts / justification (private): ');
-          console.log('Reference '+serviceCatalogSeed.id+' / '+serviceCatalogSeed.revision+'; product revision '+match.product.revision+'. Source URLs are reference metadata; verify actual use.');
-          const sourceIds=new Set([...match.product.sourceIds,...match.provider.sourceIds]);for(const source of serviceCatalogSeed.sources.filter(s=>sourceIds.has(s.id)))console.log(`Reference source: ${source.url} · ${source.access==='read'?'retrieved '+source.checkedOn:'URL only; not retrieved or verified'} · ${source.license}`);
-          if((await ask('Confirm the actual provider, purpose and location? yes / no [no]: ',16)).toLowerCase()!=='yes')continue;
-          try{const selected=createCatalogSelectionPlan(config,serviceCatalogSeed,{productId,serviceId,provider,location,purposeIds,...(privacyUrl?{privacyUrl}:{}),justification,confirmed:true});base=selected.config;catalogSelections.push(selected.selection);console.log('Added a service to the local draft; no integration or permission was enabled.');}
-          catch{console.log('Selection was not added. Check the ID, declared purposes, actual provider/location, privacy URL and private justification.');}
-        }
-      }
+      const reviewed=await reviewSetupCatalog(base,catalogSelections,ask,project);base=reviewed.base;catalogSelections=reviewed.selections;
       answers=result;
     }finally{ui.close();}
   }
   const plan=createSetupPlan(readSetupAnswers(answers),{...(base===undefined?{}:{config:base}),catalogSelections});
   // A new directory is the write boundary: never overwrite an existing config or report, including symlinks.
-  const directory=resolve(options.outDir);await mkdir(directory,{mode:0o700});
+  await mkdir(directory,{mode:0o700});
   await writeFile(join(directory,'notabenda.config.json'),JSON.stringify(plan.config,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile(join(directory,'setup.private.json'),JSON.stringify(plan.report,null,2)+'\n',{flag:'wx',mode:0o600});
-  await writeFile(join(directory,'.gitignore'),'setup.private.json\n',{flag:'wx'});
+  if(project)await writeFile(join(directory,'discovery.private.json'),JSON.stringify(project.report,null,2)+'\n',{flag:'wx',mode:0o600});
+  await writeFile(join(directory,'.gitignore'),'setup.private.json\n'+(project?'discovery.private.json\n':''),{flag:'wx'});
+  if(project)console.log(`Saved ${project.report.findings.length} project candidate(s) separately in discovery.private.json; coverage ${project.report.coverage.limited?'limited':'bounded'}. Findings never add services without actual-use confirmation.`);
   console.log(`Created a draft config and private setup report in ${options.outDir}.`);
   for(const recommendation of plan.report.recommendations)if(recommendation.status!=='declared-no')console.log(`${recommendation.status}: ${recommendation.title}\n  ${recommendation.reason}\n  ${recommendation.requirementIds.join(', ')}\n  Config / integration: ${recommendation.configPaths.join(', ')}\n  Guide: https://notabenda.org/guide/${recommendation.guide}`);
   console.log(`${plan.report.reviewItems.length} review items; ${plan.report.diagnostics.filter(d=>d.severity==='error').length} production validation errors. Review locally; no services were enabled or deployed.`);

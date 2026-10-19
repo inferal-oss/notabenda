@@ -22,7 +22,10 @@
         "packages/notabenda-cf/src/setup.ts",
         "packages/notabenda/src/setup-purpose.ts",
         "packages/notabenda/src/setup-purpose-ui.ts",
-        "packages/notabenda/src/setup-purpose-cli.ts"
+        "packages/notabenda/src/setup-purpose-cli.ts",
+        "packages/notabenda/src/setup-catalog-cli.ts",
+        "packages/notabenda/src/cli-json.ts",
+        "packages/notabenda/src/catalog-node.ts"
       ]
     },
     {
@@ -114,7 +117,10 @@
         "packages/notabenda/src/discovery-capture.ts",
         "packages/notabenda/src/discovery-ui.ts",
         "catalog/browser-rules.json",
-        "catalog/browser-providers.json"
+        "catalog/browser-providers.json",
+        "packages/notabenda/src/setup-catalog-cli.ts",
+        "packages/notabenda/src/cli-json.ts",
+        "packages/notabenda/src/catalog-node.ts"
       ]
     },
     {
@@ -3710,16 +3716,20 @@
         "site/admin-presentation.mjs",
         "packages/notabenda/src/setup-purpose.ts",
         "packages/notabenda/src/setup-purpose-ui.ts",
-        "packages/notabenda/src/setup-purpose-cli.ts"
+        "packages/notabenda/src/setup-purpose-cli.ts",
+        "packages/notabenda/src/setup-catalog-cli.ts",
+        "packages/notabenda/src/cli-json.ts",
+        "packages/notabenda/src/catalog-node.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/setup.test.mjs",
         "packages/notabenda-cf/test/setup.test.mjs",
         "docs/verification/setup.md",
         "docs/verification/ux-review.md",
-        "packages/notabenda/test/setup-purpose.test.mjs"
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/setup-project.test.mjs"
       ],
-      "implementationNote": "Shared tri-state questionnaire and bounded normalized answers; explicit selected markets trigger review. Config/imported runtime settings stay separate from private notes. Contradictions remain unresolved; current exports invalidate on edits and saved reports resume answers only. Questionnaire revision 3 adds actual distance/continuing-contract practices and conditional regional/handoff review, accepts earlier reports and preserves unresolved new answers. Explicit public purpose add/edit/remove plans now power CLI/admin authoring; unresolved basis/retention/consequence text stays production-blocking, linked removals reject, existing restrictions/scopes persist, and stale catalog notes remain review items."
+      "implementationNote": "Shared tri-state questionnaire and bounded normalized answers; explicit selected markets trigger review. Config/imported runtime settings stay separate from private notes. Contradictions remain unresolved; current exports invalidate on edits and saved reports resume answers only. Questionnaire revision 3 adds actual distance/continuing-contract practices and conditional regional/handoff review, accepts earlier reports and preserves unresolved new answers. Explicit public purpose add/edit/remove plans now power CLI/admin authoring; unresolved basis/retention/consequence text stays production-blocking, linked removals reject, existing restrictions/scopes persist, and stale catalog notes remain review items. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable."
     },
     {
       "id": "REQ-PRODUCT-COLLECTION-NOTICE",
@@ -4583,7 +4593,10 @@
         "packages/notabenda/src/discovery-capture.ts",
         "packages/notabenda/src/discovery-ui.ts",
         "catalog/browser-rules.json",
-        "catalog/browser-providers.json"
+        "catalog/browser-providers.json",
+        "packages/notabenda/src/setup-catalog-cli.ts",
+        "packages/notabenda/src/cli-json.ts",
+        "packages/notabenda/src/catalog-node.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -4596,9 +4609,10 @@
         "site/test/catalog-setup.test.mjs",
         "packages/notabenda/test/setup-purpose.test.mjs",
         "packages/notabenda/test/catalog-browser.test.mjs",
-        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs",
+        "packages/notabenda/test/setup-project.test.mjs"
       ],
-      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Reviewed profiles and automatic immutable release-provenance archival remain open."
+      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Reviewed profiles and automatic immutable release-provenance archival remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -4672,16 +4686,21 @@
         "packages/notabenda/src/discovery-capture.ts",
         "packages/notabenda/src/discovery-ui.ts",
         "catalog/browser-rules.json",
-        "catalog/browser-providers.json"
+        "catalog/browser-providers.json",
+        "packages/notabenda/src/setup-catalog-cli.ts",
+        "packages/notabenda/src/cli-json.ts",
+        "packages/notabenda/src/catalog-node.ts",
+        "packages/notabenda/src/setup-cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/service-catalog.md",
         "packages/notabenda/test/catalog-browser.test.mjs",
-        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs",
+        "packages/notabenda/test/setup-project.test.mjs"
       ],
-      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned."
+      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable."
     }
   ],
   "verification": [
@@ -5354,7 +5373,8 @@
         "packages/notabenda/test/setup.test.mjs",
         "packages/notabenda-cf/test/setup.test.mjs",
         "docs/verification/setup.md",
-        "packages/notabenda/test/setup-purpose.test.mjs"
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/setup-project.test.mjs"
       ]
     },
     {
@@ -5621,7 +5641,8 @@
         "site/test/catalog-setup.test.mjs",
         "packages/notabenda/test/setup-purpose.test.mjs",
         "packages/notabenda/test/catalog-browser.test.mjs",
-        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs",
+        "packages/notabenda/test/setup-project.test.mjs"
       ]
     },
     {
@@ -5636,7 +5657,8 @@
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/service-catalog.md",
         "packages/notabenda/test/catalog-browser.test.mjs",
-        "packages/notabenda/test/catalog-browser-workflow.test.mjs"
+        "packages/notabenda/test/catalog-browser-workflow.test.mjs",
+        "packages/notabenda/test/setup-project.test.mjs"
       ]
     }
   ],

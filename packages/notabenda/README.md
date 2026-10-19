@@ -189,6 +189,8 @@ The repository’s `npm run size` reports measured browser/CSS sizes; `npm run s
 
 The optional [service catalog](../../docs/SERVICE-CATALOG.md) supplies offline provider/product search and static project discovery, including backend SDKs. Use `notabenda catalog search email --delivery backend` or `notabenda discover --project .` after installing the local preview. Results remain candidates for review; reference data and Node scanning stay outside ordinary consent bundles.
 
+`npx notabenda wizard --project . --out-dir ./setup-review` connects those candidates to explicit actual-use review after purpose authoring. Add `--catalog FILE` for a custom reference. The wizard saves full findings separately in ignored `discovery.private.json`; noninteractive `--answers` runs never select services from detection. Existing settings and private reviewed pins remain intact. See [project-aware setup](../../docs/SETUP.md#find-project-services-during-setup).
+
 [Service directories](https://notabenda.org/guide/services) render the declared inventory as native, React or Astro cards with optional local search. Import `notabenda/services` and `notabenda/services.css`; no reference dataset is loaded by the visitor view.
 
 

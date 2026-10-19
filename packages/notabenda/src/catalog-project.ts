@@ -62,7 +62,7 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
   let unsafe=false,cursor=root;for(const part of file.split('/')){cursor=join(cursor,part);try{if((await lstat(cursor)).isSymbolicLink()){unsafe=true;break;}}catch{unsafe=true;break;}}
   if(unsafe){skippedFiles++;continue;}
   let source:string;try{
-   const h=await open(path,constants.O_RDONLY|constants.O_NOFOLLOW);try{const stat=await h.stat();if(!stat.isFile()||stat.size>262144||bytesExamined+stat.size>32*1024*1024){limited=true;skippedFiles++;continue;}
+   const h=await open(path,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);try{const stat=await h.stat();if(!stat.isFile()||stat.size>262144||bytesExamined+stat.size>32*1024*1024){limited=true;skippedFiles++;continue;}
     const buffer=Buffer.alloc(Math.min(262145,stat.size+1));let size=0;while(size<buffer.length){const {bytesRead}=await h.read(buffer,size,buffer.length-size,size);if(!bytesRead)break;size+=bytesRead;}if(size>262144||bytesExamined+size>32*1024*1024){limited=true;skippedFiles++;continue;}if(size>stat.size)limited=true;source=new TextDecoder('utf-8',{fatal:true}).decode(buffer.subarray(0,size));bytesExamined+=size;
    }finally{await h.close();}
   }catch{limited=true;skippedFiles++;continue;}filesExamined++;

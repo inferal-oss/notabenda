@@ -37,6 +37,32 @@ A minimal answers file:
 
 Question/market IDs and public fact fields are exported from `notabenda/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 3 accepts private reports from revisions 1, 2 and 3. Missing new questions remain unresolved.
 
+## Find project services during setup
+
+After installing the local preview, opt into a project scan in the same command:
+
+```sh
+npx notabenda wizard --project . --out-dir ./setup-review
+npx notabenda wizard --project ./app --config ./notabenda.config.json \
+  --catalog ./service-catalog.json --out-dir ./setup-review
+```
+
+`--project` names the directory to inspect; setup never scans the current directory implicitly. The optional `--catalog` applies to both detected candidates and later manual catalog search, and requires `--project`. Project code, package scripts, installers and network probes never run. The [project scanner](SERVICE-CATALOG.md) reports its supported identifiers, skipped files and limited coverage. A source match can be unused, development-only, a commented import or a self-hosted client.
+
+After purpose authoring, choose **Review project service candidates** to inspect findings in pages of 12. Enter a detected product ID to see its file, dependency/import context and matching rule. At most eight evidence items are printed per candidate; the full bounded scan remains in the private report. `next` and `back` move between pages; blank continues to manual catalog search. A skipped candidate remains unreviewed. An empty or limited scan never proves that no third parties are used.
+
+A candidate opens the same actual-use review as manual selection: supply a unique local service ID, actual provider entity and processing location, declared purpose IDs, an optional verified privacy link and private supporting facts. Nothing is added until explicit confirmation succeeds. The wizard does not choose purposes, add storage, enable integrations, grant permission or declare an exemption from a source match. Existing restrictions and runtime settings remain intact.
+
+With a project scan, setup also writes **`discovery.private.json`**, using private file permissions and an entry in the generated `.gitignore`. It contains the scanner's catalog revision, findings and coverage, including project file names. It stays separate from `notabenda.config.json` and `setup.private.json`; source lines, dependency values and secret-file contents are excluded. Keep both private reports out of public assets. Selected products link to the scan by product ID and catalog revision; private setup selections retain their own reviewed reference/purpose snapshots. A new scan does not refresh those earlier pins or archive discovery into legal-release history automatically.
+
+```sh
+# Noninteractive: retain new findings without automatically selecting providers.
+npx notabenda wizard --answers ./answers.json --project ./app \
+  --out-dir ./setup-review
+```
+
+Noninteractive use still requires `--answers` and, for existing selections, their matching `--config`. Existing answers and pins are checked before scanning; findings never change questionnaire answers or add providers automatically. Interactive setup requires a terminal. The output directory must be new, and setup checks that before asking questions or scanning. Explicit setup/catalog JSON inputs must be ordinary, bounded UTF-8 files; symlinks, devices and named pipes are rejected. Browser/admin setup cannot inspect a local filesystem: run project discovery locally and review the private output before entering confirmed site use in admin.
+
 ## What gets exported
 
 The config is a draft built from starter values or the imported **public configuration projection**, with supplied public site facts. It preserves existing inventory, runtime scopes, lifetimes, restrictions, document wording and routes. All document review declarations become draft. Private/imported unknown fields are excluded; keep the original file if you need those fields. No file is overwritten.

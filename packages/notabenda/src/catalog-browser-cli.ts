@@ -1,12 +1,9 @@
 /** @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-DISCOVERY */
-import {open,lstat,mkdir,writeFile} from 'node:fs/promises';
-import {constants} from 'node:fs';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {readCliJson} from './cli-json.js';
 import {resolve,join} from 'node:path';
 import {analyzeBrowserCatalogCapture,recognizeLegacyBrowserCapture} from './catalog-browser.js';
-async function readJson(path:string,max:number):Promise<unknown>{
- try{const file=resolve(path),before=await lstat(file);if(!before.isFile()||before.size>max)throw Error();const handle=await open(file,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);try{const stat=await handle.stat();if(!stat.isFile()||stat.size>max)throw Error();const chunks:Buffer[]=[];let size=0;for await(const chunk of handle.createReadStream()){size+=chunk.length;if(size>max)throw Error();chunks.push(chunk as Buffer);}return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(Buffer.concat(chunks)));}finally{await handle.close();}}
- catch{throw Error('Browser capture/rule input must be an ordinary, bounded UTF-8 JSON file.');}
-}
+const readJson=(path:string,max:number)=>readCliJson(path,max,'Browser capture/rule input must be an ordinary, bounded UTF-8 JSON file.');
 export async function runBrowserCatalogCli(args:string[]):Promise<void>{
  if(args.shift()!=='detect')throw Error('Use catalog detect --capture FILE [--rules FILE] [--out-dir NEW] [--json].');
  let captureFile:string|undefined,rulesFile:string|undefined,out:string|undefined,json=false;const seen=new Set<string>();
