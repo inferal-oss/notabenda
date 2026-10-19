@@ -5,7 +5,7 @@ import {websiteNoticeFacts,websiteNoticeBody} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-CF-HOST
 import {createCodeHighlighter} from './syntax.mjs';
 import {examplesBody} from './examples-page.mjs';
-import {siteSections,guideNavigation,sectionForGuide,sectionDirectory,exampleSectionUrl,guideSectionUrl,guideContext,starterPath} from './navigation.mjs';
+import {siteSections,guideNavigation,sectionForGuide,exampleSectionUrl,guideSectionUrl,guideContext,starterPath,stageDirectory,guideOrientation} from './navigation.mjs';
 import {guideLanding,allGuidePages,guideArea} from './guide-pages.mjs';
 import { readFile, readdir, mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { resolve, dirname, extname, posix } from 'node:path';
@@ -27,7 +27,17 @@ const escape = value=>String(value).replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&l
 const websiteFacts=websiteNoticeFacts(process.env,{production:process.argv.includes('--production')});
 const catalog = JSON.parse(await read('regulatory/catalog.json'));
 const syntax=await createCodeHighlighter();
-const markdownRenderer=new Marked({renderer:{code({text,lang}){return syntax.renderBlock(text+'\n',lang);}}});
+let pageHeadings=[],headingIds=new Set();
+const markdownRenderer=new Marked({renderer:{
+ code({text,lang}){return syntax.renderBlock(text+'\n',lang);},
+ heading({tokens,depth,text}){
+  const label=text.replace(/<[^>]*>/gu,'').replace(/[`*_]/gu,''),base=label.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,'-').replace(/^-|-$/gu,'')||'section';
+  let id=base,count=1;while(headingIds.has(id))id=base+'-'+(++count);headingIds.add(id);
+  if(depth===2)pageHeadings.push({id,label});
+  return `<h${depth} id="${escape(id)}">${this.parser.parseInline(tokens)}</h${depth}>\n`;
+ }
+}});
+function guideOutline(headings){return headings.length<3?'':`<details class="guide-outline"><summary>On this page <span>${headings.length} sections</span></summary><nav aria-label="On this page">${headings.map(h=>`<a href="#${escape(h.id)}">${escape(h.label)}</a>`).join('')}</nav></details>`;}
 const style = await read('site/style.css');
 const files = {'site.css':style,'assets/inferal-mark.svg':await read('site/assets/inferal-mark.svg')};
 files['assets/demo-admin.css']=await read('site/demo-admin.css');
@@ -82,10 +92,18 @@ const guideEntries=[];
 for(const [path,route] of docs) {
   const markdown = await read(path);
   const title = /^# (.+)$/mu.exec(markdown)?.[1] ?? 'Guide';
-  const html = markdownRenderer.parse(markdown,{async:false,walkTokens(token){
+  pageHeadings=[];headingIds=new Set();
+  // Explicit anchors in trusted docs retain their address; generated headings avoid them.
+  markdownRenderer.walkTokens(markdownRenderer.lexer(markdown),token=>{
+   if(token.type==='html')for(const match of token.text.matchAll(/\bid=["']([^"']+)["']/gu))headingIds.add(match[1]);
+  });
+  let html = markdownRenderer.parse(markdown,{async:false,walkTokens(token){
     if(token.type==='link' || token.type==='image') token.href=rewrite(token.href,path);
     if(token.type==='html') token.text=token.text.replace(/(?:src|href)="([^"]+)"/gu,(match,href)=>match.replace(href,rewrite(href,path)));
   }});
+  // Local navigation is native HTML and works without a client script.
+  const end=html.indexOf('</h1>')+5;
+  if(end>4)html=html.slice(0,end)+guideOrientation(route)+guideOutline(pageHeadings)+html.slice(end);
   files[routeFile(route)] = layout(title,html,{guide:true,guideRoute:route});
   guideEntries.push({route,title});
 }
@@ -96,7 +114,7 @@ const counts = {requirements:catalog.requirements.length,sources:catalog.sources
 files['index.html'] = layout('Legal pages and privacy controls',`
 <section class="hero section"><div class="hero-copy"><p class="eyebrow"><span class="status-dot"></span> Developer preview · Apache 2.0</p><h1>Legal pages and<br><span class="hero-highlight">privacy controls</span></h1><p class="lede">Generate privacy, cookie and terms pages. Manage consent, record choices, and inspect policy changes using your own site and backend.</p><div class="actions"><a class="button primary" href="/guide">Start building <span aria-hidden="true">→</span></a><a class="text-link" href="/examples">Browse examples <span aria-hidden="true">↗</span></a></div><p class="hint">Works with plain HTML, React and Astro.</p></div><figure class="hero-figure product-figure"><a class="product-preview" href="/demo/admin" aria-label="Explore the evidence workspace"><div class="product-preview-bar"><span class="product-preview-dot"></span><span>Evidence workspace</span><span aria-hidden="true">↗</span></div><img src="/docs/assets/screenshots/workspace-current.png" alt="Notabenda evidence workspace with search, document versions and recorded terms agreements." width="1698" height="808"></a><figcaption>Search choices, agreements and document revisions. <a href="/demo/admin">Explore the workspace →</a></figcaption></figure></section>
 <section class="section home-start"><div class="section-intro"><p class="eyebrow">A path through the basics</p><h2>Your first integration</h2><p>Start with pages and privacy choices. Each part works on its own; you can add a backend later.</p></div>${starterPath()}</section>
-<section class="section home-paths"><div class="section-intro"><p class="eyebrow">When your site needs more</p><h2>Choose the next part</h2><p>Notices, purchase flows and operator records have their own examples and integration guides.</p></div>${sectionDirectory('examples',siteSections.filter(s=>['privacy-information','contracts','records'].includes(s.id)))}</section>
+<section class="section home-paths"><div class="section-intro"><p class="eyebrow">When your site needs more</p><h2>Choose the next part</h2><p>Follow the path from site configuration to visitor controls and retained records. Open only the areas your site needs.</p></div>${stageDirectory()}</section>
 <section class="setup section"><div><p class="eyebrow">npm packages</p><h2>Install the parts<br>your site needs</h2><p>The core package has no runtime dependencies. Use its vanilla interface or build your own from the same headless controllers. Add <code>notabenda-cf</code> when you need a Cloudflare evidence workspace.</p><a class="text-link" href="/examples/integrations/">Choose your framework & backend <span aria-hidden="true">→</span></a></div><div class="code-panel"><div class="code-title"><span>Start locally</span><span>Unpublished preview</span></div>${syntax.renderBlock("npm install\nnpm run dev\n\n# Pack the reusable frontend\nnpm pack --workspace notabenda", "sh",{dark:true})}<p>Typed configuration. Semantic HTML. Optional CSS.</p></div></section>
 <section class="section coverage-strip"><div><p class="eyebrow">Coverage and limits</p><h2>Check what is covered</h2><p>${counts.requirements} requirements linked to sources, code and verification. The count is not a compliance score. Legal research is initial and unreviewed; no jurisdiction pack is production-supported.</p></div><a class="text-link" href="/guide/requirements">Requirements & current status →</a></section>
 `);

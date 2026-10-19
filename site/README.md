@@ -23,7 +23,9 @@ Open `http://127.0.0.1:4179`. `site:dev` builds the site and runs Wrangler local
 
 `navigation.mjs` defines shared task groups for the homepage, example directory and documentation. Start here, privacy information, privacy choices, terms and purchases, records, and integration have separate example category pages. Each example family has one category home; theme, framework and payment-scenario variants remain beside that topic. Consumer-contract flows have their own subsection rather than appearing among privacy-consent controls. Existing example routes stay unchanged.
 
-The guide overview introduces those same groups. Desktop navigation opens the current group and marks its page; mobile has one native menu with flat group headings. The complete `/guide/all` index keeps every guide and verification/provenance report reachable, including pages outside the primary navigation. Detailed reports remain in a collapsed reference section. Website/category pages remain unmarked; the Demo ribbon belongs to the actual examples and demo admin.
+The homepage and both directories follow three stages: **set up and publish**, **add the controls you need**, and **integrate and keep records**. Each area has a continuation link. A guide has one primary navigation home; links from another task are references. Specialist controls and producer artwork material are collapsed within their parent area, while every example and variant remains linked.
+
+The guide overview introduces those same groups. Desktop navigation opens the current group and marks its page; mobile has one native menu with flat group headings. The complete `/guide/all` index keeps every guide and verification/provenance report reachable, including pages outside the primary navigation. Detailed reports remain in a collapsed reference section. Source-example pages link back to their integration guide; long guides have a native, collapsed section index with unique heading anchors. Previous/next links cross subgroup boundaries in the primary reading path. Website/category pages remain unmarked; the Demo ribbon belongs to the actual examples and demo admin.
 
 ## Build and verify
 

@@ -50,3 +50,36 @@ test('each example appears in exactly one subgroup and area overviews connect gu
  const home=await page('/'),overview=await page('/guide');for(const document of [home,overview])assert.deepEqual([...document.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
  assert.equal(home.querySelectorAll('.foundation,.closing').length,0);assert.equal(overview.querySelectorAll('.guide-topic').length,6);
 });
+
+test('shared stages preserve a single primary home and an ordered path through all areas',async()=>{
+ const {siteStages,orderedSiteSections}=await import('../navigation.mjs');
+ assert.deepEqual(siteStages.flatMap(s=>s.areaIds),orderedSiteSections.map(s=>s.id));assert.equal(new Set(orderedSiteSections.map(s=>s.id)).size,siteSections.length);
+ const primary=siteSections.flatMap(s=>s.guides.map(g=>g.href));assert.equal(new Set(primary).size,primary.length,'a guide has one primary navigation home');
+ for(const route of ['/','/examples','/guide']){
+  const document=await page(route),stages=document.querySelectorAll('.directory-stage,.guide-stage');assert.equal(stages.length,3,route);
+  const areas=[...document.querySelectorAll('.topic-destination,.guide-topic .guide-group-all')].map(a=>a.getAttribute('href'));
+  assert.deepEqual(areas,orderedSiteSections.map(s=>route==='/guide'?guideSectionUrl(s):exampleSectionUrl(s)),route);
+ }
+ for(const [index,section] of orderedSiteSections.entries()){
+  const next=orderedSiteSections[index+1];if(!next)continue;
+  for(const [route,href] of [[guideSectionUrl(section),guideSectionUrl(next)],[exampleSectionUrl(section),exampleSectionUrl(next)]]){
+   const document=await page(route);assert.ok(document.querySelector(`.guide-area-back a[href="${href}"],.topic-next a[href="${href}"]`),route);
+  }
+ }
+});
+
+test('specialist material stays discoverable beneath its task and source guides identify their integration',async()=>{
+ const examples=await page('/examples/privacy-choices/'),controls=examples.querySelector('details.specialist-section');assert.ok(controls);assert.equal(controls.open,false);assert.ok(controls.querySelector('a[href="/storage-exceptions"]'));assert.ok(controls.querySelector('a[href="/google-basic"]'));
+ const area=await page('/guide/areas/contracts/');assert.equal(area.querySelector('.specialist-section').open,false);assert.ok(area.querySelector('.specialist-section a[href="/guide/guarantee-producer-example"]'));
+ const source=await page('/guide/guarantee-producer-example');assert.ok(source.querySelector('.guide-orientation a[href="/guide/guarantee-labels"]'));
+ const terms=await page('/guide/terms');assert.ok(terms.querySelector('.guide-context a[href="/guide/guarantees"]'),'next guide crosses a subgroup boundary');
+});
+
+test('long guides have script-free section navigation to unique generated headings',async()=>{
+ const sources=await page('/guide/requirements/sources'),ids=[...sources.querySelectorAll('[id]')].map(e=>e.id);assert.equal(new Set(ids).size,ids.length,'generated headings preserve and avoid explicit source anchors');assert.ok(sources.getElementById('src-eu-gdpr'));
+ for(const route of ['/guide/cloudflare','/guide/paid-orders','/guide/terms']){
+  const document=await page(route),outline=document.querySelector('.guide-outline');assert.ok(outline,route);assert.equal(outline.open,false);assert.equal(document.querySelectorAll('script').length,0);
+  const headings=[...document.querySelectorAll('#main h2[id]')];assert.ok(headings.length>=3);assert.equal(new Set(headings.map(h=>h.id)).size,headings.length);
+  const anchors=[...outline.querySelectorAll('a')];assert.equal(anchors.length,headings.length);for(const anchor of anchors){const target=document.getElementById(anchor.getAttribute('href').slice(1));assert.equal(target.tagName,'H2');assert.ok(target.textContent.trim());}
+ }
+});

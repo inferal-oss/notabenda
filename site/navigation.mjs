@@ -53,14 +53,14 @@ export const siteSections=[
 ];
 // Each guide has one place in the learning path. Specialist and maintainer material
 // belongs below its parent task rather than becoming another top-level destination.
-const group=(title,description,slugs,topicIds=[])=>({title,description,slugs,topicIds});
+const group=(title,description,slugs,topicIds=[],options={})=>({title,description,slugs,topicIds,...options});
 const areaGroups={
  start:[group('Configure your site','Begin with an inventory, then review the setup recommendations.',['package','setup'],['setup']),group('Find the services you use','Discovery supplies findings for review; the catalog supplies reusable service descriptions.',['discovery','service-catalog'],['discovery'])],
  'privacy-information':[group('Publish your documents','Supply reviewed wording and describe the services behind it.',['authoring','services'],['documents','services']),group('Explain collection and contact routes','Put the relevant information where people provide data or ask for help.',['collection','indirect-collection','rights'],['collection','indirect-collection','rights'])],
- 'privacy-choices':[group('Control optional services','Start with cookie preferences, then gate resources and clean up declared storage.',['consent','embeds','storage-cleanup'],['cookies','embeds','storage']),group('Offer separate permissions and opt-outs','Form permissions and processing restrictions have their own controls.',['form-permissions','privacy-signals','processing-choices'],['permissions','signals','opt-outs']),group('Specialist controls','Use these when your integration needs tag signals, repeat-prompt rules or explicit scope restrictions.',['storage-exceptions','google-basic','regional-prompts','scope-guards'],['exceptions','google','prompts','guards'])],
- contracts:[group('Agree to terms','Bind the action and wording to the terms version people see.',['terms'],['agreement']),group('Before a purchase','Review the offer, applicable guarantee information and the final payment action.',['guarantees','guarantee-labels','paid-orders'],['guarantee-notice','producer-label','orders']),group('After a purchase','Retain the customer copy and handle withdrawal, cancellation and host delivery.',['order-confirmations','contract-actions','contract-dispatch'],['withdrawal','cancellation']),group('Producer artwork example','Inspect the prepared fixture and its provenance after reading the product-label integration.',['guarantee-producer-example'])],
- records:[group('Retain versions and choices','Keep the released wording and link recorded choices to it.',['releases','consent-evidence'],['history','recorded-cookies','releases','catalog-history']),group('Inspect and manage evidence','Review customer confirmations, export scoped records and manage retention or holds.',['order-confirmations','evidence-export','evidence-lifecycle'],['confirmations','exports','lifecycle'])],
- integrations:[group('Choose a frontend','The framework adapters use the same controllers. Authored documents are compiled at build time.',['react','astro','authoring','localization'],['react','astro','authoring','localization']),group('Add the backend when needed','Connect host-authorized records, then verify your deployment.',['cloudflare','cloudflare-starter','cloudflare-doctor'],['backend'])]
+ 'privacy-choices':[group('Control optional services','Start with cookie preferences, then gate resources and clean up declared storage.',['consent','embeds','storage-cleanup'],['cookies','embeds','storage']),group('Offer separate permissions and opt-outs','Form permissions and processing restrictions have their own controls.',['form-permissions','privacy-signals','processing-choices'],['permissions','signals','opt-outs']),group('Specialist controls','Use these when your integration needs tag signals, repeat-prompt rules or explicit scope restrictions.',['storage-exceptions','google-basic','regional-prompts','scope-guards'],['exceptions','google','prompts','guards'],{specialist:true})],
+ contracts:[group('Agree to terms','Bind the action and wording to the terms version people see.',['terms'],['agreement']),group('Before a purchase','Review the offer, applicable guarantee information and the final payment action.',['guarantees','guarantee-labels','paid-orders'],['guarantee-notice','producer-label','orders']),group('After a purchase','Retain the customer copy and handle withdrawal, cancellation and host delivery.',['order-confirmations','contract-actions','contract-dispatch'],['withdrawal','cancellation']),group('Example source and artwork','For readers who need to inspect or reproduce the prepared producer-label example.',['guarantee-producer-example'],[],{specialist:true})],
+ records:[group('Retain versions and choices','Keep the released wording and link recorded choices to it.',['releases','consent-evidence'],['history','recorded-cookies','releases','catalog-history']),group('Inspect and manage evidence','Review customer confirmations, export scoped records and manage retention or holds.',['evidence-export','evidence-lifecycle'],['confirmations','exports','lifecycle'])],
+ integrations:[group('Choose a frontend','The framework adapters use the same controllers. Authored documents are compiled at build time.',['react','astro','localization'],['react','astro','authoring','localization']),group('Add the backend when needed','Connect host-authorized records, then verify your deployment.',['cloudflare','cloudflare-starter','cloudflare-doctor'],['backend'])]
 };
 // Cross-area references are links, not duplicate primary homes.
 const primaryHome={authoring:'privacy-information','order-confirmations':'contracts'};
@@ -72,7 +72,34 @@ for(const section of siteSections){
  section.groups=areaGroups[section.id].map(g=>({...g,guides:g.slugs.map(slug=>guide(slug,labels.get('/guide/'+slug)??slug))}));
  section.guides=section.groups.flatMap(g=>g.guides);
 }
-export const guideSections=[...siteSections,referenceSection];
+// Stages are shared across the homepage and both directories. Areas keep stable URLs.
+export const siteStages=[
+ {id:'foundations',title:'Set up and publish',description:'Declare what your site does, then publish your reviewed legal wording.',areaIds:['start','privacy-information']},
+ {id:'features',title:'Add the controls you need',description:'Choose the privacy and contract flows that apply to your site.',areaIds:['privacy-choices','contracts']},
+ {id:'operations',title:'Integrate and keep records',description:'Choose your framework, connect the backend and inspect retained evidence.',areaIds:['integrations','records']}
+];
+export const orderedSiteSections=siteStages.flatMap(stage=>stage.areaIds.map(id=>siteSections.find(section=>section.id===id)));
+export const guideSections=[...orderedSiteSections,referenceSection];
+export const stageForSection=section=>siteStages.find(stage=>stage.areaIds.includes(section.id));
+const guideParents={
+ 'guarantee-producer-example':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Example source',description:'This page explains the prepared example and its source files. Start with the integration guide to add a label to your own site.'},
+ 'guarantee-asset-notice':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Asset provenance'},
+ 'authoring-package':{slug:'authoring',label:'Markdown & MDX',kind:'Package reference'},
+ 'catalog-data':{slug:'service-catalog',label:'Service catalog',kind:'Catalog reference'}
+};
+export function parentForGuide(route){return guideParents[normalizeGuideRoute(route).replace(/^\/guide\//u,'')];}
+export function guideOrientation(route){
+ const parent=parentForGuide(route);if(!parent?.description)return '';
+ return `<aside class="guide-orientation" aria-label="About this guide"><p class="eyebrow">${e(parent.kind)}</p><p>${e(parent.description)}</p><a href="/guide/${parent.slug}">Read ${e(parent.label.toLowerCase())} →</a></aside>`;
+}
+export function stageDirectory(kind='examples'){
+ return `<div class="stage-directory">${siteStages.map((stage,index)=>`<section class="directory-stage" aria-labelledby="stage-${stage.id}"><header><span class="path-step">0${index+1}</span><div><h3 id="stage-${stage.id}">${e(stage.title)}</h3><p>${e(stage.description)}</p></div></header>${sectionDirectory(kind,stage.areaIds.map(id=>siteSections.find(s=>s.id===id)),4)}</section>`).join('')}</div>`;
+}
+export function areaContinuation(section,kind='guide'){
+ const index=orderedSiteSections.indexOf(section),next=orderedSiteSections[index+1];if(index<0||!next)return '';
+ const href=kind==='examples'?exampleSectionUrl(next):guideSectionUrl(next);
+ return `<a href="${href}"><small>Next area</small><span>${e(next.title)} →</span></a>`;
+}
 export const normalizeGuideRoute=route=>route.replace(/\/$/u,'');
 export const guideSectionUrl=section=>'/guide/areas/'+section.id+'/';
 export const exampleSectionUrl=section=>'/examples/'+section.id+'/';
@@ -81,6 +108,7 @@ export function sectionForGuide(route){
  const current=normalizeGuideRoute(route),area=guideSections.find(s=>normalizeGuideRoute(guideSectionUrl(s))===current);
  if(area)return area;
  let slug=current.replace(/^\/guide\//u,'');
+ if(guideParents[slug])slug=guideParents[slug].slug;
  if(slug.startsWith('verification/'))slug=reportParents[slug.slice(13)]??slug.slice(13);
  if(primaryHome[slug])return siteSections.find(s=>s.id===primaryHome[slug]);
  return guideSections.find(section=>section.guides.some(item=>item.href==='/guide/'+slug))??referenceSection;
@@ -94,10 +122,11 @@ export function guideNavigation(route,title,{mobile=false}={}){
   const contents=section.groups?section.groups.map(group=>`<div class="guide-nav-subgroup"><p>${e(group.title)}</p>${group.guides.map(link).join('')}</div>`).join(''):section.guides.map(link).join('');
   const links=link(areaLink)+(isActive?contents+(!listed&&!isArea?link({href:current,label:title}):''):'');
   // Mobile has one disclosure for the menu; inactive areas are a single link.
-  return mobile?`<section class="guide-group"><h2>${isActive?e(section.title):`<a href="${guideSectionUrl(section)}">${e(section.title)}</a>`}</h2>${isActive?`<div>${links}</div>`:''}</section>`:`<details class="guide-group"${isActive?' open':''}><summary>${e(section.title)}</summary><div>${links}</div></details>`;
+  const stage=stageForSection(section),stageLabel=stage?.areaIds[0]===section.id?`<p class="guide-nav-stage">${e(stage.title)}</p>`:'';
+  return stageLabel+(mobile?`<section class="guide-group"><h2>${isActive?e(section.title):`<a href="${guideSectionUrl(section)}">${e(section.title)}</a>`}</h2>${isActive?`<div>${links}</div>`:''}</section>`:`<details class="guide-group"${isActive?' open':''}><summary>${e(section.title)}</summary><div>${links}</div></details>`);
  }).join('')}</nav>`;
 }
-export function sectionDirectory(kind='examples',sections=siteSections){return `<div class="topic-directory">${sections.map((section,index)=>`<a class="topic-destination"${kind==='examples'&&({'privacy-information':'interfaces',integrations:'frameworks',records:'evidence'}[section.id])?' id="'+({'privacy-information':'interfaces',integrations:'frameworks',records:'evidence'}[section.id])+'"':''} href="${kind==='examples'?exampleSectionUrl(section):guideSectionUrl(section)}"><span class="topic-number">${String(index+1).padStart(2,'0')}</span><h3>${e(section.title)} <span aria-hidden="true">↗</span></h3><p>${e(section.description)}</p>${kind==='examples'?`<span class="topic-count">${section.topics.length} topics</span>`:''}</a>`).join('')}</div>`;}
+export function sectionDirectory(kind='examples',sections=orderedSiteSections,headingLevel=3){const h='h'+headingLevel;return `<div class="topic-directory">${sections.map(section=>`<a class="topic-destination"${kind==='examples'&&({'privacy-information':'interfaces',integrations:'frameworks',records:'evidence'}[section.id])?' id="'+({'privacy-information':'interfaces',integrations:'frameworks',records:'evidence'}[section.id])+'"':''} href="${kind==='examples'?exampleSectionUrl(section):guideSectionUrl(section)}"><span class="topic-number">${String(orderedSiteSections.indexOf(section)+1).padStart(2,'0')}</span><${h}>${e(section.title)} <span aria-hidden="true">↗</span></${h}><p>${e(section.description)}</p>${kind==='examples'?`<span class="topic-count">${section.topics.length} topics</span>`:''}</a>`).join('')}</div>`;}
 export const starterSteps=[
  {title:'Configure your site',description:'Declare the services and purposes your site uses.',href:'/guide/package'},
  {title:'Publish legal pages',description:'Bring your reviewed wording as Markdown, MDX or structured content.',href:'/guide/authoring'},
@@ -107,8 +136,9 @@ export function starterPath(){return `<ol class="starter-path">${starterSteps.ma
 export function guideContext(route){
  const current=normalizeGuideRoute(route),section=sectionForGuide(current);
  if(current==='/guide'||current==='/guide/all'||current.includes('/areas/')||current.includes('/verification/')||section===referenceSection)return '';
- const group=section.groups.find(g=>g.guides.some(guide=>guide.href===current));if(!group)return '';
- const index=group.guides.findIndex(g=>g.href===current),next=group.guides[index+1],previous=group.guides[index-1]??(current==='/guide/guarantee-producer-example'?{href:'/guide/guarantee-labels',label:'Product guarantee labels'}:null);
- const topic=section.topics.find(t=>t.guide===current||t.variants.some(v=>v.href===current));
- return `<aside class="guide-context" aria-label="Related guides and examples"><p class="eyebrow">${e(section.title)} / ${e(group.title)}</p><nav aria-label="Continue in this area">${previous?`<a href="${previous.href}"><small>Previous guide</small><span>← ${e(previous.label)}</span></a>`:''}${next?`<a href="${next.href}"><small>Next guide</small><span>${e(next.label)} →</span></a>`:''}${topic?`<a href="${topic.href}"><small>Working example</small><span>${e(topic.title)} ↗</span></a>`:''}<a href="${guideSectionUrl(section)}"><small>In this area</small><span>All ${e(section.title.toLowerCase())} guides →</span></a></nav></aside>`;
+ const parent=parentForGuide(current),parentRoute=parent?'/guide/'+parent.slug:current;
+ const group=section.groups.find(g=>g.guides.some(guide=>guide.href===parentRoute));if(!group)return '';
+ const path=section.groups.filter(g=>!g.specialist).flatMap(g=>g.guides),index=path.findIndex(g=>g.href===current),next=parent?null:path[index+1],previous=parent?{href:parentRoute,label:parent.label}:path[index-1];
+ const topic=section.topics.find(t=>t.guide===parentRoute||t.variants.some(v=>v.href===current));
+ return `<aside class="guide-context" aria-label="Related guides and examples"><p class="eyebrow">${e(section.title)} / ${e(group.title)}</p><nav aria-label="Continue in this area">${previous?`<a href="${previous.href}"><small>${parent?'Integration guide':'Previous guide'}</small><span>← ${e(previous.label)}</span></a>`:''}${next?`<a href="${next.href}"><small>Next guide</small><span>${e(next.label)} →</span></a>`:''}${topic?`<a href="${topic.href}"><small>Working example</small><span>${e(topic.title)} ↗</span></a>`:''}<a href="${guideSectionUrl(section)}"><small>In this area</small><span>All ${e(section.title.toLowerCase())} guides →</span></a></nav></aside>`;
 }
