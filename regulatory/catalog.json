@@ -3982,7 +3982,8 @@
         "scripts/check-site-runtime.mjs",
         "packages/notabenda/test/rights.test.mjs",
         "packages/notabenda/test/catalog-release.test.mjs",
-        "docs/verification/catalog-release.md"
+        "docs/verification/catalog-release.md",
+        "site/test/demo-upgrade.test.mjs"
       ],
       "implementationNote": "A bounded build-time API and repeatable CLI input emit only immutable artifact paths. Exact historical bytes and rich bodies are preserved without source evaluation. Clean-build tests and a two-version example connect public pinned URLs to private authorized comparison."
     },
@@ -4413,7 +4414,8 @@
         "site/test/demo.test.mjs",
         "docs/verification/demo-workspace.md",
         "scripts/check-site-runtime.mjs",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "site/test/demo-upgrade.test.mjs"
       ],
       "implementationNote": "Separate DO binding, bounded provisioning, session cookie and rolling idle expiry, seeded immutable ledgers and browser generation checks."
     },
@@ -4788,7 +4790,8 @@
         "scripts/fixtures/contract-dispatch-worker.mjs",
         "docs/verification/contract-dispatch.md",
         "packages/notabenda/test/setup.test.mjs",
-        "docs/verification/setup.md"
+        "docs/verification/setup.md",
+        "site/test/demo-upgrade.test.mjs"
       ],
       "implementationNote": "Versioned archive-bound definitions, visible-field validation, native forms/headless state, bounded exact retry/recovery, transactional capture and independent leased jobs, immutable at-capture copy, provider CAS, private semantic inspection/search and per-declaration lifecycle. The isolated example deliberately retains its recovery command within a session-scoped tab, with no mount-time transport. Local SQLite capture/restart verified; real runners, provider delivery, regional and platform acceptance remain open. Optional single/paired dispatch runners validate before claim, bound asynchronous provider attempts, preserve independent acknowledgement, fence late results and report provider/settlement outcomes separately. Real SQLite restart/deduplication is verified with test-only provider simulation; production scheduling/provider delivery remains open."
     },
@@ -6035,7 +6038,8 @@
         "scripts/check-site-runtime.mjs",
         "packages/notabenda/test/rights.test.mjs",
         "packages/notabenda/test/catalog-release.test.mjs",
-        "docs/verification/catalog-release.md"
+        "docs/verification/catalog-release.md",
+        "site/test/demo-upgrade.test.mjs"
       ]
     },
     {
@@ -6184,7 +6188,8 @@
         "site/test/demo.test.mjs",
         "docs/verification/demo-workspace.md",
         "scripts/check-site-runtime.mjs",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "site/test/demo-upgrade.test.mjs"
       ]
     },
     {
@@ -6286,7 +6291,8 @@
         "packages/notabenda-cf/test/contract-dispatch.test.mjs",
         "scripts/check-contract-dispatch-runtime.mjs",
         "scripts/fixtures/contract-dispatch-worker.mjs",
-        "docs/verification/contract-dispatch.md"
+        "docs/verification/contract-dispatch.md",
+        "site/test/demo-upgrade.test.mjs"
       ]
     },
     {

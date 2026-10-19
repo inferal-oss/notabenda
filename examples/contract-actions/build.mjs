@@ -5,7 +5,7 @@ import {renderLegalLinks} from 'notabenda';
 export function contractActionExample(base){
  const config=structuredClone(base);config.site.id='juniper-contract-actions';config.site.name='Juniper Notes';for(const [kind,doc] of Object.entries(config.documents))doc.route='/contract-actions/'+kind;
  const build=compileLegalDocuments(config,{mode:'preview'}),definitions={};
- for(const [route,profile] of [['withdrawal','eu-withdrawal'],['cancellation','de-cancellation']])definitions[route]=createContractActionDefinition(build.artifact,{actionId:route,revision:'form-1',profile,reviewStatus:'draft'},{mode:'preview'});
+ for(const [route,profile] of [['withdrawal','eu-withdrawal'],['cancellation','de-cancellation']])definitions[route]=createContractActionDefinition(build.artifact,{actionId:route,revision:'form-1@'+build.manifest.artifactId,profile,reviewStatus:'draft'},{mode:'preview'});
  return {build,definitions};
 }
 export async function contractActionFiles(base){
