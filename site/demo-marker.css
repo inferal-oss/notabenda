@@ -1,0 +1,5 @@
+/* @requirements REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y */
+.demo-corner{position:fixed;inset:0 0 auto auto;z-index:20;box-sizing:border-box;min-width:70px;padding:6px 12px 6px 18px;clip-path:polygon(0 0,100% 0,100% 100%,10px 100%);background:#5b51b5;color:#fff;font:600 11px/16px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-align:center;text-transform:uppercase;pointer-events:none}
+body:has(>.demo-corner) :is(.nb-site-header,.choices-header,.discovery-header,.top){padding-right:max(88px,env(safe-area-inset-right))}
+@media(forced-colors:active){.demo-corner{background:CanvasText;color:Canvas;forced-color-adjust:none}}
+@media print{.demo-corner{position:absolute}}

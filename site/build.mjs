@@ -13,6 +13,7 @@ import { compileLegalDocuments, createConsentNotice } from 'notabenda/content';
 import { writeBuildFiles } from '../packages/notabenda/dist/files.js';
 import { syntheticRecords } from '../packages/notabenda-cf/examples/synthetic.mjs';
 import { exampleFiles } from '../examples/static/build.mjs';
+import {markDemoPage} from './demo-marker.mjs';
 import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
 import {retainedReleaseExample} from '../examples/releases/build.mjs';
 import { authoringExample } from '../examples/authoring/build.mjs';
@@ -28,6 +29,7 @@ const markdownRenderer=new Marked({renderer:{code({text,lang}){return syntax.ren
 const style = await read('site/style.css');
 const files = {'site.css':style,'assets/inferal-mark.svg':await read('site/assets/inferal-mark.svg')};
 files['assets/demo-admin.css']=await read('site/demo-admin.css');
+files['assets/demo-marker.css']=await read('site/demo-marker.css');
 files['assets/website-notice.css']=await read('site/website-notice.css');
 const media = [];
 async function visit(directory,callback) {
@@ -39,7 +41,8 @@ async function visit(directory,callback) {
 // Allowlisted source roots only. Never scan the workspace for uploadable assets.
 for(const [relative,content] of Object.entries(await exampleFiles())) {
   if(relative === 'index.html') files['examples/index.html']=content;
-  else files[relative]=content;
+  // The website labels demo routes; retained releases keep their exact bytes.
+  else files[relative]=relative.endsWith('.html')&&!relative.startsWith('artifacts/')&&typeof content==='string'?markDemoPage(content):content;
 }
 await visit('docs/assets',async path=>{ if(['.svg','.jpg','.png'].includes(extname(path))) media.push(path); });
 const docs = new Map([['README.md','/guide'],['packages/notabenda/README.md','/guide/package'],['packages/notabenda-cf/README.md','/guide/cloudflare'],['packages/notabenda-authoring/README.md','/guide/authoring-package'],['regulatory/README.md','/guide/research'],['site/README.md','/guide/website'],['catalog/README.md','/guide/catalog-data'],['packages/notabenda/assets/guarantees/NOTICE.md','/guide/guarantee-asset-notice']]);

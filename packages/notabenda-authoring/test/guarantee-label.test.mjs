@@ -103,3 +103,20 @@ for(const css of ['a'.repeat(99999),'.x{fill:white;}'+ ' '.repeat(99000)]){const
  assert.throws(()=>buildDurabilityGuaranteeLabel(options,svg('<style>'+'.x{fill:white;}'+ ' '.repeat(60000)+'</style><style>'+'.y{fill:black;}'+ ' '.repeat(60000)+'</style>')),/stylesheet/);
  assert.throws(()=>buildDurabilityGuaranteeLabel(options,svg('<style>'+'.x{fill:white;}'.repeat(513)+'</style>')),/rule limit/);
 });
+
+// @requirements REQ-EU-GUARANTEE-LABEL
+ test('static clip graphs accept bounded nesting and reject cycles, deep chains and unused CSS expansion',()=>{
+ const accept=svg('<defs><clipPath id="a"><rect width="90" height="90"/></clipPath><clipPath id="b"><g clip-path="url(#a)"><rect width="80" height="80"/></g></clipPath></defs><path clip-path="url(#b)" d="M0 0H100V100Z"/>');
+ const built=buildDurabilityGuaranteeLabel(options,accept);assert.ok(built);
+ for(const body of [
+ '<defs><clipPath id="a"><g clip-path="url(#a)"><rect width="90" height="90"/></g></clipPath></defs>',
+ '<defs><clipPath id="a"><g clip-path="url(#b)"/></clipPath><clipPath id="b"><g clip-path="url(#a)"/></clipPath></defs>',
+ '<style>.x{clip-path:url(#a)}</style><defs><clipPath id="a"><g class="x"/></clipPath></defs>',
+ '<path clip-path="url(#missing)" d="M0 0H1V1Z"/>',
+ '<defs>'+Array.from({length:9},(_,i)=>`<clipPath id="a${i}"><g ${i<8?`clip-path="url(#a${i+1})"`:''}><rect width="90" height="90"/></g></clipPath>`).join('')+'</defs>',
+ ])assert.throws(()=>buildDurabilityGuaranteeLabel(options,svg(body)),/Unsupported producer label asset/);
+ const selectors=Array.from({length:1000},(_,i)=>`.c${i}`).join(','),declarations=Array.from({length:1000},(_,i)=>`clip-path:url(#a${i});`).join(''),clips=Array.from({length:1000},(_,i)=>`<clipPath id="a${i}"><rect width="1" height="1"/></clipPath>`).join('');
+ const hostile=svg(`<style>${selectors}{${declarations}}</style><defs>${clips}</defs>`);
+ const result=spawnSync(process.execPath,['--input-type=module','-e',`import {buildDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';try{buildDurabilityGuaranteeLabel(${JSON.stringify(options)},Buffer.from(${JSON.stringify(hostile.toString('base64'))},'base64'));process.exit(2);}catch(e){if(!/CSS clip (?:association|expansion) limit/.test(e.message))throw e;}`],{timeout:5000,encoding:'utf8'});
+ assert.equal(result.error,undefined);assert.equal(result.status,0,result.stderr);
+ });

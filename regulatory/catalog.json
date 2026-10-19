@@ -4382,7 +4382,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Isolated fictional admin workspace for public examples",
       "kind": "product-standard",
-      "summary": "Public example visitors get a separately provisioned DO database, fictional seeded journeys, generation-bound actions and session-bound access and idle cleanup; operational admin remains separately authorized.",
+      "summary": "Public example visitors get a separately provisioned DO database, fictional seeded journeys, generation-bound actions and session-bound access and idle cleanup; operational admin remains separately authorized. Example and demo-admin screens carry a visible corner marker, distinct from the project website and documentation.",
       "appliesWhen": "Public example or demo admin navigation.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -4405,12 +4405,15 @@
         "site/demo-admin.css",
         "site/worker.mjs",
         "site/host.mjs",
-        "scripts/serve-example.mjs"
+        "scripts/serve-example.mjs",
+        "site/demo-marker.mjs",
+        "site/demo-marker.css"
       ],
       "testRefs": [
         "site/test/demo.test.mjs",
         "docs/verification/demo-workspace.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "site/test/host.test.mjs"
       ],
       "implementationNote": "Separate DO binding, bounded provisioning, session cookie and rolling idle expiry, seeded immutable ledgers and browser generation checks."
     },
@@ -5313,7 +5316,8 @@
         "packages/notabenda/src/guarantees.css",
         "packages/notabenda/src/react-documents.ts",
         "packages/notabenda/src/astro/DurabilityGuaranteeLabel.astro",
-        "docs/GUARANTEE-LABELS.md"
+        "docs/GUARANTEE-LABELS.md",
+        "packages/notabenda-authoring/src/guarantee-label-clips.ts"
       ],
       "testRefs": [
         "packages/notabenda-authoring/test/guarantee-label.test.mjs",
@@ -6179,7 +6183,8 @@
       "testRefs": [
         "site/test/demo.test.mjs",
         "docs/verification/demo-workspace.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "site/test/host.test.mjs"
       ]
     },
     {

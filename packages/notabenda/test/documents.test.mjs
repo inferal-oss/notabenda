@@ -89,3 +89,17 @@ test('structured tables retain safe text and public projection excludes table me
   config.documents.terms.sections[0].table.rows[0].push('extra');
   assert.equal(validateSiteConfig(config).valid, false);
 });
+
+// @requirements REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-A11Y
+ test('declared storage starts collapsed with an accessible count and complete inventory',async()=>{
+ const {JSDOM}=await import('jsdom'),config=await fixture();
+ const document=new JSDOM(renderLegalDocument(config,'cookies')).window.document;
+ const foldout=document.querySelector('#nb-cookies-section-storage > details');
+ assert.ok(foldout);assert.equal(foldout.open,false);
+ assert.match(foldout.querySelector('summary').textContent,/Declared storage.*1 item/);
+ assert.equal(foldout.querySelectorAll('tbody tr').length,config.storage.length);
+ assert.match(foldout.textContent,/display_mode/);
+ foldout.open=true;assert.equal(foldout.open,true);
+ assert.equal(document.querySelector('nav a[href="#nb-cookies-section-storage"]').textContent,'Declared storage');
+ config.storage=[];assert.doesNotMatch(renderLegalDocument(config,'cookies'),/nb-storage-foldout/);
+ });

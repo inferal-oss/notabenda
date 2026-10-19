@@ -2,6 +2,8 @@
  * Build-only supported image subset. Reject unsupported files; never sanitize or re-encode producer art.
  */
 import {inflateSync} from 'node:zlib';
+import {verifyLabelClipGraph} from './guarantee-label-clips.js';
+import type {LabelClipReference} from './guarantee-label-clips.js';
 import {PNG} from 'pngjs';
 import {decode} from 'jpeg-js';
 import {DOMParser} from '@xmldom/xmldom';
@@ -57,37 +59,39 @@ function svg(bytes:Buffer):LabelImage {
  const document=new DOMParser({onError:()=>bad('malformed XML')}).parseFromString(source,'image/svg+xml'),root=document.documentElement;
  if(!root||root.tagName!=='svg'||root.namespaceURI!=='http://www.w3.org/2000/svg')bad('invalid SVG root');
  const viewBox=root.getAttribute('viewBox')??'';if(!numbers.test(viewBox.trim()))bad('SVG needs a numeric viewBox');const box=viewBox.trim().split(/[ ,]+/u).map(Number);if(box.length!==4||box.some(x=>!Number.isFinite(x))||box[0]!==0||box[1]!==0)bad('SVG viewBox must begin at 0 0');const size=dimensions(box[2]!,box[3]!);
- let nodes=0,pathBytes=0,embeddedBytes=0,embeddedPixels=0,embeddedCount=0,cssBytes=0,cssRules=0;const ids=new Map<string,string>(),clips:string[]=[],classes=new Set<string>(),usedClasses:string[]=[];
- function property(name:string,value:string,insideClip:boolean){
+ let nodes=0,pathBytes=0,embeddedBytes=0,embeddedPixels=0,embeddedCount=0,cssBytes=0,cssRules=0,cssSelectors=0,cssDeclarations=0,clipAssociations=0,clipAttempts=0;const ids=new Map<string,string>(),clipCosts=new Map<string,number>(),references:LabelClipReference[]=[],styleTargets=new Set<string>(),classClips=new Map<string,Set<string>>(),classes=new Set<string>(),classUsers:{names:string[];owner:string|undefined}[]=[];
+ function reference(owner:string|undefined,target:string){if(references.length>=2048)bad('SVG clip reference limit');references.push({owner,target});}
+ function property(name:string,value:string):string|undefined {
   if(name==='fill'||name==='stroke'){if(!/^(?:none|black|white|#[a-fA-F0-9]{3}|#[a-fA-F0-9]{6})$/u.test(value))bad('unsupported SVG paint');}
   else if(['stroke-width','stroke-miterlimit','opacity','fill-opacity','stroke-opacity'].includes(name)){if(!scalar.test(value)||!Number.isFinite(Number(value))||Number(value)<0||Number(value)>10000)bad('invalid SVG numeric style');}
   else if(name==='stroke-linecap'){if(!['butt','round','square'].includes(value))bad('invalid SVG line cap');}
   else if(name==='stroke-linejoin'){if(!['miter','round','bevel'].includes(value))bad('invalid SVG line join');}
   else if(name==='fill-rule'||name==='clip-rule'){if(!['nonzero','evenodd'].includes(value))bad('invalid SVG fill rule');}
-  else if(name==='clip-path'){const match=/^url\(#([a-zA-Z_][a-zA-Z0-9_.-]{0,119})\)$/u.exec(value);if(!match||insideClip)bad('unsupported or recursive SVG clip reference');clips.push(match[1]!);}
+  else if(name==='clip-path'){const match=/^url\(#([a-zA-Z_][a-zA-Z0-9_.-]{0,119})\)$/u.exec(value);if(!match)bad('unsupported SVG clip reference');return match[1]!;}
   else bad('unsupported SVG style property');
  }
- function visit(n:XmlNode,depth:number,insideClip=false):void {
+ function visit(n:XmlNode,depth:number,clipOwner?:string):void {
   if(++nodes>20000||depth>32)bad('SVG tree limit');
   if(n.nodeType===3){if(n.nodeValue?.trim())bad('SVG live text must be outlined');return;}
   if(n.nodeType===7){if(n.parentNode!==document||n.nodeName!=='xml')bad('SVG processing instruction');return;}
   if(n.nodeType!==1)bad('SVG comments, metadata or unsupported nodes');
-  const el=n as XmlElement,tag=el.tagName;if(el.namespaceURI!=='http://www.w3.org/2000/svg'||!Object.hasOwn(tagAttributes,tag)||tag==='svg'&&el!==root||insideClip&&tag!=='g'&&!geometry.has(tag))bad('SVG contains live text, external resources or unsupported elements');
-  const clip=insideClip||tag==='clipPath';
+  const el=n as XmlElement,tag=el.tagName;if(el.namespaceURI!=='http://www.w3.org/2000/svg'||!Object.hasOwn(tagAttributes,tag)||tag==='svg'&&el!==root||clipOwner!==undefined&&tag!=='g'&&!geometry.has(tag))bad('SVG contains live text, external resources or unsupported elements');
+  if(tag==='clipPath'){const id=el.getAttribute('id');if(!id||!/^[a-zA-Z_][a-zA-Z0-9_.-]{0,119}$/u.test(id))bad('clip definitions need a bounded ID');clipOwner=id;clipCosts.set(id,0);}
+  if(clipOwner!==undefined)clipCosts.set(clipOwner,(clipCosts.get(clipOwner)??0)+1);
   for(let index=0;index<el.attributes.length;index++){const attr=el.attributes.item(index)!,name=attr.localName??attr.name,value=attr.value;if(attr.namespaceURI==='http://www.w3.org/2000/xmlns/'){if(el!==root||!['xmlns','xmlns:xlink'].includes(attr.name)||attr.value!==(attr.name==='xmlns'?'http://www.w3.org/2000/svg':'http://www.w3.org/1999/xlink'))bad('unsupported SVG namespace');continue;}
    if(attr.namespaceURI&&!(attr.namespaceURI==='http://www.w3.org/1999/xlink'&&tag==='image'&&name==='href')||!common.has(name)&&!tagAttributes[tag]!.includes(name)||value.length>500000)bad('unsupported SVG attribute');
    if(name==='id'){if(!/^[a-zA-Z_][a-zA-Z0-9_.-]{0,119}$/u.test(value)||ids.has(value))bad('duplicate or invalid SVG ID');ids.set(value,tag);}
-   else if(name==='class'){if(clip)bad('classes inside SVG clips are unsupported');if(value.length>1024||!/^[a-zA-Z_][a-zA-Z0-9_-]*(?:\s+[a-zA-Z_][a-zA-Z0-9_-]*)*$/u.test(value))bad('invalid SVG class');usedClasses.push(...value.split(/\s+/u));}
+   else if(name==='class'){if(value.length>1024||!/^[a-zA-Z_][a-zA-Z0-9_-]*(?:\s+[a-zA-Z_][a-zA-Z0-9_-]*)*$/u.test(value))bad('invalid SVG class');classUsers.push({names:value.split(/\s+/u),owner:clipOwner});}
    else if(name==='transform'){
     if(value.length>4000)bad('SVG transform bounds');const pattern=/\s*(matrix|translate|scale|rotate|skewX|skewY)\(([+\-0-9.eE, ]+)\)\s*/gy;let offset=0,count=0;
     while(offset<value.length){pattern.lastIndex=offset;const match=pattern.exec(value);if(!match||++count>16||!numbers.test(match[2]!.trim()))bad('unsupported SVG transform');const values=match[2]!.trim().split(/[ ,]+/u).map(Number),arity:Record<string,number[]>={matrix:[6],translate:[1,2],scale:[1,2],rotate:[1,3],skewX:[1],skewY:[1]};
      if(!arity[match[1]!]!.includes(values.length)||values.some(x=>!Number.isFinite(x)||Math.abs(x)>1000000))bad('SVG transform bounds');offset=pattern.lastIndex;
     }if(!count)bad('empty SVG transform');
    }
-   else if(common.has(name))property(name,value,clip);
+   else if(common.has(name)){const target=property(name,value);if(target)reference(clipOwner,target);}
    else if(name==='viewBox'){/* checked above */}
-   else if(name==='d'){pathBytes+=value.length;if(pathBytes>1000000||!value||!/^[MmZzLlHhVvCcSsQqTtAa0-9eE.,+\-\s]+$/u.test(value))bad('SVG path data limit or syntax');}
-   else if(name==='points'){if(!numbers.test(value.trim()))bad('invalid SVG points');}
+   else if(name==='d'){if(clipOwner!==undefined)clipCosts.set(clipOwner,clipCosts.get(clipOwner)!+Math.ceil(value.length/64));pathBytes+=value.length;if(pathBytes>1000000||!value||!/^[MmZzLlHhVvCcSsQqTtAa0-9eE.,+\-\s]+$/u.test(value))bad('SVG path data limit or syntax');}
+   else if(name==='points'){if(clipOwner!==undefined)clipCosts.set(clipOwner,clipCosts.get(clipOwner)!+Math.ceil(value.length/64));if(!numbers.test(value.trim()))bad('invalid SVG points');}
    else if(name==='href'){if(el.hasAttribute('href')&&el.hasAttribute('xlink:href'))bad('duplicate SVG image source');const match=/^data:image\/png;base64,([A-Za-z0-9+/]+={0,2})$/u.exec(value);if(!match)bad('SVG images must be inline metadata-free PNG');const embedded=Buffer.from(match[1]!,'base64');embeddedBytes+=embedded.length;if(embedded.toString('base64')!==match[1]||embeddedBytes>524288||++embeddedCount>16||embedded.length<33||!embedded.subarray(0,8).equals(pngSignature))bad('SVG embedded image limit');const imageSize=dimensions(embedded.readUInt32BE(16),embedded.readUInt32BE(20));embeddedPixels+=imageSize.width*imageSize.height;if(embeddedPixels>8000000)bad('SVG aggregate embedded pixel limit');png(embedded,true);}
    else if(name==='preserveAspectRatio'){if(!['xMidYMid meet','none'].includes(value))bad('unsupported SVG image scaling');}
    else if(name==='clipPathUnits'){if(value!=='userSpaceOnUse')bad('unsupported SVG clip units');}
@@ -98,21 +102,22 @@ function svg(bytes:Buffer):LabelImage {
   if(tag==='image'&&!el.hasAttribute('href')&&!el.hasAttribute('xlink:href'))bad('missing SVG image source');
   if(tag==='style'){
    for(let child=el.firstChild;child;child=child.nextSibling){if(++nodes>20000||![3,4].includes(child.nodeType))bad('SVG style contains non-text content');}
-   if(clip)bad('SVG styles within clip');const css=el.textContent??'';cssBytes+=css.length;
+   if(clipOwner!==undefined)bad('SVG styles within clip');const css=el.textContent??'';cssBytes+=css.length;
    if(cssBytes>100000||/[^a-zA-Z0-9_.#{}:;,()\-\s]/u.test(css))bad('unsupported SVG stylesheet');
    // Cursor scanning is linear even for a long malformed suffix with no opening brace.
    let position=0;while(position<css.length){while(position<css.length&&/\s/u.test(css[position]!))position++;if(position===css.length)break;
     const open=css.indexOf('{',position),close=open<0?-1:css.indexOf('}',open+1);if(open<0||close<0||++cssRules>512)bad('malformed SVG stylesheet or rule limit');
     const selectors=css.slice(position,open),declarations=css.slice(open+1,close);if(/[{}]/u.test(selectors+declarations))bad('malformed SVG CSS rule');
-    for(const selector of selectors.split(',')){const c=/^\.([a-zA-Z_][a-zA-Z0-9_-]{0,119})$/u.exec(selector.trim());if(!c)bad('SVG supports simple class selectors only');classes.add(c[1]!);}
-    for(const declaration of declarations.split(';')){if(!declaration.trim())continue;const parts=declaration.split(':');if(parts.length!==2)bad('invalid SVG CSS declaration');property(parts[0]!.trim(),parts[1]!.trim(),false);}
+    const ruleClasses=new Set<string>();for(const selector of selectors.split(',')){if(++cssSelectors>2048)bad('SVG CSS selector limit');const c=/^\.([a-zA-Z_][a-zA-Z0-9_-]{0,119})$/u.exec(selector.trim());if(!c)bad('SVG supports simple class selectors only');classes.add(c[1]!);ruleClasses.add(c[1]!);}
+    for(const declaration of declarations.split(';')){if(!declaration.trim())continue;if(++cssDeclarations>2048)bad('SVG CSS declaration limit');const parts=declaration.split(':');if(parts.length!==2)bad('invalid SVG CSS declaration');const target=property(parts[0]!.trim(),parts[1]!.trim());if(target){styleTargets.add(target);for(const name of ruleClasses){if(++clipAttempts>8192)bad('SVG CSS clip expansion limit');if(!classClips.get(name)?.has(target)){if(++clipAssociations>2048)bad('SVG CSS clip association limit');if(!classClips.has(name))classClips.set(name,new Set());classClips.get(name)!.add(target);}}}}
     position=close+1;
    }return;
   }
-  for(let child=el.firstChild;child;child=child.nextSibling)visit(child,depth+1,clip);
+  for(let child=el.firstChild;child;child=child.nextSibling)visit(child,depth+1,clipOwner);
  }
  for(let child=document.firstChild;child;child=child.nextSibling){if(child.nodeType===3&&!child.nodeValue?.trim())continue;visit(child,0);}
- if(clips.some(id=>ids.get(id)!=='clipPath')||usedClasses.some(c=>!classes.has(c)))bad('unresolved SVG class or clip');
+ for(const user of classUsers)for(const name of user.names){if(!classes.has(name))bad('unresolved SVG class');for(const target of classClips.get(name)??[])reference(user.owner,target);}
+ verifyLabelClipGraph(ids,clipCosts,references,styleTargets);
  return {mediaType:'image/svg+xml',extension:'svg',...size};
 }
 /** Input must already be an owned copy. No fetching, filename inference, pixel edits or visual-conformity claim. */

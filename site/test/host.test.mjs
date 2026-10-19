@@ -462,3 +462,19 @@ test('catalog-reference releases keep public legal bytes unchanged and private c
  const workspace=new EvidenceWorkspace(state(createSyntheticStorage([])),{ADMIN_KEY:key}),path='/backoffice/history/catalog-review-diff?before='+before.artifact.manifest.artifactId+'&after='+after.artifact.manifest.artifactId;
  assert.equal((await workspace.fetch(request(path))).status,401);const comparison=await workspace.fetch(request(path,{headers:auth}));assert.equal(comparison.status,200);const html=await comparison.text();assert.match(html,/Catalog review changes/);assert.match(html,/Cedar Mail/);assert.match(html,/Changed: catalog facts/);assert.doesNotMatch(html,/PRIVATE_CATALOG_EXAMPLE_REASON/);
 });
+
+// @requirements REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-A11Y
+ test('demo ribbons distinguish example pages and session admin from the project website',async()=>{
+ const {JSDOM}=await import('jsdom'),{markDemoResponse}=await import('../demo-marker.mjs'),root=new URL('../dist/public/',import.meta.url);
+ for(const path of ['choices/index.html','dark/choices/index.html','agreement/index.html','astro/index.html','discovery/index.html','cookies/index.html']){
+  const html=await readFile(new URL(path,root),'utf8'),document=new JSDOM(html).window.document;
+  assert.equal(document.querySelectorAll('.demo-corner').length,1,path);
+  assert.equal(document.querySelector('.demo-corner').textContent,'Demo');
+  assert.ok(document.querySelector('link[href="/assets/demo-marker.css"]'));
+ }
+ for(const path of ['index.html','examples/index.html','guide/package/index.html','website-privacy/index.html'])assert.doesNotMatch(await readFile(new URL(path,root),'utf8'),/class="demo-corner"/,path);
+ const {demoHome}=await import('../demo-presentation.mjs');
+ const marked=await markDemoResponse(demoHome()),html=await marked.text();assert.match(html,/class="demo-corner"/);
+ const again=await markDemoResponse(new Response(html,{headers:{'Content-Type':'text/html'}}));assert.equal((await again.text()).match(/class="demo-corner"/gu).length,1);
+ const json=Response.json({ok:true});assert.equal(await markDemoResponse(json),json);
+ });

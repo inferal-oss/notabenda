@@ -6,6 +6,7 @@ import {contractContext} from './contract-context.mjs';
 import {adminPresentation} from './admin-presentation.mjs';
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE
 import {demoExpired} from './demo-presentation.mjs';
+import {markDemoResponse} from './demo-marker.mjs';
 import {createSetupWorker} from 'notabenda-cf';
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS
 import {formPermissionStreamRef} from 'notabenda-cf';
@@ -79,6 +80,6 @@ export async function serveDemo(request,env,{protect,readBody}){
 
    return finish(response,undefined,true);
   }
-  return finish(response,capability);
+  return finish(await markDemoResponse(response),capability);
  }catch{return finish(new Response('Demo workspace unavailable.',{status:503}));}
 }
