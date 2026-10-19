@@ -1,3 +1,4 @@
+// @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-EU-GUARANTEE-LABEL
 // @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
 // @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
@@ -45,7 +46,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     assert.ok(manifest.files.some(f => f.path === 'dist/styles.css'));
     assert.ok(manifest.files.some(f=>f.path==='dist/consent.css'));
     assert.ok(manifest.files.some(f=>f.path==='dist/headless.js'));
-    assert.ok(manifest.files.some(f=>f.path==='dist/guarantee-label.js'));assert.ok(manifest.files.some(f=>f.path==='dist/astro/DurabilityGuaranteeLabel.astro'));assert.ok(!manifest.files.some(f=>/guarantee-label-(?:build|image)/u.test(f.path)));
+    assert.ok(manifest.files.some(f=>f.path==='dist/paid-order.js'));assert.ok(manifest.files.some(f=>f.path==='dist/orders.css'));assert.ok(manifest.files.some(f=>f.path==='dist/astro/PaidOrderReview.astro'));assert.ok(manifest.files.some(f=>f.path==='dist/guarantee-label.js'));assert.ok(manifest.files.some(f=>f.path==='dist/astro/DurabilityGuaranteeLabel.astro'));assert.ok(!manifest.files.some(f=>/guarantee-label-(?:build|image)/u.test(f.path)));
     const headlessPackage=JSON.parse(await readFile(join(root,'packages/notabenda/package.json'),'utf8'));assert.equal(headlessPackage.exports['./consent.css'],'./dist/consent.css');
     assert.equal(manifest.files.some(f => /(?:test|regulatory|notabenda.config)/.test(f.path)), false);
     await writeFile(join(cwd, 'package.json'), '{"private":true,"type":"module"}');

@@ -6,6 +6,8 @@ import {renderCollectionNotice} from './collection.js';
 import {renderIndirectCollectionNotice} from './indirect-collection.js';
 import {renderLegalGuaranteeNotice} from './guarantee-notice.js';
 import {renderDurabilityGuaranteeLabel} from './guarantee-label.js';
+import {renderPaidOrderReview} from './paid-order.js';
+import type {PaidOrderRenderOptions} from './paid-order.js';
 import {renderLegalDocument,renderLegalLinks} from './documents.js';
 import type {DocumentKind,ValidationOptions} from './types.js';
 import {renderServiceDirectory} from './service-directory.js';
@@ -57,4 +59,11 @@ export function RightsCenter({config,className,...options}:RightsCenterProps):Re
 export interface DurabilityGuaranteeLabelProps {label:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;className?:string}
 export function DurabilityGuaranteeLabel({label,idPrefix,headingLevel,allowPreview=false,className}:DurabilityGuaranteeLabelProps):ReactElement {
  return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderDurabilityGuaranteeLabel(label,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})})}});
+}
+
+/** @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-REACT */
+export interface PaidOrderReviewProps extends PaidOrderRenderOptions {review:unknown;className?:string}
+/** Server-safe information. Mount the host-owned action separately after hydration. */
+export function PaidOrderReview({review,className,...options}:PaidOrderReviewProps):ReactElement {
+ return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderPaidOrderReview(review,options)}});
 }

@@ -1,4 +1,6 @@
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
+import {orderDemoAdmin} from './order-demo-admin.mjs';
+import {serveOrderDemo} from './order-demo.mjs';
 import {registerContractActionDefinition,recordContractDeclaration,createContractDeclarationStore,ContractActionRecordError} from 'notabenda-cf';
 import {contractContext} from './contract-context.mjs';
 import {seedContractDeclarations} from './contract-seed.mjs';
@@ -163,16 +165,17 @@ export class DemoWorkspace extends EvidenceWorkspace {
     const usedAt=Date.now();metadata={...metadata,lastUsedAt:usedAt,expiresAt:usedAt+86400000};await storage.put('demo/session',metadata);await storage.setAlarm(metadata.expiresAt);
     if(path==='/demo/session'&&request.method==='GET')return protectedResponse(new Response(null,{status:204}));
     if(path==='/demo/provision'&&request.method==='POST'){await this.initialize();return protectedResponse(new Response(null,{status:204}));}
-    if(!/^\/demo\/(?:admin|agreements|choices|processing|permissions|contracts)(?:\/|$)/u.test(path))return protectedResponse(new Response('Not found.',{status:404}));
+    if(!/^\/demo\/(?:admin|agreements|choices|processing|permissions|contracts|orders)(?:\/|$)/u.test(path))return protectedResponse(new Response('Not found.',{status:404}));
     if(path==='/demo/admin'||path==='/demo/admin/'){await this.initialize();return protectedResponse(demoHome());}
     let commandKey;
-    if(request.method==='POST'&&/^\/demo\/(?:agreements|choices|processing|permissions|contracts)\//u.test(path)){
+    if(request.method==='POST'&&/^\/demo\/(?:agreements|choices|processing|permissions|contracts|orders)\//u.test(path)){
       let body;try{body=await request.clone().json();}catch{return protectedResponse(new Response('Invalid request.',{status:400}));}
       if(typeof body.requestId==='string'&&/^[a-f0-9-]{36}$/u.test(body.requestId))commandKey='demo/commands/'+path+'/'+body.requestId;
       const count=await storage.get('demo/command-count')??0;
       if(count>=200&&(!commandKey||!await storage.get(commandKey)))return protectedResponse(Response.json({code:'demo-limit-reached'},{status:429}));
     }
-    const response=await super.fetch(request);
+    if(/^\/demo\/admin\/orders(?:\/|$)/u.test(path))return decorateDemoAdmin(protectedResponse(await orderDemoAdmin(request,storage)),path);
+    const response=path.startsWith('/demo/orders/')?protectedResponse(await serveOrderDemo(request,{storage,generation:this.generation,templates:data.paidOrders,readBody:readDemoRequest})):await super.fetch(request);
     if(commandKey&&response.ok&&!await storage.get(commandKey))await storage.transaction(async tx=>{await tx.put(commandKey,true);await tx.put('demo/command-count',(await tx.get('demo/command-count')??0)+1);});
     return decorateDemoAdmin(response,path);
   }

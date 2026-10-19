@@ -15,9 +15,10 @@ import data from './dist/server-data.json' with {type:'json'};
 const cookieBase='notabenda_demo';
 const permissionPage=/^\/(?:(?:dark\/)?form-permissions(?:\/react)?|form-permissions\/astro(?:\/review)?)(?:\/(?:index\.html)?)?$/u;
 const contractPage=/^\/(?:dark\/)?contract-actions\/(withdrawal|cancellation)(?:\/(?:index\.html)?)?$/u;
-const isPage=path=>permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|recorded-choices|processing-choices)(?:\/|$)/u.test(path);
+const orderPage=/^\/(?:dark\/)?orders\/(mixed|deferred|conditional)(?:\/(?:index\.html)?)?$/u;
+const isPage=path=>orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|recorded-choices|processing-choices)(?:\/|$)/u.test(path);
 const admin=/^\/demo\/admin(?:\/|$)/u;
-const api=/^\/demo\/(?:agreements\/(?:light|dark)|(?:choices|processing)\/(?:head|record)|permissions\/(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
+const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark)|(?:choices|processing)\/(?:head|record)|permissions\/(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
 export const isDemoRoute=path=>isPage(path)||admin.test(path)||api.test(path);
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 const digest=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
@@ -35,7 +36,7 @@ export async function serveDemo(request,env,{protect,readBody}){
  if(!['GET','HEAD','POST'].includes(request.method))return finish(new Response('Method not allowed.',{status:405}));
  if(request.method==='POST'&&!api.test(path))return finish(new Response('Method not allowed.',{status:405}));
  let body;
- if(api.test(path)&&!/(?:head|state)$/u.test(path)){
+ if(api.test(path)&&!/(?:head|state|quote)$/u.test(path)){
   try{body=await readBody(request);}catch{return finish(Response.json({code:'invalid-request'},{status:400}));}
  }else if(request.method==='POST')return finish(new Response('Method not allowed.',{status:405}));
  if(!secret)return finish(new Response('Demo sessions are not configured.',{status:503}));

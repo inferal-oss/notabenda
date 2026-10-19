@@ -11,7 +11,8 @@
     "./dist/styles.css",
     "./dist/consent.css",
     "./dist/services.css",
-    "./dist/guarantees.css"
+    "./dist/guarantees.css",
+    "./dist/orders.css"
   ],
   "files": [
     "dist",
@@ -191,7 +192,13 @@
       "types": "./dist/guarantee-label.d.ts",
       "import": "./dist/guarantee-label.js",
       "default": "./dist/guarantee-label.js"
-    }
+    },
+    "./orders": {
+      "types": "./dist/paid-order.d.ts",
+      "import": "./dist/paid-order.js",
+      "default": "./dist/paid-order.js"
+    },
+    "./orders.css": "./dist/orders.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

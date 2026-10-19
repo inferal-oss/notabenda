@@ -204,3 +204,7 @@ For information obtained from another source, the optional [indirect collection 
 The optional [EU guarantee notice](../../docs/GUARANTEES.md) supplies the unchanged official shop-level artwork in 24 languages, with selected-file build output and text alternatives. Code is Apache-2.0; official graphics keep their own source/use conditions. Product labels and paid ordering remain separate work.
 
 The optional `notabenda/guarantees/label` entry supplies `normalizeDurabilityGuaranteeLabel` and `renderDurabilityGuaranteeLabel` for finished producer GARAN files. React and Astro provide static wrappers. Ingestion and image validation live in `notabenda-authoring/guarantees`, keeping frontend installs dependency-free. See [product durability labels](../../docs/GUARANTEE-LABELS.md) for qualification, review and retention boundaries. **REQ-EU-GUARANTEE-LABEL**.
+
+## Paid orders
+
+Use `notabenda/orders` and `notabenda/orders.css` for expanded final-order information and an explicit payment-obligation action. Mixed carts, deposit/balance, subscriptions and conditional/calculated charges have separate totals and commitments. Your host supplies authenticated quotes, atomic admission, payment execution and durable contract confirmation. See [paid orders](../../docs/PAID-ORDERS.md) for setup and recovery behavior.

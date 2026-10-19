@@ -318,6 +318,22 @@ Features link to specific obligations and their planned verification scenarios. 
 
 **Code references:** [packages/notabenda-cf/src/history.ts](../packages/notabenda-cf/src/history.ts), [packages/notabenda-cf/src/render.ts](../packages/notabenda-cf/src/render.ts), [packages/notabenda/src/content.ts](../packages/notabenda/src/content.ts), [packages/notabenda/src/release-files.ts](../packages/notabenda/src/release-files.ts)
 
+<a id="feat-paid-orders"></a>
+
+## P2 · FEAT-PAID-ORDERS — Paid order information and deliberate payment action
+
+**Status:** partial.
+
+**Deliverables:**
+
+- Reviewed item and commitment definitions bound to host-calculated quotes, exact money, total/due-now prices, recurring and conditional charges, and product-specific guarantee labels.
+- Static vanilla/React/Astro information and a native/headless final action with uncertainty recovery. No implicit terms agreement, payment execution or durable contract confirmation.
+- Mixed, deferred and conditional examples with session-isolated DO admission and searchable retained reviews are implemented. Reusable production Cloudflare admission/asset archives, host payment/stock integration, durable confirmation and legal/national review remain open.
+
+**Requirement links:** [REQ-EU-ORDER-ACTION](requirements/README.md#req-eu-order-action).
+
+**Code references:** [packages/notabenda/src/paid-order-policy.ts](../packages/notabenda/src/paid-order-policy.ts), [packages/notabenda/src/paid-order.ts](../packages/notabenda/src/paid-order.ts), [packages/notabenda/src/paid-order-action.ts](../packages/notabenda/src/paid-order-action.ts), [packages/notabenda/src/paid-order-ui.ts](../packages/notabenda/src/paid-order-ui.ts), [packages/notabenda/src/orders.css](../packages/notabenda/src/orders.css), [packages/notabenda-authoring/src/paid-order-build.ts](../packages/notabenda-authoring/src/paid-order-build.ts), [packages/notabenda/src/react-documents.ts](../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/PaidOrderReview.astro](../packages/notabenda/src/astro/PaidOrderReview.astro), [examples/orders/build.mjs](../examples/orders/build.mjs), [examples/orders/client.mjs](../examples/orders/client.mjs), [site/order-demo.mjs](../site/order-demo.mjs), [site/order-demo-admin.mjs](../site/order-demo-admin.mjs), [site/order-admin.css](../site/order-admin.css)
+
 <a id="feat-discovery"></a>
 
 ## P3 · FEAT-DISCOVERY — Standalone discovery tooling

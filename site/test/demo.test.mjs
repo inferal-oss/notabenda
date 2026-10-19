@@ -18,6 +18,21 @@ function environment(){
 }
 async function session(env){const response=await serveHost(req('/demo/admin'),env);assert.equal(response.status,200,await response.clone().text());const cookie=response.headers.get('Set-Cookie').split(';')[0],value=cookie.split('=')[1];return {cookie,generation:await digest(value.split('.')[0]),response};}
 const headers=s=>({Cookie:s.cookie,'X-Notabenda-Demo-Generation':s.generation});
+
+// @requirements REQ-EU-ORDER-ACTION REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-A11Y
+test('order examples issue session-bound quotes and retain one exact request with readable isolated history',async()=>{
+ const {env,objects}=environment(),a=await session(env),b=await session(env);
+ for(const route of ['mixed','deferred','conditional']){
+  const page=await serveHost(req('/orders/'+route+'/',{headers:headers(a)}),env);assert.equal(page.status,200);const html=await page.text();assert.match(html,/notabenda-demo-generation/);assert.match(html,/class="demo-corner"/);assert.match(page.headers.get('Content-Security-Policy'),/script-src 'self'/);
+  const get=s=>serveHost(req('/demo/orders/'+route+'/quote',{headers:headers(s)}),env),review=await(await get(a)).json(),other=await(await get(b)).json();assert.notEqual(review.quote.contextRef,other.quote.contextRef);assert.equal(review.definition.definitionId,data.paidOrders[route].definition.definitionId);assert.deepEqual(await(await get(a)).json(),review);
+  const request={schemaVersion:1,requestId:crypto.randomUUID(),reviewId:review.reviewId,definitionId:review.definition.definitionId,quoteId:review.quote.quoteId,quoteRevision:review.quote.revision,contextRef:review.quote.contextRef};
+  const post=(s,body)=>serveHost(req('/demo/orders/'+route+'/submit',{method:'POST',headers:{...headers(s),Origin:'https://demo.example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(body)}),env),responses=await Promise.all([post(a,request),post(a,request)]);assert.deepEqual(responses.map(r=>r.status),[200,200]);const outcome=await responses[0].json();assert.deepEqual(await responses[1].json(),outcome);assert.equal(outcome.status,'received');assert.equal((await post(b,request)).status,409);assert.equal((await post(a,{...request,quoteRevision:'other'})).status,409);
+  const detail=await serveHost(req('/demo/admin/orders/record?id='+outcome.id,{headers:headers(a)}),env),content=await detail.text();assert.equal(detail.status,200);for(const label of ['Information presented','Payment','Not performed','Not formed','Not sent',request.requestId,request.reviewId])assert.ok(content.includes(label),label);assert.match(content,/class="demo-corner"/);assert.match(content,/order-admin.css/);assert.equal((await serveHost(req('/demo/admin/orders/record?id='+outcome.id,{headers:headers(b)}),env)).status,404);
+  const search=await serveHost(req('/demo/admin/orders?q='+request.requestId,{headers:headers(a)}),env);assert.equal(search.status,200);assert.match(await search.text(),/1 request/);
+ }
+ const stores=[...objects.values()].map(o=>o.storage);for(const storage of stores){const records=await storage.list({prefix:'demo/orders/received/',limit:200});assert.equal(records.size,storage===stores[0]?3:0);}
+ const denied=await serveHost(req('/demo/orders/mixed/quote'),env);assert.equal(denied.status,409);
+});
 test('visitors receive independent seeded DO databases while operational admin stays protected',async()=>{
  const {env,objects}=environment(),a=await session(env),b=await session(env);assert.notEqual(a.cookie,b.cookie);assert.equal(objects.size,2);
  assert.match(a.response.headers.get('Set-Cookie'),/^__Host-notabenda_demo=[a-f0-9]{64}\.[a-f0-9]{64}; Path=\/; HttpOnly; SameSite=Lax; Secure$/);assert.equal(a.response.headers.get('Vary'),'Cookie');assert.equal(a.response.headers.get('Cache-Control'),'private, no-store, no-transform');

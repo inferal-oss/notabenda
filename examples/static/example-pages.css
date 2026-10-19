@@ -82,3 +82,14 @@
  @media(forced-colors:active){.producer-inspection-image{forced-color-adjust:none}}
  @media print{.producer-inspection{display:none}}
 }
+
+/* @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y */
+.nb-demo-orders .nb-document{width:min(100% - 3rem,66rem);max-width:none;padding-block:clamp(2.5rem,6vw,5rem)}
+.nb-demo-orders .order-example-intro{max-width:48rem;margin-bottom:3.5rem}.nb-demo-orders .order-example-intro h1{font-size:clamp(2.3rem,6vw,4.4rem);line-height:1.06;letter-spacing:-.055em;max-width:14ch;margin:1rem 0 1.5rem;font-weight:520}.nb-demo-orders .order-example-intro>p{font-size:1rem;line-height:1.8;color:var(--nb-muted)}
+.nb-demo-orders .order-example-intro nav{display:flex;flex-wrap:wrap;gap:.25rem 1.5rem;border-block:1px solid var(--nb-line);padding:.75rem 0;margin-top:1.75rem}.nb-demo-orders .order-example-intro nav a{display:inline-flex;align-items:center;min-height:44px;font-size:.8125rem;color:var(--nb-muted);text-decoration:none}.nb-demo-orders .order-example-intro nav a[aria-current]{color:var(--nb-text);font-weight:600}.nb-demo-orders .order-example-intro .order-example-note{font-size:.8125rem;max-width:42rem;margin-top:1rem}
+.nb-demo-orders .nb-order-heading>h2{font-size:1.6rem}.nb-demo-orders .nb-order-items>h3,.nb-demo-orders .nb-order-prices>h3{font-size:.75rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;color:var(--nb-muted)}.nb-demo-orders .nb-order-item>header>h4,.nb-demo-orders .nb-order-payment>header>h4{font-size:1.15rem}
+.nb-demo-orders .nb-order-total-price{border-bottom:0}.nb-demo-orders .nb-order-action{border:0;padding:0;margin-top:2rem}.nb-demo-orders #order-request-record{border-top:1px solid var(--nb-line);padding-top:1.5rem;font-size:.875rem}
+@media(max-width:40rem){.nb-demo-orders .nb-document{width:calc(100% - 2rem)}.nb-demo-orders .order-example-intro nav{gap:.25rem 1rem}}
+@media(max-width:30rem){.nb-demo-page>.nb-site-header{flex-wrap:wrap;gap:.25rem}.nb-demo-page>.nb-site-header nav{flex-basis:100%;justify-content:flex-start}.nb-demo-page>.nb-site-header nav a{white-space:nowrap}}
+
+.nb-demo-orders .nb-site-footer{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}.nb-demo-orders .nb-site-footer>a{display:inline-flex;align-items:center;min-height:44px;font-size:.8125rem;text-underline-offset:.2em}

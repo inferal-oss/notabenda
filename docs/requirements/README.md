@@ -10,7 +10,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 
 | Scope | Requirements | Coverage |
 | --- | --- | --- |
-| EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing), [REQ-EU-GUARANTEE-NOTICE](#req-eu-guarantee-notice), [REQ-EU-GUARANTEE-LABEL](#req-eu-guarantee-label) | Selected items: partial, planned |
+| EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing), [REQ-EU-GUARANTEE-NOTICE](#req-eu-guarantee-notice), [REQ-EU-GUARANTEE-LABEL](#req-eu-guarantee-label) | Selected items: partial |
 | FR | [REQ-FR-SCOPE](#req-fr-scope) | Selected items: planned |
 | DE | [REQ-DE-DEVICE](#req-de-device), [REQ-DE-CANCEL](#req-de-cancel), [REQ-DE-WITHDRAWAL](#req-de-withdrawal) | Selected items: partial, planned |
 | IT | [REQ-IT-REPROMPT](#req-it-reprompt) | Selected items: partial |
@@ -1111,21 +1111,21 @@ For applicable paid electronic distance contracts, present the required pre-orde
 
 **Applies when:** An electronic distance contract with a consumer creates a payment obligation within the Directive and applicable national implementing law.
 
-**Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** primary-law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Current Article 8(2): Article 6(1)(a), (e), (la), (o), (p); Article 8(7) confirmation (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)); [CJEU C-400/22 Conny: official press summary](https://curia.europa.eu/jcms/upload/docs/application/pdf/2024-05/cp240090en.pdf) — Conditional payment obligation; full judgment review remains open (read; [SRC-EU-ORDER-CONNY-SUMMARY](SOURCES.md#src-eu-order-conny-summary)).
+**Sources:** [Consumer Rights Directive 2011/83/EU, consolidated 27 September 2026](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) — Current Article 8(2): Article 6(1)(a), (e), (la), (o), (p); Article 8(7) confirmation (read; [SRC-EU-CRD-20260927](SOURCES.md#src-eu-crd-20260927)); [CJEU C-400/22 Conny judgment](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A62022CJ0400) — Paragraphs 44–56 and operative part: conditional payment obligations (read; [SRC-EU-ORDER-CONNY](SOURCES.md#src-eu-order-conny)); [CJEU C-249/21 Fuhrmann-2 judgment](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62021CJ0249) — Indexed primary paragraphs 28/34: button wording itself; complete judgment retrieval remains open (search-result; [SRC-EU-ORDER-FUHRMANN](SOURCES.md#src-eu-order-fuhrmann)).
 
-**Features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-CONTRACT-ACTIONS](../FEATURES.md#feat-contract-actions).
+**Features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-CONTRACT-ACTIONS](../FEATURES.md#feat-contract-actions), [FEAT-PAID-ORDERS](../FEATURES.md#feat-paid-orders).
 
 <a id="verify-eu-order-action"></a>
 
-**VERIFY-EU-ORDER-ACTION (planned):** Applicable paid-checkout fixtures expose the required pre-order facts and a reviewed unambiguous payment action, with durable contract confirmation checked separately.
+**VERIFY-EU-ORDER-ACTION (partial):** Verify exact mixed/deferred/recurring/conditional price and commitment facts, product label binding/readiness, reviewed native action, quote identities/expiry, uncertainty recovery, atomic demo admission and isolated searchable history. Durable contract confirmation and production/regional acceptance remain separate open checks.
 
 **Timing:** Current consolidation reread on 19 October 2026. Conditional harmonised durability label is now included in the pre-order cross-references.
 
-**Limits/open review:** A generic terms checkbox or stored receipt does not implement the paid-order button, all pre-contract information, or durable-medium confirmation. Shop notice implementation is a prerequisite only; it does not implement the conditional product label or final order action.
+**Limits/open review:** Selected frontend mechanics and website-only DO examples are implemented. Applicability, national/linguistic review, complete pre-contract information, early-performance/digital-content permissions, original-asset archives, production host payment/stock admission and durable-medium confirmation remain separate open work. A received request does not mean payment, fulfillment or contract confirmation.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/paid-order-policy.ts](../../packages/notabenda/src/paid-order-policy.ts), [packages/notabenda/src/paid-order.ts](../../packages/notabenda/src/paid-order.ts), [packages/notabenda/src/paid-order-action.ts](../../packages/notabenda/src/paid-order-action.ts), [packages/notabenda/src/paid-order-ui.ts](../../packages/notabenda/src/paid-order-ui.ts), [packages/notabenda/src/orders.css](../../packages/notabenda/src/orders.css), [packages/notabenda-authoring/src/paid-order-build.ts](../../packages/notabenda-authoring/src/paid-order-build.ts), [packages/notabenda/src/react-documents.ts](../../packages/notabenda/src/react-documents.ts), [packages/notabenda/src/astro/PaidOrderReview.astro](../../packages/notabenda/src/astro/PaidOrderReview.astro), [examples/orders/build.mjs](../../examples/orders/build.mjs), [examples/orders/client.mjs](../../examples/orders/client.mjs), [site/order-demo.mjs](../../site/order-demo.mjs), [site/order-demo-admin.mjs](../../site/order-demo-admin.mjs), [site/order-admin.css](../../site/order-admin.css), [packages/notabenda/test/paid-order.test.mjs](../../packages/notabenda/test/paid-order.test.mjs), [site/test/order-demo.test.mjs](../../site/test/order-demo.test.mjs), [site/test/demo.test.mjs](../../site/test/demo.test.mjs), [docs/verification/paid-orders.md](../../docs/verification/paid-orders.md)
 
 <a id="req-product-terms-acceptance"></a>
 

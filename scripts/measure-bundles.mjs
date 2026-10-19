@@ -1,3 +1,4 @@
+// @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-BUNDLE-BUDGET
 import {build,version as esbuildVersion} from 'esbuild';
 import {gzipSync} from 'node:zlib';
@@ -12,6 +13,8 @@ export async function measureBundles(){
   ['compiled-required','notabenda/consent','createConsentRuntime,mountControls',null],
   ['react-compiled','notabenda/react/consent','ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed',null],
   ['service-directory','notabenda/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],
+  ['paid-order-review','notabenda/orders','renderPaidOrderReview',null],
+  ['paid-order-action','notabenda/orders','createPaidOrderAction,mountPaidOrderAction',null],
   ['headless','notabenda/headless','createConsent',null],
   ['core-controls','notabenda','createConsent,mountControls',15*1024],
  ]){

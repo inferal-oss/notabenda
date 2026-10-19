@@ -25,7 +25,7 @@ test('website privacy is distinct from sample policies and stays script-free wit
  const html=await readFile(new URL('../dist/public/website-privacy/index.html',import.meta.url),'utf8'),home=await readFile(new URL('../dist/public/index.html',import.meta.url),'utf8'),sample=await readFile(new URL('../dist/public/privacy/index.html',import.meta.url),'utf8');
  const dom=new JSDOM(html),document=dom.window.document;
  assert.equal(document.querySelectorAll('script,form').length,0);assert.match(document.querySelector('h1').textContent,/Website privacy/);assert.ok(document.querySelector('.website-notice-draft')||document.querySelector('#website-operator'));
- for(const phrase of ['__Host-notabenda_demo','Cloudflare','one day without use','not immediately delete','not uploaded','not advertising','sample details']){
+ for(const phrase of ['__Host-notabenda_demo','Cloudflare','one day without use','not immediately delete','not uploaded','not advertising','sample details','sample order requests','exact review and pending request']){
   assert.ok(document.body.textContent.includes(phrase),phrase);
  }
  assert.match(home,/href="\/website-privacy">Website privacy/);assert.match(sample,/Juniper/);assert.doesNotMatch(sample,/Website privacy/);dom.window.close();

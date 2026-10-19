@@ -1,0 +1,8 @@
+---
+// @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-ASTRO
+import {renderPaidOrderReview} from '../paid-order.js';
+export interface Props {review:unknown;idPrefix:string;headingLevel?:2|3;allowPreview?:boolean;class?:string}
+const {review,idPrefix,headingLevel,allowPreview=false,class:className}=Astro.props;
+const html=renderPaidOrderReview(review,{idPrefix,allowPreview,...(headingLevel===undefined?{}:{headingLevel})});
+---
+<div class={className} set:html={html} />

@@ -549,6 +549,32 @@
         "packages/notabenda/src/content.ts",
         "packages/notabenda/src/release-files.ts"
       ]
+    },
+    {
+      "id": "FEAT-PAID-ORDERS",
+      "priority": "P2",
+      "title": "Paid order information and deliberate payment action",
+      "status": "partial",
+      "deliverables": [
+        "Reviewed item and commitment definitions bound to host-calculated quotes, exact money, total/due-now prices, recurring and conditional charges, and product-specific guarantee labels.",
+        "Static vanilla/React/Astro information and a native/headless final action with uncertainty recovery. No implicit terms agreement, payment execution or durable contract confirmation.",
+        "Mixed, deferred and conditional examples with session-isolated DO admission and searchable retained reviews are implemented. Reusable production Cloudflare admission/asset archives, host payment/stock integration, durable confirmation and legal/national review remain open."
+      ],
+      "implementationRefs": [
+        "packages/notabenda/src/paid-order-policy.ts",
+        "packages/notabenda/src/paid-order.ts",
+        "packages/notabenda/src/paid-order-action.ts",
+        "packages/notabenda/src/paid-order-ui.ts",
+        "packages/notabenda/src/orders.css",
+        "packages/notabenda-authoring/src/paid-order-build.ts",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/PaidOrderReview.astro",
+        "examples/orders/build.mjs",
+        "examples/orders/client.mjs",
+        "site/order-demo.mjs",
+        "site/order-demo-admin.mjs",
+        "site/order-admin.css"
+      ]
     }
   ],
   "sources": [
@@ -1450,7 +1476,25 @@
       "kind": "court-summary",
       "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Two-page official press summary read. Payment action also concerns obligations conditional on a later event. This is expressly not the binding judgment; full judgment review remains open."
+      "note": "Official press summary read. Full judgment is recorded separately as SRC-EU-ORDER-CONNY. The judgment takes precedence."
+    },
+    {
+      "id": "SRC-EU-ORDER-CONNY",
+      "title": "CJEU C-400/22 Conny judgment",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A62022CJ0400",
+      "kind": "court-judgment",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Full primary judgment retrieved and read, including paragraphs 42–56 and the operative part. Payment-obligation action also applies where payment depends on a later condition. Current EUR-Lex direct requests can show a JavaScript verification challenge."
+    },
+    {
+      "id": "SRC-EU-ORDER-FUHRMANN",
+      "title": "CJEU C-249/21 Fuhrmann-2 judgment",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62021CJ0249",
+      "kind": "court-judgment",
+      "checkedOn": "2026-10-19",
+      "access": "search-result",
+      "note": "Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; official press release also read. The wording on the button itself must unambiguously express payment obligation. Full judgment retrieval remains open; direct requests show a JavaScript verification challenge."
     }
   ],
   "jurisdictions": [
@@ -3499,26 +3543,50 @@
           "locator": "Current Article 8(2): Article 6(1)(a), (e), (la), (o), (p); Article 8(7) confirmation"
         },
         {
-          "sourceId": "SRC-EU-ORDER-CONNY-SUMMARY",
-          "locator": "Conditional payment obligation; full judgment review remains open"
+          "sourceId": "SRC-EU-ORDER-CONNY",
+          "locator": "Paragraphs 44–56 and operative part: conditional payment obligations"
+        },
+        {
+          "sourceId": "SRC-EU-ORDER-FUHRMANN",
+          "locator": "Indexed primary paragraphs 28/34: button wording itself; complete judgment retrieval remains open"
         }
       ],
       "discoverySourceIds": [],
       "featureIds": [
         "FEAT-TERMS",
-        "FEAT-CONTRACT-ACTIONS"
+        "FEAT-CONTRACT-ACTIONS",
+        "FEAT-PAID-ORDERS"
       ],
       "verificationIds": [
         "VERIFY-EU-ORDER-ACTION"
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": "Current consolidation reread on 19 October 2026. Conditional harmonised durability label is now included in the pre-order cross-references.",
-      "caveats": "A generic terms checkbox or stored receipt does not implement the paid-order button, all pre-contract information, or durable-medium confirmation. Shop notice implementation is a prerequisite only; it does not implement the conditional product label or final order action.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Selected frontend mechanics and website-only DO examples are implemented. Applicability, national/linguistic review, complete pre-contract information, early-performance/digital-content permissions, original-asset archives, production host payment/stock admission and durable-medium confirmation remain separate open work. A received request does not mean payment, fulfillment or contract confirmation.",
+      "implementationRefs": [
+        "packages/notabenda/src/paid-order-policy.ts",
+        "packages/notabenda/src/paid-order.ts",
+        "packages/notabenda/src/paid-order-action.ts",
+        "packages/notabenda/src/paid-order-ui.ts",
+        "packages/notabenda/src/orders.css",
+        "packages/notabenda-authoring/src/paid-order-build.ts",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/PaidOrderReview.astro",
+        "examples/orders/build.mjs",
+        "examples/orders/client.mjs",
+        "site/order-demo.mjs",
+        "site/order-demo-admin.mjs",
+        "site/order-admin.css"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/paid-order.test.mjs",
+        "site/test/order-demo.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/paid-orders.md"
+      ]
     },
     {
       "id": "REQ-PRODUCT-TERMS-ACCEPTANCE",
@@ -5898,9 +5966,14 @@
       "requirementIds": [
         "REQ-EU-ORDER-ACTION"
       ],
-      "status": "planned",
-      "expected": "Applicable paid-checkout fixtures expose the required pre-order facts and a reviewed unambiguous payment action, with durable contract confirmation checked separately.",
-      "testRefs": []
+      "status": "partial",
+      "expected": "Verify exact mixed/deferred/recurring/conditional price and commitment facts, product label binding/readiness, reviewed native action, quote identities/expiry, uncertainty recovery, atomic demo admission and isolated searchable history. Durable contract confirmation and production/regional acceptance remain separate open checks.",
+      "testRefs": [
+        "packages/notabenda/test/paid-order.test.mjs",
+        "site/test/order-demo.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/paid-orders.md"
+      ]
     },
     {
       "id": "VERIFY-PRODUCT-TERMS-ACCEPTANCE",

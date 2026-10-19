@@ -952,4 +952,24 @@ Reuse/copyright section read. General CC BY 4.0 policy has exceptions for logos/
 
 **Type:** court-summary. **Checked:** 2026-10-19. **Access:** read.
 
-Two-page official press summary read. Payment action also concerns obligations conditional on a later event. This is expressly not the binding judgment; full judgment review remains open.
+Official press summary read. Full judgment is recorded separately as SRC-EU-ORDER-CONNY. The judgment takes precedence.
+
+<a id="src-eu-order-conny"></a>
+
+## SRC-EU-ORDER-CONNY
+
+[CJEU C-400/22 Conny judgment](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A62022CJ0400)
+
+**Type:** court-judgment. **Checked:** 2026-10-19. **Access:** read.
+
+Full primary judgment retrieved and read, including paragraphs 42–56 and the operative part. Payment-obligation action also applies where payment depends on a later condition. Current EUR-Lex direct requests can show a JavaScript verification challenge.
+
+<a id="src-eu-order-fuhrmann"></a>
+
+## SRC-EU-ORDER-FUHRMANN
+
+[CJEU C-249/21 Fuhrmann-2 judgment](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62021CJ0249)
+
+**Type:** court-judgment. **Checked:** 2026-10-19. **Access:** search-result.
+
+Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; official press release also read. The wording on the button itself must unambiguously express payment obligation. Full judgment retrieval remains open; direct requests show a JavaScript verification challenge.

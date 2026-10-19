@@ -23,6 +23,11 @@
       "types": "./dist/guarantee-label-build.d.ts",
       "import": "./dist/guarantee-label-build.js",
       "default": "./dist/guarantee-label-build.js"
+    },
+    "./orders": {
+      "types": "./dist/paid-order-build.d.ts",
+      "import": "./dist/paid-order-build.js",
+      "default": "./dist/paid-order-build.js"
     }
   },
   "scripts": {

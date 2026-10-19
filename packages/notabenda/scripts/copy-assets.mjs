@@ -2,6 +2,7 @@ import {createConsentStyles} from './consent-styles.mjs';
 import { copyFile, chmod, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 await copyFile(new URL('../src/styles.css', import.meta.url), new URL('../dist/styles.css', import.meta.url));
 await copyFile(new URL('../src/services.css', import.meta.url), new URL('../dist/services.css', import.meta.url));
+await copyFile(new URL('../src/orders.css', import.meta.url), new URL('../dist/orders.css', import.meta.url));
 await copyFile(new URL('../src/guarantees.css', import.meta.url), new URL('../dist/guarantees.css', import.meta.url));
 await writeFile(new URL('../dist/consent.css',import.meta.url),createConsentStyles(await readFile(new URL('../src/styles.css',import.meta.url),'utf8')));
 await chmod(new URL('../dist/cli.js', import.meta.url), 0o755);
