@@ -981,7 +981,7 @@ Render versioned, safely structured documents with visible drafts and production
 
 **Limits/open review:** Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.
 
-**Code/test references:** [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/test/documents.test.mjs](../../packages/notabenda/test/documents.test.mjs), [packages/notabenda/test/config.test.mjs](../../packages/notabenda/test/config.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs)
+**Code/test references:** [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda/test/documents.test.mjs](../../packages/notabenda/test/documents.test.mjs), [packages/notabenda/test/config.test.mjs](../../packages/notabenda/test/config.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs)
 
 <a id="req-product-safe-content"></a>
 
@@ -1147,7 +1147,7 @@ Use an unchecked statement tied to exact archived terms and UI wording; only rep
 
 **Limits/open review:** Host supplies auth, CSRF protection, authorization, clock, retention, exact pinned-document serving and workflow completion. A stored assertion does not prove a human click, identity, enforceability, delivery or purchase completion. Preview requires independent server opt-in. Browser/platform accessibility remains partial.
 
-**Code/test references:** [packages/notabenda/src/terms.ts](../../packages/notabenda/src/terms.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda-cf/src/terms.ts](../../packages/notabenda-cf/src/terms.ts), [packages/notabenda-cf/src/render.ts](../../packages/notabenda-cf/src/render.ts), [packages/notabenda/test/terms.test.mjs](../../packages/notabenda/test/terms.test.mjs), [docs/verification/terms-browser.md](../../docs/verification/terms-browser.md)
+**Code/test references:** [packages/notabenda/src/terms.ts](../../packages/notabenda/src/terms.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda-cf/src/terms.ts](../../packages/notabenda-cf/src/terms.ts), [packages/notabenda-cf/src/render.ts](../../packages/notabenda-cf/src/render.ts), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda-cf/src/admin-style.ts](../../packages/notabenda-cf/src/admin-style.ts), [examples/static/terms-build.mjs](../../examples/static/terms-build.mjs), [examples/static/example-theme.css](../../examples/static/example-theme.css), [packages/notabenda/test/terms.test.mjs](../../packages/notabenda/test/terms.test.mjs), [docs/verification/terms-browser.md](../../docs/verification/terms-browser.md), [packages/notabenda-cf/test/admin.test.mjs](../../packages/notabenda-cf/test/admin.test.mjs)
 
 <a id="req-product-cf-host"></a>
 

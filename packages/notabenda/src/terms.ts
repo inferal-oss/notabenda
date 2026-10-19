@@ -123,21 +123,25 @@ export function mountTermsAcceptance(container: HTMLElement, options: { acceptan
   const { acceptance } = options; const offer = acceptance.getOffer(); const doc = container.ownerDocument;
   const root = doc.createElement('section'); root.className = 'nb-terms-acceptance'; root.setAttribute('aria-label','Terms agreement');
   const heading = doc.createElement('h2'); heading.textContent = 'Review the terms';
-  const link = doc.createElement('a'); link.href = offer.document.url; link.textContent = `${offer.document.title} · version ${offer.document.version}`; link.target = '_blank'; link.rel = 'noopener';
-  const metadata = doc.createElement('p'); metadata.className = 'nb-document-meta'; metadata.textContent = `Effective ${offer.document.effectiveDate} · opens in a new tab`;
+  const documentRow=doc.createElement('div');documentRow.className='nb-terms-document';
+  const documentIcon=doc.createElement('span');documentIcon.className='nb-terms-document-icon';documentIcon.setAttribute('aria-hidden','true');documentIcon.innerHTML='<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/></svg>';
+  const documentCopy=doc.createElement('div');documentCopy.className='nb-terms-document-copy';
+  const link = doc.createElement('a'); link.href = offer.document.url; link.textContent = offer.document.title;const external=doc.createElement('span');external.textContent='↗';external.setAttribute('aria-hidden','true');link.append(external); link.target = '_blank'; link.rel = 'noopener';
+  const metadata = doc.createElement('p'); metadata.className = 'nb-document-meta'; metadata.textContent = `Version ${offer.document.version} · effective ${offer.document.effectiveDate} · opens in a new tab`;link.setAttribute('aria-description',metadata.textContent);
   const label = doc.createElement('label'); label.className = 'nb-terms-statement';
   const checkbox = doc.createElement('input'); checkbox.type = 'checkbox';
   const statement = doc.createElement('span'); statement.textContent = offer.statement; label.append(checkbox,statement);
   const action = doc.createElement('button'); action.type = 'button'; action.className = 'nb-choice-button'; action.textContent = offer.actionLabel;
   const message = doc.createElement('p'); message.className = 'nb-control-status'; message.setAttribute('role','status');
-  root.append(heading,link,metadata);
+  documentCopy.append(link,metadata);documentRow.append(documentIcon,documentCopy);root.append(heading,documentRow);
   if (offer.mode === 'preview' || offer.document.reviewStatus !== 'reviewed') { const draft = doc.createElement('p'); draft.className = 'nb-draft'; draft.textContent = 'Preview · Draft terms'; root.append(draft); }
-  root.append(label,action,message); container.append(root);
+  const footer=doc.createElement('div');footer.className='nb-terms-footer';footer.append(action,message);root.append(label,footer); container.append(root);
   checkbox.addEventListener('change',()=>acceptance.setChecked(checkbox.checked));
   action.addEventListener('click',()=>{ void acceptance.submit().catch(()=>{}); });
   const unsubscribe = acceptance.subscribe(state=>{
     checkbox.checked = state.checked; checkbox.disabled = !['idle','error'].includes(state.status);
     action.disabled = !state.checked || !['idle','error'].includes(state.status);
+    root.dataset.status=state.status;
     root.setAttribute('aria-busy',String(state.status === 'submitting'));
     message.textContent = state.status === 'recorded' ? `Agreement recorded for version ${offer.document.version}.` : state.status === 'submitting' ? 'Recording your agreement…' : state.status === 'stale' ? 'The terms have changed. Reload to review the current version.' : state.status === 'retired' ? 'This agreement context has closed. Contact the site operator to start a new workflow.' : state.error === 'unavailable' ? 'This browser cannot start a secure agreement request. Try a supported browser over HTTPS.' : state.status === 'error' ? "We couldn't confirm your agreement was saved. Please try again." : '';
   });

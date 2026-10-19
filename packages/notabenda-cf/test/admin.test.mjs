@@ -33,7 +33,7 @@ test('authorized UI exposes evidence search, safe detail, and restrictive header
   const response = await worker.fetch(request(), {});
   assert.equal(response.status, 200);
   const html = await response.text();
-  assert.match(html, /Find evidence/); assert.match(html, /subject-4z2/); assert.match(html, /4 records on this page/);
+  assert.match(html, /Refine your search/); assert.match(html, /subject-4z2/); assert.match(html, /4 records on this page/);
   assert.doesNotMatch(html, /<script|https?:\/\//);
   const nonce = html.match(/<style nonce="([a-f0-9]+)"/)[1];
   assert.match(response.headers.get('content-security-policy'), new RegExp(`style-src 'nonce-${nonce}'`));
@@ -235,4 +235,12 @@ test('comparison does not infer chronology from keys, versions, or tied timestam
       assert.doesNotMatch(select, /<option value="[az]" selected>/);
     }
   }
+});
+
+/** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-A11Y */
+test('agreement inspection prioritizes the exact statement and version while retaining hostile and absent fields safely',async()=>{
+ const statement='Literal <script>statement</script>\nSecond line.',record={id:'agreement-one',data:{kind:'terms-acceptance',subjectId:'<Member>',siteId:'site-one',operationId:'operation-one',occurredAt:'2026-10-19T12:00:00Z',offer:{scopeId:'membership',mode:'preview',offerId:'offer-one',artifactId:'release-one',statement,actionLabel:'Agree <exactly>',document:{title:'Terms <one>',version:'version-one',effectiveDate:'2026-10-18',url:'javascript:alert(1)',sha256:'html-one',contentSha256:'content-one'}}}};
+ const worker=mount(createStore(createSyntheticStorage([record]))),list=await(await worker.fetch(request(),{})).text();assert.match(list,/class="agreement-entry"/);assert.match(list,/&lt;Member&gt;/);assert.match(list,/version-one/);assert.match(list,/operation-one/);assert.doesNotMatch(list,/<script|<Member>/);
+ const detail=await(await worker.fetch(request('/record?id=agreement-one'),{})).text();assert.match(detail,/workspace-agreement-detail/);assert.match(detail,/<blockquote>Literal &lt;script&gt;statement&lt;\/script&gt;\nSecond line\.<\/blockquote>/);assert.match(detail,/Agree &lt;exactly&gt;/);for(const value of ['version-one','2026-10-18','operation-one','offer-one','release-one','html-one','content-one','Inspect complete stored JSON','does not prove a human click'])assert.ok(detail.includes(value),value);assert.doesNotMatch(detail,/<script|<Member>|href="javascript:/);
+ const missing=mount(createStore(createSyntheticStorage([{id:'empty-agreement',data:{kind:'terms-acceptance'}}])));const empty=await(await missing.fetch(request('/record?id=empty-agreement'),{})).text();assert.match(empty,/Not recorded/);assert.match(empty,/Inspect complete stored JSON/);assert.doesNotMatch(empty,/undefined|<blockquote>true/);
 });

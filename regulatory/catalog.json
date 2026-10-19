@@ -3263,7 +3263,8 @@
       "implementationRefs": [
         "packages/notabenda/src/documents.ts",
         "packages/notabenda/src/config.ts",
-        "packages/notabenda/src/cli.ts"
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/styles.css"
       ],
       "testRefs": [
         "packages/notabenda/test/documents.test.mjs",
@@ -3547,11 +3548,16 @@
         "packages/notabenda/src/terms.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda-cf/src/terms.ts",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/src/admin-style.ts",
+        "examples/static/terms-build.mjs",
+        "examples/static/example-theme.css"
       ],
       "testRefs": [
         "packages/notabenda/test/terms.test.mjs",
-        "docs/verification/terms-browser.md"
+        "docs/verification/terms-browser.md",
+        "packages/notabenda-cf/test/admin.test.mjs"
       ],
       "implementationNote": "Immutable offer registration, explicit activation, active-check plus acceptance write in one transaction, deterministic per-site/subject/request idempotence, conservative client acknowledgment and readable agreement context are implemented. No public ingestion/auth endpoint is supplied."
     },
@@ -5889,7 +5895,8 @@
       "expected": "Exercise unchecked/coalesced submission, exact pinned document/action hashes, no optimistic success, lost-ack retry, active-offer transaction race, idempotency conflicts, server-bound subject/site/scope/operation, independent preview rejection, invalid clocks, store isolation and readable authorized evidence.",
       "testRefs": [
         "packages/notabenda/test/terms.test.mjs",
-        "docs/verification/terms-browser.md"
+        "docs/verification/terms-browser.md",
+        "packages/notabenda-cf/test/admin.test.mjs"
       ]
     },
     {
