@@ -11,7 +11,9 @@ This is an opt-in software mechanism. Ordinary configurations retain their conse
 Add `storageExceptions` to the normal site configuration. Each entry has a stable `id`, positive integer `revision`, explicit service/purpose/storage IDs, title, description, profile, conditions and review status. Storage owned by the entry uses `classification: 'exception'` and its `exceptionId`. It never becomes necessary storage or a consent grant.
 
 ```ts
-const appearance = {
+import type {StorageExceptionEntry} from 'notabenda';
+
+const appearance: StorageExceptionEntry = {
   id: 'reading-layout', revision: 1,
   serviceIds: ['reading-layout-service'],
   purposeIds: ['reading-layout'], storageIds: ['layout-preference'],
