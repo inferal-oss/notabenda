@@ -29,11 +29,11 @@ export function createHost(authorize){
    try{return privateResponse(await env.ASSETS.fetch(request));}catch{return reply('Assets unavailable.',503);}
   }
   const relative=path.slice(settings.basePath.length);
-  if(!path.startsWith(settings.basePath+'/')||!/^\/(?:history|choices|agreements|processing|permissions|contracts)(?:\/(?:record|diff|source|source-diff|export|export\.json))?\/?$/u.test(relative))return reply('Not found.',404);
+  if(!path.startsWith(settings.basePath+'/')||!/^\/(?:history|choices|agreements|processing|permissions|contracts)(?:\/(?:record|diff|source|source-diff|catalog-review|catalog-review-diff|export|export\.json))?\/?$/u.test(relative))return reply('Not found.',404);
   try{
    // The stable site comes from host configuration. URL/body/header values cannot select a DO.
    const workspace=env.EVIDENCE.getByName('notabenda:'+settings.siteId);
-   return privateResponse(await workspace.inspect(request,{allowExport:access.export===true,allowSource:access.source===true}));
+   return privateResponse(await workspace.inspect(request,{allowExport:access.export===true,allowSource:access.source===true,allowCatalogReview:access.catalogReview===true}));
   }catch{return reply('Evidence unavailable.',503);}
  };
 }

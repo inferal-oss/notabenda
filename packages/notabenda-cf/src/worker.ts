@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-SERVICE-CATALOG
+import {renderCatalogReview} from './catalog-render.js';
 /** @requirements REQ-PRODUCT-EVIDENCE-EXPORT */
 import {createEvidenceExportSegment, readRecordPage, recordQueryParams, MAX_EXPORT_BYTES} from './export.js';
 import { boundedText, MAX_PAGE_SIZE, normalizeRecord, validId } from './records.js';
@@ -43,15 +45,27 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
       let grant: AuthorizationGrant | null;
       try {
         grant = await authorize(request, env, context);
-        if (!grant || !grant.store || typeof grant.store.list !== 'function' || typeof grant.store.get !== 'function' || (grant.scopeLabel !== undefined && !boundedText(grant.scopeLabel, 200)) || (grant.allowExport !== undefined && typeof grant.allowExport !== 'boolean')) return response('Access denied.', 403);
+        if (!grant || !grant.store || typeof grant.store.list !== 'function' || typeof grant.store.get !== 'function' || (grant.scopeLabel !== undefined && !boundedText(grant.scopeLabel, 200)) || (grant.allowExport !== undefined && typeof grant.allowExport !== 'boolean') || (grant.allowCatalogReview!==undefined&&typeof grant.allowCatalogReview!=='boolean')) return response('Access denied.', 403);
       } catch { return response('Access denied.', 403); }
       if (request.method !== 'GET' && request.method !== 'HEAD') { const h = headers(); h.set('allow', 'GET, HEAD'); return response('Method not allowed.', 405, h); }
       if (request.url.length > 4096) return response('Request is too long.', 414);
       let url: URL;
       try { url = new URL(request.url); } catch { return response('Invalid request.', 400); }
-      if (![basePath, `${basePath}/`, `${basePath}/record`, `${basePath}/diff`, `${basePath}/source`, `${basePath}/source-diff`, `${basePath}/export`, `${basePath}/export.json`].includes(url.pathname)) return response('Not found.', 404);
+      if (![basePath, `${basePath}/`, `${basePath}/record`, `${basePath}/diff`, `${basePath}/source`, `${basePath}/source-diff`, `${basePath}/catalog-review`, `${basePath}/catalog-review-diff`, `${basePath}/export`, `${basePath}/export.json`].includes(url.pathname)) return response('Not found.', 404);
       const nonce = crypto.randomUUID().replaceAll('-', '');
-      const view = { ...presentation, basePath, title, scopeLabel: grant.scopeLabel ?? 'Host-authorized records', nonce, exportEnabled:grant.allowExport===true, sourceEnabled:typeof grant.store.getSource==='function' };
+      const view = { ...presentation, basePath, title, scopeLabel: grant.scopeLabel ?? 'Host-authorized records', nonce, exportEnabled:grant.allowExport===true, sourceEnabled:typeof grant.store.getSource==='function',catalogReviewEnabled:grant.allowCatalogReview===true&&typeof grant.store.getCatalogReview==='function' };
+      if(url.pathname===`${basePath}/catalog-review`||url.pathname===`${basePath}/catalog-review-diff`){
+        if(grant.allowCatalogReview!==true)return response('Catalog review inspection is not authorized.',403);
+        if(!grant.store.getCatalogReview)return response('Catalog review inspection is unavailable.',404);
+        const compare=url.pathname.endsWith('-diff'),allowed=compare?['before','after']:['id'];
+        const ids=allowed.map(k=>url.searchParams.get(k));
+        if(url.searchParams.size!==allowed.length||[...url.searchParams.keys()].some(k=>!allowed.includes(k))||ids.some(id=>!id||! /^[a-f0-9]{64}$/u.test(id)))return response('Invalid catalog review reference.',400);
+        try{
+          const records=await Promise.all(ids.map(async id=>{const raw=await grant.store.getCatalogReview!(id!);if(raw===undefined)return undefined;const record=normalizeRecord(raw);if(record.id!==id)throw Error('Invalid store response.');return record;}));
+          if(records.some(r=>r===undefined))return response('Retained catalog review not found.',404);
+          return response(renderCatalogReview(records[0]!,compare?records[1]:undefined,view),200,headers(nonce));
+        }catch{return response('Catalog reviews could not be inspected.',500);}
+      }
       if (url.pathname === `${basePath}/source` || url.pathname === `${basePath}/source-diff`) {
         const compare = url.pathname.endsWith('/source-diff');
         const kind = url.searchParams.get('kind');

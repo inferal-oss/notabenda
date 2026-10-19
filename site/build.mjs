@@ -1,3 +1,4 @@
+import {catalogReleaseExample} from '../examples/catalog-releases/build.mjs';
 import {websiteNoticeFacts,websiteNoticeBody} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-SYNTAX-HIGHLIGHTING
 // @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
@@ -97,8 +98,9 @@ const next = structuredClone(config); next.purposes[0].retention='Sample: 30 day
 next.documents.terms.sections[1].paragraphs.push('This draft revision clarifies the fictional content example.');
 for(const doc of Object.values(next.documents)) doc.version='draft-2';
 const latest=compileLegalDocuments(next,{mode:'preview'});
+const catalogExample=catalogReleaseExample(config);
 const agreements=[]; const releases=[{artifact:initial.artifact,metadata:{recordedAt:'2026-10-17T10:00:00Z',changeNote:'Initial fictional example documents.'}},{artifact:latest.artifact,metadata:{recordedAt:'2026-10-18T10:00:00Z',changeNote:'Clarify sample retention and fictional terms content.'}}];
-releases.push(...(await authoringExample()).releases,...(await retainedReleaseExample()).releases);
+releases.push(...catalogExample.releases,...(await authoringExample()).releases,...(await retainedReleaseExample()).releases);
 for(const [theme,prefix] of [['light',''],['dark','dark/']]) {
   const offer=JSON.parse(files[`${prefix}agreement/offer.json`]);
   agreements.push({theme,offer}); releases.push({artifact:JSON.parse(files[`artifacts/${offer.artifactId}.json`]),metadata:{recordedAt:'2026-10-18T10:00:00Z',changeNote:`Fictional ${theme} agreement demonstration.`}});

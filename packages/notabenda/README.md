@@ -195,3 +195,6 @@ The optional [service catalog](../../docs/SERVICE-CATALOG.md) supplies offline p
 
 
 For optional browser recognition, import `notabenda/catalog/browser` and the separately selected `notabenda/catalog/browser/seed`; pass that seed as `browserRules` to `mountDiscovery`, or capture explicitly with `captureBrowserCatalog`. `notabenda catalog detect --capture FILE` reviews rich pinned captures or origin/name-only legacy hints. Source snapshots, partial matches and coverage remain visible; no result activates a service. See [discovery](../../docs/DISCOVERY.md) for rule semantics, privacy limits and private exports.
+
+
+`notabenda/catalog/release` provides `attachCatalogReview` to bind current selected catalog facts to a compiled static/MDX release. Public files carry only a descriptor; the separate archive is for authorized history storage. Finalize before creating notices/offers. [Release workflow](../../docs/SERVICE-CATALOG.md#retain-selections-with-policy-releases).

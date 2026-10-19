@@ -1,3 +1,4 @@
+import {normalizeCatalogReviewDescriptor} from './catalog-release-policy.js';
 import {documentKinds,isSafeLink,toPublicConfig} from './config.js';
 import {canonicalJson,sha256} from './content.js';
 import type {ValidationOptions} from './types.js';
@@ -51,7 +52,8 @@ function sections(value:Json|undefined):void {
 function validate(input:Json,siteId:string,mode:'preview'|'production'):ObjectValue {
   const a=object(input);if(!exact(a,['manifest','publicConfig','pages','documents'],['renderedBodies']))return invalid();
   const m=object(a.manifest);
-  if(!exact(m,['schemaVersion','artifactId','siteId','locale','mode','configSha256','documents','requirementIds'])||m.schemaVersion!==1||!hash(m.artifactId)||!hash(m.configSha256)||m.siteId!==siteId||!['preview','production'].includes(String(m.mode))||mode==='production'&&m.mode!=='production'||!requirements(m.requirementIds))return invalid();
+  if(!exact(m,['schemaVersion','artifactId','siteId','locale','mode','configSha256','documents','requirementIds'],['catalogReview'])||m.schemaVersion!==1||!hash(m.artifactId)||!hash(m.configSha256)||m.siteId!==siteId||!['preview','production'].includes(String(m.mode))||mode==='production'&&m.mode!=='production'||!requirements(m.requirementIds))return invalid();
+  if(m.catalogReview!==undefined)normalizeCatalogReviewDescriptor(m.catalogReview);
   const {artifactId,...descriptor}=m;if(sha256(canonicalJson(descriptor))!==artifactId)return invalid();
   let config;try{config=toPublicConfig(a.publicConfig,{mode:m.mode as 'preview'|'production'});}catch{return invalid();}
   if(canonicalJson(config)!==canonicalJson(a.publicConfig)||sha256(canonicalJson(config))!==m.configSha256||config.site.id!==siteId||config.site.locale!==m.locale)return invalid();

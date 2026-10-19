@@ -120,7 +120,16 @@
         "catalog/browser-providers.json",
         "packages/notabenda/src/setup-catalog-cli.ts",
         "packages/notabenda/src/cli-json.ts",
-        "packages/notabenda/src/catalog-node.ts"
+        "packages/notabenda/src/catalog-node.ts",
+        "packages/notabenda/src/catalog-release.ts",
+        "packages/notabenda/src/catalog-release-policy.ts",
+        "packages/notabenda/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/catalog-release-policy.ts",
+        "packages/notabenda-cf/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/history.ts",
+        "packages/notabenda-cf/src/catalog-render.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "examples/catalog-releases/build.mjs"
       ]
     },
     {
@@ -3062,12 +3071,16 @@
       "timingNote": null,
       "caveats": "Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.",
       "implementationRefs": [
-        "packages/notabenda/src/content.ts"
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/catalog-release.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/content.test.mjs",
         "packages/notabenda/test/cli.test.mjs",
-        "packages/notabenda/test/history-integration.test.mjs"
+        "packages/notabenda/test/history-integration.test.mjs",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md",
+        "site/test/host.test.mjs"
       ]
     },
     {
@@ -3166,11 +3179,19 @@
       "caveats": "Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.",
       "implementationRefs": [
         "packages/notabenda-cf/src/history.ts",
-        "packages/notabenda/src/content.ts"
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/catalog-release.ts",
+        "packages/notabenda/src/catalog-release-policy.ts",
+        "packages/notabenda-cf/src/catalog-release-policy.ts",
+        "packages/notabenda-cf/src/catalog-render.ts",
+        "examples/catalog-releases/build.mjs"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
-        "packages/notabenda/test/history-integration.test.mjs"
+        "packages/notabenda/test/history-integration.test.mjs",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md",
+        "site/test/host.test.mjs"
       ]
     },
     {
@@ -3683,7 +3704,8 @@
         "packages/notabenda/src/cli.ts",
         "examples/releases/build.mjs",
         "examples/authoring/build.mjs",
-        "examples/rights/build.mjs"
+        "examples/rights/build.mjs",
+        "examples/catalog-releases/build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/retained-releases.test.mjs",
@@ -3691,7 +3713,9 @@
         "site/test/host.test.mjs",
         "docs/verification/retained-releases.md",
         "scripts/check-site-runtime.mjs",
-        "packages/notabenda/test/rights.test.mjs"
+        "packages/notabenda/test/rights.test.mjs",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md"
       ],
       "implementationNote": "A bounded build-time API and repeatable CLI input emit only immutable artifact paths. Exact historical bytes and rich bodies are preserved without source evaluation. Clean-build tests and a two-version example connect public pinned URLs to private authorized comparison."
     },
@@ -4650,7 +4674,16 @@
         "packages/notabenda/src/catalog-node.ts",
         "packages/notabenda/src/catalog-review.ts",
         "packages/notabenda/src/catalog-review-ui.ts",
-        "packages/notabenda/src/catalog-review-cli.ts"
+        "packages/notabenda/src/catalog-review-cli.ts",
+        "packages/notabenda/src/catalog-release.ts",
+        "packages/notabenda/src/catalog-release-policy.ts",
+        "packages/notabenda/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/catalog-release-policy.ts",
+        "packages/notabenda-cf/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/history.ts",
+        "packages/notabenda-cf/src/catalog-render.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "examples/catalog-releases/build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -4666,9 +4699,13 @@
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
         "packages/notabenda/test/setup-project.test.mjs",
         "packages/notabenda/test/catalog-review.test.mjs",
-        "docs/verification/catalog-review.md"
+        "docs/verification/catalog-review.md",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md",
+        "site/test/host.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs"
       ],
-      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Reviewed profiles and automatic immutable release-provenance archival remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts."
+      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Reviewed provider profiles remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -5206,7 +5243,10 @@
       "testRefs": [
         "packages/notabenda/test/content.test.mjs",
         "packages/notabenda/test/cli.test.mjs",
-        "packages/notabenda/test/history-integration.test.mjs"
+        "packages/notabenda/test/history-integration.test.mjs",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md",
+        "site/test/host.test.mjs"
       ]
     },
     {
@@ -5241,7 +5281,10 @@
       "expected": "Repeated recording is idempotent, conflicts/tampering fail, exact history is retained, and actual core-generated privacy/cookie/terms artifacts can be compared safely.",
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
-        "packages/notabenda/test/history-integration.test.mjs"
+        "packages/notabenda/test/history-integration.test.mjs",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md",
+        "site/test/host.test.mjs"
       ]
     },
     {
@@ -5406,7 +5449,9 @@
         "site/test/host.test.mjs",
         "docs/verification/retained-releases.md",
         "scripts/check-site-runtime.mjs",
-        "packages/notabenda/test/rights.test.mjs"
+        "packages/notabenda/test/rights.test.mjs",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md"
       ]
     },
     {
@@ -5706,7 +5751,10 @@
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
         "packages/notabenda/test/setup-project.test.mjs",
         "packages/notabenda/test/catalog-review.test.mjs",
-        "docs/verification/catalog-review.md"
+        "docs/verification/catalog-review.md",
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "docs/verification/catalog-release.md",
+        "site/test/host.test.mjs"
       ]
     },
     {

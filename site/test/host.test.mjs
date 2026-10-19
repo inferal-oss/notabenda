@@ -142,7 +142,7 @@ test('React examples ship conservative SSR and self-hosted runtime only on their
 
 // @requirements REQ-PRODUCT-AUTHORING
 test('authored examples publish static HTML while source inspection stays authenticated across object restarts',async()=>{
-  const releases=data.releases.filter(r=>r.artifact.sourceAttachments);
+  const releases=data.releases.filter(r=>Object.keys(r.artifact.sourceAttachments??{}).length);
   assert.equal(releases.length,2);
   const [before,after]=releases.map(r=>r.artifact.artifact.manifest.artifactId);
   const storage=createSyntheticStorage([]);const env={ADMIN_KEY:key};
@@ -433,4 +433,13 @@ test('host cache policy preserves released bytes and caching directives while pr
   }
  }
  const denied=await serveHost(request('/backoffice'),{ADMIN_KEY:key});assert.equal(denied.status,401);assert.equal(denied.headers.get('Cache-Control'),'private, no-store, no-transform');assert.equal(denied.headers.get('Vary'),'Authorization');
+});
+
+// @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-RETAINED-RELEASES
+test('catalog-reference releases keep public legal bytes unchanged and private comparison separately inspectable',async()=>{
+ const retained=data.releases.filter(r=>r.artifact.catalogReview);assert.equal(retained.length,2);const [before,after]=retained.map(r=>r.artifact);assert.deepEqual(before.artifact.pages,after.artifact.pages);assert.notEqual(before.artifact.manifest.artifactId,after.artifact.manifest.artifactId);
+ const root=new URL('../dist/public/',import.meta.url);for(const archive of [before,after]){const id=archive.artifact.manifest.artifactId;const published=JSON.parse(await readFile(new URL(`artifacts/${id}.json`,root),'utf8'));assert.equal(Object.hasOwn(published,'catalogReview'),false);assert.deepEqual(published.manifest.catalogReview,archive.artifact.manifest.catalogReview);assert.doesNotMatch(JSON.stringify(published),/PRIVATE_CATALOG_EXAMPLE_REASON/);}
+ const page=await readFile(new URL('catalog-releases/index.html',root),'utf8');assert.match(page,/example-pages\.css/);assert.match(page,/catalog-review-diff/);
+ const workspace=new EvidenceWorkspace(state(createSyntheticStorage([])),{ADMIN_KEY:key}),path='/backoffice/history/catalog-review-diff?before='+before.artifact.manifest.artifactId+'&after='+after.artifact.manifest.artifactId;
+ assert.equal((await workspace.fetch(request(path))).status,401);const comparison=await workspace.fetch(request(path,{headers:auth}));assert.equal(comparison.status,200);const html=await comparison.text();assert.match(html,/Catalog review changes/);assert.match(html,/Cedar Mail/);assert.match(html,/Changed: catalog facts/);assert.doesNotMatch(html,/PRIVATE_CATALOG_EXAMPLE_REASON/);
 });

@@ -6,7 +6,7 @@ After installing the preview package, run `npx notabenda discover --project . --
 
 For a single interactive workflow, run `npx notabenda wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
 
-Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Search providers or inspect discovery candidates, confirm the actual site use, and add selected services to configuration. Setup retains the selected reference facts and private notes. Legal-release provenance archival remains planned; see [feature status](FEATURES.md#feat-service-catalog) for coverage.
+Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Search providers or inspect discovery candidates, confirm the actual site use, and add selected services to configuration. Setup retains the selected reference facts and private notes. Explicit selected-reference release archival is available; see [feature status](FEATURES.md#feat-service-catalog) for coverage.
 
 A versioned catalog should connect service selection, discovery, disclosures and operator review. A site selects and confirms its own use of a service; the catalog supplies reusable facts and technical recognition rules. It covers hosting, identity, payments, support, media and other recipients as well as analytics and advertising.
 
@@ -47,11 +47,11 @@ Static scan recognizes declared npm dependencies, JavaScript/TypeScript module i
 
 Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files, symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
-`--out-dir` requires a new directory and writes a private review JSON, text and `.gitignore`. Scanning does not execute project modules, SDKs, installers or network probes. It leaves configuration unchanged, keeps findings local and leaves CI policy to the adopter. Catalog-selection snapshots are not yet automatically joined to immutable legal-release provenance. See [verification](verification/service-catalog.md).
+`--out-dir` requires a new directory and writes a private review JSON, text and `.gitignore`. Scanning does not execute project modules, SDKs, installers or network probes. It leaves configuration unchanged, keeps findings local and leaves CI policy to the adopter. An explicit build finalizer can bind current selected-reference facts to an immutable release; private reasons remain separate. See [verification](verification/service-catalog.md).
 
 The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
 
-The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `notabenda/catalog/selection` exports explicit draft selection and private pin validation; `notabenda/catalog/ui` supplies the optional local picker. These are separate from automatic catalog provenance archival in legal releases, which remains planned.
+The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `notabenda/catalog/selection` exports explicit draft selection and private pin validation; `notabenda/catalog/ui` supplies the optional local picker. Use the explicit release finalizer below to retain selected references with policies.
 
 ## Design direction
 
@@ -135,4 +135,39 @@ Verify false positives and shared hosts, bounded/hostile rules, normalization an
 
 ## Renewing a prior selection
 
-Admin setup and `catalog review` share the explicit [re-review workflow](SETUP.md#re-review-an-existing-service). The initial comparison uses the pinned reference; loading a newer catalog is separate and does not apply it. New justification and confirmation replace only that local service's review pin. Full current-service/purpose preconditions prevent a stale comparison from being approved. Operator labels and integration settings are preserved; private revision history retains prior and renewed selected facts. This history is not automatically attached to immutable legal releases and does not contain independent identity, time or provider verification.
+Admin setup and `catalog review` share the explicit [re-review workflow](SETUP.md#re-review-an-existing-service). The initial comparison uses the pinned reference; loading a newer catalog is separate and does not apply it. New justification and confirmation replace only that local service's review pin. Full current-service/purpose preconditions prevent a stale comparison from being approved. Operator labels and integration settings are preserved; private revision history retains prior and renewed selected facts. The explicit release finalizer retains current selected-reference facts, excluding this private revision history and its justifications. Neither record contains independent identity, time or provider verification.
+
+## Retain selections with policy releases
+
+Finalize a static or Markdown/MDX build with the current confirmed selections before creating notices or offers:
+
+```ts
+import {compileLegalDocuments} from 'notabenda/content';
+import {attachCatalogReview} from 'notabenda/catalog/release';
+import {readSetupCatalogSelections} from 'notabenda/catalog/selection';
+
+const compiled = compileLegalDocuments(reviewedSiteConfig);
+const release = attachCatalogReview(compiled, readSetupCatalogSelections(privateReport));
+// Publish release.files. Send release.archive only to your authorized backend.
+// Create consent notices and terms/form offers from release.artifact afterward.
+```
+
+`attachCatalogReview` works with `compileAuthoredDocuments` output too. It preserves exact legal HTML, rich bodies, source attachments and fragments. The final manifest binds a digest and selection count; its artifact ID and pinned URLs change. Earlier artifacts remain unchanged and can be retained with `createRetainedReleaseFiles`. Do not retarget existing notices or offers; create them from the final release.
+
+The separate archive contains the selected product/provider revisions, source references and matching public service/purpose facts. It excludes selection justifications, questionnaire answers and re-review history. Those remain in the private setup report. The count describes attached selections, not inventory coverage. Services without catalog references remain valid custom inventory. Reference updates alone do not decide legal materiality or permission changes.
+
+Stale service disclosures or purpose facts, duplicate service IDs, empty selections and mismatched source archives fail. No catalog refresh, discovery, approval or publishing occurs. The snapshot is limited to 32 selections and 48 KiB; it shares the combined 124 KiB compiler archive budget with documents and authored sources. The default backend reserves 128 KiB including host metadata.
+
+The static CLI reads an explicit report and writes an exclusive private directory outside the public output, with directory/file modes 0700/0600 and an ignore file:
+
+```sh
+npx notabenda build --preview --config notabenda.config.json \
+  --catalog-report setup.private.json \
+  --private-out-dir ./private-release --out-dir ./public-legal
+```
+
+Keep `private-release/release.private.json` off the public host and outside version control. The private directory parent must exist; nested public/private paths are rejected, including aliases through symbolic links. Removing `--preview` requires the usual reviewed production configuration. This CLI does not compile Markdown/MDX; use the authoring API before the same finalizer.
+
+`recordLegalRelease` requires the matching catalog attachment when its descriptor is present. It also rejects undeclared, stale or altered attachments. Existing releases without a descriptor continue to work. The normal history projection and evidence export omit the selected-reference snapshot. A scoped history store exposes `getCatalogReview(releaseId)` separately; the admin worker requires an explicit `allowCatalogReview: true` grant for `/catalog-review` and `/catalog-review-diff`. Inspection, source access or export permission alone does not grant this access. The generated starter forwards the independent host permission `catalogReview`.
+
+The admin view shows selected service use, catalog/product/provider revisions and source status. Comparisons separate catalog facts, site use and purpose changes from document content/rendering changes. Both releases must belong to the same host-authorized site scope. An archive does not independently establish operator identity, review time, source accuracy or publication. Try [the catalog history example](/catalog-releases) and see [verification](verification/catalog-release.md).

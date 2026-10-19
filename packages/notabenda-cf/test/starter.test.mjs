@@ -51,12 +51,12 @@ test('generated host authorizes before assets or DO access and independently gat
   const request=(path,options)=>new Request('https://example.test'+path,options);
   for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/history','/workspace/setup','/assets/setup.mjs','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
   assert.equal(lookups,0);assert.equal(assets,0);
-  const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false});
+  const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
   for(const path of ['/workspace/setup','/assets/setup.mjs'])assert.equal((await read(request(path),env)).status,403);
   for(const path of ['/workspace/private','/workspace/other/history','/workspace/history/write'])assert.equal((await read(request(path),env)).status,404);
   assert.equal((await read(request('/workspace/history',{method:'POST',body:'private'}),env)).status,405);assert.equal(assets,0);assert.equal(lookups,1);
-  const configure=createHost(()=>({inspect:true,configure:true,export:true,source:true}));const setup=await configure(request('/workspace/setup'),env);assert.equal(setup.status,200);assert.match(await setup.text(),/data-notabenda-setup/);assert.equal(setup.headers.get('Cache-Control'),'private, no-store');
-  assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true});
+  const configure=createHost(()=>({inspect:true,configure:true,export:true,source:true,catalogReview:true}));const setup=await configure(request('/workspace/setup'),env);assert.equal(setup.status,200);assert.match(await setup.text(),/data-notabenda-setup/);assert.equal(setup.headers.get('Cache-Control'),'private, no-store');
+  assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true,allowCatalogReview:true});
  }finally{await rm(cwd,{recursive:true,force:true});}
 });
 
@@ -71,5 +71,16 @@ test('generated workspace starts empty, archives only matching sites and preserv
   const id=authored.manifest.artifactId;assert.equal((await workspace.inspect(request('history/source?id='+id+'&kind=terms'))).status,404);const response=await workspace.inspect(request('history/source?id='+id+'&kind=terms'),{allowSource:true});assert.equal(response.status,200);assert.match(await response.text(),/Fictional authored terms/);
   assert.equal((await workspace.inspect(request('history/export'))).status,403);assert.equal((await workspace.inspect(request('history/export'),{allowExport:true,allowSource:false})).status,200);
   const invalid={...build.artifact,pages:{...build.artifact.pages,'terms/index.html':'tampered'}};await assert.rejects(workspace.recordRelease(invalid));
+ }finally{await rm(cwd,{recursive:true,force:true});}
+});
+
+// @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-CF-HISTORY
+test('generated workspace preserves catalog attachments and uses an independent private inspection grant',async()=>{
+ const {catalogReleaseExample}=await import('../../../examples/catalog-releases/build.mjs'),{first}=catalogReleaseExample(await fixture()),cwd=await directory();
+ try{const target=await scaffold(cwd,first.manifest.siteId),{createWorkspace}=await import(pathToFileURL(join(target,'src/workspace.mjs'))),workspace=createWorkspace(createSyntheticStorage([]));
+  await workspace.recordRelease(first.archive);await assert.rejects(workspace.recordRelease(first.artifact));
+  const request=new Request('https://example.test/workspace/history/catalog-review?id='+first.manifest.artifactId);
+  for(const access of [{},{allowSource:true},{allowExport:true}])assert.equal((await workspace.inspect(request,access)).status,403);
+  const response=await workspace.inspect(request,{allowCatalogReview:true});assert.equal(response.status,200);assert.match(await response.text(),/Cedar Mail/);
  }finally{await rm(cwd,{recursive:true,force:true});}
 });

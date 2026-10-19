@@ -24,6 +24,8 @@ export interface RecordStore {
   get(id: string): Promise<EvidenceRecord | undefined>;
   /** Optional, separately requested source inspection within this same host-authorized store scope. */
   getSource?(releaseId:string,kind:'privacy'|'cookies'|'terms'):Promise<EvidenceRecord|undefined>;
+  /** Separate private selected-reference view; never traversed by ordinary list/get/export. */
+  getCatalogReview?(releaseId:string):Promise<EvidenceRecord|undefined>;
 }
 /** Minimal structural subset of the asynchronous Durable Object storage API. */
 export interface DurableStorage {
@@ -36,6 +38,8 @@ export interface AuthorizationGrant {
   scopeLabel?: string;
   /** Explicit per-request bulk-read permission. Omitted/false disables both export routes. */
   allowExport?: boolean;
+  /** Explicit per-request permission for retained selected-reference inspection/comparison. */
+  allowCatalogReview?:boolean;
 }
 export interface ExecutionContextLike { waitUntil(promise: Promise<unknown>): void }
 /** Navigation is presentation only. Every destination must authorize its own requests. */

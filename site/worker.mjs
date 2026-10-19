@@ -115,7 +115,7 @@ export class EvidenceWorkspace {
       const section = new RegExp('^'+this.adminBasePath+'/(history|evidence|agreements|choices|recorded|processing|permissions|contracts|lifecycle)(?:/|$)','u').exec(path)?.[1];
       if(section) {
         await this.initialize();
-        return protectedResponse(await createAdminWorker({...adminPresentation(this.adminBasePath),basePath:`${this.adminBasePath}/${section}`,title:{history:'Document revisions',evidence:'Sample evidence',agreements:'Terms agreements',choices:'Cookie choices',recorded:'Sandbox activity',processing:'Processing opt-outs',permissions:'Form permissions',contracts:'Contract declarations',lifecycle:'Retention & holds'}[section],authorize:()=>({store:sections[section](),scopeLabel:this.adminBasePath==='/backoffice'?'Evidence workspace':'Your demo workspace',allowExport:true})}).fetch(request,this.env));
+        return protectedResponse(await createAdminWorker({...adminPresentation(this.adminBasePath),basePath:`${this.adminBasePath}/${section}`,title:{history:'Document revisions',evidence:'Sample evidence',agreements:'Terms agreements',choices:'Cookie choices',recorded:'Sandbox activity',processing:'Processing opt-outs',permissions:'Form permissions',contracts:'Contract declarations',lifecycle:'Retention & holds'}[section],authorize:()=>({store:sections[section](),scopeLabel:this.adminBasePath==='/backoffice'?'Evidence workspace':'Your demo workspace',allowExport:true,allowCatalogReview:true})}).fetch(request,this.env));
       }
       if(path === this.adminBasePath || path === this.adminBasePath+'/') return protectedResponse(new Response(null,{status:303,headers:{Location:this.adminBasePath+'/history'}}));
       return protectedResponse(new Response('Not found.',{status:404}));

@@ -25,6 +25,7 @@ import {normalizeProcessingNotice,processingServiceScope} from './processing.js'
 import type {ProcessingNotice} from './processing.js';
 import type {ProcessingActivity} from './types.js';
 export {createRetainedReleaseFiles} from './release-files.js';
+import type {CatalogReleaseReview,CatalogReviewDescriptor} from './catalog-release-policy.js';
 
 export function canonicalJson(value: unknown): string {
   if (value === null || typeof value !== 'object') return JSON.stringify(value);
@@ -96,6 +97,8 @@ export interface LegalBuild {
     locale: string;
     mode: 'preview' | 'production';
     configSha256: string;
+    /** Digest of an explicitly attached, separately retained selected-reference snapshot. */
+    catalogReview?:CatalogReviewDescriptor;
     documents: CompiledDocument[];
     requirementIds: RequirementId[];
   };
@@ -116,6 +119,7 @@ export interface LegalSourceArchive {
   schemaVersion:1;
   artifact:LegalArtifact;
   sourceAttachments:Partial<Record<DocumentKind,{format:'md'|'mdx';source:string}>>;
+  catalogReview?:CatalogReleaseReview;
 }
 
 /** Deterministic output; does not access the filesystem, network, clock, or operator-only metadata. */

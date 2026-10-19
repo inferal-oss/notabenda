@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-SERVICE-CATALOG
+import {normalizeCatalogReleaseReview,normalizeCatalogReviewDescriptor} from './catalog-release-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 import {normalizeScopeGuardPolicy} from './scope-guard-policy.js';
 import { boundedText, normalizeRecord } from './records.js';
@@ -32,6 +34,7 @@ export async function validateLegalArtifact(input: unknown): Promise<Record<stri
   if (Object.keys(artifact).some(key => !['manifest','publicConfig','pages','documents','renderedBodies'].includes(key))) throw new Error('Invalid legal artifact fields.');
   const manifest = object(artifact.manifest);
   if (!hash(manifest.artifactId) || typeof manifest.siteId !== 'string' || manifest.schemaVersion !== 1 || !['production','preview'].includes(String(manifest.mode))) throw new Error('Invalid artifact identity.');
+  if(manifest.catalogReview!==undefined)normalizeCatalogReviewDescriptor(manifest.catalogReview);
   const descriptor = { ...manifest }; delete descriptor.artifactId;
   if (await sha256(canonicalJson(descriptor)) !== manifest.artifactId) throw new Error('Artifact identity does not match its manifest.');
   const pages = object(artifact.pages); const documents = object(artifact.documents);
@@ -63,10 +66,10 @@ export async function validateLegalArtifact(input: unknown): Promise<Record<stri
 /** @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-CF-HISTORY
  * Public validation and private-source validation are separate contracts. Every declared source is required here.
  */
-export async function validateLegalSourceArchive(input:unknown):Promise<{artifact:Record<string,JsonValue>;sourceAttachments:Record<string,JsonValue>}> {
+export async function validateLegalSourceArchive(input:unknown):Promise<{artifact:Record<string,JsonValue>;sourceAttachments:Record<string,JsonValue>;catalogReview?:Record<string,JsonValue>}> {
   const value=object(normalizeRecord({id:'archive',data:input},MAX_ARCHIVE_BYTES).data);
   const envelope=value.schemaVersion===1&&value.artifact!==undefined;
-  if(envelope&&Object.keys(value).sort().join(',')!==['schemaVersion','artifact','sourceAttachments'].sort().join(','))throw new Error('Invalid private archive envelope.');
+  if(envelope&&(!Object.hasOwn(value,'sourceAttachments')||Object.keys(value).some(k=>!['schemaVersion','artifact','sourceAttachments','catalogReview'].includes(k))))throw new Error('Invalid private archive envelope.');
   const artifact=await validateLegalArtifact(envelope?value.artifact:input);
   const sources=envelope?object(value.sourceAttachments):{};
   const descriptors=object(artifact.manifest).documents as JsonValue[];
@@ -76,13 +79,20 @@ export async function validateLegalSourceArchive(input:unknown):Promise<{artifac
     const source=object(sources[String(d.kind)]);const descriptor=object(d.authoring);
     if(Object.keys(source).sort().join(',')!=='format,source'||source.format!==descriptor.format||typeof source.source!=='string'||new TextEncoder().encode(source.source).length!==descriptor.sourceBytes||await sha256(source.source)!==descriptor.sourceSha256)throw new Error('Private authored source does not match its descriptor.');
   }
-  return {artifact,sourceAttachments:sources};
+  const catalogReview=envelope&&value.catalogReview!==undefined?object(value.catalogReview):undefined;
+  const descriptor=object(artifact.manifest).catalogReview;
+  if((descriptor===undefined)!==(catalogReview===undefined))throw Error('Private catalog review must match the declared release attachment.');
+  if(catalogReview!==undefined){
+    const d=normalizeCatalogReviewDescriptor(descriptor),review=normalizeCatalogReleaseReview(catalogReview,artifact.publicConfig);
+    if(await sha256(canonicalJson(catalogReview))!==d.sha256||review.selections.length!==d.selectionCount)throw Error('Catalog review does not match its release descriptor.');
+  }
+  return {artifact,sourceAttachments:sources,...(catalogReview===undefined?{}:{catalogReview})};
 }
 
 export async function validateStoredLegalRelease(input:unknown):Promise<Record<string,JsonValue>> {
   const release=object(normalizeRecord({id:'release',data:input},MAX_ARCHIVE_BYTES).data);
   if(release.kind!=='document-release')throw new Error('Invalid release record.');
-  const archive=release.sourceAttachments===undefined?release.artifact:{schemaVersion:1,artifact:release.artifact!,sourceAttachments:release.sourceAttachments};
+  const archive=release.sourceAttachments===undefined&&release.catalogReview===undefined?release.artifact:{schemaVersion:1,artifact:release.artifact!,sourceAttachments:release.sourceAttachments??{},...(release.catalogReview===undefined?{}:{catalogReview:release.catalogReview})};
   return (await validateLegalSourceArchive(archive)).artifact;
 }
 
@@ -92,9 +102,9 @@ export async function recordLegalRelease(storage: HistoryStorage, input: unknown
   createDurableObjectStore(storage, { prefix }); // Use the same scope validation for reads and writes.
   if (typeof storage.transaction !== 'function') throw new Error('Atomic storage transactions are required.');
   if (metadata.changeNote !== undefined && !boundedText(metadata.changeNote, 2000) || metadata.actor !== undefined && !boundedText(metadata.actor, 200) || metadata.recordedAt !== undefined && (!boundedText(metadata.recordedAt, 64) || !/^\d{4}-\d{2}-\d{2}T/u.test(metadata.recordedAt) || !Number.isFinite(Date.parse(metadata.recordedAt)))) throw new Error('Invalid release metadata.');
-  const {artifact,sourceAttachments}=await validateLegalSourceArchive(input);
+  const {artifact,sourceAttachments,catalogReview}=await validateLegalSourceArchive(input);
   const id = object(artifact.manifest).artifactId as string;
-  const release: Record<string, JsonValue> = { kind: 'document-release', artifact, ...(Object.keys(sourceAttachments).length?{sourceAttachments}:{}), ...(metadata.changeNote === undefined ? {} : { changeNote: metadata.changeNote }), ...(metadata.actor === undefined ? {} : { actor: metadata.actor }), ...(metadata.recordedAt === undefined ? {} : { recordedAt: metadata.recordedAt }) };
+  const release: Record<string, JsonValue> = { kind: 'document-release', artifact, ...(Object.keys(sourceAttachments).length?{sourceAttachments}:{}), ...(catalogReview===undefined?{}:{catalogReview}), ...(metadata.changeNote === undefined ? {} : { changeNote: metadata.changeNote }), ...(metadata.actor === undefined ? {} : { actor: metadata.actor }), ...(metadata.recordedAt === undefined ? {} : { recordedAt: metadata.recordedAt }) };
   const serialized = canonicalJson(release);
   if (new TextEncoder().encode(serialized).length > MAX_ARCHIVE_BYTES) throw new Error('Legal release exceeds the 128 KiB archive limit.');
   return storage.transaction(async transaction => {
@@ -116,6 +126,7 @@ function projection(value: unknown, id: string): JsonValue {
   return {
     kind: 'document-release', artifactId: manifest.artifactId, siteId: manifest.siteId!,
     documents: artifact.documents!, manifest,
+    ...(release.catalogReview===undefined?{}:{hasCatalogReview:true}),
     ...(release.sourceAttachments===undefined?{}:{sourceKinds:Object.keys(object(release.sourceAttachments))}),
     ...(release.recordedAt === undefined ? {} : { occurredAt: release.recordedAt }),
     ...(release.actor === undefined ? {} : { actor: release.actor }),
@@ -134,7 +145,14 @@ export function createDocumentHistory(storage: DurableStorage, options: HistoryO
     },
   };
   const store=createDurableObjectStore(projectedStorage, { prefix, ...(options.scanLimit === undefined ? {} : { scanLimit: options.scanLimit }) });
-  return {...store,async getSource(releaseId,kind){
+  return {...store,async getCatalogReview(releaseId){
+    if(!/^[a-f0-9]{64}$/u.test(releaseId))throw Error('Invalid catalog review reference.');
+    const raw=await storage.get(prefix+releaseId);if(raw===undefined)return undefined;
+    const release=object(normalizeRecord({id:releaseId,data:raw},MAX_ARCHIVE_BYTES).data),artifact=await validateStoredLegalRelease(release),manifest=object(artifact.manifest);
+    if(manifest.artifactId!==releaseId)throw Error('Invalid release identity.');
+    if(release.catalogReview===undefined)return undefined;
+    return normalizeRecord({id:releaseId,data:{kind:'catalog-release-review-record',artifactId:releaseId,siteId:manifest.siteId!,descriptor:manifest.catalogReview!,catalogReview:release.catalogReview}});
+  },async getSource(releaseId,kind){
     if(!/^[a-f0-9]{64}$/u.test(releaseId)||!['privacy','cookies','terms'].includes(kind))throw new Error('Invalid source reference.');
     const raw=await storage.get(prefix+releaseId);if(raw===undefined)return undefined;
     const release=object(normalizeRecord({id:releaseId,data:raw},MAX_ARCHIVE_BYTES).data);

@@ -3,12 +3,18 @@ import {runDiscoveryCli} from './discovery-cli.js';
 /** @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-RETAINED-RELEASES */
 import {runSetupWizard} from './setup-cli.js';
 import {createReadStream} from 'node:fs';
-import { readFile, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import {readCliJson} from './cli-json.js';
+import {readSetupCatalogSelections} from './catalog-selection.js';
+import {attachCatalogReview} from './catalog-release.js';
+import {canonicalJson} from './content.js';
+import { readFile, writeFile, mkdir, realpath } from 'node:fs/promises';
+import { resolve, sep, dirname, basename } from 'node:path';
 import { validateSiteConfig, SiteConfigError } from './config.js';
 import { compileLegalDocuments,createRetainedReleaseFiles } from './content.js';
 import { writeBuildFiles } from './files.js';
 import { createStarterConfig } from './starter.js';
+
+const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
 const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
@@ -28,6 +34,9 @@ With --answers, findings are saved privately without adding services automatical
 --retain-artifact FILE applies to build and can be repeated. Supply trusted public
 compiler artifacts to keep old pinned document URLs in a clean deployment.
 Private MD/MDX source archives are not publication inputs. Preview remains explicit.
+Build --catalog-report FILE --private-out-dir NEW_DIRECTORY attaches current selected
+reference facts to the release and writes a separate private archive. Justifications
+and questionnaire history stay in the report. Keep the private directory off your web host.
 Discovery: --capture FILE (repeat up to 20) supplies explicit browser capture JSON.
 --config FILE selects the inventory; --json prints the private review. Optional
 --out-dir DIRECTORY writes a new private review directory and never overwrites.
@@ -51,7 +60,7 @@ async function main(): Promise<void> {
   if(command==='catalog'){if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
-  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined;
+  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined;
   const retainedPaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
@@ -60,12 +69,15 @@ async function main(): Promise<void> {
     seen.add(flag);
     if (flag === '--preview') preview = true;
     else if (flag === '--json') json = true;
-    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog') {
+    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir') {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw new Error('CLI option requires a value.');
-      if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
+      if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
     } else throw new Error('Unknown CLI option. Run notabenda --help.');
   }
+  if((catalogReportPath||privateOutDir)&&(command!=='build'||!catalogReportPath||!privateOutDir))throw Error('Build requires --catalog-report and --private-out-dir together.');
+  if(privateOutDir){
+    const pub=await canonicalOutput(resolve(outDir)),priv=resolve(await realpath(dirname(resolve(privateOutDir))),basename(privateOutDir));if(pub===priv||priv.startsWith(pub+sep)||pub.startsWith(priv+sep))throw Error('Public output and private archive directories must be separate, non-nested paths.');}
   if (seen.has('--out-dir') && !['build','wizard'].includes(command!)) throw new Error('--out-dir is only valid for build or wizard.');
   if (seen.has('--retain-artifact') && command !== 'build') throw new Error('--retain-artifact is only valid for build.');
   if (json && command !== 'check') throw new Error('--json is only valid for check.');
@@ -90,7 +102,13 @@ async function main(): Promise<void> {
     return;
   }
   if (!result.valid) throw new SiteConfigError(result.diagnostics);
-  const build = compileLegalDocuments(input, { mode });
+  let build = compileLegalDocuments(input, { mode });
+  let archive:import('./content.js').LegalSourceArchive|undefined;
+  if(catalogReportPath){
+    const report=await readCliJson(catalogReportPath,512*1024,'Catalog report could not be read as bounded ordinary JSON.');
+    if(!report||typeof report!=='object'||Array.isArray(report)||(report as Record<string,unknown>).kind!=='private-setup-report')throw Error('Supply an explicit private setup report with current catalog selections.');
+    const finalized=attachCatalogReview(build,readSetupCatalogSelections(report));build=finalized;archive=finalized.archive;
+  }
   const retained:unknown[]=[];
   for(const path of retainedPaths){
     // Stream explicit inputs with a hard bound, rather than discovering files in a workspace.
@@ -101,6 +119,15 @@ async function main(): Promise<void> {
   const pinned=retained.length?createRetainedReleaseFiles(retained,{siteId:build.publicConfig.site.id,mode}):{};
   for(const [path,contents] of Object.entries(pinned))if(Object.hasOwn(build.files,path)&&build.files[path]!==contents)throw new Error('A retained artifact conflicts with the current release.');
   const css = await readFile(new URL('./styles.css', import.meta.url), 'utf8');
+  if(archive&&privateOutDir){
+    // Exclusive private output is never added to public build.files. No existing directory is reused.
+    const root=resolve(privateOutDir);await mkdir(root,{mode:0o700});
+    // Recheck physical paths after creation: unresolved names may alias on case-insensitive volumes.
+    const actualPrivate=await realpath(root),actualPublic=await canonicalOutput(resolve(outDir));
+    if(actualPrivate===actualPublic||actualPrivate.startsWith(actualPublic+sep)||actualPublic.startsWith(actualPrivate+sep))throw Error('Public output and private archive directories resolve to overlapping paths. No private archive was written.');
+    await writeFile(resolve(root,'release.private.json'),canonicalJson(archive)+'\n',{flag:'wx',mode:0o600});
+    await writeFile(resolve(root,'.gitignore'),'*\n',{flag:'wx',mode:0o600});
+  }
   await writeBuildFiles(resolve(outDir), { ...build.files,...pinned, 'assets/notabenda.css': css });
   console.log(`Built ${build.manifest.documents.length} ${mode} documents in ${outDir}. Artifact: ${build.manifest.artifactId}`);
 }

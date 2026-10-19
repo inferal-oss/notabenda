@@ -158,6 +158,11 @@
       "types": "./dist/catalog-review.d.ts",
       "import": "./dist/catalog-review.js",
       "default": "./dist/catalog-review.js"
+    },
+    "./catalog/release": {
+      "types": "./dist/catalog-release.d.ts",
+      "import": "./dist/catalog-release.js",
+      "default": "./dist/catalog-release.js"
     }
   },
   "bin": {

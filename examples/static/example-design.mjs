@@ -3,6 +3,7 @@
 import {readFile} from 'node:fs/promises';
 const leaf='<svg viewBox="0 0 32 32" width="27" height="27" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const profiles={
+ 'catalog-releases/index.html':['catalog-releases','service-catalog'],
  'services/index.html':['services','services'], 'dark/services/index.html':['services','services'],
  'contract-actions/withdrawal/index.html':['contracts','contract-actions'],
  'contract-actions/cancellation/index.html':['contracts','contract-actions'],
