@@ -137,7 +137,14 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
     choice(item.classification, ['necessary', 'optional', 'exception'], `${path}.classification`);
     if (typeof item.serviceId === 'string' && !serviceIds.has(item.serviceId)) error(`${path}.serviceId`, 'Reference a declared service.', 'unknown-service');
     if(item.classification==='exception'&&!text(item.exceptionId)||item.classification!=='exception'&&item.exceptionId!==undefined)error(path+'.exceptionId','Only exception storage must reference its explicit declaration.','invalid-exception',['REQ-UK-EXCEPTIONS']);
-    if (item.classification === 'necessary') required(item, 'necessityReason', path);
+    // @requirements REQ-DE-DEVICE REQ-IE-DEVICE: record the claimed condition; do not certify its qualification.
+    if (item.classification === 'necessary') {
+      const ids:RequirementId[]=['REQ-PRODUCT-CONFIG','REQ-EU-DEVICE'];
+      if(list(config.jurisdictions).includes('DE'))ids.push('REQ-DE-DEVICE');
+      if(list(config.jurisdictions).includes('IE'))ids.push('REQ-IE-DEVICE');
+      if(!text(item.necessityReason))error(`${path}.necessityReason`,'Explain why this storage is needed for the requested service or transmission. A category label alone does not establish an exemption.','required-field',ids);
+      placeholder(item.necessityReason,`${path}.necessityReason`);
+    }
     else if (item.necessityReason !== undefined) required(item, 'necessityReason', path);
   }
   if(config.storageExceptions!==undefined)try{normalizeStorageExceptionPolicy(config.storageExceptions,config as unknown as ExceptionInventory,{allowPreview:options.mode!=='production'});}catch{error('storageExceptions','Declare reviewed qualifying exceptions with disjoint service/purpose/storage scope and explicit scope guards.','invalid-exception',['REQ-UK-EXCEPTIONS']);}

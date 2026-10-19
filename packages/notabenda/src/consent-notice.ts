@@ -1,3 +1,4 @@
+// @requirements REQ-FR-SCOPE
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
 import type {ConsentLocalization} from './localization-policy.js';

@@ -24,7 +24,9 @@ Generated from [the catalog](../../regulatory/catalog.json). Dates below record 
 
 [CNIL: tracker requirements](https://cnil.fr/fr/cookies-et-autres-traceurs/que-dit-la-loi)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** read.
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Read prior consent, new consent-requiring purposes, withdrawal and conditional exemptions. This page is dated 29 September 2020; checking it is not a legal review.
 
 <a id="src-de-tdddg"></a>
 
@@ -32,7 +34,9 @@ Generated from [the catalog](../../regulatory/catalog.json). Dates below record 
 
 [Germany TDDDG section 25](https://www.gesetze-im-internet.de/ttdsg/__25.html)
 
-**Type:** law. **Checked:** 2026-10-18. **Access:** read.
+**Type:** law. **Checked:** 2026-10-19. **Access:** read.
+
+Read section 25(1)-(2): prior informed consent and the transmission-only/requested-service exceptions. Qualification remains operator review.
 
 <a id="src-it-garante"></a>
 
@@ -70,7 +74,9 @@ Retrieved official FAQ. Accept/reject paragraph explicitly requires simultaneous
 
 [Irish DPC: cookies and tracking guidance](https://www.dataprotection.ie/en/dpc-guidance/guidance-cookies-and-other-tracking-technologies)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** search-result.
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Retrieved the guidance page and its linked April 2020 PDF. The two exemptions, analytics, per-purpose controls and remembered-consent duration need separate treatment. The linked statute could not be retrieved in this pass; these references establish regulator guidance rather than a fresh statutory-consolidation review.
 
 <a id="src-uk-ico"></a>
 
@@ -1005,3 +1011,23 @@ Official indexed judgment/summary: paragraphs 35, 42–51 and operative part rej
 **Type:** legislation. **Checked:** 2026-10-19. **Access:** read.
 
 Read Schedule 12 inserting PECR Schedule A1, especially paragraphs 5 and 6 (printed pages 233–234; PDF pages 243–244). This enacted source is read alongside current regulator guidance, not a complete commencement or national-applicability determination.
+
+<a id="src-ie-dpc-cookie-note"></a>
+
+## SRC-IE-DPC-COOKIE-NOTE
+
+[Irish DPC: cookies guidance note (April 2020)](https://www.dataprotection.ie/sites/default/files/uploads/2020-04/Guidance%20note%20on%20cookies%20and%20other%20tracking%20technologies.pdf)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Linked from the current DPC guidance page. Read pp. 6-11 on exemptions, analytics, purpose choices, withdrawal and duration; the PDF says last updated April 2020.
+
+<a id="src-ie-dpc-analytics"></a>
+
+## SRC-IE-DPC-ANALYTICS
+
+[Irish DPC: consent for analytics cookies](https://www.dataprotection.ie/en/faqs/cookies/do-i-need-consent-analytics-cookies)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+The answer applies to first-party as well as third-party analytics; vendor identity alone does not create an exception.

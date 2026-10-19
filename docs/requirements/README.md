@@ -11,11 +11,11 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | Scope | Requirements | Coverage |
 | --- | --- | --- |
 | EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing), [REQ-EU-GUARANTEE-NOTICE](#req-eu-guarantee-notice), [REQ-EU-GUARANTEE-LABEL](#req-eu-guarantee-label), [REQ-EU-ORDER-CONFIRMATION](#req-eu-order-confirmation) | Selected items: partial |
-| FR | [REQ-FR-SCOPE](#req-fr-scope) | Selected items: planned |
-| DE | [REQ-DE-DEVICE](#req-de-device), [REQ-DE-CANCEL](#req-de-cancel), [REQ-DE-WITHDRAWAL](#req-de-withdrawal) | Selected items: partial, planned |
+| FR | [REQ-FR-SCOPE](#req-fr-scope) | Selected items: partial |
+| DE | [REQ-DE-DEVICE](#req-de-device), [REQ-DE-CANCEL](#req-de-cancel), [REQ-DE-WITHDRAWAL](#req-de-withdrawal) | Selected items: partial |
 | IT | [REQ-IT-REPROMPT](#req-it-reprompt) | Selected items: partial |
 | ES | [REQ-ES-CHOICE](#req-es-choice) | Selected items: partial |
-| IE | [REQ-IE-DEVICE](#req-ie-device) | Selected items: planned |
+| IE | [REQ-IE-DEVICE](#req-ie-device), [REQ-IE-CONSENT-DURATION](#req-ie-consent-duration) | Selected items: partial, planned |
 | UK | [REQ-UK-EXCEPTIONS](#req-uk-exceptions) | Selected items: partial |
 | CH | [REQ-CH-PROFILING](#req-ch-profiling) | Selected items: partial |
 | BR | [REQ-BR-COOKIE-UI](#req-br-cookie-ui), [REQ-BR-CONTRACT](#req-br-contract) | Selected items: partial, planned |
@@ -147,7 +147,7 @@ Collect prior permission and revisit grants when an additional consent-requiring
 
 **Applies when:** French tracker rules apply.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
 **Sources:** [CNIL: tracker requirements](https://cnil.fr/fr/cookies-et-autres-traceurs/que-dit-la-loi) — Valid consent; prior consent; additional purposes (read; [SRC-FR-CNIL](SOURCES.md#src-fr-cnil)).
 
@@ -157,11 +157,11 @@ Collect prior permission and revisit grants when an additional consent-requiring
 
 <a id="verify-fr-scope"></a>
 
-**VERIFY-FR-SCOPE (planned):** Adding an optional purpose leaves that purpose blocked until granted; a cosmetic release alone does not invalidate existing choices.
+**VERIFY-FR-SCOPE (automated):** Adding an optional purpose leaves that purpose blocked until granted; a cosmetic release alone does not invalidate existing choices.
 
-**Limits/open review:** Audience-measurement exemptions depend on configuration and conditions, not a vendor label.
+**Limits/open review:** Audience-measurement exemptions depend on configuration and conditions, not a vendor label. Shared-engine tests cover added purposes, changed disclosures, retained refusals and presentation-only edits. No complete French pack, exemption qualification or legal review is claimed.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [packages/notabenda/src/consent-notice.ts](../../packages/notabenda/src/consent-notice.ts), [docs/verification/regional-consent.md](../../docs/verification/regional-consent.md), [packages/notabenda/test/regional-consent.test.mjs](../../packages/notabenda/test/regional-consent.test.mjs)
 
 <a id="req-de-device"></a>
 
@@ -171,7 +171,7 @@ Obtain informed consent unless a section 25 exception applies.
 
 **Applies when:** German TDDDG section 25 applies to the activity.
 
-**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
 **Sources:** [Germany TDDDG section 25](https://www.gesetze-im-internet.de/ttdsg/__25.html) — Section 25(1)–(2) (read; [SRC-DE-TDDDG](SOURCES.md#src-de-tdddg)).
 
@@ -181,11 +181,11 @@ Obtain informed consent unless a section 25 exception applies.
 
 <a id="verify-de-device"></a>
 
-**VERIFY-DE-DEVICE (planned):** A declared exemption must name its condition; an advertising loader cannot bypass the decision engine by being labeled necessary.
+**VERIFY-DE-DEVICE (partial):** A declared exemption must name its condition; an advertising loader cannot bypass the decision engine by being labeled necessary. These shared-engine checks do not establish legal qualification of the declared exception.
 
-**Limits/open review:** Transmission and requested-service necessity are narrow exceptions.
+**Limits/open review:** Transmission and requested-service necessity are narrow exceptions. Diagnostics require an explanation and cooperative lifecycle tests prevent category-based bypass. The library cannot establish that an operator's exception assertion is legally valid or stop code loaded outside its lifecycle.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [docs/verification/regional-consent.md](../../docs/verification/regional-consent.md), [packages/notabenda/test/regional-consent.test.mjs](../../packages/notabenda/test/regional-consent.test.mjs)
 
 <a id="req-it-reprompt"></a>
 
@@ -245,9 +245,9 @@ Require affirmative consent where tracking is not strictly necessary for an expl
 
 **Applies when:** Irish ePrivacy rules apply.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [Irish DPC: cookies and tracking guidance](https://www.dataprotection.ie/en/dpc-guidance/guidance-cookies-and-other-tracking-technologies) — Consent and strictly necessary exception (search-result; [SRC-IE-DPC](SOURCES.md#src-ie-dpc)).
+**Sources:** [Irish DPC: cookies and tracking guidance](https://www.dataprotection.ie/en/dpc-guidance/guidance-cookies-and-other-tracking-technologies) — Consent and strictly necessary exception (read; [SRC-IE-DPC](SOURCES.md#src-ie-dpc)); [Irish DPC: cookies guidance note (April 2020)](https://www.dataprotection.ie/sites/default/files/uploads/2020-04/Guidance%20note%20on%20cookies%20and%20other%20tracking%20technologies.pdf) — pp. 6-11: exemptions; analytics; multiple purposes; withdrawal; no implied consent (read; [SRC-IE-DPC-COOKIE-NOTE](SOURCES.md#src-ie-dpc-cookie-note)); [Irish DPC: consent for analytics cookies](https://www.dataprotection.ie/en/faqs/cookies/do-i-need-consent-analytics-cookies) — Answer and distinction between first-party and third-party analytics (read; [SRC-IE-DPC-ANALYTICS](SOURCES.md#src-ie-dpc-analytics)).
 
 **Discovery articles:** [SRC-IUB-COOKIES](SOURCES.md#src-iub-cookies).
 
@@ -255,9 +255,33 @@ Require affirmative consent where tracking is not strictly necessary for an expl
 
 <a id="verify-ie-device"></a>
 
-**VERIFY-IE-DEVICE (planned):** The Irish profile leaves optional trackers inert until an explicit choice and documents the requested-service reason for exemptions.
+**VERIFY-IE-DEVICE (partial):** The Irish profile leaves optional trackers inert until an explicit choice and documents the requested-service reason for exemptions. Current automated scenarios exercise the shared engine with an explicit Irish declaration; profile review and duration policy remain open.
 
-**Limits/open review:** Do not import prompt durations or exemption assumptions from another country's pack.
+**Limits/open review:** Do not import prompt durations or exemption assumptions from another country's pack. Shared-engine tests cover optional first-party measurement, affirmative granular choices and multipurpose gating. There is no reviewed Irish profile; remembered-consent duration is tracked separately by REQ-IE-CONSENT-DURATION.
+
+**Code/test references:** [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [docs/verification/regional-consent.md](../../docs/verification/regional-consent.md), [packages/notabenda/test/regional-consent.test.mjs](../../packages/notabenda/test/regional-consent.test.mjs)
+
+<a id="req-ie-consent-duration"></a>
+
+### REQ-IE-CONSENT-DURATION — Review remembered-consent duration against DPC guidance
+
+Compare the configured remembered-consent lifetime with the DPC default of reaffirmation within six months and its case-specific justification for longer storage.
+
+**Applies when:** Following Irish DPC guidance for cookies that remember a consent state.
+
+**Type:** regulator-recommendation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+
+**Sources:** [Irish DPC: cookies guidance note (April 2020)](https://www.dataprotection.ie/sites/default/files/uploads/2020-04/Guidance%20note%20on%20cookies%20and%20other%20tracking%20technologies.pdf) — pp. 8-9, Withdrawal of consent and footnote 2 (read; [SRC-IE-DPC-COOKIE-NOTE](SOURCES.md#src-ie-dpc-cookie-note)).
+
+**Features:** [FEAT-CHOICES](../FEATURES.md#feat-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions).
+
+<a id="verify-ie-consent-duration"></a>
+
+**VERIFY-IE-CONSENT-DURATION (planned):** A reviewed duration policy distinguishes calendar-month guidance, explicit lifetimes and case-specific justification. It must not inherit another country's prompt interval or treat a vendor retention period as consent.
+
+**Timing:** April 2020 guidance; retrieved through the current DPC page on 19 October 2026. This is guidance rather than a statutory fixed-day lifetime.
+
+**Limits/open review:** A six-calendar-month recommendation is not an automatic 180-day legal limit. Existing explicit day-based lifetimes and Italian prompt suppression do not implement this country-specific assessment.
 
 **Code/test references:** None yet; nothing implemented.
 

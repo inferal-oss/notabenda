@@ -46,7 +46,7 @@ test('each example appears in exactly one subgroup and area overviews connect gu
   assert.equal(area.querySelectorAll('script').length,0);
  }
  const producer=await page('/guide/guarantee-producer-example');assert.equal(producer.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/contracts/');assert.ok(producer.querySelector('.guide-context a[href="/guide/guarantee-labels"]'));assert.ok(producer.querySelector('.guide-context a[href="/guarantees/product/"]'));
- assert.equal(sectionForGuide('/guide/verification/paid-orders').id,'contracts');assert.equal(sectionForGuide('/guide/verification/consent-focus').id,'privacy-choices');
+ assert.equal(sectionForGuide('/guide/verification/paid-orders').id,'contracts');assert.equal(sectionForGuide('/guide/verification/consent-focus').id,'privacy-choices');assert.equal(sectionForGuide('/guide/verification/regional-consent').id,'privacy-choices');
  const home=await page('/'),overview=await page('/guide');for(const document of [home,overview])assert.deepEqual([...document.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
  assert.equal(home.querySelectorAll('.foundation,.closing').length,0);assert.equal(overview.querySelectorAll('.guide-topic').length,6);
 });

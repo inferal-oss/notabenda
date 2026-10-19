@@ -209,7 +209,9 @@
         "packages/notabenda/src/storage-exceptions.ts",
         "packages/notabenda/src/storage-exception-controls.ts",
         "packages/notabenda/src/storage-exceptions.css",
-        "packages/notabenda/src/service-runner.ts"
+        "packages/notabenda/src/service-runner.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "docs/verification/regional-consent.md"
       ]
     },
     {
@@ -232,7 +234,9 @@
         "packages/notabenda/src/consent-evidence.ts",
         "packages/notabenda-cf/src/consent.ts",
         "examples/repeat-prompts/build.mjs",
-        "examples/repeat-prompts/client.mjs"
+        "examples/repeat-prompts/client.mjs",
+        "packages/notabenda/src/consent-engine.ts",
+        "docs/verification/regional-consent.md"
       ]
     },
     {
@@ -321,7 +325,9 @@
         "packages/notabenda/src/storage-exception-controls.ts",
         "packages/notabenda/src/storage-exceptions.css",
         "packages/notabenda/src/service-runner.ts",
-        "packages/notabenda/src/storage-cleanup.ts"
+        "packages/notabenda/src/storage-cleanup.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "docs/verification/regional-consent.md"
       ]
     },
     {
@@ -695,18 +701,18 @@
       "title": "CNIL: tracker requirements",
       "url": "https://cnil.fr/fr/cookies-et-autres-traceurs/que-dit-la-loi",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-19",
       "access": "read",
-      "note": ""
+      "note": "Read prior consent, new consent-requiring purposes, withdrawal and conditional exemptions. This page is dated 29 September 2020; checking it is not a legal review."
     },
     {
       "id": "SRC-DE-TDDDG",
       "title": "Germany TDDDG section 25",
       "url": "https://www.gesetze-im-internet.de/ttdsg/__25.html",
       "kind": "law",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-19",
       "access": "read",
-      "note": ""
+      "note": "Read section 25(1)-(2): prior informed consent and the transmission-only/requested-service exceptions. Qualification remains operator review."
     },
     {
       "id": "SRC-IT-GARANTE",
@@ -740,9 +746,9 @@
       "title": "Irish DPC: cookies and tracking guidance",
       "url": "https://www.dataprotection.ie/en/dpc-guidance/guidance-cookies-and-other-tracking-technologies",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
-      "access": "search-result",
-      "note": ""
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Retrieved the guidance page and its linked April 2020 PDF. The two exemptions, analytics, per-purpose controls and remembered-consent duration need separate treatment. The linked statute could not be retrieved in this pass; these references establish regulator guidance rather than a fresh statutory-consolidation review."
     },
     {
       "id": "SRC-UK-ICO",
@@ -1616,6 +1622,24 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Read Schedule 12 inserting PECR Schedule A1, especially paragraphs 5 and 6 (printed pages 233\u2013234; PDF pages 243\u2013244). This enacted source is read alongside current regulator guidance, not a complete commencement or national-applicability determination."
+    },
+    {
+      "id": "SRC-IE-DPC-COOKIE-NOTE",
+      "title": "Irish DPC: cookies guidance note (April 2020)",
+      "url": "https://www.dataprotection.ie/sites/default/files/uploads/2020-04/Guidance%20note%20on%20cookies%20and%20other%20tracking%20technologies.pdf",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Linked from the current DPC guidance page. Read pp. 6-11 on exemptions, analytics, purpose choices, withdrawal and duration; the PDF says last updated April 2020."
+    },
+    {
+      "id": "SRC-IE-DPC-ANALYTICS",
+      "title": "Irish DPC: consent for analytics cookies",
+      "url": "https://www.dataprotection.ie/en/faqs/cookies/do-i-need-consent-analytics-cookies",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "The answer applies to first-party as well as third-party analytics; vendor identity alone does not create an exception."
     }
   ],
   "jurisdictions": [
@@ -1677,7 +1701,8 @@
       "status": "initial-research",
       "coverage": "Selected frontend, document, and integration obligations only; no production-supported pack.",
       "requirementIds": [
-        "REQ-IE-DEVICE"
+        "REQ-IE-DEVICE",
+        "REQ-IE-CONSENT-DURATION"
       ]
     },
     {
@@ -2073,12 +2098,18 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Audience-measurement exemptions depend on configuration and conditions, not a vendor label.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Audience-measurement exemptions depend on configuration and conditions, not a vendor label. Shared-engine tests cover added purposes, changed disclosures, retained refusals and presentation-only edits. No complete French pack, exemption qualification or legal review is claimed.",
+      "implementationRefs": [
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/consent-notice.ts",
+        "docs/verification/regional-consent.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/regional-consent.test.mjs"
+      ]
     },
     {
       "id": "REQ-DE-DEVICE",
@@ -2105,12 +2136,18 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Transmission and requested-service necessity are narrow exceptions.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Transmission and requested-service necessity are narrow exceptions. Diagnostics require an explanation and cooperative lifecycle tests prevent category-based bypass. The library cannot establish that an operator's exception assertion is legally valid or stop code loaded outside its lifecycle.",
+      "implementationRefs": [
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "docs/verification/regional-consent.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/regional-consent.test.mjs"
+      ]
     },
     {
       "id": "REQ-IT-REPROMPT",
@@ -2210,6 +2247,14 @@
         {
           "sourceId": "SRC-IE-DPC",
           "locator": "Consent and strictly necessary exception"
+        },
+        {
+          "sourceId": "SRC-IE-DPC-COOKIE-NOTE",
+          "locator": "pp. 6-11: exemptions; analytics; multiple purposes; withdrawal; no implied consent"
+        },
+        {
+          "sourceId": "SRC-IE-DPC-ANALYTICS",
+          "locator": "Answer and distinction between first-party and third-party analytics"
         }
       ],
       "discoverySourceIds": [
@@ -2224,10 +2269,46 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Do not import prompt durations or exemption assumptions from another country's pack.",
+      "caveats": "Do not import prompt durations or exemption assumptions from another country's pack. Shared-engine tests cover optional first-party measurement, affirmative granular choices and multipurpose gating. There is no reviewed Irish profile; remembered-consent duration is tracked separately by REQ-IE-CONSENT-DURATION.",
+      "implementationRefs": [
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "docs/verification/regional-consent.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/regional-consent.test.mjs"
+      ]
+    },
+    {
+      "id": "REQ-IE-CONSENT-DURATION",
+      "jurisdiction": "IE",
+      "title": "Review remembered-consent duration against DPC guidance",
+      "kind": "regulator-recommendation",
+      "summary": "Compare the configured remembered-consent lifetime with the DPC default of reaffirmation within six months and its case-specific justification for longer storage.",
+      "appliesWhen": "Following Irish DPC guidance for cookies that remember a consent state.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-IE-DPC-COOKIE-NOTE",
+          "locator": "pp. 8-9, Withdrawal of consent and footnote 2"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-CHOICES",
+        "FEAT-REGIONS"
+      ],
+      "verificationIds": [
+        "VERIFY-IE-CONSENT-DURATION"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "planned",
+      "effectiveFrom": null,
+      "timingNote": "April 2020 guidance; retrieved through the current DPC page on 19 October 2026. This is guidance rather than a statutory fixed-day lifetime.",
+      "caveats": "A six-calendar-month recommendation is not an automatic 180-day legal limit. Existing explicit day-based lifetimes and Italian prompt suppression do not implement this country-specific assessment.",
       "implementationRefs": [],
       "testRefs": []
     },
@@ -5931,18 +6012,22 @@
       "requirementIds": [
         "REQ-FR-SCOPE"
       ],
-      "status": "planned",
+      "status": "automated",
       "expected": "Adding an optional purpose leaves that purpose blocked until granted; a cosmetic release alone does not invalidate existing choices.",
-      "testRefs": []
+      "testRefs": [
+        "packages/notabenda/test/regional-consent.test.mjs"
+      ]
     },
     {
       "id": "VERIFY-DE-DEVICE",
       "requirementIds": [
         "REQ-DE-DEVICE"
       ],
-      "status": "planned",
-      "expected": "A declared exemption must name its condition; an advertising loader cannot bypass the decision engine by being labeled necessary.",
-      "testRefs": []
+      "status": "partial",
+      "expected": "A declared exemption must name its condition; an advertising loader cannot bypass the decision engine by being labeled necessary. These shared-engine checks do not establish legal qualification of the declared exception.",
+      "testRefs": [
+        "packages/notabenda/test/regional-consent.test.mjs"
+      ]
     },
     {
       "id": "VERIFY-IT-REPROMPT",
@@ -5972,8 +6057,19 @@
       "requirementIds": [
         "REQ-IE-DEVICE"
       ],
+      "status": "partial",
+      "expected": "The Irish profile leaves optional trackers inert until an explicit choice and documents the requested-service reason for exemptions. Current automated scenarios exercise the shared engine with an explicit Irish declaration; profile review and duration policy remain open.",
+      "testRefs": [
+        "packages/notabenda/test/regional-consent.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-IE-CONSENT-DURATION",
+      "requirementIds": [
+        "REQ-IE-CONSENT-DURATION"
+      ],
       "status": "planned",
-      "expected": "The Irish profile leaves optional trackers inert until an explicit choice and documents the requested-service reason for exemptions.",
+      "expected": "A reviewed duration policy distinguishes calendar-month guidance, explicit lifetimes and case-specific justification. It must not inherit another country's prompt interval or treat a vendor retention period as consent.",
       "testRefs": []
     },
     {

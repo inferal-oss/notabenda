@@ -4,6 +4,8 @@ Research baseline: **18 October 2026**. This document translates selected primar
 
 The expanded [requirements catalog](requirements/README.md) records individual obligations, applicability conditions, sources/locators, caveats, review status, features, actual code/test references, and verification scenarios. Its [source index](requirements/SOURCES.md) includes discovery articles and official sources across multiple jurisdictions, labeling search-only findings and blocked access. Documents/configuration, local consent state and service gating, and optional backoffice/history have implementation tests; broader legal obligations remain partial/planned, with no supported jurisdiction-pack claim.
 
+The [France, Germany and Ireland baseline report](verification/regional-consent.md) records the 19 October source check, exercised shared-engine behavior and remaining qualification gaps. Irish remembered-consent duration is a separate planned recommendation item.
+
 ## Separate the obligations
 
 Privacy notices explain processing. Cookie/device-access rules govern access to a visitor's device. A legal basis governs subsequent personal-data processing. Terms describe a contractual relationship. Marketing permissions are purpose-specific. Acknowledging a notice is not consent to every use described in it; accepting terms is not cookie consent.

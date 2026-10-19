@@ -20,6 +20,8 @@ IDs refer to inventory items. Every purpose of a managed service must be consent
 
 `scope` is an explicit material-version declaration. Effective grant scope also includes the public purpose facts and related service facts/scopes. Adding a vendor or changing these disclosures invalidates affected grants. Current refusals/withdrawals stay refused until their original expiry; a material change cannot erase rejection. General document versions, CSS, and unrelated purposes do not change that scope. There is no automatic legal materiality decision.
 
+The [regional baseline checks](verification/regional-consent.md) connect added-purpose behavior and declared German/Irish device-access conditions to primary sources and both controller APIs. Country declarations identify diagnostics; they do not certify an exception or select a complete regional pack.
+
 ## Smaller browser entry
 
 Build the consent descriptor alongside your legal pages:

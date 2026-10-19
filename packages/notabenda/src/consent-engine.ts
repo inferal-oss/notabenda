@@ -1,3 +1,4 @@
+// @requirements REQ-FR-SCOPE REQ-DE-DEVICE REQ-IE-DEVICE
 // @requirements REQ-PRODUCT-PRIVACY-SIGNALS
 import {reconcileManagedService} from './service-runner.js';
 import type {ManagedService} from './service-runner.js';
