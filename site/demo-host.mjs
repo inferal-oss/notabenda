@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-CF-HOST
+import {demoStorageNote} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 import {contractActionOperationRef} from 'notabenda-cf';
 import {contractContext} from './contract-context.mjs';
@@ -65,7 +67,7 @@ export async function serveDemo(request,env,{protect,readBody}){
     const permissionEntry=permissionPage.test(path);
     const stream=permissionEntry?`<meta name="notabenda-permission-stream" content="${await formPermissionStreamRef(permissionContext(data.formPermissions.offer,generation))}">`:'';
     const contractRoute=contractPage.exec(path)?.[1],contract=contractRoute?`<meta name="notabenda-contract-operation" content="${await contractActionOperationRef(contractContext(data.contractActions.definitions[contractRoute],generation))}">`:'';
-    content=(await response.text()).replace('</head>',`<meta name="notabenda-demo-generation" content="${generation}">${stream}${contract}</head>`);
+    content=(await response.text()).replace(/<main\b/u,demoStorageNote+'<main').replace('</head>',`<meta name="notabenda-demo-generation" content="${generation}">${stream}${contract}<link rel="stylesheet" href="/assets/website-notice.css"></head>`);
    }
    response=new Response(content,{status:response.status,headers:assetHeaders});
   }else if(['/demo/admin/setup','/demo/admin/setup/'].includes(path)){

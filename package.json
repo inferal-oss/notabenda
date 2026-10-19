@@ -16,7 +16,8 @@
     "site:key": "node scripts/init-site-key.mjs",
     "site:dev": "npm run site:build && node scripts/site-wrangler.mjs dev --config site/wrangler.jsonc --ip 127.0.0.1 --port 4179 --persist-to .local/site-state",
     "site:check": "npm run site:build && node --test site/test/*.test.mjs && node scripts/site-wrangler.mjs deploy --dry-run --config site/wrangler.jsonc --outdir dist/site-worker",
-    "example:astro": "npm run build && node examples/astro/build.mjs"
+    "example:astro": "npm run build && node examples/astro/build.mjs",
+    "site:build:production": "npm run build && node site/build.mjs --production"
   },
   "devDependencies": {
     "@types/node": "26.6.5",

@@ -3086,14 +3086,17 @@
       "implementationRefs": [
         "site/host.mjs",
         "site/worker.mjs",
-        "site/build.mjs"
+        "site/build.mjs",
+        "site/website-notice.mjs",
+        "site/website-notice.css"
       ],
       "testRefs": [
         "site/test/host.test.mjs",
         "docs/verification/website-browser.md",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "site/test/website-notice.test.mjs"
       ],
-      "implementationNote": "Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete."
+      "implementationNote": "Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms."
     },
     {
       "id": "REQ-PRODUCT-CONSENT-EVIDENCE",

@@ -63,3 +63,11 @@ A day without use expires access and schedules deletion of the demo data. Valid 
 The public provisioning limiter runs before allocation. Forged signatures are rejected before a namespace lookup. Recording is bounded, and retries of existing commands remain recoverable. Fixtures use actual ledger APIs with stable request IDs, so interrupted seeding resumes without duplicating journeys. [Verification](../docs/verification/demo-workspace.md) covers these boundaries.
 
 `npm run dev` uses the same local Worker host on port 4178; `npm run site:dev` uses port 4179. Both exercise the same session protocol, rather than a separate shared-memory admin implementation.
+
+## Public website disclosure
+
+`/website-privacy` describes the host website’s actual demo session, entered data, browser storage, Cloudflare hosting and scheduled one-day idle cleanup. It is separate from the fictional `/privacy`, `/cookies` and `/terms` documents. Recorded example pages show a short storage notice before their form; the demo admin links the website notice. Canonical sample documents and archived bytes are unchanged.
+
+Before public deployment, provide the **public** build variables `NOTABENDA_WEBSITE_OPERATOR` and `NOTABENDA_WEBSITE_PRIVACY_CONTACT` (email or HTTPS URL), then use `npm run site:build:production`. This build fails before writing output when either fact is missing or invalid. It does not establish legal completeness or review. The ordinary local build renders a clearly marked preview without inventing contact details. Do not put credentials or private operating notes in these public fields.
+
+The production build command runs from the repository root; the deployment command is `node scripts/site-wrangler.mjs deploy --config site/wrangler.jsonc`. Runtime `ADMIN_KEY` is a separate host secret and must stay out of build output, source and public assets. A browser-connected build uses the project’s pinned Wrangler package. Cloudflare supports overriding its build Node version through `NODE_VERSION` or a version file; see the [build image documentation](https://developers.cloudflare.com/workers/ci-cd/builds/build-image/).

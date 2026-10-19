@@ -1159,11 +1159,11 @@ Serve repository-built assets with a host-owned authorization boundary before pr
 
 **VERIFY-PRODUCT-CF-HOST (partial):** Verify missing/bad keys before assets or DO access; normalized/direct-file routes; protected no-store responses; exact-origin bounded writes; persisted retry across object instances; allowlisted assets and a real local Workers runtime.
 
-**Implementation boundary:** Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete.
+**Implementation boundary:** Repository-built landing/docs/examples, host-only env-key Basic authentication over HTTPS (loopback exception), canonical route protection, bounded same-origin demo writes and fixed-scope storage are implemented. Wrangler bundles successfully; actual local SQLite receipts survive process restart. Cloud deployment and production operational checks remain incomplete. Host website disclosure is separate from sample documents, requires explicit operator/contact facts for the public build and explains real demo storage before recorded forms.
 
 **Limits/open review:** Host template only; not package authentication or a multi-tenant identity provider. Stores synthetic examples, not durable visitor consent receipts. Cloud deployment, production routing, backup/retention and full browser/platform review remain separate.
 
-**Code/test references:** [site/host.mjs](../../site/host.mjs), [site/worker.mjs](../../site/worker.mjs), [site/build.mjs](../../site/build.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/website-browser.md](../../docs/verification/website-browser.md), [scripts/check-site-runtime.mjs](../../scripts/check-site-runtime.mjs)
+**Code/test references:** [site/host.mjs](../../site/host.mjs), [site/worker.mjs](../../site/worker.mjs), [site/build.mjs](../../site/build.mjs), [site/website-notice.mjs](../../site/website-notice.mjs), [site/website-notice.css](../../site/website-notice.css), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/website-browser.md](../../docs/verification/website-browser.md), [scripts/check-site-runtime.mjs](../../scripts/check-site-runtime.mjs), [site/test/website-notice.test.mjs](../../site/test/website-notice.test.mjs)
 
 <a id="req-product-consent-evidence"></a>
 
