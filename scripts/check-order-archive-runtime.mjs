@@ -24,6 +24,6 @@ let originals=0;for(const item of review.definition.items)if(item.guarantee?.sta
  const head=await fetch(origin+path,{method:'HEAD',headers});assert.equal(head.status,200);assert.equal(await head.text(),'');originals++;
 }
 const other=await newSession(),privateView=await fetch(origin+base+'/order-review?id='+id,{headers:{Cookie:other.cookie}});assert.equal(privateView.status,404);
-const download=await get(base+'/export.json');assert.equal(download.status,200);const exported=await download.json();assert.equal(exported.records.length,1);assert.equal(exported.records[0].data.id,id);assert.doesNotMatch(JSON.stringify(exported),/characteristics|producerLabel|<svg/);
+const download=await get(base+'/export.json?q='+encodeURIComponent(body.requestId));assert.equal(download.status,200);const exported=await download.json();assert.equal(exported.records.length,1);assert.equal(exported.records[0].data.id,id);assert.doesNotMatch(JSON.stringify(exported),/characteristics|producerLabel|<svg/);
 if(!saved){await mkdir(folder,{recursive:true});await writeFile(file,JSON.stringify({origin,session,review,body,receipt},null,2)+'\n',{mode:0o600});}
 console.log(JSON.stringify({phase:recover?'recovered-after-restart':'created',admissionId:id,originals,checks:['matching retry','one intent','exact JSON','original bytes','sandboxed image','private scope','small export','HEAD']},null,2));

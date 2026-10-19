@@ -33,7 +33,7 @@ test('order examples issue session-bound quotes and retain one exact request wit
   const search=await serveHost(req('/demo/admin/orders?q='+request.requestId,{headers:headers(a)}),env);assert.equal(search.status,200);assert.match(await search.text(),/1 record on this page/);
   const image=review.definition.items.find(i=>i.guarantee?.status==='label-provided')?.guarantee.label.asset;if(image){const view=await serveHost(req('/demo/admin/orders/order-review?id='+outcome.id,{headers:headers(a)}),env);assert.match(await view.text(),/Guarantee artwork © European Union.*Source and use conditions/u);const path='/demo/admin/orders/order-image?id='+outcome.id+'&sha256='+image.sha256,response=await serveHost(req(path,{headers:headers(a)}),env);assert.equal(response.status,200);assert.match(response.headers.get('Content-Security-Policy'),/^sandbox;/);assert.equal((await response.arrayBuffer()).byteLength,image.bytes);assert.equal((await serveHost(req(path,{headers:headers(b)}),env)).status,404);}
  }
- const stores=[...objects.values()].map(o=>o.storage);for(const storage of stores){const records=await storage.list({prefix:'notabenda/orders/juniper-order-example/events/',limit:200});assert.equal(records.size,storage===stores[0]?3:0);}
+ const stores=[...objects.values()].map(o=>o.storage);for(const storage of stores){const records=await storage.list({prefix:'notabenda/orders/juniper-order-example/events/',limit:200});assert.equal(records.size,storage===stores[0]?6:3);}
  const denied=await serveHost(req('/demo/orders/mixed/quote'),env);assert.equal(denied.status,409);
 });
 // @requirements REQ-EU-ORDER-ACTION

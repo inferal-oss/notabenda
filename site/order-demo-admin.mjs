@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-ORDER-CONFIRMATION
+// @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {createAdminWorker,matchesRecord} from 'notabenda-cf';
@@ -25,7 +27,7 @@ export async function orderDemoAdmin(request,storage){
    for(const record of candidates){scanned++;if(matchesRecord(record,query))records.push(record);if(records.length===query.limit)return {records,nextAfter:record.id,scanned};}return {records,scanned};
   },
  };
- const response=await createAdminWorker({...adminPresentation('/demo/admin'),basePath:base,title:'Order requests',authorize:()=>({store,scopeLabel:'Your demo workspace',allowExport:true,allowOrderArchive:true})}).fetch(request,{});
+ const response=await createAdminWorker({...adminPresentation('/demo/admin'),basePath:base,title:'Order requests',authorize:()=>({store,scopeLabel:'Your demo workspace',allowExport:true,allowOrderArchive:true,allowOrderConfirmation:true})}).fetch(request,{});
  if(url.pathname===base+'/order-review'&&request.method==='GET'&&response.ok){const html=await response.text(),asset=data.paidOrders.mixed.definition.items.find(i=>i.guarantee?.status==='label-provided').guarantee.label.asset,notice=asset.url.replace(/\.svg$/u,'.NOTICE.txt');return new Response(html.replace('</main>',(html.includes('class="nb-guarantee-artwork"')?`<p class="footnote">Guarantee artwork © European Union. <a href="${notice}">Source and use conditions</a>.</p>`:'')+'</main>'),{status:response.status,headers:response.headers});}
  return response;
 }

@@ -5,7 +5,7 @@ import {createDurableObjectStore} from './store.js';
 export interface PaidOrderStoreOptions {siteId:string;prefix?:string;releasePrefix?:string;allowPreview?:boolean}
 export interface PaidOrderContext extends PaidOrderStoreOptions {scopeId:string;checkoutId:string;now?:()=>Date}
 export class PaidOrderRecordError extends Error {
- constructor(readonly code:'scope-mismatch'|'invalid-review'|'invalid-asset'|'invalid-record'|'invalid-request'|'invalid-clock'|'revision-conflict'|'idempotency-conflict'|'checkout-used'|'context-retired'|'invalid-decision'|'archive-limit'|'unavailable'){super(code);this.name='PaidOrderRecordError';}
+ constructor(readonly code:'scope-mismatch'|'invalid-review'|'invalid-asset'|'invalid-record'|'invalid-request'|'invalid-clock'|'revision-conflict'|'idempotency-conflict'|'checkout-used'|'context-retired'|'invalid-decision'|'archive-limit'|'unavailable'|'invalid-confirmation'|'invalid-delivery'){super(code);this.name='PaidOrderRecordError';}
 }
 export const orderFail=(code:PaidOrderRecordError['code']):never=>{throw new PaidOrderRecordError(code);};
 export const orderSlug=(v:unknown):v is string=>typeof v==='string'&&/^[a-z][a-z0-9-]{0,119}$/u.test(v);

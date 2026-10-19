@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-ORDER-CONFIRMATION
+// @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -8,6 +10,7 @@
 /** @requirements REQ-PRODUCT-CONSENT-EVIDENCE
  * Trusted host operations. No public routes, identity resolution, or legal-retention inference.
  */
+import {readConfirmationState,confirmationBase} from './order-confirmation-state.js';
 import {paidOrderCheckoutRef,paidOrderAdmissionId} from './order-context.js';
 import {canonicalJson,sha256} from './history.js';
 import type {HistoryStorage,HistoryTransaction} from './history.js';
@@ -63,7 +66,7 @@ const integer=(v:unknown):v is number=>Number.isSafeInteger(v)&&Number(v)>=0;
 const iso=(v:unknown):v is string=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString()===v;
 const family=(v:unknown):v is EvidenceFamily=>typeof v==='string'&&['consent','processing','terms','permissions','contracts','orders'].includes(v);
 const kindFor={consent:'consent-choice',processing:'processing-restriction',terms:'terms-acceptance',permissions:'form-permission',contracts:'contract-declaration',orders:'paid-order-admission'} as const;
-const orderPayloadKey=(v:unknown):v is string=>typeof v==='string'&&/^(?:active|consumed|review-count|activated\/[a-f0-9]{64}|attempts\/[a-f0-9-]{36}|(?:assets|reviews)\/[a-f0-9]{64}\/(?:manifest|chunks\/[0-9]{4}))$/u.test(v);
+const orderPayloadKey=(v:unknown):v is string=>typeof v==='string'&&/^(?:confirmation\/(?:manifest|delivery|files\/[a-f0-9]{64}\/(?:manifest|chunks\/[0-9]{4}))|active|consumed|review-count|activated\/[a-f0-9]{64}|attempts\/[a-f0-9-]{36}|(?:assets|reviews)\/[a-f0-9]{64}\/(?:manifest|chunks\/[0-9]{4}))$/u.test(v);
 const markerKey=(prefix:string,f:EvidenceFamily,ref:string)=>`${prefix}lifecycle/${f}/${ref}`;
 
 function normalizeState(input:unknown,siteId:string,f:EvidenceFamily,ref:string):EvidenceLifecycleState {
@@ -147,8 +150,9 @@ export async function createEvidenceLifecycle(storage:LifecycleStorage,target:Ev
           if(raw!==undefined){const event=normalizeRecord({id:eventId,data:raw}).data;if(!object(event)||!targetMatches(event,eventId)||!object(event.delivery))return fail('invalid-record');for(const channel of ['application','acknowledgement']){const job=event.delivery[channel];if(!object(job)||typeof job.status!=='string'||!['accepted','cancelled'].includes(job.status)||job.lease!==null)return fail('pending-delivery');}}
         }
         if(t.family==='orders'){
-          const id=await paidOrderAdmissionId(ref),raw=await tx.get(prefix+'events/'+t.scopeId+'/'+id);
-          if(raw!==undefined){const event=normalizeRecord({id,data:raw}).data;if(!object(event)||!targetMatches(event,id)||!object(event.confirmation)||typeof event.confirmation.status!=='string'||!['not-prepared','accepted','cancelled'].includes(event.confirmation.status))return fail('pending-delivery');}
+          const id=await paidOrderAdmissionId(ref),raw=await tx.get(prefix+'events/'+t.scopeId+'/'+id),confirmationPath=confirmationBase(prefix,ref);
+          if(raw===undefined&&(await tx.get(confirmationPath+'manifest')!==undefined||await tx.get(confirmationPath+'delivery')!==undefined))return fail('invalid-record');
+          if(raw!==undefined){const event=normalizeRecord({id,data:raw}).data;if(!object(event)||!targetMatches(event,id)||!hash(event.reviewId))return fail('invalid-record');if(!object(event.confirmation)||typeof event.confirmation.status!=='string'||!['not-prepared','accepted','cancelled'].includes(event.confirmation.status))return fail('pending-delivery');const confirmation=await readConfirmationState(tx,confirmationBase(prefix,ref),{siteId,scopeId:t.scopeId,contextRef:ref,admissionId:id,reviewId:event.reviewId});if(confirmation&&!['accepted','cancelled'].includes(confirmation.delivery.status))return fail('pending-delivery');}
         }
         state.phase='purging';state.retirement={requestId:decision.requestId,reason:decision.reason,eligibleAt:decision.eligibleAt,startedAt:at};state.updatedAt=at;return save(tx,state);
       });

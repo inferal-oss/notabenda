@@ -983,3 +983,13 @@ Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; offi
 **Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
 
 Read SQLite combined key/value 2 MB and legacy KV value 128 KiB limits. The paid-order archive uses its own portable 64 KiB chunk profile; these bounds are engineering constraints, not legal deadlines or retention rules.
+
+<a id="src-eu-durable-content-services"></a>
+
+## SRC-EU-DURABLE-CONTENT-SERVICES
+
+[CJEU Content Services, C-49/11, 5 July 2012](https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:62011CJ0049)
+
+**Type:** primary-law. **Checked:** 2026-10-19. **Access:** search-result.
+
+Official indexed judgment/summary: paragraphs 35, 42–51 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review.

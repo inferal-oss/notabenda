@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-ORDER-CONFIRMATION
+// @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-PRODUCT-SERVICE-CATALOG
 import {renderCatalogReview} from './catalog-render.js';
@@ -8,6 +10,7 @@ import { renderRecordDetail, renderRecordDiff, renderRecordList, renderDocumentS
 import type { AdminWorker, AdminWorkerOptions, AuthorizationGrant, RecordQuery } from './types.js';
 import {normalizeAdminPresentation} from './presentation.js';
 // @requirements REQ-EU-ORDER-ACTION REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-CF-ADMIN
+import {validateConfirmationArchive,confirmationBody} from './order-confirmation-render.js';
 import {validateOrderArchive,orderArchiveBody} from './order-render.js';
 import {renderWorkspaceShell} from './render.js';
 import {orderReviewCss} from './order-review-style.js';
@@ -53,15 +56,28 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
       let grant: AuthorizationGrant | null;
       try {
         grant = await authorize(request, env, context);
-        if (!grant || !grant.store || typeof grant.store.list !== 'function' || typeof grant.store.get !== 'function' || (grant.scopeLabel !== undefined && !boundedText(grant.scopeLabel, 200)) || (grant.allowExport !== undefined && typeof grant.allowExport !== 'boolean') || (grant.allowCatalogReview!==undefined&&typeof grant.allowCatalogReview!=='boolean') || (grant.allowOrderArchive!==undefined&&typeof grant.allowOrderArchive!=='boolean')) return response('Access denied.', 403);
+        if (!grant || !grant.store || typeof grant.store.list !== 'function' || typeof grant.store.get !== 'function' || (grant.scopeLabel !== undefined && !boundedText(grant.scopeLabel, 200)) || (grant.allowExport !== undefined && typeof grant.allowExport !== 'boolean') || (grant.allowCatalogReview!==undefined&&typeof grant.allowCatalogReview!=='boolean') || (grant.allowOrderArchive!==undefined&&typeof grant.allowOrderArchive!=='boolean') || (grant.allowOrderConfirmation!==undefined&&typeof grant.allowOrderConfirmation!=='boolean')) return response('Access denied.', 403);
       } catch { return response('Access denied.', 403); }
       if (request.method !== 'GET' && request.method !== 'HEAD') { const h = headers(); h.set('allow', 'GET, HEAD'); return response('Method not allowed.', 405, h); }
       if (request.url.length > 4096) return response('Request is too long.', 414);
       let url: URL;
       try { url = new URL(request.url); } catch { return response('Invalid request.', 400); }
-      if (![basePath, `${basePath}/`, `${basePath}/record`, `${basePath}/diff`, `${basePath}/source`, `${basePath}/source-diff`, `${basePath}/catalog-review`, `${basePath}/catalog-review-diff`, `${basePath}/order-review`, `${basePath}/order-review.json`, `${basePath}/order-asset`, `${basePath}/order-image`, `${basePath}/export`, `${basePath}/export.json`].includes(url.pathname)) return response('Not found.', 404);
+      if (![basePath, `${basePath}/`, `${basePath}/record`, `${basePath}/diff`, `${basePath}/source`, `${basePath}/source-diff`, `${basePath}/catalog-review`, `${basePath}/catalog-review-diff`, `${basePath}/order-confirmation`, `${basePath}/order-confirmation-file`, `${basePath}/order-review`, `${basePath}/order-review.json`, `${basePath}/order-asset`, `${basePath}/order-image`, `${basePath}/export`, `${basePath}/export.json`].includes(url.pathname)) return response('Not found.', 404);
       const nonce = crypto.randomUUID().replaceAll('-', '');
-      const view = { ...presentation, basePath, title, scopeLabel: grant.scopeLabel ?? 'Host-authorized records', nonce, exportEnabled:grant.allowExport===true, sourceEnabled:typeof grant.store.getSource==='function',catalogReviewEnabled:grant.allowCatalogReview===true&&typeof grant.store.getCatalogReview==='function',orderArchiveEnabled:grant.allowOrderArchive===true&&typeof grant.store.getOrderArchive==='function'&&typeof grant.store.getOrderAsset==='function' };
+      const view = { ...presentation, basePath, title, scopeLabel: grant.scopeLabel ?? 'Host-authorized records', nonce, exportEnabled:grant.allowExport===true, sourceEnabled:typeof grant.store.getSource==='function',catalogReviewEnabled:grant.allowCatalogReview===true&&typeof grant.store.getCatalogReview==='function',orderConfirmationEnabled:grant.allowOrderConfirmation===true&&typeof grant.store.getOrderConfirmation==='function'&&typeof grant.store.getOrderConfirmationFile==='function',orderArchiveEnabled:grant.allowOrderArchive===true&&typeof grant.store.getOrderArchive==='function'&&typeof grant.store.getOrderAsset==='function' };
+      if([`${basePath}/order-confirmation`,`${basePath}/order-confirmation-file`].includes(url.pathname)){
+        if(grant.allowOrderConfirmation!==true)return response('Confirmation inspection is not authorized.',403);
+        if(!grant.store.getOrderConfirmation||!grant.store.getOrderConfirmationFile)return response('Confirmation inspection is unavailable.',404);
+        const download=url.pathname.endsWith('-file'),id=url.searchParams.get('id'),fileId=url.searchParams.get('file'),allowed=download?['id','file']:['id'];
+        if(!id||!/^(?:[a-z][a-z0-9-]{0,119}\/)?[a-f0-9]{64}$/u.test(id)||download&&!/^[a-z][a-z0-9-]{0,119}$/u.test(fileId??'')||url.searchParams.size!==allowed.length||[...url.searchParams.keys()].some(k=>!allowed.includes(k)))return response('Invalid confirmation reference.',400);
+        try{
+          const raw=await grant.store.get(id);if(!raw)return response('Order request not found.',404);const record=normalizeRecord(raw);if(record.id!==id)throw Error('Invalid store response.');
+          const retained=await grant.store.getOrderConfirmation(id);if(!retained)return response('Confirmation not found.',404);const archive=await validateConfirmationArchive(retained,record),file=archive.manifest.files.find(f=>download?f.id===fileId:f.role==='confirmation');if(!file)return response('File not found.',404);
+          const input=await grant.store.getOrderConfirmationFile(id,file.id);if(!(input instanceof Uint8Array)||input.buffer instanceof SharedArrayBuffer||input.length!==file.bytes||input.length>2097152)throw Error('Invalid file.');const bytes=Uint8Array.from(input);if(await orderBytesHash(bytes)!==file.sha256)throw Error('Invalid file.');
+          if(download){const h=headers();h.set('Content-Type','application/octet-stream');h.set('Content-Disposition',`attachment; filename="${file.filename}"`);h.set('Content-Security-Policy',"sandbox; default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");h.set('Cross-Origin-Resource-Policy','same-origin');return new Response(request.method==='HEAD'?null:bytes.buffer,{headers:h});}
+          const text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);return response(renderWorkspaceShell(confirmationBody(archive,record,basePath,text),view),200,headers(nonce));
+        }catch{return response('The confirmation could not be inspected.',500);}
+      }
       if([`${basePath}/order-review`,`${basePath}/order-review.json`,`${basePath}/order-asset`,`${basePath}/order-image`].includes(url.pathname)){
         if(grant.allowOrderArchive!==true)return response('Order archive inspection is not authorized.',403);
         if(!grant.store.getOrderArchive||!grant.store.getOrderAsset)return response('Order archive inspection is unavailable.',404);

@@ -1,4 +1,5 @@
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
+import {seedOrderConfirmations} from './order-confirmation-seed.mjs';
 import {orderDemoAdmin} from './order-demo-admin.mjs';
 import {serveOrderDemo,hasOrderDemoAttempt} from './order-demo.mjs';
 import {registerContractActionDefinition,recordContractDeclaration,createContractDeclarationStore,ContractActionRecordError} from 'notabenda-cf';
@@ -143,6 +144,7 @@ export class DemoWorkspace extends EvidenceWorkspace {
     await this.demoReady;
     await seedFormPermissionJourneys(this.state.storage,data);
     await seedContractDeclarations(this.state.storage,data);
+    await seedOrderConfirmations(this.state.storage,data);
   }
   contextId(value){return value+'-'+this.generation;}
   serialize(callback){const result=(this.pending??Promise.resolve()).then(callback);this.pending=result.catch(()=>{});return result;}

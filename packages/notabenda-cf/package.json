@@ -26,6 +26,11 @@
       "types": "./dist/orders.d.ts",
       "import": "./dist/orders.js",
       "default": "./dist/orders.js"
+    },
+    "./order-confirmations": {
+      "types": "./dist/order-confirmations.d.ts",
+      "import": "./dist/order-confirmations.js",
+      "default": "./dist/order-confirmations.js"
     }
   },
   "scripts": {

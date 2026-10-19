@@ -214,3 +214,7 @@ Register and activate exact purpose/channel offers with `registerFormPermissionO
 ## Retained catalog review
 
 An explicitly finalized release can include a digest-bound selected-reference attachment alongside optional Markdown/MDX sources. Pass its `archive` to `recordLegalRelease`; public artifacts alone cannot satisfy declared private attachments. `createDocumentHistory` keeps these snapshots out of ordinary records and exports and exposes `getCatalogReview` separately. Grant `allowCatalogReview: true` only after your host authorizes this inspection; source/export permissions do not imply it. The generated starter accepts the independent host grant `catalogReview: true`. See [the release workflow](../../docs/SERVICE-CATALOG.md#retain-selections-with-policy-releases).
+
+## Customer confirmations
+
+The optional `notabenda-cf/order-confirmations` subpath retains complete personally addressed host files and queues a recoverable delivery job. Hosts supply contract facts, reviewed content, a fixed destination version, authentication, provider and scheduling. Admin inspection uses a separate `allowOrderConfirmation` permission; original files download as inert attachments. Provider acceptance remains distinct from recipient delivery. See the [confirmation guide](../../docs/ORDER-CONFIRMATIONS.md).

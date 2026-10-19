@@ -33,7 +33,8 @@ export const siteSections=[
   topic('withdrawal','Contract withdrawal','/contract-actions/withdrawal','Inspect the declaration and its separate confirmation and application handoffs.','contract-actions',[],'Consumer contracts'),
   topic('cancellation','Contract cancellation','/contract-actions/cancellation','Try the German cancellation flow and review its retained request.','contract-actions',[],'Consumer contracts')
  ]},
- {id:'records',title:'Keep and inspect records',description:'Retained versions, recorded choices, private inspection, exports and lifecycle controls.',guides:[guide('releases','Retained releases'),guide('consent-evidence','Cookie-choice evidence'),guide('evidence-export','Evidence export'),guide('evidence-lifecycle','Retention & holds')],topics:[
+ {id:'records',title:'Keep and inspect records',description:'Retained versions, recorded choices, private inspection, exports and lifecycle controls.',guides:[guide('order-confirmations','Customer confirmations'),guide('releases','Retained releases'),guide('consent-evidence','Cookie-choice evidence'),guide('evidence-export','Evidence export'),guide('evidence-lifecycle','Retention & holds')],topics:[
+  topic('confirmations','Customer confirmations','/demo/admin/orders','Inspect retained customer copies, exact attachments and current delivery status.','order-confirmations'),
   topic('history','Document revisions','/demo/admin/history','Compare policy versions, authored source and rendered differences.','authoring'),
   topic('recorded-cookies','Recorded cookie choices','/recorded-choices','Follow a browser report from its pinned notice to a matching server receipt.','consent-evidence'),
   topic('releases','Public retained releases','/releases','Read two retained document versions at their original immutable addresses.','releases'),

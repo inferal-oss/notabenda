@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-ORDER-CONFIRMATION
+// @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-PAID-ORDER-ARCHIVES REQ-EU-ORDER-ACTION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -12,14 +14,17 @@ test('packed CF-only consumer imports the order backend, admin and declarations 
   const packed=spawnSync('npm',['pack','--workspace','notabenda-cf','--json','--ignore-scripts','--pack-destination',folder],{cwd:root,env,encoding:'utf8'});assert.equal(packed.status,0,packed.stderr);const manifest=JSON.parse(packed.stdout)[0];assert.ok(manifest.files.some(f=>f.path==='dist/orders.js'));assert.ok(manifest.files.some(f=>f.path==='dist/order-review-style.js'));
   await writeFile(join(folder,'package.json'),JSON.stringify({name:'isolated-order-consumer',private:true,type:'module'}));
   const install=spawnSync('npm',['install','--offline','--ignore-scripts','--no-audit','--no-fund',join(folder,manifest.filename)],{cwd:folder,env,encoding:'utf8'});assert.equal(install.status,0,install.stderr);const pkg=JSON.parse(await readFile(join(folder,'node_modules/notabenda-cf/package.json'),'utf8'));assert.equal(pkg.dependencies,undefined);assert.equal(pkg.peerDependencies,undefined);
-  const runtime=spawnSync(process.execPath,['--input-type=module','-e',"import {createAdminWorker} from 'notabenda-cf';import {paidOrderCheckoutRef,getPaidOrderCheckoutState,createPaidOrderStore} from 'notabenda-cf/orders';const ref=await paidOrderCheckoutRef({siteId:'shop',scopeId:'checkout',checkoutId:'host-intent'});if(!/^[a-f0-9]{64}$/.test(ref)||typeof getPaidOrderCheckoutState!=='function'||typeof createPaidOrderStore!=='function'||(await createAdminWorker({authorize:()=>null}).fetch(new Request('https://example.test/admin/notabenda'),{})).status!==403)process.exit(1);"],{cwd:folder,encoding:'utf8'});assert.equal(runtime.status,0,runtime.stderr);
+  const runtime=spawnSync(process.execPath,['--input-type=module','-e',"import {createAdminWorker} from 'notabenda-cf';import {preparePaidOrderConfirmation,dispatchPaidOrderConfirmation} from 'notabenda-cf/order-confirmations';if(typeof preparePaidOrderConfirmation!=='function'||typeof dispatchPaidOrderConfirmation!=='function')process.exit(1);import {paidOrderCheckoutRef,getPaidOrderCheckoutState,createPaidOrderStore} from 'notabenda-cf/orders';const ref=await paidOrderCheckoutRef({siteId:'shop',scopeId:'checkout',checkoutId:'host-intent'});if(!/^[a-f0-9]{64}$/.test(ref)||typeof getPaidOrderCheckoutState!=='function'||typeof createPaidOrderStore!=='function'||(await createAdminWorker({authorize:()=>null}).fetch(new Request('https://example.test/admin/notabenda'),{})).status!==403)process.exit(1);"],{cwd:folder,encoding:'utf8'});assert.equal(runtime.status,0,runtime.stderr);
   await writeFile(join(folder,'consumer.ts'),`
 import {createAdminWorker,createEvidenceLifecycle,type HistoryStorage,type LifecycleStorage} from 'notabenda-cf';
 import {archivePaidOrderAsset,archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,getPaidOrderAttempt,getPaidOrderCheckoutState,createPaidOrderStore,type PaidOrderReview,type PaidOrderRequest,type PaidOrderOutcome} from 'notabenda-cf/orders';
+import {readPaidOrderConfirmation,dispatchPaidOrderConfirmation,type OrderConfirmationArchive} from 'notabenda-cf/order-confirmations';
 declare const storage:HistoryStorage;declare const lifecycleStorage:LifecycleStorage;declare const review:PaidOrderReview;declare const request:PaidOrderRequest;
 const context={siteId:'shop',scopeId:'checkout',checkoutId:'host-intent'};
 archivePaidOrderReview(storage,review,context);activatePaidOrderReview(storage,{reviewId:review.reviewId,expectedRevision:0},context);
 const outcome:Promise<PaidOrderOutcome>=admitPaidOrder(storage,request,context,{hostPrefix:'shop/stock/',async decide({get}){const available=await get<number>('lamp');return available?{status:'admit',writes:[{key:'lamp',value:available-1}]}:{status:'reject',reason:'unavailable'};}});
+const confirmation:Promise<OrderConfirmationArchive|undefined>=readPaidOrderConfirmation(storage,context);
+dispatchPaidOrderConfirmation(storage,context,{async deliver({lease}){const bytes:Uint8Array=lease.files[0]!.bytes;return {providerRef:'accepted-'+bytes.length};}});
 getPaidOrderAttempt(storage,request,context);getPaidOrderCheckoutState(storage,context);
 createAdminWorker({authorize:()=>({store:createPaidOrderStore(storage,context),allowOrderArchive:true,allowExport:false})});
 createEvidenceLifecycle(lifecycleStorage,{family:'orders',siteId:'shop',scopeId:'checkout',streamId:'host-intent'});

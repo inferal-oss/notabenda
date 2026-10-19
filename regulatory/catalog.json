@@ -558,7 +558,7 @@
       "deliverables": [
         "Reviewed item and commitment definitions bound to host-calculated quotes, exact money, total/due-now prices, recurring and conditional charges, and product-specific guarantee labels.",
         "Static vanilla/React/Astro information and a native/headless final action with uncertainty recovery. No implicit terms agreement, payment execution or durable contract confirmation.",
-        "Reusable Cloudflare chunked review/original-file archives, CAS quote activation, one admission per checkout intent with atomic host mutation plans, recovery, scoped admin inspection and retirement are implemented and used by the isolated demo. External payment/stock-system acceptance, durable confirmation and legal/national review remain open."
+        "Reusable Cloudflare chunked review/original-file archives, CAS quote activation, one admission per checkout intent with atomic host mutation plans, recovery, scoped admin inspection and retirement are implemented and used by the isolated demo. External payment/stock-system acceptance, actual confirmation provision and legal/national review remain open; optional complete-file archival and host delivery mechanics are tracked separately in FEAT-ORDER-CONFIRMATION."
       ],
       "implementationRefs": [
         "packages/notabenda/src/paid-order-policy.ts",
@@ -588,6 +588,30 @@
         "packages/notabenda-cf/scripts/sync-order-policy.mjs",
         "site/order-demo-legacy.mjs",
         "site/order-demo-admin-legacy.mjs"
+      ]
+    },
+    {
+      "id": "FEAT-ORDER-CONFIRMATION",
+      "priority": "P2",
+      "title": "Customer confirmation archives and host delivery",
+      "status": "partial",
+      "deliverables": [
+        "Immutable personally addressed plain-text confirmation and optional exact attachments, linked to the admitted review, actual host contract facts and fixed destination version.",
+        "Atomic preparation/outbox, bounded host callback attempts, recoverable uncertainty and stable provider idempotency; no built-in email provider, scheduler or contract-formation decision.",
+        "Separately authorized admin inspection and inert downloads; pending-job retirement guards and resumable scoped purge.",
+        "Complete content, real channel/destination behavior, actual provision, timing and national/linguistic acceptance remain host review work."
+      ],
+      "implementationRefs": [
+        "packages/notabenda-cf/src/order-confirmations.ts",
+        "packages/notabenda-cf/src/order-confirmation-state.ts",
+        "packages/notabenda-cf/src/order-confirmation-dispatch.ts",
+        "packages/notabenda-cf/src/order-confirmation-render.ts",
+        "packages/notabenda-cf/src/orders.ts",
+        "packages/notabenda-cf/src/lifecycle.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "site/order-confirmation-seed.mjs",
+        "site/order-demo-admin.mjs"
       ]
     }
   ],
@@ -1518,6 +1542,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Read SQLite combined key/value 2 MB and legacy KV value 128 KiB limits. The paid-order archive uses its own portable 64 KiB chunk profile; these bounds are engineering constraints, not legal deadlines or retention rules."
+    },
+    {
+      "id": "SRC-EU-DURABLE-CONTENT-SERVICES",
+      "title": "CJEU Content Services, C-49/11, 5 July 2012",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:62011CJ0049",
+      "kind": "primary-law",
+      "checkedOn": "2026-10-19",
+      "access": "search-result",
+      "note": "Official indexed judgment/summary: paragraphs 35, 42–51 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review."
     }
   ],
   "jurisdictions": [
@@ -1536,7 +1569,8 @@
         "REQ-EU-RETENTION-ERASURE",
         "REQ-EU-MARKETING",
         "REQ-EU-GUARANTEE-NOTICE",
-        "REQ-EU-GUARANTEE-LABEL"
+        "REQ-EU-GUARANTEE-LABEL",
+        "REQ-EU-ORDER-CONFIRMATION"
       ]
     },
     {
@@ -1754,7 +1788,8 @@
         "REQ-PRODUCT-SERVICE-PROFILES",
         "REQ-PRODUCT-INDIRECT-NOTICE",
         "REQ-PRODUCT-GUARANTEE-NOTICE",
-        "REQ-PRODUCT-PAID-ORDER-ARCHIVES"
+        "REQ-PRODUCT-PAID-ORDER-ARCHIVES",
+        "REQ-PRODUCT-ORDER-CONFIRMATION"
       ]
     }
   ],
@@ -5556,6 +5591,111 @@
         "docs/verification/paid-orders.md"
       ],
       "implementationNote": "64 KiB sealed chunks, bounded review/files, CAS activation, intent-level consumption, fresh post-decision clock, local mutation plans, scoped private archives, safe admin rendering/downloads and resumable retirement. Existing demo receipts retain their compatibility path."
+    },
+    {
+      "jurisdiction": "EU-EEA",
+      "title": "Provide the concluded distance contract confirmation on a durable medium",
+      "kind": "primary-law",
+      "summary": "Applicable confirmation includes required pre-contract information and any relevant digital-content consent/acknowledgment; actual provision and timing remain separate from server retention.",
+      "appliesWhen": "An in-scope distance consumer contract is concluded; assess national implementation and exceptions.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-EU-CRD-20260927",
+          "locator": "Article 2(10), Article 8(7), with Article 6(1) and 16(m)"
+        },
+        {
+          "sourceId": "SRC-EU-DURABLE-CONTENT-SERVICES",
+          "locator": "Paragraphs 35, 42–51 and operative part; earlier directive context"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-ORDER-CONFIRMATION",
+        "FEAT-PAID-ORDERS"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Article 8(7) selected text reread on 19 October 2026. Host coordinates actual goods delivery/service commencement and reasonable confirmation timing.",
+      "caveats": "File retention and provider acceptance do not establish consumer receipt, legal sufficiency or timing. The host supplies reviewed complete personally addressed content, actual contract facts, frozen destination resolution, scheduling and provider/recipient reconciliation. This initial profile does not support omitting information based on prior durable provision or overwriting a mistaken confirmation.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/order-confirmations.ts",
+        "packages/notabenda-cf/src/order-confirmation-state.ts",
+        "packages/notabenda-cf/src/order-confirmation-dispatch.ts",
+        "packages/notabenda-cf/src/order-confirmation-render.ts",
+        "packages/notabenda-cf/src/orders.ts",
+        "packages/notabenda-cf/src/lifecycle.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "site/order-confirmation-seed.mjs",
+        "site/order-demo-admin.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/order-confirmations.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "site/test/order-demo.test.mjs",
+        "scripts/check-order-confirmation-runtime.mjs",
+        "docs/verification/order-confirmations.md"
+      ],
+      "implementationNote": "Bounded original files and manifest plus pending job seal atomically. Stable delivery identity, host callback dispatch, separate private inspection and lifecycle fencing preserve the admission capture. Production/regional and real delivery acceptance remain open.",
+      "id": "REQ-EU-ORDER-CONFIRMATION",
+      "verificationIds": [
+        "VERIFY-EU-ORDER-CONFIRMATION"
+      ]
+    },
+    {
+      "jurisdiction": "PRODUCT",
+      "title": "Immutable customer confirmation bundles and recoverable host delivery",
+      "kind": "product-standard",
+      "summary": "Bind personally addressed complete host files, immutable destination version and concluded-contract facts to an admitted order; atomically retain exact files and a delivery job, with bounded leases, separate inspection and retirement fences.",
+      "appliesWhen": "A host opts into notabenda-cf/order-confirmations.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-EU-CRD-20260927",
+          "locator": "Article 2(10), Article 8(7), with Article 6(1) and 16(m)"
+        },
+        {
+          "sourceId": "SRC-EU-DURABLE-CONTENT-SERVICES",
+          "locator": "Paragraphs 35, 42–51 and operative part; earlier directive context"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-ORDER-CONFIRMATION",
+        "FEAT-BACKOFFICE",
+        "FEAT-RECORDS"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "File retention and provider acceptance do not establish consumer receipt, legal sufficiency or timing. The host supplies reviewed complete personally addressed content, actual contract facts, frozen destination resolution, scheduling and provider/recipient reconciliation. This initial profile does not support omitting information based on prior durable provision or overwriting a mistaken confirmation.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/order-confirmations.ts",
+        "packages/notabenda-cf/src/order-confirmation-state.ts",
+        "packages/notabenda-cf/src/order-confirmation-dispatch.ts",
+        "packages/notabenda-cf/src/order-confirmation-render.ts",
+        "packages/notabenda-cf/src/orders.ts",
+        "packages/notabenda-cf/src/lifecycle.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "site/order-confirmation-seed.mjs",
+        "site/order-demo-admin.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/order-confirmations.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "site/test/order-demo.test.mjs",
+        "scripts/check-order-confirmation-runtime.mjs",
+        "docs/verification/order-confirmations.md"
+      ],
+      "implementationNote": "Bounded original files and manifest plus pending job seal atomically. Stable delivery identity, host callback dispatch, separate private inspection and lifecycle fencing preserve the admission capture. Production/regional and real delivery acceptance remain open. Actual local SQLite confirmation/provider stores survived restart with the exact large attachment, manifest/destination and original admission. Lost-response recovery made two provider attempts with one simulated downstream commit; stale settlement was refused.",
+      "id": "REQ-PRODUCT-ORDER-CONFIRMATION",
+      "verificationIds": [
+        "VERIFY-PRODUCT-ORDER-CONFIRMATION"
+      ]
     }
   ],
   "verification": [
@@ -6649,6 +6789,32 @@
         "site/test/order-demo.test.mjs",
         "site/test/demo.test.mjs",
         "docs/verification/paid-orders.md"
+      ]
+    },
+    {
+      "id": "VERIFY-EU-ORDER-CONFIRMATION",
+      "requirementIds": [
+        "REQ-EU-ORDER-CONFIRMATION"
+      ],
+      "status": "planned",
+      "expected": "Independent review of applicable information, actual contract facts and digital-content acknowledgments; real personally addressed channel, unchanged reproduction, access period, actual provision and timing before goods delivery/service performance.",
+      "testRefs": [
+        "docs/verification/order-confirmations.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-ORDER-CONFIRMATION",
+      "requirementIds": [
+        "REQ-PRODUCT-ORDER-CONFIRMATION"
+      ],
+      "status": "automated",
+      "expected": "Reject receipt-only/reference-only and unsafe/beyond-budget payloads; exact file retention, atomic rollback, detached inputs, immutable retry/destination version, independent admission recovery, stable provider deduplication after lost response/restart, stale lease/abort/timeout and uncertain settlement, separate admin permissions/downloads/export exclusion, orphan-job retirement/holds/purge and packed consumer.",
+      "testRefs": [
+        "packages/notabenda-cf/test/order-confirmations.test.mjs",
+        "packages/notabenda-cf/test/orders-package.test.mjs",
+        "site/test/order-demo.test.mjs",
+        "scripts/check-order-confirmation-runtime.mjs",
+        "docs/verification/order-confirmations.md"
       ]
     }
   ],

@@ -29,7 +29,7 @@ export function readableTime(value:JsonValue|undefined):string {
   return `<time datetime="${escapeHtml(value)}" title="${escapeHtml(value)}">${escapeHtml(label)} UTC</time>`;
 }
 
-export interface RenderOptions extends AdminPresentation { basePath: string; title: string; scopeLabel: string; nonce: string; exportEnabled?:boolean; sourceEnabled?:boolean; catalogReviewEnabled?:boolean; orderArchiveEnabled?:boolean }
+export interface RenderOptions extends AdminPresentation { basePath: string; title: string; scopeLabel: string; nonce: string; exportEnabled?:boolean; sourceEnabled?:boolean; catalogReviewEnabled?:boolean; orderArchiveEnabled?:boolean; orderConfirmationEnabled?:boolean }
 export function renderWorkspaceShell(body: string, options: RenderOptions, extraHead = '', bodyClass = ''): string {
   if (!/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*$/u.test(options.basePath) || !/^[a-f0-9]{32}$/u.test(options.nonce) || !boundedText(options.title, 120) || !boundedText(options.scopeLabel, 200)) throw new Error('Invalid presentation options.');
   const e = escapeHtml, presentation=normalizeAdminPresentation(options);
@@ -213,7 +213,7 @@ export function renderRecordList(page: RecordPage, query: RecordQuery, options: 
 
 export function renderRecordDetail(record: EvidenceRecord, options: RenderOptions): string {
   const e = escapeHtml;
-  const order=paidOrderDetail(record,options.basePath,options.orderArchiveEnabled===true);if(order)return shell(order,options);
+  const order=paidOrderDetail(record,options.basePath,options.orderArchiveEnabled===true,options.orderConfirmationEnabled===true);if(order)return shell(order,options);
   const f = recordFacts(record);
   const sections: [string, JsonValue | undefined][] = [
     ['Recorded event', f.occurredAt], ['Record kind', f.kind], ['Subject reference', f.subject],

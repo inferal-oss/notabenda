@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-ORDER-CONFIRMATION
+// @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 /** @requirements REQ-PRODUCT-EVIDENCE-EXPORT */
 /** @requirements REQ-PRODUCT-CF-ADMIN */
@@ -31,6 +33,9 @@ export interface RecordStore {
   getCatalogReview?(releaseId:string):Promise<EvidenceRecord|undefined>;
   /** Private admission-bound archive. The same authorized record ID selects all original files. */
   getOrderArchive?(id:string):Promise<PaidOrderArchive|undefined>;
+  /** Complete personally addressed confirmation; separate host permission, never included in generic exports. */
+  getOrderConfirmation?(id:string):Promise<import('./order-confirmation-state.js').OrderConfirmationArchive|undefined>;
+  getOrderConfirmationFile?(id:string,fileId:string):Promise<Uint8Array|undefined>;
   getOrderAsset?(id:string,sha256:string):Promise<Uint8Array|undefined>;
 }
 /** Minimal structural subset of the asynchronous Durable Object storage API. */
@@ -48,6 +53,8 @@ export interface AuthorizationGrant {
   allowCatalogReview?:boolean;
   /** Explicit permission for complete paid-order review and original-file inspection. */
   allowOrderArchive?:boolean;
+  /** Separate per-request access to customer confirmation files and recipient/destination metadata. */
+  allowOrderConfirmation?:boolean;
 }
 export interface ExecutionContextLike { waitUntil(promise: Promise<unknown>): void }
 /** Navigation is presentation only. Every destination must authorize its own requests. */
