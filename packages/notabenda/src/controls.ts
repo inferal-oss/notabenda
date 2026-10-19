@@ -81,6 +81,28 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   function syncSave():void {const state=consent.getSnapshot();save.disabled=state.destroyed||!!state.evidence&&!state.evidence.canGrant&&[...inputs.values()].some(input=>input.checked);}
   for(const input of inputs.values())input.addEventListener('change',syncSave);
   let opener: HTMLElement | undefined; let opened = false; let previousChoices = ''; let removed = false;
+  // Whole-dialog scrolling is the fallback. Pin chrome only when text leaves a useful body viewport.
+  drawer.dataset.nbScroll = 'dialog';
+  const Resize = doc.defaultView?.ResizeObserver;
+  const layoutObserver = Resize ? new Resize(() => measureDrawer()) : undefined;
+  function measureDrawer(): void {
+    if (removed || !drawer.open || !layoutObserver) return;
+    const style = doc.defaultView!.getComputedStyle(body);
+    const font = Number.parseFloat(style.fontSize) || 16;
+    const minimum = 6 * font + (Number.parseFloat(style.paddingTop) || 0) + (Number.parseFloat(style.paddingBottom) || 0);
+    const available = drawer.clientHeight - header.offsetHeight - footer.offsetHeight;
+    const next = available >= minimum + (drawer.dataset.nbScroll === 'body' ? -2 : 2) ? 'body' : 'dialog';
+    const focused = doc.activeElement;
+    if (drawer.dataset.nbScroll !== next) drawer.dataset.nbScroll = next;
+    // Resize/reflow reveals the same control; it must not move focus or change a draft choice.
+    if (focused instanceof doc.defaultView!.HTMLElement && drawer.contains(focused)) {
+      const port = (next === 'body' && body.contains(focused) ? body : drawer).getBoundingClientRect();
+      const rect = focused.getBoundingClientRect();
+      if (rect.top < port.top || rect.bottom > port.bottom || rect.left < port.left || rect.right > port.right)
+        focused.scrollIntoView?.({block:'nearest',inline:'nearest',behavior:'instant'});
+    }
+  }
+  for (const part of [drawer, header, footer]) layoutObserver?.observe(part);
   function update(state: ConsentSnapshot): void {
     if (removed) return;
     // Remember ownership before disabling/hiding anything; native browsers can move focus to body.
@@ -106,7 +128,7 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
       opener = doc.activeElement && 'focus' in doc.activeElement ? doc.activeElement as HTMLElement : trigger;
       for (const [id, input] of inputs) input.checked = state.purposes[id] === 'granted';
       drawerMessage.textContent = message.textContent; drawerMessage.hidden = !drawerMessage.textContent;
-      opened = true; drawer.showModal(); heading.focus();
+      opened = true; drawer.showModal(); measureDrawer(); heading.focus();
     } else if (opened && state.preferencesOpen) {
       if (choices !== previousChoices) for (const [id, input] of inputs) input.checked = state.purposes[id] === 'granted';
       drawerMessage.textContent = [message.textContent, choices !== previousChoices ? 'Current choices changed. Review the selections before saving.' : ''].filter(Boolean).join(' '); drawerMessage.hidden = !drawerMessage.textContent;
@@ -129,6 +151,6 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   drawer.addEventListener('cancel', event => { event.preventDefault(); consent.closePreferences(); });
   drawer.addEventListener('close', () => { if (opened && !removed) consent.closePreferences(); });
   const unsubscribe = consent.subscribe(update);
-  return { destroy(options = {}) { if (removed) return; if (opened && !options.preservePreferences) consent.closePreferences(); removed = true; unsubscribe(); if (opened) { opened = false; drawer.close(); } root.remove(); } };
+  return { destroy(options = {}) { if (removed) return; if (opened && !options.preservePreferences) consent.closePreferences(); removed = true; layoutObserver?.disconnect(); unsubscribe(); if (opened) { opened = false; drawer.close(); } root.remove(); } };
 }
 let controlId = 0;

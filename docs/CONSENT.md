@@ -143,3 +143,11 @@ The design reviewed [CookieConsent script management](https://cookieconsent.ores
 For a custom cookie-choice interface, import `createConsent` from `notabenda/headless`. It is the same validated controller as the root export, including required-receipt behavior. For the native controls, add `mountControls` from `notabenda` and optional `notabenda/consent.css`. The consent-only stylesheet is derived from the canonical styles and preserves the same tokens and accessibility rules. Use the complete `notabenda/styles.css` when you also need full document, setup or other component layouts.
 
 The local light/midnight cookie examples use the smaller stylesheet and a bundled browser entry. The full configuration and required-evidence implementation still contribute to the existing JavaScript controller; its measured core-plus-controls bundle remains above the 15 KiB target. [Measurements and limits](verification/browser-delivery.md) remain explicit.
+
+## Long copy, small screens and direction
+
+The default preferences drawer wraps long headings and Close labels. Its action grid adapts to text size, stacking buttons when two readable columns do not fit. Both actions retain the same styling and DOM order.
+
+The drawer uses one scroll region when space is tight. Where `ResizeObserver` is available and enough room remains for body text, it keeps the header and footer fixed and scrolls the body. Resizing keeps the current control focused and preserves unsaved choices. Browsers without resize observation use the whole-drawer fallback. Closing still applies no draft choices.
+
+Set direction on the host document or container using normal HTML `dir` semantics. Desktop side drawers follow inline-end placement and notice offsets follow the corresponding safe-area edge. This supports layout direction; the built-in English status messages are not a translation pack. See the [repeatable layout checks](verification/controls-layout.md) for long text, RTL, enlarged text and remaining platform work.

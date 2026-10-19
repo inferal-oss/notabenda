@@ -28,3 +28,7 @@ Screenshots: [initial phone notice](../assets/screenshots/consent-mobile.jpg), [
 ## Still required before release
 
 WebKit/Firefox and physical iOS/Android; 360-width and full breakpoint matrix; 200–400% zoom and large text; long translations and RTL; forced-colors and contrast audit; virtual keyboard/safe areas; screen-reader and full keyboard review; no-JS/blocked-script execution checks; network/storage inspection of real adapters and embeds; SPA/BFCache/navigation flows; lifecycle failures surfaced through the UI; and regional applicability/wording review. The product and legal requirements remain **partial** for these reasons.
+
+## Long-copy and direction hardening
+
+Later checks and fixes are recorded in [controls-layout.md](controls-layout.md). Long headings now wrap with Close reachable; enlarged action labels stack when needed. Normal layouts retain fixed header/actions, while constrained layouts and browsers without resize observation use whole-dialog scrolling. This extends the initial Chromium width, keyboard and RTL evidence above; the remaining zoom/platform/assistive-technology items are still open.

@@ -3013,7 +3013,8 @@
         "examples/static/example-theme.css",
         "examples/discovery/style.css",
         "examples/form-permissions/style.css",
-        "examples/contract-actions/style.css"
+        "examples/contract-actions/style.css",
+        "scripts/build-controls-layout.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/documents.test.mjs",
@@ -3026,9 +3027,11 @@
         "site/test/guide-navigation.test.mjs",
         "packages/notabenda/test/controls.test.mjs",
         "packages/notabenda/test/consent-delivery.test.mjs",
-        "docs/verification/consent-focus.md"
+        "docs/verification/consent-focus.md",
+        "packages/notabenda/test/controls-layout.test.mjs",
+        "docs/verification/controls-layout.md"
       ],
-      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open."
+      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open. Long headings/Close labels now wrap, action columns adapt to text size, and logical side placement mirrors RTL. Whole-dialog scrolling is the safe fallback; measured resize observation retains fixed chrome only with a useful text-relative body viewport, preserves draft/focus and disconnects on teardown. Repeatable local fixtures and initial Chromium width/short-screen/large-text/RTL/no-observer checks extend evidence; actual browser zoom and broader platform/assistive-technology acceptance remain open."
     },
     {
       "id": "REQ-PRODUCT-MOBILE",
@@ -3076,7 +3079,8 @@
         "examples/static/example-theme.css",
         "examples/discovery/style.css",
         "examples/form-permissions/style.css",
-        "examples/contract-actions/style.css"
+        "examples/contract-actions/style.css",
+        "scripts/build-controls-layout.mjs"
       ],
       "testRefs": [
         "docs/verification/consent-browser.md",
@@ -3087,9 +3091,11 @@
         "site/test/guide-navigation.test.mjs",
         "packages/notabenda/test/controls.test.mjs",
         "packages/notabenda/test/consent-delivery.test.mjs",
-        "docs/verification/consent-focus.md"
+        "docs/verification/consent-focus.md",
+        "packages/notabenda/test/controls-layout.test.mjs",
+        "docs/verification/controls-layout.md"
       ],
-      "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open."
+      "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open. Long headings/Close labels now wrap, action columns adapt to text size, and logical side placement mirrors RTL. Whole-dialog scrolling is the safe fallback; measured resize observation retains fixed chrome only with a useful text-relative body viewport, preserves draft/focus and disconnects on teardown. Repeatable local fixtures and initial Chromium width/short-screen/large-text/RTL/no-observer checks extend evidence; actual browser zoom and broader platform/assistive-technology acceptance remain open."
     },
     {
       "id": "REQ-PRODUCT-CONFIG",
@@ -5430,7 +5436,9 @@
         "docs/verification/terms-browser.md",
         "docs/verification/website-browser.md",
         "docs/verification/design-pass.md",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "packages/notabenda/test/controls-layout.test.mjs",
+        "docs/verification/controls-layout.md"
       ]
     },
     {
@@ -5444,7 +5452,9 @@
         "docs/verification/consent-browser.md",
         "docs/verification/terms-browser.md",
         "docs/verification/website-browser.md",
-        "docs/verification/design-pass.md"
+        "docs/verification/design-pass.md",
+        "packages/notabenda/test/controls-layout.test.mjs",
+        "docs/verification/controls-layout.md"
       ]
     },
     {
