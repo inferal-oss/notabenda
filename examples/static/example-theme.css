@@ -1,19 +1,24 @@
 /* @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
    One visual foundation shared by vanilla, framework and tooling examples. */
 @layer example-theme {
- :is(.nb-demo-page,.choices-page,.discovery-page){--nb-page-bg:#fbfbfe;--nb-text:#292e43;--nb-muted:#656d82;--nb-line:#e4e7f0;--nb-surface:#fff;--nb-soft:#f1f2fc;--nb-accent:#6266c7;--nb-action-bg:#282c48;--nb-action-text:#f7f8ff;--nb-focus:#6668e8;--nb-radius:1rem;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-synthesis:none;text-rendering:optimizeLegibility}
- :is(.nb-demo-midnight,.choices-midnight,.discovery-midnight){color-scheme:dark;--nb-page-bg:#161925;--nb-text:#eef0fc;--nb-muted:#afb7d0;--nb-line:#353c55;--nb-soft:#24293e;--nb-surface:#1e2335;--nb-accent:#bdc4ff;--nb-action-bg:#c6cbff;--nb-action-text:#202437;--nb-focus:#b3baff}
- .nb-demo-page main.nb-document>h1{font-weight:560;letter-spacing:-.065em;font-size:clamp(3rem,6vw,5.8rem)}
- .nb-demo-page main.nb-document>section{border-radius:1rem;box-shadow:0 4px 24px #20243703}
+ :is(.nb-demo-page,.choices-page,.discovery-page){--nb-page-bg:#fcfcfd;--nb-text:#292a30;--nb-muted:#65676f;--nb-line:#e5e5e8;--nb-surface:#fff;--nb-soft:#f5f5f7;--nb-accent:#5b51b5;--nb-action-bg:#303137;--nb-action-text:#fafafa;--nb-focus:#6668e8;--nb-radius:.625rem;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-synthesis:none;text-rendering:optimizeLegibility}
+ :is(.nb-demo-midnight,.choices-midnight,.discovery-midnight){color-scheme:dark;--nb-page-bg:#141517;--nb-text:#ececef;--nb-muted:#a7a7ae;--nb-line:#34353a;--nb-soft:#222327;--nb-surface:#1c1d21;--nb-accent:#b9b2ef;--nb-action-bg:#c8c2f5;--nb-action-text:#25262b;--nb-focus:#b3baff}
+ .nb-demo-page main.nb-document>h1{font-weight:560;letter-spacing:-.04em;font-size:clamp(2.5rem,4.5vw,3.75rem)}
+ .nb-demo-page main.nb-document>section{border-radius:8px;box-shadow:0 4px 24px #25262b03}
  .nb-demo-page main.nb-document>section p{font-size:.88rem}
  .nb-demo-page main.nb-document>.nb-draft{border-left-color:var(--nb-accent);font-size:.77rem}
  .nb-demo-page main.nb-document :is(select,input,textarea){font:inherit}
  .nb-demo-page main.nb-document .nb-contract-action :is(select,input,textarea){font-size:1rem}
  .nb-demo-page :is(.nb-site-header,.nb-site-footer){border-color:var(--nb-line)}
  .choices-copy h1>span{color:#797bd0}.choices-midnight .choices-copy h1>span{color:#b9bfff}.choices-theme-card{background:var(--nb-soft)}.choices-midnight .choices-theme-card{background:var(--nb-soft)}.live-dot{background:#8c91e6}
- .permission-studio{--studio-ink:#f3f5ff;background:#282c48;border-color:#3e4569;box-shadow:0 24px 65px #252b4e0d}.studio-eyebrow,.studio-summary,.service-description p,.studio-count span{color:#bcc3dd}.studio-marker,.studio-bottom,.service-icon{color:#d1d6ff}.service-description h3,.studio-count p{color:#eef0ff}.service-preview,.studio-count,.studio-bottom{border-color:#484f72}.service-icon{background:#3b4163}.service-status{color:#d4daf2;border-color:#666f95}.service-preview[data-state=active] .service-status{background:#c6cbff;border-color:#c6cbff;color:#252b4e}.studio-bottom{background:#22263f}.studio-status-dot{background:#b0b6f5}
- .theme-day{background:#fbfbfe;color:#292e43;border-color:#e4e7f0}.theme-night{background:#24283f;color:#e4e8ff;border-color:#484e73}
- .discovery-page{--nb-document-width:78rem}.discovery-header{border:0}.discovery-hero h1{font-weight:560;letter-spacing:-.065em}
- @media(max-width:760px){.nb-demo-page main.nb-document>h1{font-size:clamp(2.8rem,12vw,4.5rem)}.nb-demo-page main.nb-document>section p{font-size:.85rem}}
+ .permission-studio{--studio-ink:#f3f5ff;background:#303137;border-color:#3b3c43;box-shadow:0 24px 65px #3030390d}.studio-eyebrow,.studio-summary,.service-description p,.studio-count span{color:#b3b3bd}.studio-marker,.studio-bottom,.service-icon{color:#d4cffa}.service-description h3,.studio-count p{color:#efeff2}.service-preview,.studio-count,.studio-bottom{border-color:#3b3c43}.service-icon{background:#33343b}.service-status{color:#d6d6df;border-color:#56565f}.service-preview[data-state=active] .service-status{background:#c8c2f5;border-color:#c8c2f5;color:#303039}.studio-bottom{background:#191a1e}.studio-status-dot{background:#b0b6f5}
+ .theme-day{background:#fcfcfd;color:#292a30;border-color:#e5e5e8}.theme-night{background:#222329;color:#e7e5f3;border-color:#44444e}
+ .discovery-page{--nb-document-width:78rem}.discovery-header{border:0}.discovery-hero h1{font-weight:560;letter-spacing:-.04em}
+ @media(max-width:760px){.nb-demo-page main.nb-document>h1{font-size:clamp(2.3rem,9vw,3rem)}.nb-demo-page main.nb-document>section p{font-size:.85rem}}
 }
 @layer example-theme{.nb-demo-page main.nb-document>#demo-session-ended{grid-column:1/-1;background:var(--nb-soft)}}
+/* @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y */
+@layer example-theme {
+ .nb-demo-page main.nb-document>section{box-shadow:none;border-radius:8px}.nb-demo-page main.nb-document>section p{font-size:.9375rem;line-height:1.7}.nb-demo-page main.nb-document>.nb-draft{font-size:.875rem}.nb-demo-page main.nb-document>h1{letter-spacing:-.04em;font-weight:580}.choices-copy h1,.discovery-hero h1{letter-spacing:-.045em!important;line-height:1.08}.choices-copy h1>span{color:#827abd}.choices-midnight .choices-copy h1>span{color:#b9b2ef}.permission-studio{background:#222329;border-color:#3b3c43;border-radius:8px;box-shadow:none}.studio-bottom{background:#191a1e;border-radius:0 0 8px 8px}.service-icon{background:#33343b;border-radius:6px}.service-status{border-radius:5px}.theme-tile{transform:none;border-radius:8px;box-shadow:0 4px 20px #2021260a}.theme-night{transform:translate(6px,10px)}.discovery-lab{background:var(--nb-soft);border-radius:8px;box-shadow:none}.nb-discovery{border-radius:8px;box-shadow:none}.nb-discovery-finding,.nb-discovery-catalog-card{background:var(--nb-surface);border-radius:6px}.choices-theme-card{background:var(--nb-soft)}
+ @media(max-width:700px){.nb-demo-page main.nb-document>section p{font-size:.9375rem}.choices-copy h1{font-size:clamp(3rem,13vw,4rem)}.nb-demo-page main.nb-document>h1{font-size:clamp(2.3rem,9vw,3rem)}}
+}

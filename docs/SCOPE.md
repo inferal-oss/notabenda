@@ -32,7 +32,7 @@ Updated 19 October 2026. This records accepted product decisions; implementation
 ## Public interface and mobile design
 
 - Treat design quality as a product-wide acceptance requirement across pages, examples, documents, widgets and admin screens. Review full compositions, real interaction states and responsive behavior; maintain [the shared design standard](DESIGN.md).
-- Default designs should feel contemporary: crisp sans-serif typography, cool neutrals, restrained periwinkle accents, refined spacing and surfaces, and clear interaction states. Apply this consistently to legal pages, permission controls, agreement UI, evidence views and the project website. Theme tokens remain easy to override.
+- Default designs should feel contemporary: crisp sans-serif typography, quiet neutral surfaces, restrained violet accents, consistent small corners and purposeful spacing, and clear interaction states. Use compact desktop operator controls, readable metadata and restrained navigation in the direction of modern product tools such as Linear. Apply this consistently to legal pages, permission controls, agreement UI, evidence views and the project website; mobile primary actions remain at least 44px. Theme tokens remain easy to override.
 
 - Public legal pages inherit the site's design and work without JavaScript. Provide optional CSS tokens and unstyled composition.
 - The initial consent-controls preview uses a compact, nonmodal bottom notice with clear, balanced choices on mobile; deliberate interaction opens a bottom drawer. Larger screens use a corner notice and side drawer. Full platform/accessibility review remains pending.

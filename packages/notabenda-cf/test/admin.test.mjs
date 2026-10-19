@@ -57,6 +57,16 @@ test('host-supplied workspace navigation is detached, escaped and cannot select 
  const denied=createAdminWorker({navigation,authorize:()=>null});assert.equal((await denied.fetch(request(),{})).status,403);assert.equal(reads,1);
 });
 
+/** @requirements REQ-PRODUCT-CF-ADMIN */
+test('evidence search labels known kinds and safely preserves custom prototype-name kinds',async()=>{
+ const kinds=['constructor','__proto__','toString','custom-record','<custom>','terms-acceptance'];
+ const storage=createSyntheticStorage(kinds.map((kind,index)=>({id:`record-${index}`,data:{kind}})));
+ const response=await mount(createStore(storage)).fetch(request(),{});
+ assert.equal(response.status,200);const html=await response.text();
+ for(const kind of kinds.slice(0,4))assert.ok(html.includes(kind));
+ assert.match(html,/&lt;custom&gt;/);assert.doesNotMatch(html,/<custom>/);assert.match(html,/Terms agreement/);
+});
+
 test('store access stays inside a host-fixed prefix for get, search, and forged cursors', async () => {
   const storage = createSyntheticStorage([{ id: 'one', data: { siteId: 'alpha' } }], 'evidence/alpha/');
   await storage.put('evidence/beta/secret', { private: 'SECRET_MARKER' });

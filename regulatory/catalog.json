@@ -1198,6 +1198,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Official proxy guide names US and EU asset hosts. Technical endpoint reference only; no inference about an operator deployment region or transfers. External documentation is not reproduced."
+    },
+    {
+      "id": "SRC-LINEAR-DESIGN-2026",
+      "title": "Linear — A calmer interface for a product in motion",
+      "url": "https://linear.app/now/behind-the-latest-design-refresh",
+      "kind": "design-reference",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "March 2026 product-design reference: restrained navigation, hierarchy, compact controls, quieter separators and neutral surfaces. Visual direction only, not an accessibility or legal authority. No Linear assets are reproduced."
     }
   ],
   "jurisdictions": [
@@ -2800,7 +2809,9 @@
           "locator": "Keyboard, contrast, focus, labels, reflow, target size"
         }
       ],
-      "discoverySourceIds": [],
+      "discoverySourceIds": [
+        "SRC-LINEAR-DESIGN-2026"
+      ],
       "featureIds": [
         "FEAT-CONTROLS",
         "FEAT-DEPLOYMENT"
@@ -2828,7 +2839,16 @@
         "packages/notabenda-cf/src/admin-style.ts",
         "packages/notabenda-cf/src/presentation.ts",
         "site/admin-presentation.mjs",
-        "site/build.mjs"
+        "site/build.mjs",
+        "packages/notabenda/src/services.css",
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda-cf/src/setup.ts",
+        "site/demo-admin.css",
+        "site/syntax.mjs",
+        "examples/static/example-theme.css",
+        "examples/discovery/style.css",
+        "examples/form-permissions/style.css",
+        "examples/contract-actions/style.css"
       ],
       "testRefs": [
         "packages/notabenda/test/documents.test.mjs",
@@ -2843,7 +2863,7 @@
         "packages/notabenda/test/consent-delivery.test.mjs",
         "docs/verification/consent-focus.md"
       ],
-      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending."
+      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open."
     },
     {
       "id": "REQ-PRODUCT-MOBILE",
@@ -2853,7 +2873,9 @@
       "summary": "Default to a compact bottom notice and user-opened drawer, preserving clear choices and page usability.",
       "appliesWhen": "Any built-in mobile consent surface is shipped.",
       "sourceRefs": [],
-      "discoverySourceIds": [],
+      "discoverySourceIds": [
+        "SRC-LINEAR-DESIGN-2026"
+      ],
       "featureIds": [
         "FEAT-CONTROLS",
         "FEAT-DEPLOYMENT"
@@ -2880,7 +2902,16 @@
         "packages/notabenda-cf/src/admin-style.ts",
         "packages/notabenda-cf/src/presentation.ts",
         "site/admin-presentation.mjs",
-        "site/build.mjs"
+        "site/build.mjs",
+        "packages/notabenda/src/services.css",
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda-cf/src/setup.ts",
+        "site/demo-admin.css",
+        "site/syntax.mjs",
+        "examples/static/example-theme.css",
+        "examples/discovery/style.css",
+        "examples/form-permissions/style.css",
+        "examples/contract-actions/style.css"
       ],
       "testRefs": [
         "docs/verification/consent-browser.md",
@@ -2893,7 +2924,7 @@
         "packages/notabenda/test/consent-delivery.test.mjs",
         "docs/verification/consent-focus.md"
       ],
-      "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending."
+      "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open."
     },
     {
       "id": "REQ-PRODUCT-CONFIG",

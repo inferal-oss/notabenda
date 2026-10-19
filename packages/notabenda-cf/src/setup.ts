@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-MOBILE
+// @requirements REQ-PRODUCT-A11Y
 /** @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CF-ADMIN */
 import type {ExecutionContextLike,AdminWorker,AdminPresentation} from './types.js';
 import {normalizeAdminPresentation} from './presentation.js';
@@ -25,6 +27,6 @@ export function createSetupWorker<Env=unknown>(options:SetupWorkerOptions<Env>):
     headers.set('Content-Type','text/html; charset=utf-8');
     const nonce=crypto.randomUUID().replaceAll('-','');
     headers.set('Content-Security-Policy',headers.get('Content-Security-Policy')!.replace("style-src 'self'",`style-src 'self' 'nonce-${nonce}'`));
-    return response(renderWorkspaceShell(`<header class="setup-intro"><div><p class="eyebrow">Guided setup</p><h1>Make the setup yours.</h1><p class="intro">A few considered questions. A clearer configuration.<br> Start with your practices, and keep the reasons behind every choice.</p></div><aside class="setup-intro-note"><span aria-hidden="true">↳</span><p>Your facts become a draft.<br><strong>You decide what goes live.</strong></p></aside></header><div data-notabenda-setup></div><noscript><p>JavaScript is required for this local questionnaire. You can use the CLI wizard instead.</p></noscript>`,{...presentation,basePath,title:'Guided setup',scopeLabel:'Private working draft',nonce},`<link rel="stylesheet" href="${stylesheetUrl}"><script type="module" src="${scriptUrl}"></script>`,'workspace-setup'),200);
+    return response(renderWorkspaceShell(`<header class="setup-intro"><div><p class="eyebrow">Guided setup</p><h1>Site configuration</h1><p class="intro">Describe your site, its services and processing purposes.<br> Review a local draft before publishing.</p></div><aside class="setup-intro-note"><span aria-hidden="true">↳</span><p>Your facts become a draft.<br><strong>You decide what goes live.</strong></p></aside></header><div data-notabenda-setup></div><noscript><p>JavaScript is required for this local questionnaire. You can use the CLI wizard instead.</p></noscript>`,{...presentation,basePath,title:'Guided setup',scopeLabel:'Private working draft',nonce},`<link rel="stylesheet" href="${stylesheetUrl}"><script type="module" src="${scriptUrl}"></script>`,'workspace-setup'),200);
   }};
 }

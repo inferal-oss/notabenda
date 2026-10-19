@@ -711,3 +711,13 @@ Official tutorial excerpt describes asset-host rewriting and the array.js path. 
 **Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
 
 Official proxy guide names US and EU asset hosts. Technical endpoint reference only; no inference about an operator deployment region or transfers. External documentation is not reproduced.
+
+<a id="src-linear-design-2026"></a>
+
+## SRC-LINEAR-DESIGN-2026
+
+[Linear — A calmer interface for a product in motion](https://linear.app/now/behind-the-latest-design-refresh)
+
+**Type:** design-reference. **Checked:** 2026-10-19. **Access:** read.
+
+March 2026 product-design reference: restrained navigation, hierarchy, compact controls, quieter separators and neutral surfaces. Visual direction only, not an accessibility or legal authority. No Linear assets are reproduced.

@@ -107,9 +107,9 @@ The local example also serves [evidence search](http://127.0.0.1:4178/demo/admin
 
 ![A static privacy page with native typography and clear navigation](docs/assets/screenshots/privacy-desktop.jpg)
 
-![Terms agreements in the searchable evidence workspace](docs/assets/screenshots/admin-agreements-desktop.jpg)
+![Terms agreements in the searchable evidence workspace](docs/assets/screenshots/workspace-current.png)
 
-![User-opened mobile preferences drawer](docs/assets/screenshots/consent-drawer-mobile.jpg)
+![Compact mobile cookie notice with balanced choices](docs/assets/screenshots/consent-current.png)
 
 See a [policy comparison](docs/assets/screenshots/admin-diff-desktop.jpg) and [evidence search on a phone](docs/assets/screenshots/admin-agreements-mobile.jpg).
 

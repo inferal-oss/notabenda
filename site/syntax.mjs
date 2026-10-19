@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 const escape=value=>String(value).replace(/[&<>"']/gu,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 const labels={typescript:'TypeScript',javascript:'JavaScript',tsx:'TSX',jsx:'JSX',json:'JSON',jsonc:'JSON with comments',css:'CSS',html:'HTML',shellscript:'Shell',markdown:'Markdown',mdx:'MDX',astro:'Astro',python:'Python',yaml:'YAML',mermaid:'Mermaid',diff:'Diff',sql:'SQL',toml:'TOML',text:'Plain text'};
 const aliases={ts:'typescript',js:'javascript',mjs:'javascript',cjs:'javascript',sh:'shellscript',bash:'shellscript',shell:'shellscript',md:'markdown',yml:'yaml',py:'python',xml:'html',plaintext:'text',plain:'text',console:'text'};
-export const syntaxBackgrounds={light:'#f4f5fb',dark:'#24283f'};
+export const syntaxBackgrounds={light:'#f7f7f9',dark:'#202126'};
 const rgb=hex=>[1,3,5].map(index=>parseInt(hex.slice(index,index+2),16));
 const luminance=hex=>rgb(hex).map(channel=>{const value=channel/255;return value<=.04045?value/12.92:((value+.055)/1.055)**2.4;}).reduce((sum,value,index)=>sum+value*[.2126,.7152,.0722][index],0);
 export function contrastRatio(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
