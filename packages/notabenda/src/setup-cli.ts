@@ -5,6 +5,7 @@ import {createCatalogSelectionPlan,readSetupCatalogSelections} from './catalog-s
 import type {CatalogServiceSelection} from './catalog-selection.js';
 import {searchServiceCatalog} from './catalog.js';
 import {createStarterConfig} from './starter.js';
+import {reviewSetupPurposes} from './setup-purpose-cli.js';
 import {createInterface} from 'node:readline/promises';
 import {createReadStream} from 'node:fs';
 import {mkdir,writeFile} from 'node:fs/promises';
@@ -30,6 +31,7 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       console.log(setupMarkets.map(m=>m.id+' — '+m.label).join('\n'));
       result.markets=(await ask('Coverage interests (comma-separated IDs; blank means unresolved): ',512)).split(',').map(s=>s.trim()).filter(Boolean);
       for(const q of setupQuestions){console.log('\n'+q.title+'\n'+q.detail);let choice='';while(!['yes','no','unknown'].includes(choice))choice=(await ask('yes / no / unknown [unknown]: ',16)).toLowerCase()||'unknown';result.answers[q.id]={choice:choice as SetupChoice,justification:await ask('Supporting facts / justification (blank leaves a review item): ')};}
+      base=await reviewSetupPurposes(base,ask);
       const inventory=(base as {storage?:{id:string;classification:string}[]}|undefined)?.storage;
       if(Array.isArray(inventory))for(const item of inventory)if(item.classification==='necessary')result.storageJustifications![item.id]=await ask(`Private justification for necessary storage “${item.id}”: `);
       // Explicit opt-in: the large seed is not imported until the operator asks to search.

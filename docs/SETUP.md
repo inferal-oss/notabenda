@@ -59,7 +59,7 @@ ui.destroy();
 
 The UI runs locally in the operator's tab. Config/report imports use local files; answers are not uploaded or stored in browser persistence. Downloads are explicit. Editing invalidates earlier export links; object URLs are revoked on edits and destruction. Reloading loses unsaved notes. Reimport keeps notes by storage ID, including removed items in the private report. Resuming a report replaces current answers, so save any notes you want to retain first. Import its matching config separately.
 
-The browser interface has six navigable stages: start/import, public facts, markets, practices, storage justifications and review. Practice questions expand individually and display the current yes/no/unknown assessment. Moving between stages preserves notes; revisiting a section does not regenerate or activate anything. Preparing recommendations reveals current downloads, and an edit removes those downloads until you prepare a new review. Unknown answers stay explicit review items.
+The browser interface has six navigable stages: start/import, public facts, markets, practices, storage justifications and review. Start includes local processing-purpose authoring and optional catalog search. Practice questions expand individually and display the current yes/no/unknown assessment. Moving between stages preserves notes; revisiting a section does not regenerate or activate anything. Preparing recommendations reveals current downloads, and an edit removes those downloads until you prepare a new review. Unknown answers stay explicit review items.
 
 ```js
 import {createSetupWorker} from 'notabenda-cf';
@@ -93,6 +93,40 @@ A positive consumer-workflow answer connects the optional [contract declaration 
 
 The CLI prints requirement IDs, guide links and configuration/integration paths for each recommendation. Paths such as `host.contractActions` and `host.contractDispatch` describe host work; they are advisory references, not fields added to `SiteConfig`. Setup never enables routes, providers, schedulers or regional profiles automatically. Public exports preserve imported facts and remain drafts; private justifications remain in the separate report.
 
+## Describe processing purposes
+
+In **Start → Processing purposes**, add the reasons you actually use personal data before selecting providers. Each purpose has a stable ID, a public name and description, data categories, legal basis and retention text, plus collection source, context, requirement and consequences. The form groups these facts instead of asking you to write JSON. Purpose facts belong in public notices; keep private supporting reasoning in the questionnaire.
+
+Collection source and whether providing information is required need explicit answers. Blank legal basis, retention or consequences become `{{purposes.ID.FIELD}}` placeholders, visible in the draft and rejected by production checks. The editor does not choose a basis, exception or retention period for you. New fields start empty; importing does not create default purposes.
+
+Edits preserve the purpose ID and all existing service links, runtime settings and restrictions. Removing a purpose needs a separate confirmation and is blocked while a service, consent scope or scope restriction references it. No dependent item is removed automatically. Changes reopen all document review declarations. The consent runtime's existing material-scope comparison also includes complete purpose facts, so a changed purpose cannot inherit an old visitor grant. Review and publish a new release through your normal process.
+
+Preparing recommendations exports the current public inventory. Starting or cancelling an unfinished purpose edit does not change the inventory or invalidate a prepared report; saving or removing does. Replacing a config import closes an unsaved purpose edit explicitly. A purpose edit makes affected catalog notes stale; the original private note remains visible until you remove it or review the site use separately. Removing that stale note preserves the existing changed inventory.
+
+Interactive CLI setup offers **Review processing purposes** before catalog search. Choose `add`, `edit` or `remove`, inspect the public facts and confirm the local change. Blank keeps an existing text value; `?` marks basis, retention or consequences unresolved. On a new purpose those three fields may be left blank for draft review. `done` continues to the remaining wizard. Noninteractive setup continues to accept purpose facts through the imported config, with no questionnaire schema change.
+
+For a custom UI, optional browser-safe APIs are available:
+
+```js
+import {createPurposeDraftPlan} from 'notabenda/setup/purposes';
+import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';
+
+// reviewedPurpose is your complete public Purpose object.
+const added = createPurposeDraftPlan(config, {action: 'add', purpose: reviewedPurpose});
+const edited = createPurposeDraftPlan(added.config, {
+  action: 'update', previous: reviewedPurpose, purpose: changedPurpose,
+});
+// Updates/removals reject stale previous facts and stable-ID renaming.
+const editor = mountPurposeEditor(container, {
+  getConfig: () => currentDraft,
+  onChange: plan => { currentDraft = plan.config; },
+});
+editor.refresh(); // refresh the list after an external draft change
+editor.destroy();
+```
+
+`normalizeDraftPurpose` validates a detached closed purpose object. Authoring accepts up to 256 purposes, 64 unique data-category labels per purpose, 120-character IDs, 300-character names/category labels and 4,000-character narrative fields. Existing config validation and all production review checks still apply. The host owns persistence, authorization, deployment and any private reasoning.
+
 ## Review services from the catalog
 
 Interactive CLI setup offers an optional reference search after the questionnaire. Search by provider/product/category, choose one of the displayed product IDs, then supply the actual provider entity, processing location, existing purpose IDs, an optional verified privacy URL and a private justification. Only an explicit confirmation adds an ordinary service entry to the draft. The reference seed loads only after choosing search. Noninteractive report resume uses its pinned metadata and does not retrieve a newer catalog.
@@ -110,7 +144,7 @@ const setup = mountSetup(container, {
 
 Bundle or serve that optional module from a host-approved source; the project example uses a same-origin lazy module with its notices/license. Reading a reference catalog is separate from uploading answers. Seed entries remain unreviewed even after an operator confirms actual site use. Catalog selection does not populate cookie/storage declarations, legal bases, processing-activity classifications or consent scopes, and never initializes a vendor.
 
-Declare the site's actual processing purposes in configuration first and import it; selection can only link to those IDs. Fresh starter configs have no purposes, so catalog search alone cannot add a service. Full purpose authoring in setup remains future work. Entirely custom services remain valid ordinary config entries.
+Declare the site's actual processing purposes in the setup editor/CLI or import them from configuration; catalog selection can only link to declared IDs. Fresh starter configs have no purposes. If you add or edit one while a service proposal is open, reopen the service review to see current facts. Entirely custom services remain valid ordinary config entries.
 
 The private setup report optionally includes `catalogSelections`: each retains the selected provider/product metadata, source URLs/revisions/retrieval status, the explicit service facts, the selected purpose definitions and the private justification. Detector rules and imported storage hints are omitted because this action did not review or apply them. The snapshot is bounded to 128 KiB per entry, 32 entries, and 512 KiB for the complete report. Public config and legal/compiler output contain none of these notes.
 

@@ -45,7 +45,7 @@ Git projects use Git's ignored-file selection with filesystem monitoring disable
 
 The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
 
-The [setup guide](SETUP.md) covers the CLI/admin selection flow. `notabenda/catalog/selection` exports explicit draft selection and private pin validation; `notabenda/catalog/ui` supplies the optional local picker. These are separate from automatic catalog provenance archival in legal releases, which remains planned.
+The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `notabenda/catalog/selection` exports explicit draft selection and private pin validation; `notabenda/catalog/ui` supplies the optional local picker. These are separate from automatic catalog provenance archival in legal releases, which remains planned.
 
 ## Design direction
 

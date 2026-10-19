@@ -15,10 +15,11 @@ Features link to specific obligations and their planned verification scenarios. 
 - Shared versioned practice/coverage questionnaire for npx wizard and host-authorized admin UI.
 - Requirement-linked recommendations, unknowns/conflicts and private justifications; reviewable draft config exports with no automatic activation.
 - Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling.
+- Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts.
 
 **Requirement links:** [REQ-PRODUCT-SETUP](requirements/README.md#req-product-setup), [REQ-PRODUCT-SCOPE-GUARDS](requirements/README.md#req-product-scope-guards), [REQ-PRODUCT-CF-STARTER](requirements/README.md#req-product-cf-starter), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
 
-**Code references:** [packages/notabenda/src/setup.ts](../packages/notabenda/src/setup.ts), [packages/notabenda/src/setup-cli.ts](../packages/notabenda/src/setup-cli.ts), [packages/notabenda/src/setup-ui.ts](../packages/notabenda/src/setup-ui.ts), [packages/notabenda-cf/src/setup.ts](../packages/notabenda-cf/src/setup.ts)
+**Code references:** [packages/notabenda/src/setup.ts](../packages/notabenda/src/setup.ts), [packages/notabenda/src/setup-cli.ts](../packages/notabenda/src/setup-cli.ts), [packages/notabenda/src/setup-ui.ts](../packages/notabenda/src/setup-ui.ts), [packages/notabenda-cf/src/setup.ts](../packages/notabenda-cf/src/setup.ts), [packages/notabenda/src/setup-purpose.ts](../packages/notabenda/src/setup-purpose.ts), [packages/notabenda/src/setup-purpose-ui.ts](../packages/notabenda/src/setup-purpose-ui.ts), [packages/notabenda/src/setup-purpose-cli.ts](../packages/notabenda/src/setup-purpose-cli.ts)
 
 <a id="feat-inventory"></a>
 
@@ -34,7 +35,7 @@ Features link to specific obligations and their planned verification scenarios. 
 
 **Requirement links:** [REQ-EU-NOTICE](requirements/README.md#req-eu-notice), [REQ-CH-PROFILING](requirements/README.md#req-ch-profiling), [REQ-QC-PROFILING](requirements/README.md#req-qc-profiling), [REQ-NZ-INDIRECT](requirements/README.md#req-nz-indirect), [REQ-TR-BASIS](requirements/README.md#req-tr-basis), [REQ-EU-TERMS](requirements/README.md#req-eu-terms), [REQ-PRODUCT-CONFIG](requirements/README.md#req-product-config), [REQ-PRODUCT-EMBEDS](requirements/README.md#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](requirements/README.md#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](requirements/README.md#req-product-processing-choices), [REQ-PRODUCT-SCOPE-GUARDS](requirements/README.md#req-product-scope-guards), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog).
 
-**Code references:** [packages/notabenda/src/types.ts](../packages/notabenda/src/types.ts), [packages/notabenda/src/config.ts](../packages/notabenda/src/config.ts), [packages/notabenda/src/embeds.ts](../packages/notabenda/src/embeds.ts), [packages/notabenda/src/privacy-signals.ts](../packages/notabenda/src/privacy-signals.ts), [packages/notabenda/src/scope-guards.ts](../packages/notabenda/src/scope-guards.ts)
+**Code references:** [packages/notabenda/src/types.ts](../packages/notabenda/src/types.ts), [packages/notabenda/src/config.ts](../packages/notabenda/src/config.ts), [packages/notabenda/src/embeds.ts](../packages/notabenda/src/embeds.ts), [packages/notabenda/src/privacy-signals.ts](../packages/notabenda/src/privacy-signals.ts), [packages/notabenda/src/scope-guards.ts](../packages/notabenda/src/scope-guards.ts), [packages/notabenda/src/setup-purpose.ts](../packages/notabenda/src/setup-purpose.ts), [packages/notabenda/src/setup-purpose-ui.ts](../packages/notabenda/src/setup-purpose-ui.ts), [packages/notabenda/src/setup-purpose-cli.ts](../packages/notabenda/src/setup-purpose-cli.ts)
 
 <a id="feat-documents"></a>
 

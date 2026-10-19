@@ -56,6 +56,16 @@
       "import": "./dist/setup-ui.js",
       "default": "./dist/setup-ui.js"
     },
+    "./setup/purposes": {
+      "types": "./dist/setup-purpose.d.ts",
+      "import": "./dist/setup-purpose.js",
+      "default": "./dist/setup-purpose.js"
+    },
+    "./setup/purposes/ui": {
+      "types": "./dist/setup-purpose-ui.d.ts",
+      "import": "./dist/setup-purpose-ui.js",
+      "default": "./dist/setup-purpose-ui.js"
+    },
     "./discovery": {
       "types": "./dist/discovery.d.ts",
       "import": "./dist/discovery.js",

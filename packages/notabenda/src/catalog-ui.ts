@@ -49,7 +49,7 @@ export function mountCatalogPicker(container:HTMLElement,options:CatalogPickerOp
   const purposes=node('div');purposes.className='nb-catalog-purpose-group';purposes.setAttribute('role','group');purposes.setAttribute('aria-label','Declared purposes used by this service');purposes.append(node('p','Declared purposes used by this service'));proposal.append(purposes);const purposeInputs:HTMLInputElement[]=[];
   const config=toPublicConfig(options.getConfig(),{mode:'preview'});
   for(const purpose of config.purposes){const label=node('label');label.className='nb-catalog-check';const input=node('input');input.type='checkbox';input.value=purpose.id;purposeInputs.push(input);label.append(input,doc.createTextNode(purpose.name+' · '+purpose.id));purposes.append(label);}
-  if(!purposeInputs.length)purposes.append(node('p','Add actual purposes to your configuration and import it before selecting this service.'));
+  if(!purposeInputs.length)purposes.append(node('p','Declare actual processing purposes before selecting this service, then reopen this review. In guided setup, use the Processing purposes section above.'));
   const reason=node('textarea');reason.rows=3;reason.maxLength=4000;field('Supporting facts / justification (private)',reason);
   const confirmed=node('input');confirmed.type='checkbox';const confirmation=node('label');confirmation.className='nb-catalog-check';confirmation.append(confirmed,doc.createTextNode('I reviewed the actual provider, purpose and processing location.'));proposal.append(confirmation);
   const error=node('p');error.setAttribute('role','alert');proposal.append(error);

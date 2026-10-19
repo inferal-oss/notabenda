@@ -8,6 +8,8 @@ Notabenda gives you reusable site configuration and privacy, cookie, and terms p
 
 **Developer preview.** The packages have not been published to npm yet. Document rendering, build tooling, local consent state, vanilla cookie controls, and version-bound terms agreement work. Broader regional features remain in development. See the [current scope](docs/SCOPE.md) and [feature status](docs/FEATURES.md).
 
+Explore the [website and documentation](https://notabenda.org) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
+
 ## Try it
 
 Repository tooling requires Node.js 22.22+ (including the Astro example) and Python 3.9+ for catalog checks. The core package itself supports Node.js 22+.
@@ -59,6 +61,8 @@ npx notabenda build --preview
 
 One config describes the operator, processing purposes, services, storage, retention, rights, and document versions. It produces ordinary static pages, public configuration, and a versioned artifact for your own history/evidence backend.
 
+Prefer a guided start? Run `npx notabenda wizard` or use the [setup screen](https://notabenda.org/demo/admin/setup). Describe your processing purposes, review providers and keep private reasons alongside the resulting draft. Unknown legal basis or retention stays unresolved for review. [Setup guide](docs/SETUP.md).
+
 Use the renderer inside your own layout, too:
 
 ```ts
@@ -91,7 +95,7 @@ Public content is escaped, links and routes are checked, and private operator me
 
 The [requirements catalog](docs/requirements/README.md) connects sources to individual obligations, planned features, implementation files, and tests. Regional behavior is recorded item by item. Research, legal review, and implementation have separate statuses.
 
-The optional [`notabenda-cf` component](packages/notabenda-cf/README.md) adds host-authorized, scoped access to stored evidence and document history. Authentication belongs to your application. The backoffice is designed around finding evidence, reading what happened, and comparing policy/terms versions—not a wall of database tables. Its Durable Object adapter and history APIs work locally and in a host integration; this repository has not deployed a Cloudflare service.
+The optional [`notabenda-cf` component](packages/notabenda-cf/README.md) adds host-authorized, scoped access to stored evidence and document history. Authentication belongs to your application. The backoffice is designed around finding evidence, reading what happened, and comparing policy/terms versions. Its Durable Object adapter and history APIs power the website's isolated demo and can be plugged into your own host integration.
 
 Start your own backend with `npx notabenda-cf init`. It creates a local Worker project with SQLite storage, the admin and guided setup; you supply your existing authorization hook. Nothing is installed or deployed automatically. [Cloudflare starter guide](docs/CLOUDFLARE-STARTER.md).
 

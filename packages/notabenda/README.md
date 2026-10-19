@@ -148,7 +148,7 @@ Keep earlier pinned document URLs available in clean deployments with `createRet
 
 For an optional producer that owns exact declared browser keys, use [storage cleanup](../../docs/STORAGE-CLEANUP.md) to tie removal to withdrawal, failed startup and final teardown. Cookie expiration requests remain distinct from verified web-storage absence.
 
-Use [guided setup](../../docs/SETUP.md) through `npx notabenda wizard` or the reusable `notabenda/setup/ui` questionnaire. Import a config, record private justifications and review catalog-linked recommendations before adopting a draft.
+Use [guided setup](../../docs/SETUP.md) through `npx notabenda wizard` or the reusable `notabenda/setup/ui` questionnaire. Start fresh or import a config, describe your processing purposes, review providers, record private justifications and inspect catalog-linked recommendations before adopting a draft. Optional `notabenda/setup/purposes` and `notabenda/setup/purposes/ui` APIs support custom purpose editors.
 
 Use a [collection notice](../../docs/COLLECTION.md) to place selected purpose information beside a form, with a pinned privacy version and native details. Static vanilla, React and Astro renderers share the same reviewed descriptor; notice display creates no permission or receipt.
 

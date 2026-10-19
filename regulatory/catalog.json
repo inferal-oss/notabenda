@@ -12,13 +12,17 @@
       "deliverables": [
         "Shared versioned practice/coverage questionnaire for npx wizard and host-authorized admin UI.",
         "Requirement-linked recommendations, unknowns/conflicts and private justifications; reviewable draft config exports with no automatic activation.",
-        "Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling."
+        "Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling.",
+        "Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
         "packages/notabenda/src/setup-cli.ts",
         "packages/notabenda/src/setup-ui.ts",
-        "packages/notabenda-cf/src/setup.ts"
+        "packages/notabenda-cf/src/setup.ts",
+        "packages/notabenda/src/setup-purpose.ts",
+        "packages/notabenda/src/setup-purpose-ui.ts",
+        "packages/notabenda/src/setup-purpose-cli.ts"
       ]
     },
     {
@@ -36,7 +40,10 @@
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/embeds.ts",
         "packages/notabenda/src/privacy-signals.ts",
-        "packages/notabenda/src/scope-guards.ts"
+        "packages/notabenda/src/scope-guards.ts",
+        "packages/notabenda/src/setup-purpose.ts",
+        "packages/notabenda/src/setup-purpose-ui.ts",
+        "packages/notabenda/src/setup-purpose-cli.ts"
       ]
     },
     {
@@ -1430,7 +1437,8 @@
         "packages/notabenda/test/consent.test.mjs",
         "packages/notabenda/test/consent-evidence.test.mjs",
         "packages/notabenda/test/form-permission.test.mjs",
-        "docs/verification/form-permissions.md"
+        "docs/verification/form-permissions.md",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ],
       "implementationNote": "Local choices, withdrawal, expiry and cooperative cleanup are implemented. Optional server evidence preserves exact notices and transactional choice order; required-receipt browser mode checks current acknowledgments and bounded retries. Production retention, complete applicability and regional legal review remain incomplete. Ordinary purpose/channel fields and evaluated CF grant/withdrawal evidence now provide supporting mechanics; full applicability, meaningful presentation, specialized cases and regional review remain incomplete."
     },
@@ -2817,11 +2825,15 @@
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/types.ts",
         "packages/notabenda/src/consent-runtime-config.ts",
-        "packages/notabenda/src/consent-compile.ts"
+        "packages/notabenda/src/consent-compile.ts",
+        "packages/notabenda/src/setup-purpose.ts",
+        "packages/notabenda/src/setup-purpose-ui.ts",
+        "packages/notabenda/src/setup-purpose-cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
-        "packages/notabenda/test/consent-runtime.test.mjs"
+        "packages/notabenda/test/consent-runtime.test.mjs",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ]
     },
     {
@@ -3055,7 +3067,8 @@
       ],
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
-        "packages/notabenda/test/consent-runtime.test.mjs"
+        "packages/notabenda/test/consent-runtime.test.mjs",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ]
     },
     {
@@ -3604,15 +3617,19 @@
         "examples/setup/client.mjs",
         "packages/notabenda-cf/src/admin-style.ts",
         "packages/notabenda-cf/src/presentation.ts",
-        "site/admin-presentation.mjs"
+        "site/admin-presentation.mjs",
+        "packages/notabenda/src/setup-purpose.ts",
+        "packages/notabenda/src/setup-purpose-ui.ts",
+        "packages/notabenda/src/setup-purpose-cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/setup.test.mjs",
         "packages/notabenda-cf/test/setup.test.mjs",
         "docs/verification/setup.md",
-        "docs/verification/ux-review.md"
+        "docs/verification/ux-review.md",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ],
-      "implementationNote": "Shared tri-state questionnaire and bounded normalized answers; explicit selected markets trigger review. Config/imported runtime settings stay separate from private notes. Contradictions remain unresolved; current exports invalidate on edits and saved reports resume answers only. Questionnaire revision 3 adds actual distance/continuing-contract practices and conditional regional/handoff review, accepts earlier reports and preserves unresolved new answers."
+      "implementationNote": "Shared tri-state questionnaire and bounded normalized answers; explicit selected markets trigger review. Config/imported runtime settings stay separate from private notes. Contradictions remain unresolved; current exports invalidate on edits and saved reports resume answers only. Questionnaire revision 3 adds actual distance/continuing-contract practices and conditional regional/handoff review, accepts earlier reports and preserves unresolved new answers. Explicit public purpose add/edit/remove plans now power CLI/admin authoring; unresolved basis/retention/consequence text stays production-blocking, linked removals reject, existing restrictions/scopes persist, and stale catalog notes remain review items."
     },
     {
       "id": "REQ-PRODUCT-COLLECTION-NOTICE",
@@ -3903,7 +3920,8 @@
         "examples/scope-guards/build.mjs",
         "examples/scope-guards/client.mjs",
         "packages/notabenda/src/consent-engine.ts",
-        "packages/notabenda/src/react-consent-bindings.ts"
+        "packages/notabenda/src/react-consent-bindings.ts",
+        "packages/notabenda/src/setup-purpose.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/scope-guards.test.mjs",
@@ -3912,7 +3930,8 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "scripts/check-site-runtime.mjs",
-        "docs/verification/scope-guards.md"
+        "docs/verification/scope-guards.md",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ],
       "implementationNote": "Site and purpose restrictions compose conservatively; optional eligibility and granular grants are checked in the browser and against CF archives. Available-choice actions use save, wholly blocked actions invent no refusal, and read-only evidence distinguishes guarded-off values. The wizard preserves imported restrictions and private reasoning."
     },
@@ -4442,7 +4461,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. Entries remain unreviewed after an operator declares actual use. Purposes must already be declared; setup does not invent them. Private report pins do not automatically become archived legal-release evidence.",
+      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. Entries remain unreviewed after an operator declares actual use. Purposes must be explicitly declared through setup authoring or imported config; setup does not invent their meaning or legal basis. Private report pins do not automatically become archived legal-release evidence.",
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
         "packages/notabenda/src/catalog-seed.ts",
@@ -4462,7 +4481,10 @@
         "packages/notabenda/src/setup.ts",
         "packages/notabenda/src/setup-ui.ts",
         "packages/notabenda/src/setup-cli.ts",
-        "examples/setup/build.mjs"
+        "examples/setup/build.mjs",
+        "packages/notabenda/src/setup-purpose.ts",
+        "packages/notabenda/src/setup-purpose-ui.ts",
+        "packages/notabenda/src/setup-purpose-cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -4472,7 +4494,8 @@
         "packages/notabenda/test/astro-package.test.mjs",
         "site/test/services.test.mjs",
         "packages/notabenda/test/catalog-selection.test.mjs",
-        "site/test/catalog-setup.test.mjs"
+        "site/test/catalog-setup.test.mjs",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ],
       "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Reviewed profiles, browser recognition and automatic immutable release-provenance archival remain open."
     },
@@ -4916,7 +4939,8 @@
       "status": "automated",
       "expected": "Malformed input and broken references yield diagnostics; private/unknown nested fields never enter public output.",
       "testRefs": [
-        "packages/notabenda/test/config.test.mjs"
+        "packages/notabenda/test/config.test.mjs",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ]
     },
     {
@@ -5180,7 +5204,8 @@
       "testRefs": [
         "packages/notabenda/test/setup.test.mjs",
         "packages/notabenda-cf/test/setup.test.mjs",
-        "docs/verification/setup.md"
+        "docs/verification/setup.md",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ]
     },
     {
@@ -5444,7 +5469,8 @@
         "packages/notabenda/test/astro-package.test.mjs",
         "site/test/services.test.mjs",
         "packages/notabenda/test/catalog-selection.test.mjs",
-        "site/test/catalog-setup.test.mjs"
+        "site/test/catalog-setup.test.mjs",
+        "packages/notabenda/test/setup-purpose.test.mjs"
       ]
     },
     {
