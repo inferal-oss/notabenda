@@ -1,3 +1,4 @@
+// @requirements REQ-IE-CONSENT-DURATION REQ-FR-SCOPE REQ-DE-DEVICE REQ-IT-REPROMPT REQ-ES-CHOICE
 import {normalizeCatalogSelectionRevisions} from './catalog-review.js';
 import type {CatalogSelectionRevision} from './catalog-review.js';
 // @requirements REQ-PRODUCT-SERVICE-CATALOG
@@ -38,7 +39,11 @@ export const setupQuestions=[
 export type SetupQuestionId=typeof setupQuestions[number]['id'];
 export const setupMarkets=[
   {id:'EU-EEA',label:'EU / EEA',requirements:['REQ-EU-NOTICE','REQ-EU-DEVICE','REQ-EU-CONSENT','REQ-EU-TERMS','REQ-EU-WITHDRAWAL','REQ-EU-ORDER-ACTION']},
-  {id:'DE',label:'Germany',requirements:['REQ-DE-CANCEL','REQ-DE-WITHDRAWAL']},
+  {id:'DE',label:'Germany',requirements:['REQ-DE-DEVICE','REQ-DE-CANCEL','REQ-DE-WITHDRAWAL']},
+  {id:'FR',label:'France',requirements:['REQ-FR-SCOPE']},
+  {id:'IE',label:'Ireland',requirements:['REQ-IE-DEVICE','REQ-IE-CONSENT-DURATION']},
+  {id:'IT',label:'Italy',requirements:['REQ-IT-REPROMPT']},
+  {id:'ES',label:'Spain',requirements:['REQ-ES-CHOICE']},
   {id:'UK',label:'United Kingdom',requirements:['REQ-UK-EXCEPTIONS']},
   {id:'CH',label:'Switzerland',requirements:['REQ-CH-PROFILING']},
   {id:'BR',label:'Brazil',requirements:['REQ-BR-COOKIE-UI','REQ-BR-CONTRACT']},
@@ -59,7 +64,7 @@ export const setupFactFields=[['siteName','Site name'],['siteId','Site ID (lower
 export type SetupFactId=typeof setupFactFields[number][0];
 export interface SetupAnswers {schemaVersion:1;publicFacts?:Partial<Record<SetupFactId,string>>;markets:string[];answers:Partial<Record<SetupQuestionId,SetupAnswer>>;storageJustifications?:Record<string,string>}
 export interface SetupRecommendation {id:string;status:'recommended'|'investigate'|'review'|'declared-no';title:string;reason:string;configPaths:readonly string[];requirementIds:readonly RequirementId[];guide:string}
-export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'3';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
+export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'4';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
 const object=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const exact=(value:Record<string,unknown>,allowed:string[])=>Object.keys(value).every(k=>allowed.includes(k));
 const text=(value:unknown):value is string=>typeof value==='string'&&value.length<=4000&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u.test(value);
@@ -90,6 +95,11 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
   if(config.rightsCenter){if(!options.preserveConfig)config.rightsCenter.reviewStatus='draft';reviewItems.push('Review the imported rights page, each action’s scope and destination, public contact fallback and next steps. Existing actions were preserved; setup has not implemented request intake or fulfillment.');}
   if(!answers.markets.length||answers.markets.includes('other'))reviewItems.push('Determine applicable jurisdictions from establishment, audience, targeting and practices; this market list is incomplete and is not an applicability decision.');
   for(const market of setupMarkets)if(answers.markets.includes(market.id))recommendations.push({id:'market-'+market.id,status:'review',title:market.label+' applicability review',reason:'Selected coverage interest. Check thresholds, territorial scope, exceptions and effective dates in the catalog. Country-specific rules and unlisted jurisdictions may also apply.',configPaths:['jurisdictions'],requirementIds:market.requirements,guide:'requirements'});
+  // Coverage interest advises a reviewed selection; it never changes consent settings.
+  if(answers.markets.includes('IE')||config.jurisdictions.includes('IE')){
+    recommendations.push({id:'irish-grant-expiry',status:'review',title:'Review how long grants remain usable',reason:config.consent?.grantExpiryPolicy?'The explicit six-calendar-month grant cap is present. Verify the shorter configured lifetime, cookie disclosures and actual service shutdown. Refusal memory, prompt suppression and evidence retention use separate clocks.':'The DPC guidance describes a six-month default for reaffirming remembered consent. You can explicitly select consent.grantExpiryPolicy with profile ie-dpc-six-month-default and version 1 to cap grants at the earlier of their configured lifetime and six UTC calendar months. Longer storage needs an objective case-specific assessment; a saved note does not qualify or enable it. Setup has not selected the policy.',configPaths:['consent.grantExpiryPolicy','consent.grantLifetimeDays','consent.refusalLifetimeDays'],requirementIds:['REQ-IE-CONSENT-DURATION'],guide:'regional-prompts'});
+    reviewItems.push('Review Irish remembered-consent duration and actual cookie/storage lifetimes. Any longer-period justification stays a private assessment; the supported cap has no automatic extension switch.');
+  }
   for(const question of setupQuestions){const answer=answers.answers[question.id]??{choice:'unknown',justification:''};const status=answer.choice==='yes'?'recommended':answer.choice==='no'?'declared-no':'investigate';
     recommendations.push({id:question.id,status,title:question.title,reason:answer.choice==='yes'?question.enable:answer.choice==='no'?'Operator declared no. Verify the inventory and revisit if practices change; this is not an exemption determination.':'Investigate this practice before deciding coverage. '+question.enable,configPaths:question.paths,requirementIds:question.requirements,guide:question.guide});
     if(answer.choice==='unknown'||!answer.justification)reviewItems.push(question.title+(answer.choice==='unknown'?' — unresolved practice.':' — record the supporting facts and justification.'));
@@ -130,7 +140,7 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
   if(changed&&!options.preserveConfig)reviewItems.push('Review scopeGuards facts and supply a new, never-reused material revision before publishing the draft. Absent is an operator declaration, not legal clearance. Purpose-specific restrictions were preserved.');
   const catalogSelections=options.catalogSelections===undefined?[]:normalizeSetupCatalogSelections(options.catalogSelections,config);
   const catalogSelectionRevisions=normalizeCatalogSelectionRevisions(options.catalogSelectionRevisions??[]);
-  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'3',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{}),...(catalogSelectionRevisions.length?{catalogSelectionRevisions}:{})}};
+  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'4',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{}),...(catalogSelectionRevisions.length?{catalogSelectionRevisions}:{})}};
   if(new TextEncoder().encode(JSON.stringify(plan.report)).length>512*1024)throw Error('Private setup report exceeds 512 KiB; reduce notes or review fewer services together.');
   return plan;
 }
@@ -138,7 +148,7 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
 /** Resume only the declared answers from a private report; recommendations are always regenerated. */
 export function readSetupAnswers(input:unknown):SetupAnswers {
   if(object(input)&&input.kind==='private-setup-report'){
-    if(input.schemaVersion!==1||!['1','2','3'].includes(input.questionnaireVersion as string))return invalid();
+    if(input.schemaVersion!==1||!['1','2','3','4'].includes(input.questionnaireVersion as string))return invalid();
     return normalizeSetupAnswers(input.answers);
   }
   return normalizeSetupAnswers(input);

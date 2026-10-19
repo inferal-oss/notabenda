@@ -192,7 +192,8 @@
       "deliverables": [
         "Declared service loaders and teardown hooks; inert scripts, images, and embeds until allowed.",
         "Separate device-access permission from downstream processing restrictions.",
-        "Stop future work, remove accessible declared storage, and surface vendor/reload limitations after withdrawal."
+        "Stop future work, remove accessible declared storage, and surface vendor/reload limitations after withdrawal.",
+        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -211,7 +212,8 @@
         "packages/notabenda/src/storage-exceptions.css",
         "packages/notabenda/src/service-runner.ts",
         "packages/notabenda/src/consent-engine.ts",
-        "docs/verification/regional-consent.md"
+        "docs/verification/regional-consent.md",
+        "packages/notabenda/src/grant-expiry-policy.ts"
       ]
     },
     {
@@ -222,7 +224,8 @@
       "deliverables": [
         "Purpose-level persisted choices, scope compatibility, expiry, and cross-tab updates.",
         "Separate prompt suppression, grant expiry, evidence retention, and document versions.",
-        "Never convert dismissal, malformed state, missing storage, or stale scope into permission."
+        "Never convert dismissal, malformed state, missing storage, or stale scope into permission.",
+        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -236,7 +239,8 @@
         "examples/repeat-prompts/build.mjs",
         "examples/repeat-prompts/client.mjs",
         "packages/notabenda/src/consent-engine.ts",
-        "docs/verification/regional-consent.md"
+        "docs/verification/regional-consent.md",
+        "packages/notabenda/src/grant-expiry-policy.ts"
       ]
     },
     {
@@ -308,7 +312,8 @@
         "Explicit applicability facts and versioned rule packs; conservative fallback when applicability is unknown.",
         "Explain effective behavior using requirement IDs, sources, and active pack versions.",
         "Conditional exemptions and purpose-specific restrictions; no inference of applicability from IP geography alone.",
-        "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review."
+        "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review.",
+        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -327,7 +332,8 @@
         "packages/notabenda/src/service-runner.ts",
         "packages/notabenda/src/storage-cleanup.ts",
         "packages/notabenda/src/consent-engine.ts",
-        "docs/verification/regional-consent.md"
+        "docs/verification/regional-consent.md",
+        "packages/notabenda/src/grant-expiry-policy.ts"
       ]
     },
     {
@@ -2305,12 +2311,28 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": "April 2020 guidance; retrieved through the current DPC page on 19 October 2026. This is guidance rather than a statutory fixed-day lifetime.",
-      "caveats": "A six-calendar-month recommendation is not an automatic 180-day legal limit. Existing explicit day-based lifetimes and Italian prompt suppression do not implement this country-specific assessment.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "The explicit version-1 default cap uses the earlier of the configured grant lifetime and six clamped UTC calendar months. Refusal, Italian solicitation and evidence retention remain independent. Both receipt clocks are bounded separately. Source applicability, actual disclosures/vendor behavior, objective case-specific longer-period qualification and a complete reviewed Irish profile remain open. A six-calendar-month recommendation is not an automatic 180-day statutory limit.",
+      "implementationRefs": [
+        "packages/notabenda/src/grant-expiry-policy.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/consent-notice.ts",
+        "packages/notabenda/src/consent-evidence.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda-cf/src/grant-expiry-policy.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "examples/repeat-prompts/build.mjs",
+        "examples/repeat-prompts/client.mjs",
+        "docs/verification/regional-consent.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/grant-expiry.test.mjs"
+      ]
     },
     {
       "id": "REQ-UK-EXCEPTIONS",
@@ -6068,9 +6090,11 @@
       "requirementIds": [
         "REQ-IE-CONSENT-DURATION"
       ],
-      "status": "planned",
-      "expected": "A reviewed duration policy distinguishes calendar-month guidance, explicit lifetimes and case-specific justification. It must not inherit another country's prompt interval or treat a vendor retention period as consent.",
-      "testRefs": []
+      "status": "partial",
+      "expected": "A reviewed duration policy distinguishes calendar-month guidance, explicit lifetimes and case-specific justification. It must not inherit another country's prompt interval or treat a vendor retention period as consent. Automated scenarios cover the explicit default cap, calendar edges, local migration, preserved refusals/solicitation memory and required-evidence/CF parity. Case-specific extensions and independent legal/platform review remain open.",
+      "testRefs": [
+        "packages/notabenda/test/grant-expiry.test.mjs"
+      ]
     },
     {
       "id": "VERIFY-UK-EXCEPTIONS",

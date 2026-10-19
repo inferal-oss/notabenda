@@ -35,7 +35,11 @@ A minimal answers file:
 }
 ```
 
-Question/market IDs and public fact fields are exported from `notabenda/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 3 accepts private reports from revisions 1, 2 and 3. Missing new questions remain unresolved.
+Question/market IDs and public fact fields are exported from `notabenda/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 4 accepts private reports from revisions 1 through 4. Missing new questions remain unresolved.
+
+## Review regional consent timing
+
+The market list includes France, Germany, Ireland, Italy and Spain as separate coverage interests. Selecting Ireland, or importing an explicit Irish jurisdiction declaration, adds a duration recommendation linked to `REQ-IE-CONSENT-DURATION`. It points to the opt-in [six-calendar-month grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months), names the configuration fields and distinguishes grants from refusal memory, solicitation and evidence retention. Existing policies and lifetimes are preserved. A supporting note remains private and does not qualify a longer period or disable a cap.
 
 ## Find project services during setup
 
@@ -85,7 +89,7 @@ ui.destroy();
 
 The UI runs locally in the operator's tab. Config/report imports use local files; answers are not uploaded or stored in browser persistence. Downloads are explicit. Editing invalidates earlier export links; object URLs are revoked on edits and destruction. Reloading loses unsaved notes. Reimport keeps notes by storage ID, including removed items in the private report. Resuming a report replaces current answers, so save any notes you want to retain first. Import its matching config separately.
 
-The browser interface has six navigable stages: start/import, public facts, markets, practices, storage justifications and review. Start includes local processing-purpose authoring and optional catalog search. Practice questions expand individually and display the current yes/no/unknown assessment. Moving between stages preserves notes; revisiting a section does not regenerate or activate anything. Preparing recommendations reveals current downloads, and an edit removes those downloads until you prepare a new review. Unknown answers stay explicit review items.
+The browser interface has six navigable stages: start/import, public facts, markets, practices, storage justifications and review. Start includes local processing-purpose authoring and optional catalog search. Practice questions appear in a grid with direct yes/no/not-sure choices; supporting notes can be expanded separately. Moving between stages preserves notes; revisiting a section does not regenerate or activate anything. Preparing recommendations reveals current downloads, and an edit removes those downloads until you prepare a new review. Unknown answers stay explicit review items.
 
 ```js
 import {createSetupWorker} from 'notabenda-cf';

@@ -1,3 +1,6 @@
+// @requirements REQ-IE-CONSENT-DURATION
+import {receiptGrantExpiresAt,isGrantExpiryPolicy,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
+import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
 import type {ConsentLocalization} from './localization-policy.js';
@@ -85,12 +88,13 @@ async function noticeValue(input:unknown,context:ConsentStoreOptions):Promise<Ob
   if (Object.keys(scopes).length<1 || Object.keys(scopes).length>40 || Object.entries(scopes).some(([id,v])=>!slug(id)||!text(v,30000)) || await sha256(canonicalJson(scopes))!==n.scopeDigest) return fail('invalid-notice');
   const labels=['acceptLabel','rejectLabel','saveLabel','preferencesLabel','dismissLabel','closeLabel'];
   if (!exact(wording,['title','summary','preferencesTitle','preferencesIntro','essentialNote',...labels]) || Object.entries(wording).some(([k,v])=>!text(v,labels.includes(k)?120:2000))) return fail('invalid-notice');
-  if (!exact(policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(policy.promptPolicy===undefined?[]:['promptPolicy'])]) || !validPromptPolicy(policy.promptPolicy,wording,localization) || ![policy.grantLifetimeDays,policy.refusalLifetimeDays].every(v=>Number.isInteger(v)&&Number(v)>=1&&Number(v)<=730) || !Number.isInteger(policy.deliveryWindowSeconds) || Number(policy.deliveryWindowSeconds)<30 || Number(policy.deliveryWindowSeconds)>86400 || !exact(docs,['privacy','cookies'])) return fail('invalid-notice');
+  if (!exact(policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(policy.promptPolicy===undefined?[]:['promptPolicy']),...(policy.grantExpiryPolicy===undefined?[]:['grantExpiryPolicy'])]) || !validPromptPolicy(policy.promptPolicy,wording,localization) || ![policy.grantLifetimeDays,policy.refusalLifetimeDays].every(v=>Number.isInteger(v)&&Number(v)>=1&&Number(v)<=730) || !Number.isInteger(policy.deliveryWindowSeconds) || Number(policy.deliveryWindowSeconds)<30 || Number(policy.deliveryWindowSeconds)>86400 || !exact(docs,['privacy','cookies'])) return fail('invalid-notice');
   for (const kind of ['privacy','cookies']) {
     const d=object(docs[kind]);
     if (!exact(d,['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus']) || !text(d.title,300) || !text(d.version,200) || !hash(d.sha256) || !hash(d.contentSha256) || d.url!==`/artifacts/${n.artifactId}/${kind}.html` || (typeof d.reviewStatus!=='string'||!['draft','reviewed'].includes(d.reviewStatus)) || typeof d.effectiveDate!=='string' || !/^\d{4}-\d{2}-\d{2}$/u.test(d.effectiveDate) || !Number.isFinite(Date.parse(d.effectiveDate)) || new Date(d.effectiveDate).toISOString().slice(0,10)!==d.effectiveDate) return fail('invalid-notice');
     if (!context.allowPreview && (n.mode!=='production'||d.reviewStatus!=='reviewed')) return fail('invalid-notice');
   }
+  if(policy.grantExpiryPolicy!==undefined&&!isGrantExpiryPolicy(policy.grantExpiryPolicy))return fail('invalid-notice');
   const {noticeId:_,...descriptor}=n;
   if (await sha256(canonicalJson(descriptor))!==n.noticeId) return fail('invalid-notice');
   return n;
@@ -104,7 +108,7 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
   if(config.localization!==undefined){try{const {documents:_,generatedDocuments:__,terms:___,...selected}=object(config.localization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   if(canonicalJson((localization??null) as unknown as JsonValue)!==canonicalJson(n.localization??null))return fail('invalid-notice');
   const policy=object(config.consent); const declared=object(n.policy);
-  if (policy.grantLifetimeDays!==declared.grantLifetimeDays || policy.refusalLifetimeDays!==declared.refusalLifetimeDays || canonicalJson(policy.promptPolicy??null)!==canonicalJson(declared.promptPolicy??null) || !Array.isArray(policy.purposes) || !Array.isArray(policy.services) || !Array.isArray(config.purposes) || !Array.isArray(config.services)) return fail('invalid-notice');
+  if (policy.grantLifetimeDays!==declared.grantLifetimeDays || policy.refusalLifetimeDays!==declared.refusalLifetimeDays || canonicalJson(policy.promptPolicy??null)!==canonicalJson(declared.promptPolicy??null) || !sameGrantExpiryPolicy(policy.grantExpiryPolicy,declared.grantExpiryPolicy) || !Array.isArray(policy.purposes) || !Array.isArray(policy.services) || !Array.isArray(config.purposes) || !Array.isArray(config.services)) return fail('invalid-notice');
   let guards;try{guards=config.scopeGuards===undefined?undefined:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>String(object(p).id)));}catch{return fail('invalid-notice');}
   const blocked:string[]=[];
   const scopes:ObjectValue={};
@@ -117,7 +121,7 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
       .filter(s=>{const ids=object(s.service).purposeIds; return Array.isArray(ids)&&ids.includes(p.id!);})
       .sort((a,b)=>String(object(a.service).id)<String(object(b.service).id)?-1:String(object(a.service).id)>String(object(b.service).id)?1:0);
     const scopeGuard=scopeGuardContext(guards,p.id);if(scopeGuardBlocked(guards,p.id))blocked.push(p.id);
-    scopes[p.id]=JSON.stringify({scope:p.scope,purpose,services,...(scopeGuard?{scopeGuard}:{}),...(localization?{localization:{locale:localization.locale,disclosureRevision:localization.disclosureRevision}}:{})});
+    scopes[p.id]=JSON.stringify({scope:p.scope,purpose,services,...(policy.grantExpiryPolicy?{grantExpiryPolicy:policy.grantExpiryPolicy}:{}),...(scopeGuard?{scopeGuard}:{}),...(localization?{localization:{locale:localization.locale,disclosureRevision:localization.disclosureRevision}}:{})});
   }
   if(localization){const change=policy.promptPolicy?object(policy.promptPolicy).materialChange:undefined;const expected=localizedConsentWording(localization,{available:policy.purposes.length>blocked.length,restricted:blocked.length>0,exceptions:Array.isArray(config.storage)&&config.storage.some(s=>object(s).classification==='exception'),...(change?{changeSummary:String(object(change).summary)}:{})});if(canonicalJson(expected)!==canonicalJson(n.wording??null))return fail('invalid-notice');}
   // Archives may be serialized canonically, changing object key order. Verify the disclosed facts
@@ -224,7 +228,7 @@ export async function recordConsentChoice(storage:HistoryStorage,input:unknown,c
     if (head.revision===Number.MAX_SAFE_INTEGER) return fail('invalid-record');
     // An old notice may omit newly introduced purposes. Revoke-all clears the entire stream; it does not merge old grants.
     const choices = r.action==='revoke-all' ? Object.fromEntries([...new Set([...ids,...Object.entries(head.event?.choices??{}).filter(([,grant])=>grant).map(([id])=>id)])].map(id=>[id,false])) : r.choices;
-    const expiresAt=Object.fromEntries(Object.entries(choices).map(([id,grant])=>[id,new Date(Math.min(clientTime,serverTime)+Number(grant?policy.grantLifetimeDays:policy.refusalLifetimeDays)*86400000).toISOString()]));
+    const expiresAt=Object.fromEntries(Object.entries(choices).map(([id,grant])=>[id,new Date(grant?receiptGrantExpiresAt(clientTime,serverTime,Number(policy.grantLifetimeDays),policy.grantExpiryPolicy as unknown as GrantExpiryPolicy|undefined):Math.min(clientTime,serverTime)+Number(policy.refusalLifetimeDays)*86400000).toISOString()]));
     const event:ObjectValue={kind:'consent-choice',id,siteId:context.siteId,scopeId:context.scopeId,streamRef,revision:head.revision+1,supersededRevision:head.revision,expectedRevision:r.expectedRevision,noticeId:r.noticeId,artifactId:n.artifactId!,scopeDigest:n.scopeDigest!,requestId:r.requestId,action:r.action,clientAt:r.clientAt,occurredAt:recordedAt,submittedChoices:r.choices,purposeChoices:choices,expiresAt,requestSha256,provenance:{source:'host-received-browser-report',identity:'Host authorizes an opaque stream; this record does not verify identity, a human action, or legal validity.'}};
     const receipt=receiptFor(event,context,streamRef); normalizeRecord({id,data:event});
     await tx.put(key,event); await tx.put(`${prefix}heads/${streamRef}`,{id,revision:receipt.revision,siteId:context.siteId,scopeId:context.scopeId,streamRef});

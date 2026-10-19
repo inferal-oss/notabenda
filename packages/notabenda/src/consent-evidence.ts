@@ -1,3 +1,6 @@
+// @requirements REQ-IE-CONSENT-DURATION
+import {receiptGrantExpiresAt,isGrantExpiryPolicy,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
+import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 import {selectConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
@@ -40,7 +43,7 @@ export interface ConsentEvidenceOptions {
 /** One bounded recoverable action, atomically stored with its local choices; never an authorization credential. */
 export interface SavedConsentCommand {
   schemaVersion:1; mode:'required'; siteId:string; scopeId:string; streamRef:string;
-  release:{noticeId:string;artifactId:string;scopeDigest:string;mode:'preview'|'production';grantLifetimeDays:number;refusalLifetimeDays:number;deliveryWindowSeconds:number};
+  release:{noticeId:string;artifactId:string;scopeDigest:string;mode:'preview'|'production';grantLifetimeDays:number;refusalLifetimeDays:number;deliveryWindowSeconds:number;grantExpiryPolicy?:GrantExpiryPolicy};
   request:ConsentChoiceRequest;
 }
 export interface EvidenceEnvironment { now:()=>number; schedule:(callback:()=>void,delay:number)=>(()=>void) }
@@ -75,7 +78,7 @@ export function createEvidenceSession(config:ConsentRuntimeInventory,options:Con
   const scopes=consentScopes(config); const timeout=options.timeoutMs??10000;
   const selectedLocalization=config.localization?selectConsentLocalization(config.localization):undefined;
   if(JSON.stringify(notice.localization)!==JSON.stringify(selectedLocalization)||config.localization&&!same({...notice.wording},{...defaultConsentWording(config)}))throw new Error('Evidence localization must match the selected release.');
-  if(notice.siteId!==config.site.id||!same(notice.scopes,scopes)||!samePromptPolicy(notice.policy.promptPolicy,config.consent!.promptPolicy)||notice.policy.grantLifetimeDays!==config.consent!.grantLifetimeDays||notice.policy.refusalLifetimeDays!==config.consent!.refusalLifetimeDays||!hash(options.streamRef)||typeof options.read!=='function'||typeof options.write!=='function'||!Number.isInteger(timeout)||timeout<1000||timeout>30000) throw new Error('Evidence must match this site, material scope, prompt policy, lifetimes and a host-authorized stream.');
+  if(notice.siteId!==config.site.id||!same(notice.scopes,scopes)||!samePromptPolicy(notice.policy.promptPolicy,config.consent!.promptPolicy)||!sameGrantExpiryPolicy(notice.policy.grantExpiryPolicy,config.consent!.grantExpiryPolicy)||notice.policy.grantLifetimeDays!==config.consent!.grantLifetimeDays||notice.policy.refusalLifetimeDays!==config.consent!.refusalLifetimeDays||!hash(options.streamRef)||typeof options.read!=='function'||typeof options.write!=='function'||!Number.isInteger(timeout)||timeout<1000||timeout>30000) throw new Error('Evidence must match this site, material scope, prompt policy, grant expiry policy, lifetimes and a host-authorized stream.');
   const {streamRef,read,write}=options;
   let current:SavedConsentCommand|undefined; let head:ConsentHead|undefined;
   let status:ConsentEvidenceStatus='checking'; let gate:ConsentReceipt|undefined;
@@ -96,7 +99,8 @@ export function createEvidenceSession(config:ConsentRuntimeInventory,options:Con
       const v=boundedCopy(value,10000);
       if(!object(v)||!exact(v,['schemaVersion','mode','siteId','scopeId','streamRef','release','request'])||v.schemaVersion!==1||v.mode!=='required'||v.siteId!==notice.siteId||v.scopeId!==notice.scopeId||v.streamRef!==streamRef||!object(v.release)) return undefined;
       const r=v.release;
-      if(!exact(r,['noticeId','artifactId','scopeDigest','mode','grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds'])||!hash(r.noticeId)||!hash(r.artifactId)||r.scopeDigest!==notice.scopeDigest||typeof r.mode!=='string'||!['preview','production'].includes(r.mode)||!options.allowPreview&&r.mode!=='production'||!Number.isInteger(r.deliveryWindowSeconds)||Number(r.deliveryWindowSeconds)<30||Number(r.deliveryWindowSeconds)>86400||![r.grantLifetimeDays,r.refusalLifetimeDays].every(n=>Number.isInteger(n)&&Number(n)>=1&&Number(n)<=730)) return undefined;
+      if(!exact(r,['noticeId','artifactId','scopeDigest','mode','grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(r.grantExpiryPolicy===undefined?[]:['grantExpiryPolicy'])])||!hash(r.noticeId)||!hash(r.artifactId)||r.scopeDigest!==notice.scopeDigest||typeof r.mode!=='string'||!['preview','production'].includes(r.mode)||!options.allowPreview&&r.mode!=='production'||!Number.isInteger(r.deliveryWindowSeconds)||Number(r.deliveryWindowSeconds)<30||Number(r.deliveryWindowSeconds)>86400||![r.grantLifetimeDays,r.refusalLifetimeDays].every(n=>Number.isInteger(n)&&Number(n)>=1&&Number(n)<=730)) return undefined;
+      if(r.grantExpiryPolicy!==undefined&&!isGrantExpiryPolicy(r.grantExpiryPolicy))return undefined;
       const request=requestValue(v.request);
       if(request.noticeId!==r.noticeId||!exact(request.choices,Object.keys(scopes))||Date.parse(request.clientAt)>env.now()) return undefined;
       return v as unknown as SavedConsentCommand;
@@ -116,7 +120,7 @@ export function createEvidenceSession(config:ConsentRuntimeInventory,options:Con
     if(r.action!=='revoke-all'&&event.revision!==r.expectedRevision+1) return false;
     if(r.action==='revoke-all' ? Object.entries(r.choices).some(([id,v])=>event.choices[id]!==v)||Object.values(event.choices).some(Boolean) : !same(event.choices,r.choices)) return false;
     const base=Math.min(Date.parse(r.clientAt),Date.parse(event.recordedAt));
-    return Object.entries(event.choices).every(([id,grant])=>Date.parse(event.expiresAt[id]!)===base+(grant?release.grantLifetimeDays:release.refusalLifetimeDays)*86400000);
+    return Object.entries(event.choices).every(([id,grant])=>Date.parse(event.expiresAt[id]!)===(grant?receiptGrantExpiresAt(Date.parse(r.clientAt),Date.parse(event.recordedAt),release.grantLifetimeDays,release.grantExpiryPolicy):base+release.refusalLifetimeDays*86400000));
   }
   function headValue(value:unknown):ConsentHead {
     if(!object(value)||!exact(value,['schemaVersion','siteId','scopeId','streamRef','revision','event'])||value.schemaVersion!==1||value.siteId!==notice.siteId||value.scopeId!==notice.scopeId||value.streamRef!==streamRef||!revision(value.revision)||value.revision<highestRevision) return fail();
@@ -196,7 +200,7 @@ export function createEvidenceSession(config:ConsentRuntimeInventory,options:Con
       try {
         const requestId=globalThis.crypto?.randomUUID();const clientAt=new Date(at).toISOString();
         if(!uuid(requestId)||!iso(clientAt)) return undefined;
-        return {schemaVersion:1,mode:'required',siteId:notice.siteId,scopeId:notice.scopeId,streamRef,release:{noticeId:notice.noticeId,artifactId:notice.artifactId,scopeDigest:notice.scopeDigest,mode:notice.mode,grantLifetimeDays:notice.policy.grantLifetimeDays,refusalLifetimeDays:notice.policy.refusalLifetimeDays,deliveryWindowSeconds:notice.policy.deliveryWindowSeconds},request:{schemaVersion:1,noticeId:notice.noticeId,requestId,expectedRevision:head?.revision??0,action,choices:{...choices},clientAt}};
+        return {schemaVersion:1,mode:'required',siteId:notice.siteId,scopeId:notice.scopeId,streamRef,release:{noticeId:notice.noticeId,artifactId:notice.artifactId,scopeDigest:notice.scopeDigest,mode:notice.mode,grantLifetimeDays:notice.policy.grantLifetimeDays,refusalLifetimeDays:notice.policy.refusalLifetimeDays,deliveryWindowSeconds:notice.policy.deliveryWindowSeconds,...(notice.policy.grantExpiryPolicy?{grantExpiryPolicy:notice.policy.grantExpiryPolicy}:{})},request:{schemaVersion:1,noticeId:notice.noticeId,requestId,expectedRevision:head?.revision??0,action,choices:{...choices},clientAt}};
       } catch {return undefined;}
     },
     commit(saved:SavedConsentCommand|undefined,persisted:boolean):void {

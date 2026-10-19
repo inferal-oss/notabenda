@@ -153,3 +153,5 @@ The default preferences drawer wraps long headings and Close labels. Its action 
 The drawer uses one scroll region when space is tight. Where `ResizeObserver` is available and enough room remains for body text, it keeps the header and footer fixed and scrolls the body. Resizing keeps the current control focused and preserves unsaved choices. Browsers without resize observation use the whole-drawer fallback. Closing still applies no draft choices.
 
 Set direction on the host document or container using normal HTML `dir` semantics. Desktop side drawers follow inline-end placement and notice offsets follow the corresponding safe-area edge. This supports layout direction; the built-in English status messages are not a translation pack. See the [repeatable layout checks](verification/controls-layout.md) for long text, RTL, enlarged text and remaining platform work.
+
+An optional [calendar grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months) can limit remembered grants separately from refusal memory and repeat-prompt rules. The host selects it explicitly; market and locale declarations do not activate it.

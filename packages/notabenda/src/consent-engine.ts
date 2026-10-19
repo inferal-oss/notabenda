@@ -1,3 +1,6 @@
+// @requirements REQ-IE-CONSENT-DURATION
+import {grantExpiresAt,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
+import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-FR-SCOPE REQ-DE-DEVICE REQ-IE-DEVICE
 // @requirements REQ-PRODUCT-PRIVACY-SIGNALS
 import {reconcileManagedService} from './service-runner.js';
@@ -30,7 +33,7 @@ interface EngineOptions {evidence?:EvidenceSessionFactory|undefined;globalPrivac
 const DAY = 86400000;
 const MAX_RECORD = 65536;
 interface Choice { scope: string; status: 'granted' | 'denied' | 'withdrawn'; at: number; until: number }
-interface ChoiceRecord { schemaVersion: 1; siteId: string; choices: Record<string, Choice>; dismissedUntil: number; authorizationMode?:'local'|'required'; evidence?:SavedConsentCommand; promptPolicy?:PromptPolicyMemory }
+interface ChoiceRecord { grantExpiryPolicy?:GrantExpiryPolicy; schemaVersion: 1; siteId: string; choices: Record<string, Choice>; dismissedUntil: number; authorizationMode?:'local'|'required'; evidence?:SavedConsentCommand; promptPolicy?:PromptPolicyMemory }
 type RunningService=ManagedService;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
 
@@ -87,11 +90,12 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
   let cancelTimer: (() => void) | undefined;
   let unsubscribe: (() => void) | undefined;
   let savedRaw:string|null=null;
+  let expiryMigration=false;
   let choicePromptMemory:PromptPolicyMemory|undefined;
   let dismissalPromptMemory:PromptPolicyMemory|undefined;
   let failedDismissalPromptMemory:PromptPolicyMemory|undefined;
   const scopes = new Map(Object.entries(consentScopes(config)));
-  const largestRecord = { authorizationMode:options.evidence?'required':'local', schemaVersion:1, siteId:config.site.id, dismissedUntil:0, choices:Object.fromEntries([...scopes].map(([id, scope]) => [id, { scope, status:'withdrawn', at:Number.MAX_SAFE_INTEGER, until:Number.MAX_SAFE_INTEGER }])),...(policy.promptPolicy?{promptPolicy:{profile:policy.promptPolicy.profile,processingRevision:policy.promptPolicy.processingRevision,at:Number.MAX_SAFE_INTEGER,outcome:'all-granted'}}:{}) };
+  const largestRecord = { ...(policy.grantExpiryPolicy?{grantExpiryPolicy:policy.grantExpiryPolicy}:{}), authorizationMode:options.evidence?'required':'local', schemaVersion:1, siteId:config.site.id, dismissedUntil:0, choices:Object.fromEntries([...scopes].map(([id, scope]) => [id, { scope, status:'withdrawn', at:Number.MAX_SAFE_INTEGER, until:Number.MAX_SAFE_INTEGER }])),...(policy.promptPolicy?{promptPolicy:{profile:policy.promptPolicy.profile,processingRevision:policy.promptPolicy.processingRevision,at:Number.MAX_SAFE_INTEGER,outcome:'all-granted'}}:{}) };
   if (JSON.stringify(largestRecord).length > MAX_RECORD) throw new Error('Consent scope exceeds the 64K-character local record limit. Reduce the declared optional scope or use a different integration.');
   let evidence:ReturnType<typeof createEvidenceSession>|undefined;
   if(options.evidence) evidence=options.evidence(config,{now,schedule},()=>{
@@ -149,26 +153,31 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     emit();
   }
   function parse(raw: string | null): ChoiceRecord {
+    expiryMigration=false;let migrated=false;
     const empty: ChoiceRecord = { schemaVersion: 1, siteId: config.site.id, choices: {}, dismissedUntil: 0 };
     if (!raw || raw.length > MAX_RECORD) return empty;
     try {
       const value: unknown = JSON.parse(raw);
       if (!object(value) || value.schemaVersion !== 1 || value.siteId !== config.site.id || !object(value.choices) || Object.keys(value.choices).length > 40 || !Number.isSafeInteger(value.dismissedUntil) || Number(value.dismissedUntil) < 0 || Number(value.dismissedUntil) > now() + policy!.dismissalMinutes * 60000) return empty;
       const choices: Record<string, Choice> = {};
+      migrated=!sameGrantExpiryPolicy(value.grantExpiryPolicy,policy!.grantExpiryPolicy);
       for (const [id, item] of Object.entries(value.choices)) {
         if (!scopes.has(id)) continue; // Removed purposes never obtain permission.
         if (!object(item) || typeof item.status!=='string' || !['granted','denied','withdrawn'].includes(item.status) || typeof item.scope !== 'string' || item.scope.length > MAX_RECORD || !Number.isSafeInteger(item.at) || !Number.isSafeInteger(item.until) || Number(item.at) < 0 || Number(item.at) > now() || Number(item.until) <= Number(item.at)) return empty;
-        const lifetime = item.status === 'granted' ? policy!.grantLifetimeDays : policy!.refusalLifetimeDays;
-        if (Number(item.until) - Number(item.at) > lifetime * DAY) return empty;
+        if(Number(item.until)-Number(item.at)>730*DAY)return empty;
+        if(item.status==='granted'&&!sameGrantExpiryPolicy(value.grantExpiryPolicy,policy!.grantExpiryPolicy)){migrated=true;continue;}
+        const limit=item.status==='granted'?grantExpiresAt(Number(item.at),policy!.grantLifetimeDays,policy!.grantExpiryPolicy):Number(item.at)+policy!.refusalLifetimeDays*DAY;
+        if(Number(item.until)>limit){if(item.status==='granted'){migrated=true;continue;}return empty;}
         // Pre-release migration: markerless grants have ambiguous authority. Keep negative intent.
         if(item.status==='granted'&&!evidence&&(value.authorizationMode!=='local'||Object.hasOwn(value,'evidence')))continue;
         choices[id] = { scope: item.scope, status: item.status as Choice['status'], at: Number(item.at), until: Number(item.until) };
       }
       const saved=evidence?.parseSaved(value.evidence);
       const coherent=saved&&Object.entries(saved.request.choices).every(([id,grant])=>{
-        const choice=choices[id];return choice&&choice.scope===scopes.get(id)&&(choice.status==='granted')===grant&&choice.at===Date.parse(saved.request.clientAt)&&choice.until===choice.at+(grant?saved.release.grantLifetimeDays:saved.release.refusalLifetimeDays)*DAY;
+        const choice=choices[id];return choice&&choice.scope===scopes.get(id)&&(choice.status==='granted')===grant&&choice.at===Date.parse(saved.request.clientAt)&&choice.until===(grant?grantExpiresAt(choice.at,saved.release.grantLifetimeDays,saved.release.grantExpiryPolicy):choice.at+saved.release.refusalLifetimeDays*DAY);
       });
-      return { schemaVersion: 1, siteId: config.site.id, choices, dismissedUntil: 0,...(coherent?{evidence:saved}:{}) };
+      expiryMigration=migrated;
+      return { ...(policy!.grantExpiryPolicy?{grantExpiryPolicy:policy!.grantExpiryPolicy}:{}),schemaVersion: 1, siteId: config.site.id, choices, dismissedUntil: 0,...(coherent?{evidence:saved}:{}) };
     } catch { return empty; }
   }
   /** @requirements REQ-IT-REPROMPT Read withholding independently of current purposes, scope and lifetimes. */
@@ -189,7 +198,12 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     try {
       const raw = env.storage?.getItem(storageKey) ?? null; readable = !!env.storage; savedRaw=raw;
       if(!writeFailed)choicePromptMemory=readChoicePromptMemory(raw);
-      if (!writeFailed) record = parse(raw); // A failed local withdrawal cannot revive an old persisted grant in this instance.
+      if (!writeFailed) {
+        record=parse(raw);
+        // Persist only invalidation, never a new permission or a server event. Negative choices survive.
+        // The equality check avoids knowingly overwriting a newer tab; local storage is not transactional.
+        if(expiryMigration&&env.storage?.getItem(storageKey)===raw)persist(true);
+      } // A failed local withdrawal cannot revive an old persisted grant in this instance.
       const prompt = env.storage?.getItem(promptKey);
       try {
         const value: unknown = prompt && prompt.length < 1000 ? JSON.parse(prompt) : null;
@@ -208,15 +222,15 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     if(evidence) void evidence.refresh(writeFailed&&Object.values(record.choices).some(c=>c.status==='granted')?undefined:record.evidence);
     update();
   }
-  function persist(): boolean {
+  function persist(preserveExistingOnFailure=false): boolean {
     try {
       if (!env.storage) throw new Error();
-      const serialized = JSON.stringify({ ...record, dismissedUntil: 0, authorizationMode:evidence?'required':'local' });
+      const serialized = JSON.stringify({ ...record,...(choicePromptMemory?{promptPolicy:choicePromptMemory}:{}),...(policy!.grantExpiryPolicy?{grantExpiryPolicy:policy!.grantExpiryPolicy}:{}), dismissedUntil: 0, authorizationMode:evidence?'required':'local' });
       if (serialized.length > MAX_RECORD) throw new Error();
       env.storage.setItem(storageKey, serialized); savedRaw=serialized; readable = true; writeFailed = false; return true;
     } catch {
       writeFailed = true;
-      try { env.storage?.removeItem(storageKey); } catch { /* Remain denied in memory even if old storage cannot be removed. */ }
+      try { if(!preserveExistingOnFailure)env.storage?.removeItem(storageKey); } catch { /* Remain denied in memory even if old storage cannot be removed. */ }
       return false;
     }
   }
@@ -232,7 +246,7 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     record = { schemaVersion: 1, siteId: config.site.id, dismissedUntil: 0, choices: Object.fromEntries([...scopes].map(([id, scope]) => {
       const granted = choices[id]!;
       const previous = Object.hasOwn(record.choices, id) ? record.choices[id] : undefined;
-      return [id, { scope, status: granted ? 'granted' : previous?.status === 'granted' || previous?.status === 'withdrawn' ? 'withdrawn' : 'denied', at, until: at + (granted ? policy!.grantLifetimeDays : policy!.refusalLifetimeDays) * DAY }];
+      return [id, { scope, status: granted ? 'granted' : previous?.status === 'granted' || previous?.status === 'withdrawn' ? 'withdrawn' : 'denied', at, until:granted?grantExpiresAt(at,policy!.grantLifetimeDays,policy!.grantExpiryPolicy):at+policy!.refusalLifetimeDays*DAY }];
     })),...(command?{evidence:command}:{}),...(choicePromptMemory?{promptPolicy:choicePromptMemory}:{}) };
     const persisted = persist();
     // Regional entries are superseded by timestamps; deletion could erase another tab's newer dismissal.

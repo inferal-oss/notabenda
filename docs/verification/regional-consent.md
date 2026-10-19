@@ -24,7 +24,19 @@ The [DPC guidance page](https://www.dataprotection.ie/en/dpc-guidance/guidance-c
 
 The scenarios keep optional measurement inert through dismissal and preference-panel navigation. An explicit purpose choice starts it; withdrawal stops it. A service using both measurement and advertising requires both choices and stops when either is withdrawn. A missing necessity explanation identifies `REQ-IE-DEVICE` when Ireland is declared.
 
-Tests: the `IE` and declaration cases in the same file. `VERIFY-IE-DEVICE` remains partial: these are shared-engine cases, not a complete Irish profile. The DPC note's remembered-consent duration guidance is recorded separately as `REQ-IE-CONSENT-DURATION`; the existing day-based configuration does not implement that assessment. No Italian repeat-prompt interval is selected by these scenarios.
+Tests: the `IE` and declaration cases in the same file. `VERIFY-IE-DEVICE` remains partial: these are shared-engine cases, not a complete Irish profile. The DPC note's remembered-consent duration guidance is tracked separately by `REQ-IE-CONSENT-DURATION`; its opt-in default cap is described below. No Italian repeat-prompt interval is selected by these scenarios.
+
+## Ireland: a separate calendar grant cap
+
+The explicit `ie-dpc-six-month-default` grant-expiry policy uses the earlier of the configured day lifetime and six UTC calendar months, with month-end clamping. This follows the default in the DPC note; case-specific longer-period qualification remains open. No market or locale selects the policy automatically.
+
+[grant-expiry.test.mjs](../../packages/notabenda/test/grant-expiry.test.mjs) checks month ends, leap years, shorter lifetimes, exact timer-driven shutdown and reload, policy addition/removal without resurrecting positive grants, preserved refusals, failed local migration, and expired permissions while Italian solicitation remains suppressed. Both controller profiles exercise these behaviors. Required-evidence cases cover saved-command reload and rejection of a day-only acknowledgement. Cloudflare cases verify archive binding, client/server time anchoring and immutable historical retries after a new notice is activated.
+
+The policy implementation is shared by the [browser](../../packages/notabenda/src/grant-expiry-policy.ts) and generated standalone Cloudflare copy. Notices, scopes, saved commands and CF registration bind it independently. The setup scenarios run the actual CLI and admin UI and verify that private notes do not enter the public configuration or activate the policy.
+
+The local Chromium timing lab was also exercised in light and dark themes and at 320px and 390px. Selecting the cap, granting both purposes and advancing from 31 August to 28 February produced two starts, two stops and no remaining optional permissions. Its clock and effects are simulated; it makes no vendor requests.
+
+These tests exercise synthetic service lifecycles and in-memory transactional stores. They do not establish real vendor shutdown, durable browser writes during failure, physical-device timing or legal qualification. A justified-extension workflow and a complete reviewed Irish profile remain open; `VERIFY-IE-CONSENT-DURATION` stays partial.
 
 ## What the checks establish
 
@@ -34,5 +46,6 @@ Run the scenarios after building:
 
 ```sh
 npm run build
-node --test packages/notabenda/test/regional-consent.test.mjs
+node --test packages/notabenda/test/regional-consent.test.mjs \
+  packages/notabenda/test/grant-expiry.test.mjs
 ```

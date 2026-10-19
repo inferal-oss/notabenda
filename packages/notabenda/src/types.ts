@@ -1,4 +1,6 @@
 import type {SiteLocalization} from './document-localization.js';
+import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
+export type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-UK-EXCEPTIONS
 import type {StorageExceptionPolicy} from './storage-exception-policy.js';
 export type {StorageExceptionPolicy,StorageExceptionEntry} from './storage-exception-policy.js';
@@ -100,6 +102,8 @@ export interface ConsentConfig {
   grantLifetimeDays: number;
   refusalLifetimeDays: number;
   dismissalMinutes: number;
+  /** Explicit grant cap; independent of refusal memory and solicitation. */
+  grantExpiryPolicy?:GrantExpiryPolicy;
   promptPolicy?: PromptPolicy;
 }
 

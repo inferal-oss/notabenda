@@ -1,6 +1,31 @@
-# Give a recorded choice some quiet
+# Consent expiry and repeat prompts
 
-The optional Italian repeat-prompt guard is an initial regional mechanism, not an Italy compliance profile. The host explicitly selects it; `jurisdictions`, IP addresses and browser language never activate it. Other regional profiles remain unimplemented.
+Grant expiry determines when a service must stop. Repeat-prompt rules determine when a site may ask again. Configure and review them separately.
+
+## Cap remembered grants at six calendar months
+
+```ts
+config.consent.grantExpiryPolicy = {
+  profile: 'ie-dpc-six-month-default',
+  version: 1,
+};
+```
+
+This opt-in mechanism follows the default timeframe described in the [Irish DPC April 2020 note, p. 8 and footnote 2](https://www.dataprotection.ie/sites/default/files/uploads/2020-04/Guidance%20note%20on%20cookies%20and%20other%20tracking%20technologies.pdf). The guidance allows an objectively justified longer period on a case-specific basis. The package does not assess those justifications or provide an extension switch. This is not a statutory 180-day limit or a complete Irish profile. Declaring Ireland, setting `en-IE` or selecting a setup market does not enable it.
+
+A grant ends at the earlier of `grantLifetimeDays` and six UTC calendar months after its original action. Month-end dates clamp to the destination month's final day while retaining UTC time: 31 August 2026 at noon becomes 28 February 2027 at noon; 1 March becomes 1 September. A configured 30-day lifetime stays 30 days. Active service lifecycles stop at expiry, and a reload cannot renew them. A deliberate new choice is required.
+
+Refusal/withdrawal lifetimes, dismissal, Italian solicitation suppression and server evidence retention remain independent. A suppressed prompt never keeps an expired service running. Preferences can still be opened manually. Disclose the actual local preference storage, purpose and lifetimes in reviewed cookie wording; setting this option does not rewrite supplied legal text or vendor cookies.
+
+The selected policy is bound to positive purpose scopes, notices and saved evidence commands. Adding or removing it requires a new choice for positive permissions; still-current refusals survive. On observing a policy transition, the local controller removes prior positive authority and persists that invalidation before it can later be restored by a configuration rollback. This local migration creates no server event and does not rewrite historical receipts. Browser storage is untrusted and nontransactional; a failed write keeps the current instance blocked but cannot promise durable invalidation after that instance closes. Keep the policy consistent across routes and avoid concurrent deployments with conflicting configurations.
+
+Cloudflare independently verifies the policy against the retained release and caps receipt expiry from both the client action and server-recorded time, choosing the earlier result. Comparing both calculations matters because month-end clamping is not monotonic across times of day. Pending acknowledgements cannot extend the grant; immutable retries retain their original expiry even after a different notice is activated. The browser separately checks the receipt formula and its own local deadline. See the [regional verification record](verification/regional-consent.md) for scenarios and limits.
+
+Setup revision 4 offers an Irish duration recommendation and the exact configuration field, without modifying imported settings. A private supporting note is an operator assessment, never approval to extend a grant. Reviewed extension workflows remain open.
+
+## Suppress repeated Italian solicitation
+
+The optional Italian repeat-prompt guard is an initial regional mechanism, not an Italy compliance profile. The host explicitly selects it; `jurisdictions`, IP addresses and browser language never activate it. Other complete regional profiles remain unimplemented.
 
 The Garante's [2021 guidelines, §§6.2–7.1](https://www.garanteprivacy.it/home/docweb/-/docweb-display/docweb/9677876) address repeated solicitation after refusal, partial consent and closing the initial banner. They identify significant processing changes, unavailable prior state and six months since the previous banner presentation as exceptions. This implementation conservatively starts six UTC calendar months at the recorded withholding/dismissal action, which may occur later than presentation. Month-end dates clamp to the destination month's last day. This calculation and applicability still need legal review.
 

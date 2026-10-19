@@ -1,3 +1,5 @@
+// @requirements REQ-IE-CONSENT-DURATION
+import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 import {normalizeSiteLocalization} from './document-localization.js';
 // @requirements REQ-UK-EXCEPTIONS
 import {normalizeStorageExceptionPolicy} from './storage-exception-policy.js';
@@ -166,6 +168,7 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
     }
     for (const purpose of optionalPurposes) if (!list(config.services).map(record).some(service => optionalServices.has(String(service.id)) && list(service.purposeIds).includes(purpose))) error('consent.purposes', 'Every consent-managed purpose needs a declared consent-managed service.');
     for (const item of list(config.storage).map(record)) if (item.classification === 'optional' && !optionalServices.has(String(item.serviceId))) error('consent.services', 'Declare every optional-storage service in the runtime scope.');
+    if(consent.grantExpiryPolicy!==undefined&&!isGrantExpiryPolicy(consent.grantExpiryPolicy))error('consent.grantExpiryPolicy','Select the explicit ie-dpc-six-month-default profile, version 1. Longer-period assessments cannot disable this cap.','invalid-grant-expiry-policy',['REQ-IE-CONSENT-DURATION','REQ-PRODUCT-CONFIG']);
     for (const key of ['grantLifetimeDays', 'refusalLifetimeDays']) if (!Number.isInteger(consent[key]) || Number(consent[key]) < 1 || Number(consent[key]) > 730) error(`consent.${key}`, 'Choose an explicit lifetime from 1 to 730 days; check applicable rules.');
     if (!Number.isInteger(consent.dismissalMinutes) || Number(consent.dismissalMinutes) < 0 || Number(consent.dismissalMinutes) > 43200) error('consent.dismissalMinutes', 'Choose a separate dismissal suppression from 0 to 43200 minutes. Dismissal grants nothing.');
     if (consent.promptPolicy !== undefined) {
@@ -282,6 +285,7 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
     ...(config.consent === undefined ? {} : { consent: {
       purposes: config.consent.purposes.map(p => ({ id: p.id, scope: p.scope })),
       services: config.consent.services.map(s => ({ id: s.id, scope: s.scope })),
+      ...(config.consent.grantExpiryPolicy?{grantExpiryPolicy:{profile:config.consent.grantExpiryPolicy.profile,version:config.consent.grantExpiryPolicy.version}}:{}),
       grantLifetimeDays: config.consent.grantLifetimeDays, refusalLifetimeDays: config.consent.refusalLifetimeDays, dismissalMinutes: config.consent.dismissalMinutes,
       ...(config.consent.promptPolicy === undefined ? {} : {promptPolicy: { profile:config.consent.promptPolicy.profile, processingRevision:config.consent.promptPolicy.processingRevision, ...(config.consent.promptPolicy.materialChange === undefined ? {} : {materialChange:{fromRevision:config.consent.promptPolicy.materialChange.fromRevision,summary:config.consent.promptPolicy.materialChange.summary}}) }}),
     } }),

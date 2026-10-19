@@ -1,6 +1,8 @@
 // @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
 /** @requirements REQ-IT-REPROMPT Solicitation guard. It never grants or extends permission. */
 import type { PromptPolicy } from './types.js';
+import {sixCalendarMonthsAfter} from './grant-expiry-policy.js';
+export {sixCalendarMonthsAfter} from './grant-expiry-policy.js';
 
 export interface PromptPolicyMemory {
   profile: 'it-garante-2021';
@@ -35,15 +37,6 @@ export function samePromptPolicy(a:PromptPolicy|undefined,b:PromptPolicy|undefin
 export function parsePromptPolicyMemory(value: unknown, now: number): PromptPolicyMemory | undefined {
   if (!object(value) || !exact(value,['profile','at','outcome',...(value.processingRevision === undefined ? [] : ['processingRevision'])]) || value.profile !== 'it-garante-2021' || !Number.isSafeInteger(value.at) || Number(value.at) < 0 || Number(value.at) > now || Number(value.at) > 8640000000000000 - 366 * 86400000 || typeof value.outcome!=='string' || !['withheld','all-granted'].includes(value.outcome) || value.processingRevision !== undefined && !isProcessingRevision(value.processingRevision)) return undefined;
   return { profile: value.profile, at: Number(value.at), outcome: value.outcome as PromptPolicyMemory['outcome'], ...(value.processingRevision === undefined ? {} : { processingRevision: value.processingRevision as string }) };
-}
-
-/** Six UTC calendar months, clamping the day to the destination month's last day. */
-export function sixCalendarMonthsAfter(at: number): number {
-  const date = new Date(at), day = date.getUTCDate();
-  date.setUTCDate(1); date.setUTCMonth(date.getUTCMonth() + 6);
-  const end = new Date(date.getTime()); end.setUTCMonth(end.getUTCMonth() + 1); end.setUTCDate(0);
-  date.setUTCDate(Math.min(day, end.getUTCDate()));
-  return date.getTime();
 }
 
 /** Equal-time withholding/current-revision acknowledgement wins conservatively. */

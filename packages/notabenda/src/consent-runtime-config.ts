@@ -1,3 +1,5 @@
+// @requirements REQ-IE-CONSENT-DURATION
+import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeConsentLocalization} from './localization-policy.js';
 import type {ConsentLocalization} from './localization-policy.js';
@@ -62,7 +64,7 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
   if(s.classification==='necessary'||s.necessityReason!==undefined)need(text(s.necessityReason));
   return {id:s.id,name:s.name,type:s.type,serviceId:s.serviceId,duration:s.duration,classification:s.classification,...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}),...(s.necessityReason===undefined?{}:{necessityReason:s.necessityReason})};
  });
- const policy=c.consent;shape(policy,['purposes','services','grantLifetimeDays','refusalLifetimeDays','dismissalMinutes'],['promptPolicy']);
+ const policy=c.consent;shape(policy,['purposes','services','grantLifetimeDays','refusalLifetimeDays','dismissalMinutes'],['promptPolicy','grantExpiryPolicy']);
  entries(policy.purposes,40);entries(policy.services,80);
  for(const [list,ids] of [[policy.purposes,purposeIds],[policy.services,serviceIds]] as const)for(const entry of list){shape(entry,['id','scope']);need(ids.includes(entry.id)&&text(entry.scope,200));}
  const optionalPurposes=policy.purposes.map(p=>p.id),optionalServices=policy.services.map(s=>s.id);
@@ -71,8 +73,9 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
  for(const item of storage){if(item.classification==='optional')need(optionalServices.includes(item.serviceId));if(item.classification==='exception')need(!optionalServices.includes(item.serviceId));}
  for(const key of ['grantLifetimeDays','refusalLifetimeDays'])need(Number.isInteger(policy[key])&&Number(policy[key])>=1&&Number(policy[key])<=730);
  need(Number.isInteger(policy.dismissalMinutes)&&Number(policy.dismissalMinutes)>=0&&Number(policy.dismissalMinutes)<=43200);
+ if(policy.grantExpiryPolicy!==undefined)need(isGrantExpiryPolicy(policy.grantExpiryPolicy));
  if(policy.promptPolicy!==undefined)need(isPromptPolicy(policy.promptPolicy));
- const consent={purposes:policy.purposes.map(p=>({id:p.id,scope:p.scope})),services:policy.services.map(s=>({id:s.id,scope:s.scope})),grantLifetimeDays:policy.grantLifetimeDays,refusalLifetimeDays:policy.refusalLifetimeDays,dismissalMinutes:policy.dismissalMinutes,...(policy.promptPolicy===undefined?{}:{promptPolicy:policy.promptPolicy})};
+ const consent={...(isGrantExpiryPolicy(policy.grantExpiryPolicy)?{grantExpiryPolicy:{profile:policy.grantExpiryPolicy.profile,version:policy.grantExpiryPolicy.version}}:{}),purposes:policy.purposes.map(p=>({id:p.id,scope:p.scope})),services:policy.services.map(s=>({id:s.id,scope:s.scope})),grantLifetimeDays:policy.grantLifetimeDays,refusalLifetimeDays:policy.refusalLifetimeDays,dismissalMinutes:policy.dismissalMinutes,...(policy.promptPolicy===undefined?{}:{promptPolicy:policy.promptPolicy})};
  let scopeGuards;
  if(c.scopeGuards!==undefined)scopeGuards=normalizeScopeGuardPolicy(c.scopeGuards,purposeIds as string[]);
  let privacySignals;

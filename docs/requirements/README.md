@@ -15,7 +15,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | DE | [REQ-DE-DEVICE](#req-de-device), [REQ-DE-CANCEL](#req-de-cancel), [REQ-DE-WITHDRAWAL](#req-de-withdrawal) | Selected items: partial |
 | IT | [REQ-IT-REPROMPT](#req-it-reprompt) | Selected items: partial |
 | ES | [REQ-ES-CHOICE](#req-es-choice) | Selected items: partial |
-| IE | [REQ-IE-DEVICE](#req-ie-device), [REQ-IE-CONSENT-DURATION](#req-ie-consent-duration) | Selected items: partial, planned |
+| IE | [REQ-IE-DEVICE](#req-ie-device), [REQ-IE-CONSENT-DURATION](#req-ie-consent-duration) | Selected items: partial |
 | UK | [REQ-UK-EXCEPTIONS](#req-uk-exceptions) | Selected items: partial |
 | CH | [REQ-CH-PROFILING](#req-ch-profiling) | Selected items: partial |
 | BR | [REQ-BR-COOKIE-UI](#req-br-cookie-ui), [REQ-BR-CONTRACT](#req-br-contract) | Selected items: partial, planned |
@@ -269,7 +269,7 @@ Compare the configured remembered-consent lifetime with the DPC default of reaff
 
 **Applies when:** Following Irish DPC guidance for cookies that remember a consent state.
 
-**Type:** regulator-recommendation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-recommendation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
 **Sources:** [Irish DPC: cookies guidance note (April 2020)](https://www.dataprotection.ie/sites/default/files/uploads/2020-04/Guidance%20note%20on%20cookies%20and%20other%20tracking%20technologies.pdf) — pp. 8-9, Withdrawal of consent and footnote 2 (read; [SRC-IE-DPC-COOKIE-NOTE](SOURCES.md#src-ie-dpc-cookie-note)).
 
@@ -277,13 +277,13 @@ Compare the configured remembered-consent lifetime with the DPC default of reaff
 
 <a id="verify-ie-consent-duration"></a>
 
-**VERIFY-IE-CONSENT-DURATION (planned):** A reviewed duration policy distinguishes calendar-month guidance, explicit lifetimes and case-specific justification. It must not inherit another country's prompt interval or treat a vendor retention period as consent.
+**VERIFY-IE-CONSENT-DURATION (partial):** A reviewed duration policy distinguishes calendar-month guidance, explicit lifetimes and case-specific justification. It must not inherit another country's prompt interval or treat a vendor retention period as consent. Automated scenarios cover the explicit default cap, calendar edges, local migration, preserved refusals/solicitation memory and required-evidence/CF parity. Case-specific extensions and independent legal/platform review remain open.
 
 **Timing:** April 2020 guidance; retrieved through the current DPC page on 19 October 2026. This is guidance rather than a statutory fixed-day lifetime.
 
-**Limits/open review:** A six-calendar-month recommendation is not an automatic 180-day legal limit. Existing explicit day-based lifetimes and Italian prompt suppression do not implement this country-specific assessment.
+**Limits/open review:** The explicit version-1 default cap uses the earlier of the configured grant lifetime and six clamped UTC calendar months. Refusal, Italian solicitation and evidence retention remain independent. Both receipt clocks are bounded separately. Source applicability, actual disclosures/vendor behavior, objective case-specific longer-period qualification and a complete reviewed Irish profile remain open. A six-calendar-month recommendation is not an automatic 180-day statutory limit.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/grant-expiry-policy.ts](../../packages/notabenda/src/grant-expiry-policy.ts), [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/consent-runtime-config.ts](../../packages/notabenda/src/consent-runtime-config.ts), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [packages/notabenda/src/consent-notice.ts](../../packages/notabenda/src/consent-notice.ts), [packages/notabenda/src/consent-evidence.ts](../../packages/notabenda/src/consent-evidence.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda-cf/src/grant-expiry-policy.ts](../../packages/notabenda-cf/src/grant-expiry-policy.ts), [packages/notabenda-cf/src/consent.ts](../../packages/notabenda-cf/src/consent.ts), [examples/repeat-prompts/build.mjs](../../examples/repeat-prompts/build.mjs), [examples/repeat-prompts/client.mjs](../../examples/repeat-prompts/client.mjs), [docs/verification/regional-consent.md](../../docs/verification/regional-consent.md), [packages/notabenda/test/grant-expiry.test.mjs](../../packages/notabenda/test/grant-expiry.test.mjs)
 
 <a id="req-uk-exceptions"></a>
 

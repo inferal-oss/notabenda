@@ -1,3 +1,6 @@
+// @requirements REQ-IE-CONSENT-DURATION
+import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
+import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-FR-SCOPE
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
@@ -17,7 +20,7 @@ export function consentScopes(config: ConsentRuntimeInventory): Record<string, s
     const services = config.consent!.services.map(s => ({ scope:s.scope, service:config.services.find(item => item.id === s.id)! }))
       .filter(s => s.service.purposeIds.includes(p.id)).sort((a,b) => a.service.id < b.service.id ? -1 : a.service.id > b.service.id ? 1 : 0);
     const scopeGuard=scopeGuardContext(config.scopeGuards,p.id);
-    return [p.id, JSON.stringify({ scope:p.scope, purpose, services,...(scopeGuard?{scopeGuard}:{}),...(config.localization?{localization:{locale:config.localization.locale,disclosureRevision:config.localization.disclosureRevision}}:{}) })];
+    return [p.id, JSON.stringify({ scope:p.scope, purpose, services,...(config.consent!.grantExpiryPolicy?{grantExpiryPolicy:config.consent!.grantExpiryPolicy}:{}),...(scopeGuard?{scopeGuard}:{}),...(config.localization?{localization:{locale:config.localization.locale,disclosureRevision:config.localization.disclosureRevision}}:{}) })];
   }));
 }
 export interface ConsentWording {
@@ -57,7 +60,7 @@ export interface ConsentNotice {
   schemaVersion:1|2; localization?:ConsentLocalization; noticeId:string; siteId:string; scopeId:string; artifactId:string; mode:'preview'|'production';
   scopeDigest:string; scopes:Record<string,string>; wording:ConsentWording;
   documents:{privacy:ConsentNoticeDocument; cookies:ConsentNoticeDocument};
-  policy:{grantLifetimeDays:number; refusalLifetimeDays:number; deliveryWindowSeconds:number;promptPolicy?:PromptPolicy};
+  policy:{grantLifetimeDays:number; refusalLifetimeDays:number; deliveryWindowSeconds:number;grantExpiryPolicy?:GrantExpiryPolicy;promptPolicy?:PromptPolicy};
 }
 const hash = (value:unknown):value is string => typeof value === 'string' && /^[a-f0-9]{64}$/u.test(value);
 const slug = (value:unknown):value is string => typeof value === 'string' && /^[a-z][a-z0-9-]{0,119}$/u.test(value);
@@ -75,7 +78,8 @@ export function normalizeConsentNotice(input:unknown, options:{allowPreview?:boo
   if (!object(n.scopes) || Object.keys(n.scopes).length < 1 || Object.keys(n.scopes).length > 40 || Object.entries(n.scopes).some(([id,value])=>!slug(id) || !text(value,30000))) return invalid();
   const wordingKeys = ['title','summary','preferencesTitle','preferencesIntro','essentialNote','acceptLabel','rejectLabel','saveLabel','preferencesLabel','dismissLabel','closeLabel'];
   if (!object(n.wording) || !exact(n.wording,wordingKeys) || Object.entries(n.wording).some(([key,value])=>!text(value, key.endsWith('Label') ? 120 : 2000))) return invalid();
-  if (!object(n.policy) || !exact(n.policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(n.policy.promptPolicy===undefined?[]:['promptPolicy'])]) || ![n.policy.grantLifetimeDays,n.policy.refusalLifetimeDays].every(v=>Number.isInteger(v) && Number(v)>=1 && Number(v)<=730) || !Number.isInteger(n.policy.deliveryWindowSeconds) || Number(n.policy.deliveryWindowSeconds)<30 || Number(n.policy.deliveryWindowSeconds)>86400 || n.policy.promptPolicy!==undefined&&!isPromptPolicy(n.policy.promptPolicy)) return invalid();
+  if (!object(n.policy) || !exact(n.policy,['grantLifetimeDays','refusalLifetimeDays','deliveryWindowSeconds',...(n.policy.promptPolicy===undefined?[]:['promptPolicy']),...(n.policy.grantExpiryPolicy===undefined?[]:['grantExpiryPolicy'])]) || ![n.policy.grantLifetimeDays,n.policy.refusalLifetimeDays].every(v=>Number.isInteger(v) && Number(v)>=1 && Number(v)<=730) || !Number.isInteger(n.policy.deliveryWindowSeconds) || Number(n.policy.deliveryWindowSeconds)<30 || Number(n.policy.deliveryWindowSeconds)>86400 || n.policy.promptPolicy!==undefined&&!isPromptPolicy(n.policy.promptPolicy)) return invalid();
+  if(n.policy.grantExpiryPolicy!==undefined&&!isGrantExpiryPolicy(n.policy.grantExpiryPolicy))return invalid();
   if(isPromptPolicy(n.policy.promptPolicy)&&n.policy.promptPolicy.materialChange){
     const disclosure=n.schemaVersion===2?formatMessage((n.localization as unknown as ConsentLocalization).consent.materialChange,{summary:n.policy.promptPolicy.materialChange.summary}):`Changes to optional processing: ${n.policy.promptPolicy.materialChange.summary}`;
     if(!(n.wording.summary as string).endsWith(disclosure)||!(n.wording.preferencesIntro as string).endsWith(disclosure))return invalid();
