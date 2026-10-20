@@ -1,10 +1,11 @@
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-CF-ADMIN
 import {createSetupWorker} from 'notabenda-cf';
 import {settings} from './settings.mjs';
 
 export function presentation(){return {
  workspaceLabel:settings.workspaceLabel,
- navigation:[['history','Document revisions'],['choices','Cookie choices'],['agreements','Terms agreements'],['processing','Processing opt-outs'],['permissions','Form permissions'],['contracts','Contract declarations'],['setup','Guided setup']].map(([path,label])=>({label,href:settings.basePath+'/'+path})),
+ navigation:[['','Workspace overview'],['history','Document revisions'],['choices','Cookie choices'],['agreements','Terms agreements'],['processing','Processing opt-outs'],['permissions','Form permissions'],['contracts','Contract declarations'],['setup','Guided setup']].map(([path,label])=>({label,href:settings.basePath+(path?'/'+path:'')})),
 };}
 export function privateResponse(response){
  const headers=new Headers(response.headers);headers.set('Cache-Control','private, no-store');headers.set('Vary','Cookie, Authorization');headers.set('Referrer-Policy','no-referrer');headers.set('X-Content-Type-Options','nosniff');headers.set('X-Robots-Tag','noindex, nofollow');
@@ -19,7 +20,8 @@ export function createHost(authorize){
   if(!['GET','HEAD'].includes(request.method)){const response=reply('Method not allowed.',405);response.headers.set('Allow','GET, HEAD');return response;}
   const url=new URL(request.url),path=url.pathname;
   if(path.includes('%')||path.includes('\\')||request.url.length>4096)return reply('Invalid route.',400);
-  if(path===settings.basePath||path===settings.basePath+'/'||path==='/')return privateResponse(new Response(null,{status:303,headers:{Location:settings.basePath+'/history'}}));
+  if(path==='/')return privateResponse(new Response(null,{status:303,headers:{Location:settings.basePath}}));
+  if(path===settings.basePath||path===settings.basePath+'/'){try{const workspace=env.EVIDENCE.getByName('notabenda:'+settings.siteId);return privateResponse(await workspace.inspect(request,{allowSetup:access.configure===true}));}catch{return reply('Workspace unavailable.',503);}}
   if(path===settings.basePath+'/setup'||path===settings.basePath+'/setup/'){
    if(access.configure!==true)return reply('Configuration access denied.',403);
    return privateResponse(await createSetupWorker({...presentation(),basePath:settings.basePath+'/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css',cartridgeStylesheetUrl:'/assets/cartridges.css'}).fetch(request,env));

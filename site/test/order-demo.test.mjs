@@ -9,10 +9,24 @@ const readAsset=asset=>readFile(new URL('../dist/public'+asset.url,import.meta.u
 import assert from 'node:assert/strict';
 import {serveOrderDemo} from '../order-demo.mjs';
 import {serveLegacyOrderDemo} from '../order-demo-legacy.mjs';
-import {orderDemoAdmin} from '../order-demo-admin.mjs';
+import {orderDemoAdmin,createOrderDemoStore} from '../order-demo-admin.mjs';
+import {readRecordPage} from '../../packages/notabenda-cf/dist/export.js';
 import {createSyntheticStorage} from '../../packages/notabenda-cf/examples/synthetic.mjs';
 import data from '../dist/server-data.json' with {type:'json'};
 const origin='https://orders.example.test',generation='a'.repeat(64);
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
+test('combined order search preserves bounded continuations beyond old row caps and across both key spaces',async()=>{
+ const storage=createSyntheticStorage([]),context={storage,generation,readAsset,templates:data.paidOrders,readBody:r=>r.json()},review=await(await serveOrderDemo(new Request(origin+'/demo/orders/deferred/quote'),context)).json();
+ const request={schemaVersion:1,requestId:crypto.randomUUID(),reviewId:review.reviewId,definitionId:review.definition.definitionId,quoteId:review.quote.quoteId,quoteRevision:review.quote.revision,contextRef:review.quote.contextRef};
+ const current=await(await serveOrderDemo(new Request(origin+'/demo/orders/deferred/submit',{method:'POST',body:JSON.stringify(request)}),context)).json();assert.equal(current.status,'received');
+ const legacyIds=[];for(let i=1;i<=201;i++){const id=i.toString(16).padStart(64,'0');legacyIds.push(id);await storage.put('demo/orders/received/'+id,{review,request:{contextRef:'legacy-session',note:i===201?'unique-last-legacy':'ordinary'},receivedAt:'2026-10-18T12:00:00.000Z'});}
+ const store=createOrderDemoStore(storage),base={query:'unique-last-legacy',kind:'',keyPrefix:'',from:'',to:'',limit:3};let after,segments=0,found=[];
+ do{const page=await readRecordPage(store,{...base,...(after?{after}:{})});assert.ok(page.scanned<=100);segments++;found.push(...page.records.map(r=>r.id));after=page.nextAfter;}while(after&&segments<20);
+ assert.equal(after,undefined);assert.ok(segments>=5);assert.deepEqual(found,[legacyIds.at(-1)]);
+ after=undefined;const all=[];do{const page=await readRecordPage(store,{...base,query:'',limit:50,...(after?{after}:{})});all.push(...page.records.map(r=>r.id));after=page.nextAfter;}while(after&&all.length<300);
+ assert.equal(after,undefined);assert.equal(new Set(all).size,202);assert.ok(all.includes(current.id));assert.deepEqual(all,[...all].sort());
+ const prefixed=await readRecordPage(store,{...base,keyPrefix:legacyIds.at(-1)});assert.deepEqual(prefixed.records.map(r=>r.id),[legacyIds.at(-1)]);
+});
 test('demo admission checks a current quote atomically and recovers original admission after expiry or release changes',async()=>{
  const storage=createSyntheticStorage([]);let at=new Date('2026-10-19T10:00:00.000Z');const templates=structuredClone(data.paidOrders),context={storage,generation,readAsset,templates,now:()=>new Date(at),readBody:r=>r.json()},get=()=>serveOrderDemo(new Request(origin+'/demo/orders/deferred/quote'),context),review=await(await get()).json();
  const request={schemaVersion:1,requestId:crypto.randomUUID(),reviewId:review.reviewId,definitionId:review.definition.definitionId,quoteId:review.quote.quoteId,quoteRevision:review.quote.revision,contextRef:review.quote.contextRef},post=body=>serveOrderDemo(new Request(origin+'/demo/orders/deferred/submit',{method:'POST',body:JSON.stringify(body)}),context),received=await(await post(request)).json();assert.equal(received.status,'received');

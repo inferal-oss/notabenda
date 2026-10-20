@@ -15,6 +15,8 @@ export {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,c
 export type {ProcessingActivity,ProcessingProvenance,ProcessingStoreOptions,ProcessingStreamContext,ProcessingRecordContext,ProcessingRequest,ProcessingReceipt,ProcessingHead,ProcessingResult} from './processing.js';
 export {createSetupWorker} from './setup.js';
 export type {SetupWorkerOptions} from './setup.js';
+export {createWorkspaceOverviewWorker} from './overview.js';
+export type {WorkspaceArea,WorkspaceOverviewGrant,WorkspaceOverviewOptions} from './overview.js';
 
 export {createEvidenceExportSegment, MAX_EXPORT_BYTES} from './export.js';
 export type {EvidenceExportSegment} from './export.js';

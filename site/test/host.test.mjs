@@ -478,8 +478,9 @@ test('catalog-reference releases keep public legal bytes unchanged and private c
   assert.ok(document.querySelector('link[href="/assets/demo-marker.css"]'));
  }
  for(const path of ['index.html','examples/index.html','guide/package/index.html','website-privacy/index.html'])assert.doesNotMatch(await readFile(new URL(path,root),'utf8'),/class="demo-corner"/,path);
- const {demoHome}=await import('../demo-presentation.mjs');
- const marked=await markDemoResponse(demoHome()),html=await marked.text();assert.match(html,/class="demo-corner"/);
+ const {createWorkspaceOverviewWorker}=await import('notabenda-cf');
+ const demoHome=()=>createWorkspaceOverviewWorker({basePath:'/demo/admin',authorize:()=>({areas:[]})}).fetch(new Request('https://example.test/demo/admin'),{});
+ const marked=await markDemoResponse(await demoHome()),html=await marked.text();assert.match(html,/class="demo-corner"/);
  const again=await markDemoResponse(new Response(html,{headers:{'Content-Type':'text/html'}}));assert.equal((await again.text()).match(/class="demo-corner"/gu).length,1);
  const json=Response.json({ok:true});assert.equal(await markDemoResponse(json),json);
  });

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-PACKAGE REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-CF-HISTORY
 import {test} from 'node:test';
@@ -52,6 +53,7 @@ test('generated host authorizes before assets or DO access and independently gat
   const request=(path,options)=>new Request('https://example.test'+path,options);
   for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/history','/workspace/setup','/assets/setup.mjs','/assets/cartridges.css','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
   assert.equal(lookups,0);assert.equal(assets,0);
+  const overviewRead=createHost(()=>({inspect:true}));assert.equal((await overviewRead(request('/workspace?q=reader'),env)).status,200);assert.deepEqual(received,{allowSetup:false});assert.equal((await createHost(()=>({inspect:true,configure:true}))(request('/workspace'),env)).status,200);assert.deepEqual(received,{allowSetup:true});lookups=0;
   const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
   for(const path of ['/workspace/setup','/assets/setup.mjs','/assets/cartridges.css'])assert.equal((await read(request(path),env)).status,403);
   for(const path of ['/workspace/private','/workspace/other/history','/workspace/history/write'])assert.equal((await read(request(path),env)).status,404);
@@ -67,6 +69,7 @@ test('generated workspace starts empty, archives only matching sites and preserv
   const request=path=>new Request('https://example.test/workspace/'+path);
   for(const section of ['history','choices','agreements','processing','permissions','contracts']){const response=await workspace.inspect(request(section));assert.equal(response.status,200);assert.match(await response.text(),/No matches/);}
   const build=compileLegalDocuments(config);await workspace.recordRelease(build.artifact,{changeNote:'Fictional starter test'});assert.match(await (await workspace.inspect(request('history'))).text(),/Fictional starter test/);
+  const overview=await workspace.inspect(new Request('https://example.test/workspace?q='+build.artifact.manifest.artifactId));assert.match(await overview.text(),/history\/record\?id=/);
   const other=structuredClone(config);other.site.id='another-site';await assert.rejects(workspace.recordRelease(compileLegalDocuments(other).artifact),/configured site/);
   const authored=await compileAuthoredDocuments(config,{terms:{format:'mdx',source:'---\nkind: terms\ntitle: Sample terms\nroute: /terms\nversion: authored-1\neffectiveDate: 2026-10-18\nreview:\n  status: reviewed\n---\n## First section\n\nFictional authored terms.'}});await workspace.recordRelease(authored.archive);
   const id=authored.manifest.artifactId;assert.equal((await workspace.inspect(request('history/source?id='+id+'&kind=terms'))).status,404);const response=await workspace.inspect(request('history/source?id='+id+'&kind=terms'),{allowSource:true});assert.equal(response.status,200);assert.match(await response.text(),/Fictional authored terms/);

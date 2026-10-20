@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-MOBILE
 import {test} from 'node:test';
@@ -55,6 +56,7 @@ test('visitors receive independent seeded DO databases while operational admin s
  const body={schemaVersion:1,noticeId:data.recordedConsent.notice.noticeId,requestId:crypto.randomUUID(),expectedRevision:0,action:'revoke-all',choices:Object.fromEntries(Object.keys(data.recordedConsent.notice.scopes).map(id=>[id,false])),clientAt:new Date().toISOString()};
  const post=s=>serveHost(req('/demo/choices/record',{method:'POST',headers:{...headers(s),Origin:'https://demo.example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(body)}),env);
  const saved=await post(a);assert.equal(saved.status,200);const result=await saved.json();assert.equal((await head(b)).revision,0);assert.equal((await head(a)).revision,1);
+ const overview=await serveHost(req('/demo/admin?q='+result.receipt.id,{headers:headers(a)}),env),overviewHtml=await overview.text();assert.equal(overview.status,200);assert.ok(overviewHtml.includes('/demo/admin/recorded/record?id='+result.receipt.id));assert.doesNotMatch(overviewHtml,/href="\/backoffice/);const isolated=await serveHost(req('/demo/admin?q='+result.receipt.id,{headers:headers(b)}),env);assert.match(await isolated.text(),/No matching records in the available areas/);
  const record=await serveHost(req('/demo/admin/recorded/record?id='+result.receipt.id,{headers:headers(a)}),env);assert.equal(record.status,200);const html=await record.text();assert.match(html,/Your demo workspace/);assert.doesNotMatch(html,/href="\/backoffice/);
  const unavailable=await serveHost(req('/demo/admin/recorded/record?id='+result.receipt.id,{headers:headers(b)}),env);assert.equal(unavailable.status,404);
  assert.equal((await serveHost(req('/backoffice',{headers:{Cookie:a.cookie}}),env)).status,401);

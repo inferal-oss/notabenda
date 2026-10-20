@@ -602,7 +602,8 @@
       "deliverables": [
         "Pluggable read-only worker with mandatory host authorization and host-selected store scope.",
         "Bounded search, evidence cards, readable details, filters, and raw JSON disclosure.",
-        "Durable Object adapter; no login, credentials, arbitrary DO selectors, or consent collection."
+        "Durable Object adapter; no login, credentials, arbitrary DO selectors, or consent collection.",
+        "Job-focused overview and native cross-area record finder with bounded continuation and separate setup permission."
       ],
       "implementationRefs": [
         "packages/notabenda-cf/src/worker.ts",
@@ -620,7 +621,8 @@
         "packages/notabenda-cf/src/export.ts",
         "packages/notabenda-cf/src/types.ts",
         "packages/notabenda-cf/src/lifecycle.ts",
-        "examples/lifecycle.mjs"
+        "examples/lifecycle.mjs",
+        "packages/notabenda-cf/src/overview.ts"
       ]
     },
     {
@@ -2061,7 +2063,8 @@
         "REQ-PRODUCT-LOCALIZATION",
         "REQ-PRODUCT-AGENT-INTEGRATION",
         "REQ-PRODUCT-COMPLIANCE-MAP",
-        "REQ-PRODUCT-CARTRIDGES"
+        "REQ-PRODUCT-CARTRIDGES",
+        "REQ-PRODUCT-WORKSPACE-OVERVIEW"
       ]
     }
   ],
@@ -6583,6 +6586,45 @@
         "packages/notabenda-cf/test/starter.test.mjs"
       ],
       "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected cartridge revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access."
+    },
+    {
+      "id": "REQ-PRODUCT-WORKSPACE-OVERVIEW",
+      "jurisdiction": "PRODUCT",
+      "title": "Job-focused workspace overview and bounded record finder",
+      "kind": "product-standard",
+      "summary": "Group primary operator jobs, keep additional areas available and search only host-authorized scoped stores through bounded segments. Preserve continuations and distinguish unavailable, incomplete and empty results without readiness claims.",
+      "appliesWhen": "The optional workspace overview is mounted.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-BACKOFFICE"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-WORKSPACE-OVERVIEW"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "The overview does not prove current permission, installed cartridges, complete history, newest events, a snapshot or legal compliance. Host adapters and destination authorization remain host responsibilities.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/overview.ts",
+        "packages/notabenda-cf/src/admin-style.ts",
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "site/worker.mjs",
+        "site/admin-presentation.mjs",
+        "site/order-demo-admin.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/overview.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/workspace-overview.md",
+        "site/test/order-demo.test.mjs"
+      ]
     }
   ],
   "verification": [
@@ -7860,6 +7902,21 @@
         "packages/notabenda/test/cartridges-ui.test.mjs",
         "packages/notabenda-cf/test/setup.test.mjs",
         "packages/notabenda-cf/test/starter.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-WORKSPACE-OVERVIEW",
+      "requirementIds": [
+        "REQ-PRODUCT-WORKSPACE-OVERVIEW"
+      ],
+      "status": "automated",
+      "expected": "No record reads on opening; one validated bounded search segment per granted area. Authorization, setup permission, continuation, sanitized failures and cross-session separation are exercised with real workers and generated starter routes.",
+      "testRefs": [
+        "packages/notabenda-cf/test/overview.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/workspace-overview.md",
+        "site/test/order-demo.test.mjs"
       ]
     }
   ],

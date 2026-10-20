@@ -10,6 +10,7 @@ import {createTermsAcceptance,mountTermsAcceptance,createFormPermission,mountFor
 import {mountSetup} from 'notabenda/setup/ui';
 import {mountCartridgeConsole} from 'notabenda/cartridges/ui';
 import {selectCartridges} from 'notabenda/cartridges';
+import {createWorkspaceOverviewWorker} from 'notabenda-cf';
 const shell='<!doctype html><html lang="en"><head><title>Component check</title></head><body><main id="main"><h1>Settings</h1><div id="component"></div></main></body></html>';
 function visibleLabels(document){
  const words=value=>value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -19,6 +20,13 @@ function visibleLabels(document){
  }
 }
 function clean(result){assert.deepEqual(result.violations,[],result.label);assert.deepEqual(result.structural,[],result.label);assert.deepEqual(result.warnings,[],result.label);assert.equal(result.incomplete.some(v=>v.id==='aria-prohibited-attr'),false,result.label+' has unresolved naming semantics');assert.equal(result.environment,'jsdom-semantic-only');assert.deepEqual(result.excludedRules,['color-contrast','label-content-name-mismatch']);}
+
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
+test('operator overview and cross-area finder have native labels, headings and reachable records',async()=>{
+ const areas=[{id:'choices',title:'Cookie choices',description:'Inspect choices and their notices.',href:'/workspace/choices',primary:true,store:{list:async()=>({records:[{id:'record-one',data:{kind:'inspection-note',subjectId:'reader'}}]}),get:async()=>undefined}}];
+ const worker=createWorkspaceOverviewWorker({basePath:'/workspace',setupPath:'/workspace/setup',authorize:()=>({areas,allowSetup:true})});
+ for(const query of ['', '?q=reader']){const response=await worker.fetch(new Request('https://example.test/workspace'+query),{}),audit=await createAccessibilityAudit(await response.text(),{label:'workspace overview '+query});try{clean(await audit.scan());assert.equal(audit.dom.window.document.querySelector('script'),null);if(query)assert.ok(audit.dom.window.document.querySelector('a[href="/workspace/choices/record?id=record-one"]'));}finally{audit.close();}}
+});
 
 // @requirements REQ-PRODUCT-CARTRIDGES
 test('reusable cartridge library and its focused setup retain semantic names and focus',async()=>{

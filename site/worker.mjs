@@ -1,6 +1,8 @@
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
+// @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 import {seedOrderConfirmations} from './order-confirmation-seed.mjs';
-import {orderDemoAdmin} from './order-demo-admin.mjs';
+import {orderDemoAdmin,createOrderDemoStore} from './order-demo-admin.mjs';
 import {serveOrderDemo,hasOrderDemoAttempt} from './order-demo.mjs';
 import {registerContractActionDefinition,recordContractDeclaration,createContractDeclarationStore,ContractActionRecordError} from 'notabenda-cf';
 import {contractContext} from './contract-context.mjs';
@@ -13,13 +15,13 @@ import {permissionContext} from './permission-context.mjs';
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
 // @requirements REQ-PRODUCT-CF-HOST
-import { EvidenceLifecycleError, createAdminWorker, createDocumentHistory, createDurableObjectStore, createTermsAcceptanceStore, createConsentEvidenceStore, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, TermsRecordError } from 'notabenda-cf';
+import { EvidenceLifecycleError, createAdminWorker, createWorkspaceOverviewWorker, createDocumentHistory, createDurableObjectStore, createTermsAcceptanceStore, createConsentEvidenceStore, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, TermsRecordError } from 'notabenda-cf';
 import {adminPresentation} from './admin-presentation.mjs';
 import { seedConsentExample } from '../examples/consent-evidence.mjs';
 import {seedEvidenceLifecycle,lifecycleDemoPrefix} from '../examples/lifecycle.mjs';
 import data from './dist/server-data.json' with {type:'json'};
 import {seedDemoWorkspace} from './demo-seed.mjs';
-import {decorateDemoAdmin,demoHome} from './demo-presentation.mjs';
+import {decorateDemoAdmin} from './demo-presentation.mjs';
 import { canonicalRequest, hostAuthorization, protectedResponse, readDemoRequest, serveHost } from './host.mjs';
 import {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,ProcessingRecordError} from 'notabenda-cf';
 import {registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,ConsentRecordError} from 'notabenda-cf';
@@ -123,7 +125,12 @@ export class EvidenceWorkspace {
         await this.initialize();
         return protectedResponse(await createAdminWorker({...adminPresentation(this.adminBasePath),basePath:`${this.adminBasePath}/${section}`,title:{history:'Document revisions',evidence:'Sample evidence',agreements:'Terms agreements',choices:'Cookie choices',recorded:'Sandbox activity',processing:'Processing opt-outs',permissions:'Form permissions',contracts:'Contract declarations',lifecycle:'Retention & holds'}[section],authorize:()=>({store:sections[section](),scopeLabel:this.adminBasePath==='/backoffice'?'Evidence workspace':'Your demo workspace',allowExport:true,allowCatalogReview:true})}).fetch(request,this.env));
       }
-      if(path === this.adminBasePath || path === this.adminBasePath+'/') return protectedResponse(new Response(null,{status:303,headers:{Location:this.adminBasePath+'/history'}}));
+      if(path === this.adminBasePath || path === this.adminBasePath+'/') {
+        await this.initialize();const demo=this.adminBasePath==='/demo/admin';
+        const jobs=[['history','Privacy pages','Compare retained privacy, cookie and terms versions.',true],['choices','Cookie choices','Inspect choices and the notices they refer to.',true],['agreements','Terms agreement','Review the person, exact terms version and recorded statement.',true],['permissions','Form permissions','Inspect optional permissions and later withdrawals.'],['processing','Processing opt-outs','Review requests and retained processing restrictions.'],['contracts','Contract declarations','Inspect declarations and independent handoff states.'],['lifecycle','Retention & holds','Review holds, retirement and purge progress.'],['recorded','Sandbox choices','Inspect actions made in the recorded-choice example.'],...(demo?[['orders','Orders & confirmations','Inspect order reviews, retained files and delivery jobs.']]:[['evidence','Sample evidence','Inspect the general evidence store.']])];
+        const areas=jobs.map(([id,title,description,primary=false])=>({id,title,description,primary,href:this.adminBasePath+'/'+id,store:id==='orders'?createOrderDemoStore(this.state.storage):sections[id]()}));
+        return protectedResponse(await createWorkspaceOverviewWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath,setupPath:this.adminBasePath+'/setup',authorize:()=>({areas,allowSetup:true,scopeLabel:demo?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
+      }
       return protectedResponse(new Response('Not found.',{status:404}));
     } catch(error) {
       if(error instanceof EvidenceLifecycleError&&error.code==='context-retired')return protectedResponse(Response.json({code:'context-retired'},{status:410}));
@@ -171,7 +178,6 @@ export class DemoWorkspace extends EvidenceWorkspace {
     if(path==='/demo/session'&&request.method==='GET')return protectedResponse(new Response(null,{status:204}));
     if(path==='/demo/provision'&&request.method==='POST'){await this.initialize();return protectedResponse(new Response(null,{status:204}));}
     if(!/^\/demo\/(?:admin|agreements|choices|processing|permissions|contracts|orders)(?:\/|$)/u.test(path))return protectedResponse(new Response('Not found.',{status:404}));
-    if(path==='/demo/admin'||path==='/demo/admin/'){await this.initialize();return protectedResponse(demoHome());}
     let commandKey;
     if(request.method==='POST'&&/^\/demo\/(?:agreements|choices|processing|permissions|contracts|orders)\//u.test(path)){
       let body;try{body=await request.clone().json();}catch{return protectedResponse(new Response('Invalid request.',{status:400}));}

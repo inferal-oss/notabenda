@@ -218,3 +218,38 @@ An explicitly finalized release can include a digest-bound selected-reference at
 ## Customer confirmations
 
 The optional `notabenda-cf/order-confirmations` subpath retains complete personally addressed host files and queues a recoverable delivery job. Hosts supply contract facts, reviewed content, a fixed destination version, authentication, provider and scheduling. Admin inspection uses a separate `allowOrderConfirmation` permission; original files download as inert attachments. Provider acceptance remains distinct from recipient delivery. See the [confirmation guide](../../docs/ORDER-CONFIRMATIONS.md).
+
+## Workspace overview and record finder
+
+New generated starters open a workspace overview before individual evidence views. Its three starting jobs are privacy pages, cookie choices and terms agreements. Other record areas stay in a foldout. A native search form finds records across the areas your host authorizes; it needs no browser script.
+
+For an existing host, mount `createWorkspaceOverviewWorker` at your admin root:
+
+```js
+import {createWorkspaceOverviewWorker} from 'notabenda-cf';
+
+const overview = createWorkspaceOverviewWorker({
+  basePath: '/admin/privacy',
+  setupPath: '/admin/privacy/setup',
+  authorize: async (request, env) => {
+    const access = await authorizeOperator(request, env);
+    if (!access.inspect) return null;
+    return {
+      scopeLabel: access.siteLabel,
+      allowSetup: access.configure === true,
+      areas: [{
+        id: 'choices', title: 'Cookie choices', primary: true,
+        description: 'Inspect choices and the notices they refer to.',
+        href: '/admin/privacy/choices',
+        store: access.cookieChoiceStore,
+      }],
+    };
+  },
+});
+```
+
+The host must return already-scoped stores. A displayed ID, label, search word or URL never selects a Durable Object or tenant. Each destination also authorizes its own requests. Supply up to ten distinct areas, with at most three primary jobs. Titles/descriptions are bounded plain text and destinations are clean local paths. Existing per-area views, source inspection and export permissions remain separate.
+
+Opening the overview reads no records. A nonempty search reads one validated segment of at most three records per area, one area at a time. A continuation link retains the query and cursor for that area's existing search view. Complete empty results, unfinished scans and read failures have different messages. A malformed store response is treated as unavailable. Counts and samples never establish a total, newest event, consistent snapshot, current permission, installed cartridge or legal conclusion.
+
+Search uses `?q=` and the same bounded word matching as the record stores. Reference IDs, recorded subject labels, versions and purposes are useful starting points. Original MDX, retained file contents and separately authorized source attachments are not traversed. The worker accepts only GET/HEAD, sets private/no-store and no-referrer headers, installs no scripts and performs no writes or source/file reads. Hosts remain responsible for bounded adapters and protecting external access logs.

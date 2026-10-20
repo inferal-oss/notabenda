@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-ORDER-CONFIRMATION
 // @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
@@ -16,18 +17,29 @@ function legacyProjection(id,raw){
 export async function orderDemoAdmin(request,storage){
  const url=new URL(request.url),id=url.searchParams.get('id');
  if(url.pathname===base+'/record'&&/^[a-f0-9]{64}$/u.test(id??'')&&await storage.get(prefix+id))return legacyOrderDemoAdmin(request,storage);
+ const store=createOrderDemoStore(storage);
+ const response=await createAdminWorker({...adminPresentation('/demo/admin'),basePath:base,title:'Order requests',authorize:()=>({store,scopeLabel:'Your demo workspace',allowExport:true,allowOrderArchive:true,allowOrderConfirmation:true})}).fetch(request,{});
+ if(url.pathname===base+'/order-review'&&request.method==='GET'&&response.ok){const html=await response.text(),asset=data.paidOrders.mixed.definition.items.find(i=>i.guarantee?.status==='label-provided').guarantee.label.asset,notice=asset.url.replace(/\.svg$/u,'.NOTICE.txt');return new Response(html.replace('</main>',(html.includes('class="nb-guarantee-artwork"')?`<p class="footnote">Guarantee artwork © European Union. <a href="${notice}">Source and use conditions</a>.</p>`:'')+'</main>'),{status:response.status,headers:response.headers});}
+ return response;
+}
+
+// @requirements REQ-PRODUCT-CARTRIDGES
+export function createOrderDemoStore(storage){
  const current=createPaidOrderStore(storage,{siteId:orderDemoSite,scopeId:orderDemoScope,allowPreview:true}),store={
   ...current,
   async get(id){const record=await current.get(id);if(record)return record;const old=await storage.get(prefix+id);return old?legacyProjection(id,old):undefined;},
   async list(input){
-   const query=normalizeRecordQuery(input),all=[];let after;
-   do{const page=await current.list({query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50,...(after?{after}:{})});all.push(...page.records);after=page.nextAfter;}while(after&&all.length<200);
-   const old=await storage.list({prefix,limit:200});for(const [key,value] of old)all.push(legacyProjection(key.slice(prefix.length),value));
-   const candidates=all.sort((a,b)=>compareRecordKeys(a.id,b.id)).filter(r=>r.id.startsWith(query.keyPrefix)&&(query.after===undefined||compareRecordKeys(r.id,query.after)>0)),records=[];let scanned=0;
-   for(const record of candidates){scanned++;if(matchesRecord(record,query))records.push(record);if(records.length===query.limit)return {records,nextAfter:record.id,scanned};}return {records,scanned};
+   const query=normalizeRecordQuery(input),page=await current.list({query:'',kind:'',from:'',to:'',keyPrefix:query.keyPrefix,limit:50,...(query.after===undefined?{}:{after:query.after})});
+   const old=await storage.list({prefix:prefix+query.keyPrefix,limit:51,...(query.after===undefined?{}:{startAfter:prefix+query.after})}),legacy=[...old.entries()].slice(0,50),frontiers=[];
+   if(page.nextAfter!==undefined)frontiers.push(page.nextAfter);
+   if(old.size>50)frontiers.push(legacy.at(-1)[0].slice(prefix.length));
+   // Do not advance beyond the earliest unfinished source: the other source may have unread keys there.
+   const frontier=frontiers.sort(compareRecordKeys)[0],all=new Map(legacy.map(([key,value])=>{const id=key.slice(prefix.length);return [id,legacyProjection(id,value)];}));
+   for(const record of page.records)all.set(record.id,record); // Same precedence as get().
+   const candidates=[...all.values()].filter(r=>frontier===undefined||compareRecordKeys(r.id,frontier)<=0).sort((a,b)=>compareRecordKeys(a.id,b.id)),records=[];let scanned=0;
+   for(const record of candidates){scanned++;if(matchesRecord(record,query))records.push(record);if(records.length===query.limit)return {records,nextAfter:record.id,scanned};}
+   return {records,scanned,...(frontier===undefined?{}:{nextAfter:frontier})};
   },
  };
- const response=await createAdminWorker({...adminPresentation('/demo/admin'),basePath:base,title:'Order requests',authorize:()=>({store,scopeLabel:'Your demo workspace',allowExport:true,allowOrderArchive:true,allowOrderConfirmation:true})}).fetch(request,{});
- if(url.pathname===base+'/order-review'&&request.method==='GET'&&response.ok){const html=await response.text(),asset=data.paidOrders.mixed.definition.items.find(i=>i.guarantee?.status==='label-provided').guarantee.label.asset,notice=asset.url.replace(/\.svg$/u,'.NOTICE.txt');return new Response(html.replace('</main>',(html.includes('class="nb-guarantee-artwork"')?`<p class="footnote">Guarantee artwork © European Union. <a href="${notice}">Source and use conditions</a>.</p>`:'')+'</main>'),{status:response.status,headers:response.headers});}
- return response;
+ return store;
 }
