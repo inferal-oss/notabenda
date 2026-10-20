@@ -1,0 +1,9 @@
+# Privacy pack setup verification
+
+Requirement: `REQ-PRODUCT-PRIVACY-PACKS`. Underlying mechanisms remain linked to `REQ-PRODUCT-COLLECTION-NOTICE`, `REQ-PRODUCT-INDIRECT-NOTICE`, `REQ-NZ-INDIRECT`, `REQ-PRODUCT-RIGHTS-CENTER`, `REQ-PRODUCT-PROCESSING-CHOICES` and the signal requirements in the catalog.
+
+`packages/notabenda/test/privacy-packs.test.mjs` exercises independent targets, direct versus indirect language requirements, preservation of the original eight pins, missing classification versus explicit empty arrays, empty-inventory review, imported request destinations and restrictions, old-report resume, private-note separation and UI/CLI handoff parity. Forged saved input reviews are ignored and regenerated. The indirect-language regression keeps a Portuguese site unchanged while reporting the English-only renderer limit. A conflicting indirect-collection answer produces a separate fact conflict without duplicate recommendation IDs.
+
+The existing collection, indirect-collection, rights, browser-signal and processing-choice suites test the actual builders, static renderers, controllers and ledgers. Pack selection invokes none of those effects. Connection-guide tests run each installed pack through the shared UI, with no network or browser persistence. The packed-consumer test compiles the exported review API and its always-false readiness type outside the workspace. Site tests verify all 12 cards and their examples, groups and direct anchors remain reachable.
+
+These checks establish setup behavior. Operators must review actual source facts and legal applicability, author the selected builder inputs, test deployed placement and destinations, arrange notification where required, and verify actual account/downstream effects. No pack is marked installed or verified by these checks. Broader device and assistive-technology review remains separate from semantic tests and recorded browser layout checks.

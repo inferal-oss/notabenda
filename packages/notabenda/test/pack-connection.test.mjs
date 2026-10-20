@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-PACK-CONNECTION REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';

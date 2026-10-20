@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING
 // @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-EU-GUARANTEE-LABEL
@@ -266,6 +267,13 @@ const controlsEditor=mountConsentEditor(container,{getConfig:()=>controlsDraft.c
 controlsEditor.refresh({discardDraft:true});controlsEditor.destroy();
 // @ts-expect-error memory periods are numbers, not unchecked text
 settings.grantLifetimeDays='90';
+`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {packLibrary,packGroups,selectPacks,reviewPackInputs,type PackInputReview} from '@notabenda/core/packs';
+const packInputReview:PackInputReview=reviewPackInputs(selectPacks(['privacy-requests']),config);
+const unresolved: false=packInputReview.productionReady;void packLibrary;void packGroups;void unresolved;
+// @ts-expect-error declaration checks do not supply a configured or verified state
+const configured: true=packInputReview.productionReady;
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

@@ -234,3 +234,5 @@ Optional [UK storage settings](../../docs/STORAGE-EXCEPTIONS.md) use `@notabenda
 ## Bring your own language
 
 Supply complete versioned messages for legal pages, cookie-choice controls and terms acceptance, including status and accessibility text. Set an explicit locale and direction; the compiled runtime contains only the selected consent copy. See the [localization guide](../../docs/LOCALIZATION.md) and [Portuguese example](../../examples/localization/config.mjs). Translation review, remaining interfaces and multi-language routing remain host or future work.
+
+The [privacy packs](../../docs/PRIVACY-PACKS.md) add focused form/indirect notices, request entry points and processing opt-out setup. `reviewPackInputs` and `packGroups` are exported from `@notabenda/core/packs`. The scoped report and optional third `formatPackBrief` argument identify missing/manual inputs without copying config values or marking anything configured.

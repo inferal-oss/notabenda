@@ -4,7 +4,7 @@ A pack keeps one job together: what it adds, the facts it needs, and the steps t
 
 Start with **Privacy pages**, **Cookie choices** or **Terms agreement**. You can combine them or add another job later. Each works from the same site inventory.
 
-## All eight packs
+## All twelve packs
 
 The library shows every pack, grouped by the job it does. Use the links at the top to jump between groups.
 
@@ -13,15 +13,19 @@ The library shows every pack, grouped by the job it does. Use the links at the t
 | Start here | Privacy pages | Privacy, cookie and terms documents. |
 | Start here | Cookie choices | A compact request, preferences and service gates. |
 | Start here | Terms agreement | Agreement to an exact terms version. |
+| Privacy information | Form notices | Context-specific information beside direct collection fields. |
+| Privacy information | Indirect collection | The separately assessed supported IPP3A notice path. |
+| Privacy information | Privacy requests | Real request destinations, scope and a public fallback. |
 | Add a function | Form permissions | Optional purpose and channel permissions, separate from form submission. |
 | Add a function | Gated media | Remote media stays unloaded until permitted. |
 | Add a function | Evidence workspace | Retained versions, searchable records and a private backoffice. |
+| Add a function | Processing opt-outs | Assessed signals and/or recorded restrictions with host enforcement. |
 | Regional rules | Irish grant duration | Assessment of the supported six-month default grant cap. |
 | Regional rules | Italian repeat requests | Assessment of the supported six-month repeat-request guard. |
 
 The regional packs cover those named mechanisms; they are not complete country coverage.
 
-The original overview covers additional jobs that are not yet selectable packs. See the [pack roadmap](PACK-ROADMAP.md) for the next privacy, consumer-transaction and regional setup paths.
+The [privacy-pack guide](PRIVACY-PACKS.md) explains the four added paths and their draft input reviews. See the [pack roadmap](PACK-ROADMAP.md) for the remaining consumer-transaction and regional setup paths.
 
 ## Prepare it your way
 

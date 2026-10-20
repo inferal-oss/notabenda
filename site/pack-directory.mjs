@@ -1,8 +1,9 @@
+// @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
-import {packLibrary} from '@notabenda/core/packs';
+import {packLibrary,packGroups} from '@notabenda/core/packs';
 import {fromMarkdown} from 'mdast-util-from-markdown';
 
-const groups=[['basics','Start here'],['more','Add a function'],['regional','Regional rules']];
+const groups=packGroups().map(g=>[g.id,g.title]);
 const e=value=>String(value).replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 /** A script-free overview, using the installed registry rather than a second list. */
 export function packDirectory(){

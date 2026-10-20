@@ -2075,7 +2075,8 @@
         "REQ-PRODUCT-WORKSPACE-OVERVIEW",
         "REQ-PRODUCT-DRAFT-PREVIEW",
         "REQ-PRODUCT-PACK-CONNECTION",
-        "REQ-PRODUCT-CONSENT-AUTHORING"
+        "REQ-PRODUCT-CONSENT-AUTHORING",
+        "REQ-PRODUCT-PRIVACY-PACKS"
       ]
     }
   ],
@@ -6606,7 +6607,7 @@
         "packages/notabenda-cf/test/starter.test.mjs",
         "site/test/site-organization.test.mjs"
       ],
-      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All eight packs are shown in three shelves with a counted index. The homepage and architecture guide list all eight packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All twelve packs are shown in four shelves with a counted index. The homepage and architecture guide list all twelve packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
     },
     {
       "id": "REQ-PRODUCT-WORKSPACE-OVERVIEW",
@@ -6761,6 +6762,48 @@
         "packages/notabenda/test/package.test.mjs"
       ],
       "implementationNote": "Explicit service selection exposes its mechanical purpose closure, with operator-supplied purpose/service material versions and grant/refusal/dismissal memory. Public baseline comparison rejects stale changes. Existing consent information, regional policies, scope guards and catalog review pins are preserved. Saves invalidate exported draft artifacts; unsaved/canceled proposals do not change config. Synthetic actual lifecycle checks cover rejection, granular grants, withdrawal/reload and restrictive scopes. Imported timing policies are shown in the editor for review. Enter in draft fields cannot advance the parent setup; packed imports and strict consumer types cover both new subpaths."
+    },
+    {
+      "id": "REQ-PRODUCT-PRIVACY-PACKS",
+      "jurisdiction": "PRODUCT",
+      "title": "Focused privacy-information and processing-restriction packs",
+      "kind": "product-standard",
+      "summary": "Provide separate direct and supported indirect collection, privacy request navigation and processing opt-out setup paths. Preserve unknown practices and imported restrictions; identify missing declarations and manual builder/host work in UI, private reports and matching agent briefs without enabling features.",
+      "appliesWhen": "Choosing, preparing or resuming Notabenda integration work in the website, CLI or reusable setup UI.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PRIVACY-PACKS"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Setup and input review only. Declared fields do not establish truth, profile applicability or working destinations. Builder descriptors, actual notification, request fulfillment and downstream enforcement remain host work; no regional profile is enabled.",
+      "implementationRefs": [
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "site/pack-directory.mjs",
+        "site/style.css",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-packs.test.mjs",
+        "packages/notabenda/test/pack-connection.test.mjs",
+        "site/test/cartridges.test.mjs",
+        "docs/verification/privacy-packs.md",
+        "packages/notabenda/test/package.test.mjs"
+      ]
     }
   ],
   "verification": [
@@ -8096,6 +8139,20 @@
         "site/test/accessibility.test.mjs",
         "docs/verification/consent-authoring.md",
         "packages/notabenda/test/package.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PRIVACY-PACKS",
+      "requirementIds": [
+        "REQ-PRODUCT-PRIVACY-PACKS"
+      ],
+      "status": "automated",
+      "expected": "UI and CLI preserve four distinct new pack selections and private notes. Direct versus indirect language/profile paths remain separate, missing classifications differ from explicit [], rights workflows remain host work, and regenerated input reviews and matching briefs identify missing/manual inputs without creating policies, routes, permissions or verified states. Older reports resume with added questions unresolved.",
+      "testRefs": [
+        "packages/notabenda/test/privacy-packs.test.mjs",
+        "packages/notabenda/test/pack-connection.test.mjs",
+        "site/test/cartridges.test.mjs",
+        "docs/verification/privacy-packs.md"
       ]
     }
   ],

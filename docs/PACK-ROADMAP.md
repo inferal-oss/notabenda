@@ -1,18 +1,18 @@
 # Growing the pack library
 
-The eight installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
+The twelve installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
 
-This is a product roadmap. Entries below are **not selectable packs**. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
+This is a product roadmap. The first privacy group is now available; later groups remain proposals. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
 
 ## First: everyday privacy jobs
 
-| Proposed pack | Existing foundation | What setup still needs |
+| Available pack | Existing foundation | What remains in the adopter’s project |
 | --- | --- | --- |
-| Collection notices | [Direct notices](COLLECTION.md), [indirect notices](INDIRECT-COLLECTION.md); FEAT-FORMS | Ask where and how information is collected, select the relevant purposes and exact released wording, then guide placement and review. Direct and indirect collection need distinct paths. Rendering a notice records no permission. |
+| Form notices and Indirect collection | [Direct notices](COLLECTION.md), [indirect notices](INDIRECT-COLLECTION.md); FEAT-FORMS | Ask where and how information is collected, select the relevant purposes and exact released wording, then guide placement and review. Direct and indirect collection need distinct paths. Rendering a notice records no permission. |
 | Privacy requests | [Rights entry points](RIGHTS.md); FEAT-RIGHTS | Ask which request routes actually exist, their scope and fallback contact. Check that each link reaches a working host workflow. This is an entry point, not rights-case management or fulfillment. |
 | Processing opt-outs | [Browser signals](PRIVACY-SIGNALS.md), [recorded restrictions](PROCESSING-CHOICES.md); FEAT-US-CHOICES | Gather applicability and actual processing activities; connect signals, browser restrictions and optional durable account/downstream handling. Cookie acceptance must not clear an independent restriction. |
 
-These are the next three product priorities. They complete common paths from publishing information to giving people usable actions. They reuse the installed integration targets `collection-notice`, `privacy-rights` and `processing-opt-outs`; each needs its own pack questions, connection brief and acceptance scenarios before joining the library.
+These four setup paths are now in the installed library. They reuse the collection, rights and processing modules, with separate direct/indirect targets, focused questions and a draft input review shared by the UI, private report and agent brief. Builders, destinations, notification and downstream effects still need project integration and verification. See [the privacy-pack guide](PRIVACY-PACKS.md).
 
 ## Next: consumer transactions
 

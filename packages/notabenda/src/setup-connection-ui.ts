@@ -1,9 +1,10 @@
+// @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING
 // @requirements REQ-PRODUCT-PACK-CONNECTION REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-A11Y
-import type {planCartridges} from './cartridges.js';
+import type {planCartridges,PackInputReview} from './cartridges.js';
 
 /** Render the installed integration contract; no completion state or host actions are owned here. */
-export function appendPackConnectionGuide(container:HTMLElement,scope:ReturnType<typeof planCartridges>,docs:string,options:{hasConsent?:boolean;configureConsent?:()=>void}={}):void {
+export function appendPackConnectionGuide(container:HTMLElement,scope:ReturnType<typeof planCartridges>,docs:string,options:{inputReview?:PackInputReview;hasConsent?:boolean;configureConsent?:()=>void}={}):void {
  const doc=container.ownerDocument;
  const node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
  const list=(items:readonly string[])=>{const ul=node('ul');for(const copy of items)ul.append(node('li',copy));return ul;};
@@ -14,6 +15,9 @@ export function appendPackConnectionGuide(container:HTMLElement,scope:ReturnType
   const article=node('article');article.className='nb-setup-connection-pack';article.dataset.pack=pack.id;
   article.append(node('h4',pack.title),node('p',pack.lesson),guideLink(pack.guide));
   const targets=scope.reference.targets.filter(t=>pack.targetIds.some(id=>id===t.id));
+  const inputs=options.inputReview?.packs.find(p=>p.id===pack.id);
+  if(inputs){const review=node('section');review.className='nb-setup-pack-inputs';review.append(node('h5','Inputs and manual setup'),node('p','Declarations are unverified. Author the listed builder inputs or settings in your project; this questionnaire does not create them.'));const rows=(items:typeof inputs.items)=>{const ul=node('ul');for(const item of items){const li=node('li');li.dataset.input=item.id;li.dataset.state=item.state;li.append(node('strong',item.state==='declared'?'Declared · verify':item.state==='missing'?'Missing':item.state==='needs-review'?'Review needed':'In your project'),node('p',item.label));for(const path of item.paths)li.append(node('code',path),doc.createTextNode(' '));ul.append(li);}return ul;};const missing=inputs.items.filter(i=>i.state==='missing'||i.state==='needs-review'),manual=inputs.items.filter(i=>i.state==='declared'||i.state==='host-work');if(missing.length)review.append(rows(missing));else review.append(node('p','No missing declarations detected in this draft. Actual facts, builder inputs and host behavior still need verification.'));if(manual.length){const detail=node('details');detail.append(node('summary','Declared inputs and project work ('+manual.length+')'),rows(manual));review.append(detail);}article.append(review);}
+
   article.append(node('h5','Connect'),list([...new Set(targets.flatMap(t=>t.hostWork))]));
   const proposal=scope.policyProposals.find(p=>p.cartridgeId===pack.id);
   if(proposal){const policy=node('aside');policy.className='nb-setup-connection-policy';policy.append(node('strong','Assess this policy before enabling it'),node('p',proposal.path+' · '+proposal.profile),node('p','Required fields: '+proposal.requiredFields.join(', ')+'. Selection has not enabled this policy.'));article.append(policy);}

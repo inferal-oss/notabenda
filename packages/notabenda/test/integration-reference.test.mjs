@@ -30,7 +30,7 @@ test('explicit task decisions select only requested outcomes and their supportin
   assert.equal(result.reference.targets.some(t=>t.id==='evidence'),requested.includes('evidence'));
   assert.equal(result.reference.targets.some(t=>t.id==='regional-consent'),false,'language does not select regional timing');
  }
- const blank=selectIntegration(describeIntegration().selectionTemplate);assert.deepEqual(blank.reference.targets,[]);assert.equal(blank.unresolvedQuestionIds.length,16);
+ const blank=selectIntegration(describeIntegration().selectionTemplate);assert.deepEqual(blank.reference.targets,[]);assert.equal(blank.unresolvedQuestionIds.length,17);
  const declined=Object.fromEntries(describeIntegration().selectionQuestions.map(q=>[q.id,'no']));
  const noWork=selectIntegration({schemaVersion:1,answers:declined});assert.deepEqual(noWork.reference.targets,[]);assert.equal(noWork.status,'scope-recorded');assert.equal(noWork.productionReady,false);
  const existing=selectIntegration({schemaVersion:1,answers:{...declined,'explicit-agreement':'yes'}});assert.deepEqual(existing.requestedTargetIds,['terms-agreement']);assert.deepEqual(existing.prerequisiteReview.map(p=>[p.targetId,p.scopeChoice]),[['legal-pages','no']]);

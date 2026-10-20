@@ -6,7 +6,7 @@ Developer preview: packages have not been published to npm. The package names ar
 
 Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
 
-Browse all eight packs in three visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
+Browse all twelve packs in four visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
 
 ## Skill
 
@@ -25,6 +25,8 @@ Browse all eight packs in three visible groups at https://notabenda.org/start/. 
 - [Package and configuration](https://notabenda.org/guide/package/index.md): Public inventory, rendering and JSON CLI.
 - [Guided setup](https://notabenda.org/guide/setup/index.md): Interactive wizard and explicit noninteractive answers.
 - [Services and project discovery](https://notabenda.org/guide/service-catalog/index.md): Review provider candidates and their actual use.
+
+- [Privacy packs](https://notabenda.org/guide/privacy-packs/index.md): Direct versus indirect collection, request entry points, processing restrictions and regenerated input reviews.
 
 ## Documents and controls
 

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING
 import {reviewSetupConsent} from './setup-consent-cli.js';
 // @requirements REQ-PRODUCT-PACK-CONNECTION
@@ -56,7 +57,7 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
   await mkdir(directory,{mode:0o700});
   await writeFile(join(directory,'notabenda.config.json'),JSON.stringify(plan.config,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile(join(directory,'setup.private.json'),JSON.stringify(plan.report,null,2)+'\n',{flag:'wx',mode:0o600});
-  if(selection)await writeFile(join(directory,'notabenda-setup-brief.txt'),formatCartridgeBrief(selection,'connect'),{flag:'wx',mode:0o600});
+  if(selection)await writeFile(join(directory,'notabenda-setup-brief.txt'),formatCartridgeBrief(selection,'connect',{config:plan.config}),{flag:'wx',mode:0o600});
   if(project)await writeFile(join(directory,'discovery.private.json'),JSON.stringify(project.report,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile(join(directory,'.gitignore'),'setup.private.json\n'+(project?'discovery.private.json\n':''),{flag:'wx'});
   if(project)console.log(`Saved ${project.report.findings.length} project candidate(s) separately in discovery.private.json; coverage ${project.report.coverage.limited?'limited':'bounded'}. Findings never add services without actual-use confirmation.`);
