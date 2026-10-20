@@ -1,0 +1,43 @@
+# Notabenda
+
+> Self-hosted legal pages, privacy controls and optional evidence records. Apache 2.0.
+
+Developer preview: packages have not been published to npm. Use a trusted workspace build or locally packed tarballs. The JSON CLI and optional Markdown/MDX build API are separate.
+
+Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
+
+## Skill
+
+- [Notabenda integration skill](https://notabenda.org/skills/notabenda/SKILL.md): Reusable instructions for an agent integrating or updating the library.
+
+## Start here
+
+- [Agent setup](https://notabenda.org/guide/agent-setup/index.md): Skill installation, version matching and review boundaries.
+- [Package and configuration](https://notabenda.org/guide/package/index.md): Public inventory, rendering and JSON CLI.
+- [Guided setup](https://notabenda.org/guide/setup/index.md): Interactive wizard and explicit noninteractive answers.
+- [Services and project discovery](https://notabenda.org/guide/service-catalog/index.md): Review provider candidates and their actual use.
+
+## Documents and controls
+
+- [Markdown and MDX](https://notabenda.org/guide/authoring/index.md): YAML frontmatter, trusted components and private source archives.
+- [Cookie choices](https://notabenda.org/guide/consent/index.md): Connect optional service lifecycles to effective permission.
+- [Terms agreements](https://notabenda.org/guide/terms/index.md): Bind an unchecked action to the exact document revision.
+- [Retained releases](https://notabenda.org/guide/releases/index.md): Keep earlier artifacts and pinned URLs through clean builds.
+- [React](https://notabenda.org/guide/react/index.md): Provider, hooks and document wrappers.
+- [Astro](https://notabenda.org/guide/astro/index.md): Static pages and client navigation lifecycle.
+
+## Evidence and scope
+
+- [Cloudflare starter](https://notabenda.org/guide/cloudflare-starter/index.md): Optional local scaffold; host-owned authorization.
+- [Backend API](https://notabenda.org/guide/cloudflare/index.md): Stored evidence, history and separately authorized inspection.
+- [Consent evidence](https://notabenda.org/guide/consent-evidence/index.md): Notice binding, receipts and failure behavior.
+- [Requirements catalog](https://notabenda.org/guide/requirements/index.md): Individual sources, applicability, caveats and implementation status.
+- [Feature status](https://notabenda.org/guide/features/index.md): Implemented, partial and planned work.
+
+## Optional
+
+- [Browser discovery](https://notabenda.org/guide/discovery/index.md): Explicit resource/storage observations and visibility limits.
+- [Consent timing](https://notabenda.org/guide/regional-prompts/index.md): Explicit grant expiry and repeat-prompt policies.
+- [Localization](https://notabenda.org/guide/localization/index.md): Host-supplied wording and separate jurisdiction decisions.
+- [Scope and decisions](https://notabenda.org/guide/scope/index.md): Product boundaries and remaining host responsibilities.
+- [Research workflow](https://notabenda.org/guide/research/index.md): Primary sources connected to requirements, implementation and tests.

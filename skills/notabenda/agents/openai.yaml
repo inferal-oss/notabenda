@@ -1,0 +1,4 @@
+interface:
+  display_name: "Notabenda"
+  short_description: "Integrate legal pages, consent and evidence records"
+  default_prompt: "Use $notabenda to set up or update this site's legal pages and privacy controls."

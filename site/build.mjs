@@ -7,6 +7,8 @@ import {createCodeHighlighter} from './syntax.mjs';
 import {examplesBody} from './examples-page.mjs';
 import {siteSections,guideNavigation,sectionForGuide,exampleSectionUrl,guideSectionUrl,guideContext,starterPath,stageOverview,guideOrientation} from './navigation.mjs';
 import {guideLanding,allGuidePages,guideArea} from './guide-pages.mjs';
+// @requirements REQ-PRODUCT-AGENT-INTEGRATION
+import {markdownRoute,rewriteMarkdown,skillFiles} from './agent-docs.mjs';
 import { readFile, readdir, mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { resolve, dirname, extname, posix } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -64,11 +66,14 @@ const catalogRefs = new Set(catalog.requirements.flatMap(r=>[...r.implementation
 for(const path of catalogRefs) if(/^(?:packages|scripts|examples|regulatory|site)\//u.test(path) && /\.(?:ts|mjs|json|py|css|astro)$/u.test(path)) files[`source/${path}.txt`]=await read(path);
 files['source/regulatory/catalog.json.txt']=JSON.stringify(catalog,null,2)+'\n';
 files['license.txt']=await read('LICENSE');
+files['llms.txt']=await read('llms.txt');
+for(const path of skillFiles)files['skills/notabenda/'+path]=await read('skills/notabenda/'+path);
 
 function layout(title, body, {description='Self-hosted legal pages, privacy controls and document history.',guide=false,guideRoute='/guide'}={}) {
   const section=sectionForGuide(guideRoute);
+  const agentLinks='<link rel="describedby" href="/llms.txt">'+(guide&&[...docs.values()].includes(guideRoute)?`<link rel="alternate" type="text/markdown" href="${markdownRoute(guideRoute)}">`:'');
   const breadcrumb=guide&&guideRoute!=='/guide'?`<nav class="guide-breadcrumb" aria-label="Breadcrumb"><a href="/guide">Guide</a><span aria-hidden="true">/</span>${guideRoute.replace(/\/$/u,'')===guideSectionUrl(section).replace(/\/$/u,'')?`<span aria-current="page">${escape(section.title)}</span>`:`<a href="${guideSectionUrl(section)}">${escape(section.title)}</a>`}</nav>`:'';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escape(description)}"><title>${escape(title)} · Notabenda</title><link rel="icon" href="/docs/assets/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/assets/syntax.css"><link rel="stylesheet" href="/assets/website-notice.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="/" aria-label="Notabenda home"><img src="/docs/assets/mark.svg" width="36" height="36" alt=""><span>notabenda</span></a><nav aria-label="Main"><a href="/guide">Guide</a><a href="/examples">Examples</a><a href="/guide/requirements">Requirements</a><a class="nav-action" href="/choices">Try the controls <span aria-hidden="true">↗</span></a></nav></header>${guide ? `<div class="guide-layout"><aside class="guide-nav guide-nav-desktop"><p class="eyebrow">Build with Notabenda</p>${guideNavigation(guideRoute,title)}<p class="hint">Developer preview.<br>Regional support is tracked item by item.</p></aside><details class="guide-nav guide-nav-mobile"><summary>Browse documentation <span aria-hidden="true">⌄</span></summary>${guideNavigation(guideRoute,title,{mobile:true})}</details><main id="main" class="prose">${breadcrumb}${body}${guideContext(guideRoute)}</main></div>` : `<main id="main">${body}</main>`}<footer class="site-footer"><a class="brand" href="/"><img src="/docs/assets/mark.svg" alt="" width="28" height="28"><span>notabenda</span></a><p>Open-source privacy tools.</p><nav aria-label="Footer"><a href="/website-privacy">Website privacy</a><a href="/license.txt">Apache 2.0</a><a href="/guide/scope">Scope &amp; limits</a><a href="/guide/research">Research workflow</a><a href="/demo/admin">Demo workspace</a><a href="/demo/admin/setup">Setup wizard</a></nav><p class="sponsor">Sponsored by <a href="https://inferal.com/"><img src="/assets/inferal-mark.svg" width="12" height="14" alt="">Inferal</a></p></footer></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escape(description)}"><title>${escape(title)} · Notabenda</title>${agentLinks}<link rel="icon" href="/docs/assets/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/assets/syntax.css"><link rel="stylesheet" href="/assets/website-notice.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="/" aria-label="Notabenda home"><img src="/docs/assets/mark.svg" width="36" height="36" alt=""><span>notabenda</span></a><nav aria-label="Main"><a href="/guide">Guide</a><a href="/examples">Examples</a><a href="/guide/requirements">Requirements</a><a class="nav-action" href="/choices">Try the controls <span aria-hidden="true">↗</span></a></nav></header>${guide ? `<div class="guide-layout"><aside class="guide-nav guide-nav-desktop"><p class="eyebrow">Build with Notabenda</p>${guideNavigation(guideRoute,title)}<p class="hint">Developer preview.<br>Regional support is tracked item by item.</p></aside><details class="guide-nav guide-nav-mobile"><summary>Browse documentation <span aria-hidden="true">⌄</span></summary>${guideNavigation(guideRoute,title,{mobile:true})}</details><main id="main" class="prose">${breadcrumb}${body}${guideContext(guideRoute)}</main></div>` : `<main id="main">${body}</main>`}<footer class="site-footer"><a class="brand" href="/"><img src="/docs/assets/mark.svg" alt="" width="28" height="28"><span>notabenda</span></a><p>Open-source privacy tools.</p><nav aria-label="Footer"><a href="/website-privacy">Website privacy</a><a href="/license.txt">Apache 2.0</a><a href="/guide/scope">Scope &amp; limits</a><a href="/guide/research">Research workflow</a><a href="/demo/admin">Demo workspace</a><a href="/demo/admin/setup">Setup wizard</a></nav><p class="sponsor">Sponsored by <a href="https://inferal.com/"><img src="/assets/inferal-mark.svg" width="12" height="14" alt="">Inferal</a></p></footer></body></html>`;
 }
 files['website-privacy/index.html']=layout('Website privacy',websiteNoticeBody(websiteFacts),{description:'How this project website handles demo sessions, entries and browser storage.'});
 files['examples/index.html']=layout('Examples',examplesBody(),{description:'Working examples grouped by privacy information, privacy choices, purchases, records and integration.'});
@@ -86,11 +91,16 @@ function rewrite(href, source) {
   if(catalogRefs.has(resolved) && files[`source/${resolved}.txt`]) return `/source/${resolved}.txt`;
   if(resolved==='regulatory/catalog.json') return '/source/regulatory/catalog.json.txt';
   if(resolved==='LICENSE') return '/license.txt';
+  if(resolved==='skills/notabenda/SKILL.md')return '/skills/notabenda/SKILL.md';
   return '/guide';
 }
 const guideEntries=[];
 for(const [path,route] of docs) {
   const markdown = await read(path);
+  files[markdownRoute(route).slice(1)]=rewriteMarkdown(markdown,href=>{
+    const rewritten=rewrite(href,path),hash=rewritten.indexOf('#'),target=hash<0?rewritten:rewritten.slice(0,hash),fragment=hash<0?'':rewritten.slice(hash);
+    return [...docs.values()].includes(target)?markdownRoute(target)+fragment:rewritten;
+  });
   const title = /^# (.+)$/mu.exec(markdown)?.[1] ?? 'Guide';
   pageHeadings=[];headingIds=new Set();
   // Explicit anchors in trusted docs retain their address; generated headings avoid them.

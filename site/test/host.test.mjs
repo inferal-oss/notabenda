@@ -172,7 +172,12 @@ test('authored examples publish static HTML while source inspection stays authen
   const restarted=await new EvidenceWorkspace(state(storage),env).fetch(request(`/backoffice/history/source?id=${after}&kind=terms`,{headers:auth}));assert.equal(restarted.status,200);assert.match(await restarted.text(),/&lt;PolicyNote/);
   const html=await readFile(new URL('../dist/public/authored/terms/index.html',import.meta.url),'utf8');assert.match(html,/class="policy-note"/);assert.doesNotMatch(html,/<script|<PolicyNote|sourceAttachments/);
   const publicArtifact=JSON.parse(await readFile(new URL(`../dist/public/artifacts/${after}.json`,import.meta.url),'utf8'));assert.equal(Object.hasOwn(publicArtifact,'sourceAttachments'),false);
-  const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));assert.equal(manifest.some(path=>/\.mdx?$/u.test(path)),false);assert.ok(manifest.includes('guide/authoring/index.html'));
+  // @requirements REQ-PRODUCT-AGENT-INTEGRATION
+  // Public guide Markdown and the selected skill are deliberate assets; authored policy sources remain private.
+  const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));
+  assert.equal(manifest.some(path=>/\.mdx$/u.test(path)),false);
+  assert.ok(manifest.filter(path=>/\.md$/u.test(path)).every(path=>/^guide\/.+\/index\.md$/u.test(path)||path==='skills/notabenda/SKILL.md'));
+  assert.ok(manifest.includes('guide/authoring/index.html'));
 });
 
 test('host fails closed before assets or DO access for direct, normalized and encoded protected paths',async()=>{

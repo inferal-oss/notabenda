@@ -13,3 +13,8 @@ for(const file of await readdir(new URL('../src/astro/',import.meta.url)))if(fil
 // @requirements REQ-PRODUCT-SERVICE-CATALOG
 await mkdir(new URL('../dist/catalog/',import.meta.url),{recursive:true});
 for(const [source,target] of [['schema.json','schema.json'],['NOTICE','NOTICE.txt'],['sources/open-cookie-database/LICENSE','open-cookie-database-LICENSE.txt']])await copyFile(new URL('../../../catalog/'+source,import.meta.url),new URL('../dist/catalog/'+target,import.meta.url));
+
+// @requirements REQ-PRODUCT-AGENT-INTEGRATION
+// One maintained skill, distributed with the installed package version.
+await mkdir(new URL('../dist/skill/agents/',import.meta.url),{recursive:true});
+for(const path of ['SKILL.md','agents/openai.yaml'])await copyFile(new URL('../../../skills/notabenda/'+path,import.meta.url),new URL('../dist/skill/'+path,import.meta.url));

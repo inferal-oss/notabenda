@@ -1,4 +1,5 @@
 // @requirements REQ-PRODUCT-CF-HOST REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
+// @requirements REQ-PRODUCT-AGENT-INTEGRATION
 // Shared task groups keep website entry points, examples and guides in the same order.
 const guide=(slug,label)=>({href:'/guide/'+slug,label});
 const topic=(id,title,href,description,guideSlug,variants=[],section='')=>({id,title,href,description,guide:'/guide/'+guideSlug,variants:variants.map(([label,href])=>({label,href})),section});
@@ -55,7 +56,7 @@ export const siteSections=[
 // belongs below its parent task rather than becoming another top-level destination.
 const group=(title,description,slugs,topicIds=[],options={})=>({title,description,slugs,topicIds,...options});
 const areaGroups={
- start:[group('Configure your site','Begin with an inventory, then review the setup recommendations.',['package','setup'],['setup']),group('Find the services you use','Discovery supplies findings for review; the catalog supplies reusable service descriptions.',['discovery','service-catalog'],['discovery'])],
+ start:[group('Configure your site','Begin with an inventory, then review the setup recommendations.',['package','setup','agent-setup'],['setup']),group('Find the services you use','Discovery supplies findings for review; the catalog supplies reusable service descriptions.',['discovery','service-catalog'],['discovery'])],
  'privacy-information':[group('Publish your documents','Supply reviewed wording and describe the services behind it.',['authoring','services'],['documents','services']),group('Explain collection and contact routes','Put the relevant information where people provide data or ask for help.',['collection','indirect-collection','rights'],['collection','indirect-collection','rights'])],
  'privacy-choices':[group('Control optional services','Start with cookie preferences, then gate resources and clean up declared storage.',['consent','embeds','storage-cleanup'],['cookies','embeds','storage']),group('Offer separate permissions and opt-outs','Form permissions and processing restrictions have their own controls.',['form-permissions','privacy-signals','processing-choices'],['permissions','signals','opt-outs']),group('Specialist controls','Use these when your integration needs tag signals, grant expiry, repeat-prompt rules or explicit scope restrictions.',['storage-exceptions','google-basic','regional-prompts','scope-guards'],['exceptions','google','prompts','guards'],{specialist:true})],
  contracts:[group('Agree to terms','Bind the action and wording to the terms version people see.',['terms'],['agreement']),group('Before a purchase','Review the offer, applicable guarantee information and the final payment action.',['guarantees','guarantee-labels','paid-orders'],['guarantee-notice','producer-label','orders']),group('After a purchase','Retain the customer copy and handle withdrawal, cancellation and host delivery.',['order-confirmations','contract-actions','contract-dispatch'],['withdrawal','cancellation']),group('Example source and artwork','For readers who need to inspect or reproduce the prepared producer-label example.',['guarantee-producer-example'],[],{specialist:true})],
@@ -66,6 +67,7 @@ const areaGroups={
 const primaryHome={authoring:'privacy-information','order-confirmations':'contracts'};
 export const referenceSection={id:'reference',title:'Reference and verification',description:'Requirements, primary sources, scope, verification reports and asset provenance.',guides:[guide('project','Project overview'),guide('requirements','Requirements catalog'),guide('requirements/sources','Primary sources'),guide('features','Feature status'),guide('scope','Scope & limits'),guide('research','Research workflow'),guide('all','All guides & reports')]};
 const labels=new Map([...siteSections.flatMap(s=>s.guides),...referenceSection.guides].map(g=>[g.href,g.label]));
+labels.set('/guide/agent-setup','Agent setup');
 labels.set('/guide/localization','Localization');
 labels.set('/guide/storage-exceptions','UK storage settings');
 for(const section of siteSections){

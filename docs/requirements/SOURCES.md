@@ -1031,3 +1031,13 @@ Linked from the current DPC guidance page. Read pp. 6-11 on exemptions, analytic
 **Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
 
 The answer applies to first-party as well as third-party analytics; vendor identity alone does not create an exception.
+
+<a id="src-llms-txt"></a>
+
+## SRC-LLMS-TXT
+
+[llms.txt proposal: format and Markdown documentation discovery](https://llmstxt.org/)
+
+**Type:** technical-specification. **Checked:** 2026-10-19. **Access:** read.
+
+Voluntary documentation convention, not a regulatory obligation. Read format, proposal and alternate/describedby link guidance; no indexing, crawler adoption or legal-compliance guarantee.

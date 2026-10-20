@@ -55,6 +55,12 @@ export async function readDemoRequest(request) {
 }
 export function publicResponse(response, path) {
   const headers = new Headers(response.headers);
+  // @requirements REQ-PRODUCT-AGENT-INTEGRATION
+  if(response.ok&&(/^\/guide\/.+\/index\.md$/u.test(path)||path==='/skills/notabenda/SKILL.md')){
+    headers.set('Content-Type','text/markdown; charset=utf-8');
+    headers.set('Link','</llms.txt>; rel="describedby"');
+  }
+  if(response.ok&&(path==='/llms.txt'||path==='/skills/notabenda/agents/openai.yaml'))headers.set('Content-Type','text/plain; charset=utf-8');
   // Preserve exact built/released bytes at intermediary caches, including HTML injection.
   const caching=headers.get('Cache-Control');
   if(!caching?.split(',').some(value=>value.trim().toLowerCase()==='no-transform'))headers.set('Cache-Control',caching?caching+', no-transform':'no-transform');

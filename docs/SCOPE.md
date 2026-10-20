@@ -21,6 +21,10 @@ Updated 19 October 2026. This records accepted product decisions; implementation
 - Regional behavior begins with an explicitly selected Italian repeat-prompt guard, independently versioned and explained with catalog references. Preserve withholding/dismissal suppression separately from permission expiry, require an exact declared significant-change transition and public explanation, and keep preferences manually reachable. This initial mechanism and its conservative timing calculation do not establish full regional support; see [repeat-prompt rules](REGIONAL-PROMPTS.md).
 - Initial GPC runtime restrictions are explicitly configured, with exhaustive service activity classification, separate cookie/service eligibility, monotonic signal observation, control status and a server header helper. This adds no persistent opt-out identity or account system. Applicable account/profile retention and downstream enforcement remain host work; the corresponding CA/CO/CT legal requirements remain partial. See [privacy signals](PRIVACY-SIGNALS.md).
 
+## Agent integration
+
+Ship a reusable integration skill with the package and website, plus a concise `llms.txt` linking to Markdown versions of the maintained guides. Keep CLI/API examples aligned with the installed version, preserve existing site settings and retained releases, and leave material facts and legal review explicit. Discovery findings and private reports remain separate from public output; host authorization, deployment and optional CI remain adopter decisions. See [agent setup](AGENT-SETUP.md).
+
 ## Guided setup
 
 - Provide `npx notabenda wizard` and a matching host-authorized admin setup UI. Ask about intended coverage, actual practices and justifications; distinguish confirmed facts, unknowns and review decisions.

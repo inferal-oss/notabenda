@@ -13,7 +13,8 @@
         "Shared versioned practice/coverage questionnaire for npx wizard and host-authorized admin UI.",
         "Requirement-linked recommendations, unknowns/conflicts and private justifications; reviewable draft config exports with no automatic activation.",
         "Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling.",
-        "Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts."
+        "Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts.",
+        "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -25,7 +26,10 @@
         "packages/notabenda/src/setup-purpose-cli.ts",
         "packages/notabenda/src/setup-catalog-cli.ts",
         "packages/notabenda/src/cli-json.ts",
-        "packages/notabenda/src/catalog-node.ts"
+        "packages/notabenda/src/catalog-node.ts",
+        "skills/notabenda/SKILL.md",
+        "site/agent-docs.mjs",
+        "llms.txt"
       ]
     },
     {
@@ -466,7 +470,8 @@
         "Vanilla, React, static HTML, and Astro examples with fictional operators and data.",
         "Optional Cloudflare deployment commands, same-origin configuration, and install/uninstall instructions.",
         "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Remote provisioning and operational rollout verification remain separate.",
-        "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open."
+        "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open.",
+        "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -486,7 +491,10 @@
         "packages/notabenda-cf/templates/src/authorize.mjs",
         "packages/notabenda-cf/templates/src/setup.mjs",
         "packages/notabenda-cf/templates/scripts/build-assets.mjs",
-        "packages/notabenda-cf/bin/doctor.mjs"
+        "packages/notabenda-cf/bin/doctor.mjs",
+        "skills/notabenda/SKILL.md",
+        "site/agent-docs.mjs",
+        "llms.txt"
       ]
     },
     {
@@ -1646,6 +1654,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "The answer applies to first-party as well as third-party analytics; vendor identity alone does not create an exception."
+    },
+    {
+      "id": "SRC-LLMS-TXT",
+      "title": "llms.txt proposal: format and Markdown documentation discovery",
+      "url": "https://llmstxt.org/",
+      "kind": "technical-specification",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Voluntary documentation convention, not a regulatory obligation. Read format, proposal and alternate/describedby link guidance; no indexing, crawler adoption or legal-compliance guarantee."
     }
   ],
   "jurisdictions": [
@@ -1887,7 +1904,8 @@
         "REQ-PRODUCT-PAID-ORDER-ARCHIVES",
         "REQ-PRODUCT-ORDER-CONFIRMATION",
         "REQ-PRODUCT-STORAGE-EXCEPTIONS",
-        "REQ-PRODUCT-LOCALIZATION"
+        "REQ-PRODUCT-LOCALIZATION",
+        "REQ-PRODUCT-AGENT-INTEGRATION"
       ]
     }
   ],
@@ -5980,6 +5998,54 @@
         "packages/notabenda/test/terms-localization.test.mjs",
         "site/test/demo.test.mjs"
       ]
+    },
+    {
+      "id": "REQ-PRODUCT-AGENT-INTEGRATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Agent integration skill and public Markdown documentation",
+      "kind": "product-standard",
+      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries.",
+      "appliesWhen": "An agent helps an adopter configure, update or validate a Notabenda integration.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-LLMS-TXT",
+          "locator": "Proposal and Format: concise Markdown index, file-list links, Markdown alternates and describedby discovery."
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-AGENT-INTEGRATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Instructions are advisory and version-specific. Facts, legal review, host authorization, deployment permission and optional CI remain adopter decisions. No package registry publication, automatic skill installation, account grant or compliance claim.",
+      "implementationRefs": [
+        "skills/notabenda/SKILL.md",
+        "skills/notabenda/agents/openai.yaml",
+        "llms.txt",
+        "site/agent-docs.mjs",
+        "site/build.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs",
+        "site/guide-pages.mjs",
+        "packages/notabenda/package.json",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "docs/AGENT-SETUP.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/agent-integration.test.mjs",
+        "site/test/agent-docs.test.mjs",
+        "docs/verification/agent-integration.md",
+        "site/test/host.test.mjs"
+      ],
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores."
     }
   ],
   "verification": [
@@ -7148,6 +7214,20 @@
         "site/test/localization.test.mjs",
         "packages/notabenda/test/terms-localization.test.mjs",
         "site/test/demo.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-AGENT-INTEGRATION",
+      "requirementIds": [
+        "REQ-PRODUCT-AGENT-INTEGRATION"
+      ],
+      "status": "automated",
+      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure.",
+      "testRefs": [
+        "packages/notabenda/test/agent-integration.test.mjs",
+        "site/test/agent-docs.test.mjs",
+        "docs/verification/agent-integration.md",
+        "site/test/host.test.mjs"
       ]
     }
   ],

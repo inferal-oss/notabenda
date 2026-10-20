@@ -1,5 +1,8 @@
 # notabenda
 
+For agent-assisted integration, use the bundled `dist/skill/SKILL.md` and optional `dist/skill/agents/openai.yaml`, also exported as `notabenda/skill/SKILL.md` and `notabenda/skill/agents/openai.yaml`. See the [agent setup guide](../../docs/AGENT-SETUP.md). The installed copy follows this package version; the website follows the current preview.
+
+
 Reusable site configuration and legal pages for your own website. Render privacy, cookie, and supplied terms documents as ordinary HTML, with optional styles and no runtime dependencies.
 
 Optional [repeat-prompt policy](../../docs/REGIONAL-PROMPTS.md) keeps solicitation separate from permission expiry, with configured applicability, public change explanations and linked requirements.
