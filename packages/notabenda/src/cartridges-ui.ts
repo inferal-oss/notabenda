@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-AGENT-HANDOFF
+import {mountAgentHandoff} from './agent-handoff.js';
+import type {MountedAgentHandoff} from './agent-handoff.js';
 // @requirements REQ-PRODUCT-PACK-EDUCATION
 // @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
@@ -24,8 +27,10 @@ export function mountCartridgeConsole(container:HTMLElement,options:CartridgeCon
  if(!hydrated){while(doc.getElementById(html.match(/id="(nb-packs-\d+-basics)"/u)![1]!))html=renderCartridgeConsole(options);container.innerHTML=html;}
  const root=hydrated?container:container.querySelector<HTMLElement>('[data-cartridge-console]')!;
  const find=<T extends HTMLElement>(selector:string)=>{const node=root.querySelector<T>(selector);if(!node)throw Error('Pack console markup is incomplete.');return node;};
- const library=find<HTMLElement>('[data-cartridge-library]'),setup=find<HTMLElement>('[data-cartridge-setup]'),form=find<HTMLFormElement>('form'),next=find<HTMLButtonElement>('[data-cartridge-continue]'),brief=find<HTMLAnchorElement>('[data-cartridge-brief]'),count=find<HTMLElement>('[data-cartridge-count]'),error=find<HTMLElement>('[data-cartridge-error]'),target=find<HTMLElement>('[data-cartridge-setup-mount]'),back=find<HTMLButtonElement>('[data-cartridge-back]');
- let mounted:MountedSetup|undefined,briefUrl:string|undefined,destroyed=false;
+ const library=find<HTMLElement>('[data-cartridge-library]'),setup=find<HTMLElement>('[data-cartridge-setup]'),form=find<HTMLFormElement>('form'),next=find<HTMLButtonElement>('[data-cartridge-continue]'),count=find<HTMLElement>('[data-cartridge-count]'),error=find<HTMLElement>('[data-cartridge-error]'),target=find<HTMLElement>('[data-cartridge-setup-mount]'),back=find<HTMLButtonElement>('[data-cartridge-back]');
+ let brief=find<HTMLElement>('[data-cartridge-brief]');
+ let mounted:MountedSetup|undefined,handoff:MountedAgentHandoff|undefined,destroyed=false;
+ if(brief.tagName!=='BUTTON'){const replacement=doc.createElement('button');replacement.type='button';replacement.dataset.cartridgeBrief='';replacement.hidden=brief.hidden;replacement.className=brief.className;replacement.textContent='Give to my agent';brief.replaceWith(replacement);brief=replacement;}brief.setAttribute('type','button');
  const inputs=()=>[...root.querySelectorAll<HTMLInputElement>('input[name=cartridge]')];
  const initial=initialSelection(options);
  if(initial.selected.length){const ids=new Set(initial.selected.map(c=>c.id));for(const input of inputs())input.checked=ids.has(input.value as CartridgeId);}
@@ -35,22 +40,21 @@ export function mountCartridgeConsole(container:HTMLElement,options:CartridgeCon
   const retained=pins.selected.filter(c=>checked.includes(c.id)).map(c=>c.id);
   return selectCartridges([...retained,...checked.filter(id=>!retained.includes(id as CartridgeId))]);
  };
- const releaseBrief=()=>{if(briefUrl)view.URL.revokeObjectURL(briefUrl);briefUrl=undefined;brief.removeAttribute('href');brief.removeAttribute('download');};
+ const releaseHandoff=()=>{handoff?.destroy();handoff=undefined;};
+ const onBrief=()=>{if(destroyed||!selection().selected.length)return;try{releaseHandoff();handoff=mountAgentHandoff(root,{text:formatCartridgeBrief(selection())});handoff.open();}catch{error.textContent='Could not open agent instructions. You can continue with setup.';error.hidden=false;}};
+ brief.addEventListener('click',onBrief);
  function refresh(){
   if(destroyed)return;
-  releaseBrief();error.hidden=true;
-  const chosen=selection();next.disabled=!chosen.selected.length;brief.hidden=!chosen.selected.length;
+  releaseHandoff();error.hidden=true;
+  const chosen=selection();next.disabled=!chosen.selected.length;brief.hidden=!chosen.selected.length;brief.toggleAttribute('disabled',!chosen.selected.length);
   count.textContent=chosen.selected.length?chosen.selected.length+' pack'+(chosen.selected.length===1?'':'s')+' in your plan':'Choose your first pack';
   for(const card of root.querySelectorAll<HTMLElement>('[data-cartridge]')){
    const added=card.querySelector<HTMLInputElement>('input')!.checked;card.dataset.selected=String(added);
    card.querySelector('.cartridge-select-label')!.firstChild!.textContent=added?'In your plan ':card.dataset.kind==='regulatory'?'Select for assessment ':'Insert into plan ';
   }
-  if(chosen.selected.length){
-   try{briefUrl=view.URL.createObjectURL(new view.Blob([formatCartridgeBrief(chosen)],{type:'text/plain'}));brief.href=briefUrl;brief.download='notabenda-setup-brief.txt';}
-   catch{brief.hidden=true;/* Setup remains usable when downloads are unavailable. */}
-  }
+
  }
- const onSubmit=(event:Event)=>{event.preventDefault();if(destroyed)return;try{
+ const onSubmit=(event:Event)=>{event.preventDefault();if(destroyed)return;releaseHandoff();try{
   const chosen=selection();if(!chosen.selected.length)return;
   if(mounted)mounted.setCartridges(chosen);else mounted=mountSetup(target,{...options,cartridges:chosen});
   library.hidden=true;setup.hidden=false;error.hidden=true;
@@ -67,7 +71,7 @@ export function mountCartridgeConsole(container:HTMLElement,options:CartridgeCon
   refresh();setup.hidden=true;library.hidden=false;next.focus();
  };
  form.addEventListener('submit',onSubmit);form.addEventListener('change',refresh);back.addEventListener('click',onBack);next.hidden=false;refresh();
- return {getDraft:()=>mounted?.getDraft(),destroy(){if(destroyed)return;destroyed=true;mounted?.destroy();releaseBrief();form.removeEventListener('submit',onSubmit);form.removeEventListener('change',refresh);back.removeEventListener('click',onBack);next.disabled=true;}};
+ return {getDraft:()=>mounted?.getDraft(),destroy(){if(destroyed)return;destroyed=true;mounted?.destroy();releaseHandoff();brief.removeEventListener('click',onBrief);brief.hidden=true;brief.setAttribute('disabled','');form.removeEventListener('submit',onSubmit);form.removeEventListener('change',refresh);back.removeEventListener('click',onBack);next.disabled=true;}};
 }
 const e=(v:unknown)=>String(v).replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const link=(value:string|undefined)=>{if(value!==undefined&&(!/^\/(?!\/)[a-zA-Z0-9_./#-]*$/u.test(value)||value.split('/').some(p=>p==='.'||p==='..')))throw Error('Use local pack example and guide paths without query strings.');return value;};
@@ -83,7 +87,7 @@ export function renderCartridgeConsole(options:CartridgeConsoleOptions={}):strin
  const mapUrl=link(options.mapUrl),guideUrl=link(options.guideUrl),shelfPrefix='nb-packs-'+(++consoleSequence);
  const groups=packGroups().map(g=>({...g,packs:library.filter(c=>c.shelf===g.id)}));
  const card=(c:ReturnType<typeof cartridgeLibrary>[number],index:number,small=false)=>`<article id="${shelfPrefix}-pack-${c.id}" tabindex="-1" class="cartridge-card ${small?'cartridge-card-small':''}" data-cartridge="${c.id}" data-kind="${c.kind}" data-selected="${selected.has(c.id)}"><label class="cartridge-select"><input type="checkbox" value="${c.id}" name="cartridge"${selected.has(c.id)?' checked':''}><span class="cartridge-art cartridge-art-${c.id}" aria-hidden="true"><span class="cartridge-spine">NOTABENDA <span>${String(index+1).padStart(2,'0')}</span></span><span class="cartridge-glyph"><i></i><i></i><i></i></span><span class="cartridge-case-label">${c.kind==='regulatory'?'REGIONAL PACK':'SITE PACK'}</span><span class="cartridge-contacts"><span class="cartridge-contact-bank"><i></i><i></i><i></i><i></i><i></i></span><span class="cartridge-contact-bank"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span><span class="cartridge-added">✓</span></span><span class="cartridge-card-copy"><strong>${e(c.title)}</strong><span>${e(c.outcome)}</span><span class="cartridge-select-label">${c.kind==='regulatory'?'Select for assessment':'Insert into plan'} <span aria-hidden="true">＋</span></span></span></label>${examples[c.id]?`<a class="cartridge-preview" href="${e(examples[c.id])}" aria-label="${c.kind==='regulatory'?'See the timing example':'Try the example'}: ${e(c.title)}">${c.kind==='regulatory'?'See the timing example':'Try the example'} <span aria-hidden="true">↗</span></a>`:''}</article>`;
- return `<div class="cartridge-shell" data-cartridge-console><section data-cartridge-library><header class="cartridge-intro"><p class="eyebrow"><span class="status-dot"></span> YOUR NOTABENDA</p><h1>Choose your<br><span>first pack.</span></h1><p>Choose the legal information, visitor choices, contract actions or records your site needs. Each pack explains the job and helps you prepare it.</p></header><form class="cartridge-library" aria-label="Choose packs"><nav class="pack-index" aria-label="Browse all packs"><p>${library.length} packs for your site</p><div>${groups.map(g=>`<a href="#${shelfPrefix}-${g.anchor}">${g.title} <span>${g.packs.length}</span></a>`).join('')}</div><ul class="pack-name-index">${library.map(c=>`<li><a href="#${shelfPrefix}-pack-${c.id}">${e(c.title)}</a></li>`).join('')}</ul></nav>${groups.map(g=>`<section class="pack-shelf${g.id==='basics'?'':' pack-shelf-more'}" aria-labelledby="${shelfPrefix}-${g.anchor}"><div class="cartridge-shelf-heading"><h2 id="${shelfPrefix}-${g.anchor}" tabindex="-1">${g.title}</h2><p>${g.description}</p></div><div class="cartridge-deck${g.id==='regional'?' cartridge-regional':g.id==='more'?' cartridge-functions':''}">${g.packs.map(c=>card(c,library.indexOf(c),g.compact)).join('')}</div></section>`).join('')}<div class="cartridge-tray"><div><span class="cartridge-tray-label">SETUP TRAY</span><p data-cartridge-count role="status">Choose your first pack</p></div><div class="cartridge-tray-actions"><a data-cartridge-brief hidden>Give to my agent <span aria-hidden="true">↗</span></a><button class="button primary" data-cartridge-continue type="submit" hidden disabled>Set up my site <span aria-hidden="true">→</span></button></div></div></form><p class="cartridge-footnote">Selection prepares a local draft. It does not change your site or certify compliance. ${mapUrl?`<a href="${e(mapUrl)}">How the parts fit together →</a>`:''}</p><noscript><p>${guideUrl?`Use the <a href="${e(guideUrl)}">pack guide</a> to prepare a draft with the CLI.`:'Prepare a draft with the Notabenda CLI wizard.'} This local setup needs JavaScript.</p></noscript></section><section data-cartridge-setup hidden><header class="cartridge-workspace-heading"><button type="button" data-cartridge-back>← Your packs</button><p class="eyebrow">PREPARE YOUR SITE</p><h1>Set up your selected packs</h1><p>Your public details come first. Then we’ll ask about the practices your selection covers.</p></header><div data-cartridge-setup-mount></div></section><p data-cartridge-error role="alert" hidden></p></div>`;
+ return `<div class="cartridge-shell" data-cartridge-console><section data-cartridge-library><header class="cartridge-intro"><p class="eyebrow"><span class="status-dot"></span> YOUR NOTABENDA</p><h1>Choose your<br><span>first pack.</span></h1><p>Choose the legal information, visitor choices, contract actions or records your site needs. Each pack explains the job and helps you prepare it.</p></header><form class="cartridge-library" aria-label="Choose packs"><nav class="pack-index" aria-label="Browse all packs"><p>${library.length} packs for your site</p><div>${groups.map(g=>`<a href="#${shelfPrefix}-${g.anchor}">${g.title} <span>${g.packs.length}</span></a>`).join('')}</div><ul class="pack-name-index">${library.map(c=>`<li><a href="#${shelfPrefix}-pack-${c.id}">${e(c.title)}</a></li>`).join('')}</ul></nav>${groups.map(g=>`<section class="pack-shelf${g.id==='basics'?'':' pack-shelf-more'}" aria-labelledby="${shelfPrefix}-${g.anchor}"><div class="cartridge-shelf-heading"><h2 id="${shelfPrefix}-${g.anchor}" tabindex="-1">${g.title}</h2><p>${g.description}</p></div><div class="cartridge-deck${g.id==='regional'?' cartridge-regional':g.id==='more'?' cartridge-functions':''}">${g.packs.map(c=>card(c,library.indexOf(c),g.compact)).join('')}</div></section>`).join('')}<div class="cartridge-tray"><div><span class="cartridge-tray-label">SETUP TRAY</span><p data-cartridge-count role="status">Choose your first pack</p></div><div class="cartridge-tray-actions"><button type="button" data-cartridge-brief hidden disabled>Give to my agent</button><button class="button primary" data-cartridge-continue type="submit" hidden disabled>Set up my site <span aria-hidden="true">→</span></button></div></div></form><p class="cartridge-footnote">Selection prepares a local draft. It does not change your site or certify compliance. ${mapUrl?`<a href="${e(mapUrl)}">How the parts fit together →</a>`:''}</p><noscript><p>${guideUrl?`Use the <a href="${e(guideUrl)}">pack guide</a> to prepare a draft with the CLI.`:'Prepare a draft with the Notabenda CLI wizard.'} This local setup needs JavaScript.</p></noscript></section><section data-cartridge-setup hidden><header class="cartridge-workspace-heading"><button type="button" data-cartridge-back>← Your packs</button><p class="eyebrow">PREPARE YOUR SITE</p><h1>Set up your selected packs</h1><p>Your public details come first. Then we’ll ask about the practices your selection covers.</p></header><div data-cartridge-setup-mount></div></section><p data-cartridge-error role="alert" hidden></p></div>`;
 }
 
 /** Pack naming aliases; existing console imports remain supported. */

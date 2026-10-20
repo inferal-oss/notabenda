@@ -20,13 +20,13 @@ test('headless entry shares the exact consent engine and imports with browser gl
 const context=rule=>{const parents=[];for(let parent=rule.parent;parent&&parent.type!=='root';parent=parent.parent)parents.unshift('@'+parent.name+' '+parent.params);return parents.join('|');};
 const declarations=rule=>rule.nodes.filter(n=>n.type==='decl').map(n=>[n.prop,n.value,!!n.important]);
 test('published consent CSS retains canonical declarations, cascade and accessibility media without unrelated components',async()=>{
- const source=await readFile(new URL('../src/styles.css',import.meta.url),'utf8'),full=await readFile(new URL('../dist/styles.css',import.meta.url),'utf8'),css=await readFile(new URL('../dist/consent.css',import.meta.url),'utf8');assert.equal(full,source);
+ const source=await readFile(new URL('../src/styles.css',import.meta.url),'utf8'),full=await readFile(new URL('../dist/styles.css',import.meta.url),'utf8'),css=await readFile(new URL('../dist/consent.css',import.meta.url),'utf8');const handoff=await readFile(new URL('../src/agent-handoff.css',import.meta.url),'utf8');assert.equal(full,source+'\n'+handoff);
  const canonical=[];postcss.parse(source).walkRules(rule=>canonical.push({selector:rule.selector,context:context(rule),declarations:declarations(rule)}));
  let last=-1,count=0;const profile=postcss.parse(css);
  profile.walkRules(rule=>{const match={selector:rule.selector,context:context(rule),declarations:declarations(rule)},index=canonical.findIndex((item,i)=>i>last&&JSON.stringify(item)===JSON.stringify(match));assert.ok(index>last,'Canonical cascade/declarations missing for '+rule.selector);last=index;count++;});
  assert.ok(count>35);assert.ok(gzipSync(css,{level:9}).length<=5*1024);
  assert.match(css,/\.nb-controls \[hidden\][^}]*display:\s*none/u);assert.match(css,/\.nb-preferences::backdrop/u);assert.match(css,/forced-colors:\s*active/u);assert.match(css,/prefers-reduced-motion:\s*reduce/u);assert.match(css,/safe-area-inset-bottom/u);assert.match(css,/focus-visible/u);assert.match(css,/@media print/u);
- assert.doesNotMatch(css,/\.nb-(?:setup|contract|terms-acceptance|form-permission|rights-center|discovery)/u);assert.doesNotMatch(css,/@import|url\(/u);
+ assert.doesNotMatch(css,/\.nb-(?:setup|contract|terms-acceptance|form-permission|rights-center|discovery|agent-)/u);assert.doesNotMatch(css,/@import|url\(/u);
 });
 
 test('real browser entry measurements expose missed targets and exclude backend, build and framework modules',async()=>{

@@ -350,3 +350,6 @@ Release preparation now has an optional offline [package candidate check](RELEAS
 
 <!-- @requirements REQ-PRODUCT-RECORDING-INSPECTION -->
 The optional [recording setup inspector](RECORDING-INSPECTION.md) now checks fixed host-selected cookie, terms and form-permission activations against retained releases. The operator page separates absent, inactive, selected and unavailable reads without inspecting visitor heads or changing configuration. The overview grants its link explicitly; new starters keep an empty reader list and the denying authorization hook. Publication, runtime behavior and broader pack installation verification remain separate work.
+
+<!-- @requirements REQ-PRODUCT-AGENT-HANDOFF -->
+Browser agent handoffs now show their stage-specific instructions in a shared dismissible drawer, with deliberate clipboard copying and manual selection fallback. Pack changes and draft edits discard stale drawers. Configuration/private-report files remain explicit downloads; the terminal wizard retains its text brief.

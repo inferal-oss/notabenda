@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AGENT-HANDOFF
 // @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-PACK-CONNECTION REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
@@ -17,6 +18,7 @@ function browser(selection,options={}){
  let effects=0;
  dom.window.fetch=()=>{effects++;throw Error('No network');};dom.window.Storage.prototype.setItem=()=>{effects++;throw Error('No persistence');};
  dom.window.URL.createObjectURL=blob=>{const url='blob:local-'+blobs.size;blobs.set(url,blob);return url;};dom.window.URL.revokeObjectURL=url=>revoked.push(url);
+ dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new dom.window.Event('close'));};
  const ui=mountSetup(d.querySelector('main'),{cartridges:selection,...options});
  const prepare=()=>d.querySelector('form').dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));
  return {dom,d,ui,blobs,revoked,prepare,effects:()=>effects};
@@ -57,16 +59,16 @@ test('combined work deduplicates foundations and preserves exact regional propos
  }finally{b.ui.destroy();b.dom.window.close();}
 });
 
-test('prepared downloads use a connect brief with actual filenames, and edits invalidate the guide and URLs',async()=>{
+test('prepared handoff opens the connect instructions and edits invalidate the drawer, guide and data downloads',async()=>{
  const selection=selectPacks(['cookie-choices']),b=browser(selection);
  try{
   const note=b.d.querySelector('[data-question="optional-storage"] textarea');note.value='PRIVATE justification never belongs in the brief';
   b.prepare();const report=b.ui.getPlan().report;assert.equal(report.answers.answers['optional-storage'].justification,note.value);
   const revisit=[...b.d.querySelectorAll('button')].find(el=>el.textContent==='Review selected facts');revisit.click();assert.equal(b.d.querySelector('[data-question="optional-storage"]').closest('fieldset').hidden,false);assert.equal(b.d.activeElement.tagName,'LEGEND');assert.deepEqual(b.ui.getPlan().report,report);
-  const link=b.d.querySelector('a[download="notabenda-setup-brief.txt"]'),brief=await b.blobs.get(link.href).text();
+  const handoff=b.d.querySelector('.nb-setup-agent-handoff button');handoff.click();const brief=b.d.querySelector('.nb-agent-text').value;assert.equal(b.d.querySelectorAll('a[download]').length,2);const download=b.d.querySelector('a[download]'),url=download.href;
   assert.equal(brief,formatPackBrief(selection,'connect'));assert.match(brief,/notabenda\.config\.json and setup\.private\.json/);assert.match(brief,/check --config .* --preview --json/);assert.doesNotMatch(brief,/PRIVATE justification/);
   assert.ok(brief.includes(planPacks(selection).reference.targets.find(t=>t.id==='cookie-consent').verify[0]));
-  note.dispatchEvent(new b.dom.window.Event('input',{bubbles:true}));assert.equal(b.ui.getPlan(),null);assert.equal(b.d.querySelector('.nb-setup-connection'),null);assert.ok(b.revoked.includes(link.href));
+  note.dispatchEvent(new b.dom.window.Event('input',{bubbles:true}));assert.equal(b.ui.getPlan(),null);assert.equal(b.d.querySelector('.nb-setup-connection'),null);assert.ok(b.revoked.includes(url));assert.equal(b.d.querySelector('.nb-agent-drawer'),null);handoff.click();assert.equal(b.d.querySelector('.nb-agent-drawer'),null);
  }finally{b.ui.destroy();b.dom.window.close();}
 });
 

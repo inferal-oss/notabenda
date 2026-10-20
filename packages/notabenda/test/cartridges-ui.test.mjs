@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AGENT-HANDOFF
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,7 +18,7 @@ test('reusable SSR has no website routing assumptions and validates host destina
  const html=renderCartridgeConsole(),{dom,d}=browser(html);
  try{
   assert.equal(d.querySelectorAll('h1').length,2);assert.equal(d.querySelector('[data-cartridge-setup]').hidden,true);
-  assert.equal(d.querySelectorAll('a').length,26); // shelf links, every pack and the hidden agent download
+  assert.equal(d.querySelectorAll('a').length,25); // shelf links and every pack; the handoff is a button
   assert.doesNotMatch(html,/\/demo\/admin|\/guide\/|notabenda\.org|<script|<style/);
   for(const url of ['javascript:alert(1)','//remote.test','https://remote.test/x','/x?secret=1','/a/../b','/x" onclick="bad'])assert.throws(()=>renderCartridgeConsole({mapUrl:url}));
   assert.throws(()=>renderCartridgeConsole({exampleLinks:{unknown:'/try'}}));
@@ -38,7 +39,7 @@ test('mount and SSR hydration retain the same focused editing session across car
    assert.equal(d.querySelector('input[type=email]'),email);assert.equal(email.value,'unfinished@');
    assert.deepEqual(app.getDraft().report.cartridges.selected.map(c=>c.id),['cookie-choices','privacy-pages']);
    assert.equal(app.getDraft().config,undefined);assert.equal(writes,0);assert.equal(network,0);
-   app.destroy();app.destroy();assert.ok(revoked.length>=2);assert.equal(d.querySelector('[data-cartridge-brief]').hasAttribute('href'),false);
+   app.destroy();app.destroy();assert.equal(d.querySelector('dialog'),null);assert.equal(d.querySelector('[data-cartridge-brief]').hasAttribute('href'),false);
   }finally{app.destroy();dom.window.close();}
  }
 });
@@ -55,10 +56,10 @@ test('resuming a report preserves its cartridge pins when their order differs fr
  const {dom,d}=browser(),app=mountCartridgeConsole(d.querySelector('#mount'),{answers:report});
  try{submit(d);assert.equal(d.querySelector('[data-cartridge-error]').hidden,true);assert.deepEqual(app.getDraft().report.cartridges,pinned);d.querySelector('[data-cartridge-back]').click();submit(d);assert.deepEqual(app.getDraft().report.cartridges,pinned);}finally{app.destroy();dom.window.close();}
 });
-test('unavailable brief downloads leave cartridge selection and setup usable',()=>{
+test('agent instructions stay available without the browser download API',()=>{
  const {dom,d}=browser();delete dom.window.URL.createObjectURL;
  const app=mountCartridgeConsole(d.querySelector('#mount'),{cartridges:selection});
- try{assert.equal(d.querySelector('[data-cartridge-brief]').hidden,true);assert.equal(d.querySelector('[data-cartridge-continue]').disabled,false);submit(d);assert.equal(d.querySelector('[data-cartridge-setup]').hidden,false);}finally{app.destroy();dom.window.close();}
+ try{assert.equal(d.querySelector('[data-cartridge-brief]').hidden,false);assert.equal(d.querySelector('[data-cartridge-brief]').tagName,'BUTTON');assert.equal(d.querySelector('[data-cartridge-continue]').disabled,false);submit(d);assert.equal(d.querySelector('[data-cartridge-setup]').hidden,false);}finally{app.destroy();dom.window.close();}
 });
 test('package publishes separate cartridge defaults without changing the visitor stylesheet entry',async()=>{
  const pkg=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));

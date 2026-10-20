@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AGENT-HANDOFF
 // @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {test} from 'node:test';
@@ -47,7 +48,7 @@ test('cartridge choice opens focused setup and returning to the library preserve
  const root=d.querySelector('[data-cartridge-console]'),app=mountCartridgeConsole(root);
  try{
   const choose=id=>{const input=d.querySelector(`input[value="${id}"]`);input.checked=true;input.dispatchEvent(new dom.window.Event('change',{bubbles:true}));};
-  choose('terms-agreement');assert.match(d.querySelector('[data-cartridge-count]').textContent,/1 pack/u);assert.ok(d.querySelector('[data-cartridge-brief]').hasAttribute('download'));
+  choose('terms-agreement');assert.match(d.querySelector('[data-cartridge-count]').textContent,/1 pack/u);assert.equal(d.querySelector('[data-cartridge-brief]').tagName,'BUTTON');assert.equal(d.querySelector('[data-cartridge-brief]').hasAttribute('download'),false);
   d.querySelector('.cartridge-library').dispatchEvent(new dom.window.Event('submit',{cancelable:true,bubbles:true}));assert.equal(d.querySelector('[data-cartridge-setup]').hidden,false);assert.equal(d.activeElement.tagName,'H1');
   const email=[...root.querySelectorAll('input')].find(input=>input.type==='email');email.value='pending@';d.querySelector('[data-cartridge-back]').click();assert.equal(d.querySelector('[data-cartridge-library]').hidden,false);
   choose('privacy-pages');d.querySelector('.cartridge-library').dispatchEvent(new dom.window.Event('submit',{cancelable:true,bubbles:true}));assert.equal([...root.querySelectorAll('input')].find(input=>input.type==='email').value,'pending@');assert.equal(d.querySelector('[data-cartridge-error]').hidden,true);

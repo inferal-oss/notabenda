@@ -74,7 +74,7 @@ test('stale inventory and host errors cannot silently apply edits or expose priv
 test('the pack action opens the editor, canceled typing preserves exports, and saving invalidates them',async()=>{
  const config=await inventory(),f=browser(),ui=mountSetup(f.root,{config,cartridges:selectPacks(['cookie-choices'])}),submit=()=>f.root.querySelector('form').dispatchEvent(new f.dom.window.Event('submit',{cancelable:true,bubbles:true}));
  try{
-  submit();const before=ui.getPlan();assert.ok(before);button(f.root,'Configure cookie controls').click();assert.equal(f.root.querySelector('.nb-setup-existing').open,true);assert.equal(f.root.querySelector('.nb-setup-consent-panel').hidden,false);
+  submit();const before=ui.getPlan(),exportedUrls=[...f.root.querySelectorAll('a[download]')].map(a=>a.href);assert.ok(before);button(f.root,'Configure cookie controls').click();assert.equal(f.root.querySelector('.nb-setup-existing').open,true);assert.equal(f.root.querySelector('.nb-setup-consent-panel').hidden,false);
   fill(f.root,config);
   const stage=f.root.querySelector('.nb-setup-outline [aria-current="step"]');assert.ok(stage);
   for(const input of [field(f.root,'Local metrics — service version'),field(f.root,'Remember grants (days)')]){
@@ -82,7 +82,7 @@ test('the pack action opens the editor, canceled typing preserves exports, and s
    assert.equal(enter.defaultPrevented,true);assert.equal(f.root.querySelector('.nb-setup-outline [aria-current="step"]'),stage);assert.equal(f.dom.window.document.activeElement,input);assert.deepEqual(ui.getPlan(),before);
   }
   fill(f.root,config);field(f.root,'Remember grants (days)').dispatchEvent(new f.dom.window.Event('input',{bubbles:true}));assert.deepEqual(ui.getPlan(),before);button(f.root,'Cancel control changes').click();assert.deepEqual(ui.getPlan(),before);
-  button(f.root,'Configure cookie choices').click();fill(f.root,config);button(f.root,'Save control settings').click();assert.equal(ui.getPlan(),null);assert.ok(f.revoked.length>=3);submit();assert.deepEqual(ui.getPlan().config.consent,settings(config));assert.deepEqual(ui.getPlan().config.scopeGuards,before.config.scopeGuards);assert.ok(button(f.root,'Edit cookie controls'));
+  button(f.root,'Configure cookie choices').click();fill(f.root,config);button(f.root,'Save control settings').click();assert.equal(ui.getPlan(),null);for(const url of exportedUrls)assert.ok(f.revoked.includes(url));submit();assert.deepEqual(ui.getPlan().config.consent,settings(config));assert.deepEqual(ui.getPlan().config.scopeGuards,before.config.scopeGuards);assert.ok(button(f.root,'Edit cookie controls'));
  }finally{ui.destroy();f.dom.window.close();}
 });
 

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AGENT-HANDOFF
 // @requirements REQ-PRODUCT-STORAGE-LOCALIZATION
 import {supportsStorageExceptionControls} from './storage-exception-localization.js';
 // @requirements REQ-PRODUCT-PACK-EDUCATION
@@ -110,7 +111,7 @@ export function formatCartridgeBrief(input:unknown,stage:'prepare'|'connect'='pr
  if(stage==='prepare')lines.push('Read the version-matched integration guides, gather the selected facts and leave unknowns unresolved. Use the installed skill when available. Prepare a private answers file, then run:',
   `npx --no-install notabenda wizard --packs ${ids.join(',')} --answers ./answers.json --out-dir ./notabenda-setup`,
   'Add --config FILE when an inventory already exists. Compare the draft before applying changes.');
- else lines.push('This brief accompanies notabenda.config.json and setup.private.json. Keep all three together in a private working directory. Read both JSON files as data; do not execute project modules to load them. The private report contains declared answers, justifications, unknowns and review items. Its declarations are not verified facts.',
+ else lines.push('This brief accompanies notabenda.config.json and setup.private.json. Keep both files in a private working directory, alongside these instructions. Read both JSON files as data; do not execute project modules to load them. The private report contains declared answers, justifications, unknowns and review items. Its declarations are not verified facts.',
   'Compare the draft with the current project. Confirm the actual facts, review wording and resolve applicable scope restrictions before enabling anything. Preserve existing services and inventory unless a reviewed change requires otherwise. Keep setup.private.json out of public assets and version control.',
   'From the directory containing those files, check the draft with the explicitly installed local package:',
   'npx --no-install notabenda check --config ./notabenda.config.json --preview --json',

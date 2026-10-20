@@ -248,3 +248,6 @@ Maintainer release tooling may pack the three known workspaces offline with life
 
 <!-- @requirements REQ-PRODUCT-RECORDING-INSPECTION -->
 Recording setup is a read-only operator job over explicit trusted scopes. Distinguish immutable registration from activation and validate the selected descriptor/archive atomically. Show failures as unavailable, keep visitor heads out of the read path, cap and time-bound readers, and accept no browser-selected tenant, namespace or scope. HTML/JSON use existing host authorization; no login, mutation or universal readiness verdict is supplied.
+
+<!-- @requirements REQ-PRODUCT-AGENT-HANDOFF -->
+Use a read-only instruction drawer for browser agent handoffs rather than forcing a text-file download. Keep the initial plan and prepared-draft instructions distinct, copy only on deliberate action, provide manual selection when clipboard access fails and return focus after dismissal. No message, upload, automatic agent action or private justification enters the brief.

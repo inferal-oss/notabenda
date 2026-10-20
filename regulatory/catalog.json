@@ -27,7 +27,8 @@
         "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate.",
         "Shared short descriptions for every pack, concrete example use cases and walkthroughs, separate timing and payment-variant flows, and unchanged stable selection pins.",
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
-        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks."
+        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
+        "Dismissible copyable agent-instruction drawer for selected plans and prepared drafts, with manual clipboard fallback and stale-draft cleanup."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -94,7 +95,10 @@
         "packages/notabenda-cf/src/index.ts",
         "packages/notabenda-cf/src/overview.ts",
         "packages/notabenda-cf/templates/src/workspace.mjs",
-        "site/worker.mjs"
+        "site/worker.mjs",
+        "packages/notabenda/src/agent-handoff.ts",
+        "packages/notabenda/src/agent-handoff.css",
+        "packages/notabenda/scripts/copy-assets.mjs"
       ]
     },
     {
@@ -2217,7 +2221,8 @@
         "REQ-PRODUCT-PACK-EDUCATION",
         "REQ-PRODUCT-STORAGE-LOCALIZATION",
         "REQ-PRODUCT-RELEASE-CANDIDATE",
-        "REQ-PRODUCT-RECORDING-INSPECTION"
+        "REQ-PRODUCT-RECORDING-INSPECTION",
+        "REQ-PRODUCT-AGENT-HANDOFF"
       ]
     }
   ],
@@ -7473,6 +7478,47 @@
         "site/test/agent-docs.test.mjs"
       ],
       "implementationNote": "Atomic selection/archive readers, bounded fixed-reader HTML/JSON inspector with timeout/failure isolation, explicit overview grant, denying starter integration and session-isolated website example."
+    },
+    {
+      "id": "REQ-PRODUCT-AGENT-HANDOFF",
+      "jurisdiction": "PRODUCT",
+      "title": "Readable, dismissible browser instructions for agent handoff",
+      "kind": "product-standard",
+      "summary": "Replace browser brief downloads with a shared read-only drawer containing current stage-specific instructions, deliberate copy and manual selection fallback. Preserve focus and discard stale handoffs after edits.",
+      "appliesWhen": "A user hands a selected pack plan or prepared setup draft to a coding agent.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-AGENT-HANDOFF"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Copying is explicit and can fail under browser policy. The UI does not send instructions, install a skill or execute an agent; private answers remain separate.",
+      "implementationRefs": [
+        "packages/notabenda/src/agent-handoff.ts",
+        "packages/notabenda/src/agent-handoff.css",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/cartridges.css",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/agent-handoff.test.mjs",
+        "packages/notabenda/test/cartridges-ui.test.mjs",
+        "packages/notabenda/test/pack-connection.test.mjs",
+        "site/test/agent-handoff.test.mjs",
+        "docs/verification/agent-handoff.md",
+        "site/test/cartridges.test.mjs"
+      ],
+      "implementationNote": "Native modal drawer with safe literal text, copy/fallback, focus return and stale async result fencing. Both pack and prepared-draft actions share it. Terminal files remain supported."
     }
   ],
   "verification": [
@@ -9003,6 +9049,22 @@
         "docs/verification/recording-inspection.md",
         "packages/notabenda-cf/test/starter.test.mjs",
         "site/test/agent-docs.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-AGENT-HANDOFF",
+      "requirementIds": [
+        "REQ-PRODUCT-AGENT-HANDOFF"
+      ],
+      "status": "automated",
+      "expected": "Current instructions open without a text download; copy is explicit and exact, clipboard failures remain usable, stale async callbacks cannot change closed/reopened views, edits/destruction dismiss the drawer and private notes never enter it.",
+      "testRefs": [
+        "packages/notabenda/test/agent-handoff.test.mjs",
+        "packages/notabenda/test/cartridges-ui.test.mjs",
+        "packages/notabenda/test/pack-connection.test.mjs",
+        "site/test/agent-handoff.test.mjs",
+        "docs/verification/agent-handoff.md",
+        "site/test/cartridges.test.mjs"
       ]
     }
   ],

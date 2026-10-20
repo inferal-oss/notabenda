@@ -15,7 +15,8 @@
     "./dist/orders.css",
     "./dist/storage-exceptions.css",
     "./dist/technology.css",
-    "./dist/cartridges.css"
+    "./dist/cartridges.css",
+    "./dist/agent-handoff.css"
   ],
   "files": [
     "dist",
@@ -309,7 +310,13 @@
       "types": "./dist/react-terms.d.ts",
       "import": "./dist/react-terms.js",
       "default": "./dist/react-terms.js"
-    }
+    },
+    "./agent-handoff": {
+      "types": "./dist/agent-handoff.d.ts",
+      "import": "./dist/agent-handoff.js",
+      "default": "./dist/agent-handoff.js"
+    },
+    "./agent-handoff.css": "./dist/agent-handoff.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

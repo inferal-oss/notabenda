@@ -20,7 +20,7 @@ The [specialist-pack guide](SPECIALIST-PACKS.md) covers technology notices, asse
 
 ## Prepare it your way
 
-The website offers two paths. Choose **Set up my site** for a local questionnaire, or **Give to my agent** for an integration brief. Neither requires an account or uploads your answers. Save the draft and private report before leaving the tab.
+The website offers two paths. Choose **Set up my site** for a local questionnaire, or **Give to my agent** to open the instructions in a drawer. Read and copy them into your coding agent; Close, Escape or a tap outside dismisses the drawer. Neither requires an account or uploads your answers. Save the draft and private report before leaving the tab.
 
 The questionnaire shows the practice questions relevant to your selected jobs and their supporting foundations. Unknowns remain unknown. Complete configuration diagnostics and wider review items remain available when you prepare the draft.
 
@@ -60,7 +60,7 @@ After preparing the draft, **Connect to your site** shows the selected pack's in
 
 **Review selected facts** returns to the questionnaire without losing the prepared draft. Editing an answer or changing packs invalidates the old guide and downloads, so the next draft reflects the new scope. Selection actions stay in reach while browsing the entire pack library.
 
-The browser offers three downloads: `notabenda.config.json`, `setup.private.json` and `notabenda-setup-brief.txt`. A scoped terminal wizard now writes the same three files into its new output directory. Keep them together in a private working directory when handing work to an agent. The connection brief names those files, includes the installed target tasks and checks, supplies a preview-validation command and explains how to resume into a new directory. Operator answers and justifications remain in the private report; they are not copied into the brief.
+The browser provides **Give to my agent** again after preparing a draft. Its drawer contains the connection instructions and a **Copy instructions** button. If clipboard access is unavailable, **Select text** lets you copy manually. Download `notabenda.config.json` and `setup.private.json` separately and share them alongside the instructions. A scoped terminal wizard continues to write both files and `notabenda-setup-brief.txt` into its new output directory. Keep the files in a private working directory when handing work to an agent. The connection brief names those files, includes the installed target tasks and checks, supplies a preview-validation command and explains how to resume into a new directory. Operator answers and justifications remain in the private report; they are not copied into the brief.
 
 `formatPackBrief(selection)` prepares the initial planning brief. `formatPackBrief(selection, 'connect')` prepares the post-draft handoff used by the UI and scoped wizard. Both reference the installed integration contract. These instructions do not run tests or mark a pack installed or verified. The host still connects the actual components, loaders or recording transport and verifies the result in its application. Publication and deployment verification remain separate steps.
 
@@ -90,7 +90,7 @@ Destinations are optional. The component does not assume that your application s
 
 For server rendering, insert the result of `renderPackConsole(options)` and mount its `[data-cartridge-console]` element with the same options. The server renderer adds no script, stylesheet, account or storage. A fresh empty mount also works. Use native checkboxes, tab navigation and the ordinary setup button; no drag or gesture is required.
 
-Pass `cartridges: selectPacks([...])` to preselect work. Pass a private report as `answers`, with its matching `config`, to resume. Conflicting explicit/report selections fail before replacing host content. Going back and adding a pack preserves the current editing session. `getDraft()` returns the setup draft after setup has opened; it is undefined while only choosing packs. An unavailable browser download API hides the initial agent download without blocking setup. Call `destroy()` when unmounting to release download URLs and listeners.
+Pass `cartridges: selectPacks([...])` to preselect work. Pass a private report as `answers`, with its matching `config`, to resume. Conflicting explicit/report selections fail before replacing host content. Going back and adding a pack preserves the current editing session. `getDraft()` returns the setup draft after setup has opened; it is undefined while only choosing packs. The initial handoff needs no browser download API. Changing the selection or editing a prepared draft dismisses stale instructions. Call `destroy()` when unmounting to release dialogs, download URLs and listeners.
 
 The Cloudflare `createSetupWorker` accepts an optional `cartridgeStylesheetUrl` alongside the existing host module and questionnaire stylesheet. Use it with a module that mounts this console. The generated starter builds these assets, requires the host's configuration permission for all of them and checks their presence in `notabenda-cf doctor`. Existing hosts can continue mounting `mountSetup` directly.
 
@@ -128,3 +128,6 @@ The website and new Cloudflare starter serve the reader module only when it is r
 The pack artwork uses a flat, downward-facing keyed card edge with separate muted contact banks and an open notch. It remains decorative and hidden from assistive technology; selection continues to use the labeled native checkbox and visible selected state. Reduced-motion and forced-color preferences retain usable selection controls. Visual changes are reviewed in local desktop/mobile previews before publication.
 
 For cookie packs, [inspect the actual connection](CONNECTION-INSPECTION.md) after registering the real lifecycles. A matching inventory and registration count remain separate from published files and tested application behavior.
+
+<!-- @requirements REQ-PRODUCT-AGENT-HANDOFF -->
+The reusable `mountAgentHandoff` component is available from `@notabenda/core/agent-handoff`, with optional `@notabenda/core/agent-handoff.css`. The default setup and pack styles already include it. Pass a fixed `text`, optional `title`/`description` and `onClose`; use the returned `open()`, `close()` and `destroy()`. It renders text without interpreting HTML and writes the clipboard only after a deliberate Copy press. It sends no message to an agent or external service. Native modal focus handling, focus return, reduced-motion and forced-color styles are included.

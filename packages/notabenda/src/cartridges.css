@@ -119,3 +119,6 @@
 .nb-setup-storage-editor>.nb-setup-purpose-body>input[type=search]{margin-bottom:18px}.nb-setup-storage-ack{display:flex!important;align-items:center;gap:12px;min-height:48px;font-size:14px;line-height:1.6;margin-top:24px;cursor:pointer}.nb-setup-storage-ack>input{width:18px!important;min-height:18px!important;height:18px;margin:0;flex:none;accent-color:var(--nb-accent,#665481)}.nb-setup-storage-editor .nb-setup-purpose-card>h4{margin:0 0 10px}.nb-setup-storage-editor .nb-setup-purpose-card .nb-setup-purpose-field{margin-top:16px}.nb-setup-storage-editor .nb-setup-purpose-actions>p{font-size:12px;margin:0}.nb-setup-storage-editor a[download]{display:inline-flex;min-height:44px;align-items:center;font-size:13px}
 
 .nb-setup-storage-editor>summary>h2{display:inline;font:inherit;letter-spacing:inherit;margin:0}
+
+/* @requirements REQ-PRODUCT-AGENT-HANDOFF */
+.cartridge-shell .cartridge-tray [data-cartridge-brief]{background:transparent;color:var(--nb-text,#302a3d);border:1px solid var(--nb-border,#dddbe3);font:inherit;font-size:13px;min-height:44px}.cartridge-shell .cartridge-tray [data-cartridge-brief]:hover:not(:disabled){background:var(--nb-bg,#f4f2f7)}

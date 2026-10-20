@@ -50,12 +50,12 @@ test('each privacy pack exposes its focused questions and the same regenerated i
  for(const id of additions){
   const selection=selectPacks([id]),scope=planPacks(selection),dom=new JSDOM('<main></main>',{url:'https://host.example.test/setup'}),d=dom.window.document,blobs=new Map();let effects=0;
   dom.window.fetch=()=>{effects++;throw Error('No network');};dom.window.Storage.prototype.setItem=()=>{effects++;throw Error('No storage');};dom.window.URL.createObjectURL=b=>{const u='blob:local-'+blobs.size;blobs.set(u,b);return u;};dom.window.URL.revokeObjectURL=()=>{};
-  const ui=mountSetup(d.querySelector('main'),{cartridges:selection,config});
+  dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;this.dispatchEvent(new dom.window.Event('close'));};const ui=mountSetup(d.querySelector('main'),{cartridges:selection,config});
   try{
    assert.deepEqual(new Set([...d.querySelectorAll('[data-question]')].filter(n=>!n.hidden).map(n=>n.dataset.question)),new Set(scope.reference.relevantQuestionIds));
    d.querySelector('form').dispatchEvent(new dom.window.Event('submit',{bubbles:true,cancelable:true}));const plan=ui.getPlan();assert.ok(plan,id);const review=plan.report.packInputs;
    assert.deepEqual(review,reviewPackInputs(selection,plan.config));const card=d.querySelector('[data-pack="'+id+'"]');for(const input of review.packs[0].items){const row=card.querySelector('[data-input="'+input.id+'"]');assert.equal(row.dataset.state,input.state);assert.ok(row.textContent.includes(input.label));}
-   const link=d.querySelector('a[download="notabenda-setup-brief.txt"]');assert.equal(await blobs.get(link.href).text(),formatPackBrief(selection,'connect',{config:plan.config}));assert.equal(effects,0);
+   d.querySelector('.nb-setup-agent-handoff button').click();assert.equal(d.querySelector('.nb-agent-text').value,formatPackBrief(selection,'connect',{config:plan.config}));assert.equal(effects,0);
    ui.setCartridges(selectPacks(['privacy-pages']));assert.equal(d.querySelector('.nb-setup-pack-inputs'),null);assert.equal(ui.getPlan(),null);
   }finally{ui.destroy();dom.window.close();}
  }
