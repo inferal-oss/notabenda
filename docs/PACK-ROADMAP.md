@@ -1,8 +1,8 @@
 # Growing the pack library
 
-The twelve installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
+The seventeen installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
 
-This is a product roadmap. The first privacy group is now available; later groups remain proposals. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
+This is a product roadmap. The privacy and consumer groups are available; the later named mechanisms remain proposals. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
 
 ## First: everyday privacy jobs
 
@@ -14,9 +14,9 @@ This is a product roadmap. The first privacy group is now available; later group
 
 These four setup paths are now in the installed library. They reuse the collection, rights and processing modules, with separate direct/indirect targets, focused questions and a draft input review shared by the UI, private report and agent brief. Builders, destinations, notification and downstream effects still need project integration and verification. See [the privacy-pack guide](PRIVACY-PACKS.md).
 
-## Next: consumer transactions
+## Available: consumer transactions
 
-| Proposed pack | Existing foundation | What setup still needs |
+| Available pack | Existing foundation | What setup still needs |
 | --- | --- | --- |
 | Contract withdrawal | [Contract actions](CONTRACT-ACTIONS.md), [delivery runners](CONTRACT-DISPATCH.md); FEAT-CONTRACT-ACTIONS | Select an assessed supported withdrawal profile, exact definition and host handoff; show what remains before an acknowledgment or delivery can be claimed. |
 | Subscription cancellation | The separate cancellation flow in [contract actions](CONTRACT-ACTIONS.md); FEAT-CONTRACT-ACTIONS | Gather continuing-contract facts and supported profile conditions. Keep cancellation separate from withdrawal windows and privacy-consent withdrawal. |
@@ -24,7 +24,7 @@ These four setup paths are now in the installed library. They reuse the collecti
 | Customer confirmations | [Confirmation archives and delivery](ORDER-CONFIRMATIONS.md); FEAT-ORDER-CONFIRMATION | Gather the personally addressed content, attachments, fixed destination and real delivery integration. Make unresolved or uncertain delivery visible. Keep it independently selectable from order review. |
 | Product guarantee information | [Shop notice](GUARANTEES.md), [product labels](GUARANTEE-LABELS.md) | Distinguish shop-level legal information from an eligible producer's product-specific guarantee. Ask the relevant product, producer, language, applicability and review questions; do not enable labels from a country selection alone. |
 
-The existing `consumer-contracts` target is deliberately broad. Before adding these packs, split its configuration questions, prerequisites and checks into the specific supported jobs. A shared target must not silently select every purchase feature.
+These five packs now have independent targets, focused questions and shared draft-input/connection reviews. The existing `consumer-contracts` target remains a broad reference; it is not their prerequisite. Confirmations explicitly require the existing received Cloudflare order admission/archive foundation without automatically installing a checkout UI. No selection enables a profile, quote, route or delivery. Read [consumer packs](CONSUMER-PACKS.md).
 
 ## Then: named regional mechanisms and integrations
 

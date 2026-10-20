@@ -51,3 +51,10 @@
 @media(max-width:700px){.pack-index>div{grid-template-columns:repeat(2,minmax(0,1fr))}.pack-index>div>a{font-size:12px}.nb-setup-pack-inputs>ul>li{padding:12px}}
 
 .cartridge-functions{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:700px){.cartridge-functions{grid-template-columns:minmax(0,1fr)}}
+
+/* @requirements REQ-PRODUCT-CONSUMER-PACKS */
+.cartridge-art-contract-withdrawal .cartridge-glyph{transform:rotate(-5deg);background:#f8fafc;border-color:#9aa9b8;box-shadow:6px -5px 0 #cdd8e3}.cartridge-art-contract-withdrawal .cartridge-glyph:after{content:'↶';position:absolute;right:-12px;bottom:-6px;font-size:30px;color:#617b94}
+.cartridge-art-subscription-cancellation .cartridge-glyph{transform:rotate(3deg);background:#fff9f7;border-color:#b8a499;box-shadow:6px -5px 0 #e5d7ce}.cartridge-art-subscription-cancellation .cartridge-glyph i:last-child{height:2px;width:70%;background:#a47d68}
+.cartridge-art-paid-order-review .cartridge-glyph{transform:rotate(-3deg);background:#f8faf4;border-color:#a5ad93;box-shadow:6px -5px 0 #d6ddc6}.cartridge-art-paid-order-review .cartridge-glyph i:last-child{height:9px;width:100%;background:#8b9b72}
+.cartridge-art-customer-confirmations .cartridge-glyph{transform:rotate(4deg);background:#f8f7fc;border-color:#aaa0bb;box-shadow:6px -5px 0 #d9d0e6}.cartridge-art-customer-confirmations .cartridge-glyph:after{content:'';position:absolute;bottom:18px;right:-12px;width:28px;height:20px;border:1px solid #9482a7;border-radius:3px;background:linear-gradient(35deg,transparent 49%,#9482a7 50%,transparent 54%) left/50% 100% no-repeat,linear-gradient(-35deg,transparent 49%,#9482a7 50%,transparent 54%) right/50% 100% no-repeat,#f3edf9}
+.cartridge-art-guarantee-information .cartridge-glyph{transform:rotate(-2deg);background:#faf8ef;border-color:#b5a774;box-shadow:6px -5px 0 #e4dcbc}.cartridge-art-guarantee-information .cartridge-glyph:after{content:'';position:absolute;right:-12px;bottom:-5px;width:26px;height:31px;border:1px solid #a08d52;border-radius:8px 8px 14px 14px;background:#e9dfb8}

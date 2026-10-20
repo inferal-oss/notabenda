@@ -4,7 +4,7 @@ A pack keeps one job together: what it adds, the facts it needs, and the steps t
 
 Start with **Privacy pages**, **Cookie choices** or **Terms agreement**. You can combine them or add another job later. Each works from the same site inventory.
 
-## All twelve packs
+## All seventeen packs
 
 The library shows every pack, grouped by the job it does. Use the links at the top to jump between groups.
 
@@ -20,12 +20,17 @@ The library shows every pack, grouped by the job it does. Use the links at the t
 | Add a function | Gated media | Remote media stays unloaded until permitted. |
 | Add a function | Evidence workspace | Retained versions, searchable records and a private backoffice. |
 | Add a function | Processing opt-outs | Assessed signals and/or recorded restrictions with host enforcement. |
+| Purchases and contracts | Contract withdrawal | A reviewed public declaration route and independent handoffs. |
+| Purchases and contracts | Subscription cancellation | The supported German continuing-contract cancellation flow. |
+| Purchases and contracts | Paid order review | Exact items, prices and commitments beside the final action. |
+| Purchases and contracts | Customer confirmations | Complete customer copies and tracked delivery handoffs. |
+| Purchases and contracts | Guarantee information | Separately assessed shop notices and producer labels. |
 | Regional rules | Irish grant duration | Assessment of the supported six-month default grant cap. |
 | Regional rules | Italian repeat requests | Assessment of the supported six-month repeat-request guard. |
 
 The regional packs cover those named mechanisms; they are not complete country coverage.
 
-The [privacy-pack guide](PRIVACY-PACKS.md) explains the four added paths and their draft input reviews. See the [pack roadmap](PACK-ROADMAP.md) for the remaining consumer-transaction and regional setup paths.
+The [privacy-pack guide](PRIVACY-PACKS.md) explains the four added paths and their draft input reviews. The [consumer-pack guide](CONSUMER-PACKS.md) covers the five transaction jobs and their host dependencies. See the [pack roadmap](PACK-ROADMAP.md) for remaining regional setup paths.
 
 ## Prepare it your way
 

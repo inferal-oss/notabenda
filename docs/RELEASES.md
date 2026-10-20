@@ -50,3 +50,5 @@ This helper does not remove stale files, register backend history, activate a no
 Removing a public artifact is also a host decision. Ensure notices, agreements and retained records still have the versions they need, and apply your reviewed retention/erasure and backup policies. Neither cookie expiry nor a newer policy automatically removes an older artifact.
 
 Try the [current and prior terms example](http://127.0.0.1:4178/releases) after `npm run dev`. Both builds are explicit inputs, so the old URL survives a clean build. Its comparison opens the host-authorized document history workspace. See the [verification record](verification/retained-releases.md) and `REQ-PRODUCT-RETAINED-RELEASES` in the [catalog](requirements/README.md#req-product-retained-releases).
+
+After deployment, explicitly [check pinned publication](PUBLICATION-CHECK.md) against the intended trusted artifact. This checks four retained files; current routes, active controls and future retention remain separate.

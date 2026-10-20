@@ -504,3 +504,16 @@ test('catalog-reference releases keep public legal bytes unchanged and private c
  }
  const gallery=new JSDOM(await readFile(new URL('examples/index.html',root),'utf8')).window.document;assert.ok(gallery.querySelector('a[href="/examples/contracts/"]'));const contracts=new JSDOM(await readFile(new URL('examples/contracts/index.html',root),'utf8')).window.document;assert.ok(contracts.querySelector('a[href="/guarantees/product/"]'));
  });
+
+// @requirements REQ-PRODUCT-PUBLICATION-CHECK REQ-PRODUCT-RETAINED-RELEASES
+test('pinned document URLs resolve internally without exposing asset canonical redirects or touching records',async()=>{
+ const id='a'.repeat(64),seen=[],bytes='<article>Exact retained document</article>';
+ const env={ASSETS:{fetch:async req=>{const url=new URL(req.url);seen.push([url.pathname,req.method,url.search]);return url.pathname.endsWith('.html')?new Response(null,{status:307,headers:{Location:url.pathname.slice(0,-5)}}):new Response(req.method==='HEAD'?null:bytes,{headers:{'Content-Type':'text/html; charset=utf-8'}});}},WORKSPACE:{get(){throw Error('Public pinned files do not read records');}},DEMO_WORKSPACES:{get(){throw Error('Public pinned files do not allocate a demo');}}};
+ for(const kind of ['privacy','cookies','terms'])for(const method of ['GET','HEAD']){
+  const response=await serveHost(request(`/artifacts/${id}/${kind}.html?revision=retained`,{method}),env);
+  assert.equal(response.status,200);assert.equal(response.headers.get('Location'),null);assert.equal(response.headers.get('Set-Cookie'),null);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);assert.match(response.headers.get('Cache-Control'),/no-transform/);assert.equal(await response.text(),method==='HEAD'?'':bytes);
+  assert.deepEqual(seen.at(-1),[`/artifacts/${id}/${kind}`,method,'?revision=retained']);
+ }
+ for(const path of [`/artifacts/${id}.json`,`/artifacts/${id}/other.html`,'/guide/setup/index.html']){seen.length=0;await serveHost(request(path),env);assert.equal(seen[0][0],path);}
+ const before=seen.length;assert.equal((await serveHost(request(`/artifacts/${id}/privacy.html`,{method:'POST'}),env)).status,405);assert.equal(seen.length,before);
+});

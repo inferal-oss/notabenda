@@ -275,6 +275,16 @@ const unresolved: false=packInputReview.productionReady;void packLibrary;void pa
 // @ts-expect-error declaration checks do not supply a configured or verified state
 const configured: true=packInputReview.productionReady;
 `);
+    for(const file of ['dist/publication.js','dist/publication.d.ts','dist/publication-cli.js'])assert.ok(manifest.files.some(f=>f.path===file),file);
+    const publicationImport=spawnSync(process.execPath,['--input-type=module','-e',"import {checkLegalPublication} from '@notabenda/core/publication'; if(typeof checkLegalPublication!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(publicationImport.status,0,publicationImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {checkLegalPublication,type LegalPublicationReport} from '@notabenda/core/publication';
+const publication:Promise<LegalPublicationReport>=checkLegalPublication(release.artifact,{origin:'https://example.test',packs:selectPacks(['privacy-pages'])});
+declare const published:LegalPublicationReport;
+const noInstallation:false=published.boundaries.establishesPackInstallation;
+// @ts-expect-error matching files never establish legal compliance
+const compliance:true=published.boundaries.establishesLegalCompliance;
+`);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);
   } finally { await rm(cwd, { recursive: true, force: true }); }

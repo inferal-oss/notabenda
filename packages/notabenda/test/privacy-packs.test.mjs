@@ -16,7 +16,7 @@ const additions=['collection-notices','indirect-collection','privacy-requests','
 const item=(review,id,key)=>review.packs.find(p=>p.id===id).items.find(i=>i.id===key);
 
 test('new privacy jobs keep separate targets, language contracts and enforcement paths without changing older pins',()=>{
- const library=packLibrary();assert.equal(library.length,12);assert.deepEqual(packGroups().map(g=>library.filter(p=>p.shelf===g.id).length),[3,3,4,2]);
+ const library=packLibrary();assert.equal(library.length,17);assert.deepEqual(packGroups().map(g=>library.filter(p=>p.shelf===g.id).length),[3,3,4,5,2]);
  const direct=planPacks(selectPacks(['collection-notices'])),indirect=planPacks(selectPacks(['indirect-collection']));
  assert.deepEqual(direct.reference.requestedTargetIds,['collection-notice']);assert.deepEqual(indirect.reference.requestedTargetIds,['indirect-collection-notice']);
  assert.ok(direct.reference.targets.find(t=>t.id==='collection-notice').conditionalConfig.some(r=>r.requiredPaths.includes('localization.collection')));
@@ -40,7 +40,7 @@ test('rights declarations and imported restrictions remain intact while the scop
  config.privacySignals={globalPrivacyControl:{appliesTo:['sale'],explanation:'Fictional assessed restriction.'}};
  const original=structuredClone(config),selection=selectPacks(additions),answers=planPacks(selection).reference.targetAnswersTemplate;answers.answers['privacy-request-routes']={choice:'yes',justification:'PRIVATE_ROUTE_REVIEW'};
  const plan=createPackSetupPlan(selection,answers,{config});assert.deepEqual(config,original);assert.deepEqual(plan.config.rightsCenter.actions,config.rightsCenter.actions);assert.equal(plan.config.rightsCenter.reviewStatus,'draft');assert.deepEqual(plan.config.privacySignals,config.privacySignals);assert.deepEqual(plan.config.services,config.services);
- assert.equal(plan.report.questionnaireVersion,'6');assert.equal(item(plan.report.packInputs,'privacy-requests','review').state,'needs-review');assert.match(JSON.stringify(plan.report),/PRIVATE_ROUTE_REVIEW/);assert.doesNotMatch(formatPackBrief(selection,'connect',{config:plan.config}),/PRIVATE_ROUTE_REVIEW/);
+ assert.equal(plan.report.questionnaireVersion,'7');assert.equal(item(plan.report.packInputs,'privacy-requests','review').state,'needs-review');assert.match(JSON.stringify(plan.report),/PRIVATE_ROUTE_REVIEW/);assert.doesNotMatch(formatPackBrief(selection,'connect',{config:plan.config}),/PRIVATE_ROUTE_REVIEW/);
  const old={schemaVersion:1,kind:'private-setup-report',questionnaireVersion:'5',answers:{schemaVersion:1,markets:[],answers:{'personal-data':{choice:'yes',justification:'Preserved previous note.'}}}};
  const resumed=createPackSetupPlan(selectPacks(['privacy-requests']),readSetupAnswers(old),{config});assert.equal(resumed.report.answers.answers['privacy-request-routes'],undefined);assert.equal(resumed.report.recommendations.find(r=>r.id==='privacy-request-routes').status,'investigate');assert.equal(resumed.report.answers.answers['personal-data'].justification,'Preserved previous note.');
 });
@@ -64,7 +64,7 @@ test('each privacy pack exposes its focused questions and the same regenerated i
 test('scoped CLI exports the concrete input review and matching brief, then recomputes them on resume',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'notabenda-privacy-packs-')),cli=new URL('../dist/cli.js',import.meta.url).pathname,selection=selectPacks(additions),run=(...args)=>spawnSync(process.execPath,[cli,...args],{cwd:directory,encoding:'utf8'});
  try{
-  const listing=run('packs','--json');assert.equal(listing.status,0,listing.stderr);assert.deepEqual(JSON.parse(listing.stdout).groups,packGroups());assert.equal(JSON.parse(listing.stdout).cartridges.length,12);
+  const listing=run('packs','--json');assert.equal(listing.status,0,listing.stderr);assert.deepEqual(JSON.parse(listing.stdout).groups,packGroups());assert.equal(JSON.parse(listing.stdout).cartridges.length,17);
   const answers=planPacks(selection).reference.targetAnswersTemplate;answers.answers['direct-collection']={choice:'yes',justification:'PRIVATE_FORM_REVIEW'};await writeFile(join(directory,'answers.json'),JSON.stringify(answers));
   const result=run('wizard','--packs',additions.join(','),'--answers','answers.json','--out-dir','draft');assert.equal(result.status,0,result.stderr);
   const config=JSON.parse(await readFile(join(directory,'draft/notabenda.config.json'),'utf8')),report=JSON.parse(await readFile(join(directory,'draft/setup.private.json'),'utf8')),brief=await readFile(join(directory,'draft/notabenda-setup-brief.txt'),'utf8');

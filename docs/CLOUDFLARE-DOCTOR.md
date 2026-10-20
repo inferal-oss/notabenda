@@ -51,3 +51,5 @@ After reviewing the project scripts, run its build and Wrangler dry run yourself
 Keep staging and production distinct. Review routing, bindings, existing namespace identity, logging, retention/holds, backups, restoration, erasure and external copies. These decisions remain application work even when every local check passes. Nothing here deploys or changes a remote resource.
 
 See [scope decisions](SCOPE.md), [requirements](requirements/README.md#req-product-cf-doctor) and [verification](verification/cloudflare-doctor.md).
+
+For an explicit anonymous check of the published pinned JSON and document bytes, use [check-publication](PUBLICATION-CHECK.md). The local doctor and public observation cover different deployment evidence. Neither verifies the active application or legal applicability.

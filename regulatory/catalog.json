@@ -2076,7 +2076,9 @@
         "REQ-PRODUCT-DRAFT-PREVIEW",
         "REQ-PRODUCT-PACK-CONNECTION",
         "REQ-PRODUCT-CONSENT-AUTHORING",
-        "REQ-PRODUCT-PRIVACY-PACKS"
+        "REQ-PRODUCT-PRIVACY-PACKS",
+        "REQ-PRODUCT-PUBLICATION-CHECK",
+        "REQ-PRODUCT-CONSUMER-PACKS"
       ]
     }
   ],
@@ -6607,7 +6609,7 @@
         "packages/notabenda-cf/test/starter.test.mjs",
         "site/test/site-organization.test.mjs"
       ],
-      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All twelve packs are shown in four shelves with a counted index. The homepage and architecture guide list all twelve packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All seventeen packs are shown in five shelves with a counted index. The homepage and architecture guide list all seventeen packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
     },
     {
       "id": "REQ-PRODUCT-WORKSPACE-OVERVIEW",
@@ -6803,6 +6805,74 @@
         "site/test/cartridges.test.mjs",
         "docs/verification/privacy-packs.md",
         "packages/notabenda/test/package.test.mjs"
+      ]
+    },
+    {
+      "id": "REQ-PRODUCT-PUBLICATION-CHECK",
+      "jurisdiction": "PRODUCT",
+      "title": "Explicit bounded observation of published pinned release files",
+      "kind": "product-standard",
+      "summary": "Compare a trusted local public compiler artifact with four anonymous exact-path deployment observations. Report canonical JSON and exact HTML matches, origins, preview mode and narrow unverified boundaries.",
+      "appliesWhen": "An operator deliberately invokes the Node-only publication checker against a selected origin.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PUBLICATION-CHECK"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "No crawling, redirects, scripts, authentication, writes or automatic setup requests. No installed-pack, legal approval, current-route, active-control, atomic-snapshot or future-retention claim. Input and decompressed response limits remain 128 KiB; HTTPS is not SSRF protection. Keep operator reports private.",
+      "implementationRefs": [
+        "packages/notabenda/src/publication.ts",
+        "packages/notabenda/src/publication-cli.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "site/host.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/publication.test.mjs",
+        "docs/verification/publication-check.md",
+        "site/test/host.test.mjs"
+      ]
+    },
+    {
+      "id": "REQ-PRODUCT-CONSUMER-PACKS",
+      "jurisdiction": "PRODUCT",
+      "title": "Independent consumer transaction setup packs",
+      "kind": "product-standard",
+      "summary": "Keep withdrawal, supported German cancellation, paid-order review, customer copies and guarantee information separately selectable, with focused facts, real builder inputs, explicit backend dependencies and host acceptance checks shared across UI, CLI and agent handoff.",
+      "appliesWhen": "Preparing or resuming a selected supported consumer-transaction setup job.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CONSUMER-PACKS"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Setup behavior only; no expanded legal coverage. No inferred profile, quote, route, guarantee qualification or delivery. Fixed contract-profile language and existing confirmation admission/archive dependency remain explicit. Terms agreement, cookie controls and backoffice are not automatic prerequisites.",
+      "implementationRefs": [
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "site/pack-directory.mjs",
+        "site/style.css",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/consumer-packs.test.mjs",
+        "docs/verification/consumer-packs.md"
       ]
     }
   ],
@@ -8153,6 +8223,31 @@
         "packages/notabenda/test/pack-connection.test.mjs",
         "site/test/cartridges.test.mjs",
         "docs/verification/privacy-packs.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PUBLICATION-CHECK",
+      "requirementIds": [
+        "REQ-PRODUCT-PUBLICATION-CHECK"
+      ],
+      "status": "automated",
+      "expected": "Explicit four-GET observation honors preflight, origins, preview mode, anonymous authority, content comparison, media/charset checks, decompressed/streamed limits, deadlines, sanitized reports and narrow claims. Setup itself performs no observation.",
+      "testRefs": [
+        "packages/notabenda/test/publication.test.mjs",
+        "docs/verification/publication-check.md",
+        "site/test/host.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CONSUMER-PACKS",
+      "requirementIds": [
+        "REQ-PRODUCT-CONSUMER-PACKS"
+      ],
+      "status": "automated",
+      "expected": "Five targets preserve unknowns, prior pins, private answers and restrictions. Focused input review distinguishes inventory declarations from separate manual builder/host work, profile-language limits, guarantee branches and existing confirmation archive foundation; selection causes no runtime effects.",
+      "testRefs": [
+        "packages/notabenda/test/consumer-packs.test.mjs",
+        "docs/verification/consumer-packs.md"
       ]
     }
   ],

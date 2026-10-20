@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+// @requirements REQ-PRODUCT-PUBLICATION-CHECK
+import {runPublicationCli} from './publication-cli.js';
 // @requirements REQ-PRODUCT-CARTRIDGES
 import {runDiscoveryCli} from './discovery-cli.js';
 /** @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-RETAINED-RELEASES */
@@ -19,7 +21,7 @@ import {describeIntegration,selectIntegration} from './integration-reference.js'
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess|schema|packs> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess|schema|packs|check-publication> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
@@ -42,10 +44,16 @@ Never writes a draft or enables features. Exit zero means a report was produced,
 packs [ID ...] [--json | --brief]  List jobs, prepare a pack plan or an agent brief.
 Wizard --packs ID,ID focuses questions on selected jobs and retains selection in the private report.
 
-All configuration is JSON; no module execution or network access is required.
+check-publication --artifact FILE --origin URL [--packs ID,ID] [--preview]
+[--allow-loopback] [--json] checks four pinned public release files with anonymous GETs.
+Explicit network access only; no redirects, scripts, crawling or deployment writes.
+Matching files do not verify active controls, host behavior or legal compliance.
+
+All configuration is JSON. Commands require no project-module execution.
+Only check-publication makes explicit network requests.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
 Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config FILE
-imports an existing config. Output requires a new directory and never overwrites. --json applies to check, describe and assess.
+imports an existing config. Output requires a new directory and never overwrites. --json applies to check, describe, assess, packs and check-publication.
 Wizard --project DIRECTORY explicitly scans supported source/dependency identifiers and
 offers actual-use review in interactive setup; --catalog FILE selects its reference catalog.
 With --answers, findings are saved privately without adding services automatically.
@@ -76,6 +84,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='check-publication'){await runPublicationCli(args);return;}
   if(command==='packs'||command==='cartridges'){await (await import('./cartridges-cli.js')).runCartridgesCli(args);return;}
   if(command==='schema'){await (await import('./schema-cli.js')).runSchemaCli(args);return;}
   if(command==='assess'){

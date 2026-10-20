@@ -6,7 +6,7 @@ Developer preview: packages have not been published to npm. The package names ar
 
 Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
 
-Browse all twelve packs in four visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
+Browse all seventeen packs in five visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
 
 ## Skill
 
@@ -53,3 +53,7 @@ Browse all twelve packs in four visible groups at https://notabenda.org/start/. 
 - [Localization](https://notabenda.org/guide/localization/index.md): Host-supplied wording and separate jurisdiction decisions.
 - [Scope and decisions](https://notabenda.org/guide/scope/index.md): Product boundaries and remaining host responsibilities.
 - [Research workflow](https://notabenda.org/guide/research/index.md): Primary sources connected to requirements, implementation and tests.
+
+- [Publication check](https://notabenda.org/guide/publication-check/index.md): Explicit Node-only observation of four pinned release files; current routes and controls remain unverified.
+
+- [Consumer packs](https://notabenda.org/guide/consumer-packs/index.md): Five separate transaction jobs, fixed profile-language limits, manual builder inputs and the exact confirmation admission/archive dependency.

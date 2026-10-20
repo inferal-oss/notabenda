@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PUBLICATION-CHECK REQ-PRODUCT-RETAINED-RELEASES
 // @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -107,5 +108,12 @@ export async function serveHost(input, env) {
     } catch { return protectedResponse(new Response('Workspace unavailable.',{status:503})); }
   }
   if (!['GET','HEAD'].includes(request.method)) return new Response('Method not allowed.',{status:405,headers:{Allow:'GET, HEAD'}});
-  return publicResponse(await env.ASSETS.fetch(request),path);
+  // Workers Assets canonicalizes .html to extensionless paths. Resolve these
+  // known immutable files internally so the published pinned URL remains a 200.
+  let assetRequest=request;
+  if(/^\/artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(path)){
+    const assetUrl=new URL(request.url);assetUrl.pathname=path.slice(0,-5);
+    assetRequest=new Request(assetUrl,request);
+  }
+  return publicResponse(await env.ASSETS.fetch(assetRequest),path);
 }
