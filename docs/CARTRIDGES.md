@@ -142,3 +142,6 @@ The website and new Cloudflare starter serve the reader module only when it is r
 ## Compatibility
 
 `notabenda cartridges`, `wizard --cartridges`, the `@notabenda/core/cartridges` imports and their existing function names remain supported. Saved reports keep their `cartridges` field and pinned revisions; changing the display name does not require migrating a draft. New examples use `packs` commands and import paths.
+
+<!-- @requirements REQ-PRODUCT-CARTRIDGES -->
+The pack artwork uses a flat, downward-facing keyed card edge with separate muted contact banks and an open notch. It remains decorative and hidden from assistive technology; selection continues to use the labeled native checkbox and visible selected state. Reduced-motion and forced-color preferences retain usable selection controls. Visual changes are reviewed in local desktop/mobile previews before publication.

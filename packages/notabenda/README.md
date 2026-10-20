@@ -240,4 +240,7 @@ The [privacy packs](../../docs/PRIVACY-PACKS.md) add focused form/indirect notic
 The Node-only `@notabenda/core/publication` API and `notabenda check-publication` command compare an intended public artifact with four deployed pinned files. See [publication checks](../../docs/PUBLICATION-CHECK.md) for explicit network authority, limits and unverified work.
 
 <!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
-Privacy-request setup includes an explicit public-page editor, atomic page/ privacy-link draft API and versioned CLI proposal. It requires actual destinations, contact, scope and wording; it supplies no entitlement or intake process. Changed public content needs a new revision. The packaged page/editor are English-only. See [request-page authoring](https://notabenda.org/guide/rights-authoring/).
+Privacy-request setup includes an explicit public-page editor, atomic page/ privacy-link draft API and versioned CLI proposal. It requires actual destinations, contact, scope and wording; it supplies no entitlement or intake process. Changed public content needs a new revision. Non-English native pages require complete `localization.rights` messages; the operator editor remains English. See [request-page authoring](https://notabenda.org/guide/rights-authoring/).
+
+<!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
+Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-DRAFT-PREVIEW REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -50,8 +51,8 @@ test('incomplete, executable, ambiguous and colliding proposals fail without mut
 });
 
 test('non-English authoring leaves the locale and imported declarations unresolved',async()=>{
- const config=localizedExampleConfig(await fixture());const before=structuredClone(config);assert.throws(()=>createRightsDraftPlan(config,change(config)),/localized UI/);assert.deepEqual(config,before);
- const f=browser(),ui=mountRightsEditor(f.root,{getConfig:()=>config,onChange:()=>assert.fail()});try{ui.open();assert.match(f.root.textContent,/English only/);assert.equal(f.root.querySelector('textarea'),null);assert.ok(button(f.root,'Cancel page changes'));}finally{ui.destroy();f.dom.window.close();}
+ const config=localizedExampleConfig(await fixture());const before=structuredClone(config);assert.throws(()=>createRightsDraftPlan(config,change(config)),/localization.rights/);assert.deepEqual(config,before);
+ const f=browser(),ui=mountRightsEditor(f.root,{getConfig:()=>config,onChange:()=>assert.fail()});try{ui.open();assert.match(f.root.textContent,/localization.rights/);assert.equal(f.root.querySelector('textarea'),null);assert.ok(button(f.root,'Cancel page changes'));}finally{ui.destroy();f.dom.window.close();}
 });
 
 test('editor starts blank, requires explicit link replacement and saves complete operator wording only',async()=>{
@@ -81,7 +82,7 @@ test('local supporting-page previews are inert and leave the three pinned docume
 });
 
 test('unsupported rights preview is disabled without breaking legal previews or changing locale',async()=>{
- const config=createRightsDraftPlan(await fixture(),change(await fixture())).config;const localized=localizedExampleConfig(await fixture());config.site.locale=localized.site.locale;config.localization=localized.localization;const f=browser();try{assert.throws(()=>mountLegalPreview(f.root,{config,initialDocument:'rights'}),/English only/);assert.equal(f.root.children.length,0);const ui=mountLegalPreview(f.root,{config});try{assert.match(f.root.querySelector('button:disabled').textContent,/English renderer only/);ui.open();assert.equal(f.root.querySelector('.nb-document').dataset.documentKind,'privacy');assert.equal(config.site.locale,'pt-BR');}finally{ui.destroy();}}finally{f.dom.window.close();}
+ const config=createRightsDraftPlan(await fixture(),change(await fixture())).config;const localized=localizedExampleConfig(await fixture());config.site.locale=localized.site.locale;config.localization=localized.localization;const f=browser();try{assert.throws(()=>mountLegalPreview(f.root,{config,initialDocument:'rights'}),/localization.rights/);assert.equal(f.root.children.length,0);const ui=mountLegalPreview(f.root,{config});try{assert.match(f.root.querySelector('button:disabled').textContent,/Page translations needed/);ui.open();assert.equal(f.root.querySelector('.nb-document').dataset.documentKind,'privacy');assert.equal(config.site.locale,'pt-BR');}finally{ui.destroy();}}finally{f.dom.window.close();}
 });
 
 test('bounded ordinary JSON proposal files are required and interactive confirmation rechecks the current baseline',async()=>{

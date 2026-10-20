@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
+import {supportsRightsPage} from './rights-localization-policy.js';
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-SAFE-CONTENT REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
@@ -16,15 +18,15 @@ export function mountLegalPreview(container:HTMLElement,options:LegalPreviewOpti
  // Project to declared public facts before creating DOM; private reports are never accepted here.
  const config=structuredClone(toPublicConfig(options.config,{mode:'preview'})),instance='nb-preview-'+crypto.randomUUID();
  const pages=new Map<PreviewPageKind,string>(documentKinds.map(kind=>[kind,renderLegalDocument(config,kind,{mode:'preview'})]));
- const unsupportedRights=!!config.rightsCenter&&!/^en(?:-|$)/iu.test(config.site.locale);
+ const unsupportedRights=!!config.rightsCenter&&!supportsRightsPage(config);
  if(config.rightsCenter&&!unsupportedRights)pages.set('rights',renderRightsCenter(config,{mode:'preview',idPrefix:'nb-rights-preview',headingLevel:2}));
- if(options.initialDocument==='rights'&&!pages.has('rights'))throw Error(unsupportedRights?'The packaged privacy request preview currently supports English only; keep the site locale.':'Declare a supported request page before previewing it.');
+ if(options.initialDocument==='rights'&&!pages.has('rights'))throw Error(unsupportedRights?'The privacy request preview needs complete localization.rights messages; keep the site locale.':'Declare a supported request page before previewing it.');
  const node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
  const dialog=node('dialog');dialog.className='nb-legal-preview';dialog.setAttribute('aria-labelledby',instance+'-title');dialog.setAttribute('aria-describedby',instance+'-note');
  const header=node('header');header.className='nb-legal-preview-header';
  const title=node('h2','Preview your pages');title.id=instance+'-title';title.tabIndex=-1;
  const close=node('button','Close preview');close.type='button';close.className='nb-legal-preview-close';
- const note=node('p','This shows declared configuration, including placeholders. Outside links are disabled. Your site is unchanged.'+(unsupportedRights?' The request-page preview is unavailable: its packaged renderer currently supports English only.':''));note.id=instance+'-note';
+ const note=node('p','This shows declared configuration, including placeholders. Outside links are disabled. Your site is unchanged.'+(unsupportedRights?' The request-page preview is unavailable: supply complete localization.rights messages for this site locale.':''));note.id=instance+'-note';
  header.append(title,close,note);dialog.append(header);
  const navigation=node('nav');navigation.className='nb-legal-preview-navigation';navigation.setAttribute('aria-label','Preview document');
  const paper=node('div');paper.className='nb-legal-preview-paper';
@@ -48,7 +50,7 @@ export function mountLegalPreview(container:HTMLElement,options:LegalPreviewOpti
   paper.scrollTop=0;
  }
  for(const kind of pages.keys()){const button=node('button',kind==='rights'?config.rightsCenter!.title:config.documents[kind].title);button.type='button';button.addEventListener('click',()=>{if(!destroyed)select(kind);});navigation.append(button);buttons.set(kind,button);}
- if(unsupportedRights){const unavailable=node('button',config.rightsCenter!.title+' — English renderer only');unavailable.type='button';unavailable.disabled=true;navigation.append(unavailable);}
+ if(unsupportedRights){const unavailable=node('button',config.rightsCenter!.title+' — Page translations needed');unavailable.type='button';unavailable.disabled=true;navigation.append(unavailable);}
  select(options.initialDocument??'privacy');
  const click=(event:MouseEvent)=>{
   const target=event.target instanceof view.Element?event.target.closest('a'):null;if(!target||!paper.contains(target))return;

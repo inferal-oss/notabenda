@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
+import {supportsRightsPage} from './rights-localization-policy.js';
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-SPECIALIST-PACKS
 // @requirements REQ-PRODUCT-CONSUMER-PACKS
@@ -151,7 +153,7 @@ export function reviewPackInputs(selection:unknown,input:unknown):PackInputRevie
    add('notification','host-work','Bind the actual privacy release and arrange presentation or delivery, timing and any separate notification evidence. Rendering alone does not notify the person.');
   }
   if(pack.id==='privacy-requests'){
-   add('language',/^en(?:-|$)/iu.test(config.site.locale)?'declared':'needs-review','The packaged request-page renderer and editor currently support English only. Keep other locales unresolved; a collection dictionary cannot translate this page.',['site.locale']);
+   add('language',supportsRightsPage(config)?'declared':'needs-review','Non-English request pages need complete localization.rights messages in the matching site locale. Keep missing translations unresolved; a collection dictionary cannot translate this page.',['site.locale','localization.rights']);
    add('page',config.rightsCenter?'declared':'missing','Supply the public request page, action kinds, scope explanations, stable destinations and nextSteps.',['rightsCenter']);
    add('contact',config.rightsCenter?.contact?'declared':'missing','Provide an available public email or phone fallback for unsuitable or unavailable account workflows.',['rightsCenter.contact']);
    add('review',config.rightsCenter?.reviewStatus==='reviewed'?'declared':'needs-review','Review the page wording and each destination against the actual request process.',['rightsCenter.reviewStatus']);

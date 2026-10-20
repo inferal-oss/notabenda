@@ -1,10 +1,11 @@
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 import {normalizeConsentInformation} from './consent-information.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {receiptGrantExpiresAt,isGrantExpiryPolicy,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
 import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
-import {normalizeConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
+import {normalizeConsentLocalization,selectConsentLocalization,formatMessage,localizedConsentWording} from './localization-policy.js';
 import type {ConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 import {normalizeScopeGuardPolicy,scopeGuardContext,scopeGuardBlocked} from './scope-guard-policy.js';
@@ -108,7 +109,7 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
   const artifact=await validateStoredLegalRelease(release); const m=object(artifact.manifest); const config=object(artifact.publicConfig);
   if (m.siteId!==context.siteId || m.artifactId!==n.artifactId || m.mode!==n.mode || object(config.site).id!==context.siteId) return fail('scope-mismatch');
   let localization:ConsentLocalization|undefined;
-  if(config.localization!==undefined){try{const {documents:_,generatedDocuments:__,terms:___,formPermission:____,collection:_____,...selected}=object(config.localization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
+  if(config.localization!==undefined){try{const selected=selectConsentLocalization(object(config.localization) as unknown as ConsentLocalization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   if(canonicalJson((localization??null) as unknown as JsonValue)!==canonicalJson(n.localization??null))return fail('invalid-notice');
   const policy=object(config.consent); const declared=object(n.policy);
   let information;try{information=policy.information===undefined?undefined:normalizeConsentInformation(policy.information);}catch{return fail('invalid-notice');}

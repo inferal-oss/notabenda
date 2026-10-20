@@ -8,16 +8,10 @@ import {scopeGuardContext,scopeGuardBlocked} from './scope-guard-policy.js';
 import {isSafeLink} from './safe-links.js';
 import {toPublicConfig} from './config.js';
 import type {ValidationOptions} from './types.js';
-export type TechnologyFunction='identification'|'location'|'profiling';
+export type {TechnologyFunction,TechnologyCollectionSettings} from './technology-collection-policy.js';
+import type {TechnologyFunction,TechnologyCollectionSettings} from './technology-collection-policy.js';
+import {normalizeTechnologyCollectionSettings as settings,technologyCollectionScopePayload} from './technology-collection-policy.js';
 const functions:TechnologyFunction[]=['identification','location','profiling'];
-const labels=['title','intro','functionsLabel','purposesLabel','providerLabel','defaultOff','activationLabel','privacyLinkLabel','draftLabel','contactLabel'] as const;
-export interface TechnologyCollectionSettings {
- profile:'qc-private-technology-v1';scopeId:string;serviceId:string;revision:string;
- functions:readonly TechnologyFunction[];technologyDescription:string;activationInstructions:string;
- controlsLink:{label:string;href:string};reviewStatus:'draft'|'reviewed';direction:'ltr'|'rtl';
- wording:Record<typeof labels[number],string>;
- functionLabels:Record<TechnologyFunction,string>;
-}
 export interface TechnologyCollectionNotice {
  schemaVersion:1;kind:'technology-collection-notice';noticeId:string;siteId:string;artifactId:string;
  mode:'preview'|'production';locale:string;declaration:TechnologyCollectionSettings;
@@ -52,18 +46,9 @@ function copy(input:unknown):any {
  return visit(input,0);
 }
 const shape=(v:any,keys:readonly string[]):void=>{if(!v||typeof v!=='object'||Array.isArray(v)||Object.keys(v).length!==keys.length||keys.some(k=>!Object.hasOwn(v,k)))fail();};
-function settings(input:unknown):TechnologyCollectionSettings {
- const s=copy(input);shape(s,['profile','scopeId','serviceId','revision','functions','technologyDescription','activationInstructions','controlsLink','reviewStatus','direction','wording','functionLabels']);
- if(s.profile!=='qc-private-technology-v1'||!slug(s.scopeId)||!slug(s.serviceId)||!text(s.revision,200)||!Array.isArray(s.functions)||!s.functions.length||s.functions.length>3||new Set(s.functions).size!==s.functions.length||s.functions.some((f:unknown)=>!functions.includes(f as TechnologyFunction))||!text(s.technologyDescription)||!text(s.activationInstructions)||!['draft','reviewed'].includes(s.reviewStatus)||!['ltr','rtl'].includes(s.direction))return fail();
- shape(s.controlsLink,['label','href']);if(!text(s.controlsLink.label,160)||!text(s.controlsLink.href,1000)||!s.controlsLink.href.startsWith('/')||!isSafeLink(s.controlsLink.href))return fail();
- shape(s.wording,labels);if(labels.some(k=>!text(s.wording[k],k==='intro'||k==='defaultOff'?2000:300)))return fail();
- shape(s.functionLabels,functions);if(functions.some(k=>!text(s.functionLabels[k],160)))return fail();
- return s;
-}
 /** Assign this to the selected consent.services[].scope BEFORE compiling the legal release. */
 export function technologyCollectionScope(input:TechnologyCollectionSettings):string {
- const s=settings(input);
- return 'technology-v1:'+sha256(canonicalJson({profile:s.profile,serviceId:s.serviceId,revision:s.revision,functions:[...s.functions].sort(),technologyDescription:s.technologyDescription,activationInstructions:s.activationInstructions,controlsLink:s.controlsLink}));
+ return 'technology-v1:'+sha256(technologyCollectionScopePayload(input));
 }
 /** A public disclosure, not proof of presentation, voluntary action, lawfulness or host enforcement. */
 export function createTechnologyCollectionNotice(artifact:unknown,input:TechnologyCollectionSettings,options:ValidationOptions={}):TechnologyCollectionNotice {

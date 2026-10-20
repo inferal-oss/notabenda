@@ -1,7 +1,8 @@
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-CONFIG
 import {assertPlainCatalogData} from './catalog-plain.js';
 import {toPublicConfig} from './config.js';
-import {requireEnglishSurface} from './document-localization.js';
+import {selectRightsMessages} from './rights-localization-policy.js';
 import {normalizeRightsCenter} from './rights-policy.js';
 import type {RightsCenterConfig} from './rights-policy.js';
 import type {SiteConfig} from './types.js';
@@ -33,7 +34,7 @@ export function createRightsDraftPlan(input:unknown,change:RightsDraftChange):Ri
  if(!object(change)||!exact(change,['baseline','settings','linkPrivacyToPage'])||change.linkPrivacyToPage!==true)return invalid();
  const config=toPublicConfig(input,{mode:'preview'}),baseline=toPublicConfig(change.baseline,{mode:'preview'});
  if(canonical(config)!==canonical(baseline))throw Error('The site draft changed. Reopen the request-page editor before saving.');
- requireEnglishSurface(config,'Privacy request page authoring');
+ selectRightsMessages(config);
  const settings=normalizeRightsDraftSettings(change.settings),previous=config.rightsCenter;
  if(previous){
   const {reviewStatus,...previousSettings}=previous;

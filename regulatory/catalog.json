@@ -21,7 +21,9 @@
         "Pack-led product entry, shared installed job registry, focused setup questions and version-pinned draft/report/agent handoff; advanced product conversion remains in progress.",
         "Optional local reader for configured draft pages with the existing document renderer and separate on-demand delivery.",
         "Selected pack connection work, application checks and foundation reuse, with the same saved connection-stage brief in browser and scoped terminal drafts; actual deployment verification remains host work.",
-        "Explicit local consent settings authoring in the UI and CLI, including service/purpose enrollment, material versions and separate lifetimes; existing policies and restrictive scope facts are preserved."
+        "Explicit local consent settings authoring in the UI and CLI, including service/purpose enrollment, material versions and separate lifetimes; existing policies and restrictive scope facts are preserved.",
+        "Complete host-supplied privacy-request page messages with matching locale/direction/review metadata, inert local preview and separate operator-owned request workflows.",
+        "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -46,7 +48,23 @@
         "packages/notabenda/src/setup-connection-ui.ts",
         "packages/notabenda/src/setup-consent.ts",
         "packages/notabenda/src/setup-consent-ui.ts",
-        "packages/notabenda/src/setup-consent-cli.ts"
+        "packages/notabenda/src/setup-consent-cli.ts",
+        "packages/notabenda/src/rights-localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/rights.ts",
+        "packages/notabenda/src/setup-rights.ts",
+        "packages/notabenda/src/setup-rights-ui.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/src/consent.ts",
+        "examples/localization/rights-build.mjs",
+        "examples/localization/build.mjs",
+        "examples/setup/build.mjs",
+        "packages/notabenda/src/setup-storage.ts",
+        "packages/notabenda/src/setup-storage-ui.ts",
+        "packages/notabenda/src/setup-storage-cli.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/cartridges.css"
       ]
     },
     {
@@ -57,7 +75,8 @@
       "deliverables": [
         "Typed site, service, purpose, storage, retention, audience, and document configuration.",
         "Separate public bundle facts from private operator metadata.",
-        "Completeness checks with requirement IDs and actionable missing-field messages."
+        "Completeness checks with requirement IDs and actionable missing-field messages.",
+        "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review."
       ],
       "implementationRefs": [
         "packages/notabenda/src/types.ts",
@@ -68,7 +87,16 @@
         "packages/notabenda/src/setup-purpose.ts",
         "packages/notabenda/src/setup-purpose-ui.ts",
         "packages/notabenda/src/setup-purpose-cli.ts",
-        "packages/notabenda/src/purpose-disclosures.ts"
+        "packages/notabenda/src/purpose-disclosures.ts",
+        "packages/notabenda/src/setup-storage.ts",
+        "packages/notabenda/src/setup-storage-ui.ts",
+        "packages/notabenda/src/setup-storage-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "examples/setup/build.mjs"
       ]
     },
     {
@@ -80,7 +108,7 @@
         "Static privacy and cookie pages, semantic HTML, document links, service/storage tables, and legal-center composition.",
         "Reviewed supplied content plus an original clause pipeline with explicit review and licensing status.",
         "Versioned artifacts and material-change diffs; readable pages without JavaScript.",
-        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
+        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
       ],
       "implementationRefs": [
         "packages/notabenda/src/documents.ts",
@@ -193,7 +221,7 @@
         "Accessible native markup, optional CSS, semantic theme tokens, light/dark and unstyled variants; optional drag gestures always have visible tap and keyboard equivalents.",
         "Safe-area spacing, thumb-friendly controls, persistent reopening, focus restoration, and readable choices across small screens, zoom, large text, RTL, and the on-screen keyboard.",
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
-        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
+        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -354,7 +382,7 @@
         "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review.",
         "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
-        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
+        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -407,7 +435,8 @@
         "Configurable rights/contact page and links for access, correction, erasure, withdrawal, and applicable appeals.",
         "Authenticated hooks to an operator's workflow; receipt exports do not pretend to export all application data.",
         "Document verified identity and response handling as operator/application responsibilities.",
-        "Initial static core/React/Astro entry points and public contact fallback are implemented; intake, identity, request/response workflow and fulfillment remain host work."
+        "Initial static core/React/Astro entry points and public contact fallback are implemented; intake, identity, request/response workflow and fulfillment remain host work.",
+        "Complete host-supplied privacy-request page messages with matching locale/direction/review metadata, inert local preview and separate operator-owned request workflows."
       ],
       "implementationRefs": [
         "packages/notabenda/src/rights-policy.ts",
@@ -419,7 +448,19 @@
         "packages/notabenda/src/astro/RightsCenter.astro",
         "packages/notabenda/src/styles.css",
         "packages/notabenda-authoring/src/index.ts",
-        "examples/rights/build.mjs"
+        "examples/rights/build.mjs",
+        "packages/notabenda/src/rights-localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/setup-rights.ts",
+        "packages/notabenda/src/setup-rights-ui.ts",
+        "packages/notabenda/src/setup-preview.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "examples/localization/rights-build.mjs",
+        "examples/localization/build.mjs",
+        "examples/setup/build.mjs"
       ]
     },
     {
@@ -860,7 +901,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Final guide version 1.0, October 2022, retrieved again for printed pages 30\u201333 (PDF indexes 29\u201332). Publication date is distinct from this access date. Do not use the separate administrative-process bundle containing drafts."
+      "note": "Final guide version 1.0, October 2022, retrieved again for printed pages 30–33 (PDF indexes 29–32). Publication date is distinct from this access date. Do not use the separate administrative-process bundle containing drafts."
     },
     {
       "id": "SRC-CA-OPC",
@@ -882,7 +923,7 @@
     },
     {
       "id": "SRC-QC-CAI",
-      "title": "Qu\u00e9bec CAI: private-sector collection and profiling functions",
+      "title": "Québec CAI: private-sector collection and profiling functions",
       "url": "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises",
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-19",
@@ -995,7 +1036,7 @@
       "kind": "law",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read dates and final \u00a7312.5(a)(1)\u2013(2) text. No parental-verification implementation or full COPPA support claim."
+      "note": "Read dates and final §312.5(a)(1)–(2) text. No parental-verification implementation or full COPPA support claim."
     },
     {
       "id": "SRC-TR-KVKK",
@@ -1184,7 +1225,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read sections 3.1.3, 3.3.1, 3.4 and 5.1\u20135.2: purpose granularity, informed affirmative action, evidence and easy withdrawal. Scope/duration need contextual review; no prescribed software schema."
+      "note": "Read sections 3.1.3, 3.3.1, 3.4 and 5.1–5.2: purpose granularity, informed affirmative action, evidence and easy withdrawal. Scope/duration need contextual review; no prescribed software schema."
     },
     {
       "id": "SRC-MDN-IFRAME",
@@ -1211,7 +1252,7 @@
       "kind": "law",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read section 7025(b)\u2013(c), pp. 44\u201348: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows."
+      "note": "Read section 7025(b)–(c), pp. 44–48: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows."
     },
     {
       "id": "SRC-W3C-GPC",
@@ -1238,11 +1279,11 @@
       "kind": "law",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read definitions, \u00a759.1-578(A)(5) sensitive-data provision and \u00a759.1-577(C) appeals. Other provisions, including specialized minor/social-platform rules, are not implemented by the generic scope guard."
+      "note": "Read definitions, §59.1-578(A)(5) sensitive-data provision and §59.1-577(C) appeals. Other provisions, including specialized minor/social-platform rules, are not implemented by the generic scope guard."
     },
     {
       "id": "SRC-EU-RIGHTS-GUIDE",
-      "title": "EDPB small-business guide: respecting individuals\u2019 rights",
+      "title": "EDPB small-business guide: respecting individuals’ rights",
       "url": "https://www.edpb.europa.eu/sme/be-compliant/respect-individuals-rights_en",
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
@@ -1292,7 +1333,7 @@
       "kind": "legislation",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read Article 13(1)\u2013(5). Selected electronic direct-marketing rules, conditioned customer exception and national choices; national transposition remains separate research."
+      "note": "Read Article 13(1)–(5). Selected electronic direct-marketing rules, conditioned customer exception and national choices; national transposition remains separate research."
     },
     {
       "id": "SRC-CA-CASL-S10",
@@ -1301,7 +1342,7 @@
       "kind": "legislation",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read subsection 10(1) request purpose/identity/prescribed information, and 10(9)\u2013(10) implied-consent conditions. Page states current to 2026-09-30; exceptions are not inferred by the toolkit."
+      "note": "Read subsection 10(1) request purpose/identity/prescribed information, and 10(9)–(10) implied-consent conditions. Page states current to 2026-09-30; exceptions are not inferred by the toolkit."
     },
     {
       "id": "SRC-CA-CRTC-548",
@@ -1310,7 +1351,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read paragraphs 5\u201320: sender/contact information, readily performed unsubscribe, separate requests and separation from general terms. Full prescribed particulars and sending workflow remain host/regional review."
+      "note": "Read paragraphs 5–20: sender/contact information, readily performed unsubscribe, separate requests and separation from general terms. Full prescribed particulars and sending workflow remain host/regional review."
     },
     {
       "id": "SRC-CA-CRTC-549",
@@ -1319,7 +1360,7 @@
       "kind": "regulator-guidance",
       "checkedOn": "2026-10-18",
       "access": "read",
-      "note": "Read paragraphs 4\u20138: default opt-out does not obtain express consent; positive opt-in mechanisms and confirmation guidance. No sending or confirmation delivery is supplied."
+      "note": "Read paragraphs 4–8: default opt-out does not obtain express consent; positive opt-in mechanisms and confirmation guidance. No sending or confirmation delivery is supplied."
     },
     {
       "id": "SRC-GOOGLE-CONSENT-SETUP",
@@ -1458,7 +1499,7 @@
     },
     {
       "id": "SRC-LINEAR-DESIGN-2026",
-      "title": "Linear \u2014 A calmer interface for a product in motion",
+      "title": "Linear — A calmer interface for a product in motion",
       "url": "https://linear.app/now/behind-the-latest-design-refresh",
       "kind": "design-reference",
       "checkedOn": "2026-10-19",
@@ -1467,7 +1508,7 @@
     },
     {
       "id": "SRC-CF-NO-TRANSFORM",
-      "title": "Cloudflare Web Analytics \u2014 automatic injection and no-transform",
+      "title": "Cloudflare Web Analytics — automatic injection and no-transform",
       "url": "https://developers.cloudflare.com/web-analytics/get-started/",
       "kind": "platform-documentation",
       "checkedOn": "2026-10-19",
@@ -1670,7 +1711,7 @@
       "kind": "court-judgment",
       "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Full primary judgment retrieved and read, including paragraphs 42\u201356 and the operative part. Payment-obligation action also applies where payment depends on a later condition. Current EUR-Lex direct requests can show a JavaScript verification challenge."
+      "note": "Full primary judgment retrieved and read, including paragraphs 42–56 and the operative part. Payment-obligation action also applies where payment depends on a later condition. Current EUR-Lex direct requests can show a JavaScript verification challenge."
     },
     {
       "id": "SRC-EU-ORDER-FUHRMANN",
@@ -1697,7 +1738,7 @@
       "kind": "primary-law",
       "checkedOn": "2026-10-19",
       "access": "search-result",
-      "note": "Official indexed judgment/summary: paragraphs 35, 42\u201351 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review."
+      "note": "Official indexed judgment/summary: paragraphs 35, 42–51 and operative part reject the ordinary hyperlink arrangement in that case. Adequate future access and unchanged reproduction matter; the advanced-website question was left open. Direct full-text retrieval encountered a script/robot challenge. Prior Directive 97/7 context; current-law and national application require review."
     },
     {
       "id": "SRC-UK-DUAA-STORAGE",
@@ -1706,7 +1747,7 @@
       "kind": "legislation",
       "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Read Schedule 12 inserting PECR Schedule A1, especially paragraphs 5 and 6 (printed pages 233\u2013234; PDF pages 243\u2013244). This enacted source is read alongside current regulator guidance, not a complete commencement or national-applicability determination."
+      "note": "Read Schedule 12 inserting PECR Schedule A1, especially paragraphs 5 and 6 (printed pages 233–234; PDF pages 243–244). This enacted source is read alongside current regulator guidance, not a complete commencement or national-applicability determination."
     },
     {
       "id": "SRC-IE-DPC-COOKIE-NOTE",
@@ -1742,7 +1783,7 @@
       "kind": "secondary-explainer",
       "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Discovery aid linking ANPD\u2019s final guide. Its mandatory wording is not substituted for the regulator\u2019s recommendation status or a purpose-specific LGPD legal-basis assessment."
+      "note": "Discovery aid linking ANPD’s final guide. Its mandatory wording is not substituted for the regulator’s recommendation status or a purpose-specific LGPD legal-basis assessment."
     },
     {
       "id": "SRC-CHROME-COOKIE-HELP-PT",
@@ -1764,7 +1805,7 @@
     },
     {
       "id": "SRC-IUB-QC-LAW25",
-      "title": "iubenda: Qu\u00e9bec new privacy law preparation overview",
+      "title": "iubenda: Québec new privacy law preparation overview",
       "url": "https://help.iubenda.com/wp-content/uploads/2023/02/Quebecs-New-Privacy-Law-PDF.pdf",
       "kind": "secondary-explainer",
       "checkedOn": "2026-10-19",
@@ -2080,7 +2121,9 @@
         "REQ-PRODUCT-PUBLICATION-CHECK",
         "REQ-PRODUCT-CONSUMER-PACKS",
         "REQ-PRODUCT-SPECIALIST-PACKS",
-        "REQ-PRODUCT-RIGHTS-AUTHORING"
+        "REQ-PRODUCT-RIGHTS-AUTHORING",
+        "REQ-PRODUCT-RIGHTS-LOCALIZATION",
+        "REQ-PRODUCT-STORAGE-AUTHORING"
       ]
     }
   ],
@@ -2095,7 +2138,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-GDPR",
-          "locator": "Articles 12\u201314"
+          "locator": "Articles 12–14"
         },
         {
           "sourceId": "SRC-EU-RIGHTS-GUIDE",
@@ -2146,7 +2189,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-GDPR",
-          "locator": "Articles 6(1)(f), 13(1)(d), 14(2)(b); Official Journal PDF pp. 36, 41\u201342"
+          "locator": "Articles 6(1)(f), 13(1)(d), 14(2)(b); Official Journal PDF pp. 36, 41–42"
         }
       ],
       "discoverySourceIds": [],
@@ -2212,7 +2255,7 @@
         },
         {
           "sourceId": "SRC-EU-EDPB-CONSENT",
-          "locator": "Sections 5.1\u20135.2, paragraphs 104\u2013120"
+          "locator": "Sections 5.1–5.2, paragraphs 104–120"
         }
       ],
       "discoverySourceIds": [
@@ -2302,7 +2345,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-EDPB",
-          "locator": "Practices A\u2013E and K"
+          "locator": "Practices A–E and K"
         }
       ],
       "discoverySourceIds": [
@@ -2382,7 +2425,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-DE-TDDDG",
-          "locator": "Section 25(1)\u2013(2)"
+          "locator": "Section 25(1)–(2)"
         }
       ],
       "discoverySourceIds": [
@@ -2603,7 +2646,7 @@
         },
         {
           "sourceId": "SRC-UK-DUAA-STORAGE",
-          "locator": "Schedule 12 inserting PECR Schedule A1, paragraphs 5\u20136, printed pages 233\u2013234"
+          "locator": "Schedule 12 inserting PECR Schedule A1, paragraphs 5–6, printed pages 233–234"
         }
       ],
       "discoverySourceIds": [
@@ -2690,7 +2733,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-BR-ANPD",
-          "locator": "Printed pp. 30\u201333 (PDF indexes 29\u201332): first/second-layer rejection, purpose categories, consent-based choices off by default, and patterns to avoid."
+          "locator": "Printed pp. 30–33 (PDF indexes 29–32): first/second-layer rejection, purpose categories, consent-based choices off by default, and patterns to avoid."
         }
       ],
       "discoverySourceIds": [
@@ -2810,11 +2853,11 @@
       "title": "Profiling/identification/location functions off by default",
       "kind": "regulator-interpretation",
       "summary": "Notify people of covered functions and how to activate them; do not activate them by default.",
-      "appliesWhen": "Qu\u00e9bec private-sector collection rules cover the declared technology.",
+      "appliesWhen": "Québec private-sector collection rules cover the declared technology.",
       "sourceRefs": [
         {
           "sourceId": "SRC-QC-CAI",
-          "locator": "Private-sector collection: necessity; Technologies d\u2019identification, de localisation et de profilage; separate biometric and automated-decision sections."
+          "locator": "Private-sector collection: necessity; Technologies d’identification, de localisation et de profilage; separate biometric and automated-decision sections."
         }
       ],
       "discoverySourceIds": [
@@ -2836,7 +2879,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Scope and exceptions need Qu\u00e9bec-specific review; this is not a statement that every cookie is covered.",
+      "caveats": "Scope and exceptions need Québec-specific review; this is not a statement that every cookie is covered.",
       "implementationRefs": [
         "packages/notabenda/src/technology-collection.ts",
         "packages/notabenda/src/technology.css",
@@ -2850,7 +2893,8 @@
         "examples/technology/client.mjs",
         "examples/technology/style.css",
         "docs/TECHNOLOGY-COLLECTION.md",
-        "scripts/measure-bundles.mjs"
+        "scripts/measure-bundles.mjs",
+        "packages/notabenda/src/technology-collection-policy.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/technology-collection.test.mjs",
@@ -3043,7 +3087,7 @@
         },
         {
           "sourceId": "SRC-US-CA-AG-RIGHTS",
-          "locator": "Sections B\u2013E: designated methods; account creation; verification distinctions"
+          "locator": "Sections B–E: designated methods; account creation; verification distinctions"
         }
       ],
       "discoverySourceIds": [
@@ -3089,7 +3133,7 @@
         },
         {
           "sourceId": "SRC-US-CA-REGS-2026",
-          "locator": "\u00a77025(b)\u2013(c), pp. 44\u201348"
+          "locator": "§7025(b)–(c), pp. 44–48"
         }
       ],
       "discoverySourceIds": [
@@ -3238,7 +3282,7 @@
         },
         {
           "sourceId": "SRC-US-VA-CODE",
-          "locator": "\u00a759.1-571 definitions; \u00a759.1-578(A)(5); \u00a759.1-577(C)"
+          "locator": "§59.1-571 definitions; §59.1-578(A)(5); §59.1-577(C)"
         }
       ],
       "discoverySourceIds": [
@@ -3318,7 +3362,7 @@
       "title": "Separate legal basis and disclosure from explicit consent",
       "kind": "regulator-interpretation",
       "summary": "Identify an applicable processing condition; do not substitute disclosure or a blanket checkbox for required explicit consent.",
-      "appliesWhen": "T\u00fcrkiye Law 6698 applies to the declared personal-data processing.",
+      "appliesWhen": "Türkiye Law 6698 applies to the declared personal-data processing.",
       "sourceRefs": [
         {
           "sourceId": "SRC-TR-KVKK",
@@ -3439,7 +3483,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-DE-CANCEL",
-          "locator": "Section 312k(1)\u2013(6): direct confirmation page, timing, savable declaration and electronic confirmation"
+          "locator": "Section 312k(1)–(6): direct confirmation page, timing, savable declaration and electronic confirmation"
         }
       ],
       "discoverySourceIds": [
@@ -4119,7 +4163,7 @@
         },
         {
           "sourceId": "SRC-EU-ORDER-CONNY",
-          "locator": "Paragraphs 44\u201356 and operative part: conditional payment obligations"
+          "locator": "Paragraphs 44–56 and operative part: conditional payment obligations"
         },
         {
           "sourceId": "SRC-EU-ORDER-FUHRMANN",
@@ -4967,7 +5011,7 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-GDPR",
-          "locator": "Articles 5(1)(c),(e), 5(2), 17(1)\u2013(3), 19"
+          "locator": "Articles 5(1)(c),(e), 5(2), 17(1)–(3), 19"
         }
       ],
       "discoverySourceIds": [],
@@ -5271,11 +5315,11 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-EU-EPRIVACY-MARKETING",
-          "locator": "Article 13(1)\u2013(5)"
+          "locator": "Article 13(1)–(5)"
         },
         {
           "sourceId": "SRC-EU-EDPB-CONSENT",
-          "locator": "Sections 3.1.3, 3.3.1, 3.4, 5.1\u20135.2"
+          "locator": "Sections 3.1.3, 3.3.1, 3.4, 5.1–5.2"
         }
       ],
       "discoverySourceIds": [],
@@ -5315,15 +5359,15 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-CA-CASL-S10",
-          "locator": "Subsection 10(1); distinguish 10(9)\u2013(10)"
+          "locator": "Subsection 10(1); distinguish 10(9)–(10)"
         },
         {
           "sourceId": "SRC-CA-CRTC-548",
-          "locator": "Paragraphs 5\u201320, particularly 16 and 20"
+          "locator": "Paragraphs 5–20, particularly 16 and 20"
         },
         {
           "sourceId": "SRC-CA-CRTC-549",
-          "locator": "Paragraphs 4\u20138"
+          "locator": "Paragraphs 4–8"
         }
       ],
       "discoverySourceIds": [],
@@ -5404,11 +5448,11 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-DE-CANCEL",
-          "locator": "Section 312k(2)\u2013(5)"
+          "locator": "Section 312k(2)–(5)"
         },
         {
           "sourceId": "SRC-DE-WITHDRAW",
-          "locator": "Section 356a(1)\u2013(5)"
+          "locator": "Section 356a(1)–(5)"
         },
         {
           "sourceId": "SRC-EU-WITHDRAWAL",
@@ -5603,7 +5647,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Catalog facts and imported categories do not decide a site\u2019s legal basis, provider role, actual settings, necessity or complete disclosure. Entries remain unreviewed after an operator declares actual use. Purposes must be explicitly declared through setup authoring or imported config; setup does not invent their meaning or legal basis. Private report pins do not automatically become archived legal-release evidence.",
+      "caveats": "Catalog facts and imported categories do not decide a site’s legal basis, provider role, actual settings, necessity or complete disclosure. Entries remain unreviewed after an operator declares actual use. Purposes must be explicitly declared through setup authoring or imported config; setup does not invent their meaning or legal basis. Private report pins do not automatically become archived legal-release evidence.",
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
         "packages/notabenda/src/catalog-seed.ts",
@@ -6035,7 +6079,7 @@
         "site/test/host.test.mjs",
         "packages/notabenda-cf/test/orders.test.mjs"
       ],
-      "implementationNote": "Optional bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes and binds explicit qualifying facts, product, producer, duration, review and wording. A fixed maintainer fixture fills only the official template\u2019s three fields with pinned Inter outlines, records source/font provenance and compares fixed artwork. Light/dark examples include optional enlarged inspection; software QR decoding uses development-only tools. No public template generator, automatic no-guarantee inference, payment action or confirmation."
+      "implementationNote": "Optional bounded PNG/JPEG/outlined-SVG importer preserves original binary bytes and binds explicit qualifying facts, product, producer, duration, review and wording. A fixed maintainer fixture fills only the official template’s three fields with pinned Inter outlines, records source/font provenance and compares fixed artwork. Light/dark examples include optional enlarged inspection; software QR decoding uses development-only tools. No public template generator, automatic no-guarantee inference, payment action or confirmation."
     },
     {
       "id": "REQ-PRODUCT-GUARANTEE-NOTICE",
@@ -6146,7 +6190,7 @@
         },
         {
           "sourceId": "SRC-EU-DURABLE-CONTENT-SERVICES",
-          "locator": "Paragraphs 35, 42\u201351 and operative part; earlier directive context"
+          "locator": "Paragraphs 35, 42–51 and operative part; earlier directive context"
         }
       ],
       "discoverySourceIds": [],
@@ -6198,7 +6242,7 @@
         },
         {
           "sourceId": "SRC-EU-DURABLE-CONTENT-SERVICES",
-          "locator": "Paragraphs 35, 42\u201351 and operative part; earlier directive context"
+          "locator": "Paragraphs 35, 42–51 and operative part; earlier directive context"
         }
       ],
       "discoverySourceIds": [],
@@ -6364,7 +6408,7 @@
         },
         {
           "sourceId": "SRC-JSON-SCHEMA-2020-12",
-          "locator": "Sections 8.2.3\u20138.2.4 and 9: local references, definitions and schema processing."
+          "locator": "Sections 8.2.3–8.2.4 and 9: local references, definitions and schema processing."
         }
       ],
       "discoverySourceIds": [],
@@ -6423,7 +6467,7 @@
       "title": "Accessible rights entry in the first cookie layer",
       "kind": "regulator-recommendation",
       "summary": "Expose a clear host-supplied rights link in the initial notice and detailed preferences.",
-      "appliesWhen": "The operator applies ANPD\u2019s cookie-banner recommendations after assessing the actual processing context.",
+      "appliesWhen": "The operator applies ANPD’s cookie-banner recommendations after assessing the actual processing context.",
       "sourceRefs": [
         {
           "sourceId": "SRC-BR-ANPD",
@@ -6476,7 +6520,7 @@
       "title": "Browser-control guidance in cookie preferences",
       "kind": "regulator-recommendation",
       "summary": "Offer host-supplied browser-control instructions and links, including limitations for the actual trackers.",
-      "appliesWhen": "The operator applies ANPD\u2019s cookie-banner recommendations after assessing the actual processing context.",
+      "appliesWhen": "The operator applies ANPD’s cookie-banner recommendations after assessing the actual processing context.",
       "sourceRefs": [
         {
           "sourceId": "SRC-BR-ANPD",
@@ -6933,7 +6977,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "The native page and authoring support English only. Authoring supplies no entitlement, intake, identity, response deadline, fulfillment or appeal workflow. Historical revision uniqueness, applicable submission methods and working destinations remain host work. The supporting page stays outside the three pinned legal-document kinds.",
+      "caveats": "Non-English native pages and authoring require complete localization.rights messages; operator setup remains English. Authoring supplies no entitlement, intake, identity, response deadline, fulfillment or appeal workflow. Historical revision uniqueness, applicable submission methods and working destinations remain host work. The supporting page stays outside the three pinned legal-document kinds.",
       "implementationRefs": [
         "packages/notabenda/src/setup-rights.ts",
         "packages/notabenda/src/setup-rights-ui.ts",
@@ -6954,6 +6998,98 @@
         "docs/verification/rights-authoring.md"
       ],
       "implementationNote": "Complete explicit settings and current public baseline are validated before returning a detached draft. Changing the public page requires a different current revision and resets review. Privacy route/link update together after explicit acknowledgement. UI cancel/import/reset and CLI final confirmation fence stale work. Preview links cannot navigate or contact workflows."
+    },
+    {
+      "id": "REQ-PRODUCT-RIGHTS-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Complete host-supplied localization for privacy request pages",
+      "kind": "product-standard",
+      "summary": "Require a complete bounded plain-text rights-page message set for non-English native presentation and authoring. Reuse the matching site language/direction/revision/review metadata and document navigation labels; preserve operator facts, inert preview and immutable release boundaries.",
+      "appliesWhen": "A host renders, authors or previews a native non-English privacy request page.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-RIGHTS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-RIGHTS-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host-supplied demonstration translations are not reviewed legal-language packs. Missing page messages remain unresolved without changing the site locale. Operator setup and preview chrome stay English. Entitlement, intake, identity, deadlines, fulfillment and appeals remain host work; this supporting page stays outside the three pinned legal-document HTML kinds.",
+      "implementationRefs": [
+        "packages/notabenda/src/rights-localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/rights.ts",
+        "packages/notabenda/src/setup-rights.ts",
+        "packages/notabenda/src/setup-rights-ui.ts",
+        "packages/notabenda/src/setup-preview.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/src/consent.ts",
+        "examples/localization/rights-build.mjs",
+        "examples/localization/build.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/rights-localization.test.mjs",
+        "packages/notabenda/test/setup-rights.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/rights-localization.md"
+      ],
+      "implementationNote": "Public configuration validates exact five-field rights messages. Vanilla/React/Astro share selected page labels, lang/dir and logical spacing. Draft localization remains visible and production-blocking. Authoring compares the complete public baseline, including messages. Consent runtime and backend archive verification project only explicit consent metadata/messages, allowing real notice registration and choice recording from a release with additional page dictionaries."
+    },
+    {
+      "id": "REQ-PRODUCT-STORAGE-AUTHORING",
+      "jurisdiction": "PRODUCT",
+      "title": "Explicit storage inventory authoring and affected material service versions",
+      "kind": "product-standard",
+      "summary": "Author bounded ordinary storage batches through a shared baseline-bound API, operator editor and CLI. Require actual public facts, explicit classification and public necessity reasons, fresh material versions for every enrolled old/new owner, and separate review of previous markers/technology inputs. Preserve restrictions, policies, enrollment and protected exception ownership.",
+      "appliesWhen": "An operator adds, edits or removes storage declarations in a local setup draft.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-INVENTORY"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-STORAGE-AUTHORING"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "No exemption or actual storage behavior is inferred. Exception-owned storage needs full separate profile review; technology owners need a revised explicit binding and descriptor rebuild. Disclosure types exceed the built-in cleanup adapter. Historical version uniqueness, old-marker migration, inaccessible storage and actual loader/network checks remain host work.",
+      "implementationRefs": [
+        "packages/notabenda/src/setup-storage.ts",
+        "packages/notabenda/src/setup-storage-ui.ts",
+        "packages/notabenda/src/setup-storage-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "examples/setup/build.mjs",
+        "packages/notabenda/src/technology-collection-policy.ts",
+        "packages/notabenda/src/catalog-plain.ts",
+        "packages/notabenda-cf/src/catalog-plain.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/setup-storage.test.mjs",
+        "packages/notabenda/test/setup-storage-ui.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/storage-authoring.md"
+      ],
+      "implementationNote": "A closed atomic batch changes only declared storage and explicit affected enrolled service versions. The complete public baseline rejects stale work. Old declarations and scope changes remain in a separate private review; config/source files are not overwritten. UI search pages are bounded; unapplied edits remain separate, while saves invalidate prepared exports. Actual compatibility/compiled runtimes reject old grants under the new scope and preserve restrictive refusal/solicitation behavior. Browser-safe platform hashing detaches declarations before awaiting and rechecks the current host baseline before adoption. Cancel/import/reset/destroy abandon pending work. Exact storage names are preserved; stale cards reopen current facts. The cumulative private review retains each site context across reset/import, bounded to 128 steps/512 KiB, and must be downloadable before adoption. Setup configs remain within the 512 KiB import bound."
     }
   ],
   "verification": [
@@ -8348,12 +8484,42 @@
         "REQ-PRODUCT-RIGHTS-AUTHORING"
       ],
       "status": "automated",
-      "expected": "Detached atomic page/link edits, explicit complete settings, no inferred destinations/rights, revision and stale-baseline checks, preserved unrelated settings, inert supporting preview, English limitation, UI/CLI parity and packaged strict types.",
+      "expected": "Detached atomic page/link edits, explicit complete settings, no inferred destinations/rights, revision and stale-baseline checks, preserved unrelated settings, inert supporting preview, explicit missing-translation limitation, UI/CLI parity and packaged strict types.",
       "testRefs": [
         "packages/notabenda/test/setup-rights.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/accessibility.test.mjs",
         "docs/verification/rights-authoring.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-RIGHTS-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-RIGHTS-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Complete/closed bounded messages, explicit missing-language limits, escaped visitor labels, lang/dir and RTL ordinals, preserved locale and stale-dictionary authoring fences, inert supporting preview, release retention, consent registration and actual choice recording without page messages, and installed strict types.",
+      "testRefs": [
+        "packages/notabenda/test/rights-localization.test.mjs",
+        "packages/notabenda/test/setup-rights.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/rights-localization.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-STORAGE-AUTHORING",
+      "requirementIds": [
+        "REQ-PRODUCT-STORAGE-AUTHORING"
+      ],
+      "status": "automated",
+      "expected": "Atomic detached batches, exact affected-owner versions, stale/malformed/no-op/duplicate rejection, exception/technology boundaries, preserved policies/guards/enrollment, retained migration facts, actual grant/refusal behavior, UI cancel/confirm/search/reset, private CLI review and installed types. Exact whitespace-bearing keys, fresh stale-card facts, hostile inherited array hooks, async cancellation/host replacement, browser/build hash parity without Node dependencies, cumulative site-bound migration history and pre-adoption download limits.",
+      "testRefs": [
+        "packages/notabenda/test/setup-storage.test.mjs",
+        "packages/notabenda/test/setup-storage-ui.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/storage-authoring.md"
       ]
     }
   ],

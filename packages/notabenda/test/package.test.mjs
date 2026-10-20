@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-STORAGE-AUTHORING
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING
@@ -265,6 +267,11 @@ import {createRightsDraftPlan,normalizeRightsDraftInput,type RightsDraftSettings
 import {mountRightsEditor} from '@notabenda/core/setup/rights/ui';
 import {mountLegalPreview,type PreviewPageKind} from '@notabenda/core/setup/preview';
 declare const rightsSettings:RightsDraftSettings;
+import type {RightsMessages} from '@notabenda/core';
+declare const rightsMessages:RightsMessages;
+config.localization!.rights=rightsMessages;
+// @ts-expect-error the visitor message set is closed
+rightsMessages.unknown='text';
 const rightsDraft=createRightsDraftPlan(config,{baseline:config,settings:rightsSettings,linkPrivacyToPage:true});
 mountRightsEditor(container,{getConfig:()=>rightsDraft.config,onChange:plan=>{void plan.privacyLink.to;}}).refresh({discardDraft:true});
 const supportingKind:PreviewPageKind='rights';mountLegalPreview(container,{config:rightsDraft.config,initialDocument:supportingKind});
@@ -272,6 +279,17 @@ const supportingKind:PreviewPageKind='rights';mountLegalPreview(container,{confi
 createRightsDraftPlan(config,{baseline:config,settings:rightsSettings});
 // @ts-expect-error page authoring cannot self-declare reviewed status
 rightsSettings.reviewStatus='reviewed';
+`);
+    for(const file of ['dist/setup-storage.js','dist/setup-storage-ui.js','dist/setup-storage-cli.js','dist/setup-storage.d.ts','dist/setup-storage-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
+    const storageImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createStorageDraftPlan,normalizeStorageDraftInput} from '@notabenda/core/setup/storage';import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';if([createStorageDraftPlan,normalizeStorageDraftInput,mountStorageEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(storageImport.status,0,storageImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createStorageDraftPlan,type StorageDraftItem} from '@notabenda/core/setup/storage';
+import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';
+declare const storageItem:StorageDraftItem;
+const storageDraft=await createStorageDraftPlan(config,{baseline:config,changes:[{action:'add',item:storageItem}],serviceScopes:[]});
+mountStorageEditor(container,{getConfig:()=>storageDraft.config,onChange:plan=>{void plan.scopeChanges;void plan.technologyBindings;}}).show();
+// @ts-expect-error exception storage requires complete separate profile review
+const unsupported:StorageDraftItem={id:'example',name:'marker',type:'cookie',serviceId:'example',duration:'One session',classification:'exception',exceptionId:'profile'};
 `);
     const controlsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentDraftPlan} from '@notabenda/core/setup/consent';import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';if([createConsentDraftPlan,mountConsentEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(controlsImport.status,0,controlsImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
@@ -318,5 +336,7 @@ test('browser/SSR entry graph has no Node imports or runtime framework dependenc
   }
   await walk(new URL('../dist/index.js', import.meta.url));
   await walk(new URL('../dist/discovery-ui.js', import.meta.url));
+  await walk(new URL('../dist/setup-storage.js', import.meta.url));
+  await walk(new URL('../dist/setup-storage-ui.js', import.meta.url));
   assert.ok(seen.size >= 3);
 });

@@ -3,7 +3,7 @@
 
 The **Privacy requests** pack can produce a draft page with your wording, request destinations, public email or phone fallback, and next steps. It also updates `privacy.rightsUrl` to that page route after an explicit decision. This is a navigation page: your application still handles requests, identity checks, deadlines, responses and appeals.
 
-The packaged page and editor currently support English only. Keep an imported site's locale intact. Other locales need separate presentation support; a collection-notice dictionary does not translate this page.
+Non-English native pages and authoring require a complete `localization.rights` dictionary in the site's existing localization declaration. The operator editor remains English. Keep the actual locale intact and supply the page messages; a collection-notice dictionary cannot translate this page. See [request-page localization](LOCALIZATION.md#privacy-request-pages).
 
 ## In guided setup
 

@@ -270,4 +270,7 @@ To retain the current catalog references with a policy release, use [the build f
 <!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
 ## Configure privacy request links
 
-The **Privacy requests** pack now opens a structured editor for actual public wording, destinations, fallback contact and next steps. Saving requires an explicit privacy-link replacement decision and returns the page to draft. The same bounded proposal works with `wizard --rights FILE`. The native page and editor currently support English only. See [request-page authoring](RIGHTS-AUTHORING.md) for the complete JSON format, local preview and host responsibilities.
+The **Privacy requests** pack now opens a structured editor for actual public wording, destinations, fallback contact and next steps. Saving requires an explicit privacy-link replacement decision and returns the page to draft. The same bounded proposal works with `wizard --rights FILE`. Non-English native pages require complete `localization.rights` messages; the operator editor remains English. See [request-page authoring](RIGHTS-AUTHORING.md) for the complete JSON format, local preview and host responsibilities.
+
+<!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
+Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).

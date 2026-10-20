@@ -128,6 +128,31 @@ See the [collection guide](COLLECTION.md#language-and-release-verification) and 
 
 This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls and static direct-collection notices. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Service-directory UI, indirect-collection notice UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Service-directory UI, indirect-collection notice UI, processing-choice UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.
+
+<!-- @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION -->
+## Privacy request pages
+
+A native request page uses the operator's `rightsCenter` wording and a complete `localization.rights` dictionary for its fixed visitor labels:
+
+```json
+{
+  "yourInformation": "Suas informações",
+  "requestOption": "OPÇÃO DE SOLICITAÇÃO",
+  "draft": "Informações sobre solicitações — rascunho para revisão.",
+  "contactHeading": "Fale com o responsável",
+  "nextStepsHeading": "Próximos passos"
+}
+```
+
+Add this object to the existing complete site localization declaration. It shares that declaration's canonical locale, direction, revision and review status. Page skip navigation and the header/footer request label reuse `localization.documents.skipToContent` and `privacyRequests`. Every selected message must be nonempty plain text without markup, control characters or placeholders. Unknown fields, incomplete sets and messages over 2,000 UTF-8 bytes are rejected.
+
+Supply the page title, introduction, action names/descriptions/scope/link labels, fallback explanation and next steps separately in `rightsCenter`, in the intended language. The dictionary translates no operator facts or request workflow. The Portuguese example is demonstration wording for operator review, not a reviewed legal-language pack or a decision about applicable rights. [Try the example](/localization/rights/).
+
+Non-English native rendering, setup authoring and supporting-page preview require this complete dictionary. Missing messages leave the page unresolved; other legal-document previews remain available. The setup interface itself remains English. Do not change the site's language to bypass a missing translation.
+
+The full page and fragment set `lang` and `dir`; action ordinals use isolated text and next-step lists use logical spacing. The vanilla renderer, React wrapper, Astro component and JSON/Markdown/MDX builds share the same page rendering. Preview links remain inactive.
+
+The complete public dictionary is included in the hashed release configuration. Revise `localization.revision` when changing its wording and retain releases under the normal review process. The request page remains outside the three pinned legal-document HTML kinds. Its message set is excluded from the compiled cookie-consent runtime and consent-only notices; adding page copy does not grant permission or configure a request process. See [request-page authoring](RIGHTS-AUTHORING.md) and [verification](verification/rights-localization.md).

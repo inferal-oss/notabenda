@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-STORAGE-AUTHORING
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
@@ -16,6 +18,10 @@ import {createWorkspaceOverviewWorker} from '@notabenda/cloudflare';
 import {mountLegalPreview} from '@notabenda/core/setup/preview';
 import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';
 import {mountRightsEditor} from '@notabenda/core/setup/rights/ui';
+import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';
+import {renderRightsPage} from '@notabenda/core';
+import {localizedExampleConfig} from '../../examples/localization/config.mjs';
+import {localizedRightsConfig} from '../../examples/localization/rights-build.mjs';
 const shell='<!doctype html><html lang="en"><head><title>Component check</title></head><body><main id="main"><h1>Settings</h1><div id="component"></div></main></body></html>';
 function visibleLabels(document){
  const words=value=>value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -131,4 +137,17 @@ test('request page editor exposes labeled fields, grouped destinations and link 
  const data=await accessibilityFixtureData(),audit=await createAccessibilityAudit(shell,{label:'request page editor'}),d=audit.dom.window.document;
  const ui=mountRightsEditor(d.querySelector('#component'),{getConfig:()=>data.config,onChange:()=>{}});
  try{ui.open();clean(await audit.scan());d.querySelector('.nb-setup-rights-actions button').click();assert.ok(d.activeElement.hasAttribute('aria-invalid'));clean(await audit.scan());const add=[...d.querySelectorAll('button')].find(b=>b.textContent==='Add destination');add.click();clean(await audit.scan());}finally{ui.destroy();audit.close();}
+});
+
+// @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
+test('localized request pages label sections and links in their selected language',async()=>{
+ const data=await accessibilityFixtureData(),config=localizedRightsConfig(localizedExampleConfig(data.config));
+ clean(await auditAccessibility(renderRightsPage(config,{mode:'preview'}),{label:'Portuguese request page'}));
+});
+
+// @requirements REQ-PRODUCT-STORAGE-AUTHORING
+test('storage authoring names public fields, affected versions and the explicit local decision',async()=>{
+ const data=await accessibilityFixtureData(),audit=await createAccessibilityAudit(shell,{label:'storage authoring editor'}),d=audit.dom.window.document;
+ const ui=mountStorageEditor(d.querySelector('#component'),{getConfig:()=>data.config,onChange:()=>{}});
+ try{ui.open();clean(await audit.scan());[...d.querySelectorAll('button')].find(b=>b.textContent==='Save storage declaration').click();assert.ok(d.activeElement.hasAttribute('aria-invalid'));clean(await audit.scan());}finally{ui.destroy();audit.close();}
 });

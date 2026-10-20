@@ -4,7 +4,7 @@ A rights page links visitors to the operator's request workflows. Configure the 
 
 The first implementation is navigation and public information. It does not collect request contents, verify identity, submit or acknowledge a request, produce a personal-data export, delete application data or process an appeal. The [feature remains partial](FEATURES.md#feat-rights); those application workflows remain separate.
 
-The packaged renderer currently supports English only. Keep other site locales intact; a collection-notice dictionary does not translate this supporting page.
+Non-English native pages require a complete `localization.rights` dictionary in the matching site locale. Keep the actual locale intact; a collection-notice dictionary does not translate this supporting page. See [request-page localization](LOCALIZATION.md#privacy-request-pages).
 
 Use the [request-page setup editor or explicit CLI proposal](RIGHTS-AUTHORING.md) to author a local draft, or supply the declaration directly below.
 
@@ -68,7 +68,7 @@ An ordinary link is the initial application bridge. It can reach an existing acc
 
 Do not use a backoffice evidence download as an individual's complete data-access response. Its authorized records are a selected evidence store, not all application data. Likewise, removing consent evidence is distinct from fulfilling an erasure request. Contract withdrawal/cancellation stays separate from privacy-consent withdrawal.
 
-[Try the fictional rights center](http://127.0.0.1:4179/rights/) or [its midnight version](http://127.0.0.1:4179/dark/rights/). Each action opens an explanatory, script-free fictional destination; nothing is submitted and no personal information is collected.
+[Try the fictional rights center](http://127.0.0.1:4179/rights/) or [its midnight version](http://127.0.0.1:4179/dark/rights/) or [the Portuguese page](/localization/rights/). Each action opens an explanatory, script-free fictional destination; nothing is submitted and no personal information is collected.
 
 ## Connected research and remaining work
 

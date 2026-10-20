@@ -284,6 +284,16 @@
       "types": "./dist/setup-rights-ui.d.ts",
       "import": "./dist/setup-rights-ui.js",
       "default": "./dist/setup-rights-ui.js"
+    },
+    "./setup/storage": {
+      "types": "./dist/setup-storage.d.ts",
+      "import": "./dist/setup-storage.js",
+      "default": "./dist/setup-storage.js"
+    },
+    "./setup/storage/ui": {
+      "types": "./dist/setup-storage-ui.d.ts",
+      "import": "./dist/setup-storage-ui.js",
+      "default": "./dist/setup-storage-ui.js"
     }
   },
   "bin": {

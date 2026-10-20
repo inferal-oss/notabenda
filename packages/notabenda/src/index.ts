@@ -1,3 +1,4 @@
+export type {RightsMessages} from './rights-localization-policy.js';
 export {renderRightsCenter,renderRightsPage} from './rights.js';
 export type {RightsCenterRenderOptions} from './rights.js';
 export {evaluateScopeGuards,ScopeGuardError} from './scope-guards.js';
