@@ -75,7 +75,7 @@ export async function serveDemo(request,env,{protect,readBody}){
    }
    response=new Response(content,{status:response.status,headers:assetHeaders});
   }else if(['/demo/admin/setup','/demo/admin/setup/'].includes(path)){
-   response=await createSetupWorker({...adminPresentation('/demo/admin'),basePath:'/demo/admin/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css'}).fetch(request,env);
+   response=await createSetupWorker({...adminPresentation('/demo/admin'),basePath:'/demo/admin/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css',cartridgeStylesheetUrl:'/assets/cartridges.css'}).fetch(request,env);
   }else{
    const forwarded=new Request(request.url,{method:request.method,headers,...(body?{body:JSON.stringify(body)}:{})});response=await stub.fetch(forwarded);
   }

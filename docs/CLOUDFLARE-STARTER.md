@@ -56,3 +56,5 @@ Removing the mount/routes stops serving the integration; uninstalling packages o
 For optional maintainer runtime verification, build the workspace and run `node scripts/check-cf-starter-runtime.mjs`. It uses a disposable loopback Worker, verifies default denial, substitutes fictional host permissions only in that test copy, checks private archive RPC and restarts against the same SQLite state. It stops its own server and retains the ignored fixture for inspection. This is optional project tooling, not an adopter CI requirement.
 
 See [the CF API](../packages/notabenda-cf/README.md), [scope decisions](SCOPE.md), [deployment feature status](FEATURES.md#feat-deployment) and [verification](verification/cloudflare-starter.md).
+
+Setup starts with the reusable cartridge library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all three generated assets.

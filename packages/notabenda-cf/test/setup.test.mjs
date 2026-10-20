@@ -10,3 +10,11 @@ test('setup worker requires host access on every request and never accepts quest
   const html=await (await worker.fetch(new Request('https://example.test/workspace/setup'),{})).text();assert.match(html,/data-notabenda-setup/);assert.match(html,/src="\/assets\/setup.mjs"/);assert.doesNotMatch(html,/private exception|<script>/);
 });
 test('setup asset paths cannot inject markup or third-party script origins',()=>{for(const scriptUrl of ['https://remote.test/x.js','//remote.test/x.js','/assets/../x.js','/assets/x.js?secret=1','/assets/" onload="bad'])assert.throws(()=>createSetupWorker({...options,scriptUrl,authorize:()=>true}));});
+// @requirements REQ-PRODUCT-CARTRIDGES
+test('cartridge entry loads only the host-provided local assets and keeps setup authorization',async()=>{
+ for(const cartridgeStylesheetUrl of ['https://remote.test/style.css','//remote.test/style.css','/assets/../style.css','/style.css?token=private','/x" onclick="bad'])assert.throws(()=>createSetupWorker({...options,cartridgeStylesheetUrl,authorize:()=>true}));
+ const cartridgeStylesheetUrl='/assets/cartridges.css';
+ const denied=createSetupWorker({...options,cartridgeStylesheetUrl,authorize:()=>false});assert.equal((await denied.fetch(new Request('https://example.test/workspace/setup'),{})).status,403);
+ const worker=createSetupWorker({...options,cartridgeStylesheetUrl,authorize:()=>true}),response=await worker.fetch(new Request('https://example.test/workspace/setup'),{}),html=await response.text();
+ assert.equal(response.status,200);assert.match(html,/href="\/assets\/cartridges.css"/);assert.match(html,/data-notabenda-setup/);assert.doesNotMatch(html,/class="setup-intro"/);assert.match(response.headers.get('Cache-Control'),/private, no-store/);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/connect-src|https:/);
+});

@@ -83,7 +83,7 @@ export async function serveHost(input, env) {
   if (isProtected(path)) {
     const denied = await hostAuthorization(request,env); if(denied) return denied;
     try {
-      if(['/backoffice/setup','/backoffice/setup/'].includes(path))return protectedResponse(await createSetupWorker({...adminPresentation('/backoffice'),basePath:'/backoffice/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css'}).fetch(request,env));
+      if(['/backoffice/setup','/backoffice/setup/'].includes(path))return protectedResponse(await createSetupWorker({...adminPresentation('/backoffice'),basePath:'/backoffice/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css',cartridgeStylesheetUrl:'/assets/cartridges.css'}).fetch(request,env));
       if (/^\/backoffice(?:\/|$)/u.test(path) || /^\/demo\/(?:agreements|choices|processing)(?:\/|$)/u.test(path)) {
         let forwarded=request;
         if(path.startsWith('/demo/agreements/')||path==='/demo/choices/record'||path==='/demo/processing/record') {

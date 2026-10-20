@@ -130,4 +130,7 @@ body{font-size:.875rem}.brand{font-size:1rem;letter-spacing:-.035em}.brand-mark,
 
 @media(max-width:500px){.filters{grid-template-columns:minmax(0,1fr)}.filters .search,.filters>.button{grid-column:1;grid-row:auto}.filters>.button{width:100%;min-height:44px}.filters .search input,.filters input,.filters select{font-size:1rem}.filter-details>summary{font-size:.8125rem}}
 @media(max-width:30rem){.top{height:auto;min-height:52px;flex-wrap:wrap;gap:4px 12px;padding-block:10px}.top-title{flex:1 1 auto}.top-title strong{overflow-wrap:normal;word-break:normal}.mode{flex-shrink:0}}
+
+/* @requirements REQ-PRODUCT-CARTRIDGES */
+.workspace-setup .cartridge-shell{padding:0;max-width:1180px}.workspace-setup .cartridge-intro h1{font-size:clamp(2rem,4vw,3rem)}.workspace-setup .cartridge-intro{margin-bottom:32px}.workspace-setup .cartridge-intro .eyebrow{margin-top:0}.workspace-setup .cartridge-workspace-heading h1{font-size:clamp(1.8rem,4vw,2.6rem)}
 `;

@@ -14,7 +14,8 @@
     "./dist/guarantees.css",
     "./dist/orders.css",
     "./dist/storage-exceptions.css",
-    "./dist/technology.css"
+    "./dist/technology.css",
+    "./dist/cartridges.css"
   ],
   "files": [
     "dist",
@@ -236,7 +237,13 @@
       "types": "./dist/cartridges.d.ts",
       "import": "./dist/cartridges.js",
       "default": "./dist/cartridges.js"
-    }
+    },
+    "./cartridges/ui": {
+      "types": "./dist/cartridges-ui.d.ts",
+      "import": "./dist/cartridges-ui.js",
+      "default": "./dist/cartridges-ui.js"
+    },
+    "./cartridges.css": "./dist/cartridges.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

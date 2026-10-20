@@ -8,6 +8,8 @@ import {accessibilityFixtureData} from '../../scripts/accessibility-fixtures.mjs
 import {createConsentRuntime,mountControls} from 'notabenda/consent';
 import {createTermsAcceptance,mountTermsAcceptance,createFormPermission,mountFormPermission} from 'notabenda';
 import {mountSetup} from 'notabenda/setup/ui';
+import {mountCartridgeConsole} from 'notabenda/cartridges/ui';
+import {selectCartridges} from 'notabenda/cartridges';
 const shell='<!doctype html><html lang="en"><head><title>Component check</title></head><body><main id="main"><h1>Settings</h1><div id="component"></div></main></body></html>';
 function visibleLabels(document){
  const words=value=>value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -17,6 +19,18 @@ function visibleLabels(document){
  }
 }
 function clean(result){assert.deepEqual(result.violations,[],result.label);assert.deepEqual(result.structural,[],result.label);assert.deepEqual(result.warnings,[],result.label);assert.equal(result.incomplete.some(v=>v.id==='aria-prohibited-attr'),false,result.label+' has unresolved naming semantics');assert.equal(result.environment,'jsdom-semantic-only');assert.deepEqual(result.excludedRules,['color-contrast','label-content-name-mismatch']);}
+
+// @requirements REQ-PRODUCT-CARTRIDGES
+test('reusable cartridge library and its focused setup retain semantic names and focus',async()=>{
+ const audit=await createAccessibilityAudit(shell.replace('<h1>Settings</h1>',''),{label:'cartridge console'}),d=audit.dom.window.document;
+ audit.dom.window.URL.createObjectURL=()=> 'blob:semantic-fixture';audit.dom.window.URL.revokeObjectURL=()=>{};
+ const ui=mountCartridgeConsole(d.querySelector('#component'),{cartridges:selectCartridges(['cookie-choices'])});
+ try{
+  clean(await audit.scan());
+  d.querySelector('.cartridge-library').dispatchEvent(new audit.dom.window.Event('submit',{cancelable:true,bubbles:true}));
+  assert.equal(d.activeElement.textContent,'Let’s make it yours.');clean(await audit.scan());visibleLabels(d);
+ }finally{ui.destroy();audit.close();}
+});
 
 test('the semantic guard catches real markup defects while retaining incomplete results',async()=>{
  for(const tag of new Set(axe.getRules().flatMap(rule=>rule.tags).filter(tag=>/^wcag(?:2|21|22)a{1,2}$/u.test(tag))))assert.ok(accessibilityTags.includes(tag),tag);

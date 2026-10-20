@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-MOBILE
 // @requirements REQ-PRODUCT-A11Y
 /** @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CF-ADMIN */
@@ -11,12 +12,14 @@ export interface SetupWorkerOptions<Env> extends AdminPresentation {
   /** Hosted same-origin module that calls mountSetup from notabenda/setup/ui. */
   scriptUrl:string;
   stylesheetUrl:string;
+  /** Opt into a host module that mounts notabenda/cartridges/ui instead of the questionnaire directly. */
+  cartridgeStylesheetUrl?:string;
 }
 const path=(value:unknown):value is string=>typeof value==='string'&&value.length<=300&&/^\/[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_.-]+)*$/u.test(value)&&!value.split('/').some(part=>part==='.'||part==='..');
 export function createSetupWorker<Env=unknown>(options:SetupWorkerOptions<Env>):AdminWorker<Env> {
-  if(!options||typeof options.authorize!=='function'||!path(options.scriptUrl)||!path(options.stylesheetUrl))throw new Error('Setup needs host authorization and explicit same-origin script/style paths.');
+  if(!options||typeof options.authorize!=='function'||!path(options.scriptUrl)||!path(options.stylesheetUrl)||(options.cartridgeStylesheetUrl!==undefined&&!path(options.cartridgeStylesheetUrl)))throw new Error('Setup needs host authorization and explicit same-origin script/style paths.');
   const basePath=options.basePath??'/admin/notabenda/setup';if(!path(basePath)||basePath.includes('.'))throw new Error('Use a clean setup base path.');
-  const {authorize,scriptUrl,stylesheetUrl}=options;
+  const {authorize,scriptUrl,stylesheetUrl,cartridgeStylesheetUrl}=options;
   const presentation=normalizeAdminPresentation(options);
   return {async fetch(request,env,context){
     const headers=new Headers({'Content-Type':'text/plain; charset=utf-8','Cache-Control':'private, no-store','Pragma':'no-cache','Vary':'Cookie, Authorization','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','X-Robots-Tag':'noindex, nofollow','Content-Security-Policy':"default-src 'none'; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'"});
@@ -27,6 +30,6 @@ export function createSetupWorker<Env=unknown>(options:SetupWorkerOptions<Env>):
     headers.set('Content-Type','text/html; charset=utf-8');
     const nonce=crypto.randomUUID().replaceAll('-','');
     headers.set('Content-Security-Policy',headers.get('Content-Security-Policy')!.replace("style-src 'self'",`style-src 'self' 'nonce-${nonce}'`));
-    return response(renderWorkspaceShell(`<header class="setup-intro"><div><p class="eyebrow">Guided setup</p><h1>Site configuration</h1><p class="intro">Describe your site, its services and processing purposes.<br> Review a local draft before publishing.</p></div><div class="setup-intro-note"><span aria-hidden="true">↳</span><p>Download a site configuration<br>and a private setup report.</p></div></header><div data-notabenda-setup></div><noscript><p>JavaScript is required for this local questionnaire. You can use the CLI wizard instead.</p></noscript>`,{...presentation,basePath,title:'Guided setup',scopeLabel:'Private working draft',nonce},`<link rel="stylesheet" href="${stylesheetUrl}"><script type="module" src="${scriptUrl}"></script>`,'workspace-setup'),200);
+    return response(renderWorkspaceShell(` ${cartridgeStylesheetUrl?'':`<header class="setup-intro"><div><p class="eyebrow">Guided setup</p><h1>Site configuration</h1><p class="intro">Describe your site, its services and processing purposes.<br> Review a local draft before publishing.</p></div><div class="setup-intro-note"><span aria-hidden="true">↳</span><p>Download a site configuration<br>and a private setup report.</p></div></header>`}<div data-notabenda-setup>${cartridgeStylesheetUrl?'<h1>Set up your site</h1><p>Choose a cartridge to prepare a local setup draft.</p>':''}</div><noscript><p>JavaScript is required for this local questionnaire. You can use the CLI wizard instead.</p></noscript>`,{...presentation,basePath,title:'Guided setup',scopeLabel:'Private working draft',nonce},`<link rel="stylesheet" href="${stylesheetUrl}">${cartridgeStylesheetUrl?`<link rel="stylesheet" href="${cartridgeStylesheetUrl}">`:''}<script type="module" src="${scriptUrl}"></script>`,'workspace-setup'),200);
   }};
 }

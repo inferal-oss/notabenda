@@ -45,3 +45,31 @@ Review applicability and wording before applying a policy. These are preview mec
 The current flow produces a draft config, private report and agent brief. Your host still connects the actual components, loaders or recording transport. The selected integration reference lists the scenarios to test. Publication and deployment verification are separate from preparing a draft.
 
 The cartridge approach is being carried through the rest of the product. Advanced configuration remains available in the guides; existing APIs continue to work.
+
+## Put the library in your own application
+
+The website and new Cloudflare starter use the same component exported by `notabenda/cartridges/ui`. Include `notabenda/styles.css` for the questionnaire and `notabenda/cartridges.css` for the library. Both are separate from the smaller visitor consent stylesheet.
+
+```js
+import {mountCartridgeConsole} from 'notabenda/cartridges/ui';
+import 'notabenda/styles.css';
+import 'notabenda/cartridges.css';
+
+const console = mountCartridgeConsole(document.querySelector('#setup'), {
+  documentationBase: '/help/notabenda',
+  exampleLinks: {'cookie-choices': '/try-cookies'},
+  guideUrl: '/help/notabenda/cartridges',
+  mapUrl: '/help/notabenda/compliance-map',
+});
+
+// On navigation away:
+console.destroy();
+```
+
+Destinations are optional. The component does not assume that your application serves Notabenda's website routes. Example/map/guide links must be local paths without query strings; the questionnaire's existing `documentationBase` contract also permits an explicit HTTPS documentation origin. Supply `loadCatalog` only if you want catalog-assisted inventory editing.
+
+For server rendering, insert the result of `renderCartridgeConsole(options)` and mount its `[data-cartridge-console]` element with the same options. The server renderer adds no script, stylesheet, account or storage. A fresh empty mount also works. Use native checkboxes, tab navigation and the ordinary setup button; no drag or gesture is required.
+
+Pass `cartridges: selectCartridges([...])` to preselect work. Pass a private report as `answers`, with its matching `config`, to resume. Conflicting explicit/report selections fail before replacing host content. Going back and adding a cartridge preserves the current editing session. `getDraft()` returns the setup draft after setup has opened; it is undefined while only choosing cartridges. An unavailable browser download API hides the initial agent download without blocking setup. Call `destroy()` when unmounting to release download URLs and listeners.
+
+The Cloudflare `createSetupWorker` accepts an optional `cartridgeStylesheetUrl` alongside the existing host module and questionnaire stylesheet. Use it with a module that mounts this console. The generated starter builds these assets, requires the host's configuration permission for all of them and checks their presence in `notabenda-cf doctor`. Existing hosts can continue mounting `mountSetup` directly.

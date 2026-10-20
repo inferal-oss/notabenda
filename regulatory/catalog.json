@@ -6565,17 +6565,24 @@
         "packages/notabenda/src/cli.ts",
         "site/cartridge-page.mjs",
         "site/cartridges-app.mjs",
-        "site/cartridges.css",
         "site/build.mjs",
         "site/host.mjs",
-        "examples/setup/build.mjs"
+        "examples/setup/build.mjs",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "packages/notabenda-cf/src/setup.ts",
+        "packages/notabenda-cf/templates/src/setup.mjs",
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/cartridges.test.mjs",
         "site/test/cartridges.test.mjs",
-        "docs/verification/cartridges.md"
+        "docs/verification/cartridges.md",
+        "packages/notabenda/test/cartridges-ui.test.mjs",
+        "packages/notabenda-cf/test/setup.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs"
       ],
-      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected cartridge revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser."
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected cartridge revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access."
     }
   ],
   "verification": [
@@ -7849,7 +7856,10 @@
       "testRefs": [
         "packages/notabenda/test/cartridges.test.mjs",
         "site/test/cartridges.test.mjs",
-        "docs/verification/cartridges.md"
+        "docs/verification/cartridges.md",
+        "packages/notabenda/test/cartridges-ui.test.mjs",
+        "packages/notabenda-cf/test/setup.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs"
       ]
     }
   ],

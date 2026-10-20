@@ -122,7 +122,7 @@ for(const [path,route] of docs) {
 for(const section of [...siteSections,sectionForGuide('/guide/requirements')])files[routeFile(guideSectionUrl(section).replace(/\/$/u,''))]=layout(section.title,guideArea(section,guideEntries),{guide:true,guideRoute:guideSectionUrl(section),description:section.description});
 files['guide/index.html']=layout('Build with Notabenda',guideLanding(),{guide:true,guideRoute:'/guide'});
 files['guide/all/index.html']=layout('All guides and reports',allGuidePages(guideEntries),{guide:true,guideRoute:'/guide/all'});
-files['assets/cartridges.css']=await read('site/cartridges.css');
+files['assets/cartridges.css']=await read('packages/notabenda/dist/cartridges.css');
 const cartridgeApp=await buildCartridgeApp({entryPoints:[resolve(root,'site/cartridges-app.mjs')],external:['/assets/catalog-seed.mjs'],bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});
 files['assets/cartridges.mjs']=cartridgeApp.outputFiles[0].text;
 files['start/index.html']=layout('Choose your cartridges',cartridgePage(),{description:'Choose a compliance job, prepare a local draft and connect it to your site.'}).replace('</head>','<link rel="stylesheet" href="/assets/notabenda.css"><link rel="stylesheet" href="/assets/cartridges.css"><script type="module" src="/assets/cartridges.mjs"></script></head>');

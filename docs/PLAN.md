@@ -317,3 +317,5 @@ The optional [UK storage settings](STORAGE-EXCEPTIONS.md) implement declared sta
 ## Product direction: cartridges
 
 The primary product path is now choose a job, prepare its facts and connect it to a site. Treat the framework APIs as supporting integration details. The first slice supplies three basic cartridges, additional functions and specific timing overlays, a shared installed registry, focused manual/CLI setup and an agent brief. Continue this model through preview, connection and operator next actions; avoid adding more isolated feature pages as the default onboarding. See [cartridges](CARTRIDGES.md) and [scope decisions](SCOPE.md#cartridge-product-model).
+
+The installed cartridge UI now supplies optional server rendering, browser mounting/hydration and separate styles. Website/operator setup and new CF starters use the shared component, including private-report resume and host-owned destinations. Continue with evidence-workspace organization and evidence-bound operator next actions; setup selection alone remains a local draft.

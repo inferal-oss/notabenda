@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CARTRIDGES
 import {createConsentStyles} from './consent-styles.mjs';
 import {createConfigSchema} from './config-schema.mjs';
 import {createConfigShapeValidator} from './config-shape-validator.mjs';
@@ -10,6 +11,7 @@ await writeFile(new URL('../dist/consent.css',import.meta.url),createConsentStyl
 await copyFile(new URL('../src/storage-exceptions.css', import.meta.url), new URL('../dist/storage-exceptions.css', import.meta.url));
 // @requirements REQ-QC-PROFILING
 await copyFile(new URL('../src/technology.css', import.meta.url), new URL('../dist/technology.css', import.meta.url));
+await copyFile(new URL('../src/cartridges.css', import.meta.url), new URL('../dist/cartridges.css', import.meta.url));
 await chmod(new URL('../dist/cli.js', import.meta.url), 0o755);
 await mkdir(new URL('../dist/astro/',import.meta.url),{recursive:true});
 for(const file of await readdir(new URL('../src/astro/',import.meta.url)))if(file.endsWith('.astro'))await copyFile(new URL('../src/astro/'+file,import.meta.url),new URL('../dist/astro/'+file,import.meta.url));

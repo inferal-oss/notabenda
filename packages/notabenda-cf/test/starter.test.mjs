@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-PACKAGE REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-CF-HISTORY
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -49,14 +50,14 @@ test('generated host authorizes before assets or DO access and independently gat
    EVIDENCE:{getByName(name){lookups++;assert.equal(name,'notabenda:site-one');return {inspect:async(request,access)=>{received=access;return new Response('scoped');}};}},
   };
   const request=(path,options)=>new Request('https://example.test'+path,options);
-  for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/history','/workspace/setup','/assets/setup.mjs','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
+  for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/history','/workspace/setup','/assets/setup.mjs','/assets/cartridges.css','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
   assert.equal(lookups,0);assert.equal(assets,0);
   const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
-  for(const path of ['/workspace/setup','/assets/setup.mjs'])assert.equal((await read(request(path),env)).status,403);
+  for(const path of ['/workspace/setup','/assets/setup.mjs','/assets/cartridges.css'])assert.equal((await read(request(path),env)).status,403);
   for(const path of ['/workspace/private','/workspace/other/history','/workspace/history/write'])assert.equal((await read(request(path),env)).status,404);
   assert.equal((await read(request('/workspace/history',{method:'POST',body:'private'}),env)).status,405);assert.equal(assets,0);assert.equal(lookups,1);
   const configure=createHost(()=>({inspect:true,configure:true,export:true,source:true,catalogReview:true}));const setup=await configure(request('/workspace/setup'),env);assert.equal(setup.status,200);assert.match(await setup.text(),/data-notabenda-setup/);assert.equal(setup.headers.get('Cache-Control'),'private, no-store');
-  assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true,allowCatalogReview:true});
+  assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);assert.equal((await configure(request('/assets/cartridges.css'),env)).status,200);assert.equal(assets,2);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true,allowCatalogReview:true});
  }finally{await rm(cwd,{recursive:true,force:true});}
 });
 

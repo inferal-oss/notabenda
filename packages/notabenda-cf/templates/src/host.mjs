@@ -22,9 +22,9 @@ export function createHost(authorize){
   if(path===settings.basePath||path===settings.basePath+'/'||path==='/')return privateResponse(new Response(null,{status:303,headers:{Location:settings.basePath+'/history'}}));
   if(path===settings.basePath+'/setup'||path===settings.basePath+'/setup/'){
    if(access.configure!==true)return reply('Configuration access denied.',403);
-   return privateResponse(await createSetupWorker({...presentation(),basePath:settings.basePath+'/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css'}).fetch(request,env));
+   return privateResponse(await createSetupWorker({...presentation(),basePath:settings.basePath+'/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css',cartridgeStylesheetUrl:'/assets/cartridges.css'}).fetch(request,env));
   }
-  if(['/assets/setup.mjs','/assets/notabenda.css'].includes(path)){
+  if(['/assets/setup.mjs','/assets/notabenda.css','/assets/cartridges.css'].includes(path)){
    if(access.configure!==true)return reply('Configuration access denied.',403);
    try{return privateResponse(await env.ASSETS.fetch(request));}catch{return reply('Assets unavailable.',503);}
   }
