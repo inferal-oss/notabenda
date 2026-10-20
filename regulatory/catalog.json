@@ -2116,6 +2116,159 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "Read account script listing and script identity/tag/modification metadata. The list endpoint has no pagination parameters."
+    },
+    {
+      "id": "SRC-PROFILE-CLERK-COOKIES",
+      "title": "Clerk authentication cookies",
+      "url": "https://clerk.com/docs/guides/how-clerk-works/cookies",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-CLERK-METADATA",
+      "title": "Clerk user metadata",
+      "url": "https://clerk.com/docs/guides/users/extending",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-CLERK-PRIVACY",
+      "title": "Clerk privacy policy",
+      "url": "https://clerk.com/legal/privacy",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-CLERK-DPA",
+      "title": "Clerk data processing addendum",
+      "url": "https://clerk.com/legal/dpa",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-VERCEL-REGIONS",
+      "title": "Vercel Function regions",
+      "url": "https://vercel.com/docs/functions/configuring-functions/region",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-VERCEL-LOGS",
+      "title": "Vercel logs and drains",
+      "url": "https://vercel.com/docs/logs",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-VERCEL-PRIVACY",
+      "title": "Vercel privacy notice",
+      "url": "https://vercel.com/legal/privacy-notice",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-VERCEL-DPA",
+      "title": "Vercel data processing addendum",
+      "url": "https://vercel.com/legal/dpa",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Read Introduction and Role and Scope. The public addendum names Enterprise and Pro plans; the actual customer plan and agreement must be checked separately."
+    },
+    {
+      "id": "SRC-PROFILE-POSTHOG-COLLECTION",
+      "title": "PostHog collection controls",
+      "url": "https://posthog.com/docs/privacy/data-collection",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-POSTHOG-REPLAY",
+      "title": "PostHog replay privacy controls",
+      "url": "https://posthog.com/docs/session-replay/privacy",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-POSTHOG-STORAGE",
+      "title": "PostHog storage and deletion controls",
+      "url": "https://posthog.com/docs/privacy/data-storage",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-POSTHOG-PRIVACY",
+      "title": "PostHog privacy policy",
+      "url": "https://posthog.com/privacy",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "SRC-PROFILE-POSTHOG-DPA",
+      "title": "PostHog DPA preview and account agreement",
+      "url": "https://posthog.com/dpa",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Read the page introduction describing a non-binding public preview and an account-generated countersigned DPA. Do not treat this reference as an accepted customer agreement."
+    },
+    {
+      "id": "SRC-PROFILE-SENTRY-COLLECTION",
+      "title": "Sentry JavaScript data collection",
+      "url": "https://docs.sentry.io/platforms/javascript/data-management/data-collected/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "SRC-PROFILE-SENTRY-REPLAY",
+      "title": "Sentry JavaScript replay privacy",
+      "url": "https://docs.sentry.io/platforms/javascript/session-replay/privacy/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "SRC-PROFILE-SENTRY-PRIVACY",
+      "title": "Sentry privacy policy",
+      "url": "https://sentry.io/privacy/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "SRC-PROFILE-SENTRY-DPA",
+      "title": "Sentry data processing addendum",
+      "url": "https://sentry.io/legal/dpa/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
     }
   ],
   "jurisdictions": [
@@ -5981,7 +6134,7 @@
         "site/test/host.test.mjs",
         "packages/notabenda-cf/test/starter.test.mjs"
       ],
-      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Optional documentation profiles now cover four products; independent provider-practice review and broader coverage remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
+      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Optional documentation profiles now cover eight products; independent provider-practice review and broader coverage remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -6140,6 +6293,74 @@
         {
           "sourceId": "SRC-PROFILE-RESEND-PRIVACY",
           "locator": "Public documentation, privacy or contractual reference; original conditional notes, not a verified provider classification."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLERK-COOKIES",
+          "locator": "How Clerk uses cookies; deployment-specific storage inventory remains required."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLERK-METADATA",
+          "locator": "Types of metadata and metadata in the session token."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLERK-PRIVACY",
+          "locator": "Scope: customer records, customer privacy policies and contractual processing."
+        },
+        {
+          "sourceId": "SRC-PROFILE-CLERK-DPA",
+          "locator": "Parties and Background; actual customer agreement must be verified."
+        },
+        {
+          "sourceId": "SRC-PROFILE-VERCEL-REGIONS",
+          "locator": "Static delivery, project and per-function regions, middleware and failover."
+        },
+        {
+          "sourceId": "SRC-PROFILE-VERCEL-LOGS",
+          "locator": "Build, runtime, activity, audit logs and configured log drains."
+        },
+        {
+          "sourceId": "SRC-PROFILE-VERCEL-PRIVACY",
+          "locator": "Scope of the notice versus processing under customer instructions."
+        },
+        {
+          "sourceId": "SRC-PROFILE-VERCEL-DPA",
+          "locator": "Introduction and Role and Scope; plan and agreement conditions."
+        },
+        {
+          "sourceId": "SRC-PROFILE-POSTHOG-COLLECTION",
+          "locator": "Opt-in/out, opt-out persistence and separate autocapture controls."
+        },
+        {
+          "sourceId": "SRC-PROFILE-POSTHOG-REPLAY",
+          "locator": "Input masking, content controls and network capture."
+        },
+        {
+          "sourceId": "SRC-PROFILE-POSTHOG-STORAGE",
+          "locator": "Collection versus server-side transformations and IP discarding."
+        },
+        {
+          "sourceId": "SRC-PROFILE-POSTHOG-PRIVACY",
+          "locator": "Full policy introduction and customer-data scope; summaries are not binding."
+        },
+        {
+          "sourceId": "SRC-PROFILE-POSTHOG-DPA",
+          "locator": "Introduction: public preview versus account-generated countersigned agreement."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SENTRY-COLLECTION",
+          "locator": "SDK/integration-specific data, explicit user fields, source maps and separate replay controls."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SENTRY-REPLAY",
+          "locator": "Masking, blocking and configured network/console capture."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SENTRY-PRIVACY",
+          "locator": "Opening scope excludes submitted Service Data governed by the customer agreement."
+        },
+        {
+          "sourceId": "SRC-PROFILE-SENTRY-DPA",
+          "locator": "Opening agreement and definitions of Customer Data and Service."
         }
       ],
       "discoverySourceIds": [
@@ -6157,7 +6378,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Documentation can change and describes provider claims or options. Source retrieval is not independent practice verification, a signed agreement or legal approval. Requirement links are conditional review context. Initial profiles cover four products; other entries may have no profile. Actual entity, location, purpose, basis, retention and settings remain operator-supplied.",
+      "caveats": "Documentation can change and describes provider claims or options. Source retrieval is not independent practice verification, a signed agreement or legal approval. Requirement links are conditional review context. Profiles cover eight products; other entries may have no profile. Actual entity, location, purpose, basis, retention and settings remain operator-supplied.",
       "implementationRefs": [
         "catalog/product-profiles.json",
         "catalog/schema.json",
@@ -6175,9 +6396,10 @@
       "testRefs": [
         "packages/notabenda/test/catalog-profile.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/catalog-profiles.md"
+        "docs/verification/catalog-profiles.md",
+        "packages/notabenda/test/catalog-profile-coverage.test.mjs"
       ],
-      "implementationNote": "Version-1 optional closed-schema profiles, static escaped renderer and terminal inspection; explicit picker copying preserves entered URLs and clears confirmation on edits. Selected source/profile revisions survive private setup pins, renewed comparison and separately authorized retained-release views. No external fetch, automatic setting, consent grant or public policy prose insertion."
+      "implementationNote": "Version-1 optional closed-schema profiles, static escaped renderer and terminal inspection; explicit picker copying preserves entered URLs and clears confirmation on edits. Selected source/profile revisions survive private setup pins, renewed comparison and separately authorized retained-release views. No external fetch, automatic setting, consent grant or public policy prose insertion. Clerk, Vercel, PostHog and Sentry profiles connect existing project matches to sourced questions; new guidance requires explicit renewed review. Per-product revisions preserve the four unchanged original profiles."
     },
     {
       "id": "REQ-PRODUCT-INDIRECT-NOTICE",
@@ -9027,11 +9249,12 @@
         "REQ-PRODUCT-SERVICE-PROFILES"
       ],
       "status": "partial",
-      "expected": "Reject malformed/source-unbound profiles; distinguish unread URLs; render escaped linked notes without network or automatic settings; preserve manual URLs, old pins and exact legal bytes while profile-only changes alter retained reference digests.",
+      "expected": "Reject malformed/source-unbound profiles; distinguish unread URLs; render escaped linked notes without network or automatic settings; preserve manual URLs, old pins and exact legal bytes while profile-only changes alter retained reference digests. Expanded project candidates resolve to sourced profiles without site-fact output; original product revisions remain fixed, renewal is explicit and resulting profile-only archives preserve legal page bytes.",
       "testRefs": [
         "packages/notabenda/test/catalog-profile.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/catalog-profiles.md"
+        "docs/verification/catalog-profiles.md",
+        "packages/notabenda/test/catalog-profile-coverage.test.mjs"
       ]
     },
     {

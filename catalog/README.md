@@ -4,6 +4,7 @@ The optional catalog seed currently has 363 provider identities and 402 product/
 
 The source dataset has 2,279 rows. One generic XSRF-TOKEN row lacks both a platform and controller, so it remains in the preserved CSV and is omitted from provider/product identities. Product identity uses the source platform/controller pair; labels are not deduplicated into assumed legal entities. Generic drivers such as MongoDB, Redis, libSQL and Meilisearch can represent self-hosted software. An SDK match does not establish a hosted provider relationship.
 
+- `product-profiles.json`: eight original, source-linked product profiles with explicit catalog/product revisions. Seventeen additional official references were retrieved on 20 October 2026 for Clerk, Vercel, PostHog and Sentry. The original four profile revisions remain unchanged; reading a reference does not establish actual use or approval.
 - `backend-providers.json`: original identity/SDK reference candidates. Homepage URLs are reference-only, with no invented verification date. Signature and provider-practice review remains required.
 - `sources/open-cookie-database/`: exact source CSV, Apache license and revision/content hashes.
 - `schema.json`: public JSON Schema for the version-1 format. The package additionally checks cross-references, unique IDs, canonical dates and bounded plain data.

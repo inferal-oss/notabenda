@@ -174,7 +174,7 @@ The admin view shows selected service use, catalog/product/provider revisions an
 
 ## Product documentation profiles
 
-A product can supply an optional version-1 `profile`: original sourced `facts`, `links` to privacy/DPA/documentation/subprocessor pages, and `reviewPrompts` with source and requirement IDs. `catalog/product-profiles.json` contains the initial four profiles: Workers, Stripe payment libraries, Supabase and Resend. Regenerate the offline seed with `python3 scripts/build-service-catalog.py`; update the product/catalog revision whenever selected facts change. Existing profile-free catalogs and historical pins stay valid.
+A product can supply an optional version-1 `profile`: original sourced `facts`, `links` to privacy/DPA/documentation/subprocessor pages, and `reviewPrompts` with source and requirement IDs. `catalog/product-profiles.json` contains eight profiles: Workers, Stripe payment libraries, Supabase, Resend, Clerk, Vercel, PostHog and Sentry. The maintainer data declares a catalog revision and explicit `productRevisions`; adding a profile does not stamp a new revision onto unchanged products. Regenerate the offline seed with `python3 scripts/build-service-catalog.py`; update the product/catalog revision whenever selected facts change. Existing profile-free catalogs and historical pins stay valid.
 
 Profiles describe documented options. They do not supply the site's provider entity, deployment, purposes, legal basis, processing location or retention. Requirement links are review context, with applicability still assessed separately. All provider/product records remain unreviewed. Reading documentation does not verify provider practices or a customer's agreement. A recorded URL that could not be retrieved is marked explicitly; no fact may rely on an unread source.
 
@@ -203,3 +203,24 @@ Use `@notabenda/core/styles.css` for default styling. The renderer escapes text,
 A profile is bounded to 16 KiB, eight facts, six document links and eight questions. Each cited source must belong to the product; fact sources must have been retrieved. Document links must match a cited generic HTTPS URL without a query, fragment or credentials. These structural checks cannot prove a URL is public; catalog authors must review that too. Keep tenant IDs, contract copies and private answers outside reference catalogs. Questions may have no source when they are editorial prompts, rather than provider claims.
 
 Confirmed selection retains the exact profile and source revisions. Renewed review shows prior/proposed documentation; attached release reviews preserve that snapshot for authorized admin inspection and field-level comparison. A profile-only change changes reference digests without changing legal-document bytes. Combined snapshot/archive size limits still apply. See [verification](verification/catalog-profiles.md).
+
+
+### What the expanded profiles help review
+
+The same notes appear in setup, `catalog show`, renewed selection review and retained-reference inspection. A project match resolves to its product ID; it does not select that product or add these notes to a policy.
+
+| Product ID | Review focus |
+| --- | --- |
+| `clerk-identity` | Actual authentication cookies, metadata visibility and session claims; the customer agreement for user records. |
+| `vercel-platform` | Function regions versus global delivery and middleware; log retention, drains and the account's plan and agreement. |
+| `posthog-analytics` | Autocapture and explicit events, replay and network details, removal before transmission, and the actual customer DPA. |
+| `sentry-monitoring` | Installed SDK/runtime and enabled integrations, submitted event fields, source maps, separate replay controls and customer-data terms. |
+
+```sh
+npx @notabenda/core catalog show clerk-identity
+npx @notabenda/core catalog show posthog-analytics --json
+npx @notabenda/core catalog show sentry-monitoring
+npx @notabenda/core catalog show vercel-platform
+```
+
+These references were checked on 20 October 2026. Review the current installed version and account settings before using them. They do not supply working adapters, choose exemptions or authorize collection. Existing saved selections retain their earlier profile and source revisions until you explicitly compare and confirm a renewed selection.

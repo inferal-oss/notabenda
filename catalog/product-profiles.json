@@ -160,6 +160,176 @@
       "access": "reference-only",
       "license": "Original metadata; documentation referenced",
       "note": "Public reference URL recorded. Two retrieval attempts failed (timeout/internal error); its contents were not reviewed. Follow the link to review the current agreement."
+    },
+    {
+      "id": "profile-clerk-cookies",
+      "title": "Clerk authentication cookies",
+      "url": "https://clerk.com/docs/guides/how-clerk-works/cookies",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-clerk-metadata",
+      "title": "Clerk user metadata",
+      "url": "https://clerk.com/docs/guides/users/extending",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-clerk-privacy",
+      "title": "Clerk privacy policy",
+      "url": "https://clerk.com/legal/privacy",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-clerk-dpa",
+      "title": "Clerk data processing addendum",
+      "url": "https://clerk.com/legal/dpa",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-vercel-regions",
+      "title": "Vercel Function regions",
+      "url": "https://vercel.com/docs/functions/configuring-functions/region",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-vercel-logs",
+      "title": "Vercel logs and drains",
+      "url": "https://vercel.com/docs/logs",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-vercel-privacy",
+      "title": "Vercel privacy notice",
+      "url": "https://vercel.com/legal/privacy-notice",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-vercel-dpa",
+      "title": "Vercel data processing addendum",
+      "url": "https://vercel.com/legal/dpa",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Read Introduction and Role and Scope. The public addendum names Enterprise and Pro plans; the actual customer plan and agreement must be checked separately."
+    },
+    {
+      "id": "profile-posthog-collection",
+      "title": "PostHog collection controls",
+      "url": "https://posthog.com/docs/privacy/data-collection",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-posthog-replay",
+      "title": "PostHog replay privacy controls",
+      "url": "https://posthog.com/docs/session-replay/privacy",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-posthog-storage",
+      "title": "PostHog storage and deletion controls",
+      "url": "https://posthog.com/docs/privacy/data-storage",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-posthog-privacy",
+      "title": "PostHog privacy policy",
+      "url": "https://posthog.com/privacy",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+    },
+    {
+      "id": "profile-posthog-dpa",
+      "title": "PostHog DPA preview and account agreement",
+      "url": "https://posthog.com/dpa",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Read the page introduction describing a non-binding public preview and an account-generated countersigned DPA. Do not treat this reference as an accepted customer agreement."
+    },
+    {
+      "id": "profile-sentry-collection",
+      "title": "Sentry JavaScript data collection",
+      "url": "https://docs.sentry.io/platforms/javascript/data-management/data-collected/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "profile-sentry-replay",
+      "title": "Sentry JavaScript replay privacy",
+      "url": "https://docs.sentry.io/platforms/javascript/session-replay/privacy/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "profile-sentry-privacy",
+      "title": "Sentry privacy policy",
+      "url": "https://sentry.io/privacy/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "profile-sentry-dpa",
+      "title": "Sentry data processing addendum",
+      "url": "https://sentry.io/legal/dpa/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
     }
   ],
   "profiles": {
@@ -539,6 +709,463 @@
           ]
         }
       ]
+    },
+    "clerk-identity": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "session-storage",
+          "title": "Authentication uses browser cookies",
+          "description": "Clerk documents cookies used by its authentication flow. Inventory the cookies and domains in your actual deployment, including custom session claims; this reference does not decide a legal exemption.",
+          "sourceIds": [
+            "profile-clerk-cookies"
+          ]
+        },
+        {
+          "id": "metadata",
+          "title": "Metadata can reach different readers",
+          "description": "Public metadata is frontend-readable; private metadata is backend-only; unsafe metadata can be written from the frontend. Review which fields your application stores and includes in session tokens.",
+          "sourceIds": [
+            "profile-clerk-metadata"
+          ]
+        },
+        {
+          "id": "policy-scope",
+          "title": "Customer records have separate terms",
+          "description": "Clerk distinguishes customer-submitted data from information covered by its own privacy policy. Review your customer agreement and data processing addendum for authentication records.",
+          "sourceIds": [
+            "profile-clerk-privacy",
+            "profile-clerk-dpa"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "label": "Privacy policy",
+          "kind": "privacy",
+          "url": "https://clerk.com/legal/privacy",
+          "sourceIds": [
+            "profile-clerk-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "label": "Data processing addendum",
+          "kind": "dpa",
+          "url": "https://clerk.com/legal/dpa",
+          "sourceIds": [
+            "profile-clerk-dpa"
+          ]
+        },
+        {
+          "id": "cookies",
+          "label": "Authentication cookies",
+          "kind": "documentation",
+          "url": "https://clerk.com/docs/guides/how-clerk-works/cookies",
+          "sourceIds": [
+            "profile-clerk-cookies"
+          ]
+        },
+        {
+          "id": "metadata",
+          "label": "User metadata",
+          "kind": "documentation",
+          "url": "https://clerk.com/docs/guides/users/extending",
+          "sourceIds": [
+            "profile-clerk-metadata"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "data",
+          "prompt": "Which sign-in fields, identity providers, metadata and session claims does this application use?",
+          "sourceIds": [
+            "profile-clerk-metadata"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "storage",
+          "prompt": "Which cookies and domains are actually used, and what are their lifetimes and assessed purposes?",
+          "sourceIds": [
+            "profile-clerk-cookies"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-DEVICE"
+          ]
+        },
+        {
+          "id": "contract",
+          "prompt": "Which entity, agreement, locations, retention and deletion process apply to your customer records?",
+          "sourceIds": [
+            "profile-clerk-privacy",
+            "profile-clerk-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        }
+      ]
+    },
+    "vercel-platform": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "regions",
+          "title": "Function regions and delivery differ",
+          "description": "Vercel documents configurable Function regions and separate global static delivery. Review overrides, failover and middleware as well as databases and external services before describing processing locations.",
+          "sourceIds": [
+            "profile-vercel-regions"
+          ]
+        },
+        {
+          "id": "logs",
+          "title": "Log exports have their own destinations",
+          "description": "Vercel provides build, runtime, activity and audit logs. Runtime retention depends on the plan and observability settings; log drains can export data to other services.",
+          "sourceIds": [
+            "profile-vercel-logs"
+          ]
+        },
+        {
+          "id": "contract",
+          "title": "Check the plan and customer agreement",
+          "description": "The referenced Vercel addendum describes processing for customers on Enterprise and Pro plans. Confirm the agreement that applies to your account rather than assuming a public link establishes coverage.",
+          "sourceIds": [
+            "profile-vercel-dpa"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "label": "Privacy notice",
+          "kind": "privacy",
+          "url": "https://vercel.com/legal/privacy-notice",
+          "sourceIds": [
+            "profile-vercel-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "label": "Data processing addendum",
+          "kind": "dpa",
+          "url": "https://vercel.com/legal/dpa",
+          "sourceIds": [
+            "profile-vercel-dpa"
+          ]
+        },
+        {
+          "id": "regions",
+          "label": "Function regions",
+          "kind": "documentation",
+          "url": "https://vercel.com/docs/functions/configuring-functions/region",
+          "sourceIds": [
+            "profile-vercel-regions"
+          ]
+        },
+        {
+          "id": "logs",
+          "label": "Logs and drains",
+          "kind": "documentation",
+          "url": "https://vercel.com/docs/logs",
+          "sourceIds": [
+            "profile-vercel-logs"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "deployment",
+          "prompt": "Which functions, middleware, storage and delivery services process visitor data, and in which configured regions?",
+          "sourceIds": [
+            "profile-vercel-regions"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "logs",
+          "prompt": "What enters logs, how long is it kept, and which drain recipients or integrations receive copies?",
+          "sourceIds": [
+            "profile-vercel-logs"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE",
+            "REQ-EU-RETENTION-ERASURE"
+          ]
+        },
+        {
+          "id": "contract",
+          "prompt": "Which plan, customer agreement and transfer arrangements apply to this deployment?",
+          "sourceIds": [
+            "profile-vercel-dpa",
+            "profile-vercel-privacy"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        }
+      ]
+    },
+    "posthog-analytics": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "collection",
+          "title": "Check automatic and explicit collection",
+          "description": "PostHog documents separate controls for autocapture, identified events and capture opt-in or opt-out. Confirm the enabled products, SDK settings and consent integration before describing the data collected.",
+          "sourceIds": [
+            "profile-posthog-collection"
+          ]
+        },
+        {
+          "id": "replay",
+          "title": "Replay needs its own review",
+          "description": "Replay has input masking, content controls and optional network capture. Test the actual pages and payloads, including headers and bodies; masking form fields does not describe every recording setting.",
+          "sourceIds": [
+            "profile-posthog-replay"
+          ]
+        },
+        {
+          "id": "storage",
+          "title": "Filtering after receipt is a different boundary",
+          "description": "PostHog distinguishes collection controls from transformations and IP-discard settings on its servers. Data that must never reach the provider needs to be excluded before transmission.",
+          "sourceIds": [
+            "profile-posthog-storage"
+          ]
+        },
+        {
+          "id": "agreement",
+          "title": "A public DPA page is not your signed copy",
+          "description": "PostHog identifies its public DPA as a preview and directs customers to generate and countersign the agreement in their organization. Retain the agreement actually used.",
+          "sourceIds": [
+            "profile-posthog-dpa"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "label": "Privacy policy",
+          "kind": "privacy",
+          "url": "https://posthog.com/privacy",
+          "sourceIds": [
+            "profile-posthog-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "label": "DPA preview and agreement instructions",
+          "kind": "dpa",
+          "url": "https://posthog.com/dpa",
+          "sourceIds": [
+            "profile-posthog-dpa"
+          ]
+        },
+        {
+          "id": "collection",
+          "label": "Collection controls",
+          "kind": "documentation",
+          "url": "https://posthog.com/docs/privacy/data-collection",
+          "sourceIds": [
+            "profile-posthog-collection"
+          ]
+        },
+        {
+          "id": "replay",
+          "label": "Replay privacy",
+          "kind": "documentation",
+          "url": "https://posthog.com/docs/session-replay/privacy",
+          "sourceIds": [
+            "profile-posthog-replay"
+          ]
+        },
+        {
+          "id": "storage",
+          "label": "Storage and deletion",
+          "kind": "documentation",
+          "url": "https://posthog.com/docs/privacy/data-storage",
+          "sourceIds": [
+            "profile-posthog-storage"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "features",
+          "prompt": "Which products, event properties, user identifiers, autocapture and replay settings are enabled?",
+          "sourceIds": [
+            "profile-posthog-collection",
+            "profile-posthog-replay"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "consent",
+          "prompt": "How do actual loading, capture and withdrawal behave before and after a visitor changes their choice?",
+          "sourceIds": [
+            "profile-posthog-collection"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-CONSENT",
+            "REQ-EU-WITHDRAWAL"
+          ]
+        },
+        {
+          "id": "data-path",
+          "prompt": "Where do events go, what is removed before transmission, and which retention and deletion settings apply?",
+          "sourceIds": [
+            "profile-posthog-storage",
+            "profile-posthog-replay"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "agreement",
+          "prompt": "Which customer agreement and transfer arrangements have you actually accepted and retained?",
+          "sourceIds": [
+            "profile-posthog-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        }
+      ]
+    },
+    "sentry-monitoring": {
+      "schemaVersion": 1,
+      "facts": [
+        {
+          "id": "collection",
+          "title": "Review the installed SDK and integrations",
+          "description": "Sentry documents collection that varies by runtime and integrations, including URLs, request data, identifiers and source maps. Check the installed SDK version, explicit user data and collection options; a monitoring label does not describe its payloads.",
+          "sourceIds": [
+            "profile-sentry-collection"
+          ]
+        },
+        {
+          "id": "replay",
+          "title": "Replay controls are separate",
+          "description": "Sentry documents replay masking, blocking, console and network capture controls separately from general SDK data-collection options. Test configured pages and enabled network details before enabling recording.",
+          "sourceIds": [
+            "profile-sentry-replay",
+            "profile-sentry-collection"
+          ]
+        },
+        {
+          "id": "policy-scope",
+          "title": "Submitted events use the customer agreement",
+          "description": "Sentry distinguishes submitted Service Data from the information covered by its own privacy policy. Review the customer agreement and DPA for events sent from this application.",
+          "sourceIds": [
+            "profile-sentry-privacy",
+            "profile-sentry-dpa"
+          ]
+        }
+      ],
+      "links": [
+        {
+          "id": "privacy",
+          "label": "Privacy policy",
+          "kind": "privacy",
+          "url": "https://sentry.io/privacy/",
+          "sourceIds": [
+            "profile-sentry-privacy"
+          ]
+        },
+        {
+          "id": "dpa",
+          "label": "Data processing addendum",
+          "kind": "dpa",
+          "url": "https://sentry.io/legal/dpa/",
+          "sourceIds": [
+            "profile-sentry-dpa"
+          ]
+        },
+        {
+          "id": "collection",
+          "label": "JavaScript data collection",
+          "kind": "documentation",
+          "url": "https://docs.sentry.io/platforms/javascript/data-management/data-collected/",
+          "sourceIds": [
+            "profile-sentry-collection"
+          ]
+        },
+        {
+          "id": "replay",
+          "label": "Replay privacy controls",
+          "kind": "documentation",
+          "url": "https://docs.sentry.io/platforms/javascript/session-replay/privacy/",
+          "sourceIds": [
+            "profile-sentry-replay"
+          ]
+        }
+      ],
+      "reviewPrompts": [
+        {
+          "id": "data",
+          "prompt": "Which SDKs and integrations send events, request data, user identifiers, logs or source files?",
+          "sourceIds": [
+            "profile-sentry-collection"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "replay",
+          "prompt": "Is replay enabled, and what do tests show for masking, console messages and network detail capture?",
+          "sourceIds": [
+            "profile-sentry-replay"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        },
+        {
+          "id": "contract",
+          "prompt": "Which endpoint operator, account agreement, locations, retention and deletion settings apply?",
+          "sourceIds": [
+            "profile-sentry-privacy",
+            "profile-sentry-dpa"
+          ],
+          "requirementIds": [
+            "REQ-PRODUCT-SERVICE-CATALOG",
+            "REQ-EU-NOTICE"
+          ]
+        }
+      ]
     }
+  },
+  "revision": "2026-10-20.1",
+  "productRevisions": {
+    "cloudflare-workers": "2026-10-19.3",
+    "stripe-payments": "2026-10-19.3",
+    "supabase-platform": "2026-10-19.3",
+    "resend-email": "2026-10-19.3",
+    "clerk-identity": "2026-10-20.1",
+    "vercel-platform": "2026-10-20.1",
+    "posthog-analytics": "2026-10-20.1",
+    "sentry-monitoring": "2026-10-20.1"
   }
 }

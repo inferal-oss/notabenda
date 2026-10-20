@@ -38,16 +38,17 @@ for product_id,source_ids in browser['productSourceAdditions'].items():
  for source_id in source_ids:
   if source_id not in products[product_id]['sourceIds']:products[product_id]['sourceIds'].append(source_id)
 profiles=json.loads((root/'catalog/product-profiles.json').read_text())
+if profiles['schemaVersion']!=1 or set(profiles['productRevisions'])!=set(profiles['profiles']):raise ValueError('Every profile needs an explicit product revision')
 sources+=profiles['sources']
 requirements={r['id'] for r in json.loads((root/'regulatory/catalog.json').read_text())['requirements']}
 for product_id,profile in profiles['profiles'].items():
  if product_id not in products:raise ValueError('Unknown profile product')
  for prompt in profile['reviewPrompts']:
   if not set(prompt['requirementIds'])<=requirements:raise ValueError('Unknown profile review requirement')
- product=products[product_id];product['profile']=profile;product['revision']='2026-10-19.3'
+ product=products[product_id];product['profile']=profile;product['revision']=profiles['productRevisions'][product_id]
  for source_id in [s for group in ('facts','links','reviewPrompts') for item in profile[group] for s in item['sourceIds']]:
   if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision='2026-10-19.3' ,sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=profiles['revision'],sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
 def emit(path,output):

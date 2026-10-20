@@ -9,3 +9,12 @@ Focused automated cases cover source membership and retrieved-fact references, u
 Public documentation describes options and provider statements. These checks do not verify provider practices, signed contracts, actual deployment, legal roles, locations or legal applicability. Initial source coverage and cross-platform accessibility remain partial.
 
 The complete milestone check passed 539 package tests, 64 site tests, regulatory/catalog regeneration and a Worker deployment dry run. After the final mobile spacing adjustment, focused profile and site catalog tests passed again. Local Chromium acceptance covered Supabase and Resend notes, source/requirement links, explicit privacy URL copying, disabling replacement of a manually entered URL and clearing confirmation after an actual-location edit. At 390/320 px viewports the content widths were 375/305 px with no horizontal overflow; the copy action measured 46 px high. Mobile proposals use less nested padding, and discovery command tokens stay intact when wrapping. These checks do not replace screen-reader, forced-color, physical-device or cross-browser acceptance.
+
+
+## Expanded source coverage
+
+On 20 October 2026, seventeen additional official references were retrieved for Clerk authentication, Vercel hosting, PostHog analytics and Sentry monitoring. Sentry's documentation was retrieved directly from its official URLs after the web reader rejected Markdown responses. Notes distinguish configured collection and replay, metadata visibility, regional execution versus delivery, exported logs and the actual customer agreement. PostHog's public DPA is labeled as a preview, not an accepted contract. The catalog now contains eight profiles; provider/product review status remains unreviewed.
+
+New regressions exercise all four existing SDK/project matches, source dates and fact bindings, explicit renewal of profile-free pins, preserved private reasons and exact legal pages, installed CLI inspection and unchanged revisions for the four original profiles. Ordinary consent graphs still exclude the seed and scanner. Adding documentation changes no service settings, legal basis, consent choice or historical pin.
+
+The expanded coverage is undergoing full package/site and browser verification; focused source/selection/CLI checks pass. Broader provider coverage and independent practice, legal and platform review remain open.

@@ -8,7 +8,7 @@ const field=(root,text)=>[...root.querySelectorAll('label')].find(l=>l.firstChil
 test('optional profiles preserve old v1 catalogs and detached read-only notes with source status',()=>{
  const c=compact();assert.equal(normalizeServiceCatalog(c).products[0].profile.schemaVersion,1);delete c.products[0].profile;assert.equal(readCatalogProductProfile(c,'stripe-payments'),undefined);assert.equal(renderCatalogProductProfile(c,'stripe-payments'),'');assert.throws(()=>readCatalogProductProfile(c,'absent'));
  const view=readCatalogProductProfile(serviceCatalogSeed,'resend-email');assert.ok(view.profile.facts.every(f=>f.sourceIds.every(id=>view.sources.find(s=>s.id===id)?.access==='read')));assert.equal(view.sources.find(s=>s.id==='profile-resend-dpa').checkedOn,null);view.profile.facts[0].description='Changed';assert.notEqual(readCatalogProductProfile(serviceCatalogSeed,'resend-email').profile.facts[0].description,'Changed');
- assert.deepEqual(serviceCatalogSeed.products.filter(p=>p.profile).map(p=>p.id),['cloudflare-workers','resend-email','stripe-payments','supabase-platform']);assert.ok(serviceCatalogSeed.products.every(p=>p.review==='unreviewed'));
+ assert.deepEqual(serviceCatalogSeed.products.filter(p=>p.profile).map(p=>p.id),['clerk-identity','cloudflare-workers','posthog-analytics','resend-email','sentry-monitoring','stripe-payments','supabase-platform','vercel-platform']);assert.ok(serviceCatalogSeed.products.every(p=>p.review==='unreviewed'));
 });
 test('profile schema rejects dangling/unread facts, unsafe URLs, duplicate IDs, coercion, controls and budgets',()=>{
  for(const mutate of [

@@ -1175,3 +1175,173 @@ Read paginated namespace IDs, owning scripts, class names and SQLite indicators 
 **Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
 
 Read account script listing and script identity/tag/modification metadata. The list endpoint has no pagination parameters.
+
+<a id="src-profile-clerk-cookies"></a>
+
+## SRC-PROFILE-CLERK-COOKIES
+
+[Clerk authentication cookies](https://clerk.com/docs/guides/how-clerk-works/cookies)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-clerk-metadata"></a>
+
+## SRC-PROFILE-CLERK-METADATA
+
+[Clerk user metadata](https://clerk.com/docs/guides/users/extending)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-clerk-privacy"></a>
+
+## SRC-PROFILE-CLERK-PRIVACY
+
+[Clerk privacy policy](https://clerk.com/legal/privacy)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-clerk-dpa"></a>
+
+## SRC-PROFILE-CLERK-DPA
+
+[Clerk data processing addendum](https://clerk.com/legal/dpa)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-vercel-regions"></a>
+
+## SRC-PROFILE-VERCEL-REGIONS
+
+[Vercel Function regions](https://vercel.com/docs/functions/configuring-functions/region)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-vercel-logs"></a>
+
+## SRC-PROFILE-VERCEL-LOGS
+
+[Vercel logs and drains](https://vercel.com/docs/logs)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-vercel-privacy"></a>
+
+## SRC-PROFILE-VERCEL-PRIVACY
+
+[Vercel privacy notice](https://vercel.com/legal/privacy-notice)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-vercel-dpa"></a>
+
+## SRC-PROFILE-VERCEL-DPA
+
+[Vercel data processing addendum](https://vercel.com/legal/dpa)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Read Introduction and Role and Scope. The public addendum names Enterprise and Pro plans; the actual customer plan and agreement must be checked separately.
+
+<a id="src-profile-posthog-collection"></a>
+
+## SRC-PROFILE-POSTHOG-COLLECTION
+
+[PostHog collection controls](https://posthog.com/docs/privacy/data-collection)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-posthog-replay"></a>
+
+## SRC-PROFILE-POSTHOG-REPLAY
+
+[PostHog replay privacy controls](https://posthog.com/docs/session-replay/privacy)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-posthog-storage"></a>
+
+## SRC-PROFILE-POSTHOG-STORAGE
+
+[PostHog storage and deletion controls](https://posthog.com/docs/privacy/data-storage)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-posthog-privacy"></a>
+
+## SRC-PROFILE-POSTHOG-PRIVACY
+
+[PostHog privacy policy](https://posthog.com/privacy)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability.
+
+<a id="src-profile-posthog-dpa"></a>
+
+## SRC-PROFILE-POSTHOG-DPA
+
+[PostHog DPA preview and account agreement](https://posthog.com/dpa)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Read the page introduction describing a non-binding public preview and an account-generated countersigned DPA. Do not treat this reference as an accepted customer agreement.
+
+<a id="src-profile-sentry-collection"></a>
+
+## SRC-PROFILE-SENTRY-COLLECTION
+
+[Sentry JavaScript data collection](https://docs.sentry.io/platforms/javascript/data-management/data-collected/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied.
+
+<a id="src-profile-sentry-replay"></a>
+
+## SRC-PROFILE-SENTRY-REPLAY
+
+[Sentry JavaScript replay privacy](https://docs.sentry.io/platforms/javascript/session-replay/privacy/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied.
+
+<a id="src-profile-sentry-privacy"></a>
+
+## SRC-PROFILE-SENTRY-PRIVACY
+
+[Sentry privacy policy](https://sentry.io/privacy/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied.
+
+<a id="src-profile-sentry-dpa"></a>
+
+## SRC-PROFILE-SENTRY-DPA
+
+[Sentry data processing addendum](https://sentry.io/legal/dpa/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied.
