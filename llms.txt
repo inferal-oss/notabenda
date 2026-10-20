@@ -39,6 +39,7 @@ Use the installed package documentation and types for its version. Discovery fin
 ## Optional
 
 - [Browser discovery](https://notabenda.org/guide/discovery/index.md): Explicit resource/storage observations and visibility limits.
+- [Technology functions](https://notabenda.org/guide/technology-collection/index.md): Prior technology disclosure, activation instructions, fresh service scope and optional on-demand controls.
 - [Consent timing](https://notabenda.org/guide/regional-prompts/index.md): Explicit grant expiry and repeat-prompt policies.
 - [Localization](https://notabenda.org/guide/localization/index.md): Host-supplied wording and separate jurisdiction decisions.
 - [Scope and decisions](https://notabenda.org/guide/scope/index.md): Product boundaries and remaining host responsibilities.

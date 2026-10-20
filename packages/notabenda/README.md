@@ -122,6 +122,10 @@ Use `createTermsAcceptance(offer, {operationId, submit})` and `mountTermsAccepta
 
 The optional `notabenda-cf` helpers register archived offers, explicitly activate them, and atomically record acceptance under a server-bound subject, scope and operation. The host provides all endpoint auth/CSRF, operation authorization, pinned hosting and retention. A recorded assertion does not establish a valid contract, durable-medium delivery or completion of a signup/payment. See the repository's [terms guide](../../docs/TERMS.md) for the full integration and boundaries.
 
+## Technology function notices
+
+The optional build-time `notabenda/technology` entry supplies versioned identification, location and profiling disclosures bound to an intact legal release and a fresh consent-managed service scope. Host-language text and activation instructions stay visible without JavaScript. The host uses the existing service lifecycle and controls; it retains the supplemental descriptor separately. See [technology collection](../../docs/TECHNOLOGY-COLLECTION.md). This initial Québec profile does not determine applicability or implement specialized workflows.
+
 ## Exports
 
 - `notabenda`: configuration validation/projection, document rendering, local or required-receipt consent state, terms agreement, and vanilla controls.

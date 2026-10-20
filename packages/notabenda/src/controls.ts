@@ -7,7 +7,8 @@ import type {ConsentMessages} from './localization-policy.js';
 import type { ConsentStateController, ConsentSnapshot } from './consent.js';
 import { defaultConsentWording } from './consent-notice.js';
 
-export interface ControlsOptions { consent: ConsentStateController; preferencesLabel?: string }
+// @requirements REQ-QC-PROFILING On-demand controls leave initial disclosure placement to the host.
+export interface ControlsOptions { consent: ConsentStateController; preferencesLabel?: string; noticeMode?:'automatic'|'on-demand' }
 export interface MountedControls { destroy(options?: {preservePreferences?: boolean}): void }
 
 /** @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y REQ-EU-FAIR-CHOICE REQ-ES-CHOICE REQ-EU-CONSENT REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-REACT
@@ -15,6 +16,8 @@ export interface MountedControls { destroy(options?: {preservePreferences?: bool
  */
 export function mountControls(container: HTMLElement, options: ControlsOptions): MountedControls {
   const { consent } = options;
+  const manual=options.noticeMode==='on-demand';
+  if(options.noticeMode!==undefined&&!['automatic','on-demand'].includes(options.noticeMode))throw Error('Use automatic or on-demand notice controls.');
   const config = consent.getConfig();
   const policy = config.consent!;
   const archivedNotice=consent.getNotice();
@@ -136,7 +139,7 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     const signalMessage=state.privacySignals?.globalPrivacyControl==='observed'?c('signalObserved','Global Privacy Control is active. Services covered by this site’s signal policy stay off in this browser. Cookie choices do not override this restriction.'):state.privacySignals?.globalPrivacyControl==='unavailable'?c('signalUnavailable','Global Privacy Control could not be checked. Services covered by this site’s signal policy stay off in this browser.'):'';
     const processingMessage=state.processingChoices?(state.processingChoices.status==='recorded'?c('processingRecorded','A processing restriction is recorded for this context. Cookie choices do not remove it.'):state.processingChoices.blockedActivities.length?c('processingPending','Processing restrictions are pending or could not be confirmed. Covered services stay off; cookie choices do not override them.'):''):'';
     message.textContent = [state.destroyed ? c('destroyed','Privacy choices are unavailable.') : '',storageMessage, reloadMessage,receiptMessage,signalMessage,processingMessage].filter(Boolean).join(' ');
-    notice.hidden = state.destroyed || state.preferencesOpen || !state.shouldPrompt || !policy.purposes.length;
+    notice.hidden = manual || state.destroyed || state.preferencesOpen || !state.shouldPrompt || !policy.purposes.length;
     message.hidden = !message.textContent || !notice.hidden || state.preferencesOpen;
     noticeMessage.textContent = message.textContent; noticeMessage.hidden = !noticeMessage.textContent;
     trigger.disabled = state.destroyed;

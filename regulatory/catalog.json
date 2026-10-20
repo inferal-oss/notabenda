@@ -63,7 +63,8 @@
       "deliverables": [
         "Static privacy and cookie pages, semantic HTML, document links, service/storage tables, and legal-center composition.",
         "Reviewed supplied content plus an original clause pipeline with explicit review and licensing status.",
-        "Versioned artifacts and material-change diffs; readable pages without JavaScript."
+        "Versioned artifacts and material-change diffs; readable pages without JavaScript.",
+        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
       ],
       "implementationRefs": [
         "packages/notabenda/src/documents.ts",
@@ -84,7 +85,10 @@
         "packages/notabenda/src/guarantees.css",
         "packages/notabenda/src/astro/LegalGuaranteeNotice.astro",
         "packages/notabenda/assets/guarantees/manifest.json",
-        "examples/guarantees/build.mjs"
+        "examples/guarantees/build.mjs",
+        "packages/notabenda/src/technology-collection.ts",
+        "packages/notabenda/src/technology.css",
+        "packages/notabenda/src/controls.ts"
       ]
     },
     {
@@ -171,7 +175,8 @@
         "Preferences expand on deliberate tap into a bottom drawer; desktop may use a corner notice and side drawer. No automatic fullscreen dialog or initial page-blocking backdrop.",
         "Accessible native markup, optional CSS, semantic theme tokens, light/dark and unstyled variants; optional drag gestures always have visible tap and keyboard equivalents.",
         "Safe-area spacing, thumb-friendly controls, persistent reopening, focus restoration, and readable choices across small screens, zoom, large text, RTL, and the on-screen keyboard.",
-        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work."
+        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
+        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -189,7 +194,10 @@
         "packages/notabenda/src/storage-exceptions.css",
         "packages/notabenda/src/service-runner.ts",
         "packages/notabenda/src/storage-cleanup.ts",
-        "packages/notabenda/src/consent-information.ts"
+        "packages/notabenda/src/consent-information.ts",
+        "packages/notabenda/src/technology-collection.ts",
+        "packages/notabenda/src/technology.css",
+        "packages/notabenda/src/release-files.ts"
       ]
     },
     {
@@ -324,7 +332,8 @@
         "Conditional exemptions and purpose-specific restrictions; no inference of applicability from IP geography alone.",
         "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review.",
         "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
-        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work."
+        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
+        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -346,7 +355,10 @@
         "docs/verification/regional-consent.md",
         "packages/notabenda/src/grant-expiry-policy.ts",
         "packages/notabenda/src/consent-information.ts",
-        "packages/notabenda/src/controls.ts"
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/technology-collection.ts",
+        "packages/notabenda/src/technology.css",
+        "packages/notabenda/src/release-files.ts"
       ]
     },
     {
@@ -825,9 +837,9 @@
       "title": "Qu\u00e9bec CAI: private-sector collection and profiling functions",
       "url": "https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
-      "access": "search-result",
-      "note": ""
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Full private-sector collection page read. Relevant headings: necessity; technologies of identification, location and profiling; distinct biometric and automated-decision guidance. Functions described as off by default with prior information and means of voluntary activation. This is regulator guidance, not a full applicability determination."
     },
     {
       "id": "SRC-AU-OAIC",
@@ -1701,6 +1713,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Official help destination used in the host-authored example; live instructions can change independently of archived link text and URLs."
+    },
+    {
+      "id": "SRC-IUB-QC-LAW25",
+      "title": "iubenda: Qu\u00e9bec new privacy law preparation overview",
+      "url": "https://help.iubenda.com/wp-content/uploads/2023/02/Quebecs-New-Privacy-Law-PDF.pdf",
+      "kind": "secondary-explainer",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "One-page phased-implementation overview read for discovery. General transparency, governance and consent discussion; not authority for the specific default-off technology interpretation. No vendor wording reused."
     }
   ],
   "jurisdictions": [
@@ -2617,26 +2638,52 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-QC-CAI",
-          "locator": "Technologies d'identification, de localisation et de profilage"
+          "locator": "Private-sector collection: necessity; Technologies d\u2019identification, de localisation et de profilage; separate biometric and automated-decision sections."
         }
       ],
-      "discoverySourceIds": [],
+      "discoverySourceIds": [
+        "SRC-IUB-QC-LAW25"
+      ],
       "featureIds": [
         "FEAT-INVENTORY",
         "FEAT-REGIONS",
-        "FEAT-ENFORCEMENT"
+        "FEAT-ENFORCEMENT",
+        "FEAT-DOCUMENTS",
+        "FEAT-CONTROLS",
+        "FEAT-SETUP"
       ],
       "verificationIds": [
         "VERIFY-QC-PROFILING"
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
       "caveats": "Scope and exceptions need Qu\u00e9bec-specific review; this is not a statement that every cookie is covered.",
-      "implementationRefs": [],
-      "testRefs": []
+      "implementationRefs": [
+        "packages/notabenda/src/technology-collection.ts",
+        "packages/notabenda/src/technology.css",
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/technology/config.mjs",
+        "examples/technology/build.mjs",
+        "examples/technology/client.mjs",
+        "examples/technology/style.css",
+        "docs/TECHNOLOGY-COLLECTION.md",
+        "scripts/measure-bundles.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/technology-collection.test.mjs",
+        "packages/notabenda/test/fixtures/technology-fr.mjs",
+        "site/test/technology-collection.test.mjs",
+        "docs/verification/technology-collection.md",
+        "packages/notabenda/test/delivery.test.mjs"
+      ],
+      "implementationNote": "Optional build/server declaration and static host-language renderer bind functions, activation instructions, provider and complete service purposes to a verified legal release and a declaration-derived material service scope. Existing cooperative runtime and on-demand controls preserve prior-grant invalidation, voluntary choice, receipts, processing restrictions and withdrawal. Host placement before all activation opportunities, supplemental descriptor retention, actual necessity/applicability, specialized workflows and legal/translation review remain separate."
     },
     {
       "id": "REQ-AU-PIXELS",
@@ -6383,9 +6430,14 @@
       "requirementIds": [
         "REQ-QC-PROFILING"
       ],
-      "status": "planned",
-      "expected": "A covered profiling function stays disabled until activation, and its collection surface describes it.",
-      "testRefs": []
+      "status": "automated",
+      "expected": "A verified supplemental disclosure remains readable without JavaScript and binds a declared service to a fresh material scope. The actual local example stays off before voluntary activation; opening controls/reading topics grants nothing, old generic grants do not authorize it, withdrawal cleans up, and receipt/processing/scope restrictions remain effective. Host notification timing and legal suitability remain unproven.",
+      "testRefs": [
+        "packages/notabenda/test/technology-collection.test.mjs",
+        "packages/notabenda/test/fixtures/technology-fr.mjs",
+        "site/test/technology-collection.test.mjs",
+        "docs/verification/technology-collection.md"
+      ]
     },
     {
       "id": "VERIFY-AU-PIXELS",

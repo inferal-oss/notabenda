@@ -1,3 +1,4 @@
+// @requirements REQ-QC-PROFILING
 // @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-BUNDLE-BUDGET
 import {build,version as esbuildVersion} from 'esbuild';
@@ -27,7 +28,7 @@ export async function measureBundles(){
   const gzipBytes=gzipSync(output,{level:9}).length;
   profiles.push({id,entry,exports:exports.split(','),imports,external,bytes:output.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs});
  }
- for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null],['service-directory-css','services.css',null],['storage-exception-css','storage-exceptions.css',null]]){
+ for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null],['service-directory-css','services.css',null],['storage-exception-css','storage-exceptions.css',null],['technology-notice-css','technology.css',null]]){
   const bytes=await readFile(new URL('../packages/notabenda/dist/'+file,import.meta.url)),gzipBytes=gzipSync(bytes,{level:9}).length;
   profiles.push({id,entry:'notabenda/'+file,bytes:bytes.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs:['packages/notabenda/dist/'+file]});
  }

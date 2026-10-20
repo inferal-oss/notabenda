@@ -1,3 +1,4 @@
+// @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
 import {adminPresentation} from './admin-presentation.mjs';
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE
@@ -67,7 +68,7 @@ export function publicResponse(response, path) {
   if(!caching?.split(',').some(value=>value.trim().toLowerCase()==='no-transform'))headers.set('Cache-Control',caching?caching+', no-transform':'no-transform');
   const embeds=/^\/embeds(?:\/|\/index\.html)?$/u.test(path);
   const sampleFrame=/^\/embeds\/frame(?:\/|\/index\.html)?$/u.test(path);
-  const runtime = embeds || /^\/(?:dark\/)?(?:choices|react|google-basic|storage-cleanup|storage-exceptions|localization|privacy-signals|discovery|repeat-prompts|scope-guards|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/astro(?:\/notes)?(?:\/|\/index\.html)?$/u.test(path);
+  const runtime = embeds || /^\/(?:dark\/)?(?:choices|react|google-basic|storage-cleanup|storage-exceptions|localization|technology|privacy-signals|discovery|repeat-prompts|scope-guards|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/astro(?:\/notes)?(?:\/|\/index\.html)?$/u.test(path);
   headers.set('Content-Security-Policy',`default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; ${runtime ? "script-src 'self'; connect-src 'self';" : ''} ${embeds?"frame-src 'self'; ":''}base-uri 'none'; form-action 'self'; frame-ancestors ${sampleFrame?"'self'":"'none'"}`);
   headers.set('X-Content-Type-Options','nosniff'); headers.set('Referrer-Policy','no-referrer');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});

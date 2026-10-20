@@ -41,3 +41,5 @@ Compiled-runtime browser check on 19 October 2026: the rebuilt local `/choices/`
 This milestone passed 417 package tests and 60 site tests (477 total), catalog validation, the website build and Worker dry run. A development build initially caught three stale hashed Astro outputs; those generated files were retained outside deployment output and the asset guard remains unchanged.
 
 The current measurement includes the native-control focus/accessibility refinement in [consent focus verification](consent-focus.md). That refinement preserves the compiled local target; the compatibility entry remains above target.
+
+The later technology-notice milestone on 19 October 2026 measured compiled local runtime plus controls at **14.90 KiB gzip**, required-receipt runtime at **18.71 KiB**, and compatibility core plus controls at **25.29 KiB**. Consent CSS remains **2.59 KiB**; the separate `technology.css` is **0.70 KiB**. The optional build/server technology declaration module is absent from the compiled browser graph. These are transfer-size measurements, not interaction timings; the earlier table records the first compiled-entry milestone.

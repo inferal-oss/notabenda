@@ -20,7 +20,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | CH | [REQ-CH-PROFILING](#req-ch-profiling) | Selected items: partial |
 | BR | [REQ-BR-COOKIE-UI](#req-br-cookie-ui), [REQ-BR-CONTRACT](#req-br-contract), [REQ-BR-COOKIE-RIGHTS-LINK](#req-br-cookie-rights-link), [REQ-BR-COOKIE-BROWSER-HELP](#req-br-cookie-browser-help) | Selected items: implemented, partial |
 | CA-FED | [REQ-CA-MEANINGFUL](#req-ca-meaningful), [REQ-CA-OBA](#req-ca-oba), [REQ-CA-CASL-OPTIN](#req-ca-casl-optin) | Selected items: partial |
-| CA-QC | [REQ-QC-PROFILING](#req-qc-profiling) | Selected items: planned |
+| CA-QC | [REQ-QC-PROFILING](#req-qc-profiling) | Selected items: partial |
 | AU | [REQ-AU-PIXELS](#req-au-pixels) | Selected items: partial |
 | NZ | [REQ-NZ-NOTICE](#req-nz-notice), [REQ-NZ-INDIRECT](#req-nz-indirect) | Selected items: partial |
 | ZA | [REQ-ZA-MARKETING](#req-za-marketing) | Selected items: planned |
@@ -423,19 +423,23 @@ Notify people of covered functions and how to activate them; do not activate the
 
 **Applies when:** Québec private-sector collection rules cover the declared technology.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [Québec CAI: private-sector collection and profiling functions](https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises) — Technologies d'identification, de localisation et de profilage (search-result; [SRC-QC-CAI](SOURCES.md#src-qc-cai)).
+**Sources:** [Québec CAI: private-sector collection and profiling functions](https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises) — Private-sector collection: necessity; Technologies d’identification, de localisation et de profilage; separate biometric and automated-decision sections. (read; [SRC-QC-CAI](SOURCES.md#src-qc-cai)).
 
-**Features:** [FEAT-INVENTORY](../FEATURES.md#feat-inventory), [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-ENFORCEMENT](../FEATURES.md#feat-enforcement).
+**Discovery articles:** [SRC-IUB-QC-LAW25](SOURCES.md#src-iub-qc-law25).
+
+**Features:** [FEAT-INVENTORY](../FEATURES.md#feat-inventory), [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-ENFORCEMENT](../FEATURES.md#feat-enforcement), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents), [FEAT-CONTROLS](../FEATURES.md#feat-controls), [FEAT-SETUP](../FEATURES.md#feat-setup).
 
 <a id="verify-qc-profiling"></a>
 
-**VERIFY-QC-PROFILING (planned):** A covered profiling function stays disabled until activation, and its collection surface describes it.
+**VERIFY-QC-PROFILING (automated):** A verified supplemental disclosure remains readable without JavaScript and binds a declared service to a fresh material scope. The actual local example stays off before voluntary activation; opening controls/reading topics grants nothing, old generic grants do not authorize it, withdrawal cleans up, and receipt/processing/scope restrictions remain effective. Host notification timing and legal suitability remain unproven.
+
+**Implementation boundary:** Optional build/server declaration and static host-language renderer bind functions, activation instructions, provider and complete service purposes to a verified legal release and a declaration-derived material service scope. Existing cooperative runtime and on-demand controls preserve prior-grant invalidation, voluntary choice, receipts, processing restrictions and withdrawal. Host placement before all activation opportunities, supplemental descriptor retention, actual necessity/applicability, specialized workflows and legal/translation review remain separate.
 
 **Limits/open review:** Scope and exceptions need Québec-specific review; this is not a statement that every cookie is covered.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/technology-collection.ts](../../packages/notabenda/src/technology-collection.ts), [packages/notabenda/src/technology.css](../../packages/notabenda/src/technology.css), [packages/notabenda/src/release-files.ts](../../packages/notabenda/src/release-files.ts), [packages/notabenda/src/controls.ts](../../packages/notabenda/src/controls.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/setup-ui.ts](../../packages/notabenda/src/setup-ui.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [examples/technology/config.mjs](../../examples/technology/config.mjs), [examples/technology/build.mjs](../../examples/technology/build.mjs), [examples/technology/client.mjs](../../examples/technology/client.mjs), [examples/technology/style.css](../../examples/technology/style.css), [docs/TECHNOLOGY-COLLECTION.md](../../docs/TECHNOLOGY-COLLECTION.md), [scripts/measure-bundles.mjs](../../scripts/measure-bundles.mjs), [packages/notabenda/test/technology-collection.test.mjs](../../packages/notabenda/test/technology-collection.test.mjs), [packages/notabenda/test/fixtures/technology-fr.mjs](../../packages/notabenda/test/fixtures/technology-fr.mjs), [site/test/technology-collection.test.mjs](../../site/test/technology-collection.test.mjs), [docs/verification/technology-collection.md](../../docs/verification/technology-collection.md), [packages/notabenda/test/delivery.test.mjs](../../packages/notabenda/test/delivery.test.mjs)
 
 <a id="req-au-pixels"></a>
 

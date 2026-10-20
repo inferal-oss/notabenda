@@ -13,7 +13,8 @@
     "./dist/services.css",
     "./dist/guarantees.css",
     "./dist/orders.css",
-    "./dist/storage-exceptions.css"
+    "./dist/storage-exceptions.css",
+    "./dist/technology.css"
   ],
   "files": [
     "dist",
@@ -218,7 +219,13 @@
       "import": "./dist/integration-reference.js",
       "default": "./dist/integration-reference.js"
     },
-    "./skill/references/configuration-target.md": "./dist/skill/references/configuration-target.md"
+    "./skill/references/configuration-target.md": "./dist/skill/references/configuration-target.md",
+    "./technology": {
+      "types": "./dist/technology-collection.d.ts",
+      "import": "./dist/technology-collection.js",
+      "default": "./dist/technology-collection.js"
+    },
+    "./technology.css": "./dist/technology.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

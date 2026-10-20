@@ -1,3 +1,4 @@
+// @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {setupQuestions,setupMarkets,setupFactFields} from './setup.js';
 import type {SetupQuestionId} from './setup.js';
@@ -24,6 +25,9 @@ const targets:Record<string,Target>={
   title:'Cookie and optional-service controls',outcome:'Optional loaders run only while their declared purpose/service permission is effective.',
   configPaths:['purposes','services','storage','consent','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders.','Choose vanilla, React or Astro controls around the same controller.'],
   questionIds:['optional-storage','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Actual optional loaders, storage names/types and cleanup targets','Purpose/service IDs and deliberate material scope revisions','Grant/refusal lifetimes and dismissal interval','Scope assessments; present or unknown specialized processing remains gated'],guides:['consent','storage-cleanup','scope-guards','react','astro'],prerequisites:['legal-pages'],verify:['No optional request on initial load or after rejection.','Granular grants start only the selected work.','Withdrawal stops owned work and clears declared markers.','Reload, changed scopes and failure states retain restrictions.']
+ },
+ 'technology-functions':{
+  title:'Technology collection notices',outcome:'A static, versioned disclosure of identification, location or profiling functions and their activation method.',configPaths:['purposes','services','consent.services.scope','scopeGuards','documents.privacy'],hostWork:['Use the optional build-only notabenda/technology API; supply reviewed function/activation copy and assign technologyCollectionScope(settings) before compiling.','Place the notice before every activation opportunity, including global choices; use existing gated lifecycles and on-demand native controls when appropriate.','Retain the exact descriptor separately from its legal artifact. Ordinary consent receipts do not automatically archive this supplemental notice.'],questionIds:['technology-functions'],factsNeeded:['Actual covered technology, provider and all collection purposes','Necessity, applicable scope and specialized processing assessment','Public function declarations, activation instructions, complete host-language labels and review','Fresh service material scope and actual cleanup'],guides:['technology-collection','consent','scope-guards'],prerequisites:['cookie-consent'],verify:['The disclosure and activation instructions render without JavaScript.','Opening the controls does not activate the function.','Old generic grants cannot start the new function.','Actual service starts, withdrawal, receipt failure and processing restrictions retain the existing gates.']
  },
  'embeds':{
   title:'Gated media',outcome:'Remote media stays inert until its service is permitted.',configPaths:['services.resourceOrigins'],
@@ -64,6 +68,7 @@ const selectionQuestions=[
  {id:'documents',targetId:'legal-pages',question:'Do you want to add or update static privacy, cookie or terms documents?'},
  {id:'authored-sources',targetId:'authored-documents',question:'Do you want to maintain documents as Markdown or trusted MDX with frontmatter?'},
  {id:'optional-service-control',targetId:'cookie-consent',question:'Do you want visitors to control optional scripts or browser storage?'},
+ {id:'technology-notice',targetId:'technology-functions',question:'Do you want to disclose identification, location or profiling technology and explain its voluntary activation?'},
  {id:'remote-media',targetId:'embeds',question:'Do you want remote media to stay unloaded until its service is permitted?'},
  {id:'explicit-agreement',targetId:'terms-agreement',question:'Do you want an explicit acceptance action bound to an exact terms revision?'},
  {id:'rights-entry',targetId:'privacy-rights',question:'Do you want a page linking visitors to your privacy request workflows?'},

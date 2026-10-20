@@ -1,3 +1,4 @@
+// @requirements REQ-QC-PROFILING
 // @requirements REQ-IE-CONSENT-DURATION REQ-FR-SCOPE REQ-DE-DEVICE REQ-IT-REPROMPT REQ-ES-CHOICE
 import {normalizeCatalogSelectionRevisions} from './catalog-review.js';
 import type {CatalogSelectionRevision} from './catalog-review.js';
@@ -22,6 +23,7 @@ export type SetupChoice='yes'|'no'|'unknown';
 export const setupQuestions=[
   {id:'personal-data',title:'Do you process personal data?',detail:'Include contact forms, accounts, IP addresses in hosting logs, support and third-party tools.',enable:'Complete the processing inventory and privacy disclosures, including collection sources, retention, rights and transfers. Place a collection notice beside relevant forms. Consider a dedicated rights entry page connected to your actual request workflows and a public contact fallback.',paths:['purposes','services','privacy','rightsCenter'],requirements:['REQ-EU-NOTICE','REQ-NZ-NOTICE','REQ-PRODUCT-COLLECTION-NOTICE','REQ-PRODUCT-RIGHTS-CENTER'],guide:'collection'},
   {id:'optional-storage',title:'Do optional tools store or read browser information?',detail:'Include analytics, advertising, personalization, pixels and local/session storage. An “essential” label needs a specific justification.',enable:'Configure explicit purpose/service scopes, reviewed preference lifetimes and the consent runtime. Register optional producers and exact cleanup targets before loading them.',paths:['storage','consent'],requirements:['REQ-EU-DEVICE','REQ-PRODUCT-CONSENT-RUNTIME','REQ-PRODUCT-STORAGE-CLEANUP'],guide:'storage-cleanup'},
+  {id:'technology-functions',title:'Do technologies identify, locate or profile people?',detail:'Include recognition, location-based features and interest profiles. Distinguish ordinary profiling from biometrics, high-risk processing and entirely automated decisions.',enable:'Assess applicability and necessity, then explain the technology and its activation method before any activation opportunity. The optional Québec private-sector technology notice binds a declared consent-managed service to a fresh material scope; it does not qualify the use or replace specialized workflows. Host loaders must stay gated and collected data must match the actual declarations.',paths:['purposes','services','consent.services.scope','scopeGuards','host.technologyNotice'],requirements:['REQ-QC-PROFILING'],guide:'technology-collection'},
   {id:'embeds',title:'Do you load third-party embeds or remote media?',detail:'Include video, maps, social content, frames and pixels. Investigate vendor requests and storage before selecting exemptions.',enable:'Review vendor practices and declare initial resource origins. Use inert media placeholders for consent-gated resources.',paths:['services.resourceOrigins'],requirements:['REQ-PRODUCT-EMBEDS','REQ-EU-DEVICE'],guide:'embeds'},
   {id:'processing-opt-outs',title:'Could data be sold, shared for cross-context advertising, or used for targeted advertising?',detail:'Assess actual data flows and legal definitions; vendor labels and a cookie category alone do not resolve this.',enable:'Classify every service’s processingActivities; consider the GPC restriction policy and separate recorded opt-outs. Connect downstream/account actions through the host.',paths:['services.processingActivities','privacySignals'],requirements:['REQ-US-CA-CHOICES','REQ-US-CA-GPC','REQ-US-CO-GPC','REQ-US-CT-GPC','REQ-PRODUCT-PROCESSING-CHOICES'],guide:'processing-choices'},
   {id:'terms-agreement',title:'Do users explicitly agree to terms during a workflow?',detail:'For example signup or an application action. A privacy notice acknowledgment is a separate question.',enable:'Supply reviewed terms and create a version-bound offer with a separate unchecked agreement control and acknowledged receipt.',paths:['documents.terms'],requirements:['REQ-PRODUCT-TERMS-ACCEPTANCE'],guide:'terms'},
@@ -64,7 +66,7 @@ export const setupFactFields=[['siteName','Site name'],['siteId','Site ID (lower
 export type SetupFactId=typeof setupFactFields[number][0];
 export interface SetupAnswers {schemaVersion:1;publicFacts?:Partial<Record<SetupFactId,string>>;markets:string[];answers:Partial<Record<SetupQuestionId,SetupAnswer>>;storageJustifications?:Record<string,string>}
 export interface SetupRecommendation {id:string;status:'recommended'|'investigate'|'review'|'declared-no';title:string;reason:string;configPaths:readonly string[];requirementIds:readonly RequirementId[];guide:string}
-export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'4';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
+export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'5';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
 const object=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const exact=(value:Record<string,unknown>,allowed:string[])=>Object.keys(value).every(k=>allowed.includes(k));
 const text=(value:unknown):value is string=>typeof value==='string'&&value.length<=4000&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u.test(value);
@@ -144,7 +146,7 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
   if(changed&&!options.preserveConfig)reviewItems.push('Review scopeGuards facts and supply a new, never-reused material revision before publishing the draft. Absent is an operator declaration, not legal clearance. Purpose-specific restrictions were preserved.');
   const catalogSelections=options.catalogSelections===undefined?[]:normalizeSetupCatalogSelections(options.catalogSelections,config);
   const catalogSelectionRevisions=normalizeCatalogSelectionRevisions(options.catalogSelectionRevisions??[]);
-  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'4',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{}),...(catalogSelectionRevisions.length?{catalogSelectionRevisions}:{})}};
+  const plan:SetupPlan={config,report:{schemaVersion:1,questionnaireVersion:'5',kind:'private-setup-report',answers,recommendations,reviewItems,diagnostics:validateSiteConfig(config,{mode:'production'}).diagnostics,productionReady:false,...(catalogSelections.length?{catalogSelections}:{}),...(catalogSelectionRevisions.length?{catalogSelectionRevisions}:{})}};
   if(new TextEncoder().encode(JSON.stringify(plan.report)).length>512*1024)throw Error('Private setup report exceeds 512 KiB; reduce notes or review fewer services together.');
   return plan;
 }
@@ -152,7 +154,7 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
 /** Resume only the declared answers from a private report; recommendations are always regenerated. */
 export function readSetupAnswers(input:unknown):SetupAnswers {
   if(object(input)&&input.kind==='private-setup-report'){
-    if(input.schemaVersion!==1||!['1','2','3','4'].includes(input.questionnaireVersion as string))return invalid();
+    if(input.schemaVersion!==1||!['1','2','3','4','5'].includes(input.questionnaireVersion as string))return invalid();
     return normalizeSetupAnswers(input.answers);
   }
   return normalizeSetupAnswers(input);

@@ -2,6 +2,7 @@ import {normalizeCatalogReviewDescriptor} from './catalog-release-policy.js';
 import {documentKinds,isSafeLink,toPublicConfig} from './config.js';
 import {canonicalJson,sha256} from './content.js';
 import type {ValidationOptions} from './types.js';
+import type {LegalArtifact} from './content.js';
 
 type Json = null|boolean|number|string|Json[]|{[key:string]:Json};
 type ObjectValue = {[key:string]:Json};
@@ -75,6 +76,13 @@ function validate(input:Json,siteId:string,mode:'preview'|'production'):ObjectVa
     }
   }
   if(Object.keys(bodies).length!==authored.size||Object.keys(bodies).some(k=>!authored.has(k)))return invalid();return a;
+}
+
+// @requirements REQ-QC-PROFILING Reuse the full release verifier for optional build-time notices.
+export function normalizePublicLegalArtifact(input:unknown,options:ValidationOptions={}):LegalArtifact {
+  const copied=copyJson(input),manifest=object(object(copied.value).manifest);
+  if(typeof manifest.siteId!=='string'||options.mode!==undefined&&options.mode!=='preview'&&options.mode!=='production')return invalid();
+  return validate(copied.value,manifest.siteId,options.mode??'production') as unknown as LegalArtifact;
 }
 
 /** @requirements REQ-PRODUCT-RETAINED-RELEASES REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-AUTHORING

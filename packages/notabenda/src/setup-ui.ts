@@ -1,3 +1,4 @@
+// @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-DISCOVERY
 import {mountCatalogSelectionReview} from './catalog-review-ui.js';
 import {readSetupCatalogRevisions,normalizeCatalogSelectionRevisions} from './catalog-review.js';
@@ -79,7 +80,7 @@ export function mountSetup(container:HTMLElement,options:SetupUIOptions={}):Moun
   type PracticeControl={radios:HTMLInputElement[];reason:HTMLTextAreaElement;notes:HTMLDetailsElement;update():void;choice():SetupChoice};
   const controls=new Map<SetupQuestionId,PracticeControl>();
   function updatePracticeSummary(){const all=[...controls.values()],assessed=all.filter(c=>c.choice()!=='unknown').length,notes=all.filter(c=>c.reason.value.trim()).length;assessmentSummary.textContent=`${assessed} yes/no assessment${assessed===1?'':'s'} · ${all.length-assessed} not sure · ${notes} supporting note${notes===1?'':'s'}`;}
-  const groups:[string,SetupQuestionId[]][]=[['Data and tools',['personal-data','optional-storage','embeds','processing-opt-outs','transfers']],['Customers and contracts',['terms-agreement','consumer-payments','consumer-distance-contracts','consumer-continuing-contracts']],['Sensitive contexts',['children','sensitive-data','high-risk-profiling','regulated-sector']],['Evidence and publishing',['receipts','authored-content']]];
+  const groups:[string,SetupQuestionId[]][]=[['Data and tools',['personal-data','optional-storage','technology-functions','embeds','processing-opt-outs','transfers']],['Customers and contracts',['terms-agreement','consumer-payments','consumer-distance-contracts','consumer-continuing-contracts']],['Sensitive contexts',['children','sensitive-data','high-risk-profiling','regulated-sector']],['Evidence and publishing',['receipts','authored-content']]];
   for(const [groupTitle,ids] of groups){const group=node('section');group.className='nb-setup-practice-group';group.append(node('h2',groupTitle));const grid=node('div');grid.className='nb-setup-practice-grid';group.append(grid);practices.append(group);
    for(const id of ids){const q=setupQuestions.find(question=>question.id===id)!;const card=node('section');card.className='nb-setup-question nb-setup-practice-card';card.dataset.question=id;
     const heading=node('h3',q.title);heading.id=instance+'-question-'+id;const detail=node('p',q.detail);detail.id=heading.id+'-help';card.append(heading,detail);

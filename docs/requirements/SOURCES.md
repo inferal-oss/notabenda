@@ -130,7 +130,9 @@ Final guide version 1.0, October 2022, retrieved again for printed pages 30–33
 
 [Québec CAI: private-sector collection and profiling functions](https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** search-result.
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
+
+Full private-sector collection page read. Relevant headings: necessity; technologies of identification, location and profiling; distinct biometric and automated-decision guidance. Functions described as off by default with prior information and means of voluntary activation. This is regulator guidance, not a full applicability determination.
 
 <a id="src-au-oaic"></a>
 
@@ -1071,3 +1073,13 @@ Official help destination used in the host-authored example. Third-party-cookie 
 **Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
 
 Official help destination used in the host-authored example; live instructions can change independently of archived link text and URLs.
+
+<a id="src-iub-qc-law25"></a>
+
+## SRC-IUB-QC-LAW25
+
+[iubenda: Québec new privacy law preparation overview](https://help.iubenda.com/wp-content/uploads/2023/02/Quebecs-New-Privacy-Law-PDF.pdf)
+
+**Type:** secondary-explainer. **Checked:** 2026-10-19. **Access:** read.
+
+One-page phased-implementation overview read for discovery. General transparency, governance and consent discussion; not authority for the specific default-off technology interpretation. No vendor wording reused.

@@ -180,3 +180,7 @@ The drawer uses one scroll region when space is tight. Where `ResizeObserver` is
 Set direction on the host document or container using normal HTML `dir` semantics. Desktop side drawers follow inline-end placement and notice offsets follow the corresponding safe-area edge. This supports layout direction; the built-in English status messages are not a translation pack. See the [repeatable layout checks](verification/controls-layout.md) for long text, RTL, enlarged text and remaining platform work.
 
 An optional [calendar grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months) can limit remembered grants separately from refusal memory and repeat-prompt rules. The host selects it explicitly; market and locale declarations do not activate it.
+
+## Controls opened by the visitor
+
+`mountControls(container, { consent, noticeMode: 'on-demand' })` hides the initial automatic notice and retains the preferences trigger. It changes no stored choice and starts no service. Use it when the host already presents the relevant disclosure before activation, such as the [technology function notice](TECHNOLOGY-COLLECTION.md). Keep a persistent way to reopen choices. The default remains `automatic`; choosing a display mode never establishes legal applicability.

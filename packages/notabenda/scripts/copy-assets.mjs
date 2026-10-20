@@ -6,6 +6,8 @@ await copyFile(new URL('../src/orders.css', import.meta.url), new URL('../dist/o
 await copyFile(new URL('../src/guarantees.css', import.meta.url), new URL('../dist/guarantees.css', import.meta.url));
 await writeFile(new URL('../dist/consent.css',import.meta.url),createConsentStyles(await readFile(new URL('../src/styles.css',import.meta.url),'utf8')));
 await copyFile(new URL('../src/storage-exceptions.css', import.meta.url), new URL('../dist/storage-exceptions.css', import.meta.url));
+// @requirements REQ-QC-PROFILING
+await copyFile(new URL('../src/technology.css', import.meta.url), new URL('../dist/technology.css', import.meta.url));
 await chmod(new URL('../dist/cli.js', import.meta.url), 0o755);
 await mkdir(new URL('../dist/astro/',import.meta.url),{recursive:true});
 for(const file of await readdir(new URL('../src/astro/',import.meta.url)))if(file.endsWith('.astro'))await copyFile(new URL('../src/astro/'+file,import.meta.url),new URL('../dist/astro/'+file,import.meta.url));
