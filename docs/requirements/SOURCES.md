@@ -522,9 +522,9 @@ Read request-to-know/delete/correct methods and existing-account provisions, and
 
 [Cloudflare: Durable Object class exports](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/)
 
-**Type:** platform-documentation. **Checked:** 2026-10-18. **Access:** read.
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
 
-Read the current declarative exports flow, SQLite class binding example and its mutual exclusion with legacy migrations. Deployment and destructive namespace operations remain explicit host actions.
+Read the current declarative exports flow, SQLite class binding example and its mutual exclusion with legacy migrations. Deployment and destructive namespace operations remain explicit host actions. A deleted export tombstone permanently removes the corresponding namespace; the class code and binding must be removed first.
 
 <a id="src-cf-wrangler-config"></a>
 
@@ -542,9 +542,9 @@ Checked JSON/JSONC configuration, Worker entry, worker-first assets, bindings an
 
 [Cloudflare: SQLite-backed Durable Object storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/)
 
-**Type:** platform-documentation. **Checked:** 2026-10-19. **Access:** read.
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
 
-Read SQLite-backed storage, asynchronous KV and transaction semantics used by scoped adapters and paid-order local admission. The host callback must use local transaction reads and return writes; external payment/network side effects are excluded. No universal retention or locality claim is inferred.
+Read SQLite-backed storage, asynchronous KV and transaction semantics used by scoped adapters and paid-order local admission. The host callback must use local transaction reads and return writes; external payment/network side effects are excluded. No universal retention or locality claim is inferred. Time Travel restores SQL and KV in the same SQLite object from a provider bookmark; the documented window is 30 days and excludes local development. A bookmark is not a portable backup.
 
 <a id="src-eu-eprivacy-marketing"></a>
 
@@ -1145,3 +1145,33 @@ Core specification read for local definitions/references, schema dialect and com
 **Type:** technical-specification. **Checked:** 2026-10-19. **Access:** read.
 
 Working Draft of 1 September 2026 read for monotonic performance.now timestamps and explicitly limited/coarsened resolution. Used for measurement semantics only, not a regulatory deadline or real-user performance claim.
+
+<a id="src-cf-do-state"></a>
+
+## SRC-CF-DO-STATE
+
+[Cloudflare: Durable Object state](https://developers.cloudflare.com/durable-objects/api/state/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Read whole-event serialization with blockConcurrencyWhile and session abort behavior; callers must treat aborted RPC responses as uncertain.
+
+<a id="src-cf-do-namespace-api"></a>
+
+## SRC-CF-DO-NAMESPACE-API
+
+[Cloudflare: list Durable Object namespaces](https://developers.cloudflare.com/api/resources/durable_objects/subresources/namespaces/methods/list/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Read paginated namespace IDs, owning scripts, class names and SQLite indicators for ownership-checked disposable cleanup.
+
+<a id="src-cf-worker-scripts-api"></a>
+
+## SRC-CF-WORKER-SCRIPTS-API
+
+[Cloudflare: list Worker scripts](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/methods/list/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Read account script listing and script identity/tag/modification metadata. The list endpoint has no pagination parameters.

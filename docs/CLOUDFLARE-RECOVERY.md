@@ -4,6 +4,8 @@ A restored backup can bring back records you have already deleted. Keep it isola
 
 The repository includes an optional maintainer rehearsal for the [Cloudflare starter](CLOUDFLARE-STARTER.md). It uses two local SQLite-backed Durable Objects and synthetic records. It does not connect to a Cloudflare account or change a deployed database. Packages remain unpublished.
 
+For a separate, explicitly deployed provider-native exercise, see [remote SQLite recovery](CLOUDFLARE-REMOTE-RECOVERY.md). Its gate lives outside the restored object; it also tests a hold added after the bookmark. Neither rehearsal establishes your production host's complete recovery process.
+
 ## Run the local rehearsal
 
 From a trusted repository checkout with its development dependencies installed:

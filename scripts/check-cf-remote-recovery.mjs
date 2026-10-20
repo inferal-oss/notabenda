@@ -1,0 +1,125 @@
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
+// Explicit optional maintainer operation; never installed as part of the reusable packages.
+import assert from 'node:assert/strict';
+import {mkdir,readFile,writeFile,copyFile,symlink,stat,realpath,rename,readdir} from 'node:fs/promises';
+import {resolve,relative,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+import {randomUUID,randomBytes,createHash} from 'node:crypto';
+import {fixture} from '../packages/notabenda/test/helpers.mjs';
+import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
+import {compileLegalDocuments,createConsentNotice,canonicalJson} from '@notabenda/core/content';
+import {compileAuthoredDocuments} from '@notabenda/authoring';
+const root=fileURLToPath(new URL('../',import.meta.url)),args=process.argv.slice(2),apiRoot='https://api.cloudflare.com/client/v4';
+const hash=value=>createHash('sha256').update(value).digest('hex');
+const wait=ms=>new Promise(done=>setTimeout(done,ms));
+export function parseRemoteRecoveryArgs(args){
+ if(args.length===1&&args[0]==='--help')return {help:true};
+ if(args.length===2&&args[0]==='--cleanup')return {cleanup:args[1]};
+ if(args.length===3&&args[0]==='--run'&&args[1]==='--account-id'&&/^[a-f0-9]{32}$/u.test(args[2]))return {accountId:args[2]};
+ throw Error('Use --run --account-id ACCOUNT_ID, --cleanup PRIVATE_RUN_DIRECTORY, or --help.');
+}
+export function checkRunIdentity(run){
+ if(run?.schemaVersion!==1||run.kind!=='notabenda-remote-recovery-run'||!/^[a-f0-9]{32}$/u.test(run.accountId)||!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(run.runId)||run.workerName!=='notabenda-recovery-'+run.runId.replaceAll('-','').slice(0,16))throw Error('Invalid private fixture identity.');return run;
+}
+async function save(directory,name,value){const target=join(directory,name),temporary=target+'.tmp-'+randomUUID();await writeFile(temporary,typeof value==='string'?value:JSON.stringify(value,null,2)+'\n',{mode:0o600,flag:'wx'});await rename(temporary,target);}
+export async function sourceBodyIdentity(response){
+ const bodies=[];if((response.headers.get('Content-Type')??'').startsWith('multipart/form-data')){
+  const form=await response.formData();for(const [name,value] of form){if(name==='metadata')continue;bodies.push(typeof value==='string'?Buffer.from(value):Buffer.from(await value.arrayBuffer()));}
+ }else bodies.push(Buffer.from(await response.arrayBuffer()));
+ // This fixture is one fully bundled JS module; additional code/assets require a new reviewed boundary.
+ if(bodies.length!==1||bodies[0].length>2*1024*1024)throw Error('Unexpected rehearsal source modules.');return {sha256:hash(bodies[0]),text:bodies[0].toString('utf8')};
+}
+function client(accountId,token){
+ const request=async(path,{method='GET'}={})=>fetch(apiRoot+'/accounts/'+accountId+path,{method,headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000),redirect:'error'});
+ const api=async(path,{method='GET',allowMissing=false}={})=>{
+  const response=await request(path,{method});if(allowMissing&&response.status===404)return null;
+  const json=await response.json();if(!response.ok||!json.success)throw Error('Cloudflare API '+method+' failed ('+response.status+'); inspect the existing account permissions.');return json;
+ };
+ api.source=async name=>{const response=await request('/workers/scripts/'+name);if(!response.ok)throw Error('Could not attest the disposable Worker source.');return sourceBodyIdentity(response);};return api;
+}
+async function bundledHash(directory,folder){const files=(await readdir(join(directory,folder))).filter(name=>/\.(?:m?js)$/u.test(name));if(files.length!==1)throw Error('Expected a single bundled rehearsal module.');return hash(await readFile(join(directory,folder,files[0])));}
+export async function reconcileOwnership(directory,run,api){
+ const live=await metadata(api,run.workerName),all=await namespaces(api),recorded=run.namespaces??[],owned=all.filter(n=>n.script===run.workerName);
+ if(all.some(n=>recorded.some(v=>v.id===n.id)&&n.script!==run.workerName))throw Error('A recorded namespace changed ownership; refusing cleanup.');
+ if(!live){if(owned.length)throw Error('Recorded namespaces remain without their expected Worker.');return {live:false,cleanupSource:false};}
+ if(!run.preflightAbsent||run.workerTag&&live.tag!==run.workerTag||owned.some(n=>!['RecoveryControl','RecoveryEvidence'].includes(n.class)||n.use_sqlite!==true)||recorded.some(n=>owned.some(v=>v.class===n.class&&v.id!==n.id)))throw Error('The disposable resource identity changed.');
+ const source=await api.source(run.workerName),cleanupSource=run.stage==='cleanup-started'&&source.sha256===run.cleanupSourceSha256;
+ if(!cleanupSource&&(source.sha256!==run.expectedSourceSha256||!source.text.includes(run.runId)))throw Error('Worker source no longer matches this rehearsal.');
+ const pending=['deploying','secret-updating','cleanup-started'].includes(run.stage);
+ if(!pending&&run.workerModifiedOn&&live.modified_on!==run.workerModifiedOn)throw Error('Worker changed after this rehearsal; refusing cleanup.');
+ run.workerTag=live.tag;run.workerModifiedOn=live.modified_on;run.namespaces=[...recorded,...owned.filter(n=>!recorded.some(v=>v.id===n.id)).map(({id,class:className,use_sqlite})=>({id,class:className,use_sqlite}))];await save(directory,'run.private.json',run);return {live:true,cleanupSource};
+}
+
+async function namespaces(api){
+ const all=[];for(let page=1;page<=100;page++){const result=await api('/workers/durable_objects/namespaces?per_page=1000&page='+page);if(!Array.isArray(result.result))throw Error('Unexpected namespace response.');all.push(...result.result);if(result.result_info?.total_pages!==undefined?page>=result.result_info.total_pages:result.result.length<1000)return all;}throw Error('Namespace pagination exceeded the rehearsal bound.');
+}
+async function metadata(api,name){return (await api('/workers/scripts')).result.find(s=>s.id===name);}
+async function command(directory,label,argv,input){
+ const result=spawnSync(process.execPath,[join(root,'node_modules/wrangler/bin/wrangler.js'),...argv],{cwd:directory,env:{...process.env,WRANGLER_SEND_METRICS:'false',WRANGLER_LOG_PATH:join(directory,'logs')},encoding:'utf8',input,timeout:120000,maxBuffer:4*1024*1024});
+ await save(directory,label+'.private.log',(result.stdout??'')+(result.stderr??''));if(result.status!==0)throw Error(label+' failed; inspect the private log.');
+}
+async function callFactory(url,key){return async(action,payload,{status=200,uncertain=false,anonymous=false}={})=>{
+ let response;try{response=await fetch(url+'/rehearse',{method:'POST',headers:{'Content-Type':'application/json',...(anonymous?{}:{Authorization:'Bearer '+key})},body:JSON.stringify({action,...(payload===undefined?{}:{payload})}),redirect:'error',signal:AbortSignal.timeout(30000)});}catch(error){if(uncertain)return {uncertain:true};throw error;}
+ if(uncertain&&response.status>=500)return {uncertain:true};assert.equal(response.status,status,action+' response status');const result=await response.json();if(status===200){assert.equal(result.ok,true,action+' succeeded');return result.value;}return result;
+};}
+async function untilSummary(call,predicate){let last;for(let i=0;i<12;i++){try{last=await call('summary');if(predicate(last))return last;}catch{}await wait(750);}throw Error('The expected provider recovery state was not observed; do not retry restore blindly.');}
+export async function cleanup(directory,run,api){
+ checkRunIdentity(run);const observed=await reconcileOwnership(directory,run,api);
+ if(!observed.live){run.stage='cleaned';run.cleanup={workerRemoved:true,namespacesRemoved:true,verified:true};await save(directory,'run.private.json',run);return;}
+ const recorded=[...run.namespaces];
+ if(!observed.cleanupSource){
+  await save(directory,'cleanup.mjs',`export default {fetch(){return new Response('Disposable rehearsal finished.',{status:410,headers:{'X-Notabenda-Recovery-Run':${JSON.stringify(run.runId)}}});}};\n`);
+  await save(directory,'cleanup.json',{name:run.workerName,account_id:run.accountId,main:'cleanup.mjs',compatibility_date:'2026-10-18',workers_dev:true,preview_urls:false,observability:{enabled:false},exports:{RecoveryControl:{type:'durable-object',state:'deleted'},RecoveryEvidence:{type:'durable-object',state:'deleted'}}});
+  await command(directory,'cleanup-dry-run',['deploy','--dry-run','--config','cleanup.json','--outdir','cleanup-bundle']);run.cleanupSourceSha256=await bundledHash(directory,'cleanup-bundle');run.stage='cleanup-started';await save(directory,'run.private.json',run);
+  await command(directory,'cleanup-namespaces',['deploy','--config','cleanup.json','--outdir','cleanup-bundle']);
+  const confirmed=await reconcileOwnership(directory,run,api);if(!confirmed.cleanupSource)throw Error('Cleanup source was not confirmed.');
+ }
+ for(let i=0;i<12;i++){const remaining=(await namespaces(api)).filter(n=>n.script===run.workerName||recorded.some(v=>v.id===n.id));if(!remaining.length)break;if(i===11)throw Error('Namespace deletion has not been verified.');await wait(750);}
+ await api('/workers/scripts/'+run.workerName,{method:'DELETE'});
+ assert.equal(await api('/workers/scripts/'+run.workerName+'/settings',{allowMissing:true}),null);assert.equal((await namespaces(api)).some(n=>recorded.some(v=>v.id===n.id)||n.script===run.workerName),false);
+ run.stage='cleaned';run.cleanup={workerRemoved:true,namespacesRemoved:true,verified:true,namespaceIds:recorded.map(n=>n.id)};await save(directory,'run.private.json',run);
+}
+
+async function prepare(accountId){
+ const runId=randomUUID(),workerName='notabenda-recovery-'+runId.replaceAll('-','').slice(0,16),directory=join(root,'.local','cf-remote-recovery-'+runId);await mkdir(directory,{mode:0o700});await mkdir(join(directory,'logs'),{mode:0o700});
+ const run={schemaVersion:1,kind:'notabenda-remote-recovery-run',runId,workerName,accountId,createdAt:new Date().toISOString(),stage:'prepared',cleanup:{verified:false}};await save(directory,'run.private.json',run);
+ const key=randomBytes(32).toString('hex');await save(directory,'fixture-key.private.txt',key+'\n');
+ const config=exampleConsentConfig(await fixture({reviewed:true}));config.site.id='remote-recovery';const build=compileLegalDocuments(config),scopeId='remote-recovery',notice=createConsentNotice(build.artifact,{scopeId}),now=new Date().toISOString(),reviewAt=new Date(Date.now()+30*86400000).toISOString();
+ const authored=await compileAuthoredDocuments(config,{terms:{format:'mdx',source:'---\nkind: terms\ntitle: Synthetic recovery terms\nroute: /terms\nversion: recovery-1\neffectiveDate: 2026-10-20\nreview:\n  status: reviewed\n---\n## Recovery fixture\n\nPrivate synthetic source retained through provider recovery.'}});
+ const streams=['erased-context','old-held-context','new-held-context','retained-context'],data={runId,siteId:config.site.id,scopeId,now,reviewAt,streams,releases:[build.artifact,authored.archive],authoredId:authored.manifest.artifactId,sourceSha256:hash(authored.archive.sourceAttachments.terms.source),notice,erasedRef:hash(JSON.stringify([config.site.id,scopeId,'erased-context'])),laterHold:{id:randomUUID(),target:'new-held-context',active:true,reviewAt},decision:{requestId:randomUUID(),reason:'operator-erasure',eligibleAt:now,legalHold:false},holdProbeIds:Object.fromEntries(['old-held-context','new-held-context'].map(id=>[id,randomUUID()])),commands:Object.fromEntries(streams.map(id=>[id,{schemaVersion:1,noticeId:notice.noticeId,requestId:randomUUID(),expectedRevision:0,action:'accept-all',choices:Object.fromEntries(Object.keys(notice.scopes).map(id=>[id,true])),clientAt:now}]))};
+ await save(directory,'data.mjs','export const data='+JSON.stringify(data)+';\n');for(const name of ['remote-recovery-worker.mjs','remote-recovery.mjs'])await copyFile(join(root,'scripts/fixtures',name),join(directory,name));await symlink(join(root,'node_modules'),join(directory,'node_modules'),'dir');
+ await save(directory,'wrangler.json',{name:workerName,account_id:accountId,main:'remote-recovery-worker.mjs',compatibility_date:'2026-10-18',workers_dev:true,preview_urls:false,observability:{enabled:false},durable_objects:{bindings:[{name:'CONTROL',class_name:'RecoveryControl'},{name:'EVIDENCE',class_name:'RecoveryEvidence'}]},exports:{RecoveryControl:{type:'durable-object',storage:'sqlite'},RecoveryEvidence:{type:'durable-object',storage:'sqlite'}}});
+ return {directory,run,key,data};
+}
+async function execute(directory,run,key,data,api){
+ assert.equal(await api('/workers/scripts/'+run.workerName+'/settings',{allowMissing:true}),null);assert.equal((await namespaces(api)).some(n=>n.script===run.workerName),false);
+ run.preflightAbsent=true;await save(directory,'run.private.json',run);
+ const subdomain=(await api('/workers/subdomain')).result.subdomain;if(typeof subdomain!=='string'||!/^[a-z0-9-]+$/u.test(subdomain))throw Error('Use an existing Workers subdomain in this account.');run.url='https://'+run.workerName+'.'+subdomain+'.workers.dev';run.stage='deploying';await save(directory,'run.private.json',run);
+ await command(directory,'bundle-dry-run',['deploy','--dry-run','--config','wrangler.json','--outdir','bundle']);run.expectedSourceSha256=await bundledHash(directory,'bundle');await save(directory,'run.private.json',run);
+ try{await command(directory,'deploy',['deploy','--config','wrangler.json','--outdir','bundle']);}finally{await reconcileOwnership(directory,run,api);}
+ run.stage='deployed';await save(directory,'run.private.json',run);assert.deepEqual(run.namespaces.map(n=>n.class).sort(),['RecoveryControl','RecoveryEvidence']);
+ run.stage='secret-updating';await save(directory,'run.private.json',run);try{await command(directory,'secret',['secret','put','FIXTURE_KEY','--config','wrangler.json'],key+'\n');}finally{await reconcileOwnership(directory,run,api);}run.stage='deployed';await save(directory,'run.private.json',run);
+ const call=await callFactory(run.url,key);let ready=false;for(let i=0;i<20;i++){try{await call('state',undefined,{status:403,anonymous:true});ready=true;break;}catch{}await wait(750);}assert.equal(ready,true,'new private Worker is reachable');
+ await call('inspect',undefined,{status:503});await call('archive-write',undefined,{status:503});await call('grant',undefined,{status:503});
+ const seeded=await call('seed');assert.equal(seeded.events,4);assert.equal(seeded.sourceSha256,data.sourceSha256);const bookmark=await call('bookmark');await save(directory,'bookmark.private.json',bookmark);await call('open');assert.equal((await call('inspect')).events,4);assert.equal((await call('archive-write')).created,false);
+ await call('close');await call('post-backup-decisions');let purged;for(let i=0;i<40;i++){purged=await call('purge');if(purged.phase==='complete')break;}assert.equal(purged.phase,'complete');assert.equal(purged.progress.deleted,1);const beforeRestore=await call('summary');assert.equal(beforeRestore.events,3);assert.deepEqual(await call('hold-probes'),{'old-held-context':true,'new-held-context':true});
+ const journal={hold:data.laterHold,retirement:purged},wrong=structuredClone(journal);wrong.retirement.retirement.requestId=randomUUID();await call('journal',wrong,{status:409});const saved=await call('journal',journal);await save(directory,'decisions.private.json',{journal:saved.journal,digest:saved.journalDigest});const disk=JSON.parse(await readFile(join(directory,'decisions.private.json'),'utf8'));assert.equal(disk.digest,saved.journalDigest);assert.equal(hash(canonicalJson(disk.journal)),saved.journalDigest);
+ await call('restore',undefined,{uncertain:true});const restored=await untilSummary(call,s=>s.control.restoreIntent&&s.events===4&&s.sql.length===1&&s.sql[0].value===1&&s.holds['new-held-context']===null&&s.holds['erased-context']===null);assert.equal(restored.control.phase,'closed');assert.equal(restored.erasedPhysicalHeadGone,false);assert.equal(restored.control.restoreIntent.bookmark,bookmark.bookmark);await save(directory,'provider-restore.private.json',restored.control.restoreIntent);
+ for(const action of ['inspect','archive-write','grant'])await call(action,undefined,{status:503});await call('open',undefined,{status:409});await call('purge',undefined,{status:409});const replayed=await call('replay-journal');assert.equal(replayed.holds['new-held-context'].hold.active,true);assert.equal(replayed.holds['erased-context'].phase,'purging');await call('open',undefined,{status:409});const partial=await call('purge');assert.equal(partial.phase,'purging');
+ await call('restart',undefined,{uncertain:true});const restarted=await untilSummary(call,s=>s.control.restarts===1&&s.holds['erased-context']?.progress.batches===partial.progress.batches);assert.equal(restarted.control.phase,'closed');
+ for(let i=0;i<40;i++){purged=await call('purge');if(purged.phase==='complete')break;}assert.equal(purged.phase,'complete');assert.equal(purged.progress.deleted,1);assert.deepEqual(await call('hold-probes'),{'old-held-context':true,'new-held-context':true});await call('open');const final=await call('inspect');assert.equal(final.events,3);assert.equal(final.history,2);assert.equal(final.sourceSha256,data.sourceSha256);const denied=await call('grant',undefined,{status:409});assert.equal(denied.error,'context-retired');await call('close');const finalSummary=await call('summary');assert.equal(finalSummary.erasedPhysicalHeadGone,true);for(const id of ['old-held-context','new-held-context','retained-context'])assert.equal(finalSummary.heads[id],1);
+ run.stage='verified';run.proof={provider:'Cloudflare SQLite Time Travel',bookmarkSha256:hash(bookmark.bookmark),journalDigest:saved.journalDigest,sqlRewound:true,erasedHeadResurrectedThenPurged:true,eventsRetained:3,existingAndNewerHoldsPreserved:true,unrelatedHeadsPreserved:true,sourceBytesPreserved:true,externalGateSurvivedRollback:true,ordinaryRpcClosedBeforeReplay:true,purgeRestartPreserved:true,oldGrantBlocked:true};await save(directory,'run.private.json',run);
+}
+async function main(){
+ const parsed=parseRemoteRecoveryArgs(args);if(parsed.help){process.stdout.write('Optional maintainer-only Cloudflare SQLite recovery rehearsal.\nUse: CLOUDFLARE_API_TOKEN=... node scripts/check-cf-remote-recovery.mjs --run --account-id ACCOUNT_ID\nCreates a fresh synthetic Worker and two SQLite namespaces; permanently removes only these disposable resources after the run. No production bindings or domains.\nCleanup a retained run: --cleanup .local/cf-remote-recovery-RUN_ID\n');return;}
+ const token=process.env.CLOUDFLARE_API_TOKEN;if(!token)throw Error('Supply an existing CLOUDFLARE_API_TOKEN with Worker deployment and namespace inspection access.');
+ if(parsed.cleanup){const directory=await realpath(resolve(root,parsed.cleanup));if(!/^\.local\/cf-remote-recovery-[a-f0-9-]{36}$/u.test(relative(root,directory)))throw Error('Cleanup requires the original project-local private run directory.');assert.equal((await stat(join(directory,'run.private.json'))).mode&0o777,0o600);const run=checkRunIdentity(JSON.parse(await readFile(join(directory,'run.private.json'),'utf8')));await cleanup(directory,run,client(run.accountId,token));console.log('Disposable rehearsal cleanup verified.');return;}
+ const {directory,run,key,data}=await prepare(parsed.accountId),api=client(run.accountId,token);let failure;
+ try{await execute(directory,run,key,data,api);}catch(error){failure=error;run.failure=error.message;await save(directory,'run.private.json',run);}finally{
+  if(run.preflightAbsent)try{await cleanup(directory,run,api);}catch(error){run.cleanup={verified:false,error:error.message};await save(directory,'run.private.json',run);failure??=error;}
+ }
+ for(const name of ['run.private.json','fixture-key.private.txt'])assert.equal((await stat(join(directory,name))).mode&0o777,0o600);
+ console.log(JSON.stringify({status:failure?'failed':'verified',runDirectory:relative(root,directory),proof:run.proof??null,cleanup:run.cleanup}));if(failure)throw Error('Remote rehearsal incomplete; inspect its private run report.');
+}
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(error=>{process.stderr.write(error.message+'\n');process.exitCode=1;});

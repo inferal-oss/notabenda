@@ -26,7 +26,8 @@
     "perf": "npm run build && node scripts/measure-consent-performance.mjs",
     "perf:fixture": "npm run build && node scripts/build-performance-fixture.mjs",
     "perf:serve": "node scripts/serve-performance.mjs",
-    "release:check": "node scripts/check-package-release.mjs"
+    "release:check": "node scripts/check-package-release.mjs",
+    "cf:recovery:remote": "node scripts/check-cf-remote-recovery.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",
