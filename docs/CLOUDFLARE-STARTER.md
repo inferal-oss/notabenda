@@ -53,7 +53,7 @@ Remote deployment can provision a Worker and namespace. Keep staging and product
 
 Removing the mount/routes stops serving the integration; uninstalling packages or deleting the local project does not remove remote records. Preserve required archives and evidence first. Deleting a Cloudflare namespace is a separate destructive operation governed by the current provider procedure; the CLI never performs it.
 
-For optional maintainer runtime verification, build the workspace and run `node scripts/check-cf-starter-runtime.mjs`. It uses a disposable loopback Worker, verifies default denial, substitutes fictional host permissions only in that test copy, checks private archive RPC and restarts against the same SQLite state. It stops its own server and retains the ignored fixture for inspection. This is optional project tooling, not an adopter CI requirement.
+For optional maintainer runtime verification, build the workspace and run `node scripts/check-cf-starter-runtime.mjs`. It uses a disposable loopback Worker, verifies default denial, substitutes fictional host permissions only in that test copy, checks private archive RPC and restarts against the same SQLite state. Its [recovery rehearsal](CLOUDFLARE-RECOVERY.md) also restores a pre-erasure KV snapshot into a different local object, replays a later retirement before opening it and checks preserved records and private source bytes. It stops its own server and retains the ignored fixture for inspection. This is optional project tooling; adopters choose their own CI.
 
 See [the CF API](../packages/notabenda-cf/README.md), [scope decisions](SCOPE.md), [deployment feature status](FEATURES.md#feat-deployment) and [verification](verification/cloudflare-starter.md).
 

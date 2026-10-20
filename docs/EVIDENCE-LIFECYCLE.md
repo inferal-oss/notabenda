@@ -68,6 +68,8 @@ The current controller then remains `retired`: cookie grants and retries stop, t
 
 ## Restore before reopening traffic
 
+The optional [local recovery rehearsal](CLOUDFLARE-RECOVERY.md) exercises this sequence in two isolated starter objects, including restart recovery and preservation of backed-up holds. It is a scoped integration check, not a production recovery service.
+
 A database backup can contain both old payloads and old lifecycle metadata. Before restored storage serves any requests:
 
 1. Keep the restored object isolated from readers and writers.

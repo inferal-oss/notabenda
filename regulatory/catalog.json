@@ -581,7 +581,8 @@
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
         "Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open.",
-        "Optional Node/browser controller timing tools with synthetic inventories, actual native controls, retained distributions and explicit limits; broader page/paint/platform performance remains open."
+        "Optional Node/browser controller timing tools with synthetic inventories, actual native controls, retained distributions and explicit limits; broader page/paint/platform performance remains open.",
+        "Optional two-object local SQLite KV recovery rehearsal with later consent-retirement replay, persistent isolation, resumable purge, held-record preservation and exact private-source comparison. Remote recovery and broader evidence-family exercises remain open."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -616,7 +617,9 @@
         "scripts/serve-accessibility.mjs",
         "scripts/measure-consent-performance.mjs",
         "scripts/build-performance-fixture.mjs",
-        "scripts/serve-performance.mjs"
+        "scripts/serve-performance.mjs",
+        "scripts/check-cf-starter-runtime.mjs",
+        "scripts/fixtures/starter-recovery.mjs"
       ]
     },
     {
@@ -2148,7 +2151,8 @@
         "REQ-PRODUCT-RIGHTS-AUTHORING",
         "REQ-PRODUCT-RIGHTS-LOCALIZATION",
         "REQ-PRODUCT-STORAGE-AUTHORING",
-        "REQ-PRODUCT-CONNECTION-INSPECTION"
+        "REQ-PRODUCT-CONNECTION-INSPECTION",
+        "REQ-PRODUCT-CF-RECOVERY-REHEARSAL"
       ]
     }
   ],
@@ -7159,6 +7163,39 @@
         "site/test/delivery.test.mjs"
       ],
       "implementationNote": "Both runtime profiles expose detached enrollment maps. An optional browser-safe inspector uses the shared compiler projection, reports phases without awaiting or refreshing, and separates configuration, registration, publication and behavior. The lazy example invalidates snapshots after controller changes."
+    },
+    {
+      "id": "REQ-PRODUCT-CF-RECOVERY-REHEARSAL",
+      "jurisdiction": "PRODUCT",
+      "title": "Isolated local starter recovery with later retirement replay",
+      "kind": "product-standard",
+      "summary": "Provide optional maintainer tooling to restore a bounded pre-erasure KV snapshot into a different local SQLite object, keep tested access paths closed until retirement replay and purge finish, and verify preserved held records and private source bytes.",
+      "appliesWhen": "Maintainers explicitly run the isolated Cloudflare starter runtime rehearsal.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DEPLOYMENT",
+        "FEAT-RECORDS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CF-RECOVERY-REHEARSAL"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "One synthetic consent retirement and a pre-existing held context in local Wrangler SQLite KV. Not provider-native backup, remote recovery, all-family acceptance, newer hold-journal replay, external-copy deletion or legal readiness. Host owns complete authenticated retirement/hold reconciliation and all production access paths; fixture controls are never shipped. Adopters choose CI.",
+      "implementationRefs": [
+        "scripts/check-cf-starter-runtime.mjs",
+        "scripts/fixtures/starter-recovery.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/recovery-rehearsal.test.mjs",
+        "scripts/check-cf-starter-runtime.mjs",
+        "docs/verification/cloudflare-recovery.md"
+      ],
+      "implementationNote": "Different fixed target, owner-only backup/manifest/report, default-closed fixture gate, source-only seed guard, manifest decision check, restart/resumable purge, exact old-grant refusal, surviving heads and private MDX source response comparison."
     }
   ],
   "verification": [
@@ -8604,6 +8641,19 @@
         "site/test/connection-inspection.test.mjs",
         "docs/verification/connection-inspection.md",
         "site/test/delivery.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CF-RECOVERY-REHEARSAL",
+      "requirementIds": [
+        "REQ-PRODUCT-CF-RECOVERY-REHEARSAL"
+      ],
+      "status": "automated",
+      "expected": "Optional real local Wrangler run verifies different-object restore, private-file integrity, later retirement replay before opening, restart persistence, physical erased-head deletion, retained and held heads, exact source bytes and old-grant refusal. A direct regression rejects seeding an isolated hydrated fixture; no production restore control is added.",
+      "testRefs": [
+        "packages/notabenda-cf/test/recovery-rehearsal.test.mjs",
+        "scripts/check-cf-starter-runtime.mjs",
+        "docs/verification/cloudflare-recovery.md"
       ]
     }
   ],
