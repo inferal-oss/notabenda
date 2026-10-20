@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -112,7 +113,7 @@ test('minimum target prerequisites are distinct from optional fields and array c
  const config=await fixture();
  config.services[0].resourceOrigins=['https://media.example.test'];config.services.push({...config.services[0],id:'other',resourceOrigins:undefined});delete config.services[1].resourceOrigins;
  const result=assess(config,{'remote-media':'yes'}),media=result.targets.find(t=>t.id==='embeds');
- assert.deepEqual(media.configuration,[{path:'services.resourceOrigins',state:'partial',matchedItems:1,totalItems:2,requiredForTarget:false}]);
+ assert.deepEqual(media.configuration,[{path:'services.resourceOrigins',state:'partial',matchedItems:1,totalItems:2,requiredForTarget:false},{path:'localization.embeds',state:'absent',matchedItems:0,totalItems:1,requiredForTarget:false}]);
  assert.equal(result.missingRequiredConfig.some(f=>f.path==='services.resourceOrigins'),false);
  for(const [question,path] of [['rights-entry','rightsCenter'],['translated-copy','localization']]){
   const report=assess(config,{[question]:'yes'});assert.ok(report.missingRequiredConfig.some(f=>f.path===path));

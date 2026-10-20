@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION
@@ -34,7 +35,7 @@ export const siteSections=[
  ]},
  {id:'privacy-choices',title:'Manage privacy choices',description:'Cookie preferences, optional permissions and controls for tracking and processing.',guides:[guide('specialist-packs','Technology, storage & tags'),guide('consent','Cookie choices'),guide('connection-inspection','Inspect a connection'),guide('embeds','Gated media'),guide('storage-cleanup','Storage cleanup'),guide('form-permissions','Form permissions'),guide('privacy-signals','Global Privacy Control'),guide('processing-choices','Recorded opt-outs'),guide('google-basic','Google Basic'),guide('regional-prompts','Consent timing'),guide('scope-guards','Scope guards')],topics:[
   topic('cookies','Cookie choices','/choices','Accept, reject or choose purposes, then see which declared services may run.','consent',[['Dark','/dark/choices']]),
-  topic('embeds','Gated media','/embeds','Keep frames and images inert until their declared service is allowed.','embeds'),
+  topic('embeds','Gated media','/embeds','Keep frames and images inert until their declared service is allowed.','embeds',[['Portuguese','/localization/embeds/']]),
   topic('storage','Storage cleanup','/storage-cleanup','Remove declared browser markers after withdrawal while leaving unrelated storage alone.','storage-cleanup'),
   topic('permissions','Form permissions','/form-permissions','Record an optional purpose and channel, with independent withdrawal and recovery.','form-permissions',[['React','/form-permissions/react/'],['Astro','/form-permissions/astro/'],['Portuguese','/localization/permission/']]),
   topic('signals','Global Privacy Control','/privacy-signals','Apply a browser privacy signal independently of optional cookie preferences.','privacy-signals'),
@@ -136,7 +137,7 @@ export function areaContinuation(section,kind='guide'){
 export const normalizeGuideRoute=route=>route.replace(/\/$/u,'');
 export const guideSectionUrl=section=>'/guide/areas/'+section.id+'/';
 export const exampleSectionUrl=section=>'/examples/'+section.id+'/';
-const reportParents={'cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
+const reportParents={'embed-localization':'embeds','cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
 export function sectionForGuide(route){
  const current=normalizeGuideRoute(route),area=guideSections.find(s=>normalizeGuideRoute(guideSectionUrl(s))===current);
  if(area)return area;

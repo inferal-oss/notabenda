@@ -100,6 +100,8 @@ React and Astro views reuse the host-owned terms controller. Rendering, hydratio
 
 ## Branding, documentation, and license
 
+Gated media supports complete `localization.embeds` messages with explicit locale, direction, revision and review status. Full controllers select configured copy; compiled cookie controllers need the separately selected dictionary. Localized rendering never chooses a jurisdiction, grants permission or changes destinations. Titles, descriptions, alternatives, translations and actual provider behavior remain host work. Draft dictionaries need explicit preview use; existing unconfigured English output stays exact.
+
 Published documentation can be searched locally by topic, requirement ID and API name. The explicit search page loads a bounded same-origin index of source guides, with matching section links, text-only results and a complete no-script directory. Queries stay in the page and are not sent to a search provider or placed in its URL. Search neither reads operator data nor advises which legal rules apply.
 
 - License project code under **Apache-2.0**. Clearly distinguish code licensing from supplied or separately licensed legal content.

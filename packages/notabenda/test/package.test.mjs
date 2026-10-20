@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-CONNECTION
 // @requirements REQ-PRODUCT-CONNECTION-INSPECTION
@@ -231,6 +232,14 @@ const smallController=createConsentRuntime(runtimeConfig);
 const smallInventory:ConsentRuntimeInventory=smallController.getConfig();
 mountCompiledControls(container,{consent:smallController});
 createEmbedService({consent:smallController,serviceId:'sample'});
+import {selectEmbedLocalization,normalizeEmbedLocalization,renderEmbedPlaceholder,type EmbedMessages} from '@notabenda/core';
+const embedCopy=selectEmbedLocalization(config);
+createEmbedService({consent:smallController,serviceId:'sample',localization:embedCopy});
+renderEmbedPlaceholder({title:'Media',description:'Wait for a choice'},{localization:embedCopy});
+if(embedCopy)normalizeEmbedLocalization(embedCopy);
+const embedMessages:EmbedMessages={preferencesLabel:'Preferences',waiting:'Waiting',allowed:'Permitted',error:'Unavailable'};
+// @ts-expect-error complete embed messages include an error state
+const incompleteEmbedMessages:EmbedMessages={preferencesLabel:'Preferences',waiting:'Waiting',allowed:'Permitted'};
 registerStorageService({consent:smallController,serviceId:'sample',targets:[{storageId:'sample-storage'}],start:()=>()=>{}});
 declare const requiredOptions:ConsentEvidenceOptions;
 createConsentRuntime(runtimeConfig,undefined,{evidence:requiredConsentEvidence(requiredOptions)});

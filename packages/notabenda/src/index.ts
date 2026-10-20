@@ -22,7 +22,7 @@ export type { TermsOffer, TermsAcceptanceRequest, TermsAcceptanceReceipt, TermsA
 export { mountControls } from './controls.js';
 export type { ControlsOptions, MountedControls } from './controls.js';
 export {createEmbedService,renderEmbedPlaceholder} from './embeds.js';
-export type {EmbedPlaceholder,EmbedOptions,MountedEmbed,EmbedService} from './embeds.js';
+export type {EmbedPlaceholder,EmbedOptions,MountedEmbed,EmbedService,EmbedPresentationOptions,EmbedPlaceholderOptions,EmbedServiceOptions} from './embeds.js';
 export {hasGlobalPrivacyControl,getPrivacySignalRestrictions} from './privacy-signals.js';
 export type {GlobalPrivacyControlStatus,PrivacySignalSnapshot} from './privacy-signals.js';
 export {normalizeProcessingNotice} from './processing.js';
@@ -54,3 +54,7 @@ export type {FormPermissionLocalization,FormPermissionMessages} from './form-per
 
 // @requirements REQ-PRODUCT-LOCALIZATION
 export type {CollectionLocalization,CollectionMessages} from './collection-localization-policy.js';
+
+// @requirements REQ-PRODUCT-EMBED-LOCALIZATION
+export {normalizeEmbedLocalization,selectEmbedLocalization} from './embed-localization.js';
+export type {EmbedMessages,EmbedLocalization} from './embed-localization.js';

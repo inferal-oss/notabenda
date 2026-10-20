@@ -330,7 +330,8 @@
         "Safe-area spacing, thumb-friendly controls, persistent reopening, focus restoration, and readable choices across small screens, zoom, large text, RTL, and the on-screen keyboard.",
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
         "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
-        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment."
+        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
+        "Complete host-supplied gated-media messages, matching-language validation and inert localized SSR; copy-only revisions retain existing cookie scope."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -357,7 +358,15 @@
         "packages/notabenda/src/cartridges.ts",
         "packages/notabenda/src/integration-reference.ts",
         "examples/localization/storage-build.mjs",
-        "examples/localization/storage-client.mjs"
+        "examples/localization/storage-client.mjs",
+        "packages/notabenda/src/embed-localization.ts",
+        "packages/notabenda/src/index.ts",
+        "examples/localization/embed-messages.json",
+        "examples/localization/embeds-build.mjs",
+        "examples/localization/embeds-client.mjs",
+        "examples/localization/build.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs"
       ]
     },
     {
@@ -969,7 +978,8 @@
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
         "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering.",
-        "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work."
+        "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work.",
+        "Complete host-supplied gated-media messages, matching-language validation and inert localized SSR; copy-only revisions retain existing cookie scope."
       ],
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
@@ -1037,7 +1047,12 @@
         "packages/notabenda/src/indirect-collection-localization-policy.ts",
         "packages/notabenda/src/indirect-collection.ts",
         "examples/localization/indirect-build.mjs",
-        "examples/localization/indirect-messages.json"
+        "examples/localization/indirect-messages.json",
+        "packages/notabenda/src/embed-localization.ts",
+        "packages/notabenda/src/embeds.ts",
+        "examples/localization/embed-messages.json",
+        "examples/localization/embeds-build.mjs",
+        "examples/localization/embeds-client.mjs"
       ]
     }
   ],
@@ -2558,7 +2573,8 @@
         "REQ-PRODUCT-CF-REMOTE-RECOVERY",
         "REQ-PRODUCT-TERMS-CONNECTION",
         "REQ-PRODUCT-CONSENT-REHEARSAL",
-        "REQ-PRODUCT-DOCS-SEARCH"
+        "REQ-PRODUCT-DOCS-SEARCH",
+        "REQ-PRODUCT-EMBED-LOCALIZATION"
       ]
     }
   ],
@@ -8345,6 +8361,52 @@
         "site/test/site-organization.test.mjs"
       ],
       "implementationNote": "Build-time source-guide allowlist, bounded chunked public index, accent-insensitive identifier-aware lexical ranking, section links, local result rendering/pagination and a complete no-script directory."
+    },
+    {
+      "id": "REQ-PRODUCT-EMBED-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Complete host-supplied gated-media interface messages",
+      "kind": "product-standard",
+      "summary": "Keep inert and mounted media placeholders in the selected language across waiting, permitted and error states, without changing consent or resource gates.",
+      "appliesWhen": "A site uses native gated-media placeholders in a selected language.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-LOCALIZATION",
+        "FEAT-CONTROLS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-EMBED-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Complete host-written copy only; no language negotiation, translation approval or jurisdiction selection. Resource facts and actual provider behavior remain separate. Compiled cookie runtimes omit this dictionary; explicit view copy is not evidence of presentation.",
+      "implementationRefs": [
+        "packages/notabenda/src/embed-localization.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/embeds.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/localization/embed-messages.json",
+        "examples/localization/embeds-build.mjs",
+        "examples/localization/embeds-client.mjs",
+        "examples/localization/build.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs",
+        "examples/static/choices-build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/embed-localization.test.mjs",
+        "packages/notabenda/test/embeds.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/embed-localization.test.mjs",
+        "docs/verification/embed-localization.md",
+        "packages/notabenda/test/integration-assessment.test.mjs"
+      ],
+      "implementationNote": "Versioned four-message dictionary in public configuration, strict standalone selection/validation, automatic full-controller or explicit compiled-controller copy, inert SSR and native lang/dir, with exact unconfigured English output."
     }
   ],
   "verification": [
@@ -10025,6 +10087,22 @@
         "site/test/guide-navigation.test.mjs",
         "site/test/syntax.test.mjs",
         "site/test/site-organization.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-EMBED-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-EMBED-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Complete selected messages cover inert SSR and actual controller/media states; missing/mismatched/draft dictionaries fail explicitly, archives retain copy, material cookie scope remains unchanged, and localized example/runtime destinations preserve the existing resource gates.",
+      "testRefs": [
+        "packages/notabenda/test/embed-localization.test.mjs",
+        "packages/notabenda/test/embeds.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/embed-localization.test.mjs",
+        "docs/verification/embed-localization.md",
+        "packages/notabenda/test/integration-assessment.test.mjs"
       ]
     }
   ],

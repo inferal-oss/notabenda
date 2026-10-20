@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-EMBEDS REQ-EU-DEVICE REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-SAFE-CONTENT
 import {test} from 'node:test';
 import assert from 'node:assert/strict';

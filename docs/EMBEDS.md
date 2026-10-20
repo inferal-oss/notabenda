@@ -57,6 +57,26 @@ The placeholder button opens the existing preferences UI. It makes **no** consen
 
 ## Inert server rendering
 
+### Language and fixed interface messages
+
+For a non-English site, supply all four `localization.embeds` messages: `preferencesLabel`, `waiting`, `allowed` and `error`. They share the site's locale, direction, revision and review metadata. Titles, descriptions and image alternatives remain separate host-written facts. A full `createConsent` controller supplies the configured dictionary automatically. Missing or mismatched non-English messages stop group creation before a lifecycle is registered.
+
+```js
+import {selectEmbedLocalization, renderEmbedPlaceholder} from '@notabenda/core';
+const localization = selectEmbedLocalization(publicConfig);
+const fallback = renderEmbedPlaceholder(
+  {title: 'Your media title', description: 'Your explanation'},
+  {localization},
+);
+const media = createEmbedService({consent, serviceId: 'optional-video', localization});
+```
+
+Select this dictionary before compiling a narrow cookie runtime: `compileConsentRuntimeConfig` leaves media copy out of that descriptor. Pass the selected dictionary separately when using `createConsentRuntime`. Its locale must match the controller's site locale. Draft dictionaries require explicit `allowPreview: true` on the renderer and service group; review them before production use. SSR can also declare `locale` to reject a missing non-English dictionary.
+
+The dictionary is retained in public release configuration. Advance `localization.revision` when it changes. A copy-only edit does not change cookie scopes, grant permission or expand resource origins. Actual provider/purpose changes still require their material revisions. Explicit presentation overrides describe the local view; they do not establish that a particular copy was presented or recorded. Existing English output is unchanged when no dictionary is selected. The older per-resource `preferencesLabel` override remains available for deliberately supplied labels.
+
+Try [the Portuguese media example](/localization/embeds/) and inspect its [message file](../examples/localization/embed-messages.json). These are host-supplied draft messages, not a reviewed locale or jurisdiction pack. See [verification](verification/embed-localization.md).
+
 ```js
 import {renderEmbedPlaceholder} from '@notabenda/core';
 const fallback = renderEmbedPlaceholder({
