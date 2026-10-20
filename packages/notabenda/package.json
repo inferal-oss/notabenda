@@ -231,7 +231,12 @@
       "default": "./dist/technology-collection.js"
     },
     "./technology.css": "./dist/technology.css",
-    "./config/schema.json": "./dist/site-config.schema.json"
+    "./config/schema.json": "./dist/site-config.schema.json",
+    "./cartridges": {
+      "types": "./dist/cartridges.d.ts",
+      "import": "./dist/cartridges.js",
+      "default": "./dist/cartridges.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

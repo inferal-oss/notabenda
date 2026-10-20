@@ -30,7 +30,7 @@ test('every generated guide remains reachable from the complete grouped referenc
  async function visit(directory,prefix){for(const entry of await readdir(directory,{withFileTypes:true})){if(entry.isDirectory())await visit(new URL(entry.name+'/',directory),prefix+'/'+entry.name);else if(entry.name==='index.html')routes.push(prefix);}}
  await visit(new URL('guide/',root),'/guide');for(const route of routes)assert.ok(route==='/guide'||route==='/guide/all'||linked.has(route),route);assert.ok(routes.length>80);assert.equal(document.querySelector('.verification-index').open,false);
  const overview=await page('/guide');assert.equal(overview.querySelectorAll('.guide-breadcrumb').length,0);
- const project=await page('/guide/project');assert.match(project.querySelector('#main').textContent,/Host the HTML yourself and style it with your CSS/u);assert.ok(linked.has('/guide/project'));
+ const project=await page('/guide/project');assert.match(project.querySelector('#main').textContent,/Choose a job: publish privacy pages, manage cookie choices/u);assert.ok(linked.has('/guide/project'));
  const home=await page('/');assert.equal(home.querySelectorAll('.trace').length,0);for(const section of ['privacy-information','contracts','records'])assert.ok(home.querySelector(`a[href="/examples/${section}/"]`));assert.ok(home.querySelector('a[href="/guide"]'));
 });
 
@@ -47,7 +47,7 @@ test('each example appears in exactly one subgroup and area overviews connect gu
  }
  const producer=await page('/guide/guarantee-producer-example');assert.equal(producer.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/contracts/');assert.ok(producer.querySelector('.guide-context a[href="/guide/guarantee-labels"]'));assert.ok(producer.querySelector('.guide-context a[href="/guarantees/product/"]'));
  assert.equal(sectionForGuide('/guide/verification/paid-orders').id,'contracts');assert.equal(sectionForGuide('/guide/verification/consent-focus').id,'privacy-choices');assert.equal(sectionForGuide('/guide/verification/regional-consent').id,'privacy-choices');
- const home=await page('/'),overview=await page('/guide');for(const document of [home,overview])assert.deepEqual([...document.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
+ const home=await page('/'),overview=await page('/guide');assert.deepEqual([...home.querySelectorAll('.home-start h3')].map(h=>h.textContent),['Privacy pages','Cookie choices','Terms agreement']);assert.equal(home.querySelectorAll('.home-start a[href="/start"]').length,3);assert.ok(overview.querySelector('a[href="/start"]'));assert.deepEqual([...overview.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
  assert.equal(home.querySelectorAll('.foundation,.closing').length,0);assert.equal(overview.querySelectorAll('.guide-topic').length,6);
 });
 

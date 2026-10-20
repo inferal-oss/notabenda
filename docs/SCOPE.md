@@ -185,3 +185,13 @@ Provide an optional static technology collection notice linked to a verified leg
 ## Component maps
 
 Explain the purpose of legal/compliance components before presenting implementation architecture. Maintain a central map of information, separate visitor actions, evidence and host fulfillment; include a focused product/guarantee/order/confirmation view where useful. Keep build/browser/backend/storage in a separate view. Diagrams and text-only guides share one maintained model, work without scripts and link to the actual integration guides. Relationships are illustrative and do not declare universal applicability or completion of host duties.
+
+## Cartridge product model
+
+Notabenda should feel like inserting a cartridge for a clear job. Lead with a small library, a deliberate selection and gradual setup that teaches the decisions as they become relevant. The visual direction is console-like simplicity: a few recognizable cartridges, a visible setup tray and an obvious next action. Keep the established restrained design; do not imitate another product's branding or turn regulatory coverage into game achievements.
+
+Start with privacy pages, cookie choices and terms agreement. Additional functions and named regional rules belong in contextual expansion. A regulatory cartridge adds specific supported policy proposals, questions and checks; it does not assert complete jurisdiction coverage. Framework/package/backend choices come at connection time.
+
+Use one versioned cartridge registry referencing the existing integration and requirement contracts. Selection defines planned work. Supporting foundations are inspected and reused, rather than silently enabled. Ask relevant practice questions without marking unseen jobs or unknown facts as no. Keep complete diagnostics and supporting information accessible.
+
+Export and resume must preserve selections, explicit answers, the current draft and private justifications. No sensitive browser persistence is added by default. Removing a cartridge removes planned work; it must not silently delete existing config. A selected cartridge is not an installed integration, and a valid draft is not a verified deployment. Future verification states need evidence bound to the actual configuration, release and integration revision.

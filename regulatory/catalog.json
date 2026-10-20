@@ -17,7 +17,8 @@
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
         "Type-derived installed authoring JSON Schema and focused field lookup, with exact known keys/type values and separate runtime validation and host checks.",
-        "Standalone installed-shape checks in read-only assessment, bounded field diagnostics and selected-target prerequisites for scope assessment, localized interfaces and independent storage-exception controls."
+        "Standalone installed-shape checks in read-only assessment, bounded field diagnostics and selected-target prerequisites for scope assessment, localized interfaces and independent storage-exception controls.",
+        "Cartridge-led product entry, shared installed job registry, focused setup questions and version-pinned draft/report/agent handoff; advanced product conversion remains in progress."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -2059,7 +2060,8 @@
         "REQ-PRODUCT-STORAGE-EXCEPTIONS",
         "REQ-PRODUCT-LOCALIZATION",
         "REQ-PRODUCT-AGENT-INTEGRATION",
-        "REQ-PRODUCT-COMPLIANCE-MAP"
+        "REQ-PRODUCT-COMPLIANCE-MAP",
+        "REQ-PRODUCT-CARTRIDGES"
       ]
     }
   ],
@@ -6532,6 +6534,48 @@
         "site/test/compliance-diagrams.test.mjs",
         "docs/verification/compliance-map.md"
       ]
+    },
+    {
+      "id": "REQ-PRODUCT-CARTRIDGES",
+      "jurisdiction": "PRODUCT",
+      "title": "Cartridge-led setup with focused facts and a reusable handoff",
+      "kind": "product-standard",
+      "summary": "Present bounded functional jobs and specific regulatory overlays as versioned cartridges. Resolve their existing integration contracts, ask only the selected job questions and carry selections, explicit answers and draft config through export/resume. Keep requested work separate from supporting foundations and actual verification.",
+      "appliesWhen": "Choosing, preparing or resuming Notabenda integration work in the website, CLI or reusable setup UI.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CARTRIDGES"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Initial product flow and draft/agent handoff. Selecting a cartridge does not activate a policy, establish applicability, alter an existing deployment or prove verification. Remaining interfaces and advanced flows still need the same product treatment. Regional cartridges describe named preview mechanisms, not complete country packs.",
+      "implementationRefs": [
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/cartridges-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/cli.ts",
+        "site/cartridge-page.mjs",
+        "site/cartridges-app.mjs",
+        "site/cartridges.css",
+        "site/build.mjs",
+        "site/host.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/cartridges.test.mjs",
+        "site/test/cartridges.test.mjs",
+        "docs/verification/cartridges.md"
+      ],
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected cartridge revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser."
     }
   ],
   "verification": [
@@ -7793,6 +7837,19 @@
         "packages/notabenda/test/indirect-collection.test.mjs",
         "docs/verification/legitimate-interests.md",
         "site/test/legitimate-interests.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CARTRIDGES",
+      "requirementIds": [
+        "REQ-PRODUCT-CARTRIDGES"
+      ],
+      "status": "automated",
+      "expected": "Selection and dependency tests prove no activation or invented answers; focused UI/CLI drafts preserve imports and selection across report resume. Public onboarding stays local and separate from session demo storage. Browser checks cover desktop/mobile choice, focus and draft handoff; deployment verification is not inferred from selection.",
+      "testRefs": [
+        "packages/notabenda/test/cartridges.test.mjs",
+        "site/test/cartridges.test.mjs",
+        "docs/verification/cartridges.md"
       ]
     }
   ],

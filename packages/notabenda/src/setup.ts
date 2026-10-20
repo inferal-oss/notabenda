@@ -1,3 +1,4 @@
+import type {CartridgeSelection} from './cartridges.js';
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-IE-CONSENT-DURATION REQ-FR-SCOPE REQ-DE-DEVICE REQ-IT-REPROMPT REQ-ES-CHOICE
 import {normalizeCatalogSelectionRevisions} from './catalog-review.js';
@@ -66,7 +67,7 @@ export const setupFactFields=[['siteName','Site name'],['siteId','Site ID (lower
 export type SetupFactId=typeof setupFactFields[number][0];
 export interface SetupAnswers {schemaVersion:1;publicFacts?:Partial<Record<SetupFactId,string>>;markets:string[];answers:Partial<Record<SetupQuestionId,SetupAnswer>>;storageJustifications?:Record<string,string>}
 export interface SetupRecommendation {id:string;status:'recommended'|'investigate'|'review'|'declared-no';title:string;reason:string;configPaths:readonly string[];requirementIds:readonly RequirementId[];guide:string}
-export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'5';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
+export interface SetupPlan {config:SiteConfig;report:{schemaVersion:1;questionnaireVersion:'5';kind:'private-setup-report';answers:SetupAnswers;recommendations:SetupRecommendation[];reviewItems:string[];diagnostics:Diagnostic[];productionReady:false;cartridges?:CartridgeSelection;catalogSelections?:CatalogServiceSelection[];catalogSelectionRevisions?:CatalogSelectionRevision[]}}
 const object=(value:unknown):value is Record<string,unknown>=>!!value&&typeof value==='object'&&!Array.isArray(value);
 const exact=(value:Record<string,unknown>,allowed:string[])=>Object.keys(value).every(k=>allowed.includes(k));
 const text=(value:unknown):value is string=>typeof value==='string'&&value.length<=4000&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u.test(value);

@@ -313,3 +313,7 @@ The optional [customer confirmation module](ORDER-CONFIRMATIONS.md) retains comp
 
 
 The optional [UK storage settings](STORAGE-EXCEPTIONS.md) implement declared statistical/appearance profiles as independent objection gates. They reuse the cooperative service runner, require atomic preference persistence and usable presentation, preserve objections across material revisions, and keep ordinary consent choices separate. Broader regional support and provider qualification remain open.
+
+## Product direction: cartridges
+
+The primary product path is now choose a job, prepare its facts and connect it to a site. Treat the framework APIs as supporting integration details. The first slice supplies three basic cartridges, additional functions and specific timing overlays, a shared installed registry, focused manual/CLI setup and an agent brief. Continue this model through preview, connection and operator next actions; avoid adding more isolated feature pages as the default onboarding. See [cartridges](CARTRIDGES.md) and [scope decisions](SCOPE.md#cartridge-product-model).

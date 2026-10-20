@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-CARTRIDGES
+import {selectCartridges,readCartridgeSelection,planCartridges,createCartridgeSetupPlan,cartridgeRecommendations} from './cartridges.js';
 import {readSetupCatalogRevisions} from './catalog-review.js';
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -18,12 +20,13 @@ import {createSetupPlan,readSetupAnswers,setupQuestions,setupMarkets,setupFactFi
 import {toPublicConfig} from './config.js';
 import type {SetupAnswers,SetupChoice} from './setup.js';
 const readJson=(path:string)=>readCliJson(path,512*1024,'Setup input must be ordinary UTF-8 JSON no larger than 512 KiB.');
-export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string}):Promise<void>{
+export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string;cartridgeIds?:string[]}):Promise<void>{
   if(options.catalogPath&&!options.projectDirectory)throw Error('Wizard --catalog requires an explicit --project directory.');
   if(!options.answersPath&&(!process.stdin.isTTY||!process.stdout.isTTY))throw new Error('Interactive setup needs a terminal. Supply --answers FILE for noninteractive use.');
   const directory=resolve(options.outDir);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
+  let selection=options.cartridgeIds?selectCartridges(options.cartridgeIds):undefined;
   let base=options.configPath?toPublicConfig(await readJson(options.configPath),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];let catalogSelectionRevisions:ReturnType<typeof readSetupCatalogRevisions>=[];
-  if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);catalogSelections=readSetupCatalogSelections(input);catalogSelectionRevisions=readSetupCatalogRevisions(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});}
+  if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);const resumed=readCartridgeSelection(input);if(selection&&resumed&&JSON.stringify(selection)!==JSON.stringify(resumed))throw Error('Selected cartridges conflict with the saved report. Resume it without --cartridges or prepare a separate plan.');selection??=resumed;catalogSelections=readSetupCatalogSelections(input);catalogSelectionRevisions=readSetupCatalogRevisions(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});}
   let project: {catalog:ServiceCatalog;report:ProjectServiceReport}|undefined;
   if(options.projectDirectory){const catalog=await loadServiceCatalog(options.catalogPath);console.log('Scanning the explicitly selected project locally; no project code, installers or network probes run.');project={catalog,report:await scanProjectServices(options.projectDirectory,catalog)};}
   if(!options.answersPath){
@@ -34,7 +37,8 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       for(const [id,label] of setupFactFields)result.publicFacts![id]=await ask(label+': ');
       console.log(setupMarkets.map(m=>m.id+' — '+m.label).join('\n'));
       result.markets=(await ask('Coverage interests (comma-separated IDs; blank means unresolved): ',512)).split(',').map(s=>s.trim()).filter(Boolean);
-      for(const q of setupQuestions){console.log('\n'+q.title+'\n'+q.detail);let choice='';while(!['yes','no','unknown'].includes(choice))choice=(await ask('yes / no / unknown [unknown]: ',16)).toLowerCase()||'unknown';result.answers[q.id]={choice:choice as SetupChoice,justification:await ask('Supporting facts / justification (blank leaves a review item): ')};}
+      const selectedQuestions=selection?new Set(planCartridges(selection).reference.relevantQuestionIds):undefined;
+      for(const q of setupQuestions.filter(q=>!selectedQuestions||selectedQuestions.has(q.id))){console.log('\n'+q.title+'\n'+q.detail);let choice='';while(!['yes','no','unknown'].includes(choice))choice=(await ask('yes / no / unknown [unknown]: ',16)).toLowerCase()||'unknown';result.answers[q.id]={choice:choice as SetupChoice,justification:await ask('Supporting facts / justification (blank leaves a review item): ')};}
       base=await reviewSetupPurposes(base,ask);
       const inventory=(base as {storage?:{id:string;classification:string}[]}|undefined)?.storage;
       if(Array.isArray(inventory))for(const item of inventory)if(item.classification==='necessary')result.storageJustifications![item.id]=await ask(`Private justification for necessary storage “${item.id}”: `);
@@ -42,7 +46,8 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       answers=result;
     }finally{ui.close();}
   }
-  const plan=createSetupPlan(readSetupAnswers(answers),{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});
+  const prepare=selection?(input:unknown,opts:Parameters<typeof createSetupPlan>[1])=>createCartridgeSetupPlan(selection,input,opts):createSetupPlan;
+  const plan=prepare(readSetupAnswers(answers),{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});
   // A new directory is the write boundary: never overwrite an existing config or report, including symlinks.
   await mkdir(directory,{mode:0o700});
   await writeFile(join(directory,'notabenda.config.json'),JSON.stringify(plan.config,null,2)+'\n',{flag:'wx',mode:0o600});
@@ -51,6 +56,6 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
   await writeFile(join(directory,'.gitignore'),'setup.private.json\n'+(project?'discovery.private.json\n':''),{flag:'wx'});
   if(project)console.log(`Saved ${project.report.findings.length} project candidate(s) separately in discovery.private.json; coverage ${project.report.coverage.limited?'limited':'bounded'}. Findings never add services without actual-use confirmation.`);
   console.log(`Created a draft config and private setup report in ${options.outDir}.`);
-  for(const recommendation of plan.report.recommendations)if(recommendation.status!=='declared-no')console.log(`${recommendation.status}: ${recommendation.title}\n  ${recommendation.reason}\n  ${recommendation.requirementIds.join(', ')}\n  Config / integration: ${recommendation.configPaths.join(', ')}\n  Guide: https://notabenda.org/guide/${recommendation.guide}`);
-  console.log(`${plan.report.reviewItems.length} review items; ${plan.report.diagnostics.filter(d=>d.severity==='error').length} production validation errors. Review locally; no services were enabled or deployed.`);
+  for(const recommendation of selection?cartridgeRecommendations(selection,plan.report.recommendations):plan.report.recommendations)if(recommendation.status!=='declared-no')console.log(`${recommendation.status}: ${recommendation.title}\n  ${recommendation.reason}\n  ${recommendation.requirementIds.join(', ')}\n  Config / integration: ${recommendation.configPaths.join(', ')}\n  Guide: https://notabenda.org/guide/${recommendation.guide}`);
+  console.log(`${selection?'Complete private report: ':''}${plan.report.reviewItems.length} review items; ${plan.report.diagnostics.filter(d=>d.severity==='error').length} production validation errors. Review locally; no services were enabled or deployed.`);
 }

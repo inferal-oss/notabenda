@@ -99,3 +99,6 @@
  @media(max-width:900px){.stage-overview{grid-template-columns:1fr}.stage-overview>.directory-stage+.directory-stage{border-left:0;border-top:1px solid var(--line)}.stage-overview .directory-stage>header{flex-direction:row}.stage-overview .stage-links{padding-left:2rem}.stage-links a{font-size:.875rem}}
  @media(forced-colors:active){.stage-overview{border:1px solid CanvasText}}
 }
+
+/* Cartridge-led navigation stays usable at narrow widths. @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-MOBILE */
+@media(max-width:700px){.site-header nav{width:100%;flex-wrap:wrap;row-gap:0}.site-header .nav-action{white-space:nowrap;margin-left:auto}}
