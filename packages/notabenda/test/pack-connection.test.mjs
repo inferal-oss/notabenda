@@ -36,7 +36,7 @@ test('each installed pack has its actual connection tasks, checks and separate f
    const proposal=scope.policyProposals[0],policy=card.querySelector('.nb-setup-connection-policy');
    if(proposal){assert.ok(policy.textContent.includes(proposal.path));assert.ok(policy.textContent.includes(proposal.profile));for(const field of proposal.requiredFields)assert.ok(policy.textContent.includes(field));assert.match(policy.textContent,/Selection has not enabled/);assert.equal(plan.config.consent,config.consent);}
    else assert.equal(policy,null);
-   assert.deepEqual(b.ui.getPlan(),before);assert.equal(b.effects(),0);assert.equal(guide.querySelector('input,button'),null);
+   assert.deepEqual(b.ui.getPlan(),before);assert.equal(b.effects(),0);assert.equal(guide.querySelector('input'),null);
   }finally{b.ui.destroy();b.dom.window.close();}
  }
 });

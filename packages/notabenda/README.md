@@ -47,7 +47,7 @@ const footer = renderLegalLinks(site);
 
 `defineSite` is a typed authoring helper. For arbitrary parsed JSON, use `validateSiteConfig(input)` and `toPublicConfig(input)`. Rendering always validates input. Use `renderLegalPage` for a complete document with a language attribute, viewport, headings, contents navigation, and legal links. Build and render with `{ mode: 'production' }` when publishing reviewed documents; fragment rendering defaults to preview validation.
 
-Use optional CSS variables on your layout to set `--nb-font`, `--nb-surface`, `--nb-text`, `--nb-muted`, `--nb-line`, `--nb-accent`, and `--nb-document-width`. Omit the CSS entirely for your own styles. Content strings are plain text and escaped; structured section links allow HTTPS, plain mailto, or same-site paths. Raw HTML and Markdown execution are not supported. The initial renderer supports English locales.
+Use optional CSS variables on your layout to set `--nb-font`, `--nb-surface`, `--nb-text`, `--nb-muted`, `--nb-line`, `--nb-accent`, and `--nb-document-width`. Omit the CSS entirely for your own styles. Content strings are plain text and escaped; structured section links allow HTTPS, plain mailto, or same-site paths. Raw HTML and Markdown execution are not supported. Built-in wording is English; hosts can supply versioned [localization](../../docs/LOCALIZATION.md).
 
 ## Build a release artifact
 
@@ -76,6 +76,8 @@ Build a purpose/channel offer with `createFormPermissionOffer`, then use `create
 ## Cookie choices
 
 For a smaller browser bundle, build a descriptor with `compileConsentRuntimeConfig(config, {evidence: 'local'})` from `notabenda/content`, then use `createConsentRuntime` and `mountControls` from `notabenda/consent` with optional `notabenda/consent.css`. Required receipts use explicit `evidence: 'required'` and `requiredConsentEvidence` from `notabenda/consent/evidence`. The [consent guide](../../docs/CONSENT.md) explains validation, adapter support and the conservative migration of older stored grants. React hosts can use `notabenda/react/consent` with the compiled controller. Existing `createConsent` and `notabenda/react` remain available with full config validation and the complete public getter.
+
+The [setup editor and interactive wizard](../../docs/SETUP.md#configure-cookie-control-settings) can author consent settings from your declared inventory. Custom operator tools can use `createConsentDraftPlan` from `notabenda/setup/consent` or `mountConsentEditor` from `notabenda/setup/consent/ui`. These prepare a local draft and preserve scope restrictions; the host still connects actual services and reviews publication.
 
 Add an explicit runtime scope to the site inventory. IDs refer to declared purposes and services; every purpose of a managed service must be included:
 

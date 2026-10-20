@@ -132,7 +132,7 @@ The built-in entries expose their drawer relationship and expanded state. Purpos
 
 Use semantic CSS tokens such as `--nb-surface`, `--nb-page-bg`, `--nb-soft`, `--nb-text`, `--nb-muted`, `--nb-line`, `--nb-accent`, `--nb-action-bg`, `--nb-action-text`, `--nb-focus`, `--nb-font`, `--nb-radius`, `--nb-bottom-offset`, and `--nb-sheet-max-height`. Styles use the `notabenda` cascade layer and low-specificity selectors. Light/dark examples use tokens rather than replacing internals. Native dialog support is required by the built-in UI; a custom headless interface can serve other environments.
 
-The renderer is initially English. The optional [React adapter](REACT.md) connects to the same controller. Full accessibility review, platform/screen-reader testing, regional rule packs, US sale/sharing/GPC handling, additional framework adapters and form permissions remain separate work. [Terms agreement](TERMS.md) has its own controller and acknowledged record path, independent of these cookie controls. Do not describe this preview as a complete compliance solution.
+The built-in wording is English; hosts can supply versioned [localization](LOCALIZATION.md). The optional [React](REACT.md) and [Astro](ASTRO.md) adapters share the controller. [Processing opt-outs](PROCESSING-CHOICES.md), [Global Privacy Control](PRIVACY-SIGNALS.md) and [form permissions](FORM-PERMISSIONS.md) have separate controls and scope. Full accessibility review, platform/screen-reader testing and broader reviewed regional coverage remain open. [Terms agreement](TERMS.md) has its own controller and acknowledged record path, independent of these cookie controls. Do not describe this preview as a complete compliance solution.
 
 ## Rights links and browser guidance
 
@@ -177,10 +177,14 @@ The default preferences drawer wraps long headings and Close labels. Its action 
 
 The drawer uses one scroll region when space is tight. Where `ResizeObserver` is available and enough room remains for body text, it keeps the header and footer fixed and scrolls the body. Resizing keeps the current control focused and preserves unsaved choices. Browsers without resize observation use the whole-drawer fallback. Closing still applies no draft choices.
 
-Set direction on the host document or container using normal HTML `dir` semantics. Desktop side drawers follow inline-end placement and notice offsets follow the corresponding safe-area edge. This supports layout direction; the built-in English status messages are not a translation pack. See the [repeatable layout checks](verification/controls-layout.md) for long text, RTL, enlarged text and remaining platform work.
+Set direction on the host document or container using normal HTML `dir` semantics. Desktop side drawers follow inline-end placement and notice offsets follow the corresponding safe-area edge. This supports layout direction; translated status messages come from the host-supplied localization catalog. See the [repeatable layout checks](verification/controls-layout.md) for long text, RTL, enlarged text and remaining platform work.
 
 An optional [calendar grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months) can limit remembered grants separately from refusal memory and repeat-prompt rules. The host selects it explicitly; market and locale declarations do not activate it.
 
 ## Controls opened by the visitor
 
 `mountControls(container, { consent, noticeMode: 'on-demand' })` hides the initial automatic notice and retains the preferences trigger. It changes no stored choice and starts no service. Use it when the host already presents the relevant disclosure before activation, such as the [technology function notice](TECHNOLOGY-COLLECTION.md). Keep a persistent way to reopen choices. The default remains `automatic`; choosing a display mode never establishes legal applicability.
+
+## Author settings through setup
+
+The [cookie control settings editor](SETUP.md#configure-cookie-control-settings) and interactive wizard author enrollment, public material versions and separate memory periods from the actual inventory. They preserve scope restrictions and existing timing policies. Saving prepares a draft; registering actual service lifecycles and reviewing publication remain host work.

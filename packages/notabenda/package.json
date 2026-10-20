@@ -259,7 +259,17 @@
       "import": "./dist/cartridges-ui.js",
       "default": "./dist/cartridges-ui.js"
     },
-    "./packs.css": "./dist/cartridges.css"
+    "./packs.css": "./dist/cartridges.css",
+    "./setup/consent": {
+      "types": "./dist/setup-consent.d.ts",
+      "import": "./dist/setup-consent.js",
+      "default": "./dist/setup-consent.js"
+    },
+    "./setup/consent/ui": {
+      "types": "./dist/setup-consent-ui.d.ts",
+      "import": "./dist/setup-consent-ui.js",
+      "default": "./dist/setup-consent-ui.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

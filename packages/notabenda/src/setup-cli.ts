@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-CONSENT-AUTHORING
+import {reviewSetupConsent} from './setup-consent-cli.js';
 // @requirements REQ-PRODUCT-PACK-CONNECTION
 // @requirements REQ-PRODUCT-CARTRIDGES
 import {selectCartridges,readCartridgeSelection,planCartridges,createCartridgeSetupPlan,formatCartridgeBrief,cartridgeRecommendations} from './cartridges.js';
@@ -44,6 +46,7 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       const inventory=(base as {storage?:{id:string;classification:string}[]}|undefined)?.storage;
       if(Array.isArray(inventory))for(const item of inventory)if(item.classification==='necessary')result.storageJustifications![item.id]=await ask(`Private justification for necessary storage “${item.id}”: `);
       const reviewed=await reviewSetupCatalog(base,catalogSelections,ask,project);base=reviewed.base;catalogSelections=reviewed.selections;
+      base=await reviewSetupConsent(base,ask);
       answers=result;
     }finally{ui.close();}
   }

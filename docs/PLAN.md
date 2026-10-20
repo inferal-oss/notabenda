@@ -2,6 +2,8 @@
 
 Architecture and roadmap, 18 October 2026. Documents/configuration, the local consent runtime and vanilla controls, version-bound terms agreement, and optional host-authorized Cloudflare backoffice/history APIs work locally. Broader regional rules, additional framework adapters and further operational workflows remain proposals. Use the package READMEs and [consent guide](CONSENT.md) and [terms guide](TERMS.md) for actual APIs.
 
+Setup now includes explicit [cookie control settings authoring](SETUP.md#configure-cookie-control-settings) in the operator UI and interactive CLI. It creates configured drafts from actual inventory while preserving restrictions and policies. Connecting and verifying actual service loaders, cleanup, storage, evidence transport and deployment remains required host work; configured settings are not installation evidence.
+
 Build priorities and concrete deliverables are indexed in [FEATURES.md](FEATURES.md). Individual obligations, applicability conditions, sources, and verification scenarios live in the [requirements catalog](requirements/README.md), generated from [regulatory/catalog.json](../regulatory/catalog.json). Each rule and test must refer to its applicable `REQ-*` IDs. Research, legal review, implementation, and automated verification are separate statuses.
 
 Markdown/MDX authoring with YAML frontmatter is implemented through the optional build-time `notabenda-authoring` package. It preserves private source archives, static custom-component output and source/rendered comparisons. The JSON CLI is unchanged; see [AUTHORING.md](AUTHORING.md).

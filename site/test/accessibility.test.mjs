@@ -13,6 +13,7 @@ import {mountCartridgeConsole} from 'notabenda/cartridges/ui';
 import {selectCartridges} from 'notabenda/cartridges';
 import {createWorkspaceOverviewWorker} from 'notabenda-cf';
 import {mountLegalPreview} from 'notabenda/setup/preview';
+import {mountConsentEditor} from 'notabenda/setup/consent/ui';
 const shell='<!doctype html><html lang="en"><head><title>Component check</title></head><body><main id="main"><h1>Settings</h1><div id="component"></div></main></body></html>';
 function visibleLabels(document){
  const words=value=>value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -22,6 +23,20 @@ function visibleLabels(document){
  }
 }
 function clean(result){assert.deepEqual(result.violations,[],result.label);assert.deepEqual(result.structural,[],result.label);assert.deepEqual(result.warnings,[],result.label);assert.equal(result.incomplete.some(v=>v.id==='aria-prohibited-attr'),false,result.label+' has unresolved naming semantics');assert.equal(result.environment,'jsdom-semantic-only');assert.deepEqual(result.excludedRules,['color-contrast','label-content-name-mismatch']);}
+
+// @requirements REQ-PRODUCT-CONSENT-AUTHORING
+test('consent authoring labels its services, included purposes, memory fields and validation feedback',async()=>{
+ const data=await accessibilityFixtureData(),audit=await createAccessibilityAudit(shell,{label:'consent settings editor'}),d=audit.dom.window.document;
+ let config=structuredClone(data.config);delete config.consent;config.storage=[];
+ const ui=mountConsentEditor(d.querySelector('#component'),{getConfig:()=>config,onChange:plan=>{config=plan.config;}});
+ try{
+  ui.open();clean(await audit.scan());
+  const check=d.querySelector('.nb-setup-consent-service input[type=checkbox]');assert.ok(check);check.checked=true;check.dispatchEvent(new audit.dom.window.Event('change',{bubbles:true}));clean(await audit.scan());
+  const save=[...d.querySelectorAll('button')].find(b=>b.textContent==='Save control settings');save.click();assert.equal(d.activeElement.getAttribute('aria-invalid'),'true');clean(await audit.scan());
+  for(const input of d.querySelectorAll('.nb-setup-consent-panel input[required]:not(:disabled)'))input.value=input.type==='number'?'30':'reviewed-use-1';
+  save.click();assert.ok(config.consent);clean(await audit.scan());
+ }finally{ui.destroy();audit.close();}
+});
 
 // @requirements REQ-PRODUCT-CARTRIDGES
 test('the deliberate page preview names its dialog, document choices and legal contents',async()=>{

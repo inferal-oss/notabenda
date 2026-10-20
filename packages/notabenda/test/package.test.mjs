@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-AUTHORING
 // @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-EU-GUARANTEE-LABEL
 // @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
@@ -253,6 +254,17 @@ buildLegalGuaranteeNotice({language:'zz',reviewStatus:'reviewed'});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderDurabilityGuaranteeLabel,normalizeDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from 'notabenda/guarantees/label';\ndeclare const label:DurabilityGuaranteeLabel;normalizeDurabilityGuaranteeLabel(label);renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n`);
     const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from 'notabenda/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
+    const controlsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentDraftPlan} from 'notabenda/setup/consent';import {mountConsentEditor} from 'notabenda/setup/consent/ui';if([createConsentDraftPlan,mountConsentEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(controlsImport.status,0,controlsImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createConsentDraftPlan,type ConsentDraftSettings} from 'notabenda/setup/consent';
+import {mountConsentEditor} from 'notabenda/setup/consent/ui';
+declare const settings:ConsentDraftSettings;
+const controlsDraft=createConsentDraftPlan(config,{baseline:config,settings});
+const controlsEditor=mountConsentEditor(container,{getConfig:()=>controlsDraft.config,onChange:plan=>{void plan.blockedPurposeIds;}});
+controlsEditor.refresh({discardDraft:true});controlsEditor.destroy();
+// @ts-expect-error memory periods are numbers, not unchecked text
+settings.grantLifetimeDays='90';
+`);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);
   } finally { await rm(cwd, { recursive: true, force: true }); }

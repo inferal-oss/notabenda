@@ -20,7 +20,8 @@
         "Standalone installed-shape checks in read-only assessment, bounded field diagnostics and selected-target prerequisites for scope assessment, localized interfaces and independent storage-exception controls.",
         "Pack-led product entry, shared installed job registry, focused setup questions and version-pinned draft/report/agent handoff; advanced product conversion remains in progress.",
         "Optional local reader for configured draft pages with the existing document renderer and separate on-demand delivery.",
-        "Selected pack connection work, application checks and foundation reuse, with the same saved connection-stage brief in browser and scoped terminal drafts; actual deployment verification remains host work."
+        "Selected pack connection work, application checks and foundation reuse, with the same saved connection-stage brief in browser and scoped terminal drafts; actual deployment verification remains host work.",
+        "Explicit local consent settings authoring in the UI and CLI, including service/purpose enrollment, material versions and separate lifetimes; existing policies and restrictive scope facts are preserved."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -42,7 +43,10 @@
         "packages/notabenda/src/integration-assessment.ts",
         "packages/notabenda/scripts/config-shape-validator.mjs",
         "packages/notabenda/src/setup-preview.ts",
-        "packages/notabenda/src/setup-connection-ui.ts"
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/setup-consent.ts",
+        "packages/notabenda/src/setup-consent-ui.ts",
+        "packages/notabenda/src/setup-consent-cli.ts"
       ]
     },
     {
@@ -2070,7 +2074,8 @@
         "REQ-PRODUCT-CARTRIDGES",
         "REQ-PRODUCT-WORKSPACE-OVERVIEW",
         "REQ-PRODUCT-DRAFT-PREVIEW",
-        "REQ-PRODUCT-PACK-CONNECTION"
+        "REQ-PRODUCT-PACK-CONNECTION",
+        "REQ-PRODUCT-CONSENT-AUTHORING"
       ]
     }
   ],
@@ -6710,6 +6715,45 @@
         "docs/verification/pack-connection.md"
       ],
       "implementationNote": "Connection tasks and checks resolve the existing target registry. Regional proposals retain exact selected policy paths/required fields and stay disabled. UI and scoped CLI save the same connect-stage brief, referencing the actual config/report filenames; existing prepare-stage briefs remain available."
+    },
+    {
+      "id": "REQ-PRODUCT-CONSENT-AUTHORING",
+      "jurisdiction": "PRODUCT",
+      "title": "Explicit cookie control enrollment and memory-period draft authoring",
+      "kind": "product-standard",
+      "summary": "Let operators author real consent settings through a shared bounded draft API, setup editor and CLI. Require explicit service enrollment, complete purpose dependencies, material versions and separate lifetimes. Bind edits to reviewed public facts, preserve policies/wording/restrictions and keep configuration separate from runtime permission or deployment.",
+      "appliesWhen": "An operator explicitly configures or edits cookie control settings in a local setup draft.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CONSENT-AUTHORING"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "No recommended legal lifetimes or applicability decision is supplied. Unknown/present scope guards remain restrictive. Actual service lifecycles, qualified wording, regional changes and deployment acceptance remain host work.",
+      "implementationRefs": [
+        "packages/notabenda/src/setup-consent.ts",
+        "packages/notabenda/src/setup-consent-ui.ts",
+        "packages/notabenda/src/setup-consent-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/setup-consent.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/consent-authoring.md",
+        "packages/notabenda/test/package.test.mjs"
+      ],
+      "implementationNote": "Explicit service selection exposes its mechanical purpose closure, with operator-supplied purpose/service material versions and grant/refusal/dismissal memory. Public baseline comparison rejects stale changes. Existing consent information, regional policies, scope guards and catalog review pins are preserved. Saves invalidate exported draft artifacts; unsaved/canceled proposals do not change config. Synthetic actual lifecycle checks cover rejection, granular grants, withdrawal/reload and restrictive scopes. Imported timing policies are shown in the editor for review. Enter in draft fields cannot advance the parent setup; packed imports and strict consumer types cover both new subpaths."
     }
   ],
   "verification": [
@@ -8031,6 +8075,20 @@
         "packages/notabenda/test/pack-connection.test.mjs",
         "site/test/accessibility.test.mjs",
         "docs/verification/pack-connection.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CONSENT-AUTHORING",
+      "requirementIds": [
+        "REQ-PRODUCT-CONSENT-AUTHORING"
+      ],
+      "status": "automated",
+      "expected": "No implicit settings, complete purpose enrollment, preserved policies/guards/pins, stale/cancel fences, equivalent UI/CLI output and actual synthetic runtime enforcement.",
+      "testRefs": [
+        "packages/notabenda/test/setup-consent.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/consent-authoring.md",
+        "packages/notabenda/test/package.test.mjs"
       ]
     }
   ],

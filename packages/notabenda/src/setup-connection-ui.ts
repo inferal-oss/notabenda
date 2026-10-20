@@ -1,13 +1,15 @@
+// @requirements REQ-PRODUCT-CONSENT-AUTHORING
 // @requirements REQ-PRODUCT-PACK-CONNECTION REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-A11Y
 import type {planCartridges} from './cartridges.js';
 
 /** Render the installed integration contract; no completion state or host actions are owned here. */
-export function appendPackConnectionGuide(container:HTMLElement,scope:ReturnType<typeof planCartridges>,docs:string):void {
+export function appendPackConnectionGuide(container:HTMLElement,scope:ReturnType<typeof planCartridges>,docs:string,options:{hasConsent?:boolean;configureConsent?:()=>void}={}):void {
  const doc=container.ownerDocument;
  const node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
  const list=(items:readonly string[])=>{const ul=node('ul');for(const copy of items)ul.append(node('li',copy));return ul;};
  const guideLink=(slug:string)=>{const a=node('a','Read integration guide');a.href=docs+'/'+slug;a.className='nb-setup-connection-guide';return a;};
  const root=node('section');root.className='nb-setup-connection';root.append(node('h3','Connect to your site'),node('p','Use these steps yourself or give the downloaded files to your coding agent. Run the checks in your application after connecting each pack.'));
+ if(options.configureConsent&&scope.reference.targets.some(t=>t.id==='cookie-consent')){const controls=node('aside');controls.className='nb-setup-connection-settings';controls.append(node('h4','Cookie control settings'),node('p',options.hasConsent?'Control settings are present in this draft. Review the enrolled services, material versions and separate memory periods.':'This draft has no cookie control settings yet. Choose the actual services and their purpose versions, then enter the memory periods.'));const button=node('button',options.hasConsent?'Edit cookie controls':'Configure cookie controls');button.type='button';button.className='nb-choice-button';button.addEventListener('click',options.configureConsent);controls.append(button);root.append(controls);}
  for(const pack of scope.cartridges){
   const article=node('article');article.className='nb-setup-connection-pack';article.dataset.pack=pack.id;
   article.append(node('h4',pack.title),node('p',pack.lesson),guideLink(pack.guide));

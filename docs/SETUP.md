@@ -75,6 +75,54 @@ The private report contains answers, justifications, recommendations, conflicts,
 
 Recommendations do not silently activate services or invent purpose/vendor inventories, scope versions, preference lifetimes or evidence identity. For example, declaring optional storage recommends `consent` and lifecycle/cleanup integration, but you still inventory the actual service and choose scopes/lifetimes explicitly. Contradictions with imported facts are flagged while existing restrictions/settings remain intact. Complete the config, inspect the report, supply reviewed content and run normal `check`/build review before adopting changes.
 
+## Configure cookie control settings
+
+<!-- @requirements REQ-PRODUCT-CONSENT-AUTHORING -->
+
+After adding actual purposes and services, open **Cookie control settings** in the site inventory. The prepared Cookie choices pack also offers **Configure cookie controls**, which returns to this editor. The interactive CLI wizard offers the same optional edit after inventory review.
+
+Select the services to control. The editor shows every purpose used by each service and includes the complete selection; a service cannot be approved for only part of its declared purposes. Enter public material-version labels for the selected services and purposes, then choose grant days, refusal days and dismissal minutes separately. Fresh fields are blank. The accepted numeric ranges are validation limits, not recommended or legally approved values. Imported values can be retained or edited.
+
+**Save control settings** applies the change to the local draft and invalidates older exports. Typing and cancelling leave the prepared draft intact. Reprepare it to download the updated config, private report and connection brief. The CLI asks for confirmation before adopting the proposed settings. Noninteractive setup uses the explicit `consent` settings in its supplied config; it does not derive them from questionnaire answers.
+
+Unknown or present scope restrictions continue to block the affected purposes. Existing rights links, regional timing policies, catalog review pins and private reasoning are preserved. The editor shows existing timing policies for review; it does not enable a policy, renew a processing revision or justify an exception. Changing these settings reopens document review. Service code still needs explicit start and cleanup hooks, with tests in the actual application.
+
+For a custom operator workflow, use the same model:
+
+```ts
+import {createConsentDraftPlan} from 'notabenda/setup/consent';
+
+const reviewed = structuredClone(currentConfig);
+// settings contains the five explicitly chosen core fields:
+// purposes, services, grantLifetimeDays, refusalLifetimeDays, dismissalMinutes.
+const proposal = createConsentDraftPlan(currentConfig, {
+  baseline: reviewed,
+  settings,
+});
+currentConfig = proposal.config;
+// Present proposal.reviewItems and proposal.blockedPurposeIds to the operator.
+```
+
+Keep the reviewed baseline while the operator edits, then read the current config again at save time. The model rejects public configuration changes made in between. It returns a detached public draft, marks document reviews as draft and preserves other public settings. Keep private host data separately; this API does not return it.
+
+The standalone editor is exported from `notabenda/setup/consent/ui`:
+
+```ts
+import {mountConsentEditor} from 'notabenda/setup/consent/ui';
+import 'notabenda/styles.css';
+import 'notabenda/packs.css';
+
+const editor = mountConsentEditor(document.querySelector('#controls-editor')!, {
+  getConfig: () => currentConfig,
+  onChange: proposal => { currentConfig = proposal.config; },
+});
+// After replacing the host config, discard the old editor proposal deliberately.
+editor.refresh({discardDraft: true});
+// editor.destroy() removes the editor when the host view ends.
+```
+
+The editor owns no storage, network, deployment or visitor controller. A host callback must confirm adoption synchronously; when it throws, check the host's current state before retrying. See [verification](verification/consent-authoring.md) for the covered boundaries.
+
 ## Browser and Cloudflare integration
 
 ```js
@@ -88,6 +136,8 @@ ui.destroy();
 ```
 
 The UI runs locally in the operator's tab. Config/report imports use local files; answers are not uploaded or stored in browser persistence. Downloads are explicit. Editing invalidates earlier export links; object URLs are revoked on edits and destruction. Reloading loses unsaved notes. Reimport keeps notes by storage ID, including removed items in the private report. Resuming a report replaces current answers, so save any notes you want to retain first. Import its matching config separately.
+
+Use `notabenda/styles.css` for the shared components and `notabenda/packs.css` for pack selection and the consent settings editor. Both are optional stylesheets; the host can supply its own design.
 
 The browser interface has six navigable stages: start/import, public facts, markets, practices, storage justifications and review. Start includes local processing-purpose authoring and optional catalog search. Practice questions appear in a grid with direct yes/no/not-sure choices; supporting notes can be expanded separately. Moving between stages preserves notes; revisiting a section does not regenerate or activate anything. Preparing recommendations reveals current downloads, and an edit removes those downloads until you prepare a new review. Unknown answers stay explicit review items.
 
