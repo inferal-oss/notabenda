@@ -105,3 +105,5 @@ await rejectAllOptionalActivity(consent, settings);
 On page disposal, destroy mounted controls, unregister or destroy service helpers, call `settings.destroy()`, wait for owned teardown, and then close the journal you created. A persisted pagehide should preserve the existing page/controller lifecycle rather than constructing duplicate owners.
 
 [Verification and remaining acceptance work](verification/storage-exceptions.md) covers the automated cases and browser checks. Actual qualification, service behavior, accessibility across supported devices, downstream processing and operator legal review remain host work.
+
+For focused setup, draft input checks and the agent handoff, choose the corresponding [specialist pack](SPECIALIST-PACKS.md). Selection enables no profile, tag, permission or objection state.

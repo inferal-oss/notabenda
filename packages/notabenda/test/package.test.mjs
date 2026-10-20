@@ -270,7 +270,7 @@ settings.grantLifetimeDays='90';
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {packLibrary,packGroups,selectPacks,reviewPackInputs,type PackInputReview} from '@notabenda/core/packs';
-const packInputReview:PackInputReview=reviewPackInputs(selectPacks(['privacy-requests']),config);
+const packInputReview:PackInputReview=reviewPackInputs(selectPacks(['privacy-requests','technology-notices','assessed-storage-settings','google-basic']),config);
 const unresolved: false=packInputReview.productionReady;void packLibrary;void packGroups;void unresolved;
 // @ts-expect-error declaration checks do not supply a configured or verified state
 const configured: true=packInputReview.productionReady;

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-SPECIALIST-PACKS
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {selectIntegration} from './integration-reference.js';
 import {readSetupAnswers,createSetupPlan} from './setup.js';
@@ -72,10 +73,10 @@ export function assessIntegration(input:unknown){
  const nonEnglish=shape.valid&&preview.valid&&typeof locale==='string'&&!/^en(?:-|$)/iu.test(locale);
  const targets=reference.targets.map(t=>({
   id:t.id,selection:t.selection,outcome:t.outcome,guides:t.guides,
-  configuration:t.configPaths.map(path=>({...observe(data.config,path),requiredForTarget:(t.requiredConfigPaths?.includes(path)??false)||(nonEnglish&&!!t.conditionalConfig?.some(rule=>rule.when==='site-locale-not-english'&&rule.requiredPaths.includes(path)))})),
+  configuration:t.configPaths.map(path=>({...observe(data.config,path),...(t.requiredSomeItemConfigPaths?.includes(path)?{requiredCoverage:'at-least-one-populated-item' as const}:{}),requiredForTarget:(t.requiredSomeItemConfigPaths?.includes(path)??false)||(t.requiredConfigPaths?.includes(path)??false)||(nonEnglish&&!!t.conditionalConfig?.some(rule=>rule.when==='site-locale-not-english'&&rule.requiredPaths.includes(path)))})),
   factsToConfirm:t.factsNeeded,hostWorkToVerify:t.hostWork,acceptanceScenarios:t.verify
  }));
- const missingRequiredConfig=targets.flatMap(t=>t.configuration.filter(f=>f.requiredForTarget&&f.state!=='declared').map(f=>({targetId:t.id,path:f.path,state:f.state})));
+ const missingRequiredConfig=targets.flatMap(t=>t.configuration.filter(f=>f.requiredForTarget&&f.state!=='declared'&&!(f.requiredCoverage==='at-least-one-populated-item'&&f.state==='partial')).map(f=>({targetId:t.id,path:f.path,state:f.state})));
  const publicFacts=answers?.publicFacts??{};
  const factPaths={siteName:'site.name',siteId:'site.id',siteUrl:'site.url',controllerName:'controller.name',controllerEmail:'controller.email',controllerAddress:'controller.address'} as const;
  const factConflicts=Object.entries(factPaths).filter(([id,path])=>{

@@ -1,8 +1,8 @@
 # Growing the pack library
 
-The seventeen installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
+The twenty installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
 
-This is a product roadmap. The privacy and consumer groups are available; the later named mechanisms remain proposals. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
+This is a product roadmap. The privacy, consumer and named specialist paths below are available. Installed packs organize supported components; they do not make the wider compliance overview complete. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
 
 ## First: everyday privacy jobs
 
@@ -26,11 +26,13 @@ These four setup paths are now in the installed library. They reuse the collecti
 
 These five packs now have independent targets, focused questions and shared draft-input/connection reviews. The existing `consumer-contracts` target remains a broad reference; it is not their prerequisite. Confirmations explicitly require the existing received Cloudflare order admission/archive foundation without automatically installing a checkout UI. No selection enables a profile, quote, route or delivery. Read [consumer packs](CONSUMER-PACKS.md).
 
-## Then: named regional mechanisms and integrations
+## Available: named mechanisms and integrations
 
-- **Technology activation information:** the supported [technology-function notice](TECHNOLOGY-COLLECTION.md), with its own scope, placement and activation checks. Avoid presenting it as complete Québec coverage (`REQ-QC-PROFILING`).
-- **Assessed storage settings:** the supported [storage-exception profiles](STORAGE-EXCEPTIONS.md), with every eligibility condition and independent objection route. This is not a shortcut around cookie permission (`REQ-UK-EXCEPTIONS`, with the exact supported profiles and sources in that guide).
-- **Google Basic connection:** the [adapter](GOOGLE-BASIC.md), only where the host uses those tags. Require the actual purpose mapping, loader order and network tests; certification remains a separate deferred undertaking (`REQ-GOOGLE-MODE`, FEAT-AD-CMP).
+- **Technology notices (`technology-notices`):** the supported [technology-function notice](TECHNOLOGY-COLLECTION.md), with its own scope, placement and activation checks. Avoid presenting it as complete Québec coverage (`REQ-QC-PROFILING`).
+- **Assessed storage settings (`assessed-storage-settings`):** the supported [storage-exception profiles](STORAGE-EXCEPTIONS.md), with every eligibility condition and independent objection route. This is not a shortcut around cookie permission (`REQ-UK-EXCEPTIONS`, with the exact supported profiles and sources in that guide).
+- **Google Basic connection (`google-basic`):** the [adapter](GOOGLE-BASIC.md), only where the host uses those tags. Require the actual purpose mapping, loader order and network tests; certification remains a separate deferred undertaking (`REQ-GOOGLE-MODE`, FEAT-AD-CMP).
+
+These three paths now have focused practice questions, concrete input reviews and shared UI/CLI/agent handoffs. Read [specialist packs](SPECIALIST-PACKS.md) for exact supported inputs, separate consent/objection ownership and remaining host checks. All setup paths named in this roadmap are installed. Broader legal coverage, actual integrations and operational acceptance retain their status in the feature catalog.
 
 Do not manufacture one pack per jurisdiction or catalog requirement. Some requirements belong inside an existing pack's questions, wording or tests. Scope guards, localization, service discovery, Markdown/MDX authoring and framework selection support multiple packs; keep them available where needed without turning every supporting capability into a new installation decision.
 

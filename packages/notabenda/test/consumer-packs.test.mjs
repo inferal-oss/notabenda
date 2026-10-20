@@ -44,7 +44,7 @@ test('old reports leave newly added practices unknown and conflicting charges ne
  const config=await fixture(),before=structuredClone(config),selection=selectPacks(additions),old={schemaVersion:1,questionnaireVersion:'6',kind:'private-setup-report',answers:{schemaVersion:1,markets:[],answers:{'consumer-payments':{choice:'no',justification:'PRIVATE_PAYMENT_FACT'}}}};
  const resumed=readSetupAnswers(old);for(const id of questions)assert.equal(resumed.answers[id],undefined);
  resumed.answers['consumer-variable-charges']={choice:'yes',justification:'PRIVATE_PRICE_FACT'};
- const plan=createPackSetupPlan(selection,resumed,{config});assert.deepEqual(config,before);assert.equal(plan.report.questionnaireVersion,'7');assert.ok(plan.report.reviewItems.some(i=>i.startsWith('Conflict: payment obligations')));
+ const plan=createPackSetupPlan(selection,resumed,{config});assert.deepEqual(config,before);assert.equal(plan.report.questionnaireVersion,'8');assert.ok(plan.report.reviewItems.some(i=>i.startsWith('Conflict: payment obligations')));
  assert.equal(plan.report.recommendations.find(r=>r.id==='order-admission-archive').status,'investigate');assert.deepEqual(plan.config.terms,before.terms);assert.equal(plan.config.site.locale,before.site.locale);
  for(const key of ['contractActions','orderQuotes','orderConfirmations','producerGuaranteeLabels'])assert.equal(plan.config[key],undefined);
  const brief=formatPackBrief(selection,'connect',{config:plan.config});assert.doesNotMatch(brief,/PRIVATE_PAYMENT_FACT|PRIVATE_PRICE_FACT/);assert.match(brief,/separate builder inputs|separate from SiteConfig/);assert.match(brief,/received.*Cloudflare|received @notabenda\/cloudflare/);

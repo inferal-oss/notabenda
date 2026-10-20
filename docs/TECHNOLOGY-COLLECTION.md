@@ -111,3 +111,5 @@ Production calls reject draft declarations and releases. Use `reviewStatus: 'rev
 The [CAI private-sector collection guidance](https://www.cai.gouv.qc.ca/protection-renseignements-personnels/information-entreprises-privees/collecte-renseignements-personnels_entreprises), under technology functions, describes prior information and voluntary activation with the functions off by default. Its separate sections address necessity, privacy defaults, biometrics and automated decisions. Those assessments remain operator work.
 
 The [verification report](verification/technology-collection.md) connects the descriptor, scope checks, runtime and actual browser example to `REQ-QC-PROFILING`. Full Québec coverage and legal review remain open.
+
+For focused setup, draft input checks and the agent handoff, choose the corresponding [specialist pack](SPECIALIST-PACKS.md). Selection enables no profile, tag, permission or objection state.

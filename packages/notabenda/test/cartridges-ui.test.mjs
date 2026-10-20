@@ -17,7 +17,7 @@ test('reusable SSR has no website routing assumptions and validates host destina
  const html=renderCartridgeConsole(),{dom,d}=browser(html);
  try{
   assert.equal(d.querySelectorAll('h1').length,2);assert.equal(d.querySelector('[data-cartridge-setup]').hidden,true);
-  assert.equal(d.querySelectorAll('a').length,23); // shelf links, every pack and the hidden agent download
+  assert.equal(d.querySelectorAll('a').length,26); // shelf links, every pack and the hidden agent download
   assert.doesNotMatch(html,/\/demo\/admin|\/guide\/|notabenda\.org|<script|<style/);
   for(const url of ['javascript:alert(1)','//remote.test','https://remote.test/x','/x?secret=1','/a/../b','/x" onclick="bad'])assert.throws(()=>renderCartridgeConsole({mapUrl:url}));
   assert.throws(()=>renderCartridgeConsole({exampleLinks:{unknown:'/try'}}));
@@ -67,15 +67,15 @@ test('package publishes separate cartridge defaults without changing the visitor
  const ordinary=await readFile(new URL('../dist/styles.css',import.meta.url),'utf8');assert.doesNotMatch(ordinary,/cartridge-deck/);
 });
 
-test('all seventeen packs are discoverable without opening a disclosure, including in multiple consoles',()=>{
+test('all twenty packs are discoverable without opening a disclosure, including in multiple consoles',()=>{
  const {dom,d}=browser(renderCartridgeConsole()+renderCartridgeConsole());
  try{
   const ids=[...d.querySelectorAll('[id]')].map(el=>el.id);assert.equal(new Set(ids).size,ids.length);
   for(const root of d.querySelectorAll('[data-cartridge-console]')){
-   assert.match(root.querySelector('.pack-index').textContent,/17 packs for your site/);
-   assert.deepEqual([...root.querySelectorAll('.pack-shelf')].map(el=>el.querySelectorAll('[data-cartridge]').length),[3,3,4,5,2]);
+   assert.match(root.querySelector('.pack-index').textContent,/20 packs for your site/);
+   assert.deepEqual([...root.querySelectorAll('.pack-shelf')].map(el=>el.querySelectorAll('[data-cartridge]').length),[3,4,6,5,2]);
    for(const card of root.querySelectorAll('[data-cartridge]'))assert.equal(card.closest('details,[hidden]'),null);
-   assert.equal(root.querySelectorAll('.pack-name-index a').length,17);
+   assert.equal(root.querySelectorAll('.pack-name-index a').length,20);
    for(const link of root.querySelectorAll('.pack-index a'))assert.ok(root.querySelector(link.getAttribute('href')));
   }
  }finally{dom.window.close();}

@@ -14,8 +14,8 @@ test('home and architecture expose every installed pack with a direct, existing 
  const library=cartridgeLibrary(),setup=new JSDOM(await readFile(new URL('start/index.html',root),'utf8')).window.document;
  for(const route of ['index.html','guide/architecture/index.html']){
   const d=new JSDOM(await readFile(new URL(route,root),'utf8')).window.document;
-  assert.match(d.querySelector('header nav a[href="/start"]').textContent,/Packs 17/);
-  assert.deepEqual([...d.querySelectorAll('.pack-directory-group')].map(group=>group.querySelectorAll('[data-pack-link]').length),[3,3,4,5,2]);
+  assert.match(d.querySelector('header nav a[href="/start"]').textContent,/Packs 20/);
+  assert.deepEqual([...d.querySelectorAll('.pack-directory-group')].map(group=>group.querySelectorAll('[data-pack-link]').length),[3,4,6,5,2]);
   const links=[...d.querySelectorAll('[data-pack-link]')];assert.deepEqual(links.map(a=>a.dataset.packLink),library.map(p=>p.id));
   for(const a of links){assert.equal(a.closest('details,[hidden]'),null);const url=new URL(a.href,'https://example.test');assert.equal(url.pathname,'/start/');const target=setup.querySelector(url.hash);assert.equal(target.dataset.cartridge,a.dataset.packLink);assert.equal(target.tabIndex,-1);}
  }
@@ -26,14 +26,14 @@ test('home and architecture expose every installed pack with a direct, existing 
 test('pack overview expansion leaves code samples alone and produces an equivalent text list',()=>{
  const marker='<!-- notabenda:packs -->',code='```html\n'+marker+'\n```';
  assert.equal(expandPackDirectory(code,{graphical:true}),code);
- assert.equal(new JSDOM(packDirectory()).window.document.querySelectorAll('[data-pack-link]').length,17);
+ assert.equal(new JSDOM(packDirectory()).window.document.querySelectorAll('[data-pack-link]').length,20);
  assert.equal(expandPackDirectory(marker,{graphical:true}),packDirectory());
  for(const p of cartridgeLibrary())assert.ok(expandPackDirectory(marker).includes(p.outcome));
 });
-test('the product front door exposes all seventeen packs in five visible groups',async()=>{
+test('the product front door exposes all twenty packs in five visible groups',async()=>{
  const html=await readFile(new URL('start/index.html',root),'utf8'),dom=new JSDOM(html),d=dom.window.document;
  try{
-  const all=cartridgeLibrary();assert.deepEqual([...d.querySelectorAll('.pack-shelf')].map(el=>el.querySelectorAll('[data-cartridge]').length),[3,3,4,5,2]);assert.equal(d.querySelector('.cartridge-more'),null);assert.match(d.querySelector('.pack-index').textContent,/17 packs/);for(const card of d.querySelectorAll('[data-cartridge]'))assert.equal(card.closest('details,[hidden]'),null);assert.equal(d.querySelectorAll('input:checked').length,0);assert.equal(d.querySelector('.demo-corner'),null);
+  const all=cartridgeLibrary();assert.deepEqual([...d.querySelectorAll('.pack-shelf')].map(el=>el.querySelectorAll('[data-cartridge]').length),[3,4,6,5,2]);assert.equal(d.querySelector('.cartridge-more'),null);assert.match(d.querySelector('.pack-index').textContent,/20 packs/);for(const card of d.querySelectorAll('[data-cartridge]'))assert.equal(card.closest('details,[hidden]'),null);assert.equal(d.querySelectorAll('input:checked').length,0);assert.equal(d.querySelector('.demo-corner'),null);
   for(const c of all){assert.ok(d.querySelector(`[data-cartridge="${c.id}"]`));assert.ok(d.body.textContent.includes(c.outcome));}
   assert.ok(d.querySelector('script[src="/assets/cartridges.mjs"]'));assert.ok(d.querySelector('link[href="/assets/cartridges.css"]'));
   const home=await readFile(new URL('index.html',root),'utf8');assert.match(home,/href="\/start">Choose a pack/u);

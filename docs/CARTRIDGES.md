@@ -4,7 +4,7 @@ A pack keeps one job together: what it adds, the facts it needs, and the steps t
 
 Start with **Privacy pages**, **Cookie choices** or **Terms agreement**. You can combine them or add another job later. Each works from the same site inventory.
 
-## All seventeen packs
+## All twenty packs
 
 The library shows every pack, grouped by the job it does. Use the links at the top to jump between groups.
 
@@ -16,10 +16,13 @@ The library shows every pack, grouped by the job it does. Use the links at the t
 | Privacy information | Form notices | Context-specific information beside direct collection fields. |
 | Privacy information | Indirect collection | The separately assessed supported IPP3A notice path. |
 | Privacy information | Privacy requests | Real request destinations, scope and a public fallback. |
+| Privacy information | Technology notices | Prior information about supported technology functions and activation. |
 | Add a function | Form permissions | Optional purpose and channel permissions, separate from form submission. |
 | Add a function | Gated media | Remote media stays unloaded until permitted. |
 | Add a function | Evidence workspace | Retained versions, searchable records and a private backoffice. |
 | Add a function | Processing opt-outs | Assessed signals and/or recorded restrictions with host enforcement. |
+| Add a function | Assessed storage settings | Independent objections for explicitly assessed storage profiles. |
+| Add a function | Google Basic connection | One document owner with exact tag-purpose mappings. |
 | Purchases and contracts | Contract withdrawal | A reviewed public declaration route and independent handoffs. |
 | Purchases and contracts | Subscription cancellation | The supported German continuing-contract cancellation flow. |
 | Purchases and contracts | Paid order review | Exact items, prices and commitments beside the final action. |
@@ -30,7 +33,9 @@ The library shows every pack, grouped by the job it does. Use the links at the t
 
 The regional packs cover those named mechanisms; they are not complete country coverage.
 
-The [privacy-pack guide](PRIVACY-PACKS.md) explains the four added paths and their draft input reviews. The [consumer-pack guide](CONSUMER-PACKS.md) covers the five transaction jobs and their host dependencies. See the [pack roadmap](PACK-ROADMAP.md) for remaining regional setup paths.
+The [privacy-pack guide](PRIVACY-PACKS.md) explains the four added paths and their draft input reviews. The [consumer-pack guide](CONSUMER-PACKS.md) covers the five transaction jobs and their host dependencies. See the [pack roadmap](PACK-ROADMAP.md) for pack admission and remaining feature work.
+
+The [specialist-pack guide](SPECIALIST-PACKS.md) covers technology notices, assessed storage settings and Google Basic, including their different prerequisites and limits.
 
 ## Prepare it your way
 
