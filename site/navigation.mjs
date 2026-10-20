@@ -33,7 +33,7 @@ export const siteSections=[
   topic('permissions','Form permissions','/form-permissions','Record an optional purpose and channel, with independent withdrawal and recovery.','form-permissions',[['React','/form-permissions/react/'],['Astro','/form-permissions/astro/'],['Portuguese','/localization/permission/']]),
   topic('signals','Global Privacy Control','/privacy-signals','Apply a browser privacy signal independently of optional cookie preferences.','privacy-signals'),
   topic('opt-outs','Processing opt-outs','/processing-choices','Record restrictions and inspect their current state alongside the original request.','processing-choices'),
-  topic('exceptions','UK storage settings','/storage-exceptions','Separate on/off settings for declared statistical and appearance exceptions.','storage-exceptions',[],'Specialist controls'),
+  topic('exceptions','UK storage settings','/storage-exceptions','Separate on/off settings for declared statistical and appearance exceptions.','storage-exceptions',[['Portuguese','/localization/storage/']],'Specialist controls'),
   topic('google','Google Basic simulator','/google-basic','Inspect the declared signals without loading a live Google tag.','google-basic',[],'Specialist controls'),
   topic('prompts','Consent timing','/repeat-prompts','Compare calendar grant expiry with independent rules for asking again.','regional-prompts',[],'Specialist controls'),
   topic('guards','Scope guards','/scope-guards','See how explicit site and purpose restrictions affect available controls.','scope-guards',[],'Specialist controls')

@@ -50,14 +50,14 @@ test('technology inventory conflicts remain visible without fabricating a select
  assert.match(formatPackBrief(selection,'connect',{config}),/including global accept-all/);assert.match(formatPackBrief(selection,'connect',{config}),/localization.collection/);assert.equal(config.consent.services[0].scope,before.consent.services[0].scope);
 });
 
-test('exception conditions and objections remain independent of consent, and non-English native controls stay unresolved',async()=>{
+test('exception conditions and objections remain independent of consent, and missing non-English messages stay unresolved',async()=>{
  const config=await exceptionFixture();config.purposes=config.purposes.filter(p=>p.id!=='marketing');config.services=config.services.filter(s=>s.id!=='marketing-service');config.storage=config.storage.filter(s=>s.id!=='marketing-storage');delete config.consent;
  const selection=selectPacks(['assessed-storage-settings']),before=structuredClone(config),review=reviewPackInputs(selection,config);
  assert.deepEqual(config,before);assert.equal(item(review,'assessed-storage-settings','policy').state,'declared');assert.equal(item(review,'assessed-storage-settings','entry-review-0').state,'declared');
  const paths=item(review,'assessed-storage-settings','entry-review-0').paths;for(const key of Object.keys(config.storageExceptions.entries[0].conditions))assert.ok(paths.includes('storageExceptions.entries.0.conditions.'+key));
  config.storageExceptions.entries[0].reviewStatus='draft';assert.equal(item(reviewPackInputs(selection,config),'assessed-storage-settings','entry-review-0').state,'needs-review');
  const pt=localizedExampleConfig(await fixture());config.site.locale=pt.site.locale;config.localization=pt.localization;
- const localized=reviewPackInputs(selection,config);assert.equal(item(localized,'assessed-storage-settings','language').state,'needs-review');assert.match(item(localized,'assessed-storage-settings','language').label,/custom headless presentation/);assert.equal(config.site.locale,'pt-BR');
+ const localized=reviewPackInputs(selection,config);assert.equal(item(localized,'assessed-storage-settings','language').state,'needs-review');assert.match(item(localized,'assessed-storage-settings','language').label,/localization\.storageExceptions/);assert.equal(config.site.locale,'pt-BR');
  const answers=planPacks(selection).reference.targetAnswersTemplate;answers.answers['storage-exception-assessment']={choice:'no',justification:'PRIVATE_UNRESOLVED_QUALIFICATION'};
  const plan=createPackSetupPlan(selection,answers,{config});assert.equal(plan.config.consent,undefined);assert.deepEqual(plan.config.storageExceptions,config.storageExceptions);assert.ok(plan.report.reviewItems.some(i=>i.startsWith('Conflict: storage-exception assessment')));assert.match(formatPackBrief(selection,'connect',{config}),/cookie accept-all cannot clear an objection/);
 });

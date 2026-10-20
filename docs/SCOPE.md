@@ -239,3 +239,6 @@ Privacy-request setup includes an explicit public-page editor, atomic page/ priv
 
 <!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
 Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).
+
+<!-- @requirements REQ-PRODUCT-STORAGE-LOCALIZATION -->
+Native storage settings use an optional complete `localization.storageExceptions` dictionary, with no partial language fallback. The same site locale/revision/review metadata applies, while entry facts and profile assessments remain separate. UI copy must not clear saved objections or expand cookie permission scope. Detached native controls are inert and presentation removal closes the exception gate. The Portuguese example demonstrates presentation only; it is not reviewed regional coverage.

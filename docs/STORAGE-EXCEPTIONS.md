@@ -107,3 +107,12 @@ On page disposal, destroy mounted controls, unregister or destroy service helper
 [Verification and remaining acceptance work](verification/storage-exceptions.md) covers the automated cases and browser checks. Actual qualification, service behavior, accessibility across supported devices, downstream processing and operator legal review remain host work.
 
 For focused setup, draft input checks and the agent handoff, choose the corresponding [specialist pack](SPECIALIST-PACKS.md). Selection enables no profile, tag, permission or objection state.
+
+<!-- @requirements REQ-PRODUCT-STORAGE-LOCALIZATION -->
+## Language and control lifecycle
+
+For a non-English native interface, supply the complete `localization.storageExceptions` message set before creating the controller. The controls use the site's language and direction. Supply translated entry facts, preference-retention information and policy-link wording separately. Missing messages prevent native presentation from attaching; the underlying headless controller remains available for a host-owned interface. See [localization](LOCALIZATION.md#storage-exception-controls) and the [Portuguese example](/localization/storage/).
+
+Copy-only dictionary changes preserve saved objections and do not change cookie permission scopes. Entry wording and eligibility still belong to the versioned exception definition; keep stable entry IDs and advance material revisions as required. A new language is not a new profile assessment.
+
+Call the returned `destroy()` when removing the controls. It detaches presentation and subscriptions without destroying the controller. Retained detached inputs/buttons cannot resume or change a preference. The DOM-removal observer also closes presentation; the host still owns eventual controller destruction and journal closure.

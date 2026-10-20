@@ -1,0 +1,19 @@
+{
+  "title": "Armazenamento e acesso",
+  "description": "Você pode desativar estes recursos a qualquer momento. Estas opções são separadas dos serviços que pedem sua permissão.",
+  "retryLabel": "Tentar novamente",
+  "turnOffLabel": "Desativar estes recursos",
+  "enabledReload": "Ativado · recarregue a página",
+  "on": "Ativado",
+  "objected": "Desativado · sua escolha",
+  "stale": "Desativado · recarregue para ver as informações atualizadas",
+  "restricted": "Desativado · este uso precisa de nova avaliação",
+  "saving": "Salvando sua escolha…",
+  "checkingEntry": "Consultando as opções salvas…",
+  "off": "Desativado",
+  "unconfirmed": "Não foi possível confirmar a alteração. Confira as opções salvas antes de tentar novamente.",
+  "unavailable": "Estes recursos estão desativados porque não foi possível confirmar as opções salvas.",
+  "checking": "Consultando as opções salvas neste navegador.",
+  "browserScope": "As alterações valem para este navegador. Desativar um recurso não recupera informações já enviadas.",
+  "destroyed": "Estas opções foram encerradas. Os recursos estão desativados."
+}

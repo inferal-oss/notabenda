@@ -128,7 +128,7 @@ See the [collection guide](COLLECTION.md#language-and-release-verification) and 
 
 This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls and static direct-collection notices. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Service-directory UI, indirect-collection notice UI, processing-choice UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Service-directory UI, indirect-collection notice UI, processing-choice UI and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.
 
@@ -156,3 +156,14 @@ Non-English native rendering, setup authoring and supporting-page preview requir
 The full page and fragment set `lang` and `dir`; action ordinals use isolated text and next-step lists use logical spacing. The vanilla renderer, React wrapper, Astro component and JSON/Markdown/MDX builds share the same page rendering. Preview links remain inactive.
 
 The complete public dictionary is included in the hashed release configuration. Revise `localization.revision` when changing its wording and retain releases under the normal review process. The request page remains outside the three pinned legal-document HTML kinds. Its message set is excluded from the compiled cookie-consent runtime and consent-only notices; adding page copy does not grant permission or configure a request process. See [request-page authoring](RIGHTS-AUTHORING.md) and [verification](verification/rights-localization.md).
+
+<!-- @requirements REQ-PRODUCT-STORAGE-LOCALIZATION -->
+## Storage exception controls
+
+Supply the complete `localization.storageExceptions` dictionary for native storage settings outside English. It shares the site localization's locale, direction, revision and review status. [The Portuguese message file](../examples/localization/storage-messages.json) contains all 17 fields: heading and introduction, action labels, entry states, loading, persistence failure, retry and terminal messages. Fields accept plain text without placeholders; action labels allow 120 UTF-8 bytes, other fields 2,000 bytes, with 20,000 bytes across the message set. Unknown or missing keys are rejected. A missing dictionary cannot attach native presentation on a non-English site; no English labels are substituted. English sites can keep the built-in defaults or supply a complete dictionary.
+
+Translate the entry titles and descriptions, `preferenceNotice`, information-link label, inventory and legal documents separately. Those are facts and legal content rather than interface chrome. Explicit mount `title`/`description` overrides remain host-owned. Changing these dictionary messages needs a new localization revision and legal release. The complete dictionary is retained in the legal artifact, but excluded from cookie notices/runtime inventory and exception entry scopes. Copy-only edits preserve saved objections. Material entry facts still require their own increased entry revision; never rename IDs to discard an objection.
+
+The native root uses explicit `lang` and `dir`. Removing it closes its presentation gate and leaves retained controls inert; it does not destroy the host controller. Test long translations, direction, pending actions and unavailable persistence in the actual layout.
+
+Try [storage settings in Portuguese](/localization/storage/). This demonstrates host-supplied language over the existing declared UK profiles. Language does not select a jurisdiction, establish eligibility or provide a reviewed regional translation. See [the verification record](verification/storage-localization.md).

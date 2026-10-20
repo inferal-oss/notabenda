@@ -25,7 +25,8 @@
         "Complete host-supplied privacy-request page messages with matching locale/direction/review metadata, inert local preview and separate operator-owned request workflows.",
         "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review.",
         "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate.",
-        "Shared short descriptions for every pack, concrete example use cases and walkthroughs, separate timing and payment-variant flows, and unchanged stable selection pins."
+        "Shared short descriptions for every pack, concrete example use cases and walkthroughs, separate timing and payment-variant flows, and unchanged stable selection pins.",
+        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -80,7 +81,11 @@
         "examples/static/choices-build.mjs",
         "packages/notabenda/src/cartridges.ts",
         "packages/notabenda/src/cartridges-ui.ts",
-        "examples/static/pack-learning.mjs"
+        "examples/static/pack-learning.mjs",
+        "packages/notabenda/src/storage-exception-localization.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "examples/localization/storage-build.mjs",
+        "examples/localization/storage-client.mjs"
       ]
     },
     {
@@ -245,7 +250,8 @@
         "Accessible native markup, optional CSS, semantic theme tokens, light/dark and unstyled variants; optional drag gestures always have visible tap and keyboard equivalents.",
         "Safe-area spacing, thumb-friendly controls, persistent reopening, focus restoration, and readable choices across small screens, zoom, large text, RTL, and the on-screen keyboard.",
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
-        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
+        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
+        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -266,7 +272,13 @@
         "packages/notabenda/src/consent-information.ts",
         "packages/notabenda/src/technology-collection.ts",
         "packages/notabenda/src/technology.css",
-        "packages/notabenda/src/release-files.ts"
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/storage-exception-localization.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/localization/storage-build.mjs",
+        "examples/localization/storage-client.mjs"
       ]
     },
     {
@@ -803,7 +815,8 @@
         "Complete versioned host-supplied messages for legal documents, direct-collection notices, consent controls, ordinary terms acceptance and form permissions, including status/accessibility text, selected language and explicit direction.",
         "Archived selected consent copy, independent presentation/disclosure revisions, exact material scopes and frontend/backend validation parity.",
         "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
-        "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open."
+        "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open.",
+        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment."
       ],
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
@@ -838,7 +851,13 @@
         "examples/localization/permission.mjs",
         "packages/notabenda/src/collection-localization-policy.ts",
         "packages/notabenda/src/collection.ts",
-        "examples/localization/collection-build.mjs"
+        "examples/localization/collection-build.mjs",
+        "packages/notabenda/src/storage-exception-localization.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/localization/storage-build.mjs",
+        "examples/localization/storage-client.mjs"
       ]
     }
   ],
@@ -2166,7 +2185,8 @@
         "REQ-PRODUCT-CONNECTION-INSPECTION",
         "REQ-PRODUCT-CF-RECOVERY-REHEARSAL",
         "REQ-PRODUCT-TERMS-ADAPTERS",
-        "REQ-PRODUCT-PACK-EDUCATION"
+        "REQ-PRODUCT-PACK-EDUCATION",
+        "REQ-PRODUCT-STORAGE-LOCALIZATION"
       ]
     }
   ],
@@ -7301,6 +7321,47 @@
         "docs/verification/pack-education.md"
       ],
       "implementationNote": "Twenty shared outcomes/intros and individual use-case/flow/result records; scoped static teaching disclosures, two timing walkthroughs, order-specific variants, legal-page showcase, framework-root separation and nonce-preserving demo admin education."
+    },
+    {
+      "id": "REQ-PRODUCT-STORAGE-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Complete host-supplied native storage-settings messages",
+      "kind": "product-standard",
+      "summary": "Localize every fixed visitor label and state in native storage-exception controls, with explicit language/direction and no partial fallback. Keep declared entry facts, eligibility and saved objections separate.",
+      "appliesWhen": "An adopter uses the native storage-exception controls in a selected site language.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-LOCALIZATION",
+        "FEAT-CONTROLS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-STORAGE-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host-supplied translations are not reviewed locale or jurisdiction coverage. Entry facts and applicability remain separate. Changing UI copy cannot clear an objection or qualify an exception.",
+      "implementationRefs": [
+        "packages/notabenda/src/storage-exception-localization.ts",
+        "packages/notabenda/src/storage-exception-controls.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/localization/storage-build.mjs",
+        "examples/localization/storage-client.mjs",
+        "examples/localization/storage-messages.json",
+        "packages/notabenda/src/storage-exceptions.css"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/storage-localization.test.mjs",
+        "site/test/storage-localization.test.mjs",
+        "docs/verification/storage-localization.md"
+      ],
+      "implementationNote": "Complete optional dictionary, native metadata and state labels, missing-language assessment, copy-only journal continuity, inert detached controls and a separate local Portuguese example."
     }
   ],
   "verification": [
@@ -8790,6 +8851,19 @@
         "site/test/pack-education.test.mjs",
         "site/test/demo.test.mjs",
         "docs/verification/pack-education.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-STORAGE-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-STORAGE-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Missing or invalid message sets cannot attach native presentation. Real localized controls retain objections through copy changes, handle failure/retry and become inert on removal; selected language/direction is explicit, archived copy changes artifact identity while cookie permission scopes stay unchanged, and the static Portuguese example uses only local services and separate storage.",
+      "testRefs": [
+        "packages/notabenda/test/storage-localization.test.mjs",
+        "site/test/storage-localization.test.mjs",
+        "docs/verification/storage-localization.md"
       ]
     }
   ],

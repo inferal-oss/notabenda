@@ -341,3 +341,6 @@ Storage inventory can be authored explicitly in the operator UI or with `wizard 
 The optional [consent connection inspector](CONNECTION-INSPECTION.md) now compares the intended consent inventory with the actual supplied controller and distinguishes missing, registered and removed callbacks from lifecycle phases. It performs no publication or application behavior tests; broader evidence-bound pack verification remains open.
 
 The terms pack now supplies [React and Astro adapters](TERMS.md#react) over its existing host-owned controller. SSR stays unchecked without exposing receipts, view cleanup makes detached controls inert, and Astro checks exact offer and operation context before remounting. StrictMode, uncertain retries and pending operation replacement have dedicated tests. The examples share the existing session-isolated recorder. Actual application fulfillment and broader platform/accessibility acceptance remain open.
+
+<!-- @requirements REQ-PRODUCT-STORAGE-LOCALIZATION -->
+Native storage-exception controls now accept complete host-supplied message sets with explicit language/direction. Copy-only changes retain objections and stay outside cookie scopes. The Portuguese example uses separate local storage; qualification and translation review remain host work. Remaining interface and platform localization work stays open.

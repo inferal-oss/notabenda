@@ -43,7 +43,7 @@ The implementation validates this supported shape and ownership; it cannot estab
 
 Declare `storageExceptions` with exact exclusive entry/service/purpose/storage ownership, explicit `processingActivities: []`, no Google declaration and no consent enrollment for the same managed work. Missing policy, entries or guards appear as missing inputs. Draft entries need review; even a reviewed flag is unverified. The input review lists each entry's actual condition paths without copying its values.
 
-Provide an atomic notifying journal, hydrate it and present usable information/free objection controls before starts. Native controls currently require English; another site language needs a custom headless presentation with reviewed wording. A consent dictionary cannot translate that interface. Detaching the presentation must close its gate.
+Provide an atomic notifying journal, hydrate it and present usable information/free objection controls before starts. Non-English native controls require complete `localization.storageExceptions` messages plus translated entry facts and information. A consent dictionary cannot translate that interface; a custom headless presentation remains available. Detaching the presentation must close its gate.
 
 Disclose the supported until-cleared preference lifetime and its own storage. Preserve stable IDs across material revisions and never discard an objection by renaming an entry. Test failed writes, stale resume, cross-tab changes, removal of the presentation, cleanup and cookie accept-all. Consent acceptance must not clear an exception objection. Disposal of owned work and journals remains host work. See `REQ-UK-EXCEPTIONS`, `REQ-PRODUCT-STORAGE-EXCEPTIONS` and [verification](verification/storage-exceptions.md).
 

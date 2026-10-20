@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-STORAGE-LOCALIZATION
+import {supportsStorageExceptionControls} from './storage-exception-localization.js';
 // @requirements REQ-PRODUCT-PACK-EDUCATION
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 import {supportsRightsPage} from './rights-localization-policy.js';
@@ -214,7 +216,7 @@ export function reviewPackInputs(selection:unknown,input:unknown):PackInputRevie
    add('policy',config.storageExceptions?'declared':'missing','Supply the explicitly assessed storageExceptions policy, information route and disclosed until-cleared preference lifetime. Market selection supplies none of these facts.',['storageExceptions']);
    add('entries',config.storageExceptions?.entries.length?'declared':'missing','Declare exact exception entries and exclusive service/purpose/storage ownership, with stable IDs and increasing material revisions. Do not reclassify optional tools from their vendor or category labels.',['storageExceptions.entries','storage']);
    add('guards',config.scopeGuards?'declared':'missing','Keep explicit selected-purpose assessments; present or unknown restricted contexts stay off.',['scopeGuards']);
-   add('language',/^en(?:-|$)/iu.test(config.site.locale)?'declared':'needs-review','The native exception controls currently require English. Another site language needs a custom headless presentation with reviewed information and objection controls; a consent dictionary does not translate this interface.',['site.locale']);
+   add('language',supportsStorageExceptionControls(config)?'declared':'needs-review','Non-English native exception controls need complete localization.storageExceptions messages, translated entry facts and reviewed information and objection controls. A consent dictionary does not translate this interface.',['site.locale','localization.storageExceptions']);
    for(const [index,entry] of (config.storageExceptions?.entries??[]).entries()){
     add('entry-review-'+index,entry.reviewStatus==='reviewed'?'declared':'needs-review','Review this entry’s selected profile and establish every condition from the actual operation. A reviewed flag or true assertion does not prove eligibility.',['storageExceptions.entries.'+index+'.reviewStatus','storageExceptions.entries.'+index+'.profile',...Object.keys(entry.conditions).map(key=>'storageExceptions.entries.'+index+'.conditions.'+key)]);
    }
