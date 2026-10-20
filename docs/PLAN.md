@@ -344,3 +344,6 @@ The terms pack now supplies [React and Astro adapters](TERMS.md#react) over its 
 
 <!-- @requirements REQ-PRODUCT-STORAGE-LOCALIZATION -->
 Native storage-exception controls now accept complete host-supplied message sets with explicit language/direction. Copy-only changes retain objections and stay outside cookie scopes. The Portuguese example uses separate local storage; qualification and translation review remain host work. Remaining interface and platform localization work stays open.
+
+<!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
+Release preparation now has an optional offline [package candidate check](RELEASE-CANDIDATE.md), a public [security reporting policy](../SECURITY.md), and [migration/removal guidance](MIGRATION.md). The check inspects actual tarball bytes and records hashes without building, installing or publishing. Its contents verdict cannot establish source/build equivalence, secret absence, vulnerability review, legal review or operational readiness; those release gates remain separate.

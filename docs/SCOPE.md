@@ -242,3 +242,6 @@ Storage inventory can be authored explicitly in the operator UI or with `wizard 
 
 <!-- @requirements REQ-PRODUCT-STORAGE-LOCALIZATION -->
 Native storage settings use an optional complete `localization.storageExceptions` dictionary, with no partial language fallback. The same site locale/revision/review metadata applies, while entry facts and profile assessments remain separate. UI copy must not clear saved objections or expand cookie permission scope. Detached native controls are inert and presentation removal closes the exception gate. The Portuguese example demonstrates presentation only; it is not reviewed regional coverage.
+
+<!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
+Maintainer release tooling may pack the three known workspaces offline with lifecycle hooks disabled into a fresh ignored or external directory. Inspect actual archive bytes without extraction, preserve hashes and failed reports, reject unsupported paths/metadata and avoid publishing or registry changes. Security reports use the public private-contact policy. Migration and removal preserve legacy restrictions, pending commands and retained evidence; no generic grant importer or blanket cleanup is supplied.

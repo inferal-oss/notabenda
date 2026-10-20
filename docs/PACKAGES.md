@@ -44,3 +44,5 @@ Packs are selectable jobs within the library, rather than one npm package each. 
 This package rename does not change retained artifacts, content hashes, `notabenda-authoring@0.1.0` provenance identifiers, schema kinds, browser-storage keys or saved pack selections. Those are data contracts, not npm module names. The `cartridges` compatibility aliases remain available beneath the scoped core package.
 
 There are no published unscoped consumers to migrate. This repository does not publish compatibility aliases under the old unscoped names. If adapting an earlier local checkout, update imports, dependencies and workspace commands, then rebuild. Do not rewrite archived releases to replace old identifiers.
+
+Before sharing a release candidate, use the [local package-content check](RELEASE-CANDIDATE.md). For an existing site, read [migration and removal](MIGRATION.md); a new package installation does not import old grants or discard old restrictions. Report suspected vulnerabilities through the [security policy](../SECURITY.md).

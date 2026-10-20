@@ -71,3 +71,9 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Storage inventory authoring](https://notabenda.org/guide/storage-authoring/index.md): Complete bounded `wizard --storage FILE` batches and setup editor, with exact affected old/new owner versions. No classification, exemption, enrollment or physical cleanup is inferred. Protect assessed-exception service membership, retain previous markers and revised technology inputs separately, and keep the change review private.
 
 - [Inspect a consent connection](https://notabenda.org/guide/connection-inspection/index.md): Explicit read-only inspection of the supplied real controller, expected compiled consent inventory and lifecycle registrations/phases. Missing callbacks differ from blocked callbacks. Publication, real effects and other packs remain unverified; keep reports private.
+
+## Migration and release review
+
+- [Migration and removal](https://notabenda.org/guide/migration/index.md): Preserve old restrictions, exact historical documents and pending commands while replacing loaders; removing packages is separate from erasing records.
+- [Package candidate checks](https://notabenda.org/guide/release-candidate/index.md): Maintainer-only offline packing and byte-level inventory/digest report. It performs no npm publication, dependency vulnerability review or deployment acceptance.
+- [Security reporting](https://notabenda.org/guide/security/index.md): Private contact and minimal synthetic reproductions for suspected vulnerabilities.

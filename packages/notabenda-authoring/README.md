@@ -45,3 +45,5 @@ Full guide: [docs/AUTHORING.md](../../docs/AUTHORING.md). Working example: [exam
 The optional `@notabenda/authoring/guarantees` entry imports finished producer PNG/JPEG/outlined-SVG files without changing their bytes. `buildDurabilityGuaranteeLabel` requires explicit qualifying facts and binds a product to its file; `verifyDurabilityGuaranteeLabel` checks the descriptor and supplied original bytes. Image parsers remain build-only. Preparation of the prescribed artwork, offer review, host retention and actual display acceptance remain the adopter’s work. See [product labels](../../docs/GUARANTEE-LABELS.md). **REQ-EU-GUARANTEE-LABEL**.
 
 `@notabenda/authoring/orders` creates reviewed order definitions, binds live host quotes and verifies original guarantee-label files. It does not calculate commercial prices or execute orders. See [paid orders](../../docs/PAID-ORDERS.md).
+
+For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.

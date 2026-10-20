@@ -606,7 +606,8 @@
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
         "Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open.",
         "Optional Node/browser controller timing tools with synthetic inventories, actual native controls, retained distributions and explicit limits; broader page/paint/platform performance remains open.",
-        "Optional two-object local SQLite KV recovery rehearsal with later consent-retirement replay, persistent isolation, resumable purge, held-record preservation and exact private-source comparison. Remote recovery and broader evidence-family exercises remain open."
+        "Optional two-object local SQLite KV recovery rehearsal with later consent-retirement replay, persistent isolation, resumable purge, held-record preservation and exact private-source comparison. Remote recovery and broader evidence-family exercises remain open.",
+        "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -643,7 +644,12 @@
         "scripts/build-performance-fixture.mjs",
         "scripts/serve-performance.mjs",
         "scripts/check-cf-starter-runtime.mjs",
-        "scripts/fixtures/starter-recovery.mjs"
+        "scripts/fixtures/starter-recovery.mjs",
+        "scripts/release-package.mjs",
+        "scripts/check-package-release.mjs",
+        "SECURITY.md",
+        "docs/RELEASE-CANDIDATE.md",
+        "docs/MIGRATION.md"
       ]
     },
     {
@@ -2186,7 +2192,8 @@
         "REQ-PRODUCT-CF-RECOVERY-REHEARSAL",
         "REQ-PRODUCT-TERMS-ADAPTERS",
         "REQ-PRODUCT-PACK-EDUCATION",
-        "REQ-PRODUCT-STORAGE-LOCALIZATION"
+        "REQ-PRODUCT-STORAGE-LOCALIZATION",
+        "REQ-PRODUCT-RELEASE-CANDIDATE"
       ]
     }
   ],
@@ -7362,6 +7369,41 @@
         "docs/verification/storage-localization.md"
       ],
       "implementationNote": "Complete optional dictionary, native metadata and state labels, missing-language assessment, copy-only journal continuity, inert detached controls and a separate local Portuguese example."
+    },
+    {
+      "id": "REQ-PRODUCT-RELEASE-CANDIDATE",
+      "jurisdiction": "PRODUCT",
+      "title": "Reviewable local package candidates and migration guidance",
+      "kind": "product-standard",
+      "summary": "Prepare three offline tarballs with strict byte-level contents, identity, export, license, source-map and dependency checks. Retain digests and explicit verification boundaries; provide private security reporting and migration/removal guidance without publishing.",
+      "appliesWhen": "A maintainer prepares package artifacts or an adopter replaces/removes an existing integration.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-RELEASE-CANDIDATE"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Package-content checks do not prove secret absence, correct builds, vulnerability-free dependencies, legal review, operational acceptance or authorization to publish. Migration must preserve real restrictions and evidence; legacy choice mapping remains host work.",
+      "implementationRefs": [
+        "scripts/release-package.mjs",
+        "scripts/check-package-release.mjs",
+        "SECURITY.md",
+        "docs/RELEASE-CANDIDATE.md",
+        "docs/MIGRATION.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/release-check.test.mjs",
+        "packages/notabenda/test/migration.test.mjs",
+        "docs/verification/release-candidate.md"
+      ],
+      "implementationNote": "Offline pack-only command with fresh ignored/external output, bounded strict ustar parsing without extraction, exact source/build inventory and license checks, source-map and export/bin validation, file/archive digests, failed-report preservation and separate public security/migration docs."
     }
   ],
   "verification": [
@@ -8864,6 +8906,19 @@
         "packages/notabenda/test/storage-localization.test.mjs",
         "site/test/storage-localization.test.mjs",
         "docs/verification/storage-localization.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-RELEASE-CANDIDATE",
+      "requirementIds": [
+        "REQ-PRODUCT-RELEASE-CANDIDATE"
+      ],
+      "status": "automated",
+      "expected": "Adversarial archives fail before extraction or execution; actual packages have expected content/identity, safe maps, exports and license bytes with recorded hashes. Existing output is untouched and failures remain explicit. Opaque legacy grants are not imported; on-demand presentation grants nothing and withdrawal clears only declared markers while retaining old/unrelated storage.",
+      "testRefs": [
+        "packages/notabenda/test/release-check.test.mjs",
+        "packages/notabenda/test/migration.test.mjs",
+        "docs/verification/release-candidate.md"
       ]
     }
   ],

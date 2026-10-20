@@ -336,5 +336,14 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "homepage": "https://notabenda.org/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inferal-oss/notabenda.git",
+    "directory": "packages/notabenda"
+  },
+  "bugs": {
+    "url": "https://github.com/inferal-oss/notabenda/issues"
   }
 }

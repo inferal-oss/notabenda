@@ -139,6 +139,9 @@ Use the [CLI wizard or admin setup screen](docs/SETUP.md) to work through practi
 - [Current scope and decisions](docs/SCOPE.md)
 - [Architecture and implementation plan](docs/PLAN.md)
 - [Requirements](docs/requirements/README.md), [sources](docs/requirements/SOURCES.md), and [research workflow](regulatory/README.md)
+- [Migration and removal](docs/MIGRATION.md)
+- [Review local release candidates](docs/RELEASE-CANDIDATE.md)
+- [Report a security issue](SECURITY.md)
 - [Brand assets](docs/assets/README.md)
 
 ## License
