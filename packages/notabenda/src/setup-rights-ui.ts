@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-SETUP-SESSION
+import {captureEditorFields,restoreEditorFields} from './setup-session-fields.js';
+import type {EditorFields,InventoryEditorDraft} from './setup-session-fields.js';
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 import {supportsRightsPage} from './rights-localization-policy.js';
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
@@ -18,8 +21,9 @@ export function mountRightsEditor(container:HTMLElement,options:{getConfig():unk
  function collapse(){panel.hidden=true;panel.replaceChildren();open.hidden=false;open.setAttribute('aria-expanded','false');}
  function report(message:string){feedback.textContent=message;try{options.onStatus?.(message);}catch{/* Notification failure does not undo the host's adopted draft. */}}
  function render(){try{const c=toPublicConfig(options.getConfig(),{mode:'preview'});open.textContent=c.rightsCenter?'Edit request page':'Configure request page';summary.textContent=c.rightsCenter?c.rightsCenter.actions.length+' destination'+(c.rightsCenter.actions.length===1?'':'s')+' · '+c.rightsCenter.route+' · Revision '+c.rightsCenter.revision:'No request page is configured. Choose the actual routes and scope; no rights are selected for you.';if(!supportsRightsPage(c))summary.textContent+=' Supply complete localization.rights messages for this site locale before editing or rendering the page.';}catch{open.textContent='Configure request page';summary.textContent='Finish importing a valid config before editing the request page.';}}
- function edit(){
-  if(destroyed)return;const snapshot=toPublicConfig(options.getConfig(),{mode:'preview'}),prior=snapshot.rightsCenter;
+ let draftRead:(()=>{baseline:unknown;fields:EditorFields;actions:(string|null)[];steps:number})|undefined;
+ function edit(resume?:{baseline:unknown;fields:EditorFields;actions:(string|null)[];steps:number}){
+  if(destroyed)return;draftRead=undefined;const snapshot=toPublicConfig(resume?.baseline??options.getConfig(),{mode:'preview'}),prior=snapshot.rightsCenter;
   feedback.textContent='';panel.replaceChildren();panel.hidden=false;open.hidden=true;open.setAttribute('aria-expanded','true');
   const heading=node('h3',prior?'Edit request page':'Configure request page');heading.tabIndex=-1;
   panel.append(heading,node('p','Every field below is public. Use stable destinations without request contents, account identifiers or tokens. Save a new revision for changed wording, contact or routes.'));
@@ -38,7 +42,7 @@ export function mountRightsEditor(container:HTMLElement,options:{getConfig():unk
   const contactLabel=field(contactGrid,'Contact link label',prior?.contact.label??'',160),contactHref=field(contactGrid,'Contact email or phone URI',prior?.contact.href??'',2048,false,'mailto:privacy@your-site.example or tel:+12025550123; no mailto query parameters.'),contactDescription=field(contact,'When to use this contact',prior?.contact.description??'',2000,true);
   const destinations=group('Request destinations');destinations.append(node('p','Add only the workflows you actually offer. Describe who and what each route covers. A kind classifies the link; it does not determine entitlement.'));
   const cards=node('div');cards.className='nb-setup-rights-destinations';destinations.append(cards);
-  type ActionRow={details:HTMLDetailsElement;read():RightsCenterConfig['actions'][number]};const rows:ActionRow[]=[];
+  type ActionRow={baselineId:string|null;details:HTMLDetailsElement;read():RightsCenterConfig['actions'][number]};const rows:ActionRow[]=[];
   const add=node('button','Add destination');add.type='button';add.className='nb-choice-button';destinations.append(add);
   const kinds:[RightsActionKind,string][]=[['access','Access'],['correction','Correction'],['erasure','Erasure'],['portability','Portability'],['restriction','Restriction'],['objection','Objection'],['withdrawal','Consent withdrawal'],['appeal','Appeal'],['other','Other']];
   function addAction(value?:RightsCenterConfig['actions'][number]){
@@ -49,15 +53,15 @@ export function mountRightsEditor(container:HTMLElement,options:{getConfig():unk
    const name=field(details,'Destination title',value?.title??'',300),description=field(details,'Destination description',value?.description??'',2000,true),scope=field(details,'Who and what this route covers',value?.scope??'',2000,true),linkGrid=node('div');linkGrid.className='nb-setup-rights-grid';details.append(linkGrid);
    const label=field(linkGrid,'Destination link label',value?.link.label??'',160),href=field(linkGrid,'Destination URL',value?.link.href??'',2048,false,'Stable host route, HTTPS URL, plain email or international phone URI.');
    name.addEventListener('input',()=>{caption.textContent=name.value.trim()||'New destination';});
-   const row:ActionRow={details,read:()=>({id:id.value.trim(),kind:kind.value as RightsActionKind,title:name.value.trim(),description:description.value.trim(),scope:scope.value.trim(),link:{label:label.value.trim(),href:href.value.trim()}})};
+   const row:ActionRow={baselineId:value?.id??null,details,read:()=>({id:id.value.trim(),kind:kind.value as RightsActionKind,title:name.value.trim(),description:description.value.trim(),scope:scope.value.trim(),link:{label:label.value.trim(),href:href.value.trim()}})};
    const remove=node('button','Remove destination');remove.type='button';remove.className='nb-choice-button';remove.addEventListener('click',()=>{const index=rows.indexOf(row);if(index<0)return;rows.splice(index,1);details.remove();add.disabled=false;add.focus();});details.append(remove);rows.push(row);add.disabled=rows.length>=16;
   }
-  for(const action of prior?.actions??[])addAction(action);if(!rows.length)addAction();add.addEventListener('click',()=>{addAction();rows.at(-1)?.details.querySelector<HTMLInputElement>('input')?.focus();});
+  if(resume){for(const id of resume.actions){const action=id===null?undefined:prior?.actions.find(a=>a.id===id);if(id!==null&&!action)throw Error('The saved destination is missing.');addAction(action);}}else{for(const action of prior?.actions??[])addAction(action);if(!rows.length)addAction();}add.addEventListener('click',()=>{addAction();rows.at(-1)?.details.querySelector<HTMLInputElement>('input')?.focus();});
   const next=group('What happens next'),stepRows:{root:HTMLElement;input:HTMLTextAreaElement}[]=[];next.append(node('p','Explain the actual next steps. This page sends no request and records no receipt.'));
   const stepList=node('div');next.append(stepList);const addStep=node('button','Add next step');addStep.type='button';addStep.className='nb-choice-button';next.append(addStep);
   function addNext(value=''){if(stepRows.length>=6)return;const wrapper=node('div');wrapper.className='nb-setup-rights-next-step';stepList.append(wrapper);const input=field(wrapper,'Next-step explanation',value,2000,true) as HTMLTextAreaElement;const row={root:wrapper,input};stepRows.push(row);const remove=node('button','Remove next step');remove.type='button';remove.className='nb-choice-button';remove.addEventListener('click',()=>{const index=stepRows.indexOf(row);if(index<0)return;stepRows.splice(index,1);wrapper.remove();addStep.disabled=false;addStep.focus();});wrapper.append(remove);addStep.disabled=stepRows.length>=6;}
-  for(const step of prior?.nextSteps??[''])addNext(step);addStep.addEventListener('click',()=>{addNext();stepRows.at(-1)?.input.focus();});
-  const linkSection=group('Privacy link'),beforeAfter=node('p'),ackLabel=node('label'),ack=node('input');ack.type='checkbox';ack.required=true;ackLabel.className='nb-setup-rights-link-decision';ackLabel.append(ack,doc.createTextNode('Use this page for privacy links'));linkSection.append(beforeAfter,ackLabel,node('p','Saving replaces privacy.rightsUrl with this page route. Existing destinations are not copied into actions. Review redirects or aliases separately.'));
+  for(const step of resume?Array(resume.steps).fill(''):prior?.nextSteps??[''])addNext(step);addStep.addEventListener('click',()=>{addNext();stepRows.at(-1)?.input.focus();});
+  const linkSection=group('Privacy link'),beforeAfter=node('p'),ackLabel=node('label'),ack=node('input');ack.type='checkbox';ack.dataset.sessionReview='';ack.required=true;ackLabel.className='nb-setup-rights-link-decision';ackLabel.append(ack,doc.createTextNode('Use this page for privacy links'));linkSection.append(beforeAfter,ackLabel,node('p','Saving replaces privacy.rightsUrl with this page route. Existing destinations are not copied into actions. Review redirects or aliases separately.'));
   const showLink=()=>{beforeAfter.textContent='Current: '+(snapshot.privacy.rightsUrl??'No link configured')+' → Proposed: '+(route.value.trim()||'Enter the page route');};route.addEventListener('input',showLink);showLink();
   const actions=node('div');actions.className='nb-setup-rights-actions';const save=node('button','Save page and privacy link');save.type='button';save.className='nb-choice-button nb-primary';actions.append(save,cancel);panel.append(actions);
   save.addEventListener('click',()=>{
@@ -71,8 +75,8 @@ export function mountRightsEditor(container:HTMLElement,options:{getConfig():unk
     try{options.onChange(plan);}catch{error.textContent='Could not confirm the host draft update. Check the current draft before trying again.';return;}
     collapse();render();open.focus();report('Request page and privacy link saved in the local draft. Prepare the draft to preview it; review the wording and verify the real workflows before publishing.');
    }catch(e){error.textContent=e instanceof Error?e.message:'Could not save the request page. Review the current draft.';}
-  });heading.focus();
+  });draftRead=()=>({baseline:snapshot,fields:captureEditorFields(panel),actions:rows.map(r=>r.baselineId),steps:stepRows.length});if(resume){restoreEditorFields(panel,resume.fields);showLink();for(const row of rows)row.details.querySelector('summary')!.textContent=row.read().title||'New destination';}heading.focus();
  }
  open.addEventListener('click',()=>{try{edit();}catch{report('Finish importing a valid config before editing the request page.');}});render();
- return {open(){if(destroyed)throw Error('Editor has ended.');edit();},refresh({discardDraft=false}={}){if(destroyed)return;if(discardDraft)collapse();render();},destroy(){if(destroyed)return;destroyed=true;root.remove();}};
+ return {getSessionDraft(){return !panel.hidden&&draftRead?draftRead():undefined;},restoreSessionDraft(draft:{baseline:unknown;fields:EditorFields;actions:(string|null)[];steps:number}){edit(draft);},open(){if(destroyed)throw Error('Editor has ended.');edit();},refresh({discardDraft=false}={}){if(destroyed)return;if(discardDraft)collapse();render();},destroy(){if(destroyed)return;destroyed=true;root.remove();}};
 }

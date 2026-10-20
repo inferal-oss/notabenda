@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-CF-HOST
+// @requirements REQ-PRODUCT-CF-HOST REQ-PRODUCT-SETUP-SESSION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -48,4 +48,8 @@ test('the actual public build stops before changing existing assets when operato
  const manifest=new URL('../dist/asset-manifest.json',import.meta.url),before=await readFile(manifest,'utf8');
  const result=spawnSync(process.execPath,[new URL('../build.mjs',import.meta.url).pathname,'--production'],{env:{PATH:process.env.PATH},encoding:'utf8',timeout:10000});
  assert.notEqual(result.status,0);assert.match(result.stderr,/Public website build requires NOTABENDA_WEBSITE_OPERATOR/);assert.equal(await readFile(manifest,'utf8'),before);
+});
+
+test('website privacy describes the opt-in setup session and its expiry/clear limits',()=>{
+ const html=websiteNoticeBody(websiteNoticeFacts()),dom=new JSDOM(html),text=dom.window.document.body.textContent;for(const phrase of ['notabenda:start:draft:v1','24 hours after its last change','Forget saved draft','not uploaded','unfinished editor fields','browsers can restore or duplicate sessions'])assert.ok(text.includes(phrase),phrase);assert.doesNotMatch(text,/not uploaded or saved by the setup interface/);dom.window.close();
 });

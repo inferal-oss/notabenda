@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-SETUP-SESSION
+import type {ServiceCatalog} from './catalog.js';
+export interface CatalogReviewDraft {reason:string;reference?:ServiceCatalog}
 // @requirements REQ-EU-INTERESTS-DISCLOSURE
 import {purposeLegalBasis} from './purpose-disclosures.js';
 // @requirements REQ-PRODUCT-SERVICE-PROFILES
@@ -11,7 +14,7 @@ export interface CatalogSelectionReviewUIOptions {
  onConfirm(result:ReturnType<typeof confirmCatalogSelectionReview>):void;
 }
 /** Operator-only local comparison, with explicit reference loading and renewed confirmation. */
-export function mountCatalogSelectionReview(container:HTMLElement,options:CatalogSelectionReviewUIOptions):{destroy():void}{
+export function mountCatalogSelectionReview(container:HTMLElement,options:CatalogSelectionReviewUIOptions):{getSessionDraft():CatalogReviewDraft;restoreSessionDraft(draft:CatalogReviewDraft):void;destroy():void}{
  const doc=container.ownerDocument,node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
  let destroyed=false,loading=false,review:CatalogSelectionReview|undefined;
  const root=node('section');root.className='nb-catalog-review';container.append(root);
@@ -46,7 +49,7 @@ export function mountCatalogSelectionReview(container:HTMLElement,options:Catalo
  refresh.addEventListener('click',async()=>{if(loading||destroyed)return;loading=true;refresh.disabled=true;apply.disabled=true;checked.checked=false;
   try{const catalog=options.catalog??await options.loadCatalog!();if(destroyed)return;prepare(catalog);}
   catch{if(!destroyed){review=undefined;comparison.replaceChildren();error.textContent='The reference could not be loaded. Try again; the draft and prior pin are unchanged.';}}
-  finally{if(!destroyed){loading=false;refresh.disabled=false;apply.disabled=!review;}}
+  finally{if(!destroyed){loading=false;refresh.disabled=false;apply.disabled=!review;root.dispatchEvent(new doc.defaultView!.Event('input',{bubbles:true}));}}
  });
  apply.addEventListener('click',()=>{if(!review||loading||destroyed)return;
   let result:ReturnType<typeof confirmCatalogSelectionReview>;
@@ -54,5 +57,5 @@ export function mountCatalogSelectionReview(container:HTMLElement,options:Catalo
   catch{error.textContent='Confirm the displayed facts and provide a new private reason. If the draft changed, reopen this review. Nothing was applied.';return;}
   try{options.onConfirm(result);}catch{error.textContent='Could not confirm the host draft update. Check its review limits and current state before trying again.';}
  });
- title.focus();return {destroy(){destroyed=true;review=undefined;root.remove();}};
+ title.focus();return {getSessionDraft(){return {reason:reason.value,...(review?{reference:structuredClone(review.proposed.reference)}:{})};},restoreSessionDraft(draft){prepare(draft.reference);reason.value=draft.reason;checked.checked=false;},destroy(){destroyed=true;review=undefined;root.remove();}};
 }

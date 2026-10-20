@@ -1,3 +1,7 @@
+// @requirements REQ-PRODUCT-SETUP-SESSION
+import {createPackSession,readPackSessionDraft} from './pack-session.js';
+import type {PackSessionDraft,PackSessionOptions,PackSessionStatus} from './pack-session.js';
+export type {PackSessionOptions} from './pack-session.js';
 // @requirements REQ-PRODUCT-AGENT-HANDOFF
 import {mountAgentHandoff} from './agent-handoff.js';
 import type {MountedAgentHandoff} from './agent-handoff.js';
@@ -14,9 +18,11 @@ export interface CartridgeConsoleOptions extends SetupUIOptions {
  exampleLinks?:Partial<Record<CartridgeId,string>>;
  mapUrl?:string;
  guideUrl?:string;
+ /** Opt-in tab-local draft retention. Use a separate key for each project/operator context. */
+ session?:PackSessionOptions;
 }
 
-/** Mount into an empty host element, or hydrate markup from renderCartridgeConsole. No storage or network is owned by this component. */
+/** Mount into an empty host element, or hydrate markup from renderCartridgeConsole. Session storage is optional; no network transport is installed. */
 export function mountCartridgeConsole(container:HTMLElement,options:CartridgeConsoleOptions={}) {
  const doc=container.ownerDocument,window=doc.defaultView;
  if(!window)throw Error('A document window is required.');
@@ -32,7 +38,19 @@ export function mountCartridgeConsole(container:HTMLElement,options:CartridgeCon
  let mounted:MountedSetup|undefined,handoff:MountedAgentHandoff|undefined,destroyed=false;
  if(brief.tagName!=='BUTTON'){const replacement=doc.createElement('button');replacement.type='button';replacement.dataset.cartridgeBrief='';replacement.hidden=brief.hidden;replacement.className=brief.className;replacement.textContent='Give to my agent';brief.replaceWith(replacement);brief=replacement;}brief.setAttribute('type','button');
  const inputs=()=>[...root.querySelectorAll<HTMLInputElement>('input[name=cartridge]')];
- const initial=initialSelection(options);
+ let restored:PackSessionDraft|undefined,restoring=true;
+ let session:ReturnType<typeof createPackSession>|undefined;
+ const snapshot=():PackSessionDraft=>({schemaVersion:1,kind:'private-pack-session',selection:selection(),view:setup.hidden?'packs':'setup',...(mounted?{setup:mounted.getSessionDraft()}:{})});
+ const persist=()=>{if(destroyed||restoring||!session)return;try{const draft=snapshot();readPackSessionDraft(draft);session.save(draft);}catch{session.unsaved();}};
+ if(options.session){
+  const bar=doc.createElement('aside');bar.className='nb-pack-session';bar.setAttribute('aria-label','Saved setup draft');const note=doc.createElement('p');note.setAttribute('role','status');const forget=doc.createElement('button');forget.type='button';forget.textContent='Forget saved draft';forget.className='nb-text-button';bar.append(note,forget);root.prepend(bar);
+  const ttl=options.session.maxAgeMs??86400000,age=ttl%3600000===0?(ttl/3600000)+' hours':Math.ceil(ttl/60000)+' minutes';
+  const show=(status:PackSessionStatus)=>{const copy=({empty:'Changes are saved in this tab for '+age+'.',saved:'Draft saved in this tab. Expires after '+age+' without changes.',restored:'Restored your draft in this tab. Expires after '+age+' without changes.',expired:'The saved draft expired. Changes on this page can start a new saved draft.',cleared:'Saved draft cleared. Further changes will save a new draft.',invalid:'The saved draft could not be restored. Start again or import your downloaded files.',unavailable:'Tab storage is unavailable. Latest changes could not be saved. Keep this page open and download your draft before leaving.', 'too-large':'Latest changes are too large to save. An earlier saved copy, if any, keeps its original expiry. Download your configuration and private report.',unsaved:'Latest changes could not be saved. Check answer lengths and download your draft; any earlier saved copy keeps its original expiry.'})[status];if(note.textContent!==copy)note.textContent=copy;forget.hidden=['empty','expired','cleared','invalid'].includes(status);};
+  show('empty');session=createPackSession(view,options.session,show);
+  if(options.config===undefined&&options.answers===undefined&&options.cartridges===undefined&&options.resumeDraft===undefined){const cached=session.read();if(cached!==undefined)try{restored=readPackSessionDraft(cached);}catch{session.reject();}}
+  forget.addEventListener('click',()=>{if(destroyed)return;try{session?.clear(snapshot());}catch{session?.clear();}});
+ }
+ const initial=restored?.selection??initialSelection(options);
  if(initial.selected.length){const ids=new Set(initial.selected.map(c=>c.id));for(const input of inputs())input.checked=ids.has(input.value as CartridgeId);}
  const selection=()=>{
   const checked=inputs().filter(input=>input.checked).map(input=>input.value),pins=mounted?.getDraft().report.cartridges??initial;
@@ -52,12 +70,12 @@ export function mountCartridgeConsole(container:HTMLElement,options:CartridgeCon
    const added=card.querySelector<HTMLInputElement>('input')!.checked;card.dataset.selected=String(added);
    card.querySelector('.cartridge-select-label')!.firstChild!.textContent=added?'In your plan ':card.dataset.kind==='regulatory'?'Select for assessment ':'Insert into plan ';
   }
-
+  persist();
  }
  const onSubmit=(event:Event)=>{event.preventDefault();if(destroyed)return;releaseHandoff();try{
   const chosen=selection();if(!chosen.selected.length)return;
-  if(mounted)mounted.setCartridges(chosen);else mounted=mountSetup(target,{...options,cartridges:chosen});
-  library.hidden=true;setup.hidden=false;error.hidden=true;
+  if(mounted)mounted.setCartridges(chosen);else mounted=mountSetup(target,{...options,cartridges:chosen,onDraftChange:()=>{try{options.onDraftChange?.();}finally{persist();}}});
+  library.hidden=true;setup.hidden=false;error.hidden=true;persist();
   const heading=setup.querySelector<HTMLElement>('h1')!;heading.tabIndex=-1;heading.focus();setup.scrollIntoView?.({block:'start'});
  }catch{
   error.textContent=mounted?'This selection could not be applied. Your earlier draft is still open; check the entered facts before trying again.':'Could not prepare this selection. Return to your packs and try again.';
@@ -68,10 +86,12 @@ export function mountCartridgeConsole(container:HTMLElement,options:CartridgeCon
   // A loaded private report may have changed the selection within setup.
   const current=mounted?.getDraft().report.cartridges;
   if(current){const ids=new Set(current.selected.map(c=>c.id));for(const input of inputs())input.checked=ids.has(input.value as CartridgeId);}
-  refresh();setup.hidden=true;library.hidden=false;next.focus();
+  refresh();setup.hidden=true;library.hidden=false;persist();next.focus();
  };
  form.addEventListener('submit',onSubmit);form.addEventListener('change',refresh);back.addEventListener('click',onBack);next.hidden=false;refresh();
- return {getDraft:()=>mounted?.getDraft(),destroy(){if(destroyed)return;destroyed=true;mounted?.destroy();releaseHandoff();brief.removeEventListener('click',onBrief);brief.hidden=true;brief.setAttribute('disabled','');form.removeEventListener('submit',onSubmit);form.removeEventListener('change',refresh);back.removeEventListener('click',onBack);next.disabled=true;}};
+ if(restored?.setup){try{const d=restored.setup;mounted=mountSetup(target,{...options,...(d.config===undefined?{}:{config:d.config}),answers:d.report,cartridges:d.report.cartridges,resumeDraft:d,onDraftChange:()=>{try{options.onDraftChange?.();}finally{persist();}}});if(restored.view==='setup'){library.hidden=true;setup.hidden=false;}}catch{mounted?.destroy();mounted=undefined;target.replaceChildren();session?.reject();}}
+ restoring=false;
+ return {getDraft:()=>mounted?.getDraft(),destroy(){if(destroyed)return;destroyed=true;session?.destroy();root.querySelector('.nb-pack-session')?.remove();mounted?.destroy();releaseHandoff();brief.removeEventListener('click',onBrief);brief.hidden=true;brief.setAttribute('disabled','');form.removeEventListener('submit',onSubmit);form.removeEventListener('change',refresh);back.removeEventListener('click',onBack);next.disabled=true;}};
 }
 const e=(v:unknown)=>String(v).replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const link=(value:string|undefined)=>{if(value!==undefined&&(!/^\/(?!\/)[a-zA-Z0-9_./#-]*$/u.test(value)||value.split('/').some(p=>p==='.'||p==='..')))throw Error('Use local pack example and guide paths without query strings.');return value;};

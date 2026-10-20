@@ -274,3 +274,30 @@ The **Privacy requests** pack now opens a structured editor for actual public wo
 
 <!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
 Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).
+
+## Recover a browser setup draft
+
+<!-- @requirements REQ-PRODUCT-SETUP-SESSION -->
+
+The project website’s **[Start](/start/)** screen keeps its draft in `sessionStorage`, under `notabenda:start:draft:v1`. Reloading the same tab restores selected packs, the current step, unfinished answers, imported public configuration, private service-review notes, pending editor fields and the cumulative storage-change review. Prepared recommendations and downloads are regenerated locally. Unconfirmed proposals remain unconfirmed; review acknowledgments must be checked again.
+
+The saved copy expires **24 hours after its last change**. Reading or reloading it does not extend that deadline. **Forget saved draft** removes this saved copy without erasing the open form; a later edit starts a new saved copy. It is not uploaded. Closing the tab normally ends its storage session, although browsers can restore sessions or copy them when duplicating a tab. Do not treat this as secure deletion or a durable backup. Download the public config, private setup report and any storage-change review you need to keep.
+
+The console’s persistence is optional for other hosts:
+
+```ts
+import {mountPackConsole} from '@notabenda/core/packs/ui';
+
+const console = mountPackConsole(document.querySelector('#setup')!, {
+  session: {
+    key: 'my-app:setup:project-123:v1',
+    maxAgeMs: 24 * 60 * 60 * 1000,
+  },
+});
+// Unmounting leaves an unexpired saved copy for the next mount.
+console.destroy();
+```
+
+Use a separate key for each operator/project context, and clear that key at logout if your host supports account switching. The option accepts a retention period from one minute to seven days. Without `session`, the component does not read browser storage. Explicit host configuration, answers or pack selections take precedence over restoration. The project’s admin setup does not enable this cache.
+
+The saved envelope is limited to 1 MiB; questionnaire answers retain their existing 128 KiB normalized limit. Incompatible versions, damaged records and expired copies are discarded on access. Quota, unavailable storage or an oversized latest draft leave the open form usable and retain the last recoverable copy with its original expiry; a visible message says the latest changes are unsaved. Cleanup runs while the page is active and on the next visit, not in a closed browser. Private notes remain accessible to scripts on the same origin; never enter credentials or sensitive personal data.

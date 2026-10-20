@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-SETUP-SESSION
+import {captureEditorFields,restoreEditorFields} from './setup-session-fields.js';
+import type {EditorFields,InventoryEditorDraft} from './setup-session-fields.js';
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING REQ-PRODUCT-A11Y REQ-PRODUCT-SCOPE-GUARDS
 import {toPublicConfig} from './config.js';
 import {createConsentDraftPlan} from './setup-consent.js';
@@ -16,9 +19,10 @@ export function mountConsentEditor(container:HTMLElement,options:{getConfig():un
  function collapse(){panel.hidden=true;panel.replaceChildren();open.hidden=false;open.setAttribute('aria-expanded','false');}
  function report(message:string){feedback.textContent=message;try{options.onStatus?.(message);}catch{/* A notification failure does not undo an adopted draft. */}}
  function render(){try{const config=toPublicConfig(options.getConfig(),{mode:'preview'});open.textContent=config.consent?'Edit control settings':'Configure cookie choices';summary.textContent=config.consent?config.consent.services.length+' declared service'+(config.consent.services.length===1?'':'s')+' in the current consent settings.':config.services.length?config.services.length+' declared service'+(config.services.length===1?'':'s')+' available. Choose which services the controls should manage.':'Add actual purposes and services to the inventory before configuring cookie controls.';}catch{open.textContent='Configure cookie choices';summary.textContent='Finish importing a valid config before editing controls.';}}
- function edit(){
-  if(destroyed)return;
-  const snapshot=toPublicConfig(options.getConfig(),{mode:'preview'}),previous=snapshot.consent;
+ type Draft={baseline:unknown;fields:EditorFields;selected:string[];purposes:[string,string][]};let draftRead:(()=>Draft)|undefined;
+ function edit(resume?:Draft){
+  if(destroyed)return;draftRead=undefined;
+  const snapshot=toPublicConfig(resume?.baseline??options.getConfig(),{mode:'preview'}),previous=snapshot.consent;
   feedback.textContent='';panel.replaceChildren();panel.hidden=false;open.hidden=true;open.setAttribute('aria-expanded','true');
   const heading=node('h3',previous?'Edit cookie controls':'Configure cookie controls');heading.tabIndex=-1;panel.append(heading,node('p','Selecting a service includes all of its purposes. Review services that share a purpose or use several purposes. This does not decide a legal basis, relax scope restrictions or select a regional policy.'));
   const error=node('p');error.className='nb-setup-editor-error';error.setAttribute('role','alert');panel.append(error);
@@ -26,11 +30,11 @@ export function mountConsentEditor(container:HTMLElement,options:{getConfig():un
   if(!snapshot.services.length){panel.append(node('p','Add the actual services and their processing purposes in the inventory first. No sample service will be added for you.'),cancel);heading.focus();return;}
   function field(parent:HTMLElement,label:string,value:string,help?:string){const id=instance+'-'+sequence++,input=node('input');input.id=id;input.type='text';input.value=value;input.maxLength=200;input.required=true;const wrapper=node('div');wrapper.className='nb-setup-field';const caption=node('label',label);caption.htmlFor=id;wrapper.append(caption,input);if(help){const hint=node('p',help);hint.id=id+'-hint';input.setAttribute('aria-describedby',hint.id);wrapper.append(hint);}parent.append(wrapper);return input;}
   const services=node('fieldset'),serviceGrid=node('div');serviceGrid.className='nb-setup-consent-service-grid';services.append(node('legend','Services to control'),serviceGrid);panel.append(services);
-  const selected=new Map<string,HTMLInputElement>(),serviceScopes=new Map<string,HTMLInputElement>(),purposeValues=new Map(previous?.purposes.map(p=>[p.id,p.scope])??[]),purposeInputs=new Map<string,HTMLInputElement>();
+  const selected=new Map<string,HTMLInputElement>(),serviceScopes=new Map<string,HTMLInputElement>(),purposeValues=new Map(resume?.purposes??previous?.purposes.map(p=>[p.id,p.scope])??[]),purposeInputs=new Map<string,HTMLInputElement>();
   const purposeGroup=node('fieldset');purposeGroup.append(node('legend','Purposes included by your selection'));panel.append(purposeGroup);
   function refreshPurposes(){for(const [id,input] of purposeInputs)purposeValues.set(id,input.value);purposeInputs.clear();const grid=node('div');grid.className='nb-setup-consent-purpose-grid';purposeGroup.replaceChildren(node('legend','Purposes included by your selection'));const ids=new Set(snapshot.services.filter(s=>selected.get(s.id)?.checked).flatMap(s=>s.purposeIds));if(!ids.size)purposeGroup.append(node('p','Select a service to see every purpose that will be controlled.'));for(const purpose of snapshot.purposes.filter(p=>ids.has(p.id))){purposeInputs.set(purpose.id,field(grid,purpose.name+' — purpose version',purposeValues.get(purpose.id)??'','Use a new public version label when the actual purpose changes. Never reuse an earlier version.'));}purposeGroup.append(grid);}
   for(const service of snapshot.services){
-   const card=node('div');card.className='nb-setup-consent-service';const check=node('input');check.type='checkbox';check.id=instance+'-service-'+service.id;check.checked=!!previous?.services.some(s=>s.id===service.id);selected.set(service.id,check);
+   const card=node('div');card.className='nb-setup-consent-service';const check=node('input');check.type='checkbox';check.id=instance+'-service-'+service.id;check.checked=resume?resume.selected.includes(service.id):!!previous?.services.some(s=>s.id===service.id);selected.set(service.id,check);
    const label=node('label',service.name);label.htmlFor=check.id;label.prepend(check);card.append(label,node('p','Purposes: '+service.purposeIds.map(id=>snapshot.purposes.find(p=>p.id===id)?.name??id).join(', ')));
    const scope=field(card,service.name+' — service version',previous?.services.find(s=>s.id===service.id)?.scope??'','This public material version must change when the service use changes; changing its label is not a scope review.');scope.disabled=!check.checked;serviceScopes.set(service.id,scope);
    check.addEventListener('change',()=>{scope.disabled=!check.checked;refreshPurposes();});serviceGrid.append(card);
@@ -55,8 +59,8 @@ export function mountConsentEditor(container:HTMLElement,options:{getConfig():un
     let current:unknown;try{current=options.getConfig();}catch{error.textContent='Could not read the current draft. Check the host configuration before saving.';return;}
     const plan=createConsentDraftPlan(current,{baseline:snapshot,settings});try{options.onChange(plan);}catch{error.textContent='Could not confirm the host draft update. Check the current draft before trying again.';return;}collapse();render();open.focus();report(plan.blockedPurposeIds.length?'Control settings saved in the local draft. '+plan.blockedPurposeIds.length+' purpose'+(plan.blockedPurposeIds.length===1?' remains':'s remain')+' blocked by unknown or present scope declarations.':'Control settings saved in the local draft. Review the configuration and actual integration before publishing.');
    }catch(e){error.textContent=e instanceof Error?e.message:'Could not save control settings. Review the current draft.';}
-  });heading.focus();
+  });draftRead=()=>{for(const [id,input] of purposeInputs)purposeValues.set(id,input.value);return {baseline:snapshot,fields:captureEditorFields(panel),selected:[...selected].filter(([,input])=>input.checked).map(([id])=>id),purposes:[...purposeValues]};};if(resume)restoreEditorFields(panel,resume.fields);heading.focus();
  }
  open.addEventListener('click',()=>{try{edit();}catch{report('Finish importing a valid config before editing controls.');}});render();
- return {open(){if(destroyed)throw Error('Editor has ended.');edit();},refresh({discardDraft=false}={}){if(destroyed)return;if(discardDraft)collapse();render();},destroy(){if(destroyed)return;destroyed=true;root.remove();}};
+ return {getSessionDraft(){return !panel.hidden&&draftRead?draftRead():undefined;},restoreSessionDraft(draft:Draft){edit(draft);},open(){if(destroyed)throw Error('Editor has ended.');edit();},refresh({discardDraft=false}={}){if(destroyed)return;if(discardDraft)collapse();render();},destroy(){if(destroyed)return;destroyed=true;root.remove();}};
 }

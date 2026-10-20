@@ -1,10 +1,13 @@
+// @requirements REQ-PRODUCT-SETUP-SESSION
+import {captureEditorFields,restoreEditorFields} from './setup-session-fields.js';
+import type {EditorFields,InventoryEditorDraft} from './setup-session-fields.js';
 /** @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CONFIG REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE REQ-PRODUCT-SERVICE-CATALOG */
 import {createPurposeDraftPlan} from './setup-purpose.js';
 import type {PurposeDraftPlan} from './setup-purpose.js';
 import {toPublicConfig} from './config.js';
 import type {Purpose} from './types.js';
 export interface PurposeEditorOptions {getConfig():unknown;onChange(plan:PurposeDraftPlan):void}
-export interface MountedPurposeEditor {refresh(options?:{discardDraft?:boolean}):void;destroy():void}
+export interface MountedPurposeEditor {getSessionDraft():InventoryEditorDraft;restoreSessionDraft(draft:InventoryEditorDraft):void;refresh(options?:{discardDraft?:boolean}):void;destroy():void}
 
 /** In-memory public purpose authoring. A host owns the draft and every persistence/deployment decision. */
 export function mountPurposeEditor(container:HTMLElement,options:PurposeEditorOptions):MountedPurposeEditor {
@@ -15,7 +18,7 @@ export function mountPurposeEditor(container:HTMLElement,options:PurposeEditorOp
  const list=node('div');list.className='nb-setup-purpose-list';body.append(list);
  const add=node('button','Add a processing purpose');add.type='button';add.className='nb-choice-button';body.append(add);
  const status=node('p');status.setAttribute('role','status');body.append(status);
- const panel=node('section');panel.className='nb-setup-purpose-proposal';panel.hidden=true;body.append(panel);root.append(body);let destroyed=false;
+ const panel=node('section');panel.className='nb-setup-purpose-proposal';panel.hidden=true;body.append(panel);root.append(body);let destroyed=false;let proposalMode:{id?:string;remove:boolean;baseline:unknown}|undefined;
  for(const type of ['input','change'])root.addEventListener(type,event=>event.stopPropagation());
  root.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Enter'&&!event.isComposing&&(event.target as HTMLElement)?.tagName==='INPUT')event.preventDefault();});
  function report(message:string){status.textContent=message;status.tabIndex=-1;status.focus();}
@@ -27,8 +30,8 @@ export function mountPurposeEditor(container:HTMLElement,options:PurposeEditorOp
    for(const purpose of config.purposes){const card=node('section');card.className='nb-setup-purpose-card';card.append(node('h3',purpose.name),node('p',purpose.description));const meta=node('p',purpose.id+' · '+purpose.dataCategories.join(', '));meta.className='nb-setup-purpose-meta';card.append(meta);const actions=node('div');actions.className='nb-setup-purpose-actions';for(const [label,remove] of [['Edit',false],['Remove',true]] as const){const button=node('button',label);button.type='button';button.className='nb-choice-button';button.setAttribute('aria-label',label+' purpose '+purpose.name);button.addEventListener('click',()=>{try{open(purpose,remove);}catch{report('Finish importing a valid config before reviewing a purpose.');}});actions.append(button);}card.append(actions);list.append(card);}
   }catch{summary.textContent='Processing purposes';list.append(node('p','Finish importing a valid config before editing purposes.'));}
  }
- function open(previous?:Purpose,remove=false){
-  const snapshot=toPublicConfig(options.getConfig(),{mode:'preview'});panel.replaceChildren();panel.hidden=false;
+ function open(previous?:Purpose,remove=false,baseline?:unknown){
+  const snapshot=toPublicConfig(baseline??options.getConfig(),{mode:'preview'});proposalMode={...(previous?{id:previous.id}:{}),remove,baseline:snapshot};panel.replaceChildren();panel.hidden=false;
   const heading=node('h3',remove?'Remove '+previous!.name:previous?'Edit '+previous.name:'Describe a processing purpose');heading.tabIndex=-1;panel.append(heading);
   const error=node('p');error.setAttribute('role','alert');
   const cancel=node('button','Cancel purpose edit');cancel.type='button';cancel.className='nb-choice-button';cancel.addEventListener('click',()=>{panel.hidden=true;panel.replaceChildren();add.focus();});
@@ -78,5 +81,5 @@ export function mountPurposeEditor(container:HTMLElement,options:PurposeEditorOp
   heading.focus();
  }
  add.addEventListener('click',()=>{try{open();}catch{report('Finish importing a valid config before adding a purpose.');}});render();
- return {refresh({discardDraft=false}={}){if(destroyed)return;if(discardDraft){panel.hidden=true;panel.replaceChildren();}render();},destroy(){if(destroyed)return;destroyed=true;root.remove();}};
+ return {getSessionDraft(){return {open:root.open,...(!panel.hidden&&proposalMode?{proposal:{...proposalMode,fields:captureEditorFields(panel)}}:{})};},restoreSessionDraft(draft){if(draft.proposal){const p=draft.proposal,c=toPublicConfig(p.baseline,{mode:'preview'}),prior=p.id?c.purposes.find(v=>v.id===p.id):undefined;if(p.id&&!prior||p.remove&&!prior)throw Error('The saved purpose is missing.');open(prior,p.remove,p.baseline);restoreEditorFields(panel,p.fields);}root.open=draft.open;},refresh({discardDraft=false}={}){if(destroyed)return;if(discardDraft){panel.hidden=true;panel.replaceChildren();}render();},destroy(){if(destroyed)return;destroyed=true;root.remove();}};
 }

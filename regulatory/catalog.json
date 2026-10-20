@@ -30,7 +30,8 @@
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Dismissible copyable agent-instruction drawer for selected plans and prepared drafts, with manual clipboard fallback and stale-draft cleanup.",
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
-        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions."
+        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
+        "Optional expiring tab-local setup recovery, including unfinished proposals and storage-change review, with clear control and last recoverable copy after failed writes."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -123,7 +124,14 @@
         "site/build.mjs",
         "site/demo-host.mjs",
         "examples/static/choices-build.mjs",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/pack-session.ts",
+        "packages/notabenda/src/setup-session-fields.ts",
+        "packages/notabenda/src/setup-session-editors.ts",
+        "packages/notabenda/src/catalog-ui.ts",
+        "packages/notabenda/src/catalog-review-ui.ts",
+        "site/cartridges-app.mjs",
+        "site/website-notice.mjs"
       ]
     },
     {
@@ -2311,7 +2319,8 @@
         "REQ-PRODUCT-RECORDING-INSPECTION",
         "REQ-PRODUCT-AGENT-HANDOFF",
         "REQ-PRODUCT-AUTHORED-PREVIEW",
-        "REQ-PRODUCT-PROCESSING-LOCALIZATION"
+        "REQ-PRODUCT-PROCESSING-LOCALIZATION",
+        "REQ-PRODUCT-SETUP-SESSION"
       ]
     }
   ],
@@ -7710,6 +7719,52 @@
         "docs/verification/processing-localization.md"
       ],
       "implementationNote": "Schema-2 notices retain a bounded complete selected interface; existing schema-1 English notices and request/receipt formats remain valid. Standalone CF validation matches exact archived copy. Native controls translate all states and recovery paths with explicit lang/dir."
+    },
+    {
+      "id": "REQ-PRODUCT-SETUP-SESSION",
+      "jurisdiction": "PRODUCT",
+      "title": "Expiring tab-local setup recovery",
+      "kind": "product-standard",
+      "summary": "Optionally retain pack selection, active step, raw answers, public inventory, private review notes, unfinished editor proposals and storage-change history across same-tab reloads. Show clear/expiry/save-failure status and retain the last recoverable copy.",
+      "appliesWhen": "A host opts into session persistence for the pack setup console; the project website opts in at /start/.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-SETUP-SESSION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Tab-local convenience storage, not evidence or a backup. Session restoration/duplication is browser-controlled. Cleanup runs while open or on next access; private notes are accessible to same-origin scripts. No server upload, automatic adoption or runtime grant.",
+      "implementationRefs": [
+        "packages/notabenda/src/pack-session.ts",
+        "packages/notabenda/src/setup-session-fields.ts",
+        "packages/notabenda/src/setup-session-editors.ts",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-purpose-ui.ts",
+        "packages/notabenda/src/setup-consent-ui.ts",
+        "packages/notabenda/src/setup-rights-ui.ts",
+        "packages/notabenda/src/setup-storage-ui.ts",
+        "packages/notabenda/src/setup-storage.ts",
+        "packages/notabenda/src/catalog-ui.ts",
+        "packages/notabenda/src/catalog-review-ui.ts",
+        "examples/setup/build.mjs",
+        "site/cartridges-app.mjs",
+        "site/website-notice.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/pack-session.test.mjs",
+        "site/test/website-notice.test.mjs",
+        "docs/verification/setup-session.md"
+      ],
+      "implementationNote": "Website TTL is 24 hours after the last changed snapshot; restoration does not renew it. Reusable hosts supply a separate key per context and optional bounded TTL. Validate saved versions and reset review acknowledgments."
     }
   ],
   "verification": [
@@ -9286,6 +9341,19 @@
         "site/test/processing-localization.test.mjs",
         "site/test/demo.test.mjs",
         "docs/verification/processing-localization.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-SETUP-SESSION",
+      "requirementIds": [
+        "REQ-PRODUCT-SETUP-SESSION"
+      ],
+      "status": "automated",
+      "expected": "Same-tab reload preserves valid work, active view and separate unconfirmed proposals. Expiry and clear remove only this copy; failed or oversized writes retain the last recoverable draft and show unsaved status.",
+      "testRefs": [
+        "packages/notabenda/test/pack-session.test.mjs",
+        "site/test/website-notice.test.mjs",
+        "docs/verification/setup-session.md"
       ]
     }
   ],

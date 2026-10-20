@@ -257,3 +257,7 @@ Authored previews operate on an explicit compiler result after trusted MDX evalu
 
 <!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
 Recorded opt-out interface translations are complete, versioned host-supplied dictionaries retained with schema-2 notices; existing English schema-1 notices and request/receipt formats remain supported. Copy changes never reset a restriction or replace an in-flight request's identity. Language selection is separate from applicability and substantive notice wording; the package provides no translation approval or re-opt-in mechanism.
+
+<!-- @requirements REQ-PRODUCT-SETUP-SESSION -->
+
+Browser setup recovery: `/start/` opts into expiring, tab-local draft storage (24 hours since the last change). Retain selection, step, raw answers, public inventory, private review notes, unconfirmed editor proposals and cumulative storage migration review. Restore proposals without adopting them; reset acknowledgments. Provide a clear action, preserve the last recoverable copy after failed writes, and keep reusable persistence opt-in. No server upload or account storage is part of this feature.

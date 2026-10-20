@@ -131,3 +131,7 @@ For cookie packs, [inspect the actual connection](CONNECTION-INSPECTION.md) afte
 
 <!-- @requirements REQ-PRODUCT-AGENT-HANDOFF -->
 The reusable `mountAgentHandoff` component is available from `@notabenda/core/agent-handoff`, with optional `@notabenda/core/agent-handoff.css`. The default setup and pack styles already include it. Pass a fixed `text`, optional `title`/`description` and `onClose`; use the returned `open()`, `close()` and `destroy()`. It renders text without interpreting HTML and writes the clipboard only after a deliberate Copy press. It sends no message to an agent or external service. Native modal focus handling, focus return, reduced-motion and forced-color styles are included.
+
+<!-- @requirements REQ-PRODUCT-SETUP-SESSION -->
+
+The website’s pack picker remembers work in the same tab for 24 hours after the last change. Reloading restores the selected packs and setup draft. Use **Forget saved draft** to remove that copy. Library consumers opt into persistence with the console’s `session` option; see [browser draft recovery](SETUP.md#recover-a-browser-setup-draft).

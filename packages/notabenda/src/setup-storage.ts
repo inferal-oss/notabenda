@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING REQ-PRODUCT-CONFIG REQ-PRODUCT-STORAGE-CLEANUP REQ-PRODUCT-SCOPE-GUARDS
 import {assertPlainCatalogData} from './catalog-plain.js';
 import {toPublicConfig} from './config.js';
-import {technologyCollectionScope} from './technology-collection-policy.js';
+import {technologyCollectionScope,normalizeTechnologyCollectionSettings} from './technology-collection-policy.js';
 import type {TechnologyCollectionSettings} from './technology-collection-policy.js';
 import type {SiteConfig,StorageItem} from './types.js';
 export type StorageDraftItem=Pick<StorageItem,'id'|'name'|'type'|'serviceId'|'duration'>&({classification:'necessary';necessityReason:string}|{classification:'optional';necessityReason?:string});
@@ -112,4 +112,18 @@ export function serializeStorageDraftReview(steps:readonly StorageDraftReviewSte
  const text=JSON.stringify({schemaVersion:1,kind:'private-storage-change-review',steps},null,2)+'\n';
  if(new TextEncoder().encode(text).length>512*1024)throw Error('Export the storage-change review and begin a new setup session before the review exceeds 512 KiB.');
  return text;
+}
+
+// @requirements REQ-PRODUCT-SETUP-SESSION
+/** Read retained review facts for display/download only; never replay them as mutations. */
+export function readStorageDraftReview(input:unknown):StorageDraftReviewStep[] {
+ try{assertPlainCatalogData(input);}catch{return invalid();}
+ if(!Array.isArray(input)||input.length>128)return invalid();
+ for(const s of input){
+  if(!object(s)||!exact(s,['siteId','changes','affectedServiceIds','scopeChanges','technologyBindings','reviewItems'])||!slug(s.siteId)||!Array.isArray(s.changes)||s.changes.length>32||!Array.isArray(s.affectedServiceIds)||s.affectedServiceIds.length>64||!s.affectedServiceIds.every(slug)||!Array.isArray(s.scopeChanges)||s.scopeChanges.length>64||!Array.isArray(s.technologyBindings)||s.technologyBindings.length>64||!Array.isArray(s.reviewItems)||s.reviewItems.length>1024||!s.reviewItems.every(v=>text(v,4000)))return invalid();
+  for(const c of s.changes){if(!object(c)||!exact(c,['action','storageId'],['previous','item'])||!['add','update','remove'].includes(c.action as string)||!slug(c.storageId))return invalid();for(const key of ['previous','item'])if(c[key]!==undefined&&normalizeDraftStorage(c[key]).id!==c.storageId)return invalid();if(c.action==='add'&&(c.previous!==undefined||c.item===undefined)||c.action==='update'&&(c.previous===undefined||c.item===undefined)||c.action==='remove'&&(c.previous===undefined||c.item!==undefined))return invalid();}
+  for(const c of s.scopeChanges)if(!object(c)||!exact(c,['serviceId','previous','next'])||!slug(c.serviceId)||!scope(c.previous)||!scope(c.next))return invalid();
+  for(const c of s.technologyBindings){if(!object(c)||!exact(c,['serviceId','scope','settings'])||!slug(c.serviceId)||!scope(c.scope)||!object(c.settings))return invalid();if(normalizeTechnologyCollectionSettings(c.settings).serviceId!==c.serviceId)return invalid();}
+ }
+ const steps=structuredClone(input) as StorageDraftReviewStep[];serializeStorageDraftReview(steps);return steps;
 }
