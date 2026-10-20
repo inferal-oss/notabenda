@@ -14,6 +14,8 @@ Explore the [website and documentation](https://notabenda.org) or try the [examp
 
 Give your coding agent the [Notabenda integration skill](skills/notabenda/SKILL.md). It covers discovery, configuration, documents, controls and the optional backend. After local installation, `npx --no-install notabenda describe --json` gives agents a version-matched map of requested outcomes, config fields, facts still needed and host work. The [agent setup guide](docs/AGENT-SETUP.md) explains installation; [llms.txt](https://notabenda.org/llms.txt) links to Markdown documentation.
 
+For ambiguous requests, the map includes explicit scope questions. `describe --selection FILE --json` resolves supported decisions into targets and prerequisites while keeping unanswered questions visible. It does not edit configuration or enable features.
+
 ## Try it
 
 Repository tooling requires Node.js 22.22+ (including the Astro example) and Python 3.9+ for catalog checks. The core package itself supports Node.js 22+.

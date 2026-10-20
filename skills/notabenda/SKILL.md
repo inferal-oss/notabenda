@@ -19,6 +19,8 @@ npx --no-install notabenda describe cookie-consent terms-agreement --json
 
 Select the target IDs that match the actual request; omit IDs to list all. The read-only JSON supplies config paths, prerequisite targets, facts needed, setup question IDs, an unknown-answer template and checks. Its `hostWork` entries are application tasks, not JSON config fields. Read installed `SiteConfig` declarations for exact types. The map advises work; it does not enable it or decide applicability. If no package is installed, use [the current preview reference](https://notabenda.org/integration-reference.json).
 
+When the requested outcome is ambiguous, use the map's `selectionQuestions` and `selectionTemplate`. Record supported task decisions as `yes` or `no`; keep unanswered ones `unknown`. Resolve the private selection file with `describe --selection FILE --json`. An empty selection requests nothing. Ask only the distinctions that affect the current task; do not require the operator to complete all questions. Scope decisions are separate from wizard practice answers, applicability and review. Inspect prerequisite work against what the project already supplies before adding it.
+
 Identify its framework, build command, routes, existing legal documents, optional service loaders and authorization. Find the current Notabenda config before creating another. Preserve existing facts, restrictions, runtime settings, routes and review history. Propose targeted changes rather than replacing the inventory with a starter.
 
 Use the installed CLI's `--help` to confirm options. After local installation, these commands inspect explicit inputs and write a new private review directory:

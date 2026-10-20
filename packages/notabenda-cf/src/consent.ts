@@ -1,3 +1,5 @@
+// @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
+import {normalizeConsentInformation} from './consent-information.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {receiptGrantExpiresAt,isGrantExpiryPolicy,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
 import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
@@ -81,7 +83,8 @@ function options(storage:HistoryStorage,context:ConsentStoreOptions):{prefix:str
 }
 async function noticeValue(input:unknown,context:ConsentStoreOptions):Promise<ObjectValue> {
   const n = normalized(input,32768,'invalid-notice');
-  if (!exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy',...(n.schemaVersion===2?['localization']:[])]) || (n.schemaVersion!==1&&n.schemaVersion!==2) || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || n.siteId!==context.siteId || !slug(n.scopeId) || (typeof n.mode!=='string'||!['preview','production'].includes(n.mode))) return fail('invalid-notice');
+  if (!exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy',...(n.schemaVersion===2?['localization']:[]),...(n.information===undefined?[]:['information'])]) || (n.schemaVersion!==1&&n.schemaVersion!==2) || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || n.siteId!==context.siteId || !slug(n.scopeId) || (typeof n.mode!=='string'||!['preview','production'].includes(n.mode))) return fail('invalid-notice');
+  if(n.information!==undefined){try{n.information=normalizeConsentInformation(n.information) as unknown as JsonValue;}catch{return fail('invalid-notice');}}
   let localization:ConsentLocalization|undefined;
   if(n.schemaVersion===2){try{localization=normalizeConsentLocalization(n.localization,{allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   const scopes=object(n.scopes); const wording=object(n.wording); const policy=object(n.policy); const docs=object(n.documents);
@@ -108,6 +111,8 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
   if(config.localization!==undefined){try{const {documents:_,generatedDocuments:__,terms:___,...selected}=object(config.localization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   if(canonicalJson((localization??null) as unknown as JsonValue)!==canonicalJson(n.localization??null))return fail('invalid-notice');
   const policy=object(config.consent); const declared=object(n.policy);
+  let information;try{information=policy.information===undefined?undefined:normalizeConsentInformation(policy.information);}catch{return fail('invalid-notice');}
+  if(canonicalJson((information??null) as unknown as JsonValue)!==canonicalJson(n.information??null))return fail('invalid-notice');
   if (policy.grantLifetimeDays!==declared.grantLifetimeDays || policy.refusalLifetimeDays!==declared.refusalLifetimeDays || canonicalJson(policy.promptPolicy??null)!==canonicalJson(declared.promptPolicy??null) || !sameGrantExpiryPolicy(policy.grantExpiryPolicy,declared.grantExpiryPolicy) || !Array.isArray(policy.purposes) || !Array.isArray(policy.services) || !Array.isArray(config.purposes) || !Array.isArray(config.services)) return fail('invalid-notice');
   let guards;try{guards=config.scopeGuards===undefined?undefined:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>String(object(p).id)));}catch{return fail('invalid-notice');}
   const blocked:string[]=[];
@@ -254,7 +259,7 @@ export function createConsentEvidenceStore(storage:HistoryStorage,context:Consen
       const services=Array.isArray(parsed.services)?parsed.services.map(raw=>{const s=object(object(raw).service); return {name:typeof s.name==='string'?s.name:'Not recorded',provider:typeof s.provider==='string'?s.provider:'Not recorded'};}):[];
       return [id,{description:typeof p.description==='string'?p.description:'Not recorded',services,...(parsed.scopeGuard===undefined?{}:{scopeGuard:parsed.scopeGuard})}];
     }));
-    return normalizeRecord({id:String(e.id),data:{...e,notice:{mode:n.mode!,...(n.localization===undefined?{}:{localization:n.localization}),wording:n.wording!,documents:n.documents!,purposes,purposeDetails}}}).data;
+    return normalizeRecord({id:String(e.id),data:{...e,notice:{mode:n.mode!,...(n.information===undefined?{}:{information:n.information}),...(n.localization===undefined?{}:{localization:n.localization}),wording:n.wording!,documents:n.documents!,purposes,purposeDetails}}}).data;
   };
   const scoped:DurableStorage={
     async get<T>(key:string) { const v=await storage.get(key); return v===undefined?undefined:await inspect(v,key) as T; },

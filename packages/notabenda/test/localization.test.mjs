@@ -39,7 +39,7 @@ test('native and React legal documents share localized text, language, direction
   const html=renderLegalPage(c,kind),fragment=renderLegalDocument(c,kind),react=renderToStaticMarkup(createElement(LegalDocument,{config:c,kind}));
   assert.ok(react.includes(fragment));assert.match(html,/<html lang="pt-BR" dir="ltr">/u);assert.match(fragment,/lang="pt-BR" dir="ltr"/u);assert.match(html,/Ir para o conteúdo/u);assert.match(fragment,/Nesta página/u);assert.doesNotMatch(html,/Who is responsible|Declared storage|On this page|Skip to content|>Version |Effective <time/u);assert.doesNotMatch(html,/<img src=x/u);
  }
- const cookies=renderLegalPage(c,'cookies');assert.match(cookies,/2 itens/u);assert.match(cookies,/Armazenamento local/u);assert.match(cookies,/Necessário/u);assert.equal(new JSDOM(cookies).window.document.querySelector('.nb-storage-foldout').open,false);
+ const cookies=renderLegalPage(c,'cookies');assert.match(cookies,/3 itens/u);assert.match(cookies,/Armazenamento local/u);assert.match(cookies,/Necessário/u);assert.equal(new JSDOM(cookies).window.document.querySelector('.nb-storage-foldout').open,false);
  const rtl=structuredClone(c);rtl.site.locale=rtl.localization.locale='ar';rtl.localization.direction='rtl';assert.match(renderLegalPage(rtl,'terms'),/<html lang="ar" dir="rtl">/u);
  const build=compileLegalDocuments(c),notice=createConsentNotice(build.artifact,{scopeId:'privacy'});assert.equal(notice.schemaVersion,2);assert.equal(notice.localization.locale,'pt-BR');assert.equal(notice.localization.documents,undefined);assert.equal(compileConsentRuntimeConfig(c,{evidence:'local'}).inventory.localization.generatedDocuments,undefined);
  assert.throws(()=>createConsentNotice(build.artifact,{scopeId:'privacy',wording:{summary:'Override'}}),/localization/u);
@@ -48,8 +48,8 @@ test('native and React legal documents share localized text, language, direction
 
 for(const [profile,factory] of consentProfiles)test(`${profile}: copy revisions preserve grants, material revisions reopen grants and preserve refusals`,async()=>{
  const c=await config(),values=new Map();let consent=factory(c,env(values));consent.acceptAll();consent.destroy();
- const copy=structuredClone(c);copy.localization.revision='copy-2';copy.localization.consent.retryLabel='Tentar outra vez';consent=factory(copy,env(values));assert.equal(consent.isAllowed('suggestions'),true);consent.destroy();
- const material=structuredClone(copy);material.localization.disclosureRevision='disclosures-2';consent=factory(material,env(values));assert.equal(consent.isAllowed('suggestions'),false);consent.rejectAll();consent.destroy();material.localization.disclosureRevision='disclosures-3';consent=factory(material,env(values));assert.equal(consent.getSnapshot().purposes.suggestions,'withdrawn');consent.destroy();
+ const copy=structuredClone(c);copy.localization.revision+='-updated';copy.localization.consent.retryLabel='Tentar outra vez';consent=factory(copy,env(values));assert.equal(consent.isAllowed('suggestions'),true);consent.destroy();
+ const material=structuredClone(copy);material.localization.disclosureRevision+='-updated';consent=factory(material,env(values));assert.equal(consent.isAllowed('suggestions'),false);consent.rejectAll();consent.destroy();material.localization.disclosureRevision+='-again';consent=factory(material,env(values));assert.equal(consent.getSnapshot().purposes.suggestions,'withdrawn');consent.destroy();
 });
 
 test('all consent statuses and accessible names use the complete selected copy, including restrictions and background changes',async()=>{

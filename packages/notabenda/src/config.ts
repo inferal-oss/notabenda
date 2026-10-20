@@ -1,3 +1,5 @@
+// @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
+import {normalizeConsentInformation} from './consent-information.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 import {normalizeSiteLocalization} from './document-localization.js';
@@ -168,6 +170,7 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
     }
     for (const purpose of optionalPurposes) if (!list(config.services).map(record).some(service => optionalServices.has(String(service.id)) && list(service.purposeIds).includes(purpose))) error('consent.purposes', 'Every consent-managed purpose needs a declared consent-managed service.');
     for (const item of list(config.storage).map(record)) if (item.classification === 'optional' && !optionalServices.has(String(item.serviceId))) error('consent.services', 'Declare every optional-storage service in the runtime scope.');
+    if(consent.information!==undefined){try{normalizeConsentInformation(consent.information);}catch{error('consent.information','Supply bounded public rights/browser guidance with safe links.','invalid-consent-information',['REQ-BR-COOKIE-RIGHTS-LINK','REQ-BR-COOKIE-BROWSER-HELP','REQ-PRODUCT-CONFIG']);}}
     if(consent.grantExpiryPolicy!==undefined&&!isGrantExpiryPolicy(consent.grantExpiryPolicy))error('consent.grantExpiryPolicy','Select the explicit ie-dpc-six-month-default profile, version 1. Longer-period assessments cannot disable this cap.','invalid-grant-expiry-policy',['REQ-IE-CONSENT-DURATION','REQ-PRODUCT-CONFIG']);
     for (const key of ['grantLifetimeDays', 'refusalLifetimeDays']) if (!Number.isInteger(consent[key]) || Number(consent[key]) < 1 || Number(consent[key]) > 730) error(`consent.${key}`, 'Choose an explicit lifetime from 1 to 730 days; check applicable rules.');
     if (!Number.isInteger(consent.dismissalMinutes) || Number(consent.dismissalMinutes) < 0 || Number(consent.dismissalMinutes) > 43200) error('consent.dismissalMinutes', 'Choose a separate dismissal suppression from 0 to 43200 minutes. Dismissal grants nothing.');
@@ -283,6 +286,7 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
     terms: { audience: config.terms.audience, serviceType: config.terms.serviceType },
     ...(config.privacySignals===undefined?{}:{privacySignals:{globalPrivacyControl:{appliesTo:[...config.privacySignals.globalPrivacyControl.appliesTo],explanation:config.privacySignals.globalPrivacyControl.explanation}}}),
     ...(config.consent === undefined ? {} : { consent: {
+      ...(config.consent.information===undefined?{}:{information:normalizeConsentInformation(config.consent.information)}),
       purposes: config.consent.purposes.map(p => ({ id: p.id, scope: p.scope })),
       services: config.consent.services.map(s => ({ id: s.id, scope: s.scope })),
       ...(config.consent.grantExpiryPolicy?{grantExpiryPolicy:{profile:config.consent.grantExpiryPolicy.profile,version:config.consent.grantExpiryPolicy.version}}:{}),

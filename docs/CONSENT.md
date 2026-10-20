@@ -134,6 +134,31 @@ Use semantic CSS tokens such as `--nb-surface`, `--nb-page-bg`, `--nb-soft`, `--
 
 The renderer is initially English. The optional [React adapter](REACT.md) connects to the same controller. Full accessibility review, platform/screen-reader testing, regional rule packs, US sale/sharing/GPC handling, additional framework adapters and form permissions remain separate work. [Terms agreement](TERMS.md) has its own controller and acknowledged record path, independent of these cookie controls. Do not describe this preview as a complete compliance solution.
 
+## Rights links and browser guidance
+
+You can supply public information alongside the controls:
+
+```js
+config.consent.information = {
+  rights: {label: 'Your privacy rights', url: '/privacy/requests'},
+  browserControls: {
+    title: 'Browser storage settings',
+    description: 'Use the links below for browser settings. Blocking third-party cookies does not prevent every request or storage mechanism. Use these purpose controls to stop the registered optional features.',
+    links: [{label: 'Chrome cookie settings', url: 'https://support.google.com/chrome/answer/95647'}],
+  },
+};
+```
+
+Use your actual rights route and reviewed wording. Either field can be supplied independently. The rights link appears on the initial notice and in preferences. Browser guidance is a native foldout, collapsed initially, below the purpose choices. Opening it grants nothing. Captions and descriptions are plain text; links allow HTTPS, a single-leading-slash local route or a valid `mailto:` destination. Unknown/private fields, unsafe links, control characters and oversized values reject. The whole information object is limited to 4 KiB of UTF-8 JSON, with up to four help links and a 2,000-character description.
+
+Keep guidance relevant to your supported browsers and actual storage/trackers, including anything their settings cannot disable. The toolkit neither detects a browser nor fetches help pages. A rights link does not implement request intake or fulfillment. These hooks are reusable; declaring Brazil or selecting Portuguese does not populate them automatically. Setup advises review of the fields when Brazil is selected.
+
+The public projection, compiled browser descriptor and immutable consent notice retain the selected information. Frontend evidence initialization and the standalone Cloudflare backend require it to match the released config. Stored-choice inspection shows the retained copy and destinations. The archive records captions and URLs, rather than the contents of external pages or proof they were opened.
+
+Information edits change the release and notice IDs. They do not alone change a purpose's material scope. If the underlying processing or disclosure meaning changes, revise the appropriate purpose/service scope or localization disclosure revision deliberately. Keep previous artifacts needed by existing records.
+
+See the [Portuguese example](/localization/), `REQ-BR-COOKIE-RIGHTS-LINK`, `REQ-BR-COOKIE-BROWSER-HELP` and the [regional verification report](verification/regional-consent.md).
+
 ## Traceability and reuse
 
 The runtime connects to `REQ-EU-CONSENT`, `REQ-EU-DEVICE`, and `REQ-EU-FAIR-CHOICE`; controls connect to `REQ-ES-CHOICE`, `REQ-PRODUCT-MOBILE`, and `REQ-PRODUCT-A11Y`. Those legal/UI items remain partial, with their limitations in the catalog. See [browser verification](verification/consent-browser.md).

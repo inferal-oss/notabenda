@@ -28,6 +28,12 @@ test('package contains the versioned skill and its commands work after offline l
   const commands=skill.split('\n').filter(line=>line.startsWith('npx --no-install notabenda '));
   run(cwd,process.execPath,[cli,'init']);
   const original=await readFile(join(cwd,'notabenda.config.json'),'utf8');
+  const reference=await readFile(join(cwd,'node_modules/notabenda/dist/skill/references/configuration-target.md'),'utf8');
+  const selectionCommand=reference.split('\n').find(line=>line.startsWith('npx --no-install notabenda describe --selection '));assert.ok(selectionCommand);
+  await writeFile(join(cwd,'integration-selection.json'),JSON.stringify({schemaVersion:1,answers:{'explicit-agreement':'yes'}}));
+  const selected=JSON.parse(run(cwd,'npx',selectionCommand.split(' ').slice(1)));
+  assert.deepEqual(selected.requestedTargetIds,['terms-agreement']);assert.deepEqual(selected.prerequisiteTargetIds,['legal-pages']);assert.equal(selected.productionReady,false);
+  assert.ok(selected.unresolvedQuestionIds.includes('stored-evidence'));assert.equal(selected.reference.targets.some(t=>t.id==='evidence'),false);
   await writeFile(join(cwd,'backend.mjs'),"import {createClient} from '@supabase/supabase-js';\nthrow Error('Discovery must not execute this module');\n");
   for(const command of commands){
    const args=command.split(' ').slice(3);

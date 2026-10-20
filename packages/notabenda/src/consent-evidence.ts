@@ -76,6 +76,8 @@ function requestValue(value:unknown):ConsentChoiceRequest {
 export function createEvidenceSession(config:ConsentRuntimeInventory,options:ConsentEvidenceOptions,env:EvidenceEnvironment,changed:()=>void) {
   const notice=normalizeConsentNotice(options.notice,{allowPreview:options.allowPreview===true});
   const scopes=consentScopes(config); const timeout=options.timeoutMs??10000;
+  // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
+  if(JSON.stringify(notice.information??null)!==JSON.stringify(config.consent?.information??null))throw Error('Evidence information must match the selected release.');
   const selectedLocalization=config.localization?selectConsentLocalization(config.localization):undefined;
   if(JSON.stringify(notice.localization)!==JSON.stringify(selectedLocalization)||config.localization&&!same({...notice.wording},{...defaultConsentWording(config)}))throw new Error('Evidence localization must match the selected release.');
   if(notice.siteId!==config.site.id||!same(notice.scopes,scopes)||!samePromptPolicy(notice.policy.promptPolicy,config.consent!.promptPolicy)||!sameGrantExpiryPolicy(notice.policy.grantExpiryPolicy,config.consent!.grantExpiryPolicy)||notice.policy.grantLifetimeDays!==config.consent!.grantLifetimeDays||notice.policy.refusalLifetimeDays!==config.consent!.refusalLifetimeDays||!hash(options.streamRef)||typeof options.read!=='function'||typeof options.write!=='function'||!Number.isInteger(timeout)||timeout<1000||timeout>30000) throw new Error('Evidence must match this site, material scope, prompt policy, grant expiry policy, lifetimes and a host-authorized stream.');

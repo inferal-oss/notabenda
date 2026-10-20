@@ -1,3 +1,6 @@
+// @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
+import {normalizeConsentInformation} from './consent-information.js';
+import type {ConsentInformation} from './consent-information.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
@@ -58,7 +61,7 @@ export interface ConsentNoticeDocument {
  */
 export interface ConsentNotice {
   schemaVersion:1|2; localization?:ConsentLocalization; noticeId:string; siteId:string; scopeId:string; artifactId:string; mode:'preview'|'production';
-  scopeDigest:string; scopes:Record<string,string>; wording:ConsentWording;
+  scopeDigest:string; scopes:Record<string,string>; wording:ConsentWording; information?:ConsentInformation;
   documents:{privacy:ConsentNoticeDocument; cookies:ConsentNoticeDocument};
   policy:{grantLifetimeDays:number; refusalLifetimeDays:number; deliveryWindowSeconds:number;grantExpiryPolicy?:GrantExpiryPolicy;promptPolicy?:PromptPolicy};
 }
@@ -73,7 +76,8 @@ export function normalizeConsentNotice(input:unknown, options:{allowPreview?:boo
   let n:unknown;
   try { const serialized = JSON.stringify(input); if (new TextEncoder().encode(serialized).length > 32768) throw new Error(); n = JSON.parse(serialized); } catch { throw new Error('Invalid or oversized consent notice.'); }
   const invalid = () => { throw new Error('Invalid consent notice.'); };
-  if (!object(n) || !exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy',...(n.schemaVersion===2?['localization']:[])]) || (n.schemaVersion!==1&&n.schemaVersion!==2) || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || !slug(n.siteId) || !slug(n.scopeId) || typeof n.mode !== 'string' || !['preview','production'].includes(n.mode)) return invalid();
+  if (!object(n) || !exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','scopeDigest','scopes','wording','documents','policy',...(n.schemaVersion===2?['localization']:[]),...(n.information===undefined?[]:['information'])]) || (n.schemaVersion!==1&&n.schemaVersion!==2) || !hash(n.noticeId) || !hash(n.artifactId) || !hash(n.scopeDigest) || !slug(n.siteId) || !slug(n.scopeId) || typeof n.mode !== 'string' || !['preview','production'].includes(n.mode)) return invalid();
+  if(n.information!==undefined)n.information=normalizeConsentInformation(n.information) as unknown as Record<string,unknown>;
   if(n.schemaVersion===2)n.localization=normalizeConsentLocalization(n.localization,{allowPreview:options.allowPreview===true});
   if (!object(n.scopes) || Object.keys(n.scopes).length < 1 || Object.keys(n.scopes).length > 40 || Object.entries(n.scopes).some(([id,value])=>!slug(id) || !text(value,30000))) return invalid();
   const wordingKeys = ['title','summary','preferencesTitle','preferencesIntro','essentialNote','acceptLabel','rejectLabel','saveLabel','preferencesLabel','dismissLabel','closeLabel'];

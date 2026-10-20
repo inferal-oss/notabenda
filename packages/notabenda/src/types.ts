@@ -1,4 +1,6 @@
 import type {SiteLocalization} from './document-localization.js';
+import type {ConsentInformation} from './consent-information.js';
+export type {ConsentInformation,ConsentInformationLink} from './consent-information.js';
 import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 export type {GrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-UK-EXCEPTIONS
@@ -97,6 +99,9 @@ export interface PromptPolicy {
 
 /** Explicit opt-in runtime scope. Lifetimes remain separate from solicitation rules. */
 export interface ConsentConfig {
+  /** @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
+   * Optional public rights entry and browser-control guidance, archived with the notice. */
+  information?:ConsentInformation;
   purposes: { id: string; scope: string }[];
   services: { id: string; scope: string }[];
   grantLifetimeDays: number;

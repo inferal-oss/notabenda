@@ -30,6 +30,14 @@ Choose targets for the requested behavior: static legal pages, authored document
 
 Use [the machine-readable website reference](/integration-reference.json) if a local package is unavailable. The same reference is exposed as `describeIntegration(targetIds)` from `notabenda/integration`; the CLI additionally identifies its package version. This is a task map, not a complete JSON Schema or legal classifier. Read installed `SiteConfig` types for exact value shapes. `hostWork` is application work, rather than a config property.
 
+For an ambiguous request, use the reference's `selectionQuestions` to clarify the distinctions that matter. Its `selectionTemplate` accepts explicit `yes`, `no` and `unknown` task decisions. Save a private selection file and run:
+
+```sh
+npx --no-install notabenda describe --selection ./integration-selection.json --json
+```
+
+The result identifies requested targets, supporting work and unanswered questions; the API equivalent is `selectIntegration(input)`. All unanswered or declined selects nothing. Check prerequisites against existing documents and configuration before adding work. The selection file describes task scope and is separate from wizard practice answers. A fully recorded scope still requires actual facts, implementation and review; it does not establish production readiness.
+
 The [configuration-target reference](/skills/notabenda/references/configuration-target.md) explains how to turn the user's request and project evidence into a brief, collect only material missing facts, prepare explicit answers and compare a wizard draft with the existing configuration. A policy page, runtime control and durable receipt remain separate choices. An agent should preserve unrelated settings and report the actual host work still needed.
 
 ## Documentation without the page layout

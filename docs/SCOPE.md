@@ -25,7 +25,11 @@ Updated 19 October 2026. This records accepted product decisions; implementation
 
 Ship a reusable integration skill with the package and website, plus a concise `llms.txt` linking to Markdown versions of the maintained guides. Provide a read-only installed `describe` command and matching API/public JSON reference. Connect requested outcomes to prerequisites, real config paths, separate host work, facts needed, current wizard question IDs, unknown-answer templates and acceptance scenarios. Verify advertised paths against actual `SiteConfig` types. Keep CLI/API examples aligned with the installed version, preserve existing site settings and retained releases, and leave material facts and legal review explicit. Discovery findings and private reports remain separate from public output; host authorization, deployment and optional CI remain adopter decisions. See [agent setup](AGENT-SETUP.md).
 
+Resolve ambiguous task scope with explicit yes/no/unknown decisions through `describe --selection FILE` or `selectIntegration(input)`. Keep scope separate from practice answers, regulatory applicability and review. No answer selects nothing; supporting work is checked against existing configuration rather than silently added as requested scope. The selector changes no files or runtime permissions.
+
 ## Guided setup
+
+Optional `consent.information` supplies a public rights entry and collapsed browser-control guidance. Keep the selected text/destinations bound to config, runtime and immutable notice, reject archive mismatches, and expose the retained copy in authorized evidence inspection. ANPD-linked technical scenarios exercise the Portuguese two-purpose flow; actual rights handling, browser coverage, legal basis and content/translation review remain host decisions. No country or locale enables the fields. See [consent information](CONSENT.md#rights-links-and-browser-guidance).
 
 - Provide `npx notabenda wizard` and a matching host-authorized admin setup UI. Ask about intended coverage, actual practices and justifications; distinguish confirmed facts, unknowns and review decisions.
 - Reuse one versioned questionnaire and recommendation engine across CLI and admin. Explain each recommendation with linked catalog requirements and remaining implementation/review limits.

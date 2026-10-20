@@ -1,3 +1,4 @@
+// @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 // @requirements REQ-IE-CONSENT-DURATION
 import {selectTermsLocalization} from './terms-localization-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
@@ -65,7 +66,7 @@ export function createConsentNotice(artifact: LegalArtifact, settings:{scopeId:s
     return [kind,{title,version,effectiveDate,sha256,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/${kind}.html`}];
   }));
   if(config.localization&&settings.wording!==undefined)throw new Error('Revise localization.consent to change versioned notice wording. Localized releases do not accept wording overrides.');
-  const notice = normalizeConsentNotice({schemaVersion:config.localization?2:1,...(config.localization?{localization:consentLocalization(config.localization)}:{}),noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,scopes,scopeDigest:sha256(canonicalJson(scopes)),wording:applyPromptPolicyWording(config,{...defaultConsentWording(config),...settings.wording}),documents,policy:{grantLifetimeDays:config.consent.grantLifetimeDays,refusalLifetimeDays:config.consent.refusalLifetimeDays,deliveryWindowSeconds:settings.deliveryWindowSeconds ?? 300,...(config.consent.grantExpiryPolicy?{grantExpiryPolicy:config.consent.grantExpiryPolicy}:{}),...(config.consent.promptPolicy?{promptPolicy:config.consent.promptPolicy}:{})}}, {allowPreview:options.mode === 'preview'});
+  const notice = normalizeConsentNotice({schemaVersion:config.localization?2:1,...(config.localization?{localization:consentLocalization(config.localization)}:{}),...(config.consent.information===undefined?{}:{information:config.consent.information}),noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,scopes,scopeDigest:sha256(canonicalJson(scopes)),wording:applyPromptPolicyWording(config,{...defaultConsentWording(config),...settings.wording}),documents,policy:{grantLifetimeDays:config.consent.grantLifetimeDays,refusalLifetimeDays:config.consent.refusalLifetimeDays,deliveryWindowSeconds:settings.deliveryWindowSeconds ?? 300,...(config.consent.grantExpiryPolicy?{grantExpiryPolicy:config.consent.grantExpiryPolicy}:{}),...(config.consent.promptPolicy?{promptPolicy:config.consent.promptPolicy}:{})}}, {allowPreview:options.mode === 'preview'});
   const {noticeId:_,...descriptor} = notice;
   return {...notice,noticeId:sha256(canonicalJson(descriptor))};
 }

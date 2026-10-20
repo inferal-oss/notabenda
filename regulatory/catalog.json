@@ -170,7 +170,8 @@
         "Compact nonmodal bottom notice by default on mobile; clear permission request with balanced accept/reject/customize actions.",
         "Preferences expand on deliberate tap into a bottom drawer; desktop may use a corner notice and side drawer. No automatic fullscreen dialog or initial page-blocking backdrop.",
         "Accessible native markup, optional CSS, semantic theme tokens, light/dark and unstyled variants; optional drag gestures always have visible tap and keyboard equivalents.",
-        "Safe-area spacing, thumb-friendly controls, persistent reopening, focus restoration, and readable choices across small screens, zoom, large text, RTL, and the on-screen keyboard."
+        "Safe-area spacing, thumb-friendly controls, persistent reopening, focus restoration, and readable choices across small screens, zoom, large text, RTL, and the on-screen keyboard.",
+        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -187,7 +188,8 @@
         "packages/notabenda/src/storage-exception-controls.ts",
         "packages/notabenda/src/storage-exceptions.css",
         "packages/notabenda/src/service-runner.ts",
-        "packages/notabenda/src/storage-cleanup.ts"
+        "packages/notabenda/src/storage-cleanup.ts",
+        "packages/notabenda/src/consent-information.ts"
       ]
     },
     {
@@ -231,7 +233,8 @@
         "Purpose-level persisted choices, scope compatibility, expiry, and cross-tab updates.",
         "Separate prompt suppression, grant expiry, evidence retention, and document versions.",
         "Never convert dismissal, malformed state, missing storage, or stale scope into permission.",
-        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open."
+        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
+        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -246,7 +249,8 @@
         "examples/repeat-prompts/client.mjs",
         "packages/notabenda/src/consent-engine.ts",
         "docs/verification/regional-consent.md",
-        "packages/notabenda/src/grant-expiry-policy.ts"
+        "packages/notabenda/src/grant-expiry-policy.ts",
+        "packages/notabenda/src/consent-information.ts"
       ]
     },
     {
@@ -319,7 +323,8 @@
         "Explain effective behavior using requirement IDs, sources, and active pack versions.",
         "Conditional exemptions and purpose-specific restrictions; no inference of applicability from IP geography alone.",
         "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review.",
-        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open."
+        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
+        "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -339,7 +344,9 @@
         "packages/notabenda/src/storage-cleanup.ts",
         "packages/notabenda/src/consent-engine.ts",
         "docs/verification/regional-consent.md",
-        "packages/notabenda/src/grant-expiry-policy.ts"
+        "packages/notabenda/src/grant-expiry-policy.ts",
+        "packages/notabenda/src/consent-information.ts",
+        "packages/notabenda/src/controls.ts"
       ]
     },
     {
@@ -791,9 +798,9 @@
       "title": "ANPD: final cookies and personal-data guide",
       "url": "https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes/guia-orientativo-cookies-e-protecao-de-dados-pessoais.pdf/@@display-file/file",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-19",
       "access": "read",
-      "note": "Final October 2022 guide linked from the current ANPD landing page; do not use the separate 290-page administrative process containing drafts."
+      "note": "Final guide version 1.0, October 2022, retrieved again for printed pages 30\u201333 (PDF indexes 29\u201332). Publication date is distinct from this access date. Do not use the separate administrative-process bundle containing drafts."
     },
     {
       "id": "SRC-CA-OPC",
@@ -1667,6 +1674,33 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Voluntary documentation convention, not a regulatory obligation. Read format, proposal and alternate/describedby link guidance; no indexing, crawler adoption or legal-compliance guarantee."
+    },
+    {
+      "id": "SRC-IUB-BR-COOKIE-GUIDE",
+      "title": "iubenda: Brazil cookie recommendations",
+      "url": "https://www.iubenda.com/en/help/104366-brazil-new-cookie-requirements/",
+      "kind": "secondary-explainer",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Discovery aid linking ANPD\u2019s final guide. Its mandatory wording is not substituted for the regulator\u2019s recommendation status or a purpose-specific LGPD legal-basis assessment."
+    },
+    {
+      "id": "SRC-CHROME-COOKIE-HELP-PT",
+      "title": "Google Chrome: manage cookies (Portuguese)",
+      "url": "https://support.google.com/chrome/answer/95647?hl=pt-BR",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Official help destination used in the host-authored example. Third-party-cookie blocking is not a claim to block all local/session storage or requests."
+    },
+    {
+      "id": "SRC-FIREFOX-SITE-DATA-HELP-PT",
+      "title": "Mozilla Firefox: block site cookies and data (Portuguese)",
+      "url": "https://support.mozilla.org/pt-BR/kb/impeca-que-sites-armazenem-cookies-e-dados-no-fire",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Official help destination used in the host-authored example; live instructions can change independently of archived link text and URLs."
     }
   ],
   "jurisdictions": [
@@ -1754,7 +1788,9 @@
       "coverage": "Selected frontend, document, and integration obligations only; no production-supported pack.",
       "requirementIds": [
         "REQ-BR-COOKIE-UI",
-        "REQ-BR-CONTRACT"
+        "REQ-BR-CONTRACT",
+        "REQ-BR-COOKIE-RIGHTS-LINK",
+        "REQ-BR-COOKIE-BROWSER-HELP"
       ]
     },
     {
@@ -2457,11 +2493,12 @@
       "sourceRefs": [
         {
           "sourceId": "SRC-BR-ANPD",
-          "locator": "Section 4: cookie banners and examples"
+          "locator": "Printed pp. 30\u201333 (PDF indexes 29\u201332): first/second-layer rejection, purpose categories, consent-based choices off by default, and patterns to avoid."
         }
       ],
       "discoverySourceIds": [
-        "SRC-IUB-BR"
+        "SRC-IUB-BR",
+        "SRC-IUB-BR-COOKIE-GUIDE"
       ],
       "featureIds": [
         "FEAT-CONTROLS",
@@ -2473,12 +2510,21 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
       "caveats": "These are regulator recommendations; LGPD legal bases require purpose-specific analysis, not a claim that consent is mandatory for all cookies.",
-      "implementationRefs": [],
-      "testRefs": []
+      "implementationRefs": [
+        "packages/notabenda/src/controls.ts",
+        "examples/localization/config.mjs",
+        "examples/localization/build.mjs",
+        "examples/localization/client.mjs"
+      ],
+      "testRefs": [
+        "site/test/br-cookie-ui.test.mjs",
+        "docs/verification/regional-consent.md"
+      ],
+      "implementationNote": "Portuguese two-purpose example exercises initial off state, direct rejection on both layers, unsaved drafts, independent service grants, reload, withdrawal, exact optional-marker cleanup and blocked preference storage. This verifies technical mechanics with host-supplied draft wording; actual inventory, applicability and legal/translation review remain open."
     },
     {
       "id": "REQ-CA-MEANINGFUL",
@@ -6008,7 +6054,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Agent integration skill and public Markdown documentation",
       "kind": "product-standard",
-      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios.",
+      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features.",
       "appliesWhen": "An agent helps an adopter configure, update or validate a Notabenda integration.",
       "sourceRefs": [
         {
@@ -6053,7 +6099,113 @@
         "site/test/host.test.mjs",
         "packages/notabenda/test/integration-reference.test.mjs"
       ],
-      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled."
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness."
+    },
+    {
+      "id": "REQ-BR-COOKIE-RIGHTS-LINK",
+      "jurisdiction": "BR",
+      "title": "Accessible rights entry in the first cookie layer",
+      "kind": "regulator-recommendation",
+      "summary": "Expose a clear host-supplied rights link in the initial notice and detailed preferences.",
+      "appliesWhen": "The operator applies ANPD\u2019s cookie-banner recommendations after assessing the actual processing context.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-BR-ANPD",
+          "locator": "Printed p. 31 (PDF index 30), first-layer rights link."
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-IUB-BR-COOKIE-GUIDE"
+      ],
+      "featureIds": [
+        "FEAT-CONTROLS",
+        "FEAT-REGIONS",
+        "FEAT-CHOICES"
+      ],
+      "verificationIds": [
+        "VERIFY-BR-COOKIE-RIGHTS-LINK"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": "Guide version 1.0 was published in October 2022; this is guidance, not a newly established statutory commencement date.",
+      "caveats": "Optional technical mechanism, not a reviewed Brazilian compliance pack. The host supplies truthful wording, actual rights handling and relevant browser/platform coverage. Link snapshots preserve captions/URLs, not remote page contents or proof of a visit. No locale/jurisdiction inference or legal-basis selection.",
+      "implementationRefs": [
+        "packages/notabenda/src/consent-information.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-notice.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/consent-evidence.ts",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda-cf/src/consent-information.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "packages/notabenda-cf/src/render.ts",
+        "examples/localization/config.mjs",
+        "examples/localization/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/consent-information.test.mjs",
+        "site/test/br-cookie-ui.test.mjs",
+        "docs/verification/regional-consent.md"
+      ],
+      "implementationNote": "Bounded consent.information is projected to the browser and immutable notice, verified against the released config by the frontend and standalone CF backend, and shown with stored choice details. Setup advises these fields without activating them. Browser guidance uses a collapsed native disclosure; links never grant permission."
+    },
+    {
+      "id": "REQ-BR-COOKIE-BROWSER-HELP",
+      "jurisdiction": "BR",
+      "title": "Browser-control guidance in cookie preferences",
+      "kind": "regulator-recommendation",
+      "summary": "Offer host-supplied browser-control instructions and links, including limitations for the actual trackers.",
+      "appliesWhen": "The operator applies ANPD\u2019s cookie-banner recommendations after assessing the actual processing context.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-BR-ANPD",
+          "locator": "Printed p. 32 (PDF index 31), browser-control information and limitations."
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-IUB-BR-COOKIE-GUIDE"
+      ],
+      "featureIds": [
+        "FEAT-CONTROLS",
+        "FEAT-REGIONS",
+        "FEAT-CHOICES"
+      ],
+      "verificationIds": [
+        "VERIFY-BR-COOKIE-BROWSER-HELP"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": "Guide version 1.0 was published in October 2022; this is guidance, not a newly established statutory commencement date.",
+      "caveats": "Optional technical mechanism, not a reviewed Brazilian compliance pack. The host supplies truthful wording, actual rights handling and relevant browser/platform coverage. Link snapshots preserve captions/URLs, not remote page contents or proof of a visit. No locale/jurisdiction inference or legal-basis selection.",
+      "implementationRefs": [
+        "packages/notabenda/src/consent-information.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/consent-runtime-config.ts",
+        "packages/notabenda/src/consent-notice.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/consent-evidence.ts",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda-cf/src/consent-information.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "packages/notabenda-cf/src/render.ts",
+        "examples/localization/config.mjs",
+        "examples/localization/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/consent-information.test.mjs",
+        "site/test/br-cookie-ui.test.mjs",
+        "docs/verification/regional-consent.md"
+      ],
+      "implementationNote": "Bounded consent.information is projected to the browser and immutable notice, verified against the released config by the frontend and standalone CF backend, and shown with stored choice details. Setup advises these fields without activating them. Browser guidance uses a collapsed native disclosure; links never grant permission."
     }
   ],
   "verification": [
@@ -6199,9 +6351,12 @@
       "requirementIds": [
         "REQ-BR-COOKIE-UI"
       ],
-      "status": "planned",
-      "expected": "The Portuguese-language fixture exposes rejection and granular settings with optional choices initially off.",
-      "testRefs": []
+      "status": "automated",
+      "expected": "The actual bundled Portuguese client starts with both optional purposes off, rejects on both layers, applies granular grants independently, restores valid choices on reload and removes its exact session marker on withdrawal. Unsaved settings and preference-storage failure grant nothing.",
+      "testRefs": [
+        "site/test/br-cookie-ui.test.mjs",
+        "docs/verification/regional-consent.md"
+      ]
     },
     {
       "id": "VERIFY-CA-MEANINGFUL",
@@ -7230,13 +7385,39 @@
         "REQ-PRODUCT-AGENT-INTEGRATION"
       ],
       "status": "automated",
-      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files.",
+      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness.",
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",
         "docs/verification/agent-integration.md",
         "site/test/host.test.mjs",
         "packages/notabenda/test/integration-reference.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-BR-COOKIE-RIGHTS-LINK",
+      "requirementIds": [
+        "REQ-BR-COOKIE-RIGHTS-LINK"
+      ],
+      "status": "automated",
+      "expected": "A configured rights entry is reachable on both layers and configured browser guidance starts collapsed. Safe text/links survive config, compiled runtime, notice and backend inspection; invalid shapes/URLs and rehashed archive mismatches reject. Opening help or drafting settings never grants a purpose.",
+      "testRefs": [
+        "packages/notabenda/test/consent-information.test.mjs",
+        "site/test/br-cookie-ui.test.mjs",
+        "docs/verification/regional-consent.md"
+      ]
+    },
+    {
+      "id": "VERIFY-BR-COOKIE-BROWSER-HELP",
+      "requirementIds": [
+        "REQ-BR-COOKIE-BROWSER-HELP"
+      ],
+      "status": "automated",
+      "expected": "A configured rights entry is reachable on both layers and configured browser guidance starts collapsed. Safe text/links survive config, compiled runtime, notice and backend inspection; invalid shapes/URLs and rehashed archive mismatches reject. Opening help or drafting settings never grants a purpose.",
+      "testRefs": [
+        "packages/notabenda/test/consent-information.test.mjs",
+        "site/test/br-cookie-ui.test.mjs",
+        "docs/verification/regional-consent.md"
       ]
     }
   ],

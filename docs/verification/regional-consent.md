@@ -38,6 +38,16 @@ The local Chromium timing lab was also exercised in light and dark themes and at
 
 These tests exercise synthetic service lifecycles and in-memory transactional stores. They do not establish real vendor shutdown, durable browser writes during failure, physical-device timing or legal qualification. A justified-extension workflow and a complete reviewed Irish profile remain open; `VERIFY-IE-CONSENT-DURATION` stays partial.
 
+## Brazil: cookie choices and information
+
+The [ANPD guide, version 1.0, October 2022](https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes/guia-orientativo-cookies-e-protecao-de-dados-pessoais.pdf/@@display-file/file), printed pp. 30–33, recommends visible rejection on both layers, purpose-specific choices off initially, a rights entry and browser-control information. These are guidance items; they do not select a legal basis for every cookie. The [vendor article](https://www.iubenda.com/en/help/104366-brazil-new-cookie-requirements/) was used for discovery, with the final regulator document as the substantive source.
+
+The actual bundled [Portuguese client](/localization/) has two independent optional services: a local reading suggestion and a session reading counter. Tests execute that bundle with its compiled descriptor, checking initial state, direct rejection on both layers, unsaved drafts, individual grants, reload, withdrawal, exact session-marker removal and failed preference persistence. The rights destination resolves to the example policy's rights section; browser guidance starts collapsed and opening it changes no choice. Help links use official Chrome and Firefox documentation; the example explains limits for its local/session storage.
+
+[consent-information.test.mjs](../../packages/notabenda/test/consent-information.test.mjs) checks both controller profiles, public/runtime/notice parity, unsafe/malformed/private/oversized input, independent scope identity and refusal of mismatched evidence copy. The standalone CF test rejects rehashed forgeries against the archive, stores a real choice and inspects its retained information through the authorized admin. Setup recommends the fields while preserving imported facts and leaving activation to the host.
+
+[br-cookie-ui.test.mjs](../../site/test/br-cookie-ui.test.mjs) runs the bundled client against DOM/storage fixtures. Chromium inspection supplements those assertions with desktop/mobile layout and native disclosure behavior. These tests do not establish actual rights fulfillment, browser-wide blocking, remote help-page contents, legally reviewed Portuguese wording or a complete Brazilian pack. The supplied example remains a draft. The earlier public Portuguese artifacts are explicit retained build inputs.
+
 ## What the checks establish
 
 The probes observe registered callback starts, synthetic markers, abort/cleanup and effective permissions. They use no real vendor and are not browser network-interception tests. They do not establish the legality of a claimed exception, the adequacy of supplied disclosures, actual vendor teardown, processing outside the controller, a translation or a complete country pack. The cited primary sources were retrieved on 19 October 2026. The linked Irish statute was not retrieved in this pass, so a current statutory-consolidation check and legal review remain open.
@@ -48,4 +58,7 @@ Run the scenarios after building:
 npm run build
 node --test packages/notabenda/test/regional-consent.test.mjs \
   packages/notabenda/test/grant-expiry.test.mjs
+node --test packages/notabenda/test/consent-information.test.mjs
+node site/build.mjs
+node --test site/test/br-cookie-ui.test.mjs
 ```

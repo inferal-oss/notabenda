@@ -15,6 +15,32 @@ npx --no-install notabenda describe cookie-consent terms-agreement --json
 
 Config paths describe fields in `SiteConfig`, exported from `notabenda`. A path through an array describes its item field. `hostWork` and `hostWorkRefs` are application tasks, **not fields to insert into the config**. The CLI does not accept arbitrary `host` settings. Markdown/MDX uses the separate authoring API. Confirm exact field types and supported values against the installed declarations; the map is an integration reference, not a complete JSON Schema or legal applicability engine.
 
+## Resolve ambiguous outcomes explicitly
+
+The map's `selectionQuestions` distinguish task scope from the wizard's questions about processing practices. Start from its `selectionTemplate`, then fill only decisions supported by the request or confirmed with the operator. Missing answers remain `unknown`. For example, a request for explicit terms acceptance supports `explicit-agreement: yes`; it does not establish a need for cookie controls, translated content or a new backend.
+
+```json
+{
+  "schemaVersion": 1,
+  "answers": {
+    "explicit-agreement": "yes",
+    "stored-evidence": "unknown"
+  }
+}
+```
+
+Save this as a private `integration-selection.json`, then resolve it:
+
+```sh
+npx --no-install notabenda describe --selection ./integration-selection.json --json
+```
+
+This reads only the named bounded ordinary JSON file and installed package metadata. It does not inspect configuration or execute project code. The optional API is `selectIntegration(input)` from `notabenda/integration`. Both return requested targets, prerequisites, outstanding question IDs and the selected integration reference. All unknown or all declined produces an empty target list; the ordinary `describe` command without inputs instead lists the complete reference.
+
+`scope-incomplete` means some task decisions remain open, not that independent work must stop. A `no` decision means no new work was requested in that area; a selected feature may still need supporting configuration already present in the project. `prerequisiteReview` highlights this distinction. `scope-recorded` means every scope question was answered; it never means production readiness. Neither result proves processing facts, legal applicability or review. Unknown unrelated features can stay outside the current task.
+
+Keep this file separate from `wizard --answers`: scope decisions choose the work, while wizard answers describe practices and justifications. Neither automatically edits the site's configuration. Do not translate a requested control into a claim that its processing exists or that consent is its legal basis.
+
 ## Write a short integration brief
 
 Record the following before editing, using existing project evidence wherever available:

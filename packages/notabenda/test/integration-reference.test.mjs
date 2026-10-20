@@ -6,10 +6,61 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {describeIntegration} from 'notabenda/integration';
+import {describeIntegration,selectIntegration} from 'notabenda/integration';
 import {setupQuestions,createSetupPlan} from 'notabenda/setup';
 import {fixture} from './helpers.mjs';
 const cli=fileURLToPath(new URL('../dist/cli.js',import.meta.url));
+
+test('explicit task decisions select only requested outcomes and their supporting work',()=>{
+ const cases=[
+  [{documents:'yes'},['legal-pages'],[]],
+  [{'explicit-agreement':'yes'},['terms-agreement'],['legal-pages']],
+  [{'optional-service-control':'yes'},['cookie-consent'],['legal-pages']],
+  [{'optional-service-control':'yes','stored-evidence':'yes'},['cookie-consent','evidence'],['legal-pages']],
+  [{'remote-media':'yes'},['embeds'],['legal-pages','cookie-consent']],
+  [{'translated-copy':'yes'},['localization'],['legal-pages']],
+  [{'service-investigation':'yes'},['discovery'],[]]
+ ];
+ for(const [answers,requested,prerequisites] of cases){
+  const result=selectIntegration({schemaVersion:1,answers});assert.deepEqual(result.requestedTargetIds,requested);assert.deepEqual(result.prerequisiteTargetIds,prerequisites);
+  assert.deepEqual(result.reference.requestedTargetIds,requested);assert.equal(result.productionReady,false);assert.equal(result.status,'scope-incomplete');
+  assert.equal(result.reference.targets.some(t=>t.id==='evidence'),requested.includes('evidence'));
+  assert.equal(result.reference.targets.some(t=>t.id==='regional-consent'),false,'language does not select regional timing');
+ }
+ const blank=selectIntegration(describeIntegration().selectionTemplate);assert.deepEqual(blank.reference.targets,[]);assert.equal(blank.unresolvedQuestionIds.length,13);
+ const declined=Object.fromEntries(describeIntegration().selectionQuestions.map(q=>[q.id,'no']));
+ const noWork=selectIntegration({schemaVersion:1,answers:declined});assert.deepEqual(noWork.reference.targets,[]);assert.equal(noWork.status,'scope-recorded');assert.equal(noWork.productionReady,false);
+ const existing=selectIntegration({schemaVersion:1,answers:{...declined,'explicit-agreement':'yes'}});assert.deepEqual(existing.requestedTargetIds,['terms-agreement']);assert.deepEqual(existing.prerequisiteReview.map(p=>[p.targetId,p.scopeChoice]),[['legal-pages','no']]);
+});
+
+test('selection uses complete known question IDs and rejects malformed or executable decisions',()=>{
+ const reference=describeIntegration();assert.deepEqual(reference.selectionQuestions.map(q=>q.targetId).sort(),reference.targets.map(t=>t.id).sort());
+ const invalid=[null,[],{}, {schemaVersion:2,answers:{}},{schemaVersion:1,answers:[]},{schemaVersion:1,answers:{documents:true}},{schemaVersion:1,answers:{documents:null}},{schemaVersion:1,answers:{documents:undefined}},{schemaVersion:1,answers:{invented:'yes'}},{schemaVersion:1,answers:{documents:'yes'},jurisdictions:['FR']},JSON.parse('{"schemaVersion":1,"answers":{"__proto__":"yes"}}'),Object.create({schemaVersion:1,answers:{documents:'yes'}})];
+ let reads=0;invalid.push({schemaVersion:1,get answers(){reads++;return {documents:'yes'};}},{schemaVersion:1,answers:{get documents(){reads++;return 'yes';}}});
+ for(const input of invalid)assert.throws(()=>selectIntegration(input),/Invalid integration selection/u);assert.equal(reads,0);
+ const snapshot=selectIntegration({schemaVersion:1,answers:{documents:'yes'}});snapshot.decisions[0].question='mutated';snapshot.reference.selectionQuestions[0].question='mutated';
+ assert.doesNotMatch(describeIntegration().selectionQuestions[0].question,/mutated/u);
+});
+
+test('CLI selection reads only its explicit bounded JSON input and preserves project files',async()=>{
+ const cwd=await mkdtemp(join(tmpdir(),'notabenda-select-'));
+ try{
+  const configPath=join(cwd,'notabenda.config.json'),selectionPath=join(cwd,'selection.json');
+  await writeFile(configPath,'PRIVATE INVALID CONFIG');await writeFile(join(cwd,'notabenda.config.mjs'),"throw Error('Never execute');");
+  await writeFile(selectionPath,JSON.stringify({schemaVersion:1,answers:{documents:'no','explicit-agreement':'yes'}}));
+  const before=await readdir(cwd),run=(...args)=>spawnSync(process.execPath,[cli,'describe',...args],{cwd,encoding:'utf8'});
+  const result=run('--selection','selection.json','--json');assert.equal(result.status,0,result.stderr);
+  const selection=JSON.parse(result.stdout);assert.equal(selection.kind,'notabenda-integration-selection');assert.deepEqual(selection.requestedTargetIds,['terms-agreement']);assert.ok(selection.package.version);
+  const text=run('--selection','selection.json');assert.equal(text.status,0);assert.match(text.stdout,/\[requested\] terms-agreement/u);assert.match(text.stdout,/\[prerequisite\] legal-pages/u);assert.match(text.stdout,/check existing supporting configuration and documents before adding work/u);assert.doesNotMatch(text.stdout,/\[requested\] legal-pages/u);
+  assert.deepEqual(await readdir(cwd),before);assert.equal(await readFile(configPath,'utf8'),'PRIVATE INVALID CONFIG');
+  for(const args of [['cookie-consent','--selection','selection.json'],['--selection'],['--selection','selection.json','--selection','selection.json'],['--selection','PRIVATE-MISSING-FILE'],['--selection','.']]){
+   const failed=run(...args);assert.equal(failed.status,1);assert.doesNotMatch(failed.stderr,/PRIVATE-MISSING-FILE|PRIVATE INVALID CONFIG/u);
+  }
+  for(const content of ['not JSON PRIVATE-MARKER',' '.repeat(65537),JSON.stringify({schemaVersion:1,answers:{'PRIVATE-MARKER':'yes'}})]){
+   await writeFile(selectionPath,content);const failed=run('--selection','selection.json','--json');assert.equal(failed.status,1);assert.doesNotMatch(failed.stderr,/PRIVATE-MARKER/u);
+  }
+ }finally{await rm(cwd,{recursive:true,force:true});}
+});
 
 test('targets distinguish requested outcomes, prerequisites and host implementation without activation',()=>{
  const reference=describeIntegration(['terms-agreement','cookie-consent','terms-agreement']);

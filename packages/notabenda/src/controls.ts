@@ -19,6 +19,8 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   const policy = config.consent!;
   const archivedNotice=consent.getNotice();
   const wording = archivedNotice?.wording??defaultConsentWording(config);
+  // @requirements REQ-BR-COOKIE-UI REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
+  const information=archivedNotice?archivedNotice.information:policy.information;
   const localization=archivedNotice?.localization??config.localization;
   if(localization&&options.preferencesLabel!==undefined)throw new Error('Revise localization.consent.triggerLabel instead of overriding localized evidence wording.');
   const m=localization?.consent;
@@ -44,6 +46,8 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   const preferences = button(wording.preferencesLabel, () => consent.openPreferences(), 'nb-text-button');
   secondary.append(preferences, button(wording.dismissLabel, () => { consent.dismiss(); finishNoticeAction(); }, 'nb-text-button'));
   const cookieLink = element('a', undefined, c('cookiePolicy','Cookie policy')); cookieLink.href = archivedNotice?.documents.cookies.url??config.documents.cookies.route; secondary.append(cookieLink);
+  const rightsLink=()=>{const link=element('a',undefined,information!.rights!.label);link.href=information!.rights!.url;link.dataset.nbInformation='rights';return link;};
+  if(information?.rights)secondary.append(rightsLink());
   const noticeMessage = element('p', 'nb-control-status'); noticeMessage.setAttribute('role', 'status');
   const retryButtons:HTMLButtonElement[]=[];
   const retry=()=>{const b=button(c('retryLabel','Try recording again'),()=>{void consent.retryEvidence();},'nb-text-button');b.hidden=true;retryButtons.push(b);return b;};
@@ -76,6 +80,14 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
   }
   const links = element('nav', 'nb-legal-links'); links.setAttribute('aria-label', c('privacyInformation','Privacy information'));
   for (const kind of ['privacy','cookies'] as const) { const link = element('a', undefined, archivedNotice?.documents[kind].title??config.documents[kind].title); link.href = archivedNotice?.documents[kind].url??config.documents[kind].route; links.append(link); }
+  if(information?.rights)links.append(rightsLink());
+  if(information?.browserControls){
+    const help=element('details','nb-consent-help'),copy=information.browserControls;
+    help.append(element('summary',undefined,copy.title),element('p',undefined,copy.description));
+    const navigation=element('nav');navigation.setAttribute('aria-label',copy.title);
+    for(const item of copy.links){const link=element('a',undefined,item.label);link.href=item.url;navigation.append(link);}
+    if(copy.links.length)help.append(navigation);body.append(help);
+  }
   const drawerMessage = element('p', 'nb-control-status'); drawerMessage.setAttribute('role', 'status');
   for (const status of [message, noticeMessage, drawerMessage]) status.tabIndex = -1;
   body.append(links, drawerMessage,retry());

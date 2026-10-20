@@ -13,6 +13,8 @@ Developer preview. The package has not been published to npm yet; build/pack it 
 
 After installing the local tarball, use `npx --no-install notabenda describe --json` for a version-matched integration map, facts needed, actual wizard question IDs and verification scenarios. Target specific work with `describe cookie-consent terms-agreement --json`; this reads no project config and changes nothing.
 
+For an ambiguous task, fill the reference's `selectionTemplate` with supported `yes`, `no` or `unknown` decisions, then run `describe --selection FILE --json`. The selected map lists requested work, prerequisites and unanswered scope questions. It reads only the named ordinary JSON file; it does not scan the project or activate anything. Keep this scope file separate from wizard practice answers.
+
 To create a new draft:
 
 ```sh
@@ -123,7 +125,7 @@ The optional `notabenda-cf` helpers register archived offers, explicitly activat
 ## Exports
 
 - `notabenda`: configuration validation/projection, document rendering, local or required-receipt consent state, terms agreement, and vanilla controls.
-- `notabenda/integration`: read-only `describeIntegration(targetIds)` integration map. Host tasks are separate from config fields.
+- `notabenda/integration`: read-only `describeIntegration(targetIds)` integration map and `selectIntegration(input)` for explicit scope decisions. Host tasks are separate from config fields.
 - `notabenda/content`: Node build-time compilation and portable artifacts.
 - `notabenda/styles.css`: optional responsive, namespaced styles.
 - `notabenda` CLI: JSON-only `init`, `check`, and `build` commands; `check --json` exposes diagnostics and requirement IDs.

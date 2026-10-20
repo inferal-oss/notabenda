@@ -104,9 +104,9 @@ Read the 7 October 2025 clarification on selected advertising/location contexts 
 
 [ANPD: final cookies and personal-data guide](https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes/guia-orientativo-cookies-e-protecao-de-dados-pessoais.pdf/@@display-file/file)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** read.
+**Type:** regulator-guidance. **Checked:** 2026-10-19. **Access:** read.
 
-Final October 2022 guide linked from the current ANPD landing page; do not use the separate 290-page administrative process containing drafts.
+Final guide version 1.0, October 2022, retrieved again for printed pages 30–33 (PDF indexes 29–32). Publication date is distinct from this access date. Do not use the separate administrative-process bundle containing drafts.
 
 <a id="src-ca-opc"></a>
 
@@ -1041,3 +1041,33 @@ The answer applies to first-party as well as third-party analytics; vendor ident
 **Type:** technical-specification. **Checked:** 2026-10-19. **Access:** read.
 
 Voluntary documentation convention, not a regulatory obligation. Read format, proposal and alternate/describedby link guidance; no indexing, crawler adoption or legal-compliance guarantee.
+
+<a id="src-iub-br-cookie-guide"></a>
+
+## SRC-IUB-BR-COOKIE-GUIDE
+
+[iubenda: Brazil cookie recommendations](https://www.iubenda.com/en/help/104366-brazil-new-cookie-requirements/)
+
+**Type:** secondary-explainer. **Checked:** 2026-10-19. **Access:** read.
+
+Discovery aid linking ANPD’s final guide. Its mandatory wording is not substituted for the regulator’s recommendation status or a purpose-specific LGPD legal-basis assessment.
+
+<a id="src-chrome-cookie-help-pt"></a>
+
+## SRC-CHROME-COOKIE-HELP-PT
+
+[Google Chrome: manage cookies (Portuguese)](https://support.google.com/chrome/answer/95647?hl=pt-BR)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Official help destination used in the host-authored example. Third-party-cookie blocking is not a claim to block all local/session storage or requests.
+
+<a id="src-firefox-site-data-help-pt"></a>
+
+## SRC-FIREFOX-SITE-DATA-HELP-PT
+
+[Mozilla Firefox: block site cookies and data (Portuguese)](https://support.mozilla.org/pt-BR/kb/impeca-que-sites-armazenem-cookies-e-dados-no-fire)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Official help destination used in the host-authored example; live instructions can change independently of archived link text and URLs.

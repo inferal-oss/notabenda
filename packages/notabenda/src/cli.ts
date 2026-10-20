@@ -14,7 +14,7 @@ import { compileLegalDocuments,createRetainedReleaseFiles } from './content.js';
 import { writeBuildFiles } from './files.js';
 import { createStarterConfig } from './starter.js';
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
-import {describeIntegration} from './integration-reference.js';
+import {describeIntegration,selectIntegration} from './integration-reference.js';
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
@@ -27,6 +27,9 @@ check  Validate configuration (production checks by default; --preview permits d
 build  Generate static legal pages, public configuration and a versioned artifact.
 describe [TARGET ...] [--json]  Read-only integration map, facts, actual setup question IDs
 and unknown-answer template. No project scan or config mutation. Omit targets to list all.
+describe --selection FILE [--json]  Resolve explicit yes/no/unknown scope decisions
+from selectionTemplate; reads only the named ordinary JSON file and package metadata.
+Cannot combine --selection with target IDs. An empty selection selects nothing.
 
 All configuration is JSON; no module execution or network access is required.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
@@ -63,10 +66,22 @@ async function main(): Promise<void> {
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
   if(command==='describe'){
-    const json=args.includes('--json');if(args.filter(a=>a==='--json').length>1||args.some(a=>a.startsWith('-')&&a!=='--json'))throw Error('describe accepts target IDs and one optional --json only.');
-    const reference=describeIntegration(args.filter(a=>a!=='--json'));
+    let json=false,selectionPath:string|undefined;const targetIds:string[]=[],seen=new Set<string>();
+    while(args.length){
+      const arg=args.shift()!;
+      if(arg.startsWith('-')){
+        if(seen.has(arg))throw Error('Duplicate describe option.');seen.add(arg);
+        if(arg==='--json')json=true;
+        else if(arg==='--selection'){
+          const value=args.shift();if(!value||value.startsWith('-'))throw Error('describe --selection requires an explicit JSON file.');selectionPath=value;
+        }else throw Error('describe accepts target IDs, --selection FILE and one optional --json.');
+      }else targetIds.push(arg);
+    }
+    if(selectionPath&&targetIds.length)throw Error('describe --selection cannot be combined with target IDs.');
+    const selection=selectionPath?selectIntegration(await readCliJson(selectionPath,65536,'Selection could not be read as bounded ordinary JSON.')):undefined;
+    const reference=selection?.reference??describeIntegration(targetIds);
     const {name,version}=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));
-    console.log(json?JSON.stringify({package:{name,version},...reference},null,2):`${name} ${version} · integration targets\n`+reference.targets.map((t:{id:string;outcome:string})=>`${t.id}: ${t.outcome}`).join('\n')+'\n\nUse --json for config paths, host work, facts, setup questions and verification. Advisory only; nothing enabled or written.');return;
+    console.log(json?JSON.stringify({package:{name,version},...(selection??reference)},null,2):`${name} ${version} · integration targets\n`+reference.targets.map((t:{id:string;outcome:string;selection:string})=>`[${t.selection}] ${t.id}: ${t.outcome}`).join('\n')+(reference.targets.some(t=>t.selection==='prerequisite')?'\nPrerequisites: check existing supporting configuration and documents before adding work; these are not additional requested features.\n':'')+(selection?`\nScope: ${selection.status}; unanswered: ${selection.unresolvedQuestionIds.join(', ')||'none'}.\n`:'')+'\nUse --json for config paths, host work, facts, setup questions and verification. Advisory only; nothing enabled or written.');return;
   }
   if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}

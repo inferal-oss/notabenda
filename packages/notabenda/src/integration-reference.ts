@@ -22,7 +22,7 @@ const targets:Record<string,Target>={
  },
  'cookie-consent':{
   title:'Cookie and optional-service controls',outcome:'Optional loaders run only while their declared purpose/service permission is effective.',
-  configPaths:['purposes','services','storage','consent','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders.','Choose vanilla, React or Astro controls around the same controller.'],
+  configPaths:['purposes','services','storage','consent','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders.','Choose vanilla, React or Astro controls around the same controller.'],
   questionIds:['optional-storage','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Actual optional loaders, storage names/types and cleanup targets','Purpose/service IDs and deliberate material scope revisions','Grant/refusal lifetimes and dismissal interval','Scope assessments; present or unknown specialized processing remains gated'],guides:['consent','storage-cleanup','scope-guards','react','astro'],prerequisites:['legal-pages'],verify:['No optional request on initial load or after rejection.','Granular grants start only the selected work.','Withdrawal stops owned work and clears declared markers.','Reload, changed scopes and failure states retain restrictions.']
  },
  'embeds':{
@@ -59,16 +59,39 @@ const targets:Record<string,Target>={
  }
 };
 
+/** Scope questions describe requested work, never regulatory applicability. */
+const selectionQuestions=[
+ {id:'documents',targetId:'legal-pages',question:'Do you want to add or update static privacy, cookie or terms documents?'},
+ {id:'authored-sources',targetId:'authored-documents',question:'Do you want to maintain documents as Markdown or trusted MDX with frontmatter?'},
+ {id:'optional-service-control',targetId:'cookie-consent',question:'Do you want visitors to control optional scripts or browser storage?'},
+ {id:'remote-media',targetId:'embeds',question:'Do you want remote media to stay unloaded until its service is permitted?'},
+ {id:'explicit-agreement',targetId:'terms-agreement',question:'Do you want an explicit acceptance action bound to an exact terms revision?'},
+ {id:'rights-entry',targetId:'privacy-rights',question:'Do you want a page linking visitors to your privacy request workflows?'},
+ {id:'processing-restrictions',targetId:'processing-opt-outs',question:'Do you want separate processing opt-outs or browser privacy signals connected to host restrictions?'},
+ {id:'form-permission',targetId:'form-permissions',question:'Do you want optional purpose/channel permission separate from submitting a form?'},
+ {id:'purchase-contract',targetId:'consumer-contracts',question:'Do you want consumer purchase or contract disclosures and action flows?'},
+ {id:'stored-evidence',targetId:'evidence',question:'Do you want durable records, retained archives or an operator backoffice?'},
+ {id:'translated-copy',targetId:'localization',question:'Do you want documents or controls in additional languages?'},
+ {id:'regional-timing',targetId:'regional-consent',question:'Do you want to assess and configure an explicit supported regional consent timing policy?'},
+ {id:'service-investigation',targetId:'discovery',question:'Do you want optional project scanning or review of authorized browser observations?'}
+];
+
 /** Read-only reference. Targets describe requested work; they never activate it. */
 export function describeIntegration(requested:readonly string[]=[]){
  if(!Array.isArray(requested)||requested.length>32||Array.from(requested).some(id=>typeof id!=='string'||!Object.hasOwn(targets,id)))throw Error('Unknown integration target. Run notabenda describe to list supported targets.');
- const selected=requested.length?[...new Set(requested)]:Object.keys(targets),resolved=new Set<string>();
+ return integrationReference(requested.length?[...new Set(requested)]:Object.keys(targets));
+}
+
+function integrationReference(selected:string[]){
+ const resolved=new Set<string>();
  function include(id:string){if(resolved.has(id))return;for(const prior of targets[id]!.prerequisites)include(prior);resolved.add(id);}
  for(const id of selected)include(id);
  const relevantQuestionIds=[...new Set([...resolved].flatMap(id=>targets[id]!.questionIds))];
  return structuredClone({schemaVersion:1,kind:'notabenda-integration-reference',requestedTargetIds:selected,
   boundaries:{advisoryOnly:true,writesFiles:false,readsProject:false,activatesFeatures:false,legalReview:false},
   configContract:{schemaVersion:1,typeExport:'notabenda',typeName:'SiteConfig',validation:'notabenda check --config FILE --json',jsonCli:true,markdownMdx:'notabenda-authoring build API',hostWorkIsNotConfig:true,starterDefaultsAreNotFacts:true,pathNotation:'Dot paths through inventory arrays refer to each item field, not literal JSON keys.'},
+  selectionQuestions,
+  selectionTemplate:{schemaVersion:1,answers:Object.fromEntries(selectionQuestions.map(q=>[q.id,'unknown']))},
   publicFactFields:setupFactFields.map(([id,label])=>({id,label})),
   relevantQuestionIds,
   targets:[...resolved].map(id=>({id,selection:selected.includes(id)?'requested':'prerequisite',...targets[id]!,guides:targets[id]!.guides.map(slug=>'https://notabenda.org/guide/'+slug+'/index.md')})),
@@ -78,5 +101,38 @@ export function describeIntegration(requested:readonly string[]=[]){
   workflow:['Record requested outcomes and existing integration points.','Separate confirmed facts, project evidence, unknowns and legal review decisions.','Read target guides and the installed SiteConfig type; host work is not a JSON config field.','Complete explicit answers and run wizard --answers FILE, adding --config FILE for an existing inventory.','Compare the exported draft against the original; apply only reviewed changes.','Run check/build in preview, integration scenarios, and production validation when review is complete.'],
   handoffFields:['requested outcomes','selected target IDs','existing integration','confirmed facts and provenance','unknown facts and consequences','exact config changes','host/build/runtime work','review and deployment status','verification results']
  });
+}
+
+/** Resolve explicit scope decisions only; an unanswered question is never a grant or a negative answer. */
+export function selectIntegration(input:unknown){
+ const fail=():never=>{throw Error('Invalid integration selection. Use selectionTemplate from notabenda describe --json; answers must be yes, no or unknown.');};
+ const data=(value:unknown,allowed:string[])=>{
+  if(!value||typeof value!=='object'||Array.isArray(value))return fail();
+  const proto=Object.getPrototypeOf(value);if(proto!==null&&proto!==Object.prototype)return fail();
+  const out:Record<string,unknown>=Object.create(null);
+  for(const key of Reflect.ownKeys(value)){
+   if(typeof key!=='string'||!allowed.includes(key))return fail();
+   const descriptor=Object.getOwnPropertyDescriptor(value,key)!;
+   if(!descriptor.enumerable||!Object.hasOwn(descriptor,'value'))return fail();out[key]=descriptor.value;
+  }
+  return out;
+ };
+ const root=data(input,['schemaVersion','answers']);if(root.schemaVersion!==1)return fail();
+ const answers=data(root.answers,selectionQuestions.map(q=>q.id));
+ const decisions=selectionQuestions.map(q=>{
+  const choice=Object.hasOwn(answers,q.id)?answers[q.id]:'unknown';
+  if(choice!=='yes'&&choice!=='no'&&choice!=='unknown')return fail();
+  return {...q,choice};
+ });
+ const selected=decisions.filter(q=>q.choice==='yes').map(q=>q.targetId),reference=integrationReference(selected);
+ return {
+  schemaVersion:1,kind:'notabenda-integration-selection',
+  decisions,unresolvedQuestionIds:decisions.filter(q=>q.choice==='unknown').map(q=>q.id),
+  requestedTargetIds:selected,
+  prerequisiteTargetIds:reference.targets.filter(t=>t.selection==='prerequisite').map(t=>t.id),
+  prerequisiteReview:reference.targets.filter(t=>t.selection==='prerequisite').map(t=>({targetId:t.id,questionId:decisions.find(q=>q.targetId===t.id)!.id,scopeChoice:decisions.find(q=>q.targetId===t.id)!.choice,action:'Check existing supporting configuration and documents before adding work. A prerequisite is not an additional requested feature.'})),
+  status:decisions.some(q=>q.choice==='unknown')?'scope-incomplete':'scope-recorded',
+  productionReady:false,reference
+ };
 }
 

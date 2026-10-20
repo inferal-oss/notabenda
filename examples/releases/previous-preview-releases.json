@@ -23659,5 +23659,1187 @@
         "serviceType": "informational"
       }
     }
+  },
+  {
+    "documents": {
+      "cookies": {
+        "effectiveDate": "2026-10-19",
+        "kind": "cookies",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-PRODUCT-LOCALIZATION"
+        ],
+        "reviewStatus": "draft",
+        "route": "/localization/cookies",
+        "sections": [
+          {
+            "heading": "Cookies e tecnologias semelhantes",
+            "id": "about",
+            "paragraphs": [
+              "Esta página descreve o armazenamento declarado para Juniper.",
+              "Cookies e outras tecnologias podem atender a diferentes finalidades. A lista abaixo descreve cada item declarado; publicar esta página não controla essas tecnologias."
+            ]
+          },
+          {
+            "heading": "Armazenamento declarado",
+            "id": "storage",
+            "table": {
+              "caption": "Inventário de armazenamento",
+              "columns": [
+                "Nome",
+                "Tipo",
+                "Fornecedor / serviço",
+                "Finalidade",
+                "Duração",
+                "Classificação"
+              ],
+              "rows": [
+                [
+                  "notabenda:choices:v1:juniper-pt",
+                  "Armazenamento local",
+                  "Juniper / Memória das escolhas",
+                  "Memória das escolhas",
+                  "Permissões: 30 dias. Recusas: 180 dias.",
+                  "Necessário — Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável."
+                ],
+                [
+                  "notabenda:choices:v1:juniper-pt:prompt",
+                  "Armazenamento local",
+                  "Juniper / Memória das escolhas",
+                  "Memória das escolhas",
+                  "30 minutos",
+                  "Necessário — Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável."
+                ]
+              ]
+            }
+          },
+          {
+            "heading": "Finalidades",
+            "id": "purposes",
+            "items": [
+              "Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede.",
+              "Memória das escolhas: Lembrar suas preferências de privacidade neste navegador."
+            ]
+          },
+          {
+            "heading": "Dúvidas sobre armazenamento",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "privacy@example.test"
+              },
+              {
+                "href": "/localization/privacy",
+                "label": "Política de privacidade"
+              }
+            ]
+          }
+        ],
+        "title": "Política de cookies",
+        "version": "1"
+      },
+      "privacy": {
+        "effectiveDate": "2026-10-19",
+        "kind": "privacy",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-NOTICE",
+          "REQ-NZ-NOTICE",
+          "REQ-PRODUCT-LOCALIZATION"
+        ],
+        "reviewStatus": "draft",
+        "route": "/localization/privacy",
+        "sections": [
+          {
+            "heading": "Quem é responsável",
+            "id": "controller",
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "privacy@example.test"
+              }
+            ],
+            "paragraphs": [
+              "Juniper",
+              "Endereço ilustrativo para revisão"
+            ]
+          },
+          {
+            "heading": "O que coletamos e por quê",
+            "id": "purposes",
+            "items": [
+              "Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede. Dados: Estado do recurso neste navegador. Base legal: Permissão para o recurso opcional; declaração de exemplo para revisão.. Origem (direta): Sua escolha nesta página.. O fornecimento é opcional. As sugestões permanecem desativadas.",
+              "Memória das escolhas: Lembrar suas preferências de privacidade neste navegador. Dados: Finalidade e escopo da escolha, Data da escolha e prazo de validade. Base legal: Armazenamento de preferências; classificação de exemplo para revisão.. Origem (direta): Sua escolha ou adiamento do aviso.. O fornecimento é opcional. Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências."
+            ]
+          },
+          {
+            "heading": "Por quanto tempo as informações são mantidas",
+            "id": "retention",
+            "items": [
+              "Sugestões de leitura: Até a retirada da permissão ou a limpeza do navegador.",
+              "Memória das escolhas: Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos."
+            ]
+          },
+          {
+            "heading": "Prestadores de serviços e destinatários",
+            "id": "providers",
+            "items": [
+              "Sugestões Juniper — Juniper. Localização: Este navegador. Finalidades: Sugestões de leitura.",
+              "Memória das escolhas — Juniper. Localização: Este navegador. Finalidades: Memória das escolhas."
+            ],
+            "links": []
+          },
+          {
+            "heading": "Transferências internacionais",
+            "id": "transfers",
+            "paragraphs": [
+              "Este exemplo não envia os dados do recurso para outro servidor."
+            ]
+          },
+          {
+            "heading": "Decisões automatizadas",
+            "id": "automated-decisions",
+            "paragraphs": [
+              "Este exemplo não toma decisões automatizadas sobre pessoas."
+            ]
+          },
+          {
+            "heading": "Seus direitos e escolhas",
+            "id": "rights",
+            "items": [
+              "Entre em contato para consultar suas informações e apresentar uma solicitação."
+            ],
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "Entre em contato sobre suas informações"
+              }
+            ]
+          },
+          {
+            "heading": "Dúvidas e reclamações",
+            "id": "complaints",
+            "paragraphs": [
+              "Entre em contato pelo endereço indicado nesta página."
+            ]
+          }
+        ],
+        "title": "Política de privacidade",
+        "version": "1"
+      },
+      "terms": {
+        "effectiveDate": "2026-10-19",
+        "kind": "terms",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-TERMS",
+          "REQ-PRODUCT-LOCALIZATION"
+        ],
+        "reviewStatus": "draft",
+        "route": "/localization/terms",
+        "sections": [
+          {
+            "heading": "Sobre este espaço",
+            "id": "reading",
+            "paragraphs": [
+              "Este espaço apresenta textos e sugestões de leitura."
+            ]
+          },
+          {
+            "heading": "Contato",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "Fale com a Juniper"
+              }
+            ],
+            "paragraphs": [
+              "Entre em contato se tiver dúvidas sobre o conteúdo."
+            ]
+          }
+        ],
+        "title": "Termos de uso",
+        "version": "1"
+      }
+    },
+    "manifest": {
+      "artifactId": "064b0e8e0d939c8964eb3bf8c5c773cef0d1988fa623786a8574705db30dde02",
+      "configSha256": "34e4e0309f150f5a1dc9738c64f1c153f44666678e686b26e42713a2f3bdb244",
+      "documents": [
+        {
+          "contentSha256": "9adcd2a8c86bc39873f7530457e0d7072d38a5266cadbc973b1b908dd930c896",
+          "effectiveDate": "2026-10-19",
+          "file": "localization/privacy/index.html",
+          "kind": "privacy",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-NOTICE",
+            "REQ-NZ-NOTICE",
+            "REQ-PRODUCT-LOCALIZATION"
+          ],
+          "reviewStatus": "draft",
+          "route": "/localization/privacy",
+          "sha256": "cfd1fa360c8823db15caffb75bfb6493499948b48feb7091f4ed787d170f6da7",
+          "title": "Política de privacidade",
+          "version": "1"
+        },
+        {
+          "contentSha256": "836988884a53ce6aa0b4f120735fe8dd2205f96c7749d21738050e9ab1a22f7f",
+          "effectiveDate": "2026-10-19",
+          "file": "localization/cookies/index.html",
+          "kind": "cookies",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-PRODUCT-LOCALIZATION"
+          ],
+          "reviewStatus": "draft",
+          "route": "/localization/cookies",
+          "sha256": "94332d9c473c5833b747a5a384e9082f9e6fa13d180328a97f70b8109fc4182e",
+          "title": "Política de cookies",
+          "version": "1"
+        },
+        {
+          "contentSha256": "b44631360191538ca257576d40f89b714a34ea0b4957da675f1a2acffcd3974a",
+          "effectiveDate": "2026-10-19",
+          "file": "localization/terms/index.html",
+          "kind": "terms",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-TERMS",
+            "REQ-PRODUCT-LOCALIZATION"
+          ],
+          "reviewStatus": "draft",
+          "route": "/localization/terms",
+          "sha256": "b264ebad4d135c43d4981c9386df79ebb91df784b5ca0f09a7c7ac827adb55a9",
+          "title": "Termos de uso",
+          "version": "1"
+        }
+      ],
+      "locale": "pt-BR",
+      "mode": "preview",
+      "requirementIds": [
+        "REQ-PRODUCT-CONFIG",
+        "REQ-PRODUCT-ARTIFACTS",
+        "REQ-PRODUCT-DOCUMENTS",
+        "REQ-PRODUCT-SAFE-CONTENT",
+        "REQ-EU-NOTICE",
+        "REQ-NZ-NOTICE",
+        "REQ-PRODUCT-LOCALIZATION",
+        "REQ-EU-TERMS"
+      ],
+      "schemaVersion": 1,
+      "siteId": "juniper-pt"
+    },
+    "pages": {
+      "localization/cookies/index.html": "<!doctype html><html lang=\"pt-BR\" dir=\"ltr\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Política de cookies · Juniper</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Ir para o conteúdo</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper</a><span>Informações legais</span></header><main id=\"main\"><article class=\"nb-document\" lang=\"pt-BR\" dir=\"ltr\" aria-labelledby=\"nb-cookies-title\" data-document-kind=\"cookies\" data-document-version=\"1\"><header><p class=\"nb-eyebrow\">Juniper · Informações legais</p><h1 id=\"nb-cookies-title\">Política de cookies</h1><p class=\"nb-document-meta\">Versão 1 <span aria-hidden=\"true\">·</span> Vigência <time datetime=\"2026-10-19\">2026-10-19</time></p><p class=\"nb-draft\" role=\"note\">Rascunho para revisão. Este documento não foi aprovado para uso em produção.</p></header><nav class=\"nb-contents\" aria-label=\"Nesta página\"><p>Nesta página</p><ol><li><a href=\"#nb-cookies-section-about\">Cookies e tecnologias semelhantes</a></li><li><a href=\"#nb-cookies-section-storage\">Armazenamento declarado</a></li><li><a href=\"#nb-cookies-section-purposes\">Finalidades</a></li><li><a href=\"#nb-cookies-section-contact\">Dúvidas sobre armazenamento</a></li></ol></nav><section id=\"nb-cookies-section-about\"><h2>Cookies e tecnologias semelhantes</h2><p>Esta página descreve o armazenamento declarado para Juniper.</p><p>Cookies e outras tecnologias podem atender a diferentes finalidades. A lista abaixo descreve cada item declarado; publicar esta página não controla essas tecnologias.</p></section><section id=\"nb-cookies-section-storage\"><details class=\"nb-storage-foldout\"><summary><h2>Armazenamento declarado</h2><span class=\"nb-storage-count\">2 itens</span></summary><div class=\"nb-table-scroll\" role=\"region\" aria-label=\"Inventário de armazenamento\" tabindex=\"0\"><table><caption>Inventário de armazenamento</caption><thead><tr><th scope=\"col\">Nome</th><th scope=\"col\">Tipo</th><th scope=\"col\">Fornecedor / serviço</th><th scope=\"col\">Finalidade</th><th scope=\"col\">Duração</th><th scope=\"col\">Classificação</th></tr></thead><tbody><tr><th scope=\"row\">notabenda:choices:v1:juniper-pt</th><td>Armazenamento local</td><td>Juniper / Memória das escolhas</td><td>Memória das escolhas</td><td>Permissões: 30 dias. Recusas: 180 dias.</td><td>Necessário — Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável.</td></tr><tr><th scope=\"row\">notabenda:choices:v1:juniper-pt:prompt</th><td>Armazenamento local</td><td>Juniper / Memória das escolhas</td><td>Memória das escolhas</td><td>30 minutos</td><td>Necessário — Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável.</td></tr></tbody></table></div></details></section><section id=\"nb-cookies-section-purposes\"><h2>Finalidades</h2><ul><li>Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede.</li><li>Memória das escolhas: Lembrar suas preferências de privacidade neste navegador.</li></ul></section><section id=\"nb-cookies-section-contact\"><h2>Dúvidas sobre armazenamento</h2><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">privacy@example.test</a></li><li><a href=\"/localization/privacy\">Política de privacidade</a></li></ul></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" lang=\"pt-BR\" dir=\"ltr\" aria-label=\"Informações legais\"><a href=\"/localization/privacy\">Política de privacidade</a><a href=\"/localization/cookies\">Política de cookies</a><a href=\"/localization/terms\">Termos de uso</a></nav><p>© Juniper</p></footer></body></html>",
+      "localization/privacy/index.html": "<!doctype html><html lang=\"pt-BR\" dir=\"ltr\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Política de privacidade · Juniper</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Ir para o conteúdo</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper</a><span>Informações legais</span></header><main id=\"main\"><article class=\"nb-document\" lang=\"pt-BR\" dir=\"ltr\" aria-labelledby=\"nb-privacy-title\" data-document-kind=\"privacy\" data-document-version=\"1\"><header><p class=\"nb-eyebrow\">Juniper · Informações legais</p><h1 id=\"nb-privacy-title\">Política de privacidade</h1><p class=\"nb-document-meta\">Versão 1 <span aria-hidden=\"true\">·</span> Vigência <time datetime=\"2026-10-19\">2026-10-19</time></p><p class=\"nb-draft\" role=\"note\">Rascunho para revisão. Este documento não foi aprovado para uso em produção.</p></header><nav class=\"nb-contents\" aria-label=\"Nesta página\"><p>Nesta página</p><ol><li><a href=\"#nb-privacy-section-controller\">Quem é responsável</a></li><li><a href=\"#nb-privacy-section-purposes\">O que coletamos e por quê</a></li><li><a href=\"#nb-privacy-section-retention\">Por quanto tempo as informações são mantidas</a></li><li><a href=\"#nb-privacy-section-providers\">Prestadores de serviços e destinatários</a></li><li><a href=\"#nb-privacy-section-transfers\">Transferências internacionais</a></li><li><a href=\"#nb-privacy-section-automated-decisions\">Decisões automatizadas</a></li><li><a href=\"#nb-privacy-section-rights\">Seus direitos e escolhas</a></li><li><a href=\"#nb-privacy-section-complaints\">Dúvidas e reclamações</a></li></ol></nav><section id=\"nb-privacy-section-controller\"><h2>Quem é responsável</h2><p>Juniper</p><p>Endereço ilustrativo para revisão</p><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">privacy@example.test</a></li></ul></section><section id=\"nb-privacy-section-purposes\"><h2>O que coletamos e por quê</h2><ul><li>Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede. Dados: Estado do recurso neste navegador. Base legal: Permissão para o recurso opcional; declaração de exemplo para revisão.. Origem (direta): Sua escolha nesta página.. O fornecimento é opcional. As sugestões permanecem desativadas.</li><li>Memória das escolhas: Lembrar suas preferências de privacidade neste navegador. Dados: Finalidade e escopo da escolha, Data da escolha e prazo de validade. Base legal: Armazenamento de preferências; classificação de exemplo para revisão.. Origem (direta): Sua escolha ou adiamento do aviso.. O fornecimento é opcional. Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências.</li></ul></section><section id=\"nb-privacy-section-retention\"><h2>Por quanto tempo as informações são mantidas</h2><ul><li>Sugestões de leitura: Até a retirada da permissão ou a limpeza do navegador.</li><li>Memória das escolhas: Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos.</li></ul></section><section id=\"nb-privacy-section-providers\"><h2>Prestadores de serviços e destinatários</h2><ul><li>Sugestões Juniper — Juniper. Localização: Este navegador. Finalidades: Sugestões de leitura.</li><li>Memória das escolhas — Juniper. Localização: Este navegador. Finalidades: Memória das escolhas.</li></ul></section><section id=\"nb-privacy-section-transfers\"><h2>Transferências internacionais</h2><p>Este exemplo não envia os dados do recurso para outro servidor.</p></section><section id=\"nb-privacy-section-automated-decisions\"><h2>Decisões automatizadas</h2><p>Este exemplo não toma decisões automatizadas sobre pessoas.</p></section><section id=\"nb-privacy-section-rights\"><h2>Seus direitos e escolhas</h2><ul><li>Entre em contato para consultar suas informações e apresentar uma solicitação.</li></ul><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">Entre em contato sobre suas informações</a></li></ul></section><section id=\"nb-privacy-section-complaints\"><h2>Dúvidas e reclamações</h2><p>Entre em contato pelo endereço indicado nesta página.</p></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" lang=\"pt-BR\" dir=\"ltr\" aria-label=\"Informações legais\"><a href=\"/localization/privacy\">Política de privacidade</a><a href=\"/localization/cookies\">Política de cookies</a><a href=\"/localization/terms\">Termos de uso</a></nav><p>© Juniper</p></footer></body></html>",
+      "localization/terms/index.html": "<!doctype html><html lang=\"pt-BR\" dir=\"ltr\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Termos de uso · Juniper</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Ir para o conteúdo</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper</a><span>Informações legais</span></header><main id=\"main\"><article class=\"nb-document\" lang=\"pt-BR\" dir=\"ltr\" aria-labelledby=\"nb-terms-title\" data-document-kind=\"terms\" data-document-version=\"1\"><header><p class=\"nb-eyebrow\">Juniper · Informações legais</p><h1 id=\"nb-terms-title\">Termos de uso</h1><p class=\"nb-document-meta\">Versão 1 <span aria-hidden=\"true\">·</span> Vigência <time datetime=\"2026-10-19\">2026-10-19</time></p><p class=\"nb-draft\" role=\"note\">Rascunho para revisão. Este documento não foi aprovado para uso em produção.</p></header><nav class=\"nb-contents\" aria-label=\"Nesta página\"><p>Nesta página</p><ol><li><a href=\"#nb-terms-section-reading\">Sobre este espaço</a></li><li><a href=\"#nb-terms-section-contact\">Contato</a></li></ol></nav><section id=\"nb-terms-section-reading\"><h2>Sobre este espaço</h2><p>Este espaço apresenta textos e sugestões de leitura.</p></section><section id=\"nb-terms-section-contact\"><h2>Contato</h2><p>Entre em contato se tiver dúvidas sobre o conteúdo.</p><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">Fale com a Juniper</a></li></ul></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" lang=\"pt-BR\" dir=\"ltr\" aria-label=\"Informações legais\"><a href=\"/localization/privacy\">Política de privacidade</a><a href=\"/localization/cookies\">Política de cookies</a><a href=\"/localization/terms\">Termos de uso</a></nav><p>© Juniper</p></footer></body></html>"
+    },
+    "publicConfig": {
+      "consent": {
+        "dismissalMinutes": 30,
+        "grantLifetimeDays": 30,
+        "purposes": [
+          {
+            "id": "suggestions",
+            "scope": "reading-1"
+          }
+        ],
+        "refusalLifetimeDays": 180,
+        "services": [
+          {
+            "id": "reading",
+            "scope": "reading-1"
+          }
+        ]
+      },
+      "controller": {
+        "address": "Endereço ilustrativo para revisão",
+        "email": "privacy@example.test",
+        "name": "Juniper"
+      },
+      "documents": {
+        "cookies": {
+          "effectiveDate": "2026-10-19",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/localization/cookies",
+          "source": "generated",
+          "title": "Política de cookies",
+          "version": "1"
+        },
+        "privacy": {
+          "effectiveDate": "2026-10-19",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/localization/privacy",
+          "source": "generated",
+          "title": "Política de privacidade",
+          "version": "1"
+        },
+        "terms": {
+          "effectiveDate": "2026-10-19",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/localization/terms",
+          "sections": [
+            {
+              "heading": "Sobre este espaço",
+              "id": "reading",
+              "paragraphs": [
+                "Este espaço apresenta textos e sugestões de leitura."
+              ]
+            },
+            {
+              "heading": "Contato",
+              "id": "contact",
+              "links": [
+                {
+                  "href": "mailto:privacy@example.test",
+                  "label": "Fale com a Juniper"
+                }
+              ],
+              "paragraphs": [
+                "Entre em contato se tiver dúvidas sobre o conteúdo."
+              ]
+            }
+          ],
+          "source": "supplied",
+          "title": "Termos de uso",
+          "version": "1"
+        }
+      },
+      "jurisdictions": [
+        "BR"
+      ],
+      "localization": {
+        "consent": {
+          "acceptLabel": "Permitir opcionais",
+          "checking": "Verificando sua escolha salva… Os serviços opcionais permanecem desativados.",
+          "choicesChanged": "As escolhas atuais mudaram. Revise as seleções antes de salvar.",
+          "closeLabel": "Fechar",
+          "cookiePolicy": "Política de cookies",
+          "destroyed": "As escolhas de privacidade estão indisponíveis.",
+          "dismissLabel": "Agora não",
+          "error": "Não foi possível confirmar o registro da sua escolha. Os serviços opcionais permanecem desativados.",
+          "essentialNote": "As funções essenciais são mantidas pelo site. Os recursos opcionais abaixo dependem da sua permissão.",
+          "exceptionsSummary": "Outras configurações de armazenamento têm controles separados.",
+          "expired": "A escolha não foi confirmada a tempo ou expirou. Escolha novamente para permitir serviços opcionais.",
+          "materialChange": "Mudanças no tratamento opcional: {summary}",
+          "noticeLabel": "Escolhas sobre cookies opcionais",
+          "preferencesIntro": "Escolha os recursos opcionais que deseja permitir. Fechar este painel mantém suas escolhas atuais.",
+          "preferencesLabel": "Preferências",
+          "preferencesTitle": "Escolhas de privacidade",
+          "privacyInformation": "Informações de privacidade",
+          "processingPending": "Há restrições de tratamento pendentes ou não confirmadas. Os serviços abrangidos permanecem desativados; as escolhas de cookies não alteram essas restrições.",
+          "processingRecorded": "Uma restrição de tratamento está registrada para este contexto. As escolhas de cookies não a removem.",
+          "recorded": "Suas escolhas foram registradas.",
+          "rejectLabel": "Recusar opcionais",
+          "reloadRequired": "Não foi possível interromper ou iniciar um serviço opcional com segurança. Recarregue a página para concluir a alteração.",
+          "restrictedIntro": "As finalidades indisponíveis precisam de outro processo e permanecem desativadas aqui.",
+          "restrictedSummary": "Outras finalidades precisam de outro processo e permanecem desativadas aqui.",
+          "retired": "Este contexto foi encerrado. Os serviços opcionais permanecem desativados. Entre em contato com o responsável pelo site se precisar de ajuda.",
+          "retryLabel": "Tentar registrar novamente",
+          "review": "Revise suas escolhas antes de permitir serviços opcionais.",
+          "saveLabel": "Salvar escolhas",
+          "saving": "Salvando sua escolha… Os serviços opcionais aguardam a confirmação.",
+          "scopeUnavailable": "Esta opção precisa de outro processo e permanece desativada aqui.",
+          "services": "Serviços: {services}",
+          "signalObserved": "O sinal Global Privacy Control está ativo. Os serviços abrangidos pela política do site permanecem desativados neste navegador. As escolhas de cookies não alteram essa restrição.",
+          "signalUnavailable": "Não foi possível verificar o sinal Global Privacy Control. Os serviços abrangidos pela política do site permanecem desativados.",
+          "stale": "Este aviso mudou. Recarregue a página para revisar a versão atual.",
+          "storageUnavailable": "Não foi possível salvar as preferências neste navegador. Os serviços opcionais permanecem desativados. Uma escolha anterior pode voltar em outra visita se não for possível limpar o armazenamento.",
+          "summary": "Você permite sugestões de leitura neste navegador? Elas ficam desativadas até você permitir.",
+          "title": "Sua escolha, no seu tempo",
+          "triggerLabel": "Escolhas de privacidade",
+          "unavailable": "Não foi possível criar um registro. Os serviços opcionais permanecem desativados. Você ainda pode recusá-los.",
+          "unavailableSummary": "As finalidades opcionais precisam de outro processo e permanecem desativadas aqui."
+        },
+        "direction": "ltr",
+        "disclosureRevision": "disclosures-1",
+        "documents": {
+          "contents": "Nesta página",
+          "draft": "Rascunho para revisão. Este documento não foi aprovado para uso em produção.",
+          "effectiveLabel": "Vigência",
+          "legalEyebrow": "{siteName} · Informações legais",
+          "legalInformation": "Informações legais",
+          "legalLabel": "Informações legais",
+          "privacyRequests": "Solicitações de privacidade",
+          "skipToContent": "Ir para o conteúdo",
+          "storageItem": "{count} item",
+          "storageItems": "{count} itens",
+          "versionLabel": "Versão"
+        },
+        "generatedDocuments": {
+          "automatedHeading": "Decisões automatizadas",
+          "classificationException": "Exceção declarada: {title}",
+          "classificationNecessary": "Necessário",
+          "classificationOptional": "Opcional",
+          "classificationReason": "{classification} — {reason}",
+          "collectionBoth": "direta e indireta",
+          "collectionDirect": "direta",
+          "collectionIndirect": "indireta",
+          "complaintInformation": "Informações sobre reclamações",
+          "complaintsHeading": "Dúvidas e reclamações",
+          "contactInformation": "Entre em contato sobre suas informações",
+          "controllerHeading": "Quem é responsável",
+          "cookiePurpose": "{name}: {description}",
+          "cookiePurposesHeading": "Finalidades",
+          "cookiesAbout": "Esta página descreve o armazenamento declarado para {siteName}.",
+          "cookiesExplanation": "Cookies e outras tecnologias podem atender a diferentes finalidades. A lista abaixo descreve cada item declarado; publicar esta página não controla essas tecnologias.",
+          "cookiesHeading": "Cookies e tecnologias semelhantes",
+          "dpoHeading": "Contato de proteção de dados",
+          "exerciseRights": "Como exercer seus direitos",
+          "listSeparator": ", ",
+          "noCookiePurposes": "Nenhuma finalidade de tratamento foi declarada.",
+          "noProviders": "Nenhum prestador de serviços foi declarado nesta configuração.",
+          "noPurposes": "Nenhuma finalidade de tratamento foi declarada nesta configuração.",
+          "noRetention": "Nenhum prazo de retenção foi declarado por finalidade.",
+          "noStorage": "Nenhum armazenamento de navegador foi declarado nesta configuração.",
+          "optional": "opcional",
+          "privacySignalsHeading": "Sinal Global Privacy Control",
+          "provider": "{name} — {provider}. Localização: {location}. Finalidades: {purposes}.",
+          "providerPrivacy": "Aviso de privacidade de {name}",
+          "providersHeading": "Prestadores de serviços e destinatários",
+          "purpose": "{name}: {description} Dados: {data}. Base legal: {legalBasis}. Origem ({source}): {collection}. O fornecimento é {required}. {consequences}",
+          "purposesHeading": "O que coletamos e por quê",
+          "representativeHeading": "Representante",
+          "required": "obrigatório",
+          "retentionHeading": "Por quanto tempo as informações são mantidas",
+          "retentionItem": "{name}: {retention}",
+          "rightsHeading": "Seus direitos e escolhas",
+          "storageCaption": "Inventário de armazenamento",
+          "storageClassification": "Classificação",
+          "storageCookie": "Cookie",
+          "storageDuration": "Duração",
+          "storageHeading": "Armazenamento declarado",
+          "storageIndexedDB": "Banco de dados do navegador",
+          "storageLocalStorage": "Armazenamento local",
+          "storageName": "Nome",
+          "storageOther": "Outro",
+          "storageProvider": "Fornecedor / serviço",
+          "storagePurpose": "Finalidade",
+          "storageQuestions": "Dúvidas sobre armazenamento",
+          "storageSessionStorage": "Armazenamento da sessão",
+          "storageType": "Tipo",
+          "transfersHeading": "Transferências internacionais"
+        },
+        "locale": "pt-BR",
+        "reviewStatus": "draft",
+        "revision": "copy-1",
+        "schemaVersion": 1,
+        "terms": {
+          "draft": "Prévia · Termos em revisão",
+          "error": "Não foi possível confirmar o registro da sua concordância. Tente novamente.",
+          "heading": "Revise os termos",
+          "metadata": "Versão {version} · vigência em {effectiveDate} · abre em outra aba",
+          "recorded": "Concordância registrada para a versão {version}.",
+          "regionLabel": "Concordância com os termos",
+          "retired": "Este contexto foi encerrado. Entre em contato com o responsável pelo site para iniciar outro processo.",
+          "stale": "Os termos mudaram. Recarregue a página para revisar a versão atual.",
+          "submitting": "Registrando sua concordância…",
+          "unavailable": "Este navegador não conseguiu iniciar uma solicitação segura. Use um navegador compatível com HTTPS."
+        }
+      },
+      "privacy": {
+        "automatedDecisions": "Este exemplo não toma decisões automatizadas sobre pessoas.",
+        "complaints": {
+          "description": "Entre em contato pelo endereço indicado nesta página."
+        },
+        "rights": [
+          "Entre em contato para consultar suas informações e apresentar uma solicitação."
+        ],
+        "transfers": "Este exemplo não envia os dados do recurso para outro servidor."
+      },
+      "purposes": [
+        {
+          "collection": {
+            "consequences": "As sugestões permanecem desativadas.",
+            "description": "Sua escolha nesta página.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Estado do recurso neste navegador"
+          ],
+          "description": "Mostrar uma sugestão local de leitura, sem enviar dados pela rede.",
+          "id": "suggestions",
+          "legalBasis": "Permissão para o recurso opcional; declaração de exemplo para revisão.",
+          "name": "Sugestões de leitura",
+          "retention": "Até a retirada da permissão ou a limpeza do navegador."
+        },
+        {
+          "collection": {
+            "consequences": "Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências.",
+            "description": "Sua escolha ou adiamento do aviso.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Finalidade e escopo da escolha",
+            "Data da escolha e prazo de validade"
+          ],
+          "description": "Lembrar suas preferências de privacidade neste navegador.",
+          "id": "remember-choices",
+          "legalBasis": "Armazenamento de preferências; classificação de exemplo para revisão.",
+          "name": "Memória das escolhas",
+          "retention": "Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos."
+        }
+      ],
+      "schemaVersion": 1,
+      "services": [
+        {
+          "id": "reading",
+          "location": "Este navegador",
+          "name": "Sugestões Juniper",
+          "provider": "Juniper",
+          "purposeIds": [
+            "suggestions"
+          ]
+        },
+        {
+          "id": "choices-memory",
+          "location": "Este navegador",
+          "name": "Memória das escolhas",
+          "provider": "Juniper",
+          "purposeIds": [
+            "remember-choices"
+          ]
+        }
+      ],
+      "site": {
+        "description": "Um espaço para leitura.",
+        "id": "juniper-pt",
+        "locale": "pt-BR",
+        "name": "Juniper",
+        "url": "https://juniper.example.test"
+      },
+      "storage": [
+        {
+          "classification": "necessary",
+          "duration": "Permissões: 30 dias. Recusas: 180 dias.",
+          "id": "choices",
+          "name": "notabenda:choices:v1:juniper-pt",
+          "necessityReason": "Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável.",
+          "serviceId": "choices-memory",
+          "type": "localStorage"
+        },
+        {
+          "classification": "necessary",
+          "duration": "30 minutos",
+          "id": "prompt-memory",
+          "name": "notabenda:choices:v1:juniper-pt:prompt",
+          "necessityReason": "Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável.",
+          "serviceId": "choices-memory",
+          "type": "localStorage"
+        }
+      ],
+      "terms": {
+        "audience": "consumer",
+        "serviceType": "informational"
+      }
+    }
+  },
+  {
+    "documents": {
+      "cookies": {
+        "effectiveDate": "2026-10-19",
+        "kind": "cookies",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-PRODUCT-LOCALIZATION"
+        ],
+        "reviewStatus": "draft",
+        "route": "/localization/agreement/cookies",
+        "sections": [
+          {
+            "heading": "Cookies e tecnologias semelhantes",
+            "id": "about",
+            "paragraphs": [
+              "Esta página descreve o armazenamento declarado para Juniper.",
+              "Cookies e outras tecnologias podem atender a diferentes finalidades. A lista abaixo descreve cada item declarado; publicar esta página não controla essas tecnologias."
+            ]
+          },
+          {
+            "heading": "Armazenamento declarado",
+            "id": "storage",
+            "table": {
+              "caption": "Inventário de armazenamento",
+              "columns": [
+                "Nome",
+                "Tipo",
+                "Fornecedor / serviço",
+                "Finalidade",
+                "Duração",
+                "Classificação"
+              ],
+              "rows": [
+                [
+                  "notabenda:choices:v1:juniper-agreement",
+                  "Armazenamento local",
+                  "Juniper / Memória das escolhas",
+                  "Memória das escolhas",
+                  "Permissões: 30 dias. Recusas: 180 dias.",
+                  "Necessário — Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável."
+                ],
+                [
+                  "notabenda:choices:v1:juniper-agreement:prompt",
+                  "Armazenamento local",
+                  "Juniper / Memória das escolhas",
+                  "Memória das escolhas",
+                  "30 minutos",
+                  "Necessário — Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável."
+                ]
+              ]
+            }
+          },
+          {
+            "heading": "Finalidades",
+            "id": "purposes",
+            "items": [
+              "Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede.",
+              "Memória das escolhas: Lembrar suas preferências de privacidade neste navegador."
+            ]
+          },
+          {
+            "heading": "Dúvidas sobre armazenamento",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "privacy@example.test"
+              },
+              {
+                "href": "/localization/agreement/privacy",
+                "label": "Política de privacidade"
+              }
+            ]
+          }
+        ],
+        "title": "Política de cookies",
+        "version": "1"
+      },
+      "privacy": {
+        "effectiveDate": "2026-10-19",
+        "kind": "privacy",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-NOTICE",
+          "REQ-NZ-NOTICE",
+          "REQ-PRODUCT-LOCALIZATION"
+        ],
+        "reviewStatus": "draft",
+        "route": "/localization/agreement/privacy",
+        "sections": [
+          {
+            "heading": "Quem é responsável",
+            "id": "controller",
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "privacy@example.test"
+              }
+            ],
+            "paragraphs": [
+              "Juniper",
+              "Endereço ilustrativo para revisão"
+            ]
+          },
+          {
+            "heading": "O que coletamos e por quê",
+            "id": "purposes",
+            "items": [
+              "Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede. Dados: Estado do recurso neste navegador. Base legal: Permissão para o recurso opcional; declaração de exemplo para revisão.. Origem (direta): Sua escolha nesta página.. O fornecimento é opcional. As sugestões permanecem desativadas.",
+              "Memória das escolhas: Lembrar suas preferências de privacidade neste navegador. Dados: Finalidade e escopo da escolha, Data da escolha e prazo de validade. Base legal: Armazenamento de preferências; classificação de exemplo para revisão.. Origem (direta): Sua escolha ou adiamento do aviso.. O fornecimento é opcional. Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências."
+            ]
+          },
+          {
+            "heading": "Por quanto tempo as informações são mantidas",
+            "id": "retention",
+            "items": [
+              "Sugestões de leitura: Até a retirada da permissão ou a limpeza do navegador.",
+              "Memória das escolhas: Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos."
+            ]
+          },
+          {
+            "heading": "Prestadores de serviços e destinatários",
+            "id": "providers",
+            "items": [
+              "Sugestões Juniper — Juniper. Localização: Este navegador. Finalidades: Sugestões de leitura.",
+              "Memória das escolhas — Juniper. Localização: Este navegador. Finalidades: Memória das escolhas."
+            ],
+            "links": []
+          },
+          {
+            "heading": "Transferências internacionais",
+            "id": "transfers",
+            "paragraphs": [
+              "Este exemplo não envia os dados do recurso para outro servidor."
+            ]
+          },
+          {
+            "heading": "Decisões automatizadas",
+            "id": "automated-decisions",
+            "paragraphs": [
+              "Este exemplo não toma decisões automatizadas sobre pessoas."
+            ]
+          },
+          {
+            "heading": "Seus direitos e escolhas",
+            "id": "rights",
+            "items": [
+              "Entre em contato para consultar suas informações e apresentar uma solicitação."
+            ],
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "Entre em contato sobre suas informações"
+              }
+            ]
+          },
+          {
+            "heading": "Dúvidas e reclamações",
+            "id": "complaints",
+            "paragraphs": [
+              "Entre em contato pelo endereço indicado nesta página."
+            ]
+          }
+        ],
+        "title": "Política de privacidade",
+        "version": "1"
+      },
+      "terms": {
+        "effectiveDate": "2026-10-19",
+        "kind": "terms",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-TERMS",
+          "REQ-PRODUCT-LOCALIZATION"
+        ],
+        "reviewStatus": "draft",
+        "route": "/localization/agreement/terms",
+        "sections": [
+          {
+            "heading": "Sobre este espaço",
+            "id": "reading",
+            "paragraphs": [
+              "Este espaço apresenta textos e sugestões de leitura."
+            ]
+          },
+          {
+            "heading": "Contato",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@example.test",
+                "label": "Fale com a Juniper"
+              }
+            ],
+            "paragraphs": [
+              "Entre em contato se tiver dúvidas sobre o conteúdo."
+            ]
+          }
+        ],
+        "title": "Termos de uso",
+        "version": "1"
+      }
+    },
+    "manifest": {
+      "artifactId": "e8a2a90561f7284bdbef60f28653db602fd35aedf9c226cc6a563fa8e44eb775",
+      "configSha256": "d6abb4a36dc64e40cdc4f904f632500c6d5c77374256208a907315baac5edd45",
+      "documents": [
+        {
+          "contentSha256": "9adcd2a8c86bc39873f7530457e0d7072d38a5266cadbc973b1b908dd930c896",
+          "effectiveDate": "2026-10-19",
+          "file": "localization/agreement/privacy/index.html",
+          "kind": "privacy",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-NOTICE",
+            "REQ-NZ-NOTICE",
+            "REQ-PRODUCT-LOCALIZATION"
+          ],
+          "reviewStatus": "draft",
+          "route": "/localization/agreement/privacy",
+          "sha256": "b07062580d687c580c782d009c497706d354da37590796747224fc6a624dba38",
+          "title": "Política de privacidade",
+          "version": "1"
+        },
+        {
+          "contentSha256": "9e2fe32cdc7a1b980ae43436301c374b7b711a4d249372fe565fff5250df5b26",
+          "effectiveDate": "2026-10-19",
+          "file": "localization/agreement/cookies/index.html",
+          "kind": "cookies",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-PRODUCT-LOCALIZATION"
+          ],
+          "reviewStatus": "draft",
+          "route": "/localization/agreement/cookies",
+          "sha256": "a0985805717321d6d86ff51b15b88cf3fd1cf2b3473efb7bf179952d7231738d",
+          "title": "Política de cookies",
+          "version": "1"
+        },
+        {
+          "contentSha256": "b44631360191538ca257576d40f89b714a34ea0b4957da675f1a2acffcd3974a",
+          "effectiveDate": "2026-10-19",
+          "file": "localization/agreement/terms/index.html",
+          "kind": "terms",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-TERMS",
+            "REQ-PRODUCT-LOCALIZATION"
+          ],
+          "reviewStatus": "draft",
+          "route": "/localization/agreement/terms",
+          "sha256": "65702bae3311f2cd50599701af1b60f77a45e598f5acc106c7461a7c8cde3666",
+          "title": "Termos de uso",
+          "version": "1"
+        }
+      ],
+      "locale": "pt-BR",
+      "mode": "preview",
+      "requirementIds": [
+        "REQ-PRODUCT-CONFIG",
+        "REQ-PRODUCT-ARTIFACTS",
+        "REQ-PRODUCT-DOCUMENTS",
+        "REQ-PRODUCT-SAFE-CONTENT",
+        "REQ-EU-NOTICE",
+        "REQ-NZ-NOTICE",
+        "REQ-PRODUCT-LOCALIZATION",
+        "REQ-EU-TERMS"
+      ],
+      "schemaVersion": 1,
+      "siteId": "juniper-agreement"
+    },
+    "pages": {
+      "localization/agreement/cookies/index.html": "<!doctype html><html lang=\"pt-BR\" dir=\"ltr\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Política de cookies · Juniper</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Ir para o conteúdo</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper</a><span>Informações legais</span></header><main id=\"main\"><article class=\"nb-document\" lang=\"pt-BR\" dir=\"ltr\" aria-labelledby=\"nb-cookies-title\" data-document-kind=\"cookies\" data-document-version=\"1\"><header><p class=\"nb-eyebrow\">Juniper · Informações legais</p><h1 id=\"nb-cookies-title\">Política de cookies</h1><p class=\"nb-document-meta\">Versão 1 <span aria-hidden=\"true\">·</span> Vigência <time datetime=\"2026-10-19\">2026-10-19</time></p><p class=\"nb-draft\" role=\"note\">Rascunho para revisão. Este documento não foi aprovado para uso em produção.</p></header><nav class=\"nb-contents\" aria-label=\"Nesta página\"><p>Nesta página</p><ol><li><a href=\"#nb-cookies-section-about\">Cookies e tecnologias semelhantes</a></li><li><a href=\"#nb-cookies-section-storage\">Armazenamento declarado</a></li><li><a href=\"#nb-cookies-section-purposes\">Finalidades</a></li><li><a href=\"#nb-cookies-section-contact\">Dúvidas sobre armazenamento</a></li></ol></nav><section id=\"nb-cookies-section-about\"><h2>Cookies e tecnologias semelhantes</h2><p>Esta página descreve o armazenamento declarado para Juniper.</p><p>Cookies e outras tecnologias podem atender a diferentes finalidades. A lista abaixo descreve cada item declarado; publicar esta página não controla essas tecnologias.</p></section><section id=\"nb-cookies-section-storage\"><details class=\"nb-storage-foldout\"><summary><h2>Armazenamento declarado</h2><span class=\"nb-storage-count\">2 itens</span></summary><div class=\"nb-table-scroll\" role=\"region\" aria-label=\"Inventário de armazenamento\" tabindex=\"0\"><table><caption>Inventário de armazenamento</caption><thead><tr><th scope=\"col\">Nome</th><th scope=\"col\">Tipo</th><th scope=\"col\">Fornecedor / serviço</th><th scope=\"col\">Finalidade</th><th scope=\"col\">Duração</th><th scope=\"col\">Classificação</th></tr></thead><tbody><tr><th scope=\"row\">notabenda:choices:v1:juniper-agreement</th><td>Armazenamento local</td><td>Juniper / Memória das escolhas</td><td>Memória das escolhas</td><td>Permissões: 30 dias. Recusas: 180 dias.</td><td>Necessário — Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável.</td></tr><tr><th scope=\"row\">notabenda:choices:v1:juniper-agreement:prompt</th><td>Armazenamento local</td><td>Juniper / Memória das escolhas</td><td>Memória das escolhas</td><td>30 minutos</td><td>Necessário — Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável.</td></tr></tbody></table></div></details></section><section id=\"nb-cookies-section-purposes\"><h2>Finalidades</h2><ul><li>Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede.</li><li>Memória das escolhas: Lembrar suas preferências de privacidade neste navegador.</li></ul></section><section id=\"nb-cookies-section-contact\"><h2>Dúvidas sobre armazenamento</h2><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">privacy@example.test</a></li><li><a href=\"/localization/agreement/privacy\">Política de privacidade</a></li></ul></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" lang=\"pt-BR\" dir=\"ltr\" aria-label=\"Informações legais\"><a href=\"/localization/agreement/privacy\">Política de privacidade</a><a href=\"/localization/agreement/cookies\">Política de cookies</a><a href=\"/localization/agreement/terms\">Termos de uso</a></nav><p>© Juniper</p></footer></body></html>",
+      "localization/agreement/privacy/index.html": "<!doctype html><html lang=\"pt-BR\" dir=\"ltr\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Política de privacidade · Juniper</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Ir para o conteúdo</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper</a><span>Informações legais</span></header><main id=\"main\"><article class=\"nb-document\" lang=\"pt-BR\" dir=\"ltr\" aria-labelledby=\"nb-privacy-title\" data-document-kind=\"privacy\" data-document-version=\"1\"><header><p class=\"nb-eyebrow\">Juniper · Informações legais</p><h1 id=\"nb-privacy-title\">Política de privacidade</h1><p class=\"nb-document-meta\">Versão 1 <span aria-hidden=\"true\">·</span> Vigência <time datetime=\"2026-10-19\">2026-10-19</time></p><p class=\"nb-draft\" role=\"note\">Rascunho para revisão. Este documento não foi aprovado para uso em produção.</p></header><nav class=\"nb-contents\" aria-label=\"Nesta página\"><p>Nesta página</p><ol><li><a href=\"#nb-privacy-section-controller\">Quem é responsável</a></li><li><a href=\"#nb-privacy-section-purposes\">O que coletamos e por quê</a></li><li><a href=\"#nb-privacy-section-retention\">Por quanto tempo as informações são mantidas</a></li><li><a href=\"#nb-privacy-section-providers\">Prestadores de serviços e destinatários</a></li><li><a href=\"#nb-privacy-section-transfers\">Transferências internacionais</a></li><li><a href=\"#nb-privacy-section-automated-decisions\">Decisões automatizadas</a></li><li><a href=\"#nb-privacy-section-rights\">Seus direitos e escolhas</a></li><li><a href=\"#nb-privacy-section-complaints\">Dúvidas e reclamações</a></li></ol></nav><section id=\"nb-privacy-section-controller\"><h2>Quem é responsável</h2><p>Juniper</p><p>Endereço ilustrativo para revisão</p><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">privacy@example.test</a></li></ul></section><section id=\"nb-privacy-section-purposes\"><h2>O que coletamos e por quê</h2><ul><li>Sugestões de leitura: Mostrar uma sugestão local de leitura, sem enviar dados pela rede. Dados: Estado do recurso neste navegador. Base legal: Permissão para o recurso opcional; declaração de exemplo para revisão.. Origem (direta): Sua escolha nesta página.. O fornecimento é opcional. As sugestões permanecem desativadas.</li><li>Memória das escolhas: Lembrar suas preferências de privacidade neste navegador. Dados: Finalidade e escopo da escolha, Data da escolha e prazo de validade. Base legal: Armazenamento de preferências; classificação de exemplo para revisão.. Origem (direta): Sua escolha ou adiamento do aviso.. O fornecimento é opcional. Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências.</li></ul></section><section id=\"nb-privacy-section-retention\"><h2>Por quanto tempo as informações são mantidas</h2><ul><li>Sugestões de leitura: Até a retirada da permissão ou a limpeza do navegador.</li><li>Memória das escolhas: Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos.</li></ul></section><section id=\"nb-privacy-section-providers\"><h2>Prestadores de serviços e destinatários</h2><ul><li>Sugestões Juniper — Juniper. Localização: Este navegador. Finalidades: Sugestões de leitura.</li><li>Memória das escolhas — Juniper. Localização: Este navegador. Finalidades: Memória das escolhas.</li></ul></section><section id=\"nb-privacy-section-transfers\"><h2>Transferências internacionais</h2><p>Este exemplo não envia os dados do recurso para outro servidor.</p></section><section id=\"nb-privacy-section-automated-decisions\"><h2>Decisões automatizadas</h2><p>Este exemplo não toma decisões automatizadas sobre pessoas.</p></section><section id=\"nb-privacy-section-rights\"><h2>Seus direitos e escolhas</h2><ul><li>Entre em contato para consultar suas informações e apresentar uma solicitação.</li></ul><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">Entre em contato sobre suas informações</a></li></ul></section><section id=\"nb-privacy-section-complaints\"><h2>Dúvidas e reclamações</h2><p>Entre em contato pelo endereço indicado nesta página.</p></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" lang=\"pt-BR\" dir=\"ltr\" aria-label=\"Informações legais\"><a href=\"/localization/agreement/privacy\">Política de privacidade</a><a href=\"/localization/agreement/cookies\">Política de cookies</a><a href=\"/localization/agreement/terms\">Termos de uso</a></nav><p>© Juniper</p></footer></body></html>",
+      "localization/agreement/terms/index.html": "<!doctype html><html lang=\"pt-BR\" dir=\"ltr\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Termos de uso · Juniper</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Ir para o conteúdo</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper</a><span>Informações legais</span></header><main id=\"main\"><article class=\"nb-document\" lang=\"pt-BR\" dir=\"ltr\" aria-labelledby=\"nb-terms-title\" data-document-kind=\"terms\" data-document-version=\"1\"><header><p class=\"nb-eyebrow\">Juniper · Informações legais</p><h1 id=\"nb-terms-title\">Termos de uso</h1><p class=\"nb-document-meta\">Versão 1 <span aria-hidden=\"true\">·</span> Vigência <time datetime=\"2026-10-19\">2026-10-19</time></p><p class=\"nb-draft\" role=\"note\">Rascunho para revisão. Este documento não foi aprovado para uso em produção.</p></header><nav class=\"nb-contents\" aria-label=\"Nesta página\"><p>Nesta página</p><ol><li><a href=\"#nb-terms-section-reading\">Sobre este espaço</a></li><li><a href=\"#nb-terms-section-contact\">Contato</a></li></ol></nav><section id=\"nb-terms-section-reading\"><h2>Sobre este espaço</h2><p>Este espaço apresenta textos e sugestões de leitura.</p></section><section id=\"nb-terms-section-contact\"><h2>Contato</h2><p>Entre em contato se tiver dúvidas sobre o conteúdo.</p><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@example.test\">Fale com a Juniper</a></li></ul></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" lang=\"pt-BR\" dir=\"ltr\" aria-label=\"Informações legais\"><a href=\"/localization/agreement/privacy\">Política de privacidade</a><a href=\"/localization/agreement/cookies\">Política de cookies</a><a href=\"/localization/agreement/terms\">Termos de uso</a></nav><p>© Juniper</p></footer></body></html>"
+    },
+    "publicConfig": {
+      "consent": {
+        "dismissalMinutes": 30,
+        "grantLifetimeDays": 30,
+        "purposes": [
+          {
+            "id": "suggestions",
+            "scope": "reading-1"
+          }
+        ],
+        "refusalLifetimeDays": 180,
+        "services": [
+          {
+            "id": "reading",
+            "scope": "reading-1"
+          }
+        ]
+      },
+      "controller": {
+        "address": "Endereço ilustrativo para revisão",
+        "email": "privacy@example.test",
+        "name": "Juniper"
+      },
+      "documents": {
+        "cookies": {
+          "effectiveDate": "2026-10-19",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/localization/agreement/cookies",
+          "source": "generated",
+          "title": "Política de cookies",
+          "version": "1"
+        },
+        "privacy": {
+          "effectiveDate": "2026-10-19",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/localization/agreement/privacy",
+          "source": "generated",
+          "title": "Política de privacidade",
+          "version": "1"
+        },
+        "terms": {
+          "effectiveDate": "2026-10-19",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/localization/agreement/terms",
+          "sections": [
+            {
+              "heading": "Sobre este espaço",
+              "id": "reading",
+              "paragraphs": [
+                "Este espaço apresenta textos e sugestões de leitura."
+              ]
+            },
+            {
+              "heading": "Contato",
+              "id": "contact",
+              "links": [
+                {
+                  "href": "mailto:privacy@example.test",
+                  "label": "Fale com a Juniper"
+                }
+              ],
+              "paragraphs": [
+                "Entre em contato se tiver dúvidas sobre o conteúdo."
+              ]
+            }
+          ],
+          "source": "supplied",
+          "title": "Termos de uso",
+          "version": "1"
+        }
+      },
+      "jurisdictions": [
+        "BR"
+      ],
+      "localization": {
+        "consent": {
+          "acceptLabel": "Permitir opcionais",
+          "checking": "Verificando sua escolha salva… Os serviços opcionais permanecem desativados.",
+          "choicesChanged": "As escolhas atuais mudaram. Revise as seleções antes de salvar.",
+          "closeLabel": "Fechar",
+          "cookiePolicy": "Política de cookies",
+          "destroyed": "As escolhas de privacidade estão indisponíveis.",
+          "dismissLabel": "Agora não",
+          "error": "Não foi possível confirmar o registro da sua escolha. Os serviços opcionais permanecem desativados.",
+          "essentialNote": "As funções essenciais são mantidas pelo site. Os recursos opcionais abaixo dependem da sua permissão.",
+          "exceptionsSummary": "Outras configurações de armazenamento têm controles separados.",
+          "expired": "A escolha não foi confirmada a tempo ou expirou. Escolha novamente para permitir serviços opcionais.",
+          "materialChange": "Mudanças no tratamento opcional: {summary}",
+          "noticeLabel": "Escolhas sobre cookies opcionais",
+          "preferencesIntro": "Escolha os recursos opcionais que deseja permitir. Fechar este painel mantém suas escolhas atuais.",
+          "preferencesLabel": "Preferências",
+          "preferencesTitle": "Escolhas de privacidade",
+          "privacyInformation": "Informações de privacidade",
+          "processingPending": "Há restrições de tratamento pendentes ou não confirmadas. Os serviços abrangidos permanecem desativados; as escolhas de cookies não alteram essas restrições.",
+          "processingRecorded": "Uma restrição de tratamento está registrada para este contexto. As escolhas de cookies não a removem.",
+          "recorded": "Suas escolhas foram registradas.",
+          "rejectLabel": "Recusar opcionais",
+          "reloadRequired": "Não foi possível interromper ou iniciar um serviço opcional com segurança. Recarregue a página para concluir a alteração.",
+          "restrictedIntro": "As finalidades indisponíveis precisam de outro processo e permanecem desativadas aqui.",
+          "restrictedSummary": "Outras finalidades precisam de outro processo e permanecem desativadas aqui.",
+          "retired": "Este contexto foi encerrado. Os serviços opcionais permanecem desativados. Entre em contato com o responsável pelo site se precisar de ajuda.",
+          "retryLabel": "Tentar registrar novamente",
+          "review": "Revise suas escolhas antes de permitir serviços opcionais.",
+          "saveLabel": "Salvar escolhas",
+          "saving": "Salvando sua escolha… Os serviços opcionais aguardam a confirmação.",
+          "scopeUnavailable": "Esta opção precisa de outro processo e permanece desativada aqui.",
+          "services": "Serviços: {services}",
+          "signalObserved": "O sinal Global Privacy Control está ativo. Os serviços abrangidos pela política do site permanecem desativados neste navegador. As escolhas de cookies não alteram essa restrição.",
+          "signalUnavailable": "Não foi possível verificar o sinal Global Privacy Control. Os serviços abrangidos pela política do site permanecem desativados.",
+          "stale": "Este aviso mudou. Recarregue a página para revisar a versão atual.",
+          "storageUnavailable": "Não foi possível salvar as preferências neste navegador. Os serviços opcionais permanecem desativados. Uma escolha anterior pode voltar em outra visita se não for possível limpar o armazenamento.",
+          "summary": "Você permite sugestões de leitura neste navegador? Elas ficam desativadas até você permitir.",
+          "title": "Sua escolha, no seu tempo",
+          "triggerLabel": "Escolhas de privacidade",
+          "unavailable": "Não foi possível criar um registro. Os serviços opcionais permanecem desativados. Você ainda pode recusá-los.",
+          "unavailableSummary": "As finalidades opcionais precisam de outro processo e permanecem desativadas aqui."
+        },
+        "direction": "ltr",
+        "disclosureRevision": "disclosures-1",
+        "documents": {
+          "contents": "Nesta página",
+          "draft": "Rascunho para revisão. Este documento não foi aprovado para uso em produção.",
+          "effectiveLabel": "Vigência",
+          "legalEyebrow": "{siteName} · Informações legais",
+          "legalInformation": "Informações legais",
+          "legalLabel": "Informações legais",
+          "privacyRequests": "Solicitações de privacidade",
+          "skipToContent": "Ir para o conteúdo",
+          "storageItem": "{count} item",
+          "storageItems": "{count} itens",
+          "versionLabel": "Versão"
+        },
+        "generatedDocuments": {
+          "automatedHeading": "Decisões automatizadas",
+          "classificationException": "Exceção declarada: {title}",
+          "classificationNecessary": "Necessário",
+          "classificationOptional": "Opcional",
+          "classificationReason": "{classification} — {reason}",
+          "collectionBoth": "direta e indireta",
+          "collectionDirect": "direta",
+          "collectionIndirect": "indireta",
+          "complaintInformation": "Informações sobre reclamações",
+          "complaintsHeading": "Dúvidas e reclamações",
+          "contactInformation": "Entre em contato sobre suas informações",
+          "controllerHeading": "Quem é responsável",
+          "cookiePurpose": "{name}: {description}",
+          "cookiePurposesHeading": "Finalidades",
+          "cookiesAbout": "Esta página descreve o armazenamento declarado para {siteName}.",
+          "cookiesExplanation": "Cookies e outras tecnologias podem atender a diferentes finalidades. A lista abaixo descreve cada item declarado; publicar esta página não controla essas tecnologias.",
+          "cookiesHeading": "Cookies e tecnologias semelhantes",
+          "dpoHeading": "Contato de proteção de dados",
+          "exerciseRights": "Como exercer seus direitos",
+          "listSeparator": ", ",
+          "noCookiePurposes": "Nenhuma finalidade de tratamento foi declarada.",
+          "noProviders": "Nenhum prestador de serviços foi declarado nesta configuração.",
+          "noPurposes": "Nenhuma finalidade de tratamento foi declarada nesta configuração.",
+          "noRetention": "Nenhum prazo de retenção foi declarado por finalidade.",
+          "noStorage": "Nenhum armazenamento de navegador foi declarado nesta configuração.",
+          "optional": "opcional",
+          "privacySignalsHeading": "Sinal Global Privacy Control",
+          "provider": "{name} — {provider}. Localização: {location}. Finalidades: {purposes}.",
+          "providerPrivacy": "Aviso de privacidade de {name}",
+          "providersHeading": "Prestadores de serviços e destinatários",
+          "purpose": "{name}: {description} Dados: {data}. Base legal: {legalBasis}. Origem ({source}): {collection}. O fornecimento é {required}. {consequences}",
+          "purposesHeading": "O que coletamos e por quê",
+          "representativeHeading": "Representante",
+          "required": "obrigatório",
+          "retentionHeading": "Por quanto tempo as informações são mantidas",
+          "retentionItem": "{name}: {retention}",
+          "rightsHeading": "Seus direitos e escolhas",
+          "storageCaption": "Inventário de armazenamento",
+          "storageClassification": "Classificação",
+          "storageCookie": "Cookie",
+          "storageDuration": "Duração",
+          "storageHeading": "Armazenamento declarado",
+          "storageIndexedDB": "Banco de dados do navegador",
+          "storageLocalStorage": "Armazenamento local",
+          "storageName": "Nome",
+          "storageOther": "Outro",
+          "storageProvider": "Fornecedor / serviço",
+          "storagePurpose": "Finalidade",
+          "storageQuestions": "Dúvidas sobre armazenamento",
+          "storageSessionStorage": "Armazenamento da sessão",
+          "storageType": "Tipo",
+          "transfersHeading": "Transferências internacionais"
+        },
+        "locale": "pt-BR",
+        "reviewStatus": "draft",
+        "revision": "copy-1",
+        "schemaVersion": 1,
+        "terms": {
+          "draft": "Prévia · Termos em revisão",
+          "error": "Não foi possível confirmar o registro da sua concordância. Tente novamente.",
+          "heading": "Revise os termos",
+          "metadata": "Versão {version} · vigência em {effectiveDate} · abre em outra aba",
+          "recorded": "Concordância registrada para a versão {version}.",
+          "regionLabel": "Concordância com os termos",
+          "retired": "Este contexto foi encerrado. Entre em contato com o responsável pelo site para iniciar outro processo.",
+          "stale": "Os termos mudaram. Recarregue a página para revisar a versão atual.",
+          "submitting": "Registrando sua concordância…",
+          "unavailable": "Este navegador não conseguiu iniciar uma solicitação segura. Use um navegador compatível com HTTPS."
+        }
+      },
+      "privacy": {
+        "automatedDecisions": "Este exemplo não toma decisões automatizadas sobre pessoas.",
+        "complaints": {
+          "description": "Entre em contato pelo endereço indicado nesta página."
+        },
+        "rights": [
+          "Entre em contato para consultar suas informações e apresentar uma solicitação."
+        ],
+        "transfers": "Este exemplo não envia os dados do recurso para outro servidor."
+      },
+      "purposes": [
+        {
+          "collection": {
+            "consequences": "As sugestões permanecem desativadas.",
+            "description": "Sua escolha nesta página.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Estado do recurso neste navegador"
+          ],
+          "description": "Mostrar uma sugestão local de leitura, sem enviar dados pela rede.",
+          "id": "suggestions",
+          "legalBasis": "Permissão para o recurso opcional; declaração de exemplo para revisão.",
+          "name": "Sugestões de leitura",
+          "retention": "Até a retirada da permissão ou a limpeza do navegador."
+        },
+        {
+          "collection": {
+            "consequences": "Os recursos opcionais permanecem desativados quando não é possível confirmar as preferências.",
+            "description": "Sua escolha ou adiamento do aviso.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Finalidade e escopo da escolha",
+            "Data da escolha e prazo de validade"
+          ],
+          "description": "Lembrar suas preferências de privacidade neste navegador.",
+          "id": "remember-choices",
+          "legalBasis": "Armazenamento de preferências; classificação de exemplo para revisão.",
+          "name": "Memória das escolhas",
+          "retention": "Permissões: 30 dias. Recusas: 180 dias. Adiamento do aviso: 30 minutos."
+        }
+      ],
+      "schemaVersion": 1,
+      "services": [
+        {
+          "id": "reading",
+          "location": "Este navegador",
+          "name": "Sugestões Juniper",
+          "provider": "Juniper",
+          "purposeIds": [
+            "suggestions"
+          ]
+        },
+        {
+          "id": "choices-memory",
+          "location": "Este navegador",
+          "name": "Memória das escolhas",
+          "provider": "Juniper",
+          "purposeIds": [
+            "remember-choices"
+          ]
+        }
+      ],
+      "site": {
+        "description": "Um espaço para leitura.",
+        "id": "juniper-agreement",
+        "locale": "pt-BR",
+        "name": "Juniper",
+        "url": "https://juniper.example.test"
+      },
+      "storage": [
+        {
+          "classification": "necessary",
+          "duration": "Permissões: 30 dias. Recusas: 180 dias.",
+          "id": "choices",
+          "name": "notabenda:choices:v1:juniper-agreement",
+          "necessityReason": "Lembrar sua escolha. Esta classificação precisa de revisão pelo responsável.",
+          "serviceId": "choices-memory",
+          "type": "localStorage"
+        },
+        {
+          "classification": "necessary",
+          "duration": "30 minutos",
+          "id": "prompt-memory",
+          "name": "notabenda:choices:v1:juniper-agreement:prompt",
+          "necessityReason": "Lembrar o adiamento do aviso. Esta classificação precisa de revisão pelo responsável.",
+          "serviceId": "choices-memory",
+          "type": "localStorage"
+        }
+      ],
+      "terms": {
+        "audience": "consumer",
+        "serviceType": "informational"
+      }
+    }
   }
 ]
