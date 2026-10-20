@@ -147,11 +147,12 @@ export function sectionForGuide(route){
  return guideSections.find(section=>section.guides.some(item=>item.href==='/guide/'+slug))??referenceSection;
 }
 const e=value=>String(value).replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// @requirements REQ-PRODUCT-DOCS-SEARCH
 export function guideNavigation(route,title,{mobile=false}={}){
  const current=normalizeGuideRoute(route),active=sectionForGuide(current),isArea=current===normalizeGuideRoute(guideSectionUrl(active));
  const link=item=>`<a href="${item.href}"${normalizeGuideRoute(item.href)===current?' aria-current="page"':''}>${e(item.label)}</a>`;
- return `<nav aria-label="Documentation"><a class="guide-overview" href="/guide"${current==='/guide'?' aria-current="page"':''}>Guide overview</a>${guideSections.map(section=>{
-  const areaLink={href:guideSectionUrl(section),label:'Area overview'},isActive=active.id===section.id&&current!=='/guide',listed=section.guides.some(g=>g.href===current);
+ return `<nav aria-label="Documentation"><a class="guide-search-link" href="/guide/search/"${current==='/guide/search'?' aria-current="page"':''}>Search documentation <span aria-hidden="true">⌕</span></a><a class="guide-overview" href="/guide"${current==='/guide'?' aria-current="page"':''}>Guide overview</a>${guideSections.map(section=>{
+  const areaLink={href:guideSectionUrl(section),label:'Area overview'},isActive=active.id===section.id&&current!=='/guide'&&current!=='/guide/search',listed=section.guides.some(g=>g.href===current);
   const contents=section.groups?section.groups.map(group=>`<div class="guide-nav-subgroup"><p>${e(group.title)}</p>${group.guides.map(link).join('')}</div>`).join(''):section.guides.map(link).join('');
   const links=link(areaLink)+(isActive?contents+(!listed&&!isArea?link({href:current,label:title}):''):'');
   // Mobile has one disclosure for the menu; inactive areas are a single link.

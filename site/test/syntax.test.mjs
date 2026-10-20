@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-DOCS-SEARCH
 // @requirements REQ-PRODUCT-SYNTAX-HIGHLIGHTING REQ-PRODUCT-A11Y REQ-PRODUCT-SAFE-CONTENT
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -34,7 +35,7 @@ test('every built guide code block uses keyboard-accessible static highlighting 
   if(!entry.endsWith('/index.html'))continue;
   const route=entry.slice(0,-'/index.html'.length);
   const dom=new JSDOM(await readFile(new URL('guide/'+route+'/index.html',root),'utf8')),document=dom.window.document;
-  assert.ok(document.querySelector('link[href="/assets/syntax.css"]'));assert.equal(document.querySelectorAll('script').length,0);
+  assert.ok(document.querySelector('link[href="/assets/syntax.css"]'));assert.deepEqual([...document.querySelectorAll('script')].map(script=>script.getAttribute('src')),route==='search'?['/assets/guide-search.mjs']:[]);
   for(const pre of document.querySelectorAll('.prose pre')){
    blocks++;assert.ok(pre.classList.contains('nb-code'),route);assert.equal(pre.tabIndex,0);assert.ok(pre.getAttribute('aria-label'));assert.equal(pre.querySelectorAll('[style]').length,0);
    for(const token of pre.querySelectorAll('.nb-token')){highlighted++;const name=[...token.classList].find(x=>x.startsWith('nb-token-'));assert.ok(css.includes('.'+name+'{'),name);}

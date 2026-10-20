@@ -76,7 +76,8 @@ export function publicResponse(response, path) {
   const embeds=/^\/embeds(?:\/|\/index\.html)?$/u.test(path);
   const authoredPreview=/^\/authored\/preview(?:\/|\/index\.html)?$/u.test(path);
   const sampleFrame=/^\/embeds\/frame(?:\/|\/index\.html)?$/u.test(path);
-  const runtime = embeds || /^\/(?:dark\/)?(?:start|choices|react|google-basic|storage-cleanup|storage-exceptions|localization|technology|privacy-signals|discovery|repeat-prompts|scope-guards|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/localization\/(?:storage|processing|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/astro(?:\/notes)?(?:\/|\/index\.html)?$/u.test(path);
+  // @requirements REQ-PRODUCT-DOCS-SEARCH Only the explicit search page runs search code.
+  const runtime = /^\/guide\/search(?:\/|\/index\.html)?$/u.test(path) || embeds || /^\/(?:dark\/)?(?:start|choices|react|google-basic|storage-cleanup|storage-exceptions|localization|technology|privacy-signals|discovery|repeat-prompts|scope-guards|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/localization\/(?:storage|processing|services)(?:\/|\/index\.html)?$/u.test(path) || /^\/astro(?:\/notes)?(?:\/|\/index\.html)?$/u.test(path);
   headers.set('Content-Security-Policy',`default-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; ${runtime ? "script-src 'self'; connect-src 'self';" : ''} ${embeds||authoredPreview||/^\/start(?:\/|\/index\.html)?$/u.test(path)?"frame-src 'self'; ":''}base-uri 'none'; form-action 'self'; frame-ancestors ${sampleFrame?"'self'":"'none'"}`);
   headers.set('X-Content-Type-Options','nosniff'); headers.set('Referrer-Policy','no-referrer');
   return new Response(response.body,{status:response.status,statusText:response.statusText,headers});

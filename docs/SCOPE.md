@@ -100,6 +100,8 @@ React and Astro views reuse the host-owned terms controller. Rendering, hydratio
 
 ## Branding, documentation, and license
 
+Published documentation can be searched locally by topic, requirement ID and API name. The explicit search page loads a bounded same-origin index of source guides, with matching section links, text-only results and a complete no-script directory. Queries stay in the page and are not sent to a search provider or placed in its URL. Search neither reads operator data nor advises which legal rules apply.
+
 - License project code under **Apache-2.0**. Clearly distinguish code licensing from supplied or separately licensed legal content.
 - Design an original scalable logo and wordmark. Keep the main README human-readable: what works today, a quick start, examples/screenshots, and links to deeper material.
 - Preserve the detailed overview in documentation rather than discarding it.

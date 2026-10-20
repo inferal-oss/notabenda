@@ -18,6 +18,8 @@ import {createCodeHighlighter} from './syntax.mjs';
 import {examplesBody} from './examples-page.mjs';
 import {siteSections,guideNavigation,sectionForGuide,exampleSectionUrl,guideSectionUrl,guideContext,starterPath,stageOverview,guideOrientation} from './navigation.mjs';
 import {guideLanding,allGuidePages,guideArea} from './guide-pages.mjs';
+// @requirements REQ-PRODUCT-DOCS-SEARCH
+import {guideSearchPage,buildGuideSearchIndex,guideSearchBody} from './guide-search-build.mjs';
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {describeIntegration} from '@notabenda/core/integration';
 import {markdownRoute,rewriteMarkdown,skillFiles} from './agent-docs.mjs';
@@ -53,7 +55,7 @@ const markdownRenderer=new Marked({renderer:{
  }
 }});
 function guideOutline(headings){return headings.length<3?'':`<details class="guide-outline"><summary>On this page <span>${headings.length} sections</span></summary><nav aria-label="On this page">${headings.map(h=>`<a href="#${escape(h.id)}">${escape(h.label)}</a>`).join('')}</nav></details>`;}
-const style = await read('site/style.css')+'\n'+await read('site/footer.css')+'\n'+await read('site/compliance-diagrams.css');
+const style = await read('site/style.css')+'\n'+await read('site/footer.css')+'\n'+await read('site/compliance-diagrams.css')+'\n'+await read('site/guide-search.css');
 const files = {'site.css':style,'assets/inferal-mark.svg':await read('site/assets/inferal-mark.svg')};
 files['assets/demo-admin.css']=await read('site/demo-admin.css');
 files['assets/order-admin.css']=await read('site/order-admin.css');
@@ -90,8 +92,8 @@ for(const path of skillFiles)files['skills/notabenda/'+path]=await read('skills/
 function layout(title, body, {description='Self-hosted legal pages, privacy controls and document history.',guide=false,guideRoute='/guide'}={}) {
   const section=sectionForGuide(guideRoute);
   const agentLinks='<link rel="describedby" href="/llms.txt">'+(guide&&[...docs.values()].includes(guideRoute)?`<link rel="alternate" type="text/markdown" href="${markdownRoute(guideRoute)}">`:'');
-  const breadcrumb=guide&&guideRoute!=='/guide'?`<nav class="guide-breadcrumb" aria-label="Breadcrumb"><a href="/guide">Guide</a><span aria-hidden="true">/</span>${guideRoute.replace(/\/$/u,'')===guideSectionUrl(section).replace(/\/$/u,'')?`<span aria-current="page">${escape(section.title)}</span>`:`<a href="${guideSectionUrl(section)}">${escape(section.title)}</a>`}</nav>`:'';
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escape(description)}"><title>${escape(title)} · Notabenda</title>${agentLinks}<link rel="icon" href="/docs/assets/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/assets/syntax.css"><link rel="stylesheet" href="/assets/website-notice.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="/" aria-label="Notabenda home"><img src="/docs/assets/mark.svg" width="36" height="36" alt=""><span>notabenda</span></a><nav aria-label="Main"><a href="/start">Packs <span class="nav-pack-count">${cartridgeLibrary().length}</span></a><a href="/guide">Guide</a><a href="/examples">Examples</a><a class="nav-action" href="/start">Get started <span aria-hidden="true">→</span></a></nav></header>${guide ? `<div class="guide-layout"><aside class="guide-nav guide-nav-desktop"><p class="eyebrow">Build with Notabenda</p>${guideNavigation(guideRoute,title)}<p class="hint">Developer preview.<br>Regional support is tracked item by item.</p></aside><details class="guide-nav guide-nav-mobile"><summary>Browse documentation <span aria-hidden="true">⌄</span></summary>${guideNavigation(guideRoute,title,{mobile:true})}</details><main id="main" class="prose">${breadcrumb}${body}${guideContext(guideRoute)}</main></div>` : `<main id="main">${body}</main>`}${websiteFooter()}</body></html>`;
+  const breadcrumb=guide&&guideRoute!=='/guide'&&guideRoute!=='/guide/search'?`<nav class="guide-breadcrumb" aria-label="Breadcrumb"><a href="/guide">Guide</a><span aria-hidden="true">/</span>${guideRoute.replace(/\/$/u,'')===guideSectionUrl(section).replace(/\/$/u,'')?`<span aria-current="page">${escape(section.title)}</span>`:`<a href="${guideSectionUrl(section)}">${escape(section.title)}</a>`}</nav>`:'';
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="${escape(description)}"><title>${escape(title)} · Notabenda</title>${agentLinks}<link rel="icon" href="/docs/assets/mark.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css"><link rel="stylesheet" href="/assets/syntax.css"><link rel="stylesheet" href="/assets/website-notice.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><a class="brand" href="/" aria-label="Notabenda home"><img src="/docs/assets/mark.svg" width="36" height="36" alt=""><span>notabenda</span></a><nav aria-label="Main"><a href="/start">Packs <span class="nav-pack-count">${cartridgeLibrary().length}</span></a><a href="/guide">Guide</a><a href="/examples">Examples</a><a class="site-search-link" href="/guide/search/" aria-label="Search documentation"><svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg></a><a class="nav-action" href="/start">Get started <span aria-hidden="true">→</span></a></nav></header>${guide ? `<div class="guide-layout"><aside class="guide-nav guide-nav-desktop"><p class="eyebrow">Build with Notabenda</p>${guideNavigation(guideRoute,title)}<p class="hint">Developer preview.<br>Regional support is tracked item by item.</p></aside><details class="guide-nav guide-nav-mobile"><summary>Browse documentation <span aria-hidden="true">⌄</span></summary>${guideNavigation(guideRoute,title,{mobile:true})}</details><main id="main" class="prose">${breadcrumb}${body}${guideContext(guideRoute)}</main></div>` : `<main id="main">${body}</main>`}${websiteFooter()}</body></html>`;
 }
 files['website-privacy/index.html']=layout('Website privacy',websiteNoticeBody(websiteFacts),{description:'How this project website handles demo sessions, entries and browser storage.'});
 files['examples/index.html']=layout('Examples',examplesBody(),{description:'Working examples grouped by privacy information, privacy choices, purchases, records and integration.'});
@@ -99,7 +101,7 @@ for(const section of siteSections)files['examples/'+section.id+'/index.html']=la
 
 function routeFile(route) { return route.slice(1)+'/index.html'; }
 const rewrite=createDocumentationLinkResolver({docs,assets:[...Object.keys(files),...media],sources:[...catalogRefs].filter(path=>files[`source/${path}.txt`]!==undefined).map(path=>[path,`/source/${path}.txt`]).concat([['regulatory/catalog.json','/source/regulatory/catalog.json.txt']])});
-const guideEntries=[];
+const guideEntries=[],searchPages=[];
 for(const [path,route] of docs) {
   const sourceMarkdown = await read(path),markdown=expandPackDirectory(expandComplianceDiagrams(sourceMarkdown,{graphical:true}),{graphical:true});
   files[markdownRoute(route).slice(1)]=rewriteMarkdown(expandPackDirectory(expandComplianceDiagrams(sourceMarkdown)),href=>{
@@ -118,6 +120,7 @@ for(const [path,route] of docs) {
   }});
   // @requirements REQ-PRODUCT-A11Y A logo-led README still needs a navigable page heading.
   if(!/<h1\b/iu.test(html))html='<h1>'+escape(title)+'</h1>'+html;
+  searchPages.push(guideSearchPage({title,route,html,area:sectionForGuide(route).title}));
   // Local navigation is native HTML and works without a client script.
   const end=html.indexOf('</h1>')+5;
   if(end>4)html=html.slice(0,end)+guideOrientation(route)+guideOutline(pageHeadings)+html.slice(end);
@@ -127,6 +130,10 @@ for(const [path,route] of docs) {
 for(const section of [...siteSections,sectionForGuide('/guide/requirements')])files[routeFile(guideSectionUrl(section).replace(/\/$/u,''))]=layout(section.title,guideArea(section,guideEntries),{guide:true,guideRoute:guideSectionUrl(section),description:section.description});
 files['guide/index.html']=layout('Build with Notabenda',guideLanding(),{guide:true,guideRoute:'/guide'});
 files['guide/all/index.html']=layout('All guides and reports',allGuidePages(guideEntries),{guide:true,guideRoute:'/guide/all'});
+files['assets/guide-search-index.json']=buildGuideSearchIndex(searchPages);
+const searchClient=await buildCartridgeApp({entryPoints:[resolve(root,'site/guide-search-client.mjs')],bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});
+files['assets/guide-search.mjs']=searchClient.outputFiles[0].text;
+files['guide/search/index.html']=layout('Search documentation',guideSearchBody(searchPages),{guide:true,guideRoute:'/guide/search',description:'Find published Notabenda guides by topic, API name or requirement ID.'}).replace('</head>','<script type="module" src="/assets/guide-search.mjs"></script></head>');
 files['assets/cartridges.css']=await read('packages/notabenda/dist/cartridges.css');
 files['assets/runtime/setup-consent-rehearsal.js']=(await buildCartridgeApp({stdin:{contents:"export {mountConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';",resolveDir:root},bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true})).outputFiles[0].text;
 const cartridgeApp=await buildCartridgeApp({entryPoints:[resolve(root,'site/cartridges-app.mjs')],external:['/assets/catalog-seed.mjs'],plugins:[{name:'local-preview-module',setup(build){build.onResolve({filter:/^\.\/setup-consent-rehearsal\.js$/},()=>({path:'/assets/runtime/setup-consent-rehearsal.js',external:true}));build.onResolve({filter:/^\.\/setup-preview\.js$/},()=>({path:'/assets/runtime/setup-preview.js',external:true}));}}],bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});

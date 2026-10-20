@@ -32,7 +32,8 @@
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
         "Optional expiring tab-local setup recovery, including unfinished proposals and storage-change review, with clear control and last recoverable copy after failed writes.",
-        "Try a prepared cookie draft with real native controls and disposable simulated services before connecting providers."
+        "Try a prepared cookie draft with real native controls and disposable simulated services before connecting providers.",
+        "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -133,7 +134,11 @@
         "packages/notabenda/src/catalog-review-ui.ts",
         "site/cartridges-app.mjs",
         "site/website-notice.mjs",
-        "packages/notabenda/src/setup-consent-rehearsal.ts"
+        "packages/notabenda/src/setup-consent-rehearsal.ts",
+        "site/guide-search.mjs",
+        "site/guide-search-build.mjs",
+        "site/guide-search-client.mjs",
+        "site/guide-search.css"
       ]
     },
     {
@@ -716,7 +721,8 @@
         "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
-        "Optional disposable remote SQLite Time Travel rehearsal with an external recovery gate, later hold and retirement replay, and attested namespace-first cleanup. A real remote run verified SQL/KV rollback, later hold-first replay, closed access, purge restart, surviving records/source bytes and cleanup. Complete host and all-family recovery remain open."
+        "Optional disposable remote SQLite Time Travel rehearsal with an external recovery gate, later hold and retirement replay, and attested namespace-first cleanup. A real remote run verified SQL/KV rollback, later hold-first replay, closed access, purge restart, surviving records/source bytes and cleanup. Complete host and all-family recovery remain open.",
+        "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -777,7 +783,11 @@
         "site/navigation.mjs",
         "scripts/check-cf-remote-recovery.mjs",
         "scripts/fixtures/remote-recovery.mjs",
-        "scripts/fixtures/remote-recovery-worker.mjs"
+        "scripts/fixtures/remote-recovery-worker.mjs",
+        "site/guide-search.mjs",
+        "site/guide-search-build.mjs",
+        "site/guide-search-client.mjs",
+        "site/guide-search.css"
       ]
     },
     {
@@ -2547,7 +2557,8 @@
         "REQ-PRODUCT-INDIRECT-LOCALIZATION",
         "REQ-PRODUCT-CF-REMOTE-RECOVERY",
         "REQ-PRODUCT-TERMS-CONNECTION",
-        "REQ-PRODUCT-CONSENT-REHEARSAL"
+        "REQ-PRODUCT-CONSENT-REHEARSAL",
+        "REQ-PRODUCT-DOCS-SEARCH"
       ]
     }
   ],
@@ -8293,6 +8304,47 @@
         "scripts/check-cf-starter-runtime.mjs"
       ],
       "implementationNote": "Lazy native-controls rehearsal with detached public inventory, script-disabled frame, bounded same-origin CSS loading, private Map storage, inert start/stop counters, real cancellable timers, fresh/return visits, explicit GPC simulation and generation-fenced teardown on close/edit/import."
+    },
+    {
+      "id": "REQ-PRODUCT-DOCS-SEARCH",
+      "jurisdiction": "PRODUCT",
+      "title": "Local search of published guides and section links",
+      "kind": "product-standard",
+      "summary": "Help readers find maintained guidance by topic, API name or requirement ID, with explicit local matching, usable section destinations and a complete script-free guide list.",
+      "appliesWhen": "Readers navigate the project website documentation.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-DOCS-SEARCH"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Published guide content only. Matching is lexical and does not assess applicability or recommend legal settings. No operator records, private archives or workspace scan. Queries stay in the current page; the explicit search page loads one bounded same-origin index.",
+      "implementationRefs": [
+        "site/guide-search.mjs",
+        "site/guide-search-build.mjs",
+        "site/guide-search-client.mjs",
+        "site/guide-search.css",
+        "site/build.mjs",
+        "site/navigation.mjs",
+        "site/host.mjs",
+        "site/guide-pages.mjs"
+      ],
+      "testRefs": [
+        "site/test/guide-search.test.mjs",
+        "docs/verification/guide-search.md",
+        "site/test/guide-navigation.test.mjs",
+        "site/test/syntax.test.mjs",
+        "site/test/site-organization.test.mjs"
+      ],
+      "implementationNote": "Build-time source-guide allowlist, bounded chunked public index, accent-insensitive identifier-aware lexical ranking, section links, local result rendering/pagination and a complete no-script directory."
     }
   ],
   "verification": [
@@ -9958,6 +10010,21 @@
         "site/test/consent-rehearsal.test.mjs",
         "docs/verification/consent-rehearsal.md",
         "scripts/check-cf-starter-runtime.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-DOCS-SEARCH",
+      "requirementIds": [
+        "REQ-PRODUCT-DOCS-SEARCH"
+      ],
+      "status": "automated",
+      "expected": "Every indexed published guide and emitted section address exists; matching handles titles, identifiers and diacritics, returns bounded unique-page results, keeps queries local, handles unavailable/invalid indexes, fences disposed loads, preserves text-only rendering and supplies a complete no-script directory. Native responsive/keyboard checks supplement structural accessibility tests.",
+      "testRefs": [
+        "site/test/guide-search.test.mjs",
+        "docs/verification/guide-search.md",
+        "site/test/guide-navigation.test.mjs",
+        "site/test/syntax.test.mjs",
+        "site/test/site-organization.test.mjs"
       ]
     }
   ],

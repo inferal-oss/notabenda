@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-DOCS-SEARCH
 // @requirements REQ-PRODUCT-COMPLIANCE-MAP
 import {complianceMapLink} from './compliance-diagrams.mjs';
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
@@ -18,7 +19,7 @@ export function guideArea(section,entries){
 }
 export function allGuidePages(entries){
  const grouped=section=>entries.filter(entry=>entry.route!=='/guide'&&sectionForGuide(entry.route).id===section.id);
- return `<header class="guide-hub-intro"><p class="eyebrow">Complete reference</p><h1>All guides and reports</h1><p>The full index follows the same task order as the <a href="/guide">guide overview</a>. Verification reports are folded beneath their related area.</p></header><nav class="guide-index-jumps" aria-label="Guide sections">${guideSections.map(s=>`<a href="#${s.id}">${e(s.title)}</a>`).join('')}</nav>${guideSections.map(section=>{
+ return `<header class="guide-hub-intro"><p class="eyebrow">Complete reference</p><h1>All guides and reports</h1><p>The full index follows the same task order as the <a href="/guide">guide overview</a>. Verification reports are folded beneath their related area. <a href="/guide/search/">Search by topic, API name or requirement ID →</a></p></header><nav class="guide-index-jumps" aria-label="Guide sections">${guideSections.map(s=>`<a href="#${s.id}">${e(s.title)}</a>`).join('')}</nav>${guideSections.map(section=>{
  const rows=grouped(section),reports=rows.filter(entry=>entry.route.startsWith('/guide/verification/')),remaining=new Map(rows.filter(entry=>!entry.route.startsWith('/guide/verification/')).map(entry=>[entry.route,entry]));
  const ordered=section.guides.flatMap(g=>{const entry=remaining.get(g.href);remaining.delete(g.href);return entry?[entry]:[]});
  ordered.push(...[...remaining.values()].sort((a,b)=>a.title.localeCompare(b.title,'en')));

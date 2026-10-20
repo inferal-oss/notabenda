@@ -320,6 +320,8 @@ The optional [UK storage settings](STORAGE-EXCEPTIONS.md) implement declared sta
 
 ## Product direction: packs
 
+The website's local documentation search connects topics, requirement IDs and API names to published guides and their matching sections. It keeps the grouped learning path and a complete script-free guide list. It searches maintained public content only; lexical relevance is not an applicability assessment or configuration decision.
+
 All twenty packs now have shared descriptions of their job and a specific example use case, flow and result explanation. The public examples use collapsed teaching notes, distinct regional timing flows and payment-variant-specific instructions. The legal-pages showcase links to unchanged policy documents. The same registry supplies repeated website and textual listings; display-name changes leave stable pack IDs and revisions intact.
 
 The primary product path is now choose a job, prepare its facts and connect it to a site. Treat the framework APIs as supporting integration details. The first slice supplies three basic packs, additional functions and specific timing overlays, a shared installed registry, focused manual/CLI setup and an agent brief. Continue this model through preview, connection and operator next actions; avoid adding more isolated feature pages as the default onboarding. See [packs](CARTRIDGES.md) and [scope decisions](SCOPE.md#pack-product-model).

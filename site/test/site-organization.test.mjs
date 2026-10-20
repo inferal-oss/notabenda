@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-DOCS-SEARCH
 // @requirements REQ-PRODUCT-CF-HOST REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {test} from 'node:test';
 import assert from 'node:assert/strict';

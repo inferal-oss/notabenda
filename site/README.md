@@ -1,5 +1,7 @@
 # The project website and Cloudflare host example
 
+Documentation search is available at `/guide/search/` from the website header and guide navigation. It indexes the published source guides at build time, including section text and code identifiers. Queries run locally and do not enter the index request, page URL, storage or an external search service. The page has a complete ordinary-link directory when JavaScript or search loading is unavailable. Matching is lexical; the grouped guides still supply the learning path. See [search verification](../docs/verification/guide-search.md).
+
 This directory keeps the website separate from the reusable packages. It builds a static landing page, readable documentation and fictional examples, then mounts `@notabenda/cloudflare` inside a host Worker with a SQLite-backed Durable Object. All example operators, documents, subjects and records are synthetic.
 
 From the repository root:
