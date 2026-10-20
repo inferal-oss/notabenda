@@ -6,7 +6,7 @@
 
 Notabenda generates privacy, cookie and terms pages from your site configuration. Host the HTML yourself and style it with your CSS. The same inventory connects consent controls, permission records and document history.
 
-**Developer preview.** The packages have not been published to npm yet. Document rendering, build tooling, local consent state, vanilla cookie controls, and version-bound terms agreement work. Broader regional features remain in development. See the [current scope](docs/SCOPE.md) and [feature status](docs/FEATURES.md).
+**Developer preview.** The packages have not been published to npm yet. The frontend includes legal pages, cookie choices, form permissions and terms agreements, with optional React and Astro adapters. The Cloudflare package adds scoped evidence, document history and operator tools. Regional coverage and operational integration remain partial. See the [current scope](docs/SCOPE.md) and [feature status](docs/FEATURES.md).
 
 Explore the [website and documentation](https://notabenda.org) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
 

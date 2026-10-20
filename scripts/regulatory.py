@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Validate the research catalog and render its local Markdown indexes."""
+"""Validate the research catalog and render its local Markdown indexes.
+
+@requirements REQ-PRODUCT-AGENT-INTEGRATION
+"""
 
 import argparse
 import json
@@ -171,7 +174,7 @@ def render(catalog, indexes):
                      'Generated from [the catalog](../regulatory/catalog.json). '
                      'P0 is the foundation, P1 adds browser consent, P2 adds records and applicable regional/contract controls, '
                      'P3 adds discovery/integrations, and P4 is deferred. Status is recorded per feature.', '',
-                     'Features link to specific obligations and their planned verification scenarios. '
+                     'Features link to individual obligations, implementation files and verification scenarios with their current status. '
                      'A shared mechanism can satisfy several requirements without duplicating its implementation.', '']
     for feature in sorted(features.values(), key=lambda item: item['priority']):
         feature_lines.extend([f'<a id="{feature["id"].lower()}"></a>', '',

@@ -12,6 +12,7 @@ import {guideLanding,allGuidePages,guideArea} from './guide-pages.mjs';
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {describeIntegration} from 'notabenda/integration';
 import {markdownRoute,rewriteMarkdown,skillFiles} from './agent-docs.mjs';
+import {createDocumentationLinkResolver} from './documentation-links.mjs';
 import { readFile, readdir, mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { resolve, dirname, extname, posix } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -66,7 +67,7 @@ await visit('docs/assets',async path=>{ if(['.svg','.jpg','.png'].includes(extna
 const docs = new Map([['README.md','/guide/project'],['packages/notabenda/README.md','/guide/package'],['packages/notabenda-cf/README.md','/guide/cloudflare'],['packages/notabenda-authoring/README.md','/guide/authoring-package'],['regulatory/README.md','/guide/research'],['site/README.md','/guide/website'],['catalog/README.md','/guide/catalog-data'],['packages/notabenda/assets/guarantees/NOTICE.md','/guide/guarantee-asset-notice']]);
 await visit('docs',async path=>{ if(path.endsWith('.md')) docs.set(path,'/guide/'+path.slice(5).replace(/\.md$/u,'').replace(/\/README$/u,'').toLowerCase()); });
 const catalogRefs = new Set(catalog.requirements.flatMap(r=>[...r.implementationRefs,...r.testRefs]).map(x=>x.split('#')[0]));
-for(const path of catalogRefs) if(/^(?:packages|scripts|examples|regulatory|site)\//u.test(path) && /\.(?:ts|mjs|json|py|css|astro)$/u.test(path)) files[`source/${path}.txt`]=await read(path);
+for(const path of catalogRefs) if(/^(?:packages|scripts|examples|regulatory|catalog|site)\//u.test(path) && /\.(?:ts|mjs|json|py|css|astro|md|mdx)$/u.test(path)) files[`source/${path}.txt`]=await read(path);
 files['source/regulatory/catalog.json.txt']=JSON.stringify(catalog,null,2)+'\n';
 files['license.txt']=await read('LICENSE');
 files['llms.txt']=await read('llms.txt');
@@ -88,20 +89,7 @@ files['examples/index.html']=layout('Examples',examplesBody(),{description:'Work
 for(const section of siteSections)files['examples/'+section.id+'/index.html']=layout(section.title,examplesBody({sectionId:section.id}),{description:section.description});
 
 function routeFile(route) { return route.slice(1)+'/index.html'; }
-function rewrite(href, source) {
-  if(href.startsWith('#')) return href;
-  if(/^\/backoffice(?:\/|$)/u.test(href))return href.replace(/^\/backoffice/u,'/demo/admin');
-  if(/^http:\/\/(?:127\.0\.0\.1|localhost):417[89](?:\/|$)/u.test(href)) return rewrite(new URL(href).pathname+new URL(href).search+new URL(href).hash,source);
-  if(/^[a-z][a-z0-9+.-]*:/iu.test(href) || href.startsWith('/')) return href;
-  const [path,fragment] = href.split('#'); const resolved = posix.normalize(posix.join(posix.dirname(source),path));
-  if(docs.has(resolved)) return docs.get(resolved)+(fragment ? '#'+fragment : '');
-  if(resolved.startsWith('docs/assets/')) return '/'+resolved;
-  if(catalogRefs.has(resolved) && files[`source/${resolved}.txt`]) return `/source/${resolved}.txt`;
-  if(resolved==='regulatory/catalog.json') return '/source/regulatory/catalog.json.txt';
-  if(resolved==='LICENSE') return '/license.txt';
-  if(resolved==='skills/notabenda/SKILL.md')return '/skills/notabenda/SKILL.md';
-  return '/guide';
-}
+const rewrite=createDocumentationLinkResolver({docs,assets:[...Object.keys(files),...media],sources:[...catalogRefs].filter(path=>files[`source/${path}.txt`]!==undefined).map(path=>[path,`/source/${path}.txt`]).concat([['regulatory/catalog.json','/source/regulatory/catalog.json.txt']])});
 const guideEntries=[];
 for(const [path,route] of docs) {
   const sourceMarkdown = await read(path),markdown=expandComplianceDiagrams(sourceMarkdown,{graphical:true});

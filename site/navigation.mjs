@@ -10,7 +10,7 @@ export const siteSections=[
   topic('setup','Guided setup','/demo/admin/setup','Work through site practices and keep the reasons behind each configuration choice.','setup'),
   topic('discovery','Service discovery','/discovery','Inspect detected services and review what belongs in your site configuration.','discovery')
  ]},
- {id:'privacy-information',title:'Publish privacy information',description:'Legal pages, service disclosures and notices beside the point of collection.',guides:[guide('services','Service directory'),guide('collection','Collection notices'),guide('indirect-collection','Indirect collection'),guide('rights','Privacy request links')],topics:[
+ {id:'privacy-information',title:'Publish privacy information',description:'Legal pages, service disclosures and notices beside the point of collection.',guides:[guide('services','Service directory'),guide('collection','Collection notices'),guide('indirect-collection','Indirect collection'),guide('technology-collection','Technology functions'),guide('rights','Privacy request links')],topics:[
   topic('documents','Privacy, cookie & terms pages','/privacy','Static documents using the site’s typography, layout and declared processing.','package',[['Cookie policy','/cookies'],['Terms page','/terms'],['Dark','/dark/privacy']]),
   topic('services','Service directory','/services','Explain declared third parties and the purposes, data and storage associated with them.','services',[['Dark','/dark/services']]),
   topic('technology','Technology functions','/technology/','Disclose an optional interest profile and explain how visitors activate or stop it.','technology-collection'),
@@ -74,7 +74,10 @@ labels.set('/guide/agent-setup','Agent setup');
 labels.set('/guide/localization','Localization');
 labels.set('/guide/storage-exceptions','UK storage settings');
 for(const section of siteSections){
- section.groups=areaGroups[section.id].map(g=>({...g,guides:g.slugs.map(slug=>guide(slug,labels.get('/guide/'+slug)??slug))}));
+ section.groups=areaGroups[section.id].map(g=>({...g,guides:g.slugs.map(slug=>{
+  const label=labels.get('/guide/'+slug);if(!label)throw Error('Missing guide navigation label: '+slug);
+  return guide(slug,label);
+ })}));
  section.guides=section.groups.flatMap(g=>g.guides);
 }
 // Stages are shared across the homepage and both directories. Areas keep stable URLs.

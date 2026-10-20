@@ -3,6 +3,13 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
+import {guideSections} from '../navigation.mjs';
+
+// @requirements REQ-PRODUCT-AGENT-INTEGRATION
+test('every grouped guide has a human label, including technology functions',()=>{
+ for(const section of guideSections)for(const entry of section.guides)assert.notEqual(entry.label,entry.href.split('/').at(-1),'Missing human label for '+entry.href);
+ assert.equal(guideSections.flatMap(s=>s.guides).find(g=>g.href==='/guide/technology-collection').label,'Technology functions');
+});
 
 test('script-free guides expose a native collapsed mobile menu and keep the current area and links to every other area',async()=>{
  for(const route of ['cloudflare-doctor','package','requirements']){

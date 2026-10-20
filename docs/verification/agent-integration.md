@@ -18,6 +18,10 @@ Target scenarios cover missing form scope assessment and its four relevant quest
 
 The website test follows every curated `llms.txt` target and local link in generated Markdown guides, checks their HTML alternate links, and verifies the public skill matches the same source. A mixed Markdown fixture covers nested image links, reference definitions, escaped labels, titles and unchanged inline/fenced code. Public asset requests require no operator/demo namespace, set no session cookie and reject writes. Only the explicitly selected skill files are included in the generated asset manifest.
 
+Repository-relative guide links now resolve only to published documents, explicit assets or catalog-backed source views. A missing reference raises a build error identifying its source and target; no fallback redirects it to the guide index. Regression checks cover direct links and exact bytes for Markdown/MDX examples, catalog rule/provider files, the catalog generator, `llms.txt` and the selected skill resources in both HTML and Markdown. The full static guide check verifies published targets and local fragments; session-backed operator routes remain covered by separate Worker tests. Every grouped navigation entry requires a human label.
+
+At this checkpoint, all 125 site tests and the package traceability test pass; the production build and Worker dry run pass. All 364 previously retained artifact files remain byte-identical. The documentation audit corrected confirmed stale status claims while leaving legal review, complete regional profiles and host operational work open. These checks establish link delivery and stated implementation boundaries, not the correctness of an agent's conclusions.
+
 These checks exercise documentation delivery and a real local CLI workflow. They do not evaluate an agent's reasoning, establish legal suitability, publish to npm, install a personal skill, provision resources or prove browser-crawler adoption. Existing controller, authoring, history and backend tests remain responsible for those implementations. Adopters decide their own CI and review workflow.
 
 ```sh

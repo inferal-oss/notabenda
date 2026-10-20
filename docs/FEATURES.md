@@ -2,7 +2,7 @@
 
 Generated from [the catalog](../regulatory/catalog.json). P0 is the foundation, P1 adds browser consent, P2 adds records and applicable regional/contract controls, P3 adds discovery/integrations, and P4 is deferred. Status is recorded per feature.
 
-Features link to specific obligations and their planned verification scenarios. A shared mechanism can satisfy several requirements without duplicating its implementation.
+Features link to individual obligations, implementation files and verification scenarios with their current status. A shared mechanism can satisfy several requirements without duplicating its implementation.
 
 <a id="feat-setup"></a>
 
@@ -105,7 +105,7 @@ Features link to specific obligations and their planned verification scenarios. 
 **Deliverables:**
 
 - Versioned primary-source records, requirement IDs, applicability conditions, dates, caveats, and discovery articles.
-- Links from requirements to feature IDs, planned verification scenarios, and eventual code/test references.
+- Links from requirements to feature IDs, verification scenarios with their current status, and actual code/test references.
 - Local validation and browseable indexes; legal review and implementation status tracked separately.
 - Linked graphical maps of compliance component purposes, a focused purchase journey and a separate software/storage architecture, with equivalent agent-readable text.
 

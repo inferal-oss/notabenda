@@ -127,6 +127,6 @@ The host-authorized backoffice offers source inspection and source comparisons s
 
 Each source is limited to 24 KiB UTF-8, frontmatter to 8 KiB, and rendered body to 48 KiB. The combined private build archive is limited to 124 KiB, reserving 4 KiB of the backend's 128 KiB record budget for host metadata. These are explicit preview limits; oversized builds fail clearly.
 
-See the working [authoring example](../examples/authoring/build.mjs), [MDX terms](../examples/authoring/terms.mdx), and [Markdown addendum](../examples/authoring/cookies.md). Verification is linked through **REQ-PRODUCT-AUTHORING** in the [requirements catalog](requirements/README.md#req-product-authoring).
+See the working [authoring example](../examples/authoring/build.mjs), [MDX terms](../examples/authoring/terms.mdx), and [Markdown addendum](../examples/authoring/cookies.md). These sample files are deliberately published as read-only source views. Per-site source archives use the separate host-authorized access described above. Verification is linked through **REQ-PRODUCT-AUTHORING** in the [requirements catalog](requirements/README.md#req-product-authoring).
 
 See the [verification record and screenshots](verification/authoring.md) for tested behavior and remaining review work.

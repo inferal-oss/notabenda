@@ -4,7 +4,7 @@ Research baseline: **18 October 2026**. This document translates selected primar
 
 The expanded [requirements catalog](requirements/README.md) records individual obligations, applicability conditions, sources/locators, caveats, review status, features, actual code/test references, and verification scenarios. Its [source index](requirements/SOURCES.md) includes discovery articles and official sources across multiple jurisdictions, labeling search-only findings and blocked access. Documents/configuration, local consent state and service gating, and optional backoffice/history have implementation tests; broader legal obligations remain partial/planned, with no supported jurisdiction-pack claim.
 
-The [France, Germany and Ireland baseline report](verification/regional-consent.md) records the 19 October source check, exercised shared-engine behavior and remaining qualification gaps. Irish remembered-consent duration is a separate planned recommendation item.
+The [France, Germany and Ireland baseline report](verification/regional-consent.md) records the 19 October source check, exercised shared-engine behavior and remaining qualification gaps. [Irish grant duration](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months) has an explicit calendar-month cap and setup recommendation; extension assessment and a complete regional profile remain open.
 
 ## Separate the obligations
 
@@ -38,7 +38,7 @@ CNIL emphasizes prior consent, specific purposes, and the need to collect consen
 
 ICO finalized updated guidance on 29 April 2026 following changes to PECR. There are five storage/access exceptions, with conditions; statistical and appearance exceptions include information and an easy, free objection mechanism. This does not authorize all analytics, and advertising purposes remain subject to consent. [ICO guidance](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/), [exception conditions](https://ico.org.uk/for-organisations/direct-marketing-and-privacy-and-electronic-communications/guidance-on-the-use-of-storage-and-access-technologies/what-are-the-exceptions/)
 
-Implementation consequence: an exception is a reviewed rule with prerequisites and objection behavior, not a boolean that silently labels a vendor “necessary.” Keep exceptions disabled in the initial conservative profile. A future UK pack can enable a qualifying purpose without making the same choice apply to EU visitors.
+Implementation consequence: an exception is a reviewed rule with prerequisites and objection behavior, not a boolean that silently labels a vendor “necessary.” Exceptions remain off unless the host explicitly configures them. The [storage-exception module](STORAGE-EXCEPTIONS.md) provides separate objection mechanics for selected declared UK profiles; qualification, actual processing and regional routing remain host assessments. Enabling one does not establish an exemption for other audiences.
 
 ### California and opt-out signals
 

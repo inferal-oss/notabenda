@@ -98,7 +98,7 @@ Both wrappers accept explicit `allowPreview`; the default enforces the same prod
 
 The host places the notice at the actual collection surface, supplies the real processing inventory and reviewed wording, retains the pinned privacy page and linked assets, and handles the actual form submission. Use [retained releases](RELEASES.md) when a clean deployment must keep older pinned links available.
 
-This notice does not implement an indirect-collection notification workflow, marketing/channel permission, parental authorization, legal-basis determination or complete regional profile. A marketing opt-in and a [terms agreement](TERMS.md) require their own deliberate action and appropriate records; notice display never creates either. There is no automatic “notice viewed” record. Broader form-permission and trusted application-event work remains in the plan.
+This notice does not implement an indirect-collection notification workflow, marketing/channel permission, parental authorization, legal-basis determination or complete regional profile. A marketing opt-in and a [terms agreement](TERMS.md) require their own deliberate action and appropriate records; notice display never creates either. There is no automatic “notice viewed” record. For an ordinary purpose/channel opt-in, use the separate [form-permission controller and CF records](FORM-PERMISSIONS.md). General application-event ingestion remains outside this static notice API.
 
 Traceability: `REQ-PRODUCT-COLLECTION-NOTICE`, with partial support for `REQ-EU-NOTICE` and `REQ-NZ-NOTICE`. The [setup wizard](SETUP.md) recommends collection-surface integration when personal-data processing is declared or unresolved.
 

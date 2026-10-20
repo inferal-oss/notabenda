@@ -34,24 +34,26 @@ flowchart TD
 
 No request to a project-operated service should be required. No remote UI rendering, automatic law downloads, or mandatory configuration fetch. A site can self-host pinned script/CSS assets instead of using a bundler. Content and configuration releases remain pinned and reviewable.
 
-### Proposed repository layout
+### Selected repository paths
 
 ```text
 packages/
-  notabenda/           # core, headless, vanilla UI, React, adapters, content, CLI
-  notabenda-cf/        # Worker, migrations, deployment tooling
+  notabenda/           # inventory, renderers, controllers, adapters, CLI
+  notabenda-authoring/ # build-time Markdown/MDX and YAML frontmatter
+  notabenda-cf/        # host-callable stores, operator Worker, starter and doctor
 examples/
   static/             # plain HTML and local assets
   react/              # optional framework integration
   astro/              # static legal routes + client bootstrap
-  cloudflare/         # synthetic receipts and authenticated application events
-fixtures/             # synthetic sites, vendors, legal facts, and browser scenarios
+  authoring/          # sample Markdown/MDX sources and private-archive workflow
+packages/*/test/      # package tests and scoped synthetic fixtures
+catalog/              # pinned provider data, source licenses and browser rules
 regulatory/           # public source/requirement/feature/verification catalog
 scripts/regulatory.py # local validation and readable-index generation
 docs/
 ```
 
-The initial implementation uses TypeScript, npm workspaces, ESM/declarations, and Node's built-in test runner. There is no runtime dependency or bundler requirement. Keep React optional when its adapter is added. Browser checks verify the actual no-JS pages and responsive layout. Keep build tooling out of browser dependency graphs.
+The initial implementation uses TypeScript, npm workspaces, ESM/declarations, and Node's built-in test runner. There is no runtime dependency or bundler requirement. Keep the React adapters optional. Browser checks verify the actual no-JS pages and responsive layout. Keep build tooling out of browser dependency graphs.
 
 The catalog links implemented and partial requirements to actual code/tests. Document/configuration, consent state/lifecycle, and CF backoffice/history tests run. The [accessibility audit](verification/accessibility.md) adds current-page semantic scans and desktop/mobile Chromium scenarios for actual controls and operator renderers, retaining incomplete findings explicitly. Full accessibility/platform review and regional-pack scenarios remain pending. Maintainer checks do not prescribe an adopter's CI workflow.
 
@@ -77,7 +79,7 @@ Version material consent scope separately from general artifact revisions. A new
 ## 3. Developer experience
 
 ```sh
-# Proposed frontend path
+# After installing the preview package locally
 npm install notabenda
 npx notabenda init
 npx notabenda check
@@ -201,7 +203,7 @@ Compile structured clauses or supplied reviewed documents into semantic HTML, a 
 
 Start with privacy and cookie notices plus supplied terms. Add a small original, reviewed terms pack for a narrowly declared service/audience scope rather than advertising universal generated terms. Keep template licenses explicit. A document assembler should explain which facts selected each clause and flag contradictory or missing answers.
 
-Content release tooling should generate a diff, identify material changes, and support a future effective date. It must not silently replace live terms or assume every edit requires reacceptance. Where acceptance is needed, archive the accepted version and record an explicit action through the application backend. Publishing a notice, notifying users, and obtaining a new consent are different operations.
+[Retained-release tooling](RELEASES.md) preserves exact public policy pages; [document history](AUTHORING.md) exposes rendered and authored-source comparisons. The host reviews material changes and any future effective date, then controls publication and activation. These helpers do not silently replace live terms or decide whether an edit requires reacceptance. Where acceptance is needed, archive the accepted version and record an explicit action through the application backend. Publishing a notice, notifying users, and obtaining a new consent are different operations.
 
 ### Applicable contract actions
 
@@ -209,7 +211,7 @@ The initial [contract-action module](CONTRACT-ACTIONS.md) now supplies versioned
 
 Provide a visible entry, appropriate form and review/confirmation step, durable submission, and required acknowledgment via the configured application channel. Keep forms mobile-friendly and user-opened. The application decides identity/contract matching and performs refunds, cancellation, or subscription changes. The toolkit should not require an account login merely for convenience where applicable rules require an easier route. Avoid revealing account or contract existence through public responses.
 
-If notabenda-cf handles the optional submission path, add a separate schema and retention class for contract requests, an authenticated handoff to the application, idempotent retries, and acknowledgment artifacts. Persist a pending dispatch before reporting acceptance; track acknowledgment delivery separately. A frontend-only “success” state is insufficient. Any need for a queue or delivery provider is specific to this optional reliable-dispatch requirement, not a dependency of the core cookie runtime. External delivery and fulfillment remain operator responsibilities unless explicitly configured and verified.
+The optional CF contract-action store uses its own declaration schema and lifecycle class, idempotent receipts and independent application/acknowledgement jobs. Pending dispatch is durable before a declaration is acknowledged. Host authorization, channel delivery and contractual fulfillment still need integration and verification. A frontend-only “success” state is insufficient. Any need for a queue or delivery provider is specific to this optional reliable-dispatch requirement, not a dependency of the core cookie runtime. External delivery and fulfillment remain operator responsibilities unless explicitly configured and verified.
 
 ## 7. notabenda-cf: deliberately small
 
@@ -219,7 +221,7 @@ The backoffice provides bounded evidence search, cards/details, release comparis
 
 D1, R2, scheduled retention jobs, and delivery queues remain options for future evidence services; none is a mandatory dependency of this admin component. The document archive currently bounds values to 128 KiB and requires a transactional store. Larger records need a reviewed blob-storage strategy.
 
-Terms acceptance is implemented as host-callable storage helpers, with trusted subject/workflow/operation binding and an acknowledged frontend transport. Registration and activation are separate, and activation checks share the acceptance transaction. There is no package-provided public write route. Cookie-choice notice registration and a transactional host-callable ledger are implemented; see [CONSENT-EVIDENCE.md](CONSENT-EVIDENCE.md). Browser required-receipt gating and bounded delivery are implemented behind opt-in host transport; retention and broader subject-event ingestion remain future work.
+Terms acceptance is implemented as host-callable storage helpers, with trusted subject/workflow/operation binding and an acknowledged frontend transport. Registration and activation are separate, and activation checks share the acceptance transaction. There is no package-provided public write route. Cookie-choice notice registration and a transactional host-callable ledger are implemented; see [CONSENT-EVIDENCE.md](CONSENT-EVIDENCE.md). Browser required-receipt gating and bounded delivery are implemented behind opt-in host transport; [retention, holds and resumable erasure](EVIDENCE-LIFECYCLE.md) are available through explicit host policy and authorization. Broader generic subject-event ingestion remains open.
 
 ### Future evidence-ingestion API surface (routes not implemented)
 
@@ -240,7 +242,7 @@ Prefer same-origin deployment and tightly scoped receipt capabilities stored as 
 
 ### Data and trust model
 
-A future consent-evidence service needs site-scoped records for sites, artifacts, choice events, subject events, capabilities, and operator access. Current-state projections are optional derived data. Bind record creation and projections transactionally using the selected store's guarantees, and test retry/concurrency behavior. Record trusted receipt order and client-reported time separately. Backdated/offline events must not resurrect permission after a later withdrawal; receipt retries must not create duplicate events.
+The current evidence ledgers scope artifacts, choices, terms agreements, form permissions and processing restrictions to host-resolved contexts. Their current-state projections are derived from recorded actions. A generic subject-event API and additional capability/issuer designs remain proposals. Bind record creation and projections transactionally using the selected store's guarantees, and test retry/concurrency behavior. Record trusted receipt order and client-reported time separately. Backdated/offline events must not resurrect permission after a later withdrawal; receipt retries must not create duplicate events.
 
 Hash canonical released artifacts; reference them from events. Optional signed receipts include the artifact digest, event ID, server time, and provenance level. Keep signing-key versions and document rotation. Signatures establish issuer/integrity, not human identity. Artifact registration must be authenticated, and referenced versions must remain retrievable for the record's retention period.
 
@@ -279,7 +281,7 @@ Order matters: prove enforcement and artifact identity before expanding document
 | 0 — Contracts and spike | Schema, source-linked requirements, threat model, dependency decision, synthetic demo | Stable requirement/purpose/service IDs; source gaps and trust boundaries explicit; reuse decision measured | 2–4 days |
 | 1 — Documents and integration basics | Inventory, static documents, content validation, legal links, vanilla/React/Astro entry points | No-JS documents; deterministic artifacts; incomplete production config fails; examples use native styling | 5–8 days |
 | 2 — Browser controls and enforcement | Local state, compact notice/drawers, headless/React controls, service gating, two themes | No optional traffic before grant; reject/withdraw work; storage failures stay safe; mobile, accessibility, and requirement-linked checks pass | 5–8 days |
-| 3 — Forms, regional rules, and records | Form surfaces, prioritized regional profiles, Worker/D1, receipts/trusted events, retention/export/delete | Requirement-specific behavior verified; duplicates/reordering handled; private records protected; restore/deletion drill passes | 7–12 days |
+| 3 — Forms, regional rules, and records | Form surfaces, prioritized regional profiles, Worker/DO, receipts/trusted events, retention/export/delete | Requirement-specific behavior verified; duplicates/reordering handled; private records protected; restore/deletion drill passes | 7–12 days |
 | 3b — Applicable contract widgets | Withdrawal/cancellation forms, application handoff, durable acknowledgment | Required flows pass their regional scenarios; no fake success; delivery/retry failures are recoverable | 3–6 days |
 | 4 — Integrations and diagnostics | Basic Consent Mode, browser inspection, deployment doctor | Unknown network/storage behavior reported; no-consent Google fixture stays silent; endpoint outage/recovery verified | 3–5 days |
 | 5 — Release hardening | Docs, scope review, accessibility review, package/deployment verification | Release checklist below satisfied; documented exclusions; no unsupported compliance claims | 3–5 days |
