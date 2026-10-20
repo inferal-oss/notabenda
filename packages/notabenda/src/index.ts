@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-SERVICE-LOCALIZATION
+export type {ServiceDirectoryMessages,ServiceDirectoryLocalization} from './service-directory-localization.js';
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 export type {ProcessingMessages,ProcessingLocalization} from './processing-localization-policy.js';
 export type {RightsMessages} from './rights-localization-policy.js';

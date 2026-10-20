@@ -143,7 +143,8 @@
         "Typed site, service, purpose, storage, retention, audience, and document configuration.",
         "Separate public bundle facts from private operator metadata.",
         "Completeness checks with requirement IDs and actionable missing-field messages.",
-        "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review."
+        "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review.",
+        "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering."
       ],
       "implementationRefs": [
         "packages/notabenda/src/types.ts",
@@ -163,7 +164,18 @@
         "packages/notabenda/src/cli.ts",
         "packages/notabenda/src/setup-connection-ui.ts",
         "packages/notabenda/src/cartridges.css",
-        "examples/setup/build.mjs"
+        "examples/setup/build.mjs",
+        "packages/notabenda/src/service-directory-localization.ts",
+        "packages/notabenda/src/service-directory.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/index.ts",
+        "examples/localization/services-build.mjs",
+        "examples/localization/service-messages.json",
+        "examples/localization/services.css",
+        "examples/localization/build.mjs",
+        "site/navigation.mjs",
+        "site/host.mjs",
+        "examples/static/choices-build.mjs"
       ]
     },
     {
@@ -926,7 +938,8 @@
         "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
         "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open.",
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
-        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions."
+        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
+        "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering."
       ],
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
@@ -985,7 +998,12 @@
         "site/worker.mjs",
         "site/navigation.mjs",
         "examples/static/choices-build.mjs",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/service-directory-localization.ts",
+        "packages/notabenda/src/service-directory.ts",
+        "examples/localization/services-build.mjs",
+        "examples/localization/service-messages.json",
+        "examples/localization/services.css"
       ]
     }
   ],
@@ -2320,7 +2338,8 @@
         "REQ-PRODUCT-AGENT-HANDOFF",
         "REQ-PRODUCT-AUTHORED-PREVIEW",
         "REQ-PRODUCT-PROCESSING-LOCALIZATION",
-        "REQ-PRODUCT-SETUP-SESSION"
+        "REQ-PRODUCT-SETUP-SESSION",
+        "REQ-PRODUCT-SERVICE-LOCALIZATION"
       ]
     }
   ],
@@ -7765,6 +7784,50 @@
         "docs/verification/setup-session.md"
       ],
       "implementationNote": "Website TTL is 24 hours after the last changed snapshot; restoration does not renew it. Reusable hosts supply a separate key per context and optional bounded TTL. Validate saved versions and reset review acknowledgments."
+    },
+    {
+      "id": "REQ-PRODUCT-SERVICE-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Host-supplied service-directory language and retained copy",
+      "kind": "product-standard",
+      "summary": "A complete selected dictionary covers static and enhanced service directories, accessible search/count/empty states and storage labels. Share native React/Astro rendering, explicit language/direction/review and exact release retention without changing permissions.",
+      "appliesWhen": "A site renders its declared service directory in a selected language or supplies custom English interface copy.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-LOCALIZATION",
+        "FEAT-INVENTORY"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-SERVICE-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host-authored display wording does not translate or verify provider facts, classify processing or choose a jurisdiction. One/other totals and a neutral filtered-count template do not implement arbitrary ICU plural rules. The directory is a view of public config, not a separately archived fourth document.",
+      "implementationRefs": [
+        "packages/notabenda/src/service-directory-localization.ts",
+        "packages/notabenda/src/service-directory.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/index.ts",
+        "examples/localization/services-build.mjs",
+        "examples/localization/service-messages.json",
+        "examples/localization/services.css",
+        "examples/localization/build.mjs",
+        "site/navigation.mjs",
+        "site/host.mjs",
+        "examples/static/choices-build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/service-localization.test.mjs",
+        "packages/notabenda/test/services.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/service-localization.test.mjs",
+        "docs/verification/service-localization.md"
+      ],
+      "implementationNote": "Complete optional localization.serviceDirectory dictionary with normal release review metadata, 16 KiB selected descriptor, literal local filtering and isolated formatted counts. Exact legacy English output and cookie material scopes remain unchanged."
     }
   ],
   "verification": [
@@ -9354,6 +9417,21 @@
         "packages/notabenda/test/pack-session.test.mjs",
         "site/test/website-notice.test.mjs",
         "docs/verification/setup-session.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-SERVICE-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-SERVICE-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Selected copy reaches static/native/React/Astro directories and real search; incomplete copy fails before mutation, releases retain exact text, counts/direction remain correct, and rendering/search grants or records nothing.",
+      "testRefs": [
+        "packages/notabenda/test/service-localization.test.mjs",
+        "packages/notabenda/test/services.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/service-localization.test.mjs",
+        "docs/verification/service-localization.md"
       ]
     }
   ],

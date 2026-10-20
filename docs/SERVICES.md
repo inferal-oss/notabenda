@@ -4,7 +4,7 @@ Use one inventory for privacy disclosures and a readable service directory. Each
 
 The directory reads only the site's declared `services`, `purposes` and `storage`. It supports entirely custom services and ordinary services proposed by the [catalog](SERVICE-CATALOG.md). Detection never publishes an entry. Confirm actual use and review the configuration before production rendering. Reference datasets, catalog provenance, private reasoning, integration scopes and resource origins are absent from the display model.
 
-Try the [light example](/services) and [midnight example](/dark/services). The example services and locations are illustrative; they do not describe this website's actual providers.
+Try the [light example](/services) and [midnight example](/dark/services), or [Portuguese directory](/localization/services/). The example services and locations are illustrative; they do not describe this website's actual providers.
 
 ## Native HTML and local search
 
@@ -29,7 +29,7 @@ directory.destroy();
 
 Optional search matches literal words in service/provider names, locations, declared purpose descriptions/data categories and storage names. The purpose selector combines with that search. Counts announce changes politely; the inputs retain focus, and native detail state is preserved when matching server markup is enhanced. All content remains available when the enhancement is absent or destroyed. Searches stay in the current page: no request, storage write, consent change or database allocation occurs.
 
-For server-rendered filters, supply `query` and/or `purposeId`; the result states how many of the declared services are shown. This is a filtered directory, not a complete inventory assertion. Unknown purpose IDs and oversized/unsafe search input are rejected. Supply translated title/description through options; full UI localization remains future work.
+For server-rendered filters, supply `query` and/or `purposeId`; the result states how many of the declared services are shown. This is a filtered directory, not a complete inventory assertion. Unknown purpose IDs and oversized/unsafe search input are rejected. Supply optional title/description overrides through options. For a selected non-English interface, supply the complete `localization.serviceDirectory` dictionary; see [directory localization](LOCALIZATION.md#service-directory).
 
 ## React and Astro
 
@@ -59,3 +59,11 @@ Production rendering defaults to full configuration validation and reviewed-docu
 For a historical inventory, render from the exact retained `artifact.publicConfig`, not the current reference seed or current site configuration. Config changes already change legal-release identity. The directory is an additional view of those facts, not a fourth legal document or a separately archived HTML page. Catalog-selection snapshots remain separate from the public directory. Use the explicit [release finalizer](SERVICE-CATALOG.md#retain-selections-with-policy-releases) to attach selected source/reference facts to a policy release for authorized backend inspection; rendering a directory does not archive a selection.
 
 Requirements and tests: `REQ-PRODUCT-SERVICE-CATALOG`, [verification](verification/service-catalog.md). Public directory rendering, wizard/admin selection, optional browser recognition and explicit selected-reference archival are implemented previews. Automatic selection, silent reference updates and complete provider verification are not supplied.
+
+<!-- @requirements REQ-PRODUCT-SERVICE-LOCALIZATION -->
+
+## Language and retained copy
+
+The optional complete `localization.serviceDirectory` dictionary covers all directory chrome, search, counts and empty states. The native renderer, React and Astro wrappers share it. Its explicit locale, direction, revision and review declaration come from the site localization. Translate declared provider/purpose facts separately; machine storage names remain literal. A non-English renderer fails before replacing host content when this dictionary is missing. Headless display data remains available. See [the message contract](LOCALIZATION.md#service-directory) and [Portuguese example](/localization/services/).
+
+Public legal releases retain the dictionary with the exact inventory. Render historical directories from that release’s `publicConfig`. Directory copy changes need a new localization revision and legal release but do not enter cookie material scopes or change permission. Search filters existing facts locally and never enables a provider or writes preferences.

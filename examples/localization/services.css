@@ -1,0 +1,7 @@
+/* @requirements REQ-PRODUCT-SERVICE-LOCALIZATION */
+@layer notabenda {
+ :where(.nb-service-example-guide){max-width:72rem;margin:0 auto 3rem;padding:1.5rem clamp(1rem,4vw,2rem);border-block-start:1px solid var(--nb-line,#e5e5e8);font-size:.9375rem;color:var(--nb-muted,#65676f)}
+ :where(.nb-service-example-guide h2){font-size:1rem;color:var(--nb-text,#25262b);font-weight:600}
+ :where(.nb-service-example-guide a){display:inline-flex;align-items:center;min-height:44px;color:var(--nb-accent,#5b51b5);text-underline-offset:.25em}
+ :where(.nb-service-example-guide a:focus-visible){outline:3px solid var(--nb-focus,#6466e9);outline-offset:4px}
+}

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-SERVICE-LOCALIZATION
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-AUTHORED-PREVIEW
 // @requirements REQ-PRODUCT-RECORDING-INSPECTION
@@ -23,7 +24,7 @@ export const siteSections=[
  ]},
  {id:'privacy-information',title:'Publish privacy information',description:'Legal pages, service disclosures and notices beside the point of collection.',guides:[guide('authored-preview','Preview an authored release'),guide('privacy-packs','Privacy packs'),guide('services','Service directory'),guide('collection','Collection notices'),guide('indirect-collection','Indirect collection'),guide('technology-collection','Technology functions'),guide('rights','Privacy request links'),guide('rights-authoring','Configure request page')],topics:[
   topic('documents','Privacy, cookie & terms pages','/privacy','Static documents using the site’s typography, layout and declared processing.','package',[['Privacy policy','/privacy'],['Cookie policy','/cookies'],['Terms page','/terms'],['Dark','/dark/privacy']]),
-  topic('services','Service directory','/services','Explain declared third parties and the purposes, data and storage associated with them.','services',[['Dark','/dark/services']]),
+  topic('services','Service directory','/services','Explain declared third parties and the purposes, data and storage associated with them.','services',[['Dark','/dark/services'],['Português','/localization/services/']]),
   topic('technology','Technology functions','/technology/','Disclose an optional interest profile and explain how visitors activate or stop it.','technology-collection'),
   topic('collection','Collection notice','/collection','Show privacy information beside a form, linked to an exact policy revision.','collection',[['Portuguese','/localization/collection/']]),
   topic('indirect-collection','Indirect collection notice','/indirect-collection','Explain information received from another source, including advance-notice text.','indirect-collection'),

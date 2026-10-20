@@ -261,3 +261,7 @@ Recorded opt-out interface translations are complete, versioned host-supplied di
 <!-- @requirements REQ-PRODUCT-SETUP-SESSION -->
 
 Browser setup recovery: `/start/` opts into expiring, tab-local draft storage (24 hours since the last change). Retain selection, step, raw answers, public inventory, private review notes, unconfirmed editor proposals and cumulative storage migration review. Restore proposals without adopting them; reset acknowledgments. Provide a clear action, preserve the last recoverable copy after failed writes, and keep reusable persistence opt-in. No server upload or account storage is part of this feature.
+
+<!-- @requirements REQ-PRODUCT-SERVICE-LOCALIZATION -->
+
+Declared service-directory localization: a complete host-authored dictionary, explicit locale/direction/review, static and enhanced native rendering, shared React/Astro output, local literal search and count formatting. Preserve exact legacy English rendering and exclude display copy from cookie material scopes. Store the dictionary in normal legal releases; do not auto-translate provider facts or infer applicability from language. Indirect-collection and operator chrome remain separate work.
