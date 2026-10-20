@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS
 // @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-COLLECTION-NOTICE
 // @requirements REQ-PRODUCT-REACT REQ-PRODUCT-PACKAGE
@@ -15,10 +16,10 @@ test('packed React subpaths install only with explicitly supplied peers and expo
   const env={...process.env,...(existsSync(join(root,'.local/npm-cache'))?{npm_config_cache:join(root,'.local/npm-cache')}:{})};
   try {
     const packed=spawnSync('npm',['pack','--workspace','@notabenda/core','--json','--ignore-scripts','--pack-destination',cwd],{cwd:root,encoding:'utf8',env});assert.equal(packed.status,0,packed.stderr);
-    const manifest=JSON.parse(packed.stdout)[0];for(const path of ['dist/react.js','dist/react.d.ts','dist/react-consent.js','dist/react-consent.d.ts','dist/react-consent-bindings.js','dist/react-documents.js','dist/react-documents.d.ts','dist/react-form-permission.js','dist/react-form-permission.d.ts'])assert.ok(manifest.files.some(f=>f.path===path),path);
+    const manifest=JSON.parse(packed.stdout)[0];for(const path of ['dist/react.js','dist/react.d.ts','dist/react-consent.js','dist/react-consent.d.ts','dist/react-consent-bindings.js','dist/react-documents.js','dist/react-documents.d.ts','dist/react-form-permission.js','dist/react-form-permission.d.ts','dist/react-terms.js','dist/react-terms.d.ts','dist/terms-view-owner.js'])assert.ok(manifest.files.some(f=>f.path===path),path);
     await writeFile(join(cwd,'package.json'),'{"type":"module","private":true}');
     const installed=spawnSync('npm',['install','--offline','--ignore-scripts','--no-audit','--no-fund',join(cwd,manifest.filename),'react@19.3.1','react-dom@19.3.1','@types/react@19.3.0','@types/react-dom@19.3.0'],{cwd,encoding:'utf8',env});assert.equal(installed.status,0,installed.stderr);
-    const run=spawnSync(process.execPath,['--input-type=module','-e',"import {ConsentProvider,useConsentSnapshot,FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot} from '@notabenda/core/react';import {LegalDocument,PaidOrderReview} from '@notabenda/core/react/documents';import {ConsentProvider as RuntimeProvider,useConsentController as runtimeController} from '@notabenda/core/react/consent';if([RuntimeProvider,runtimeController,ConsentProvider,useConsentSnapshot,LegalDocument,PaidOrderReview,FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot].some(v=>typeof v!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(run.status,0,run.stderr);
+    const run=spawnSync(process.execPath,['--input-type=module','-e',"import {TermsAcceptanceProvider,TermsAcceptanceControl,useTermsAcceptanceSnapshot} from '@notabenda/core/react/terms';import {ConsentProvider,useConsentSnapshot,FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot} from '@notabenda/core/react';import {LegalDocument,PaidOrderReview} from '@notabenda/core/react/documents';import {ConsentProvider as RuntimeProvider,useConsentController as runtimeController} from '@notabenda/core/react/consent';if([TermsAcceptanceProvider,TermsAcceptanceControl,useTermsAcceptanceSnapshot,RuntimeProvider,runtimeController,ConsentProvider,useConsentSnapshot,LegalDocument,PaidOrderReview,FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot].some(v=>typeof v!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(run.status,0,run.stderr);
     await writeFile(join(cwd,'consumer.ts'),"import {createElement} from 'react';import {createConsent,type PublicSiteConfig} from '@notabenda/core';import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed,useServiceAllowed,type ReactConsentSnapshot} from '@notabenda/core/react';import {LegalDocument,LegalLinks} from '@notabenda/core/react/documents';declare const config:PublicSiteConfig;const controller=createConsent(config);createElement(ConsentProvider,{controller},createElement(ConsentControls));createElement(PreferencesButton,{className:'choice'},'Review');createElement(LegalDocument,{config,kind:'privacy'});createElement(LegalLinks,{config});function Probe(){const state:ReactConsentSnapshot=useConsentSnapshot();const allowed:boolean=usePurposeAllowed('optional');const service:boolean=useServiceAllowed('optional-service');void service;\n// @ts-expect-error snapshots are read-only\nstate.permissions.optional=true;return allowed?state.purposes.optional:null;}void Probe;");
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+"\nimport {CollectionNotice} from '@notabenda/core/react/documents';createElement(CollectionNotice,{notice:{},idPrefix:'contact',headingLevel:3});\n");
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
@@ -56,6 +57,17 @@ function CompatibilityProbe(){const full:PublicSiteConfig=useLegacyConsentContro
 void [CompiledProbe,CompatibilityProbe];
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {PaidOrderReview} from '@notabenda/core/react/documents';createElement(PaidOrderReview,{review:{},idPrefix:'checkout',headingLevel:2});`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createTermsAcceptance,type TermsAcceptanceController} from '@notabenda/core/terms';
+import {TermsAcceptanceProvider,TermsAcceptanceControl,useTermsAcceptanceController,useTermsAcceptanceSnapshot,type ReactTermsAcceptanceSnapshot} from '@notabenda/core/react/terms';
+import {TermsAcceptanceControl as CompatibleTermsControl} from '@notabenda/core/react';
+declare const agreement:TermsAcceptanceController;
+createElement(TermsAcceptanceProvider,{controller:agreement},createElement(TermsAcceptanceControl,{fallback:'Read the terms below.'}));
+function TermsProbe(){const state:ReactTermsAcceptanceSnapshot=useTermsAcceptanceSnapshot();const same:TermsAcceptanceController=useTermsAcceptanceController();
+// @ts-expect-error retained receipt snapshots are immutable
+if(state.receipt)state.receipt.documentVersion='changed';
+return state.status;}void [TermsProbe,CompatibleTermsControl,createTermsAcceptance];
+`);
     const types=spawnSync(process.execPath,[resolve(root,'node_modules/typescript/bin/tsc'),'--strict','--noEmit','--module','nodenext','--moduleResolution','nodenext','--target','es2022',join(cwd,'consumer.ts')],{cwd,encoding:'utf8'});assert.equal(types.status,0,types.stdout+types.stderr);
   }finally{await rm(cwd,{recursive:true,force:true});}
 });

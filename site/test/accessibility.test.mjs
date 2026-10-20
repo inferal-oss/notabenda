@@ -69,7 +69,7 @@ test('reusable cartridge library and its focused setup retain semantic names and
  try{
   clean(await audit.scan());
   d.querySelector('.cartridge-library').dispatchEvent(new audit.dom.window.Event('submit',{cancelable:true,bubbles:true}));
-  assert.equal(d.activeElement.textContent,'Let’s make it yours.');clean(await audit.scan());visibleLabels(d);
+  assert.equal(d.activeElement.textContent,'Set up your selected packs');clean(await audit.scan());visibleLabels(d);
  }finally{ui.destroy();audit.close();}
 });
 
@@ -99,7 +99,7 @@ test('the semantic guard catches real markup defects while retaining incomplete 
 });
 
 test('current high-traffic pages and both Google themes retain sound semantic markup',async()=>{
- for(const path of ['start/index.html','index.html','guide/project/index.html','guide/architecture/index.html','guide/agent-setup/index.html','examples/index.html','examples/privacy-choices/index.html','choices/index.html','dark/choices/index.html','google-basic/index.html','dark/google-basic/index.html','agreement/index.html','technology/index.html']){
+ for(const path of ['start/index.html','index.html','guide/project/index.html','guide/architecture/index.html','guide/agent-setup/index.html','examples/index.html','examples/privacy-choices/index.html','choices/index.html','dark/choices/index.html','google-basic/index.html','dark/google-basic/index.html','agreement/index.html','agreement/react/index.html','dark/agreement/react/index.html','agreement/astro/index.html','agreement/astro/review/index.html','technology/index.html']){
   const audit=await createAccessibilityAudit(await readFile(new URL('../dist/public/'+path,import.meta.url),'utf8'),{label:path});try{clean(await audit.scan());visibleLabels(audit.dom.window.document);}finally{audit.close();}
  }
 });

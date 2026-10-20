@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PACK-EDUCATION
+import {packLibrary} from '@notabenda/core/packs';
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
@@ -17,7 +19,7 @@ export const siteSections=[
   topic('discovery','Service discovery','/discovery','Inspect detected services and review what belongs in your site configuration.','discovery')
  ]},
  {id:'privacy-information',title:'Publish privacy information',description:'Legal pages, service disclosures and notices beside the point of collection.',guides:[guide('privacy-packs','Privacy packs'),guide('services','Service directory'),guide('collection','Collection notices'),guide('indirect-collection','Indirect collection'),guide('technology-collection','Technology functions'),guide('rights','Privacy request links'),guide('rights-authoring','Configure request page')],topics:[
-  topic('documents','Privacy, cookie & terms pages','/privacy','Static documents using the site’s typography, layout and declared processing.','package',[['Cookie policy','/cookies'],['Terms page','/terms'],['Dark','/dark/privacy']]),
+  topic('documents','Privacy, cookie & terms pages','/privacy','Static documents using the site’s typography, layout and declared processing.','package',[['Privacy policy','/privacy'],['Cookie policy','/cookies'],['Terms page','/terms'],['Dark','/dark/privacy']]),
   topic('services','Service directory','/services','Explain declared third parties and the purposes, data and storage associated with them.','services',[['Dark','/dark/services']]),
   topic('technology','Technology functions','/technology/','Disclose an optional interest profile and explain how visitors activate or stop it.','technology-collection'),
   topic('collection','Collection notice','/collection','Show privacy information beside a form, linked to an exact policy revision.','collection',[['Portuguese','/localization/collection/']]),
@@ -37,7 +39,7 @@ export const siteSections=[
   topic('guards','Scope guards','/scope-guards','See how explicit site and purpose restrictions affect available controls.','scope-guards',[],'Specialist controls')
  ]},
  {id:'contracts',title:'Terms and purchases',description:'Version-bound terms agreements and separate consumer-contract information and actions.',guides:[guide('consumer-packs','Purchase & contract packs'),guide('terms','Terms agreements'),guide('guarantees','Guarantee notices'),guide('guarantee-labels','Product guarantee labels'),guide('guarantee-producer-example','Producer label example'),guide('paid-orders','Paid order reviews'),guide('contract-actions','Withdrawal & cancellation'),guide('contract-dispatch','Contract delivery runners')],topics:[
-  topic('agreement','Terms agreement','/agreement','An unchecked statement tied to the exact terms version and action wording.','terms',[['Portuguese','/localization/agreement/']]),
+  topic('agreement','Terms agreement','/agreement','An unchecked statement tied to the exact terms version and action wording.','terms',[['Portuguese','/localization/agreement/'],['React','/agreement/react/'],['Astro','/agreement/astro/']]),
   topic('guarantee-notice','EU guarantee notice','/guarantees','Display the shop-level legal guarantee notice and its readable wording.','guarantees',[],'Consumer contracts'),
   topic('producer-label','Product guarantee label','/guarantees/product/','Place the complete producer guarantee label beside the product it covers.','guarantee-labels',[['Preparation & source','/guide/guarantee-producer-example']],'Consumer contracts'),
   topic('orders','Paid order review','/orders/mixed/','Present items, commitments and prices immediately before an explicit payment action.','paid-orders',[['Deposit & balance','/orders/deferred/'],['Conditional fee','/orders/conditional/'],['Dark','/dark/orders/mixed/']],'Consumer contracts'),
@@ -63,6 +65,10 @@ export const siteSections=[
 ];
 // Each guide has one place in the learning path. Specialist and maintainer material
 // belongs below its parent task rather than becoming another top-level destination.
+// Pack listings share the installed explanation; record-specific topics keep their own descriptions.
+const topicPacks={documents:'privacy-pages',cookies:'cookie-choices',agreement:'terms-agreement',collection:'collection-notices','indirect-collection':'indirect-collection',rights:'privacy-requests',technology:'technology-notices',permissions:'form-permissions',embeds:'gated-media',backend:'evidence-workspace','opt-outs':'processing-opt-outs',exceptions:'assessed-storage-settings',google:'google-basic',withdrawal:'contract-withdrawal',cancellation:'subscription-cancellation',orders:'paid-order-review',confirmations:'customer-confirmations','guarantee-notice':'guarantee-information'};
+const installedPacks=new Map(packLibrary().map(pack=>[pack.id,pack]));
+for(const section of siteSections)for(const topic of section.topics){const pack=installedPacks.get(topicPacks[topic.id]);if(pack){topic.title=pack.title;topic.description=pack.outcome;if(topic.id==='documents')topic.href=pack.preview;}}
 const group=(title,description,slugs,topicIds=[],options={})=>({title,description,slugs,topicIds,...options});
 const areaGroups={
  start:[group('Configure your site','Begin with an inventory, then review the setup recommendations.',['cartridges','packages','compliance-map','architecture','package','setup','storage-authoring','agent-setup'],['setup']),group('Find the services you use','Discovery supplies findings for review; the catalog supplies reusable service descriptions.',['discovery','service-catalog'],['discovery'])],

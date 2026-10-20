@@ -1,0 +1,10 @@
+---
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS REQ-PRODUCT-ASTRO REQ-PRODUCT-TERMS-ACCEPTANCE
+export interface Props {id:string;offerId:string;contextKey:string;class?:string}
+const {id,offerId,contextKey,class:className}=Astro.props;
+if(!/^[a-z][a-z0-9-]{0,119}$/u.test(id)||!/^[a-f0-9]{64}$/u.test(offerId)||!/^[A-Za-z0-9_-]{1,120}$/u.test(contextKey))throw new Error('Provide a valid agreement ID, exact offer ID and non-secret host context key.');
+---
+<div class={className} data-notabenda-terms={id} data-notabenda-terms-offer={offerId} data-notabenda-terms-context={contextKey}>
+ <div data-notabenda-terms-mount></div>
+ <div data-notabenda-terms-fallback><slot><p>Agreement controls require JavaScript. Contact the site operator for help.</p></slot></div>
+</div>

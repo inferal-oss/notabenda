@@ -18,7 +18,7 @@ test('cartridges resolve existing job contracts and supporting work without acti
  for(const c of library){for(const id of c.requirements)assert.ok(ids.has(id));const plan=planCartridges(selectCartridges([c.id]));assert.deepEqual(plan.reference.requestedTargetIds,[...c.targetIds]);assert.equal(plan.boundaries.activatesFeatures,false);for(const answer of Object.values(plan.reference.targetAnswersTemplate.answers))assert.deepEqual(answer,{choice:'unknown',justification:''});}
  const plan=planCartridges(selectCartridges(['gated-media','terms-agreement']));assert.deepEqual(plan.supportingWork.map(s=>s.id),['legal-pages','cookie-consent']);assert.equal(plan.cartridges.length,2);assert.equal(plan.reference.targets.find(t=>t.id==='legal-pages').selection,'prerequisite');
  const empty=planCartridges(selectCartridges([]));assert.deepEqual(empty.reference.targets,[]);assert.equal(empty.state,'choose-cartridges');assert.throws(()=>formatCartridgeBrief(empty.selection));
- library[0].title='mutated';assert.equal(cartridgeLibrary()[0].title,'Privacy pages');plan.reference.targets[0].title='mutated';assert.notEqual(planCartridges(selectCartridges(['privacy-pages'])).reference.targets[0].title,'mutated');
+ const firstTitle=library[0].title;library[0].title='mutated';assert.equal(cartridgeLibrary()[0].title,firstTitle);plan.reference.targets[0].title='mutated';assert.notEqual(planCartridges(selectCartridges(['privacy-pages'])).reference.targets[0].title,'mutated');
 });
 
 test('regional cartridges retain distinct installed policy fields and do not enable either policy',()=>{

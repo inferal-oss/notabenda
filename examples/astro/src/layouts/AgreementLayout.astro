@@ -1,0 +1,16 @@
+---
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS REQ-PRODUCT-ASTRO REQ-PRODUCT-MOBILE
+import {ClientRouter} from 'astro:transitions';
+import TermsAcceptance from '@notabenda/core/astro/TermsAcceptance.astro';
+import LegalLinks from '@notabenda/core/astro/LegalLinks.astro';
+import {agreement} from '../lib/agreement.mjs';
+export interface Props {review?:boolean}
+const {review=false}=Astro.props;
+---
+<!doctype html><html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="notabenda-terms-offer" content={JSON.stringify(agreement.offer)}/><title>Terms with Astro · Juniper Notes</title><link rel="stylesheet" href="/assets/notabenda.css"/><link rel="stylesheet" href="/assets/example-pages.css"/><link rel="stylesheet" href="/assets/example-theme.css"/><ClientRouter fallback="none"/></head>
+<body class="nb-page nb-demo-page nb-demo-agreement"><a class="nb-skip-link" href="#main">Skip to content</a><header class="nb-site-header"><a class="demo-brand" href="/" data-astro-reload>juniper / notes</a><nav aria-label="Example navigation"><a href="/examples/contracts/" data-astro-reload>← All examples</a><a href="/guide/terms#astro" data-astro-reload>Integration guide ↗</a></nav></header>
+<main id="main" class="nb-document" data-agreement-entry><header class="agreement-intro"><p class="nb-eyebrow">Terms agreement · Astro</p><h1>{review?'Your agreement, in review.':'Read before you agree.'}</h1><p>Move between these pages without recording a choice. The same agreement draft stays with its operation.</p></header>
+<div id="terms-control"><TermsAcceptance id="sample-signup" offerId={agreement.offer.offerId} contextKey="sample-light"><p>Agreement controls require JavaScript. The terms linked below remain readable.</p></TermsAcceptance></div>
+<aside class="agreement-context" aria-labelledby="agreement-context-title"><p class="nb-eyebrow">Your agreement</p><h2 id="agreement-context-title">One version.<br/>One explicit choice.</h2><p>The record keeps the document version, the exact statement and the time it was received.</p><p data-agreement-state>No confirmed agreement this visit.</p><a data-agreement-record hidden>Inspect this agreement ↗</a><a href={review?'/agreement/astro/':'/agreement/astro/review/'}>{review?'Back to the terms':'Continue to review'} <span aria-hidden="true">→</span></a><a href="/demo/admin/agreements" data-astro-reload>View agreement records ↗</a><a href="/agreement/react/" data-astro-reload>React example ↗</a><details><summary>Follow the Astro integration</summary><p>One host-owned controller remains bound to the same operation and offer. Navigation attaches the current view without recording or retrying. A different operation needs a fresh controller.</p><a href="/guide/terms#astro" data-astro-reload>Integration guide ↗</a></details></aside></main>
+<footer class="nb-site-footer"><LegalLinks config={agreement.build.publicConfig}/></footer></body></html>
+<script>import '../scripts/agreement-client.mjs';</script>

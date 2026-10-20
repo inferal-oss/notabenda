@@ -136,7 +136,7 @@ export function createTermsAcceptance(input: unknown, options: TermsAcceptanceOp
   };
 }
 
-/** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-A11Y */
+/** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-TERMS-ADAPTERS REQ-PRODUCT-A11Y */
 export function mountTermsAcceptance(container: HTMLElement, options: { acceptance: TermsAcceptanceController }): { destroy(): void } {
   const { acceptance } = options; const offer = acceptance.getOffer(); const doc = container.ownerDocument;
   const l=offer.localization,m=l?.terms;
@@ -155,9 +155,13 @@ export function mountTermsAcceptance(container: HTMLElement, options: { acceptan
   documentCopy.append(link,metadata);documentRow.append(documentIcon,documentCopy);root.append(heading,documentRow);
   if (offer.mode === 'preview' || offer.document.reviewStatus !== 'reviewed') { const draft = doc.createElement('p'); draft.className = 'nb-draft'; draft.textContent = m?.draft??'Preview · Draft terms'; root.append(draft); }
   const footer=doc.createElement('div');footer.className='nb-terms-footer';footer.append(action,message);root.append(label,footer); container.append(root);
-  checkbox.addEventListener('change',()=>acceptance.setChecked(checkbox.checked));
-  action.addEventListener('click',()=>{ void acceptance.submit().catch(()=>{}); });
+  let disposed=false;
+  const change=()=>{if(!disposed)acceptance.setChecked(checkbox.checked);};
+  const submit=()=>{if(!disposed)void acceptance.submit().catch(()=>{});};
+  checkbox.addEventListener('change',change);
+  action.addEventListener('click',submit);
   const unsubscribe = acceptance.subscribe(state=>{
+    if(disposed)return;
     const focused=doc.activeElement;const ownedFocus=focused===checkbox||focused===action;
     checkbox.checked = state.checked; checkbox.disabled = !['idle','error'].includes(state.status);
     action.disabled = !state.checked || !['idle','error'].includes(state.status);
@@ -167,5 +171,5 @@ export function mountTermsAcceptance(container: HTMLElement, options: { acceptan
     else message.textContent = state.status === 'submitting' ? m?.submitting??'Recording your agreement…' : state.status === 'stale' ? m?.stale??'The terms have changed. Reload to review the current version.' : state.status === 'retired' ? m?.retired??'This agreement context has closed. Contact the site operator to start a new workflow.' : state.error === 'unavailable' ? m?.unavailable??'This browser cannot start a secure agreement request. Try a supported browser over HTTPS.' : state.status === 'error' ? m?.error??"We couldn't confirm your agreement was saved. Please try again." : '';
     if(ownedFocus&&message.textContent&&(focused===checkbox?checkbox.disabled:action.disabled)&&(doc.activeElement===focused||doc.activeElement===doc.body))message.focus({preventScroll:true});
   });
-  return { destroy() { unsubscribe(); root.remove(); } };
+  return { destroy() { if(disposed)return;disposed=true;checkbox.removeEventListener('change',change);action.removeEventListener('click',submit);unsubscribe();root.remove(); } };
 }

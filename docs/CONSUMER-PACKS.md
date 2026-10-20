@@ -2,13 +2,13 @@
 
 Choose the customer job you need. Questionnaire revision 7 accepts reports from revisions 1–6, leaving new facts unknown. The five packs reuse existing components; their plans keep applicability decisions, separate builder inputs and host work visible. Selection creates no profile, route, quote, payment, delivery or guarantee qualification.
 
-| Pack ID | Customer job | Integration |
+| Pack · stable ID | What it does | Integration |
 | --- | --- | --- |
-| `contract-withdrawal` | Declare withdrawal through a public route. | [Contract actions](CONTRACT-ACTIONS.md), [independent delivery runners](CONTRACT-DISPATCH.md). |
-| `subscription-cancellation` | Request an end to a continuing contract. | The supported `de-cancellation` flow in [contract actions](CONTRACT-ACTIONS.md). |
-| `paid-order-review` | Review the full offer beside the final payment action. | [Paid orders](PAID-ORDERS.md), including original product-label files. |
-| `customer-confirmations` | Receive a complete personally addressed customer copy. | [Confirmation preparation and delivery](ORDER-CONFIRMATIONS.md). |
-| `guarantee-information` | Read shop guarantee information and qualifying producer labels. | Separate [shop notice](GUARANTEES.md) and [product label](GUARANTEE-LABELS.md) branches. |
+| Contract withdrawal · `contract-withdrawal` | Give customers an online route to withdraw from an eligible purchase and keep a copy. | [Contract actions](CONTRACT-ACTIONS.md), [independent delivery runners](CONTRACT-DISPATCH.md). |
+| German contract cancellation · `subscription-cancellation` | Provide the supported German cancellation form for eligible continuing contracts, such as subscriptions. | The supported `de-cancellation` flow in [contract actions](CONTRACT-ACTIONS.md). |
+| Paid order review · `paid-order-review` | Show products, total charges and ongoing commitments before a customer places a paid order. | [Paid orders](PAID-ORDERS.md), including original product-label files. |
+| Contract confirmation copies · `customer-confirmations` | Keep the customer’s full contract copy and track its handoff to your delivery service. | [Confirmation preparation and delivery](ORDER-CONFIRMATIONS.md). |
+| Guarantee notices & labels · `guarantee-information` | Display the EU shop guarantee notice and qualifying producer durability labels on products. | Separate [shop notice](GUARANTEES.md) and [product label](GUARANTEE-LABELS.md) branches. |
 
 Open [the pack library](/start/#pack-contract-withdrawal), or ask the installed CLI for one plan:
 

@@ -81,6 +81,8 @@ Optional `consent.information` supplies a public rights entry and collapsed brow
 
 ## Explicit terms agreement
 
+React and Astro views reuse the host-owned terms controller. Rendering, hydration and navigation never submit or retry. View destruction removes its handlers and leaves the controller and uncertain request intact. React SSR exposes unchecked/idle state without receipts. Astro requires a named shell, exact offer and public operation context key; a controller's first key cannot be renamed after bridge destruction. A new subject or operation needs a fresh host controller and key. Public matching labels provide no authority; server identity/operation admission remains independent.
+
 - Keep an unchecked terms statement separate from privacy notices, cookie choices, and optional marketing permissions. Bind the exact terms HTML/content and interface wording into an immutable offer.
 - Register an archived offer separately from explicit host activation. The trusted host binds site, subject, intended workflow and operation; browser fields cannot supply that authority.
 - Report recorded agreement only after a matching persisted receipt. Check the active offer and write new agreements in one transaction; uncertain retries recover the original record without changing its version.
@@ -199,6 +201,8 @@ Explain the purpose of legal/compliance components before presenting implementat
 <span id="cartridge-product-model"></span>
 
 ## Pack product model
+
+Each pack should briefly explain its problem and what it supplies. Repeated listings use the installed registry. Every linked default example supplies a realistic use case, a flow matching its actual controls and an explanation of the result. Keep distinct timing rules and payment variants separate, explain remembered starting states, and preserve policy text, offer wording and pinned artifacts. Walkthroughs are teaching content, not automated checks or installation verdicts.
 
 Notabenda should feel like inserting a pack for a clear job. Lead with a small library, a deliberate selection and gradual setup that teaches the decisions as they become relevant. The visual direction is console-like simplicity: a few recognizable packs, a visible setup tray and an obvious next action. Keep the established restrained design; do not imitate another product's branding or turn regulatory coverage into game achievements.
 

@@ -3,6 +3,7 @@
 import {readFile} from 'node:fs/promises';
 const leaf='<svg viewBox="0 0 32 32" width="27" height="27" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const profiles={
+ 'examples/legal-pages/index.html':['documents','package'],
  'storage-exceptions/index.html':['exceptions','storage-exceptions'],
  'orders/mixed/index.html':['orders','paid-orders'],'dark/orders/mixed/index.html':['orders','paid-orders'],
  'orders/deferred/index.html':['orders','paid-orders'],'dark/orders/deferred/index.html':['orders','paid-orders'],
@@ -18,6 +19,7 @@ const profiles={
  'index.html':['overview','package'], 'brand/index.html':['brand','package'],
  'form-permissions/react/index.html':['permissions','react'], 'dark/form-permissions/react/index.html':['permissions','react'],
  'form-permissions/index.html':['permissions','form-permissions'], 'dark/form-permissions/index.html':['permissions','form-permissions'],
+ 'agreement/react/index.html':['agreement','terms'], 'dark/agreement/react/index.html':['agreement','terms'],
  'agreement/index.html':['agreement','terms'], 'dark/agreement/index.html':['agreement','terms'],
  'react/index.html':['react','react'], 'dark/react/index.html':['react','react'],
  'collection/index.html':['collection','collection'],'dark/collection/index.html':['collection','collection'],

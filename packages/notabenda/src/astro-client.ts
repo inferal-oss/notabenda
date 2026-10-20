@@ -67,3 +67,6 @@ export function mountAstroConsent(options:AstroConsentOptions):MountedAstroConse
 
 export {mountAstroFormPermission} from './astro-form-permission.js';
 export type {AstroFormPermissionOptions,MountedAstroFormPermission} from './astro-form-permission.js';
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS
+export {mountAstroTermsAcceptance} from './astro-terms.js';
+export type {AstroTermsAcceptanceOptions,MountedAstroTermsAcceptance} from './astro-terms.js';

@@ -1,9 +1,12 @@
+// @requirements REQ-PRODUCT-PACK-EDUCATION
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-MOBILE
 import {test} from 'node:test';
 import {readFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
+import {JSDOM} from 'jsdom';
 import {serveHost} from '../host.mjs';
 import {DemoWorkspace} from '../worker.mjs';
 import {createSyntheticStorage} from '../../packages/notabenda-cf/examples/synthetic.mjs';
@@ -81,10 +84,27 @@ test('public demo validates origin, capability, generation and provisioning budg
 
 test('demo example pages bind their generation without exposing the capability or operational admin',async()=>{
  const {env}=environment(),s=await session(env);
- for(const path of ['/%61greement/index.html',...['/agreement','/dark/agreement','/localization/agreement','/recorded-choices','/processing-choices'].flatMap(base=>[base,base+'/',base+'/index.html'])]){
+ for(const path of ['/%61greement/index.html',...['/agreement','/dark/agreement','/localization/agreement','/agreement/react','/dark/agreement/react','/agreement/astro','/agreement/astro/review','/recorded-choices','/processing-choices'].flatMap(base=>[base,base+'/',base+'/index.html'])]){
   const response=await serveHost(req(path,{headers:headers(s)}),env);assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'private, no-store, no-transform');assert.equal(response.headers.get('Vary'),'Cookie');assert.match(response.headers.get('Content-Security-Policy'),/frame-ancestors 'none'/);const html=await response.text();assert.match(html,new RegExp('content="'+s.generation+'"'));assert.ok(!html.includes(s.cookie.split('=')[1]));
  }
  env.ASSETS.fetch=async()=>new Response(null,{status:308,headers:{Location:'/agreement/'}});const redirect=await serveHost(req('/agreement',{headers:headers(s)}),env);assert.equal(redirect.status,308);assert.equal(redirect.headers.get('Cache-Control'),'private, no-store, no-transform');
+});
+
+test('framework agreement pages bind the isolated session without accepting terms or exposing capabilities',async()=>{
+ const {env,objects}=environment(),s=await session(env);
+ for(const path of ['/agreement/react/','/dark/agreement/react/','/agreement/astro/','/agreement/astro/review/']){
+  const raw=await readFile(new URL('../dist/public'+path+'index.html',import.meta.url),'utf8');env.ASSETS.fetch=async()=>new Response(raw,{headers:{'Content-Type':'text/html'}});
+  const response=await serveHost(req(path,{headers:headers(s)}),env),html=await response.text();assert.equal(response.status,200);assert.equal(response.headers.get('Vary'),'Cookie');assert.match(response.headers.get('Cache-Control'),/private, no-store/);assert.ok(!html.includes(s.cookie.split('=')[1]));
+  const dom=new JSDOM(html),d=dom.window.document,offer=JSON.parse(d.querySelector('meta[name=notabenda-terms-offer]').content);assert.equal(offer.offerId,data.agreements.find(entry=>entry.theme===(path.startsWith('/dark/')?'dark':'light')).offer.offerId);assert.equal(d.querySelector('input[type=checkbox]'),null);assert.ok(d.querySelector('.demo-corner'));assert.equal(d.querySelector('meta[name=notabenda-demo-generation]').content,s.generation);
+  if(path.includes('/astro/'))assert.equal(d.querySelector('[data-notabenda-terms]').dataset.notabendaTermsContext,'sample-light-'+s.generation);
+  const react=d.getElementById('react-agreement-root');if(react){assert.equal(react.querySelector('.demo-data-notice'),null);assert.equal(react.querySelector('[data-pack-guide]'),null);}dom.window.close();
+ }
+ assert.equal((await [...objects.values()][0].storage.list({prefix:'notabenda/terms/juniper-agreement/events/',limit:100})).size,10);
+});
+
+test('demo operator examples explain evidence and confirmation work without broadening their nonce policy',async()=>{
+ const {env}=environment(),s=await session(env);
+ for(const [path,id] of [['/demo/admin','evidence-workspace'],['/demo/admin/orders','customer-confirmations']]){const response=await serveHost(req(path,{headers:headers(s)}),env),html=await response.text(),dom=new JSDOM(html),guide=dom.window.document.querySelector('[data-pack-guide="'+id+'"]');assert.ok(guide);assert.equal(guide.querySelector('details').open,false);assert.equal(guide.querySelectorAll('ol li').length,3);const policy=response.headers.get('Content-Security-Policy'),nonce=/style-src 'self' 'nonce-([a-z0-9]+)'/u.exec(policy)?.[1];assert.ok(nonce);assert.ok([...dom.window.document.querySelectorAll('style[nonce="'+nonce+'"]')].some(style=>style.textContent.includes('.pack-example-guide')));assert.doesNotMatch(policy,/unsafe-inline/u);assert.equal(response.headers.get('Cache-Control'),'private, no-store, no-transform');dom.window.close();}
 });
 
 test('nested demo legal pages retain exact static bytes without session storage or cookies',async()=>{

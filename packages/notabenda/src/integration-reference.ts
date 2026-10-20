@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS
 // @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
@@ -58,7 +59,7 @@ const targets:Record<string,Target>={
  'terms-agreement':{
   conditionalConfig:[{when:'site-locale-not-english',requiredPaths:['localization.terms'],reason:'The native non-English acceptance interface needs the complete selected terms dictionary.'}],
   title:'Explicit agreement to terms',outcome:'An unchecked action bound to an exact terms revision with an acknowledged receipt.',configPaths:['documents.terms','localization.terms'],
-  hostWork:['Create/register the exact offer; bind a host context and transport to the agreement control.','A terms page alone is not an agreement flow. Keep cookie preferences separate.'],questionIds:['terms-agreement'],factsNeeded:['Action requiring agreement','Exact terms version and action wording','Host context identity, receipt admission and failure/retry behavior'],guides:['terms'],prerequisites:['legal-pages'],verify:['Initially unchecked.','Displayed document matches the offer revision.','Failure cannot appear acknowledged; successful receipt remains inspectable.']
+  hostWork:['Create/register the exact offer; bind a host context and transport to the agreement control.','Choose the native view or React terms provider/control or Astro named shell/bridge. The host owns the controller, operation and uncertain-request recovery; new operation or subject requires a fresh controller and Astro context key.','A terms page alone is not an agreement flow. Keep cookie preferences separate.'],questionIds:['terms-agreement'],factsNeeded:['Action requiring agreement','Exact terms version and action wording','Host context identity, receipt admission and failure/retry behavior'],guides:['terms'],prerequisites:['legal-pages'],verify:['Initially unchecked.','Displayed document matches the offer revision.','Failure cannot appear acknowledged; successful receipt remains inspectable.','Framework mount, hydration and navigation submit nothing; replaced operations cannot inherit the previous controller or receipt.']
  },
  'privacy-rights':{
   conditionalConfig:[{when:'site-locale-not-english',requiredPaths:['localization.rights'],reason:'The native request page needs its complete matching message set; collection messages do not translate it.'}],

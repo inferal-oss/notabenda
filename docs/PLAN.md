@@ -320,6 +320,8 @@ The optional [UK storage settings](STORAGE-EXCEPTIONS.md) implement declared sta
 
 ## Product direction: packs
 
+All twenty packs now have shared descriptions of their job and a specific example use case, flow and result explanation. The public examples use collapsed teaching notes, distinct regional timing flows and payment-variant-specific instructions. The legal-pages showcase links to unchanged policy documents. The same registry supplies repeated website and textual listings; display-name changes leave stable pack IDs and revisions intact.
+
 The primary product path is now choose a job, prepare its facts and connect it to a site. Treat the framework APIs as supporting integration details. The first slice supplies three basic packs, additional functions and specific timing overlays, a shared installed registry, focused manual/CLI setup and an agent brief. Continue this model through preview, connection and operator next actions; avoid adding more isolated feature pages as the default onboarding. See [packs](CARTRIDGES.md) and [scope decisions](SCOPE.md#pack-product-model).
 
 The installed pack UI now supplies optional server rendering, browser mounting/hydration and separate styles. Website/operator setup and new CF starters use the shared component, including private-report resume and host-owned destinations. Continue with evidence-workspace organization and evidence-bound operator next actions; setup selection alone remains a local draft.
@@ -337,3 +339,5 @@ Privacy-request setup includes an explicit public-page editor, atomic page/ priv
 Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).
 
 The optional [consent connection inspector](CONNECTION-INSPECTION.md) now compares the intended consent inventory with the actual supplied controller and distinguishes missing, registered and removed callbacks from lifecycle phases. It performs no publication or application behavior tests; broader evidence-bound pack verification remains open.
+
+The terms pack now supplies [React and Astro adapters](TERMS.md#react) over its existing host-owned controller. SSR stays unchecked without exposing receipts, view cleanup makes detached controls inert, and Astro checks exact offer and operation context before remounting. StrictMode, uncertain retries and pending operation replacement have dedicated tests. The examples share the existing session-isolated recorder. Actual application fulfillment and broader platform/accessibility acceptance remain open.

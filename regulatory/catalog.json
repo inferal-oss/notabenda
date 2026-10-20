@@ -24,7 +24,8 @@
         "Explicit local consent settings authoring in the UI and CLI, including service/purpose enrollment, material versions and separate lifetimes; existing policies and restrictive scope facts are preserved.",
         "Complete host-supplied privacy-request page messages with matching locale/direction/review metadata, inert local preview and separate operator-owned request workflows.",
         "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review.",
-        "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate."
+        "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate.",
+        "Shared short descriptions for every pack, concrete example use cases and walkthroughs, separate timing and payment-variant flows, and unchanged stable selection pins."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -76,7 +77,10 @@
         "examples/static/consent.mjs",
         "examples/static/choices-page.mjs",
         "examples/static/choices-page.css",
-        "examples/static/choices-build.mjs"
+        "examples/static/choices-build.mjs",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "examples/static/pack-learning.mjs"
       ]
     },
     {
@@ -156,7 +160,8 @@
       "deliverables": [
         "Static supplied terms first; narrowly scoped reviewed packs later.",
         "Optional explicit terms-acceptance control linked to an exact version; independent marketing permissions.",
-        "Consumer/business and service-type configuration, with conditional rights and contract-action links."
+        "Consumer/business and service-type configuration, with conditional rights and contract-action links.",
+        "React provider/hooks/native control and Astro named offer/operation-bound shell/bridge over the same host-owned acceptance controller; conservative SSR, view-only cleanup and uncertain-request preservation."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -173,7 +178,14 @@
         "packages/notabenda/src/react-documents.ts",
         "packages/notabenda/src/astro/LegalGuaranteeNotice.astro",
         "packages/notabenda/assets/guarantees/manifest.json",
-        "examples/guarantees/build.mjs"
+        "examples/guarantees/build.mjs",
+        "packages/notabenda/src/react-terms.ts",
+        "packages/notabenda/src/astro-terms.ts",
+        "packages/notabenda/src/terms-view-owner.ts",
+        "packages/notabenda/src/astro/TermsAcceptance.astro",
+        "packages/notabenda/src/terms.ts",
+        "packages/notabenda/src/react.ts",
+        "packages/notabenda/src/astro-client.ts"
       ]
     },
     {
@@ -2152,7 +2164,9 @@
         "REQ-PRODUCT-RIGHTS-LOCALIZATION",
         "REQ-PRODUCT-STORAGE-AUTHORING",
         "REQ-PRODUCT-CONNECTION-INSPECTION",
-        "REQ-PRODUCT-CF-RECOVERY-REHEARSAL"
+        "REQ-PRODUCT-CF-RECOVERY-REHEARSAL",
+        "REQ-PRODUCT-TERMS-ADAPTERS",
+        "REQ-PRODUCT-PACK-EDUCATION"
       ]
     }
   ],
@@ -7196,6 +7210,97 @@
         "docs/verification/cloudflare-recovery.md"
       ],
       "implementationNote": "Different fixed target, owner-only backup/manifest/report, default-closed fixture gate, source-only seed guard, manifest decision check, restart/resumable purge, exact old-grant refusal, surviving heads and private MDX source response comparison."
+    },
+    {
+      "id": "REQ-PRODUCT-TERMS-ADAPTERS",
+      "jurisdiction": "PRODUCT",
+      "title": "Host-owned terms agreement views for React and Astro",
+      "kind": "product-standard",
+      "summary": "Provide first-class framework views over the existing terms controller, preserving conservative SSR, explicit version-bound actions, uncertain attempts and exact operation ownership across remounts and navigation.",
+      "appliesWhen": "An adopter connects the terms agreement pack to a React or Astro application.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-TERMS-ADAPTERS"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host owns authenticated operation/subject binding, exact offer registration/activation, controller bootstrap and destruction, cross-reload recovery and business fulfillment. A public Astro context key supplies no authority. Broader platform and assistive-technology acceptance remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/react-terms.ts",
+        "packages/notabenda/src/astro-terms.ts",
+        "packages/notabenda/src/terms-view-owner.ts",
+        "packages/notabenda/src/astro/TermsAcceptance.astro",
+        "packages/notabenda/src/terms.ts",
+        "packages/notabenda/src/react.ts",
+        "packages/notabenda/src/astro-client.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/agreements/example.mjs",
+        "examples/agreements/build.mjs",
+        "examples/agreements/react-view.mjs",
+        "examples/agreements/react-client.mjs",
+        "examples/agreements/transport.mjs",
+        "examples/astro/src/layouts/AgreementLayout.astro",
+        "examples/astro/src/scripts/agreement-client.mjs",
+        "site/demo-host.mjs",
+        "examples/agreements/astro-session.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/react-terms.test.mjs",
+        "packages/notabenda/test/astro-terms.test.mjs",
+        "packages/notabenda/test/astro-agreement-example.test.mjs",
+        "packages/notabenda/test/react-package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/terms-adapters.md"
+      ],
+      "implementationNote": "React provider, cached immutable hooks and native wrapper; Astro inert named shell, exact offer and remembered controller-context binding; shared view ownership, removed detached handlers, no mount/navigation delivery and existing isolated-recording examples."
+    },
+    {
+      "id": "REQ-PRODUCT-PACK-EDUCATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Plain pack descriptions and example-specific learning flows",
+      "kind": "product-standard",
+      "summary": "Explain the concrete job and use case of every installed pack in shared short descriptions. Each default example teaches its real flow and result without altering records or claiming legal readiness.",
+      "appliesWhen": "A user browses packs, follows an example or hands a selected job to an agent.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PACK-EDUCATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Descriptions identify supported mechanisms rather than complete legal coverage. Walkthroughs do not run checks, reset remembered state, send notifications or establish fulfillment. Policy text, accepted statements and pinned artifacts retain their identities.",
+      "implementationRefs": [
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "examples/static/pack-learning.mjs",
+        "examples/static/build.mjs",
+        "site/navigation.mjs",
+        "site/examples-page.mjs",
+        "site/demo-host.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/pack-education.test.mjs",
+        "site/test/pack-education.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/pack-education.md"
+      ],
+      "implementationNote": "Twenty shared outcomes/intros and individual use-case/flow/result records; scoped static teaching disclosures, two timing walkthroughs, order-specific variants, legal-page showcase, framework-root separation and nonce-preserving demo admin education."
     }
   ],
   "verification": [
@@ -8654,6 +8759,37 @@
         "packages/notabenda-cf/test/recovery-rehearsal.test.mjs",
         "scripts/check-cf-starter-runtime.mjs",
         "docs/verification/cloudflare-recovery.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TERMS-ADAPTERS",
+      "requirementIds": [
+        "REQ-PRODUCT-TERMS-ADAPTERS"
+      ],
+      "status": "automated",
+      "expected": "Real controllers and recorder verify conservative SSR/hydration, StrictMode and view-only cleanup, inert detached controls, same-request uncertain recovery, pending operation replacement, terminal and localized native states, offer/context navigation rejection, permanent key binding, failed-mount cleanup, shared framework ownership, offline installed types and real Astro compilation. Demo pages remain session-scoped with no acceptance on rendering.",
+      "testRefs": [
+        "packages/notabenda/test/react-terms.test.mjs",
+        "packages/notabenda/test/astro-terms.test.mjs",
+        "packages/notabenda/test/astro-agreement-example.test.mjs",
+        "packages/notabenda/test/react-package.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/terms-adapters.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PACK-EDUCATION",
+      "requirementIds": [
+        "REQ-PRODUCT-PACK-EDUCATION"
+      ],
+      "status": "automated",
+      "expected": "Every public default pack destination has its corresponding case/three-step/result explanation; listings share the installed outcome; order variants and timing rules remain distinct; teaching is collapsed/no-script, outside React roots, absent from pinned policy/offer inputs, and uses existing private demo nonces without changing scope or selection pins.",
+      "testRefs": [
+        "packages/notabenda/test/pack-education.test.mjs",
+        "site/test/pack-education.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/pack-education.md"
       ]
     }
   ],

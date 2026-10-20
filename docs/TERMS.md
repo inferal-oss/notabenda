@@ -98,4 +98,81 @@ The detail view presents the exact statement/action label, effective date, workf
 
 `REQ-PRODUCT-TERMS-ACCEPTANCE` connects the implemented mechanics to source and automated tests. `REQ-EU-TERMS` remains partial: supplied content and a checkbox do not establish consumer fairness or enforceability. `REQ-EU-ORDER-ACTION` remains partial; [paid-order review](PAID-ORDERS.md) and [customer confirmations](ORDER-CONFIRMATIONS.md) have separate APIs and verification. Their pre-order cross-references include the conditional producer durability label; the separate [shop-level guarantee notice](GUARANTEES.md) is implemented as a prerequisite and does not replace that label or the final order interface. The applicable EU paid-order information/action and durable-medium confirmation requirements are separate from a generic terms agreement ([Consumer Rights Directive, Article 8(2) and (7)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927)). National, sector, withdrawal/cancellation, accessibility and delivery obligations need their own applicable flows and review.
 
-The acceptance interface uses vanilla DOM and the selected terms message set. Framework adapters for this controller and broader platform, screen-reader and zoom review remain open. Contract delivery, withdrawal and cancellation use the separate [contract-action modules](CONTRACT-ACTIONS.md); application fulfillment and provider operation remain host responsibilities.
+The acceptance interface uses the selected terms message set. React and Astro adapters below reuse that native control and the same host-owned controller. Broader platform, screen-reader and zoom review remain open. Contract delivery, withdrawal and cancellation use the separate [contract-action modules](CONTRACT-ACTIONS.md); application fulfillment and provider operation remain host responsibilities.
+
+## React
+
+Create the controller once in the host bootstrap for the exact operation and offer. Pass it to a provider; components can use the native view or the read-only snapshot hook.
+
+```jsx
+import {
+  TermsAcceptanceProvider, TermsAcceptanceControl,
+  useTermsAcceptanceSnapshot,
+} from '@notabenda/core/react/terms';
+import '@notabenda/core/styles.css';
+
+function ReceiptLink() {
+  const state = useTermsAcceptanceSnapshot();
+  return state.status === 'recorded' && state.receipt
+    ? <a href={hostRecordUrl(state.receipt.id)}>Inspect agreement</a>
+    : null;
+}
+
+function Agreement({controller}) {
+  return <TermsAcceptanceProvider controller={controller}>
+    <TermsAcceptanceControl fallback={<p>Read the terms or contact support.</p>} />
+    <ReceiptLink />
+  </TermsAcceptanceProvider>;
+}
+```
+
+`hostRecordUrl` is your authorized inspection route. A receipt still means an agreement was recorded; it does not mean the related application operation completed.
+
+`useTermsAcceptanceController()` returns the host controller. `useTermsAcceptanceSnapshot()` returns a cached, deeply immutable UI snapshot. Server rendering always exposes unchecked/idle state with no receipt or request ID, even when the supplied controller has a recorded result. Hydration then subscribes to the actual controller. The provider and view never create a controller, submit, retry or destroy it. React StrictMode can mount and clean up the view without recording another agreement.
+
+Use one native framework view per controller. Unmounting removes its handlers and subscription; retained references to old controls become inert. A remounted view of the same controller preserves an uncertain request or recorded result. A different operation or authenticated subject needs a fresh controller, not a reused provider with a renamed operation. The host owns eventual `controller.destroy()` and any recovery across full page reloads. Keep uncertain request IDs private and resume only the same authorized operation, subject and offer.
+
+The focused `@notabenda/core/react/terms` and vanilla `@notabenda/core/terms` entries avoid importing the consent integration. The React exports are also available from `@notabenda/core/react`.
+
+Try the [React example](/agreement/react/) or its [midnight appearance](/dark/agreement/react/).
+
+## Astro
+
+Render a named static shell with the exact public offer ID and a non-secret host context key. It contains no checkbox or enabled agreement action before the client bridge mounts.
+
+```astro
+---
+import TermsAcceptance from '@notabenda/core/astro/TermsAcceptance.astro';
+// Resolved by your host for this operation; never use a credential as contextKey.
+const {offerId, contextKey} = Astro.props;
+---
+<TermsAcceptance id="account-terms" offerId={offerId} contextKey={contextKey}>
+  <p>Read the terms or contact support if agreement controls are unavailable.</p>
+</TermsAcceptance>
+```
+
+In your processed client bootstrap, after the host has selected the corresponding controller:
+
+```js
+import {mountAstroTermsAcceptance} from '@notabenda/core/astro/client';
+
+const view = mountAstroTermsAcceptance({
+  acceptance: hostAgreementController,
+  id: 'account-terms',
+  contextKey: hostPublicContextKey,
+});
+
+// When this host workflow ends:
+view.destroy();
+hostAgreementController.destroy();
+```
+
+The two host values are application code. `contextKey` is a public UI binding label of 1–120 ASCII letters, digits, `_` or `-`. Generate a new key and controller when the operation or authenticated subject changes. The server must independently authorize and bind the operation, subject and exact offer; matching a public key grants no access.
+
+The bridge remembers a controller's first Astro context key, including after bridge destruction. It rejects rebinding that controller under another key. On `astro:before-swap` it detaches the view; on `astro:page-load` it attaches only one matching shell with the same offer and key. A mismatch removes the old controls and leaves the static fallback visible. Call `refresh()` after deliberate host DOM replacement; `destroy()` removes listeners and UI without destroying the controller or aborting an uncertain request. Mounting, navigation and refresh never submit or retry.
+
+Framework ownership is shared: the same controller cannot own simultaneous React and Astro native views. Supply translated fallback content through the slot. The mounted native view retains the exact offer statement, action label and supported language/direction messages.
+
+Try the [two-page Astro example](/agreement/astro/). Moving to its review page preserves the same draft; it makes no acceptance write.
+
+Linked requirement: [REQ-PRODUCT-TERMS-ADAPTERS](requirements/README.md#req-product-terms-adapters). See [adapter verification](verification/terms-adapters.md).

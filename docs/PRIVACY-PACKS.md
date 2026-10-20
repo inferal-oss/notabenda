@@ -1,6 +1,13 @@
 # Privacy information and opt-out packs
 
-Four focused setup paths connect the existing components: **Form notices**, **Indirect collection**, **Privacy requests** and **Processing opt-outs**. Choose them in the [pack library](/start), or use the installed CLI:
+These four packs address different points in the privacy flow:
+
+- **Form notices** explain collection beside a form, before someone sends information.
+- **Information from other sources** explains data received from a partner or another source. The current notice supports New Zealand, in English.
+- **Privacy request page** helps people find access, correction, deletion and other request routes.
+- **Processing opt-outs** lets people restrict sale, sharing or targeted advertising separately from cookie consent.
+
+Choose them in the [pack library](/start), or use the installed CLI:
 
 ```sh
 npx --no-install notabenda packs collection-notices indirect-collection privacy-requests processing-opt-outs --json
@@ -15,7 +22,7 @@ Use `collection-notices` for information beside fields where people provide data
 
 The draft review identifies whether eligible purposes are declared. For a non-English site it also identifies the missing `localization.collection` dictionary. Those declarations still need factual and wording review. Scope IDs, purpose selection, descriptor review and unique layout IDs are manual builder inputs. [Direct collection integration](COLLECTION.md).
 
-## Indirect collection
+## Information from other sources
 
 Use `indirect-collection` when information comes from another source. This has a separate integration target and questions. A mixed-source purpose can need both packs; neither path assumes that every category was collected indirectly.
 
@@ -23,7 +30,7 @@ The supported `nz-ipp3a` implementation requires an explicit applicability asses
 
 The current indirect renderer is **English-only**. The direct form-notice dictionary does not translate it. Another site locale remains a review item; do not change the site's actual language to bypass the limit. This is an implementation preview with unreviewed legal coverage, not complete or production-supported New Zealand coverage. [Indirect collection integration](INDIRECT-COLLECTION.md).
 
-## Privacy requests
+## Privacy request page
 
 Use `privacy-requests` for a static page that leads to actual request workflows. Supply `rightsCenter`: action kinds, scope explanations, stable destinations, a public email/phone fallback, next-step wording and a review declaration. Setup preserves imported actions while reopening their wording review; it does not invent routes.
 
@@ -62,4 +69,4 @@ const brief = formatPackBrief(selection, 'connect', {config: draftConfig});
 Questionnaire revision 6 adds the focused questions. Reports from revisions 1–5 remain readable; missing new answers remain unresolved. Existing pack IDs and revisions, imported restrictions and saved private notes are preserved. [Engineering verification](verification/privacy-packs.md).
 
 <!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
-The **Privacy requests** pack has a [page editor and explicit CLI proposal](RIGHTS-AUTHORING.md) for actual destinations, scope, public fallback and next steps. Saving also updates the privacy link after confirmation. Non-English native presentation requires complete `localization.rights` messages; requests still go to the host application.
+The **Privacy request page** pack has a [page editor and explicit CLI proposal](RIGHTS-AUTHORING.md) for actual destinations, scope, public fallback and next steps. Saving also updates the privacy link after confirmation. Non-English native presentation requires complete `localization.rights` messages; requests still go to the host application.

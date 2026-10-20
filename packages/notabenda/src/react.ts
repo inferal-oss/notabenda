@@ -1,5 +1,8 @@
 // @requirements REQ-PRODUCT-REACT REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE
 'use client';
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS
+export {TermsAcceptanceProvider,TermsAcceptanceControl,useTermsAcceptanceController,useTermsAcceptanceSnapshot} from './react-terms.js';
+export type {TermsAcceptanceProviderProps,TermsAcceptanceControlProps,ReactTermsAcceptanceSnapshot} from './react-terms.js';
 import {createReactConsentBindings} from './react-consent-bindings.js';
 import type {ReactConsentProviderProps} from './react-consent-bindings.js';
 import type {ConsentController} from './consent-types.js';

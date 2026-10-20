@@ -1,5 +1,7 @@
 # Use Notabenda with React
 
+For a terms agreement, use the dedicated [provider, snapshot hooks and native control](TERMS.md#react). Its controller stays owned by the host operation, including across view remounts; rendering does not submit agreement.
+
 The optional `@notabenda/core/react` entry point connects React 19 to the same controller used by vanilla integrations. It supplies a provider, subscription hooks, native consent controls and a preferences button. Static document components also have a separate server-safe `@notabenda/core/react/documents` entry point.
 
 The default `@notabenda/core` entry remains framework-independent and has no runtime dependencies. React is an optional peer: install your own React 19 application dependencies when using the React adapter. Packages remain an unpublished developer preview; use workspace builds or local tarballs.

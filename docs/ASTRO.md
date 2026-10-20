@@ -1,5 +1,7 @@
 # Use Notabenda with Astro
 
+For terms agreements, use the [named static shell and operation-bound client bridge](TERMS.md#astro). It preserves a draft across same-context navigation and leaves changed offers or operations unbound until the host replaces the controller.
+
 Astro can render the legal documents as ordinary static HTML, then add a small browser bootstrap only where consent controls are needed. The optional `.astro` components use the same validated core renderer. The browser bridge uses the existing host-owned controller; it creates no second consent engine.
 
 This preview is tested with **Astro 7.4.0**, which needs Node.js 22.22 or later. The core package itself still supports Node.js 22. Astro is an optional peer and is not installed by a default core installation. Packages remain unpublished; use workspace builds or local tarballs.

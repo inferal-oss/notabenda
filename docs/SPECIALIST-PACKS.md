@@ -2,11 +2,11 @@
 
 These three packs connect narrower jobs to existing components. Choose them when the actual site needs the supported mechanism. Market, language, vendor labels and pack selection do not establish applicability or enable anything.
 
-| Pack | Adds | Foundation |
+| Pack · stable ID | What it does | Foundation |
 | --- | --- | --- |
-| `technology-notices` | Prior information about supported technology functions and their activation. | [Technology declaration](TECHNOLOGY-COLLECTION.md), existing consent controls and a retained privacy release. |
-| `assessed-storage-settings` | Separate objections for specifically assessed statistical or appearance storage. | [Storage exceptions](STORAGE-EXCEPTIONS.md), exclusive inventory ownership and an atomic preference journal. No consent-control prerequisite. |
-| `google-basic` | Explicit Google Basic destinations and consent signal mappings. | [Google Basic adapter](GOOGLE-BASIC.md), existing consent controls and one Google owner per document. |
+| Profiling & location notices · `technology-notices` | Explain identification, location or profiling features before activation. Québec-focused profile. | [Technology declaration](TECHNOLOGY-COLLECTION.md), existing consent controls and a retained privacy release. |
+| Storage exceptions · `assessed-storage-settings` | Provide an off switch for qualifying UK statistical or appearance storage, separately from cookie consent. | [Storage exceptions](STORAGE-EXCEPTIONS.md), exclusive inventory ownership and an atomic preference journal. No consent-control prerequisite. |
+| Google Basic Consent Mode · `google-basic` | Connect Google Analytics or Ads to cookie choices using Basic Consent Mode. | [Google Basic adapter](GOOGLE-BASIC.md), existing consent controls and one Google owner per document. |
 
 Use the [pack library](/start/) or the explicitly installed local preview:
 
@@ -19,7 +19,7 @@ npx --no-install notabenda wizard --packs assessed-storage-settings \
 
 Read `reference.targetAnswersTemplate` for the selected job, keep unknown facts unresolved and compare the draft with the existing project. The UI, private report and matching connection brief share the same input review. Declared fields remain unverified. Separate builder inputs and actual host connections remain project work. Questionnaire revision 8 accepts reports from revisions 1–7; newly added facts stay unknown on resume. Packages remain unpublished previews.
 
-## Technology notices
+## Profiling & location notices
 
 This path uses the explicit `qc-private-technology-v1` declaration. Assess its scope; it is not complete Québec coverage. Identify the real technology, all identification/location/profiling functions, complete purposes, data and activation opportunities. Separate it from always-running or mixed-purpose work in the actual application.
 
@@ -29,7 +29,7 @@ Author the complete declaration, host wording, function labels and direction. Th
 
 Retain the exact supplemental notice separately, alongside its legal artifact and any required presentation evidence. Ordinary consent receipts do not automatically archive it or establish that someone saw it. Test old grants, disclosure placement, opening controls without saving, withdrawal cleanup, receipt failure and independent restrictions. See `REQ-QC-PROFILING` and the underlying [verification](verification/technology-collection.md).
 
-## Assessed storage settings
+## Storage exceptions
 
 Review statistical and appearance uses separately, their technical isolation, qualification evidence, free objection route and the storage that remembers objections. The supported profile conditions are explicit assertions to establish, not defaults to copy:
 

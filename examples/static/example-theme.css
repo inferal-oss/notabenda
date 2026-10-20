@@ -41,3 +41,5 @@
  .nb-demo-agreement .agreement-context>a:hover{text-decoration:underline}
  @media(max-width:760px){.nb-demo-agreement main.nb-document{row-gap:1.5rem}.nb-demo-agreement main.nb-document>.agreement-context{grid-column:1/-1;border-top:1px solid var(--nb-line);padding-top:1.5rem}}
 }
+/* @requirements REQ-PRODUCT-TERMS-ADAPTERS */
+.agreement-context [hidden]{display:none!important}

@@ -299,6 +299,16 @@
       "types": "./dist/consent-inspect.d.ts",
       "import": "./dist/consent-inspect.js",
       "default": "./dist/consent-inspect.js"
+    },
+    "./terms": {
+      "types": "./dist/terms.d.ts",
+      "import": "./dist/terms.js",
+      "default": "./dist/terms.js"
+    },
+    "./react/terms": {
+      "types": "./dist/react-terms.d.ts",
+      "import": "./dist/react-terms.js",
+      "default": "./dist/react-terms.js"
     }
   },
   "bin": {

@@ -2,34 +2,15 @@
 
 A pack keeps one job together: what it adds, the facts it needs, and the steps to connect and check it. [Open your pack library](/start).
 
-Start with **Privacy pages**, **Cookie choices** or **Terms agreement**. You can combine them or add another job later. Each works from the same site inventory.
+Start with **Legal pages**, **Cookie choices** or **Terms agreement**. You can combine them or add another job later. Each works from the same site inventory.
 
 ## All twenty packs
 
 The library shows every pack, grouped by the job it does. Use the links at the top to jump between groups.
 
-| Group | Pack | What it adds |
-| --- | --- | --- |
-| Start here | Privacy pages | Privacy, cookie and terms documents. |
-| Start here | Cookie choices | A compact request, preferences and service gates. |
-| Start here | Terms agreement | Agreement to an exact terms version. |
-| Privacy information | Form notices | Context-specific information beside direct collection fields. |
-| Privacy information | Indirect collection | The separately assessed supported IPP3A notice path. |
-| Privacy information | Privacy requests | Real request destinations, scope and a public fallback. |
-| Privacy information | Technology notices | Prior information about supported technology functions and activation. |
-| Add a function | Form permissions | Optional purpose and channel permissions, separate from form submission. |
-| Add a function | Gated media | Remote media stays unloaded until permitted. |
-| Add a function | Evidence workspace | Retained versions, searchable records and a private backoffice. |
-| Add a function | Processing opt-outs | Assessed signals and/or recorded restrictions with host enforcement. |
-| Add a function | Assessed storage settings | Independent objections for explicitly assessed storage profiles. |
-| Add a function | Google Basic connection | One document owner with exact tag-purpose mappings. |
-| Purchases and contracts | Contract withdrawal | A reviewed public declaration route and independent handoffs. |
-| Purchases and contracts | Subscription cancellation | The supported German continuing-contract cancellation flow. |
-| Purchases and contracts | Paid order review | Exact items, prices and commitments beside the final action. |
-| Purchases and contracts | Customer confirmations | Complete customer copies and tracked delivery handoffs. |
-| Purchases and contracts | Guarantee information | Separately assessed shop notices and producer labels. |
-| Regional rules | Irish grant duration | Assessment of the supported six-month default grant cap. |
-| Regional rules | Italian repeat requests | Assessment of the supported six-month repeat-request guard. |
+Each description names the problem the pack addresses. **Try the example** opens a use case with a short walkthrough and an explanation of the result. The Ireland and Italy examples describe their two different clocks separately. Some example state survives a revisit; the walkthrough tells you when to reset it before comparing behaviour.
+
+<!-- notabenda:packs -->
 
 The regional packs cover those named mechanisms; they are not complete country coverage.
 
@@ -69,7 +50,7 @@ The reusable model is available from `@notabenda/core/packs`: `packLibrary`, `se
 
 ## Assess regional rules
 
-Regional packs identify a specific mechanism. **Irish grant duration** proposes the supported grant cap for assessment. **Italian repeat requests** proposes the supported solicitation guard. They serve different clocks, even when used together. Their installed plan names exact policy paths and fields; selection does not enable them.
+Regional packs identify a specific mechanism. **Consent expiry · Ireland** proposes the supported grant cap for assessment. **Repeat prompts · Italy** proposes the supported solicitation guard. They serve different clocks, even when used together. Their installed plan names exact policy paths and fields; selection does not enable them.
 
 Review applicability and wording before applying a policy. These are preview mechanisms, not complete country packs or legal certification. [Coverage and requirements](requirements/README.md) remain connected to each pack.
 

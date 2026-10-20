@@ -7,6 +7,8 @@ import {adminPresentation} from './admin-presentation.mjs';
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE
 import {demoExpired} from './demo-presentation.mjs';
 import {markDemoResponse} from './demo-marker.mjs';
+// @requirements REQ-PRODUCT-PACK-EDUCATION
+import {withPackLearningResponse} from '../examples/static/pack-learning.mjs';
 import {createSetupWorker} from '@notabenda/cloudflare';
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS
 import {formPermissionStreamRef} from '@notabenda/cloudflare';
@@ -17,8 +19,10 @@ const permissionPage=/^\/(?:(?:dark\/)?form-permissions(?:\/react)?|form-permiss
 const contractPage=/^\/(?:dark\/)?contract-actions\/(withdrawal|cancellation)(?:\/(?:index\.html)?)?$/u;
 const orderPage=/^\/(?:dark\/)?orders\/(mixed|deferred|conditional)(?:\/(?:index\.html)?)?$/u;
 const localizedPermissionPage=/^\/localization\/permission(?:\/(?:index\.html)?)?$/u;
+// @requirements REQ-PRODUCT-TERMS-ADAPTERS
+const frameworkAgreementPage=/^\/(?:(?:dark\/)?agreement\/react|agreement\/astro(?:\/review)?)(?:\/(?:index\.html)?)?$/u;
 // Only interactive entry documents receive a session; nested legal pages and offer assets stay static.
-const isPage=path=>localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/agreement|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
+const isPage=path=>frameworkAgreementPage.test(path)||localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/agreement|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
 const admin=/^\/demo\/admin(?:\/|$)/u;
 const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing)\/(?:head|record)|permissions\/(?:pt\/)?(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
 export const isDemoRoute=path=>isPage(path)||admin.test(path)||api.test(path);
@@ -71,7 +75,9 @@ export async function serveDemo(request,env,{protect,readBody}){
     const permissionEntry=permissionPage.test(path)||localizedPermissionPage.test(path);
     const stream=permissionEntry?`<meta name="notabenda-permission-stream" content="${await formPermissionStreamRef(permissionContext(localizedPermissionPage.test(path)?data.localizedFormPermissions.offer:data.formPermissions.offer,generation))}">`:'';
     const contractRoute=contractPage.exec(path)?.[1],contract=contractRoute?`<meta name="notabenda-contract-operation" content="${await contractActionOperationRef(contractContext(data.contractActions.definitions[contractRoute],generation))}">`:'';
-    content=(await response.text()).replace(/<main\b/u,(path.startsWith('/localization/')?portugueseDemoStorageNote:demoStorageNote)+'<main').replace('</head>',`<meta name="notabenda-demo-generation" content="${generation}">${stream}${contract}<link rel="stylesheet" href="/assets/website-notice.css"></head>`);
+    content=(await response.text()).replace('data-notabenda-terms-context="sample-light"',`data-notabenda-terms-context="sample-light-${generation}"`);
+    const note=path.startsWith('/localization/')?portugueseDemoStorageNote:demoStorageNote,reactRoot=/<div\b[^>]*\bid="react-(?:agreement|permission)-root"[^>]*>/u;
+    content=(reactRoot.test(content)?content.replace(reactRoot,note+'$&'):content.replace(/<main\b/u,note+'<main')).replace('</head>',`<meta name="notabenda-demo-generation" content="${generation}">${stream}${contract}<link rel="stylesheet" href="/assets/website-notice.css"></head>`);
    }
    response=new Response(content,{status:response.status,headers:assetHeaders});
   }else if(['/demo/admin/setup','/demo/admin/setup/'].includes(path)){
@@ -83,6 +89,8 @@ export async function serveDemo(request,env,{protect,readBody}){
 
    return finish(response,undefined,true);
   }
+  if(request.method==='GET'&&/^\/demo\/admin\/?$/u.test(path))response=await withPackLearningResponse(response,['evidence-workspace']);
+  if(request.method==='GET'&&/^\/demo\/admin\/orders\/?$/u.test(path))response=await withPackLearningResponse(response,['customer-confirmations']);
   return finish(await markDemoResponse(response),capability);
  }catch{return finish(new Response('Demo workspace unavailable.',{status:503}));}
 }

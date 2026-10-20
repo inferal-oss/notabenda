@@ -33,6 +33,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Markdown and MDX](https://notabenda.org/guide/authoring/index.md): YAML frontmatter, trusted components and private source archives.
 - [Cookie choices](https://notabenda.org/guide/consent/index.md): Connect optional service lifecycles to effective permission.
 - [Terms agreements](https://notabenda.org/guide/terms/index.md): Bind an unchecked action to the exact document revision.
+- [Terms framework adapters](https://notabenda.org/guide/terms/index.md#react): React provider/hooks/native control and Astro named operation-bound shell/bridge reuse the host controller. Never submit on mount; new subject/operation needs a fresh controller, and Astro also needs a new public context key. Keep uncertain-request recovery private.
 - [Retained releases](https://notabenda.org/guide/releases/index.md): Keep earlier artifacts and pinned URLs through clean builds.
 - [React](https://notabenda.org/guide/react/index.md): Provider, hooks and document wrappers.
 - [Astro](https://notabenda.org/guide/astro/index.md): Static pages and client navigation lifecycle.
