@@ -40,6 +40,25 @@ Production requires both reviewed production privacy content and an explicit rev
 
 The notice ID covers the scope, locale, selected facts, wording, review declaration, rendering-policy revision (`collection-v1`) and pinned policy reference. Instance `idPrefix` and the surrounding host layout are outside that content identity. Digests identify content; they do not authenticate authors or prove display, reading or agreement. Browser/SSR normalization validates shape and safe links and makes a detached copy; supply trusted build descriptors, not visitor-submitted notices.
 
+## Interests pursued under a legitimate-interests basis
+
+`purposes[].legitimateInterests` is an optional public statement of the interests pursued and by whom. Supply a complete statement in the notice's content language, for example:
+
+```json
+{
+  "legalBasis": "Legitimate interests under GDPR Article 6(1)(f).",
+  "legitimateInterests": "Our interest is to protect the support inbox from repeated abusive submissions."
+}
+```
+
+This illustrates the fields, not a basis assessment. Keep any private balancing assessment outside this public field. [GDPR Article 13(1)(d) and Article 14(2)(b)](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679) require disclosure of the interests pursued when processing relies on Article 6(1)(f). See `REQ-EU-INTERESTS-DISCLOSURE` in the [requirements catalog](requirements/README.md).
+
+Generated privacy pages and direct-collection details append the statement to the declared legal-basis text. Localized notices use the existing translated basis label/template; the package does not translate the statement. Supplied Markdown, MDX or structured privacy content remains author-owned and must include the applicable facts itself. The separate NZ indirect-notice profile retains complete purpose facts in its descriptor but does not become a GDPR Article 14 notice.
+
+If supplied, the statement must be nonempty plain text of at most 4,000 UTF-8 bytes. An unresolved `{{...}}` placeholder blocks production. Omission preserves existing output; it does not establish that the field is inapplicable. The validator does not parse free-form `legalBasis` text or decide whether legitimate interests is lawful. Review necessity, balancing, rights and all applicable notice particulars separately. This field cannot enable storage or replace a required device-access permission.
+
+The public statement is retained in the released configuration, selected collection/permission facts and applicable consent scopes. Changes reopen setup document review and invalidate an affected purpose's old grant through normal scope comparison. Release verification rejects altered or omitted facts, including a descriptor whose digest has been recomputed. [Verification details](verification/legitimate-interests.md).
+
 ## Language and release verification
 
 Add a complete optional `localization.collection` dictionary to the site before building a non-English notice. The [Portuguese messages](../examples/localization/collection-messages.json) cover all 33 fixed labels, headings, source/optionality descriptions, link labels, version/date templates and list separator. The host still supplies translated purpose/recipient facts and context-specific `wording.title` and `wording.intro`.

@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE
+// @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE REQ-EU-INTERESTS-DISCLOSURE
 import {compileLegalDocuments,createCollectionNotice} from 'notabenda/content';
 import {renderCollectionNotice,renderLegalLinks,collectionNoticeIds} from 'notabenda';
 export async function collectionFiles(base){
@@ -7,6 +7,8 @@ export async function collectionFiles(base){
     const config=structuredClone(base);config.site.id='juniper-collection';config.purposes=config.purposes.filter(p=>p.id==='enquiries');config.storage=[];
     config.services=[{id:'message-inbox',name:'Message handling',provider:'Juniper Notes (fictional)',location:'This read-only example sends no message. A real deployment must declare actual hosting and processing locations.',purposeIds:['enquiries']}];
     config.purposes[0].collection.description='A message and reply address deliberately provided through a contact form.';
+    config.purposes[0].legalBasis='Legitimate interests (illustrative basis; assess the actual processing before use).';
+    config.purposes[0].legitimateInterests='Juniper Notes has an interest in answering voluntary enquiries about its work.';
     for(const [kind,doc] of Object.entries(config.documents))doc.route=`${prefix}/collection/${kind}`;
     const build=compileLegalDocuments(config,{mode:'preview',stylesheetUrl:prefix?'/assets/dark.css':'/assets/notabenda.css'});
     const notice=createCollectionNotice(build.artifact,{scopeId:'contact-form',purposeIds:['enquiries'],reviewStatus:'draft',wording:{title:'About your message',intro:'We use the information you choose to send to respond to your enquiry.'}},{mode:'preview'});

@@ -1,5 +1,7 @@
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 import {normalizeConsentInformation} from './consent-information.js';
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
+import {isLegitimateInterests} from './purpose-disclosures.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
@@ -46,10 +48,10 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
  const localization=c.localization===undefined?undefined:normalizeConsentLocalization(c.localization,{locale:String(site.locale),allowPreview:value.mode==='preview'});
  entries(c.purposes,256);entries(c.services,256);entries(c.storage,512);
  const purposes=c.purposes.map(p=>{
-  shape(p,['id','name','description','legalBasis','dataCategories','retention','collection']);need(['name','description','legalBasis','retention'].every(k=>text(p[k])));strings(p.dataCategories,1);
+  shape(p,['id','name','description','legalBasis','dataCategories','retention','collection'],['legitimateInterests']);need(p.legitimateInterests===undefined||isLegitimateInterests(p.legitimateInterests));need(['name','description','legalBasis','retention'].every(k=>text(p[k])));strings(p.dataCategories,1);
   shape(p.collection,['source','description','required','consequences']);const q=p.collection;need(member(q.source,['direct','indirect','both'])&&text(q.description)&&typeof q.required==='boolean'&&text(q.consequences));
   // Keep the compatibility scope encoding's exact field order, independently of incoming JSON key order.
-  return {id:p.id,name:p.name,description:p.description,legalBasis:p.legalBasis,dataCategories:[...p.dataCategories],retention:p.retention,collection:{source:q.source,description:q.description,required:q.required,consequences:q.consequences}};
+  return {id:p.id,name:p.name,description:p.description,legalBasis:p.legalBasis,...(p.legitimateInterests===undefined?{}:{legitimateInterests:p.legitimateInterests}),dataCategories:[...p.dataCategories],retention:p.retention,collection:{source:q.source,description:q.description,required:q.required,consequences:q.consequences}};
  });
  const purposeIds=purposes.map(p=>p.id);
  const services=c.services.map(s=>{

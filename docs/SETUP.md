@@ -135,6 +135,8 @@ Preparing recommendations exports the current public inventory. Starting or canc
 
 Interactive CLI setup offers **Review processing purposes** before catalog search. Choose `add`, `edit` or `remove`, inspect the public facts and confirm the local change. Blank keeps an existing text value; `?` marks basis, retention or consequences unresolved. On a new purpose those three fields may be left blank for draft review. `done` continues to the remaining wizard. Noninteractive setup continues to accept purpose facts through the imported config, with no questionnaire schema change.
 
+The optional **Legitimate interests** field holds public wording explaining the interests pursued and by whom, when applicable. Keep the private balancing assessment in your own records. In the CLI, blank preserves an imported statement, `-` removes it and `?` leaves an explicit production-blocking placeholder. In the browser editor, clearing the field removes it from the draft. Neither action decides applicability or changes the legal basis. See [collection disclosures](COLLECTION.md#interests-pursued-under-a-legitimate-interests-basis).
+
 For a custom UI, optional browser-safe APIs are available:
 
 ```js

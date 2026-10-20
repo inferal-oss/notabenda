@@ -10,7 +10,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 
 | Scope | Requirements | Coverage |
 | --- | --- | --- |
-| EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing), [REQ-EU-GUARANTEE-NOTICE](#req-eu-guarantee-notice), [REQ-EU-GUARANTEE-LABEL](#req-eu-guarantee-label), [REQ-EU-ORDER-CONFIRMATION](#req-eu-order-confirmation) | Selected items: partial |
+| EU-EEA | [REQ-EU-NOTICE](#req-eu-notice), [REQ-EU-CONSENT](#req-eu-consent), [REQ-EU-DEVICE](#req-eu-device), [REQ-EU-FAIR-CHOICE](#req-eu-fair-choice), [REQ-EU-TERMS](#req-eu-terms), [REQ-EU-WITHDRAWAL](#req-eu-withdrawal), [REQ-EU-ORDER-ACTION](#req-eu-order-action), [REQ-EU-RETENTION-ERASURE](#req-eu-retention-erasure), [REQ-EU-MARKETING](#req-eu-marketing), [REQ-EU-GUARANTEE-NOTICE](#req-eu-guarantee-notice), [REQ-EU-GUARANTEE-LABEL](#req-eu-guarantee-label), [REQ-EU-ORDER-CONFIRMATION](#req-eu-order-confirmation), [REQ-EU-INTERESTS-DISCLOSURE](#req-eu-interests-disclosure) | Selected items: partial |
 | FR | [REQ-FR-SCOPE](#req-fr-scope) | Selected items: partial |
 | DE | [REQ-DE-DEVICE](#req-de-device), [REQ-DE-CANCEL](#req-de-cancel), [REQ-DE-WITHDRAWAL](#req-de-withdrawal) | Selected items: partial |
 | IT | [REQ-IT-REPROMPT](#req-it-reprompt) | Selected items: partial |
@@ -60,6 +60,32 @@ Provide applicable processing disclosures in an accessible notice.
 **Limits/open review:** Required particulars differ by context; a compiler cannot verify factual accuracy.
 
 **Code/test references:** [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/collection.ts](../../packages/notabenda/src/collection.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/rights-policy.ts](../../packages/notabenda/src/rights-policy.ts), [packages/notabenda/src/rights.ts](../../packages/notabenda/src/rights.ts), [packages/notabenda/test/config.test.mjs](../../packages/notabenda/test/config.test.mjs), [packages/notabenda/test/documents.test.mjs](../../packages/notabenda/test/documents.test.mjs), [packages/notabenda/test/collection.test.mjs](../../packages/notabenda/test/collection.test.mjs), [packages/notabenda/test/rights.test.mjs](../../packages/notabenda/test/rights.test.mjs)
+
+<a id="req-eu-interests-disclosure"></a>
+
+### REQ-EU-INTERESTS-DISCLOSURE — Disclose the legitimate interests pursued
+
+When processing relies on GDPR Article 6(1)(f), disclose the interests pursued by the controller or a third party in the applicable privacy information.
+
+**Applies when:** GDPR applies and the actual processing relies on Article 6(1)(f); the operator assesses the basis and collection context.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [GDPR official text](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng) — Articles 6(1)(f), 13(1)(d), 14(2)(b); Official Journal PDF pp. 36, 41–42 (read; [SRC-EU-GDPR](SOURCES.md#src-eu-gdpr)).
+
+**Features:** [FEAT-INVENTORY](../FEATURES.md#feat-inventory), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents), [FEAT-FORMS](../FEATURES.md#feat-forms), [FEAT-SETUP](../FEATURES.md#feat-setup), [FEAT-SERVICE-CATALOG](../FEATURES.md#feat-service-catalog).
+
+<a id="verify-eu-interests-disclosure"></a>
+
+**VERIFY-EU-INTERESTS-DISCLOSURE (automated):** Explicit interests survive public projection, generated and localized direct notices, service details, guarded setup edits and selected provider archives; invalid UTF-8 bounds/control characters and production placeholders fail. Rehashed omitted/altered facts reject against intact releases in frontend and independent CF checks. Changed managed interests remove the affected saved grant without changing other grants. NZ descriptors remain profile-specific.
+
+**Timing:** Supply the applicable information at the time required for the actual collection context; Article 14 has its own timing and exceptions.
+
+**Implementation boundary:** An explicit bounded public purpose statement is projected into generated privacy and direct-collection basis text in the host language, retained across setup/provider-review archives and independently reconstructed permission facts, and included in material purpose scopes. Private assessments stay outside public output. Broader legal sufficiency and Article 14 notification workflow remain open.
+
+**Limits/open review:** Optional structured wording does not choose or substantiate a basis, perform balancing, establish notice completeness or turn the NZ indirect-notice profile into a GDPR Article 14 notification. Supplied legal content remains author-owned; absence is not an inapplicability finding.
+
+**Code/test references:** [packages/notabenda/src/purpose-disclosures.ts](../../packages/notabenda/src/purpose-disclosures.ts), [packages/notabenda/src/types.ts](../../packages/notabenda/src/types.ts), [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/localized-documents.ts](../../packages/notabenda/src/localized-documents.ts), [packages/notabenda/src/collection.ts](../../packages/notabenda/src/collection.ts), [packages/notabenda/src/indirect-collection.ts](../../packages/notabenda/src/indirect-collection.ts), [packages/notabenda/src/consent-runtime-config.ts](../../packages/notabenda/src/consent-runtime-config.ts), [packages/notabenda/src/setup-purpose.ts](../../packages/notabenda/src/setup-purpose.ts), [packages/notabenda/src/setup-purpose-ui.ts](../../packages/notabenda/src/setup-purpose-ui.ts), [packages/notabenda/src/setup-purpose-cli.ts](../../packages/notabenda/src/setup-purpose-cli.ts), [packages/notabenda/src/service-inventory.ts](../../packages/notabenda/src/service-inventory.ts), [packages/notabenda/src/service-directory.ts](../../packages/notabenda/src/service-directory.ts), [packages/notabenda/src/catalog-release-policy.ts](../../packages/notabenda/src/catalog-release-policy.ts), [packages/notabenda/src/catalog-review-ui.ts](../../packages/notabenda/src/catalog-review-ui.ts), [packages/notabenda-cf/src/catalog-release-policy.ts](../../packages/notabenda-cf/src/catalog-release-policy.ts), [packages/notabenda-cf/src/catalog-render.ts](../../packages/notabenda-cf/src/catalog-render.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [examples/static/choices-build.mjs](../../examples/static/choices-build.mjs), [examples/collection/build.mjs](../../examples/collection/build.mjs), [packages/notabenda/test/legitimate-interests.test.mjs](../../packages/notabenda/test/legitimate-interests.test.mjs), [packages/notabenda/test/setup-purpose.test.mjs](../../packages/notabenda/test/setup-purpose.test.mjs), [packages/notabenda/test/catalog-release.test.mjs](../../packages/notabenda/test/catalog-release.test.mjs), [packages/notabenda/test/indirect-collection.test.mjs](../../packages/notabenda/test/indirect-collection.test.mjs), [docs/verification/legitimate-interests.md](../../docs/verification/legitimate-interests.md), [site/test/legitimate-interests.test.mjs](../../site/test/legitimate-interests.test.mjs)
 
 <a id="req-eu-consent"></a>
 

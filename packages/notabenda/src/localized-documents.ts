@@ -1,5 +1,7 @@
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-SAFE-CONTENT
 import {formatMessage} from './localization-policy.js';
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
+import {purposeLegalBasis} from './purpose-disclosures.js';
 import {declaredServices} from './service-inventory.js';
 import type {GeneratedDocumentMessages} from './document-localization.js';
 import type {PublicSiteConfig,LegalSection} from './types.js';
@@ -14,7 +16,7 @@ export function localizedSections(config:PublicSiteConfig,kind:'privacy'|'cookie
   const sections:LegalSection[]=[{id:'controller',heading:m.controllerHeading,paragraphs:[controller.name,controller.address],links:[{label:controller.email,href:`mailto:${controller.email}`}]}];
   for(const [key,title] of [['representative',m.representativeHeading],['dpo',m.dpoHeading]] as const){const c=controller[key];if(c)sections.push({id:key,heading:title,paragraphs:[c.name,...(c.address?[c.address]:[])],links:[{label:c.email,href:`mailto:${c.email}`}]});}
   sections.push(
-   {id:'purposes',heading:m.purposesHeading,...(config.purposes.length?{}:{paragraphs:[m.noPurposes]}),items:config.purposes.map(p=>f('purpose',{name:p.name,description:p.description,data:list(p.dataCategories),legalBasis:p.legalBasis,source:{direct:m.collectionDirect,indirect:m.collectionIndirect,both:m.collectionBoth}[p.collection.source],collection:p.collection.description,required:p.collection.required?m.required:m.optional,consequences:p.collection.consequences}))},
+   {id:'purposes',heading:m.purposesHeading,...(config.purposes.length?{}:{paragraphs:[m.noPurposes]}),items:config.purposes.map(p=>f('purpose',{name:p.name,description:p.description,data:list(p.dataCategories),legalBasis:purposeLegalBasis(p),source:{direct:m.collectionDirect,indirect:m.collectionIndirect,both:m.collectionBoth}[p.collection.source],collection:p.collection.description,required:p.collection.required?m.required:m.optional,consequences:p.collection.consequences}))},
    {id:'retention',heading:m.retentionHeading,items:config.purposes.map(p=>f('retentionItem',{name:p.name,retention:p.retention})),...(config.purposes.length?{}:{paragraphs:[m.noRetention]})},
    {id:'providers',heading:m.providersHeading,items:declaredServices(config).map(s=>f('provider',{name:s.name,provider:s.provider,location:s.location,purposes:list(s.purposes.map(p=>p.name))})),...(config.services.length?{}:{paragraphs:[m.noProviders]}),links:config.services.filter(s=>s.privacyUrl).map(s=>({label:f('providerPrivacy',{name:s.name}),href:s.privacyUrl!}))},
    {id:'transfers',heading:m.transfersHeading,paragraphs:[privacy.transfers]},

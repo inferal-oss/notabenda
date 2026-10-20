@@ -8,7 +8,9 @@ Generated from [the catalog](../../regulatory/catalog.json). Dates below record 
 
 [GDPR official text](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng)
 
-**Type:** law. **Checked:** 2026-10-18. **Access:** read.
+**Type:** law. **Checked:** 2026-10-19. **Access:** read.
+
+Selected legitimate-interest disclosure provisions verified in the Official Journal PDF, https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32016R0679 (Articles 6(1)(f), 13(1)(d), 14(2)(b)); HTML access returned a verification challenge. This selected recheck is not a complete current-text or legal review.
 
 <a id="src-eu-edpb"></a>
 

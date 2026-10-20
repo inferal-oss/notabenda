@@ -1,3 +1,4 @@
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {setupQuestions,setupMarkets,setupFactFields} from './setup.js';
@@ -12,9 +13,9 @@ interface Target {
 const targets:Record<string,Target>={
  'legal-pages':{
   title:'Privacy, cookie and terms pages',outcome:'Static documents or article fragments in the host layout.',
-  configPaths:['site','controller','jurisdictions','purposes','services','storage','privacy','terms','documents'],
+  configPaths:['site','controller','jurisdictions','purposes','purposes.legitimateInterests','services','storage','privacy','terms','documents'],
   hostWork:['Choose routes and build integration; supply reviewed wording. Rendering a document does not collect agreement or gate services.','The JSON CLI builds all three configured documents. Use renderer fragments when the host needs only selected documents.'],
-  questionIds:['personal-data','transfers'],factsNeeded:['Public operator/contact facts','Actual processing purposes, legal bases, categories, collection, retention, recipients and transfers','Intended audience and service type','Document routes, revisions and review state'],guides:['package','authoring'],prerequisites:[],
+  questionIds:['personal-data','transfers'],factsNeeded:['Public operator/contact facts','Actual processing purposes, legal bases, categories, collection, retention, recipients and transfers; public interests pursued and by whom where legitimate interests applies (purposes.legitimateInterests)','Intended audience and service type','Document routes, revisions and review state'],guides:['package','authoring'],prerequisites:[],
   verify:['Legal routes render without JavaScript.','Public output excludes private fields.','Production validation rejects unresolved facts and draft declarations.']
  },
  'authored-documents':{

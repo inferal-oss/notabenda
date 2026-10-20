@@ -1,4 +1,6 @@
 import {localizedSections} from './localized-documents.js';
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
+import {purposeLegalBasis} from './purpose-disclosures.js';
 import {formatMessage} from './localization-policy.js';
 import type {SiteLocalization} from './document-localization.js';
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
@@ -30,7 +32,7 @@ function privacySections(config: PublicSiteConfig): LegalSection[] {
     if (c) sections.push({ id: key, heading: title, paragraphs: [c.name, ...(c.address ? [c.address] : [])], links: [{ label: c.email, href: `mailto:${c.email}` }] });
   }
   sections.push(
-    { id: 'purposes', heading: 'What we collect and why', ...(config.purposes.length ? {} : { paragraphs: ['No processing purposes are declared in this configuration.'] }), items: config.purposes.map(p => `${p.name}: ${sentence(p.description)} Data: ${p.dataCategories.join(', ')}. Legal basis: ${sentence(p.legalBasis)} Source (${p.collection.source}): ${sentence(p.collection.description)} Providing this information is ${p.collection.required ? 'required' : 'optional'}. ${p.collection.consequences}`) },
+    { id: 'purposes', heading: 'What we collect and why', ...(config.purposes.length ? {} : { paragraphs: ['No processing purposes are declared in this configuration.'] }), items: config.purposes.map(p => `${p.name}: ${sentence(p.description)} Data: ${p.dataCategories.join(', ')}. Legal basis: ${sentence(purposeLegalBasis(p))} Source (${p.collection.source}): ${sentence(p.collection.description)} Providing this information is ${p.collection.required ? 'required' : 'optional'}. ${p.collection.consequences}`) },
     { id: 'retention', heading: 'How long information is kept', items: config.purposes.map(p => `${p.name}: ${p.retention}`), ...(config.purposes.length ? {} : { paragraphs: ['No purpose-specific retention periods are declared.'] }) },
     { id: 'providers', heading: 'Service providers and recipients', items: declaredServices(config).map(s => `${s.name} — ${s.provider}. Location: ${sentence(s.location)} Purposes: ${s.purposes.map(p=>p.name).join(', ')}.`), ...(config.services.length ? {} : { paragraphs: ['No service providers are declared in this configuration.'] }), links: config.services.filter(s => s.privacyUrl).map(s => ({ label: `${s.name} privacy notice`, href: s.privacyUrl! })) },
     { id: 'transfers', heading: 'International transfers', paragraphs: [privacy.transfers] },
@@ -66,7 +68,7 @@ export function createLegalDocument(input: unknown, kind: DocumentKind, options:
     kind, title: document.title, route: document.route, version: document.version,
     effectiveDate: document.effectiveDate, reviewStatus: document.review.status,
     sections: document.source === 'supplied' ? supplied : [...generated, ...supplied.map(s => ({ ...s, id: `additional-${s.id}` }))],
-    requirementIds: [...documentRequirements[kind],...(config.localization?['REQ-PRODUCT-LOCALIZATION' as const]:[])],
+    requirementIds: [...documentRequirements[kind],...(kind==='privacy'&&document.source==='generated'&&config.purposes.some(p=>p.legitimateInterests!==undefined)?['REQ-EU-INTERESTS-DISCLOSURE' as const]:[]),...(config.localization?['REQ-PRODUCT-LOCALIZATION' as const]:[])],
   };
 }
 

@@ -1,3 +1,5 @@
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
+import {purposeLegalBasis} from './purpose-disclosures.js';
 // @requirements REQ-PRODUCT-SERVICE-PROFILES
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE */
 import {renderCatalogProductProfile} from './catalog-profile.js';
@@ -29,7 +31,7 @@ export function mountCatalogSelectionReview(container:HTMLElement,options:Catalo
   for(const [name,value] of [['Service',selection.service.name],['Provider',selection.service.provider],['Processing location',selection.service.location],['Privacy URL',selection.service.privacyUrl??'Not declared'],['Reference',selection.reference.id+' / '+selection.reference.revision],['Product revision',selection.reference.products[0]!.revision]]){const row=node('div');row.append(node('dt',name),node('dd',value));facts.append(row);}
   const notes=node('div');notes.innerHTML=renderCatalogProductProfile(selection.reference,selection.reference.products[0]!.id,{headingLevel:5,...(options.documentationBase?{documentationBase:options.documentationBase}:{})});section.append(notes);
   const details=node('details');details.append(node('summary','Purposes and source facts'));section.append(details);
-  for(const purpose of selection.purposes){details.append(node('h4',purpose.name+' · '+purpose.id),node('p',purpose.description),node('p','Legal basis: '+purpose.legalBasis),node('p','Data: '+purpose.dataCategories.join(', ')),node('p','Retention: '+purpose.retention),node('p',`Collection: ${purpose.collection.source} · ${purpose.collection.required?'required':'optional'}`));const all=node('details');all.append(node('summary','All pinned purpose facts'),node('pre',JSON.stringify(purpose,null,2)));details.append(all);}
+  for(const purpose of selection.purposes){details.append(node('h4',purpose.name+' · '+purpose.id),node('p',purpose.description),node('p','Legal basis: '+purposeLegalBasis(purpose)),node('p','Data: '+purpose.dataCategories.join(', ')),node('p','Retention: '+purpose.retention),node('p',`Collection: ${purpose.collection.source} · ${purpose.collection.required?'required':'optional'}`));const all=node('details');all.append(node('summary','All pinned purpose facts'),node('pre',JSON.stringify(purpose,null,2)));details.append(all);}
   for(const source of selection.reference.sources){const a=node('a',source.url);a.href=source.url;a.target='_blank';a.rel='noopener noreferrer';details.append(a,node('p',`${source.access==='read'?'Retrieved '+source.checkedOn:'Reference URL; not retrieved'} · ${source.revision} · ${source.license} · ${source.note}`));}
   const all=node('details');all.append(node('summary','Complete selected reference'),node('pre',JSON.stringify(selection.reference,null,2)));details.append(all);return section;
  }

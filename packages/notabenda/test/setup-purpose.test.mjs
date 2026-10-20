@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CONFIG REQ-PRODUCT-SCOPE-GUARDS REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-A11Y
+// @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CONFIG REQ-PRODUCT-SCOPE-GUARDS REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-A11Y REQ-EU-INTERESTS-DISCLOSURE
 import {test} from 'node:test';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
 import {normalizeDraftPurpose,createPurposeDraftPlan} from 'notabenda/setup/purposes';import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';
 import {mountSetup} from 'notabenda/setup/ui';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {validateSiteConfig,renderLegalDocument} from 'notabenda';
@@ -57,8 +57,8 @@ test('CLI purpose review requires explicit confirmation, preserves draft unknown
  const originalLog=console.log,log=[];console.log=(...parts)=>log.push(parts.join(' '));
  try{
   assert.equal(await reviewSetupPurposes(undefined,async()=> 'no'),undefined);
-  const entry=['support','Respond to support enquiries','Reply to messages sent through the contact form.','Email address, Message content','','','direct','no','Contact form',''];
-  const queue=['yes','add',...entry,'no','add',...entry,'yes','edit','support','Support requests','','','','','','','','','yes','done'];
+  const entry=['support','Respond to support enquiries','Reply to messages sent through the contact form.','Email address, Message content','','','','direct','no','Contact form',''];
+  const queue=['yes','add',...entry,'no','add',...entry,'yes','edit','support','Support requests','','','','','','','','','','yes','done'];
   const config=await reviewSetupPurposes(undefined,async()=>{assert.ok(queue.length,'unexpected extra CLI prompt');return queue.shift();});assert.equal(queue.length,0);assert.equal(config.purposes.length,1);assert.equal(config.purposes[0].name,'Support requests');assert.equal(config.purposes[0].legalBasis,'{{purposes.support.legalBasis}}');assert.equal(config.consent,undefined);assert.ok(log.some(line=>line.includes('"legalBasis": "{{purposes.support.legalBasis}}"')));
   const removal=['yes','remove','support','yes','done'];const removed=await reviewSetupPurposes(config,async()=>removal.shift());assert.equal(removed.purposes.length,0);assert.equal(config.purposes.length,1);
  }finally{console.log=originalLog;}
@@ -67,4 +67,26 @@ test('CLI purpose review requires explicit confirmation, preserves draft unknown
 test('a completed local config import immediately exposes editable imported purposes and closes an unsaved proposal',async()=>{
  const f=browser(),ui=mountSetup(f.container),config=await fixture();fillPurpose(f);const file=f.container.querySelector('input[type=file]');Object.defineProperty(file,'files',{value:[{size:100,text:async()=>JSON.stringify(config)}]});file.dispatchEvent(new f.dom.window.Event('change'));await new Promise(resolve=>setImmediate(resolve));
  assert.equal(f.container.querySelectorAll('.nb-setup-purpose-card').length,2);assert.equal(f.container.querySelector('.nb-setup-purpose-proposal').hidden,true);assert.match(f.container.querySelector('.nb-setup-purpose-editor summary').textContent,/2 declared/);button(f,'Edit purpose '+config.purposes[0].name).click();assert.equal(field(f.container.querySelector('.nb-setup-purpose-proposal'),'Purpose name').value,config.purposes[0].name);ui.destroy();f.dom.window.close();
+});
+
+test('purpose UI preserves imported public interests and saves explicit edits or removal without changing the basis',()=>{
+ const f=browser(),statement='Our interest is to protect the support inbox from abuse.';
+ let config=createPurposeDraftPlan(createStarterConfig(),{action:'add',purpose:{...purpose(),legitimateInterests:statement}}).config;
+ const editor=mountPurposeEditor(f.container,{getConfig:()=>config,onChange:result=>config=result.config});
+ const edit=()=>{button(f,'Edit purpose '+purpose().name).click();return field(f.container.querySelector('.nb-setup-purpose-proposal'),'Legitimate interests (when applicable)');};
+ assert.equal(edit().value,statement);field(f.container.querySelector('.nb-setup-purpose-proposal'),'How long you keep the data').value='30 days';button(f,'Save purpose changes').click();assert.equal(config.purposes[0].legitimateInterests,statement);
+ edit().value='The operator protects the support inbox and its users from abuse.';button(f,'Save purpose changes').click();assert.match(config.purposes[0].legitimateInterests,/its users/);
+ edit().value='';button(f,'Save purpose changes').click();assert.equal(Object.hasOwn(config.purposes[0],'legitimateInterests'),false);assert.equal(config.purposes[0].legalBasis,purpose().legalBasis);editor.destroy();f.dom.window.close();
+});
+
+test('CLI purpose editing preserves interests on blank, clears only on explicit removal and keeps unknown text as draft',async()=>{
+ const originalLog=console.log;console.log=()=>{};
+ try{
+  const start=createPurposeDraftPlan(createStarterConfig(),{action:'add',purpose:{...purpose(),legitimateInterests:'Our interest is to protect the inbox from abuse.'}}).config;
+  for(const [answer,expected] of [['',start.purposes[0].legitimateInterests],['-',undefined],['?','{{purposes.support.legitimateInterests}}']]){
+   let action=0;const config=await reviewSetupPurposes(start,async prompt=>{
+    if(prompt.startsWith('Review processing'))return 'yes';if(prompt.startsWith('Purpose action'))return action++?'done':'edit';if(prompt.startsWith('Existing purpose ID'))return 'support';if(prompt.startsWith('Purpose name'))return 'Updated support';if(prompt.startsWith('Public legitimate'))return answer;if(prompt.startsWith('Confirm these'))return 'yes';return '';
+   });assert.equal(config.purposes[0].legitimateInterests,expected);assert.equal(config.purposes[0].legalBasis,start.purposes[0].legalBasis);
+  }
+ }finally{console.log=originalLog;}
 });

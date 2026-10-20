@@ -3,6 +3,8 @@ import {normalizeConsentInformation} from './consent-information.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 import {normalizeSiteLocalization} from './document-localization.js';
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
+import {isLegitimateInterests} from './purpose-disclosures.js';
 // @requirements REQ-UK-EXCEPTIONS
 import {normalizeStorageExceptionPolicy} from './storage-exception-policy.js';
 import type {ExceptionInventory} from './storage-exception-policy.js';
@@ -100,6 +102,10 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
   for (const [i, value] of list(config.purposes).entries()) {
     const p = record(value); const path = `purposes[${i}]`;
     for (const key of ['name', 'description', 'legalBasis', 'retention']) required(p, key, path, ['REQ-EU-NOTICE']);
+    if(p.legitimateInterests!==undefined){
+      if(!isLegitimateInterests(p.legitimateInterests))error(`${path}.legitimateInterests`,'Provide a nonempty public explanation of the interests pursued and by whom, up to 4000 UTF-8 bytes.','invalid-legitimate-interests',['REQ-EU-INTERESTS-DISCLOSURE']);
+      placeholder(p.legitimateInterests,`${path}.legitimateInterests`);
+    }
     strings(p.dataCategories, `${path}.dataCategories`, true);
     const collection = objectAt(p.collection, `${path}.collection`);
     choice(collection.source, ['direct', 'indirect', 'both'], `${path}.collection.source`);
@@ -275,7 +281,7 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
     ...(config.localization===undefined?{}:{localization:normalizeSiteLocalization(config.localization,{locale:config.site.locale,allowPreview:options.mode!=='production'})}),
     ...(config.rightsCenter===undefined?{}:{rightsCenter:normalizeRightsCenter(config.rightsCenter)}),
     ...(config.scopeGuards===undefined?{}:{scopeGuards:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>p.id))}),
-    purposes: config.purposes.map(p => ({ id: p.id, name: p.name, description: p.description, legalBasis: p.legalBasis, dataCategories: [...p.dataCategories], retention: p.retention, collection: { source: p.collection.source, description: p.collection.description, required: p.collection.required, consequences: p.collection.consequences } })),
+    purposes: config.purposes.map(p => ({ id: p.id, name: p.name, description: p.description, legalBasis: p.legalBasis, ...(p.legitimateInterests===undefined?{}:{legitimateInterests:p.legitimateInterests}), dataCategories: [...p.dataCategories], retention: p.retention, collection: { source: p.collection.source, description: p.collection.description, required: p.collection.required, consequences: p.collection.consequences } })),
     services: config.services.map(s => ({ ...(s.googleBasic===undefined?{}:{googleBasic:normalizeGoogleBasic(s.googleBasic,s.purposeIds)}),id: s.id, name: s.name, provider: s.provider, purposeIds: [...s.purposeIds], location: s.location, ...(s.privacyUrl === undefined ? {} : { privacyUrl: s.privacyUrl }), ...(s.resourceOrigins===undefined?{}:{resourceOrigins:[...s.resourceOrigins]}), ...(s.processingActivities===undefined?{}:{processingActivities:[...s.processingActivities]}) })),
     ...(config.storageExceptions===undefined?{}:{storageExceptions:normalizeStorageExceptionPolicy(config.storageExceptions,config,{allowPreview:options.mode!=='production'})}),
     storage: config.storage.map(s => ({ id: s.id, name: s.name, type: s.type, serviceId: s.serviceId, duration: s.duration, classification: s.classification, ...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}), ...(s.necessityReason === undefined ? {} : { necessityReason: s.necessityReason }) })),

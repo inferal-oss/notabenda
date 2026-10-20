@@ -1,4 +1,4 @@
-// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
+// @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE REQ-EU-INTERESTS-DISCLOSURE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
@@ -22,6 +22,13 @@ async function scenario({reviewed=true,source='indirect'}={}){
   return {config,build,settings};
 }
 async function notice(){const s=await scenario();return {s,n:createIndirectCollectionNotice(s.build.artifact,s.settings)};}
+
+test('NZ notice descriptors retain optional purpose interests without expanding the notification profile',async()=>{
+ const s=await scenario();s.config.purposes[0].legitimateInterests='Our interest is to route referrals to the support team.';
+ const build=compileLegalDocuments(s.config),n=createIndirectCollectionNotice(build.artifact,s.settings);
+ assert.equal(n.collections[0].purpose.legitimateInterests,s.config.purposes[0].legitimateInterests);assert.equal(n.profile,'nz-ipp3a');assert.deepEqual(verifyIndirectCollectionNotice(n,build.artifact),n);
+ const forged=structuredClone(n);delete forged.collections[0].purpose.legitimateInterests;const {noticeId,...descriptor}=forged;forged.noticeId=sha256(canonicalJson(descriptor));assert.throws(()=>verifyIndirectCollectionNotice(forged,build.artifact));
+});
 
 test('indirect scope pins the privacy release, full purpose facts, reviewed context and collection phase',async()=>{
   const {s,n}=await notice(),original=structuredClone(s.build.artifact);

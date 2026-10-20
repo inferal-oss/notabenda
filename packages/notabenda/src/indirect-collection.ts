@@ -1,3 +1,5 @@
+// @requirements REQ-EU-INTERESTS-DISCLOSURE Inventory compatibility; this remains the explicit NZ notice profile.
+import {isLegitimateInterests} from './purpose-disclosures.js';
 /** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
  * Display-only IPP3A particulars. Hosts assess applicability, lawful collection, timing and delivery.
  */
@@ -74,7 +76,7 @@ function settings(v:Record<string,unknown>,withPurpose=false):boolean {
     ids.add(c.purposeId);
     if(withPurpose){
       const p=c.purpose;
-      if(!object(p)||!exact(p,['id','name','description','legalBasis','dataCategories','retention','collection'])||p.id!==c.purposeId||!text(p.name,300)||!text(p.description)||!text(p.legalBasis)||!list(p.dataCategories)||!text(p.retention)||c.dataCategories.some(category=>!(p.dataCategories as string[]).includes(category)))return false;
+      if(!object(p)||!exact(p,['id','name','description','legalBasis','dataCategories','retention','collection'],['legitimateInterests'])||p.id!==c.purposeId||!text(p.name,300)||!text(p.description)||!text(p.legalBasis)||p.legitimateInterests!==undefined&&!isLegitimateInterests(p.legitimateInterests)||!list(p.dataCategories)||!text(p.retention)||c.dataCategories.some(category=>!(p.dataCategories as string[]).includes(category)))return false;
       const source=p.collection;
       if(!object(source)||!exact(source,['source','description','required','consequences'])||(source.source!=='indirect'&&source.source!=='both')||!text(source.description)||typeof source.required!=='boolean'||!text(source.consequences))return false;
     }

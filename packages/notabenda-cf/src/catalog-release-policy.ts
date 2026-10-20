@@ -1,9 +1,10 @@
+// @requirements REQ-EU-INTERESTS-DISCLOSURE
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-CF-HISTORY */
 import {assertPlainCatalogData} from './catalog-plain.js';
 import {normalizeServiceCatalog} from './catalog-reference.js';
 import type {ServiceCatalog} from './catalog-reference.js';
 export interface CatalogReviewService {id:string;name:string;provider:string;purposeIds:string[];location:string;privacyUrl?:string}
-export interface CatalogReviewPurpose {id:string;name:string;description:string;legalBasis:string;dataCategories:string[];retention:string;collection:{source:'direct'|'indirect'|'both';description:string;required:boolean;consequences:string}}
+export interface CatalogReviewPurpose {id:string;name:string;description:string;legalBasis:string;legitimateInterests?:string;dataCategories:string[];retention:string;collection:{source:'direct'|'indirect'|'both';description:string;required:boolean;consequences:string}}
 export interface CatalogReleaseSelection {reference:ServiceCatalog;service:CatalogReviewService;purposes:CatalogReviewPurpose[];review:'operator-confirmed'}
 /** Selected references and public site-use facts only. Private reasons and questionnaire history are excluded. */
 export interface CatalogReleaseReview {schemaVersion:1;kind:'catalog-release-review';selections:CatalogReleaseSelection[]}
@@ -39,7 +40,7 @@ export function normalizeCatalogReleaseReview(input:unknown,publicConfig:unknown
   const projection=Object.fromEntries(['id','name','provider','purposeIds','location','privacyUrl'].filter(k=>Object.hasOwn(current[0],k)).map(k=>[k,current[0][k]]));
   if(catalogReviewCanonical(service)!==catalogReviewCanonical(projection)||raw.purposes.length!==service.purposeIds.length)return fail();
   for(const [index,purpose] of raw.purposes.entries()){
-   if(!object(purpose)||!exact(purpose,['id','name','description','legalBasis','dataCategories','retention','collection'])||purpose.id!==service.purposeIds[index]||!['name','description','legalBasis','retention'].every(k=>prose(purpose[k]))||!proseList(purpose.dataCategories)||!object(purpose.collection)||!exact(purpose.collection,['source','description','required','consequences'])||typeof purpose.collection.source!=='string'||!['direct','indirect','both'].includes(purpose.collection.source)||typeof purpose.collection.required!=='boolean'||!prose(purpose.collection.description)||!prose(purpose.collection.consequences))return fail();
+   if(!object(purpose)||!exact(purpose,['id','name','description','legalBasis','dataCategories','retention','collection'],['legitimateInterests'])||purpose.id!==service.purposeIds[index]||!['name','description','legalBasis','retention'].every(k=>prose(purpose[k]))||purpose.legitimateInterests!==undefined&&!(typeof purpose.legitimateInterests==='string'&&!!purpose.legitimateInterests.trim()&&new TextEncoder().encode(purpose.legitimateInterests).length<=4000&&!/[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u.test(purpose.legitimateInterests))||!proseList(purpose.dataCategories)||!object(purpose.collection)||!exact(purpose.collection,['source','description','required','consequences'])||typeof purpose.collection.source!=='string'||!['direct','indirect','both'].includes(purpose.collection.source)||typeof purpose.collection.required!=='boolean'||!prose(purpose.collection.description)||!prose(purpose.collection.consequences))return fail();
    const matches=publicConfig.purposes.filter(p=>object(p)&&p.id===purpose.id);if(matches.length!==1||catalogReviewCanonical(matches[0])!==catalogReviewCanonical(purpose))return fail();
   }
  }

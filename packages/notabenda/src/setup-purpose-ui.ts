@@ -50,9 +50,11 @@ export function mountPurposeEditor(container:HTMLElement,options:PurposeEditorOp
    field(facts,'name','Purpose name',previous?.name??'',{required:true,max:300});
    field(facts,'description','What you use the data for',previous?.description??'',{multiline:true,required:true});
    field(facts,'dataCategories','Data categories (one per line)',previous?.dataCategories.join('\n')??'',{multiline:true,required:true,help:'For example, describe actual categories rather than entering personal data.'});
-   const assessment=group('Basis and retention','Supply reviewed text, or leave it unresolved. Empty fields become visible draft placeholders that block production output.');
+   const assessment=group('Basis and retention','Supply reviewed text. An unresolved basis or retention period becomes a draft placeholder that blocks production output.');
    const editable=(value:string|undefined)=>value&&/^\{\{purposes\.[a-z][a-z0-9-]*\.[a-zA-Z.]+\}\}$/u.test(value)?'':value??'';
    field(assessment,'legalBasis','Legal basis',editable(previous?.legalBasis),{multiline:true});
+   // @requirements REQ-EU-INTERESTS-DISCLOSURE
+   field(assessment,'legitimateInterests','Legitimate interests (when applicable)',previous?.legitimateInterests??'',{multiline:true,help:'Public wording: explain the interests pursued and by whom, in the notice language. Keep the balancing assessment private. Leave blank when this field does not apply; this editor does not choose a legal basis.'});
    field(assessment,'retention','How long you keep the data',editable(previous?.retention),{multiline:true});
    const collection=group('Collection context','Record where the information comes from and whether providing it is required. These are separate from cookie consent.');
    field(collection,'source','Where the data comes from',previous?.collection.source??'',{required:true,choices:[['','Choose the actual source'],['direct','Directly from the person'],['indirect','From another source'],['both','Both direct and indirect sources']]});
@@ -67,7 +69,7 @@ export function mountPurposeEditor(container:HTMLElement,options:PurposeEditorOp
    try{
     const current=toPublicConfig(options.getConfig(),{mode:'preview'});if(current.site.id!==snapshot.site.id||current.site.url!==snapshot.site.url)throw Error('The site changed. Reopen this purpose before saving.');
     const value=(key:string)=>controls.get(key)!.value.trim();
-    const purpose=remove?undefined:{id:value('id'),name:value('name'),description:value('description'),dataCategories:value('dataCategories').split(/\r?\n/u).map(v=>v.trim()).filter(Boolean),legalBasis:value('legalBasis')||`{{purposes.${value('id')}.legalBasis}}`,retention:value('retention')||`{{purposes.${value('id')}.retention}}`,collection:{source:value('source') as Purpose['collection']['source'],required:value('required')==='true',description:value('collectionDescription'),consequences:value('consequences')||`{{purposes.${value('id')}.collection.consequences}}`}};
+    const purpose=remove?undefined:{id:value('id'),name:value('name'),description:value('description'),dataCategories:value('dataCategories').split(/\r?\n/u).map(v=>v.trim()).filter(Boolean),legalBasis:value('legalBasis')||`{{purposes.${value('id')}.legalBasis}}`,...(value('legitimateInterests')?{legitimateInterests:value('legitimateInterests')}:{}),retention:value('retention')||`{{purposes.${value('id')}.retention}}`,collection:{source:value('source') as Purpose['collection']['source'],required:value('required')==='true',description:value('collectionDescription'),consequences:value('consequences')||`{{purposes.${value('id')}.collection.consequences}}`}};
     const result=createPurposeDraftPlan(current,remove?{action:'remove',previous:previous!}:previous?{action:'update',previous,purpose:purpose!}:{action:'add',purpose:purpose!});
     try{options.onChange(result);}catch{error.textContent='Could not confirm the host draft update. Check the current draft before trying again.';return;}
     panel.hidden=true;panel.replaceChildren();render();report(result.action==='remove'?'Removed the purpose from the local draft.':result.action==='update'?'Updated the public purpose facts. Earlier catalog selection notes may need renewed review.':'Added the purpose to the local draft. It is now available when reviewing a service.');

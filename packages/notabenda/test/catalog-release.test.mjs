@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-RETAINED-RELEASES REQ-PRODUCT-AUTHORING
+// @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-RETAINED-RELEASES REQ-PRODUCT-AUTHORING REQ-EU-INTERESTS-DISCLOSURE
 import {test} from 'node:test';import assert from 'node:assert/strict';
 import {readFile,mkdtemp,writeFile,rm,stat,symlink} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';import {spawnSync} from 'node:child_process';
 import {attachCatalogReview} from 'notabenda/catalog/release';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {createCatalogSelectionPlan} from 'notabenda/catalog/selection';import {createSetupPlan} from 'notabenda/setup';
@@ -6,6 +6,19 @@ import {compileLegalDocuments,createRetainedReleaseFiles,canonicalJson,sha256,cr
 import {recordLegalRelease,createDocumentHistory,validateLegalSourceArchive,createAdminWorker} from 'notabenda-cf';import {validateLegalArtifact,validateStoredLegalRelease} from '../../notabenda-cf/dist/history.js';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';import {fixture} from './helpers.mjs';
 const selected=async()=>createCatalogSelectionPlan(await fixture({reviewed:true}),serviceCatalogSeed,{productId:'stripe-payments',serviceId:'payments',purposeIds:['enquiries'],provider:'Explicit entity',location:'Selected region',justification:'PRIVATE_JUSTIFICATION_SENTINEL',confirmed:true});
+
+test('selected provider review archives preserve public interests and independently reject an omitted statement',async()=>{
+ const c=await fixture({reviewed:true});c.purposes[0].legitimateInterests='Our interest is to protect the support inbox from abuse.';
+ const {config,selection}=createCatalogSelectionPlan(c,serviceCatalogSeed,{productId:'stripe-payments',serviceId:'payments',purposeIds:['enquiries'],provider:'Explicit entity',location:'Selected region',justification:'PRIVATE_ASSESSMENT',confirmed:true});
+ const finalized=attachCatalogReview(compileLegalDocuments(config,{mode:'preview'}),[selection]);
+ assert.equal(finalized.archive.catalogReview.selections[0].purposes[0].legitimateInterests,c.purposes[0].legitimateInterests);
+ assert.doesNotMatch(JSON.stringify(finalized.archive.catalogReview),/PRIVATE_ASSESSMENT/);
+ const storage=createSyntheticStorage([]);await recordLegalRelease(storage,finalized.archive);
+ const store=createDocumentHistory(storage),worker=createAdminWorker({basePath:'/admin',authorize:()=>({store,allowCatalogReview:true})});
+ const response=await worker.fetch(new Request('https://example.test/admin/catalog-review?id='+finalized.manifest.artifactId),{});assert.equal(response.status,200);assert.match(await response.text(),/Legitimate interests<\/dt><dd>Our interest is to protect the support inbox from abuse\./);
+ const forged=structuredClone(selection);delete forged.purposes[0].legitimateInterests;
+ assert.throws(()=>attachCatalogReview(compileLegalDocuments(config,{mode:'preview'}),[forged]));
+});
 const query={query:'',kind:'',keyPrefix:'',from:'',to:'',limit:25};
 const request=path=>new Request('https://example.test/admin'+path);
 async function pair(){const {config,selection}=await selected();selection.reference.sources[0].note+=' RETAINED_REFERENCE_ONLY_SENTINEL';const base=compileLegalDocuments(config,{mode:'preview'}),first=attachCatalogReview(base,[selection]);const later=structuredClone(selection);later.reference.revision+='-new';return {config,selection,base,first,latest:attachCatalogReview(base,[later])};}

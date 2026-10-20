@@ -33,6 +33,11 @@ export interface Purpose {
   name: string;
   description: string;
   legalBasis: string;
+  /** @requirements REQ-EU-INTERESTS-DISCLOSURE
+   * Public explanation of the interests pursued and by whom, in the content language.
+   * Optional for compatibility; applicability and basis assessment remain host work.
+   */
+  legitimateInterests?:string;
   dataCategories: string[];
   retention: string;
   collection: {
