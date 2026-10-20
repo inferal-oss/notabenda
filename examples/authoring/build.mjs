@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-AUTHORED-PREVIEW
+import {createAuthoredReleasePreview} from '@notabenda/authoring/preview';
 // @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-RETAINED-RELEASES
 import {readFile} from 'node:fs/promises';
 import {createElement} from 'react';
@@ -14,6 +16,8 @@ export async function authoringExample() {
   const first=await compileAuthoredDocuments(config,{terms,cookies},{mode:'preview'});
   const revised={...terms,source:terms.source.replace('"sample-1"','"sample-2"').replace('we use them only to provide the space you asked for.','we use them only to provide the space you asked for. You can export your notes before leaving.')};
   const latest=await compileAuthoredDocuments(config,{terms:revised,cookies},{mode:'preview'});
+  const preview=await createAuthoredReleasePreview(latest,{mode:'preview',initialDocument:'terms'});
+  const previewFiles=Object.fromEntries(Object.entries(preview.files).map(([path,value])=>['authored/preview/'+path,value]));
   const releases=[{artifact:first.archive,metadata:{recordedAt:'2026-10-18T11:00:00Z',changeNote:'Initial fictional Markdown and MDX authoring example.'}},{artifact:latest.archive,metadata:{recordedAt:'2026-10-18T12:00:00Z',changeNote:'Clarify the fictional note export provision.'}}];
-  return {files:{...latest.files,...createRetainedReleaseFiles([first.artifact],{siteId:config.site.id,mode:'preview'})},releases,first,latest};
+  return {files:{...latest.files,...previewFiles,...createRetainedReleaseFiles([first.artifact],{siteId:config.site.id,mode:'preview'})},releases,first,latest};
 }

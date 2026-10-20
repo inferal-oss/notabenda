@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AUTHORED-PREVIEW
 // @requirements REQ-PRODUCT-STORAGE-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-ADAPTERS
 // @requirements REQ-PRODUCT-CONNECTION-INSPECTION
@@ -23,14 +24,14 @@ const targets:Record<string,Target>={
  'legal-pages':{
   title:'Privacy, cookie and terms pages',outcome:'Static documents or article fragments in the host layout.',
   configPaths:['site','controller','jurisdictions','purposes','purposes.legitimateInterests','services','storage','privacy','terms','documents'],
-  hostWork:['Choose routes and build integration; supply reviewed wording. Rendering a document does not collect agreement or gate services.','The JSON CLI builds all three configured documents. Use renderer fragments when the host needs only selected documents.','Keep the intended trusted public artifact. After deployment explicitly run notabenda check-publication --artifact FILE --origin HTTPS_ORIGIN; this performs four anonymous reads of pinned release files.'],
-  questionIds:['personal-data','transfers'],factsNeeded:['Public operator/contact facts','Actual processing purposes, legal bases, categories, collection, retention, recipients and transfers; public interests pursued and by whom where legitimate interests applies (purposes.legitimateInterests)','Intended audience and service type','Document routes, revisions and review state'],guides:['package','authoring','publication-check'],prerequisites:[],
+  hostWork:['Choose routes and build integration; supply reviewed wording. Rendering a document does not collect agreement or gate services.','The JSON CLI builds all three configured documents. Use renderer fragments when the host needs only selected documents.','For Markdown/MDX, preview the actual compiled build with createAuthoredReleasePreview from @notabenda/authoring/preview. Export that same build; configuration previews do not show custom-component HTML.','Keep the intended trusted public artifact. After deployment explicitly run notabenda check-publication --artifact FILE --origin HTTPS_ORIGIN; this performs four anonymous reads of pinned release files.'],
+  questionIds:['personal-data','transfers'],factsNeeded:['Public operator/contact facts','Actual processing purposes, legal bases, categories, collection, retention, recipients and transfers; public interests pursued and by whom where legitimate interests applies (purposes.legitimateInterests)','Intended audience and service type','Document routes, revisions and review state'],guides:['package','authoring','authored-preview','publication-check'],prerequisites:[],
   verify:['Legal routes render without JavaScript.','Check pinned publication: canonical artifact JSON and exact privacy/cookie/terms HTML bytes. Current routes, active bindings and controls still need separate tests.','Public output excludes private fields.','Production validation rejects unresolved facts and draft declarations.']
  },
  'authored-documents':{
   title:'Markdown or MDX documents',outcome:'Build-time authored documents with YAML frontmatter and retained revisions.',
   configPaths:['documents'],hostWork:['Use @notabenda/authoring compileAuthoredDocuments, not a Markdown CLI flag.','Treat MDX imports/components as trusted build code; keep source archives private.'],
-  questionIds:['authored-content'],factsNeeded:['Trusted source files and component imports','Stable section IDs, document version/effective date and actual review decision'],guides:['authoring','releases'],prerequisites:['legal-pages'],verify:['Compile the actual sources.','Verify public HTML and private source archive separation.','Pinned prior versions survive a clean build.']
+  questionIds:['authored-content'],factsNeeded:['Trusted source files and component imports','Stable section IDs, document version/effective date and actual review decision'],guides:['authoring','authored-preview','releases'],prerequisites:['legal-pages'],verify:['Compile the actual sources.','Verify public HTML and private source archive separation.','Pinned prior versions survive a clean build.']
  },
  'cookie-consent':{
   requiredConfigPaths:['consent','consent.purposes','consent.services'],

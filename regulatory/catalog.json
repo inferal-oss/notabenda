@@ -28,7 +28,8 @@
         "Shared short descriptions for every pack, concrete example use cases and walkthroughs, separate timing and payment-variant flows, and unchanged stable selection pins.",
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
-        "Dismissible copyable agent-instruction drawer for selected plans and prepared drafts, with manual clipboard fallback and stale-draft cleanup."
+        "Dismissible copyable agent-instruction drawer for selected plans and prepared drafts, with manual clipboard fallback and stale-draft cleanup.",
+        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -98,7 +99,15 @@
         "site/worker.mjs",
         "packages/notabenda/src/agent-handoff.ts",
         "packages/notabenda/src/agent-handoff.css",
-        "packages/notabenda/scripts/copy-assets.mjs"
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "packages/notabenda-authoring/src/preview.ts",
+        "packages/notabenda-authoring/src/preview-zip.ts",
+        "packages/notabenda-authoring/src/preview.css",
+        "packages/notabenda-authoring/scripts/copy-assets.mjs",
+        "packages/notabenda/src/content.ts",
+        "examples/authoring/build.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs"
       ]
     },
     {
@@ -142,7 +151,8 @@
         "Static privacy and cookie pages, semantic HTML, document links, service/storage tables, and legal-center composition.",
         "Reviewed supplied content plus an original clause pipeline with explicit review and licensing status.",
         "Versioned artifacts and material-change diffs; readable pages without JavaScript.",
-        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
+        "Optional Québec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
+        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives."
       ],
       "implementationRefs": [
         "packages/notabenda/src/documents.ts",
@@ -167,7 +177,18 @@
         "packages/notabenda/src/technology-collection.ts",
         "packages/notabenda/src/technology.css",
         "packages/notabenda/src/controls.ts",
-        "packages/notabenda/src/purpose-disclosures.ts"
+        "packages/notabenda/src/purpose-disclosures.ts",
+        "packages/notabenda-authoring/src/preview.ts",
+        "packages/notabenda-authoring/src/preview-zip.ts",
+        "packages/notabenda-authoring/src/preview.css",
+        "packages/notabenda-authoring/scripts/copy-assets.mjs",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-preview.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/authoring/build.mjs",
+        "examples/static/pack-learning.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs"
       ]
     },
     {
@@ -621,7 +642,8 @@
         "Optional Node/browser controller timing tools with synthetic inventories, actual native controls, retained distributions and explicit limits; broader page/paint/platform performance remains open.",
         "Optional two-object local SQLite KV recovery rehearsal with later consent-retirement replay, persistent isolation, resumable purge, held-record preservation and exact private-source comparison. Remote recovery and broader evidence-family exercises remain open.",
         "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates.",
-        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks."
+        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
+        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -670,7 +692,16 @@
         "packages/notabenda-cf/src/terms.ts",
         "packages/notabenda-cf/src/permissions.ts",
         "packages/notabenda-cf/src/index.ts",
-        "packages/notabenda-cf/src/overview.ts"
+        "packages/notabenda-cf/src/overview.ts",
+        "packages/notabenda-authoring/src/preview.ts",
+        "packages/notabenda-authoring/src/preview-zip.ts",
+        "packages/notabenda-authoring/src/preview.css",
+        "packages/notabenda-authoring/scripts/copy-assets.mjs",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/setup-preview.ts",
+        "examples/authoring/build.mjs",
+        "examples/static/pack-learning.mjs",
+        "site/navigation.mjs"
       ]
     },
     {
@@ -2222,7 +2253,8 @@
         "REQ-PRODUCT-STORAGE-LOCALIZATION",
         "REQ-PRODUCT-RELEASE-CANDIDATE",
         "REQ-PRODUCT-RECORDING-INSPECTION",
-        "REQ-PRODUCT-AGENT-HANDOFF"
+        "REQ-PRODUCT-AGENT-HANDOFF",
+        "REQ-PRODUCT-AUTHORED-PREVIEW"
       ]
     }
   ],
@@ -7519,6 +7551,52 @@
         "site/test/cartridges.test.mjs"
       ],
       "implementationNote": "Native modal drawer with safe literal text, copy/fallback, focus return and stale async result fencing. Both pack and prepared-draft actions share it. Terminal files remain supported."
+    },
+    {
+      "id": "REQ-PRODUCT-AUTHORED-PREVIEW",
+      "jurisdiction": "PRODUCT",
+      "title": "Read and export an exact compiled authored release",
+      "kind": "product-standard",
+      "summary": "Preview actual MD/MDX/custom-component HTML from a verified compiler result and export the same public bytes, with original source kept in its separate private archive.",
+      "appliesWhen": "An adopter reviews an already compiled legal release before publication.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DOCUMENTS",
+        "FEAT-DEPLOYMENT",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-AUTHORED-PREVIEW"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "The static reading projection disables active markup, links, images and fonts; host styling remains trusted code and can request same-origin styles. Original exported HTML is not certified safe. Source/build truth, applicability, content review and actual application behavior remain separate.",
+      "implementationRefs": [
+        "packages/notabenda-authoring/src/preview.ts",
+        "packages/notabenda-authoring/src/preview-zip.ts",
+        "packages/notabenda-authoring/src/preview.css",
+        "packages/notabenda-authoring/scripts/copy-assets.mjs",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-preview.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/authoring/build.mjs",
+        "examples/static/pack-learning.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-authoring/test/preview.test.mjs",
+        "packages/notabenda-authoring/test/package.test.mjs",
+        "packages/notabenda/test/setup-preview.test.mjs",
+        "site/test/authored-preview.test.mjs",
+        "docs/verification/authored-preview.md"
+      ],
+      "implementationNote": "Optional build-time reader and deterministic stored public ZIP, exact public-map validation, immutable snapshots and static isolated frames. Configuration preview copy and agent integration reference distinguish the two workflows."
     }
   ],
   "verification": [
@@ -9065,6 +9143,21 @@
         "site/test/agent-handoff.test.mjs",
         "docs/verification/agent-handoff.md",
         "site/test/cartridges.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-AUTHORED-PREVIEW",
+      "requirementIds": [
+        "REQ-PRODUCT-AUTHORED-PREVIEW"
+      ],
+      "status": "automated",
+      "expected": "Actual custom component markup is readable without another compilation; public ZIP files match compiler bytes and pass the retained publication checker, while private fields/source comments and active reading content stay out. Invalid/private/altered files and preview downgrades fail. Optional tarballs and real website frames remain usable.",
+      "testRefs": [
+        "packages/notabenda-authoring/test/preview.test.mjs",
+        "packages/notabenda-authoring/test/package.test.mjs",
+        "packages/notabenda/test/setup-preview.test.mjs",
+        "site/test/authored-preview.test.mjs",
+        "docs/verification/authored-preview.md"
       ]
     }
   ],

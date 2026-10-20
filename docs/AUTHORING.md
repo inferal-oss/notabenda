@@ -130,3 +130,5 @@ Each source is limited to 24 KiB UTF-8, frontmatter to 8 KiB, and rendered body 
 See the working [authoring example](../examples/authoring/build.mjs), [MDX terms](../examples/authoring/terms.mdx), and [Markdown addendum](../examples/authoring/cookies.md). These sample files are deliberately published as read-only source views. Per-site source archives use the separate host-authorized access described above. Verification is linked through **REQ-PRODUCT-AUTHORING** in the [requirements catalog](requirements/README.md#req-product-authoring).
 
 See the [verification record and screenshots](verification/authoring.md) for tested behavior and remaining review work.
+
+Preview and export the actual compiled HTML with the optional [authored-release reader](AUTHORED-PREVIEW.md). It keeps public downloads separate from source archives and works without browser JavaScript.

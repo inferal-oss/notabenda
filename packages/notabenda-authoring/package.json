@@ -28,6 +28,11 @@
       "types": "./dist/paid-order-build.d.ts",
       "import": "./dist/paid-order-build.js",
       "default": "./dist/paid-order-build.js"
+    },
+    "./preview": {
+      "types": "./dist/preview.d.ts",
+      "import": "./dist/preview.js",
+      "default": "./dist/preview.js"
     }
   },
   "scripts": {

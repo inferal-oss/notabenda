@@ -1,0 +1,47 @@
+// @requirements REQ-PRODUCT-AUTHORED-PREVIEW REQ-PRODUCT-SAFE-CONTENT REQ-PRODUCT-PACKAGE
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {spawnSync} from 'node:child_process';
+import {createServer} from 'node:http';
+import {once} from 'node:events';
+import {createElement} from 'react';
+import {JSDOM} from 'jsdom';
+import {compileAuthoredDocuments} from '@notabenda/authoring';
+import {createAuthoredReleasePreview} from '@notabenda/authoring/preview';
+import {canonicalJson,sha256,compileLegalDocuments,createRetainedReleaseFiles} from '@notabenda/core/content';
+import {checkLegalPublication} from '@notabenda/core/publication';
+import {fixture} from '../../notabenda/test/helpers.mjs';
+import {rightsExampleConfig} from '../../../examples/rights/build.mjs';
+const source=(kind,body,review='reviewed')=>`---\n# PRIVATE source comment: never export\nkind: ${kind}\ntitle: Sample ${kind}\nroute: /${kind}\nversion: authored-1\neffectiveDate: 2026-10-18\nreview:\n  status: ${review}\n---\n${body}\n`;
+async function authored({preview=false}={}){const config=await fixture({reviewed:!preview});let calls=0;const build=await compileAuthoredDocuments(config,{terms:{format:'mdx',source:source('terms','## Your workspace\n\n<Notice>Component-only wording.</Notice>\n\n[More information](/privacy)\n\n<img src="/diagram.svg" alt="Workflow diagram" />',preview?'draft':'reviewed'),components:{Notice:({children})=>{calls++;return createElement('aside',{className:'policy-note'},createElement('strong',null,'Custom note'),children);}},componentsRevision:'note-2'},cookies:{format:'md',source:source('cookies','## Storage\n\nA **Markdown** explanation.',preview?'draft':'reviewed')}},{mode:preview?'preview':'production'});return {build,calls:()=>calls};}
+async function unzip(bytes){const dir=await mkdtemp(join(tmpdir(),'notabenda-preview-'));try{const file=join(dir,'release.zip');await writeFile(file,bytes);const child=spawnSync('python3',['-c','import zipfile,json,base64,sys\nwith zipfile.ZipFile(sys.argv[1]) as z:\n assert z.testzip() is None\n assert all(i.date_time==(1980,1,1,0,0,0) and i.create_system==0 for i in z.infolist())\n print(json.dumps({n:base64.b64encode(z.read(n)).decode() for n in z.namelist()}))',file],{encoding:'utf8',maxBuffer:4*1024*1024});assert.equal(child.status,0,child.stderr);return Object.fromEntries(Object.entries(JSON.parse(child.stdout)).map(([name,value])=>[name,Buffer.from(value,'base64')]));}finally{await rm(dir,{recursive:true,force:true});}}
+
+test('the preview reads actual MDX component HTML and Markdown while exporting the same exact public release',async()=>{
+ const f=await authored(),before=structuredClone(f.build),result=await createAuthoredReleasePreview(f.build),again=await createAuthoredReleasePreview(f.build),files=await unzip(result.files['release.zip']);assert.equal(f.calls(),1);assert.equal(result.artifactId,f.build.manifest.artifactId);assert.equal(result.zipSha256,again.zipSha256);assert.deepEqual(f.build,before);
+ for(const [name,text] of Object.entries(f.build.files))assert.deepEqual(files[name],Buffer.from(text),name);assert.deepEqual(Object.keys(files).sort(),Object.keys(result.publicFiles).sort());assert.equal(files['assets/notabenda.css'].toString(),await readFile(new URL('../../notabenda/dist/styles.css',import.meta.url),'utf8'));
+ assert.ok(Object.keys(files).every(name=>!/^\.|private|\.mdx?$/u.test(name)));assert.ok(Object.values(result.files).every(value=>!Buffer.from(value).includes(Buffer.from('PRIVATE source comment'))));
+ const d=new JSDOM(result.files['index.html']).window.document;assert.equal(d.querySelector('script'),null);assert.ok(d.body.textContent.includes('MDX'));assert.ok(d.body.textContent.includes('Markdown'));assert.ok(d.body.textContent.includes('note-2'));assert.equal(d.querySelectorAll('details.preview-document').length,3);assert.equal(d.querySelectorAll('details.preview-document[open]').length,1);
+ const frame=new JSDOM([...d.querySelectorAll('iframe')].find(n=>n.title.startsWith('Sample terms')).getAttribute('srcdoc')).window.document;assert.ok(frame.querySelector('aside.policy-note strong'));assert.ok(frame.body.textContent.includes('Component-only wording.'));assert.ok(frame.body.textContent.includes('Image not loaded: Workflow diagram'));assert.equal(frame.querySelector('img,script,iframe,form,input,button,svg,object,a[href]'),null);assert.deepEqual([...frame.querySelectorAll('link')].map(l=>l.getAttribute('href')),['assets/documents.css','assets/frame.css']);assert.match(frame.querySelector('meta[http-equiv]').content,/img-src 'none'; font-src 'none'/);
+});
+test('public inputs are snapshotted before asynchronous work, and private build fields are never accessed',async()=>{
+ const f=await authored();let reads=0;Object.defineProperty(f.build,'archive',{get(){reads++;throw Error('PRIVATE');}});const pending=createAuthoredReleasePreview(f.build);f.build.files['terms/index.html']='Changed outside';f.build.artifact.pages['terms/index.html']='Changed outside';const result=await pending;assert.equal(reads,0);assert.doesNotMatch(result.publicFiles['terms/index.html'],/Changed outside/);
+});
+test('invalid, altered, extra private files and denied preview artifacts fail without evaluating source or option accessors',async()=>{
+ const f=await authored();for(const change of [b=>b.files['private.mdx']='PRIVATE',b=>b.files['terms/index.html']+='tampered',b=>b.artifact.publicConfig.site.name='Changed',b=>b.files['notabenda.public.json']='{}']){const b=structuredClone(f.build);change(b);await assert.rejects(createAuthoredReleasePreview(b));}
+ let getters=0;const options={};Object.defineProperty(options,'mode',{enumerable:true,get(){getters++;return 'preview';}});await assert.rejects(createAuthoredReleasePreview(f.build,options));assert.equal(getters,0);const b={};Object.defineProperty(b,'artifact',{get(){getters++;return f.build.artifact;}});await assert.rejects(createAuthoredReleasePreview(b));assert.equal(getters,0);
+ const p=await authored({preview:true});await assert.rejects(createAuthoredReleasePreview(p.build));const result=await createAuthoredReleasePreview(p.build,{mode:'preview'});assert.match(result.files['index.html'],/Artifact mode: preview/);assert.equal(p.calls(),1);
+});
+test('self-consistent hostile HTML cannot execute or navigate in the preview; original export bytes remain explicit',async()=>{
+ const f=await authored(),a=structuredClone(f.build.artifact),d=a.manifest.documents.find(x=>x.kind==='terms');a.pages[d.file]=a.pages[d.file].replace('</article>','<script>globalThis.bad=true</script><iframe src="https://remote.test"></iframe><form action="/write"><input autofocus></form><svg onload="run()"></svg><meta http-equiv="refresh" content="0;url=https://remote.test"></article>');d.sha256=sha256(a.pages[d.file]);const {artifactId:_,...descriptor}=a.manifest;a.manifest.artifactId=sha256(canonicalJson(descriptor));const b={artifact:a,files:{...a.pages,...createRetainedReleaseFiles([a],{siteId:a.manifest.siteId}),'notabenda.public.json':canonicalJson(a.publicConfig)+'\n','notabenda.manifest.json':canonicalJson(a.manifest)+'\n'}};
+ const result=await createAuthoredReleasePreview(b),outer=new JSDOM(result.files['index.html']).window.document;for(const iframe of outer.querySelectorAll('iframe')){assert.equal(iframe.getAttribute('sandbox'),'allow-same-origin');const frame=new JSDOM(iframe.getAttribute('srcdoc')).window.document;assert.equal(frame.querySelector('script,iframe,form,input,svg,meta[http-equiv=refresh],a[href]'),null);assert.equal(frame.querySelector('meta[http-equiv="Content-Security-Policy"]').content.includes("default-src 'none'"),true);}assert.ok(result.publicFiles[d.file].includes('globalThis.bad=true'));
+});
+test('the ZIP can be served as the exact release required by the existing publication check',async()=>{
+ const f=await authored(),result=await createAuthoredReleasePreview(f.build),files=await unzip(result.files['release.zip']),requests=[];const server=createServer((req,res)=>{requests.push(req.url);const body=files[req.url.slice(1)];if(!body){res.writeHead(404);res.end();return;}res.setHeader('Content-Type',req.url.endsWith('.json')?'application/json; charset=utf-8':'text/html; charset=utf-8');res.end(body);});server.listen(0,'127.0.0.1');await once(server,'listening');
+ try{const report=await checkLegalPublication(f.build.artifact,{origin:'http://127.0.0.1:'+server.address().port,allowLoopback:true});assert.equal(report.retainedFilesMatched,true);assert.equal(requests.length,4);}finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
+});
+test('supporting request pages and explicitly supplied stylesheet bytes stay with their original public files',async()=>{
+ const reference=rightsExampleConfig(await fixture({reviewed:true}),{reviewed:true});const build=compileLegalDocuments(reference,{stylesheetUrl:'/styles/legal.css'}),style='.policy-note { border: 1px solid #999; }';await assert.rejects(createAuthoredReleasePreview(build));const result=await createAuthoredReleasePreview(build,{stylesheetUrl:'/styles/legal.css',stylesheet:style});assert.equal(result.publicFiles['styles/legal.css'],style);assert.equal(result.files['assets/documents.css'],style);assert.equal(result.publicFiles['rights/index.html'],build.files['rights/index.html']);
+});

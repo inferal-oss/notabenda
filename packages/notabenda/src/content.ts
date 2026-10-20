@@ -34,7 +34,8 @@ import type { ConsentNotice, ConsentWording } from './consent-notice.js';
 import {normalizeProcessingNotice,processingServiceScope} from './processing.js';
 import type {ProcessingNotice} from './processing.js';
 import type {ProcessingActivity} from './types.js';
-export {createRetainedReleaseFiles} from './release-files.js';
+// @requirements REQ-PRODUCT-AUTHORED-PREVIEW
+export {createRetainedReleaseFiles,normalizePublicLegalArtifact} from './release-files.js';
 import type {CatalogReleaseReview,CatalogReviewDescriptor} from './catalog-release-policy.js';
 
 export function canonicalJson(value: unknown): string {

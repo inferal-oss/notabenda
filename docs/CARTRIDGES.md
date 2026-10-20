@@ -96,9 +96,9 @@ The Cloudflare `createSetupWorker` accepts an optional `cartridgeStylesheetUrl` 
 
 ## Read the draft before connecting it
 
-After preparing a pack draft, choose **Preview pages**. It opens the privacy, cookie and terms pages in a local reader, using the same document renderer and default legal styles. Switch documents or expand the contents list to jump to a section, then close the reader to return to the draft. Nothing is published, stored or marked reviewed by opening it.
+After preparing a pack draft, choose **Preview configuration**. It opens the privacy, cookie and terms pages in a local reader, using the same document renderer and default legal styles. Switch documents or expand the contents list to jump to a section, then close the reader to return to the draft. Nothing is published, stored or marked reviewed by opening it.
 
-The reader shows the configuration supplied to it, including placeholders and existing review declarations. It does not verify that those declarations match actual practices. Outside links have no navigable destination inside this preview. It loads neither separate MD/MDX project files nor a running website. Use the project's authoring build to review those authored files and custom components; this reader covers config-generated pages and supplied structured sections.
+The reader shows the configuration supplied to it, including placeholders and existing review declarations. It does not verify that those declarations match actual practices. Outside links have no navigable destination inside this preview. It loads neither separate MD/MDX project files nor a running website. Use the [compiled-release preview](AUTHORED-PREVIEW.md) to review authored files and custom components from the project's build; this reader covers config-generated pages and supplied structured sections.
 
 The viewer is also available independently. Include `@notabenda/core/styles.css` and `@notabenda/core/packs.css` and mount it on your own page:
 

@@ -47,3 +47,5 @@ The optional `@notabenda/authoring/guarantees` entry imports finished producer P
 `@notabenda/authoring/orders` creates reviewed order definitions, binds live host quotes and verifies original guarantee-label files. It does not calculate commercial prices or execute orders. See [paid orders](../../docs/PAID-ORDERS.md).
 
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
+
+Use `createAuthoredReleasePreview` from `@notabenda/authoring/preview` to read and export the actual compiled release. The [preview guide](https://notabenda.org/guide/authored-preview/) covers public ZIPs, retained artifact identity, styling and private source separation.

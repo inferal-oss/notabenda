@@ -251,3 +251,6 @@ Recording setup is a read-only operator job over explicit trusted scopes. Distin
 
 <!-- @requirements REQ-PRODUCT-AGENT-HANDOFF -->
 Use a read-only instruction drawer for browser agent handoffs rather than forcing a text-file download. Keep the initial plan and prepared-draft instructions distinct, copy only on deliberate action, provide manual selection when clipboard access fails and return focus after dismissal. No message, upload, automatic agent action or private justification enters the brief.
+
+<!-- @requirements REQ-PRODUCT-AUTHORED-PREVIEW -->
+Authored previews operate on an explicit compiler result after trusted MDX evaluation. Generate a separate script-free reader and a public ZIP from the same snapshot; preserve original bytes and validate the exact allowed public file map. Reading frames use a static markup projection, disable links/images/fonts and isolate scripts/forms while allowing local styles. Private source/paths/components remain outside both public maps. Preview artifacts need explicit permission; no inferred project read, server, publication, applicability or review state is introduced.

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AUTHORED-PREVIEW
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 import {supportsRightsPage} from './rights-localization-policy.js';
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
@@ -24,9 +25,9 @@ export function mountLegalPreview(container:HTMLElement,options:LegalPreviewOpti
  const node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
  const dialog=node('dialog');dialog.className='nb-legal-preview';dialog.setAttribute('aria-labelledby',instance+'-title');dialog.setAttribute('aria-describedby',instance+'-note');
  const header=node('header');header.className='nb-legal-preview-header';
- const title=node('h2','Preview your pages');title.id=instance+'-title';title.tabIndex=-1;
+ const title=node('h2','Configuration preview');title.id=instance+'-title';title.tabIndex=-1;
  const close=node('button','Close preview');close.type='button';close.className='nb-legal-preview-close';
- const note=node('p','This shows declared configuration, including placeholders. Outside links are disabled. Your site is unchanged.'+(unsupportedRights?' The request-page preview is unavailable: supply complete localization.rights messages for this site locale.':''));note.id=instance+'-note';
+ const note=node('p','This shows declared configuration, including placeholders. Outside links are disabled. Markdown and MDX builds have a separate compiled-release preview. Your site is unchanged.'+(unsupportedRights?' The request-page preview is unavailable: supply complete localization.rights messages for this site locale.':''));note.id=instance+'-note';
  header.append(title,close,note);dialog.append(header);
  const navigation=node('nav');navigation.className='nb-legal-preview-navigation';navigation.setAttribute('aria-label','Preview document');
  const paper=node('div');paper.className='nb-legal-preview-paper';

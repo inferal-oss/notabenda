@@ -353,3 +353,6 @@ The optional [recording setup inspector](RECORDING-INSPECTION.md) now checks fix
 
 <!-- @requirements REQ-PRODUCT-AGENT-HANDOFF -->
 Browser agent handoffs now show their stage-specific instructions in a shared dismissible drawer, with deliberate clipboard copying and manual selection fallback. Pack changes and draft edits discard stale drawers. Configuration/private-report files remain explicit downloads; the terminal wizard retains its text brief.
+
+<!-- @requirements REQ-PRODUCT-AUTHORED-PREVIEW -->
+Compiled Markdown/MDX output now has an optional static release reader and deterministic public ZIP export. It verifies the exact compiler file map, retains original HTML and source/component identities, keeps source archives separate and reuses the publication checker after export. Setup configuration previews are explicitly named; they do not adopt a separate compiled build or run browser MDX. Live widget and evidence-bound installation verification remain open.

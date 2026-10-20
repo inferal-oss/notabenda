@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-AUTHORED-PREVIEW
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-SAFE-CONTENT REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {test} from 'node:test';
@@ -19,7 +20,7 @@ test('page preview projects declared public facts without publishing, persisting
  dom.window.fetch=()=>{effects++;throw Error('No network');};dom.window.Storage.prototype.setItem=()=>{effects++;throw Error('No persistence');};
  const ui=mountLegalPreview(d.querySelector('#mount'),{config});
  try{
-  const dialog=d.querySelector('dialog');assert.equal(dialog.open,false);d.querySelector('#opener').focus();ui.open();assert.equal(dialog.open,true);assert.equal(d.activeElement.textContent,'Preview your pages');
+  const dialog=d.querySelector('dialog');assert.equal(dialog.open,false);d.querySelector('#opener').focus();ui.open();assert.equal(dialog.open,true);assert.equal(d.activeElement.textContent,'Configuration preview');
   assert.match(dialog.textContent,/Juniper Notes/);assert.match(dialog.textContent,/including placeholders/);assert.match(dialog.textContent,/Draft — for review/);assert.doesNotMatch(dialog.textContent,/Synthetic private note/);assert.deepEqual(config,before);assert.equal(effects,0);
   assert.equal(dialog.querySelector('.nb-document').dataset.documentKind,'privacy');
  }finally{ui.destroy();dom.window.close();}
@@ -64,9 +65,9 @@ async function prepared(){
 }
 test('the prepared draft opens its cookie page on demand and preserves draft/report state',async()=>{
  const {dom,d,ui}=await prepared();
-  try{assert.equal(d.querySelector('dialog'),null);const before=ui.getPlan(),button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Preview pages');button.click();for(let i=0;i<10&&!d.querySelector('dialog[open]');i++)await new Promise(resolve=>setTimeout(resolve,0));assert.ok(d.querySelector('dialog[open]'));assert.equal(d.querySelector('dialog .nb-document').dataset.documentKind,'cookies');assert.deepEqual(ui.getPlan(),before);d.querySelector('.nb-legal-preview-close').click();assert.equal(d.querySelector('dialog').open,false);assert.equal(d.activeElement,button);ui.setCartridges(selectCartridges(['privacy-pages']));assert.equal(d.querySelector('dialog'),null);}finally{ui.destroy();dom.window.close();}
+  try{assert.equal(d.querySelector('dialog'),null);const before=ui.getPlan(),button=[...d.querySelectorAll('button')].find(b=>b.textContent==='Preview configuration');button.click();for(let i=0;i<10&&!d.querySelector('dialog[open]');i++)await new Promise(resolve=>setTimeout(resolve,0));assert.ok(d.querySelector('dialog[open]'));assert.equal(d.querySelector('dialog .nb-document').dataset.documentKind,'cookies');assert.deepEqual(ui.getPlan(),before);d.querySelector('.nb-legal-preview-close').click();assert.equal(d.querySelector('dialog').open,false);assert.equal(d.activeElement,button);ui.setCartridges(selectCartridges(['privacy-pages']));assert.equal(d.querySelector('dialog'),null);}finally{ui.destroy();dom.window.close();}
 });
 test('a draft invalidated during the asynchronous module load cannot open a stale preview',async()=>{
  const {dom,d,ui}=await prepared();
- try{[...d.querySelectorAll('button')].find(b=>b.textContent==='Preview pages').click();ui.setCartridges(selectCartridges(['privacy-pages']));await new Promise(resolve=>setTimeout(resolve,0));assert.equal(d.querySelector('dialog'),null);assert.equal(ui.getPlan(),null);}finally{ui.destroy();dom.window.close();}
+ try{[...d.querySelectorAll('button')].find(b=>b.textContent==='Preview configuration').click();ui.setCartridges(selectCartridges(['privacy-pages']));await new Promise(resolve=>setTimeout(resolve,0));assert.equal(d.querySelector('dialog'),null);assert.equal(ui.getPlan(),null);}finally{ui.destroy();dom.window.close();}
 });
