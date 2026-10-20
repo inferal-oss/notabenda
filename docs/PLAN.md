@@ -53,7 +53,7 @@ docs/
 
 The initial implementation uses TypeScript, npm workspaces, ESM/declarations, and Node's built-in test runner. There is no runtime dependency or bundler requirement. Keep React optional when its adapter is added. Browser checks verify the actual no-JS pages and responsive layout. Keep build tooling out of browser dependency graphs.
 
-The catalog links implemented and partial requirements to actual code/tests. Document/configuration, consent state/lifecycle, and CF backoffice/history tests run. The vanilla controls have initial Chromium checks; full accessibility/platform review and regional-pack scenarios remain pending. Maintainer checks do not prescribe an adopter's CI workflow.
+The catalog links implemented and partial requirements to actual code/tests. Document/configuration, consent state/lifecycle, and CF backoffice/history tests run. The [accessibility audit](verification/accessibility.md) adds current-page semantic scans and desktop/mobile Chromium scenarios for actual controls and operator renderers, retaining incomplete findings explicitly. Full accessibility/platform review and regional-pack scenarios remain pending. Maintainer checks do not prescribe an adopter's CI workflow.
 
 ## 2. One inventory, several outputs
 

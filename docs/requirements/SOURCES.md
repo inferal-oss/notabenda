@@ -1083,3 +1083,43 @@ Official help destination used in the host-authored example; live instructions c
 **Type:** secondary-explainer. **Checked:** 2026-10-19. **Access:** read.
 
 One-page phased-implementation overview read for discovery. General transparency, governance and consent discussion; not authority for the specific default-off technology interpretation. No vendor wording reused.
+
+<a id="src-w3c-aria-html"></a>
+
+## SRC-W3C-ARIA-HTML
+
+[W3C ARIA in HTML: roles and author naming](https://www.w3.org/TR/html-aria/)
+
+**Type:** technical-standard. **Checked:** 2026-10-19. **Access:** read.
+
+Read the pre element row and author-naming requirements. Generic pre elements prohibit author naming; an explicit supported role can preserve a useful code-group name.
+
+<a id="src-axe-core"></a>
+
+## SRC-AXE-CORE
+
+[axe-core: rules and supported environments](https://github.com/dequelabs/axe-core/blob/develop/README.md)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Read rule scope, incomplete results and JSDOM limitations. The maintainer tool pins axe-core 4.14.0; browser-only contrast and canvas/layout-dependent label checks are separated from semantic tests. Automation does not establish conformance.
+
+<a id="src-wcag-contrast"></a>
+
+## SRC-WCAG-CONTRAST
+
+[W3C: understanding minimum text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Read SC 1.4.3, ratio thresholds and exceptions, and the use of underlying computed colors rather than antialiased screenshot pixels.
+
+<a id="src-wcag-label-name"></a>
+
+## SRC-WCAG-LABEL-NAME
+
+[W3C: understanding Label in Name](https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html)
+
+**Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
+
+Read SC 2.5.3 and its explanation of visible label text in accessible names for speech interaction, including punctuation and symbolic characters.

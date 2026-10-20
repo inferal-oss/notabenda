@@ -10,7 +10,7 @@ test('build-time highlighting preserves literal source across documented languag
  try {
   for(const [lang,source] of Object.entries({ts:'// A comment\nconst label: string = "<script>alert(1)</script>";\n',js:'export const value = 42;\n',json:'{"key":true}\n',css:'.box { color: red; }\n',sh:'npm install notabenda\n',mdx:'---\ntitle: Example\n---\n<Notice value={true} />\n',astro:'---\nconst title = "Hi";\n---\n<h1>{title}</h1>\n',yaml:'enabled: true\n',mermaid:'flowchart LR\nA --> B\n'})){
    const html=syntax.renderBlock(source,lang),dom=new JSDOM(html),pre=dom.window.document.querySelector('pre');
-   assert.equal(pre.textContent,source,lang);assert.ok(pre.querySelectorAll('.nb-token').length>1,lang);assert.equal(pre.tabIndex,0);assert.match(pre.getAttribute('aria-label'),/code example/);
+   assert.equal(pre.textContent,source,lang);assert.ok(pre.querySelectorAll('.nb-token').length>1,lang);assert.equal(pre.tabIndex,0);assert.equal(pre.getAttribute('role'),'group');assert.match(pre.getAttribute('aria-label'),/code example/);
    assert.equal(dom.window.document.querySelectorAll('script,[style],[onclick],iframe').length,0);assert.equal(syntax.renderBlock(source,lang),html);dom.window.close();
   }
  }finally{syntax.dispose();}

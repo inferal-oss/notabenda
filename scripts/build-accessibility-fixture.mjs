@@ -1,0 +1,52 @@
+// @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
+// Local maintainer browser application. It is never included in the site manifest or package.
+import {mkdir,readFile,writeFile,copyFile} from 'node:fs/promises';
+import {build} from 'esbuild';
+import {fileURLToPath} from 'node:url';
+import {accessibilityFixtureData} from './accessibility-fixtures.mjs';
+import {accessibilityTags} from './accessibility-audit.mjs';
+const output=new URL('../.local/accessibility-fixture/',import.meta.url),root=new URL('../site/dist/public/',import.meta.url);
+await mkdir(new URL('pages/',output),{recursive:true});
+const data=await accessibilityFixtureData(),scenarios=[];
+const bridge='<script src="/qa-a11y/axe.min.js"></script><script type="module" src="/qa-a11y/bridge.mjs"></script>';
+function prepare(html,base='/'){
+ // Static source markup is inspected separately from mounted component states.
+ return html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/giu,'').replace(/<head([^>]*)>/iu,'<head$1><base href="'+base+'">').replace(/<\/body>/iu,bridge+'</body>');
+}
+for(const path of ['index.html','guide/agent-setup/index.html','examples/index.html','examples/privacy-choices/index.html','choices/index.html','dark/choices/index.html','agreement/index.html','dark/agreement/index.html','google-basic/index.html','dark/google-basic/index.html','technology/index.html','technology/privacy/index.html']){
+ const name=path.replace(/\/index\.html$|^index\.html$/u,'').replaceAll('/','-')||'home';
+ await writeFile(new URL('pages/'+name+'.html',output),prepare(await readFile(new URL(path,root),'utf8'),'/'+path.replace(/index\.html$/u,'')));
+ scenarios.push({label:name+' · static',url:'pages/'+name+'.html',kind:'static-html'});
+}
+for(const page of data.pages){
+ await writeFile(new URL('pages/'+page.name+'.html',output),prepare(page.html));
+ scenarios.push({label:page.name+' · operator renderer',url:'pages/'+page.name+'.html'+(page.name==='operator-setup'?'?widget=operator-setup':''),kind:'synthetic-operator'});if(['evidence-detail','release-detail','document-diff'].includes(page.name))scenarios.push({label:page.name+' expanded · operator renderer',url:'pages/'+page.name+'.html?expanded=1',kind:'synthetic-operator'});
+}
+const shell='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Component accessibility fixture</title><link rel="stylesheet" href="/assets/notabenda.css"><link rel="stylesheet" href="/assets/consent.css"><link rel="stylesheet" href="/assets/example-theme.css"></head><body class="nb-page"><main id="main" class="nb-document"><h1>Privacy settings</h1><p>Check the default components with keyboard, browser layout and the audit engine.</p><div id="widget"></div></main>'+bridge+'</body></html>';
+await writeFile(new URL('widget.html',output),shell);
+for(const widget of ['consent','consent-preferences','consent-dark','consent-dark-preferences','terms','terms-error','permission','permission-error','setup','setup-practices','setup-review'])scenarios.push({label:widget+' · mounted',url:'widget.html?widget='+widget,kind:'mounted-component'});
+const {pages,...publicData}=data;await writeFile(new URL('data.json',output),JSON.stringify(publicData));
+await copyFile(new URL('../node_modules/axe-core/axe.min.js',import.meta.url),new URL('axe.min.js',output));
+await copyFile(new URL('../node_modules/axe-core/LICENSE',import.meta.url),new URL('axe-core-LICENSE.txt',output));
+const widgetSource=`import {createConsentRuntime,mountControls} from 'notabenda/consent';
+import {createTermsAcceptance,mountTermsAcceptance,createFormPermission,mountFormPermission} from 'notabenda';
+import {mountSetup} from 'notabenda/setup/ui';
+export async function mountFixture(){
+ const params=new URL(location.href).searchParams,mode=params.get('widget');if(params.get('expanded')==='1')for(const details of document.querySelectorAll('details'))details.open=true;if(!mode)return {kind:'static',expanded:params.get('expanded')==='1'};let state;
+ const d=await fetch('/qa-a11y/data.json').then(r=>r.json()),host=document.querySelector('#widget,[data-notabenda-setup]');
+ if(mode.startsWith('consent')){const values=new Map(),controller=createConsentRuntime(d.runtimeConfig,{storage:{getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},schedule:()=>()=>{}});if(mode.includes('dark'))document.body.classList.add('nb-demo-midnight');mountControls(host,{consent:controller});if(mode.includes('preferences'))controller.openPreferences();state={preferencesOpen:controller.getSnapshot().preferencesOpen};if(mode.includes('preferences')&&!document.querySelector('dialog[open]'))throw Error('Preference dialog did not open');}
+ else if(mode.startsWith('terms')){const controller=createTermsAcceptance(d.offer,{operationId:'accessibility-signup',submit:async()=>{throw Error('Intentional fixture transport failure');}});mountTermsAcceptance(host,{acceptance:controller});if(mode==='terms-error'){controller.setChecked(true);try{await controller.submit();}catch{}}state={status:controller.getSnapshot().status};if(mode==='terms-error'&&state.status!=='error')throw Error('Agreement error state not reached');}
+ else if(mode.startsWith('permission')){const controller=createFormPermission(d.permissionOffer,{streamRef:d.streamRef,read:async()=>d.permissionState,submit:async()=>{throw Error('Intentional fixture transport failure');}});mountFormPermission(host,{permission:controller});await controller.refresh();if(mode==='permission-error'){controller.setChecked(true);try{await controller.grant();}catch{}}state={status:controller.getSnapshot().status};if(mode==='permission-error'&&state.status!=='error')throw Error('Permission error state not reached');}
+ else{const ui=mountSetup(host,{config:d.config});if(mode==='setup-practices'||mode==='setup-review'){const stage=mode==='setup-practices'?3:5;host.querySelectorAll('.nb-setup-step')[stage]?.click();if(mode==='setup-practices'){const reason=host.querySelector('.nb-setup-practice-notes textarea');if(!reason)throw Error('Private note field missing');reason.value='Provider settings reviewed in this fixture.';reason.dispatchEvent(new Event('input',{bubbles:true}));reason.closest('details').open=true;}if(mode==='setup-review'){host.querySelector('form').requestSubmit();if(!ui.getPlan())throw Error('Setup review was not prepared');}}state={step:host.querySelector('[aria-current=step] strong')?.textContent};if(mode==='setup-practices'&&!state.step?.includes('Practices'))throw Error('Practices step did not open');}return {kind:'mounted',mode,state};
+}`;
+const bundle=await build({stdin:{contents:widgetSource,resolveDir:fileURLToPath(new URL('../',import.meta.url))},bundle:true,write:false,platform:'browser',format:'esm'});
+await writeFile(new URL('widget.mjs',output),bundle.outputFiles[0].contents);
+await writeFile(new URL('bridge.mjs',output),`import {mountFixture} from '/qa-a11y/widget.mjs';
+const address=new URL(location.href),runId=address.searchParams.get('auditRun');address.searchParams.delete('auditRun');const url=address.pathname+address.search;let setupError,fixture;try{fixture=await mountFixture();}catch(error){setupError=error.message;}
+window.addEventListener('message',async event=>{if(event.source!==parent||event.origin!==location.origin||event.data?.type!=='run-accessibility-audit'||event.data.runId!==runId||typeof event.data.requestId!=='string')return;const requestId=event.data.requestId;
+try{if(setupError)throw Error(setupError);const r=await axe.run(document,{runOnly:{type:'tag',values:${JSON.stringify(accessibilityTags)}}});parent.postMessage({type:'accessibility-result',runId,requestId,fixture,viewport:{width:innerWidth,height:innerHeight},version:axe.version,url,violations:r.violations,incomplete:r.incomplete},location.origin);}catch(error){parent.postMessage({type:'accessibility-result',runId,requestId,url,error:error.message},location.origin);}});
+parent.postMessage({type:'accessibility-ready',runId,url},location.origin);`);
+await writeFile(new URL('scenarios.json',output),JSON.stringify(scenarios,null,2));
+await copyFile(new URL('./accessibility-browser-app.mjs',import.meta.url),new URL('app.mjs',output));
+await writeFile(new URL('index.html',output),`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Notabenda accessibility review</title><style>*{box-sizing:border-box}body{margin:0;background:#f7f7f9;color:#24252b;font:15px/1.5 system-ui}main{max-width:1400px;margin:auto;padding:24px}h1{font-size:24px;margin:0}p{max-width:85ch}header{display:flex;align-items:center;gap:12px;flex-wrap:wrap}select,button,textarea{font:inherit;padding:9px;border:1px solid #a6a7af;border-radius:8px;background:white;color:inherit}button{cursor:pointer}iframe{width:100%;height:850px;border:1px solid #c7c8d0;background:white;border-radius:12px;margin-top:18px}textarea{width:98%;height:160px}#summary{font-weight:600}button:focus-visible,select:focus-visible{outline:3px solid #5254ba;outline-offset:3px}@media(max-width:600px){main{padding:0}header{padding:12px}main>p,main>details{margin-inline:12px}iframe{border-inline:0}} </style></head><body><main><header><h1>Accessibility review</h1><label>Scenario <select></select></label><button id="run-one">Audit this scenario</button></header><p>Local maintainer fixtures. Static pages have app scripts disabled. Mounted components use in-memory data and intentional transport failures. Operator pages use authorized synthetic stores. No operational database or authentication is involved.</p><p id="summary">No scenarios checked yet.</p><p role="status">Loading…</p><iframe title="Accessibility fixture"></iframe><details><summary>Raw audit report</summary><label>Audit report<textarea readonly></textarea></label></details><p>Incomplete results need review. Automated results do not replace keyboard, assistive technology or platform testing.</p></main><script type="module" src="app.mjs"></script></body></html>`);
+console.log('Local browser audit fixture: .local/accessibility-fixture/ ('+scenarios.length+' scenarios)');

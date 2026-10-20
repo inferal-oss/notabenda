@@ -104,7 +104,7 @@ for(const [path,route] of docs) {
     const rewritten=rewrite(href,path),hash=rewritten.indexOf('#'),target=hash<0?rewritten:rewritten.slice(0,hash),fragment=hash<0?'':rewritten.slice(hash);
     return [...docs.values()].includes(target)?markdownRoute(target)+fragment:rewritten;
   });
-  const title = /^# (.+)$/mu.exec(markdown)?.[1] ?? 'Guide';
+  const title = /^# (.+)$/mu.exec(markdown)?.[1] ?? (path==='README.md'?'Project overview':'Guide');
   pageHeadings=[];headingIds=new Set();
   // Explicit anchors in trusted docs retain their address; generated headings avoid them.
   markdownRenderer.walkTokens(markdownRenderer.lexer(markdown),token=>{
@@ -114,6 +114,8 @@ for(const [path,route] of docs) {
     if(token.type==='link' || token.type==='image') token.href=rewrite(token.href,path);
     if(token.type==='html') token.text=token.text.replace(/(?:src|href)="([^"]+)"/gu,(match,href)=>match.replace(href,rewrite(href,path)));
   }});
+  // @requirements REQ-PRODUCT-A11Y A logo-led README still needs a navigable page heading.
+  if(!/<h1\b/iu.test(html))html='<h1>'+escape(title)+'</h1>'+html;
   // Local navigation is native HTML and works without a client script.
   const end=html.indexOf('</h1>')+5;
   if(end>4)html=html.slice(0,end)+guideOrientation(route)+guideOutline(pageHeadings)+html.slice(end);

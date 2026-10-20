@@ -493,7 +493,8 @@
         "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Remote provisioning and operational rollout verification remain separate.",
         "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open.",
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
-        "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios."
+        "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
+        "Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -517,7 +518,15 @@
         "skills/notabenda/SKILL.md",
         "site/agent-docs.mjs",
         "llms.txt",
-        "packages/notabenda/src/integration-reference.ts"
+        "packages/notabenda/src/integration-reference.ts",
+        "scripts/accessibility-audit.mjs",
+        "scripts/audit-accessibility.mjs",
+        "scripts/accessibility-fixtures.mjs",
+        "scripts/build-accessibility-fixture.mjs",
+        "scripts/accessibility-browser-app.mjs",
+        "packages/notabenda/src/setup-ui.ts",
+        "examples/google-basic/build.mjs",
+        "scripts/serve-accessibility.mjs"
       ]
     },
     {
@@ -1722,6 +1731,42 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "One-page phased-implementation overview read for discovery. General transparency, governance and consent discussion; not authority for the specific default-off technology interpretation. No vendor wording reused."
+    },
+    {
+      "id": "SRC-W3C-ARIA-HTML",
+      "title": "W3C ARIA in HTML: roles and author naming",
+      "url": "https://www.w3.org/TR/html-aria/",
+      "kind": "technical-standard",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Read the pre element row and author-naming requirements. Generic pre elements prohibit author naming; an explicit supported role can preserve a useful code-group name."
+    },
+    {
+      "id": "SRC-AXE-CORE",
+      "title": "axe-core: rules and supported environments",
+      "url": "https://github.com/dequelabs/axe-core/blob/develop/README.md",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Read rule scope, incomplete results and JSDOM limitations. The maintainer tool pins axe-core 4.14.0; browser-only contrast and canvas/layout-dependent label checks are separated from semantic tests. Automation does not establish conformance."
+    },
+    {
+      "id": "SRC-WCAG-CONTRAST",
+      "title": "W3C: understanding minimum text contrast",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Read SC 1.4.3, ratio thresholds and exceptions, and the use of underlying computed colors rather than antialiased screenshot pixels."
+    },
+    {
+      "id": "SRC-WCAG-LABEL-NAME",
+      "title": "W3C: understanding Label in Name",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/label-in-name.html",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Read SC 2.5.3 and its explanation of visible label text in accessible names for speech interaction, including punctuation and symbolic characters."
     }
   ],
   "jurisdictions": [
@@ -3482,6 +3527,22 @@
         {
           "sourceId": "SRC-WCAG",
           "locator": "Keyboard, contrast, focus, labels, reflow, target size"
+        },
+        {
+          "sourceId": "SRC-W3C-ARIA-HTML",
+          "locator": "Maintainer audit: naming, labels, contrast, supported environments and explicit incomplete results."
+        },
+        {
+          "sourceId": "SRC-AXE-CORE",
+          "locator": "Maintainer audit: naming, labels, contrast, supported environments and explicit incomplete results."
+        },
+        {
+          "sourceId": "SRC-WCAG-CONTRAST",
+          "locator": "Maintainer audit: naming, labels, contrast, supported environments and explicit incomplete results."
+        },
+        {
+          "sourceId": "SRC-WCAG-LABEL-NAME",
+          "locator": "Maintainer audit: naming, labels, contrast, supported environments and explicit incomplete results."
         }
       ],
       "discoverySourceIds": [
@@ -3524,7 +3585,15 @@
         "examples/discovery/style.css",
         "examples/form-permissions/style.css",
         "examples/contract-actions/style.css",
-        "scripts/build-controls-layout.mjs"
+        "scripts/build-controls-layout.mjs",
+        "scripts/accessibility-audit.mjs",
+        "scripts/audit-accessibility.mjs",
+        "scripts/accessibility-fixtures.mjs",
+        "scripts/build-accessibility-fixture.mjs",
+        "scripts/accessibility-browser-app.mjs",
+        "packages/notabenda/src/setup-ui.ts",
+        "examples/google-basic/build.mjs",
+        "scripts/serve-accessibility.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/documents.test.mjs",
@@ -3539,9 +3608,13 @@
         "packages/notabenda/test/consent-delivery.test.mjs",
         "docs/verification/consent-focus.md",
         "packages/notabenda/test/controls-layout.test.mjs",
-        "docs/verification/controls-layout.md"
+        "docs/verification/controls-layout.md",
+        "site/test/accessibility.test.mjs",
+        "site/test/accessibility-fixture.test.mjs",
+        "site/test/syntax.test.mjs",
+        "docs/verification/accessibility.md"
       ],
-      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open. Long headings/Close labels now wrap, action columns adapt to text size, and logical side placement mirrors RTL. Whole-dialog scrolling is the safe fallback; measured resize observation retains fixed chrome only with a useful text-relative body viewport, preserves draft/focus and disconnects on teardown. Repeatable local fixtures and initial Chromium width/short-screen/large-text/RTL/no-observer checks extend evidence; actual browser zoom and broader platform/assistive-technology acceptance remain open."
+      "implementationNote": "Document semantics and initial native-dialog focus/Escape checks are implemented. Full WCAG, screen-reader, contrast, zoom and platform audit remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open. Long headings/Close labels now wrap, action columns adapt to text size, and logical side placement mirrors RTL. Whole-dialog scrolling is the safe fallback; measured resize observation retains fixed chrome only with a useful text-relative body viewport, preserves draft/focus and disconnects on teardown. Repeatable local fixtures and initial Chromium width/short-screen/large-text/RTL/no-observer checks extend evidence; actual browser zoom and broader platform/assistive-technology acceptance remain open. A pinned maintainer semantic audit now covers current static pages, with real mounted controls and synthetic operator renderers in regression tests. Desktop/mobile Chromium audit fixtures include actual dialog/error/setup states and expanded record/diff views; run IDs, request IDs and URL matching reject stale results. Skip targets, headings, named code groups, visible-label/name mismatches, shared secondary text contrast and keyboard-scrollable diff/raw record blocks are corrected. JSDOM excludes contrast and canvas/layout-dependent label checks; browser results retain incompletes. Full platform/assistive-technology acceptance remains pending."
     },
     {
       "id": "REQ-PRODUCT-MOBILE",
@@ -3603,7 +3676,8 @@
         "packages/notabenda/test/consent-delivery.test.mjs",
         "docs/verification/consent-focus.md",
         "packages/notabenda/test/controls-layout.test.mjs",
-        "docs/verification/controls-layout.md"
+        "docs/verification/controls-layout.md",
+        "docs/verification/accessibility.md"
       ],
       "implementationNote": "Nonmodal initial notice and deliberately opened native drawer implemented. Initial Chromium phone-width checks recorded; full platform, zoom, assistive technology and device matrix remains pending. Native entry relationships, separately named purpose controls and focus recovery for disappearing retry/notice controls are covered through both consent factories; broad accessibility acceptance remains pending. Shared defaults now use neutral surfaces, restrained navigation, compact operator headings/record rows, consistent small corners and deliberate light/dark permission controls. Real browser checks retain equal accept/reject actions, mobile setup targets and no horizontal overflow on inspected families. Full accessibility certification and untested platforms remain open. Long headings/Close labels now wrap, action columns adapt to text size, and logical side placement mirrors RTL. Whole-dialog scrolling is the safe fallback; measured resize observation retains fixed chrome only with a useful text-relative body viewport, preserves draft/focus and disconnects on teardown. Repeatable local fixtures and initial Chromium width/short-screen/large-text/RTL/no-observer checks extend evidence; actual browser zoom and broader platform/assistive-technology acceptance remain open."
     },
@@ -6665,7 +6739,7 @@
         "REQ-PRODUCT-A11Y"
       ],
       "status": "partial",
-      "expected": "Keyboard, focus, screen-reader, contrast, zoom, mobile and RTL checks run against each built-in theme.",
+      "expected": "Keyboard, focus, screen-reader, contrast, zoom, mobile and RTL checks run against each built-in theme. Current-page semantic scans and actual mounted/synthetic-operator fixtures retain environment exclusions and incomplete results. Native Chromium runs check contrast and visible labels at desktop/mobile widths; stale audit results cannot credit another scenario, and comparison/raw blocks remain keyboard reachable. These checks extend partial evidence rather than establish full acceptance.",
       "testRefs": [
         "packages/notabenda/test/documents.test.mjs",
         "docs/verification/consent-browser.md",
@@ -6674,7 +6748,11 @@
         "docs/verification/design-pass.md",
         "site/test/host.test.mjs",
         "packages/notabenda/test/controls-layout.test.mjs",
-        "docs/verification/controls-layout.md"
+        "docs/verification/controls-layout.md",
+        "site/test/accessibility.test.mjs",
+        "site/test/accessibility-fixture.test.mjs",
+        "site/test/syntax.test.mjs",
+        "docs/verification/accessibility.md"
       ]
     },
     {
