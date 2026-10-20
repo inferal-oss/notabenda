@@ -1083,7 +1083,7 @@ Retain deterministic public configuration, exact HTML, and structured content wi
 
 ### REQ-PRODUCT-PACKAGE — Installable npm API, CLI, types, styles, and Apache license
 
-Pack a dependency-free browser/SSR API and separate build-time tools without publishing.
+Pack @notabenda/core, @notabenda/cloudflare and @notabenda/authoring with usable scoped exports, local CLI binaries, types and optional styles. Preserve retained protocol identifiers; no npm publication is performed.
 
 **Applies when:** The corresponding package feature is used.
 
@@ -1097,7 +1097,7 @@ Pack a dependency-free browser/SSR API and separate build-time tools without pub
 
 **Limits/open review:** Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.
 
-**Code/test references:** [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/package.json](../../packages/notabenda/package.json), [packages/notabenda/src/headless.ts](../../packages/notabenda/src/headless.ts), [packages/notabenda/scripts/consent-styles.mjs](../../packages/notabenda/scripts/consent-styles.mjs), [scripts/measure-bundles.mjs](../../scripts/measure-bundles.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs), [packages/notabenda/test/delivery.test.mjs](../../packages/notabenda/test/delivery.test.mjs), [site/test/delivery.test.mjs](../../site/test/delivery.test.mjs)
+**Code/test references:** [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/package.json](../../packages/notabenda/package.json), [packages/notabenda/src/headless.ts](../../packages/notabenda/src/headless.ts), [packages/notabenda/scripts/consent-styles.mjs](../../packages/notabenda/scripts/consent-styles.mjs), [scripts/measure-bundles.mjs](../../scripts/measure-bundles.mjs), [packages/notabenda-cf/package.json](../../packages/notabenda-cf/package.json), [packages/notabenda-authoring/package.json](../../packages/notabenda-authoring/package.json), [packages/notabenda-cf/bin/notabenda-cf.mjs](../../packages/notabenda-cf/bin/notabenda-cf.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs), [packages/notabenda/test/delivery.test.mjs](../../packages/notabenda/test/delivery.test.mjs), [site/test/delivery.test.mjs](../../site/test/delivery.test.mjs), [packages/notabenda-authoring/test/package.test.mjs](../../packages/notabenda-authoring/test/package.test.mjs), [packages/notabenda-cf/test/starter.test.mjs](../../packages/notabenda-cf/test/starter.test.mjs)
 
 <a id="req-product-cf-admin"></a>
 
@@ -1227,7 +1227,7 @@ Serve repository-built assets with a host-owned authorization boundary before pr
 
 **Limits/open review:** Host template only; not package authentication or a multi-tenant identity provider. Stores synthetic examples, not durable visitor consent receipts. Cloud deployment, production routing, backup/retention and full browser/platform review remain separate.
 
-**Code/test references:** [site/host.mjs](../../site/host.mjs), [site/worker.mjs](../../site/worker.mjs), [site/build.mjs](../../site/build.mjs), [site/website-notice.mjs](../../site/website-notice.mjs), [site/website-notice.css](../../site/website-notice.css), [site/navigation.mjs](../../site/navigation.mjs), [site/guide-pages.mjs](../../site/guide-pages.mjs), [site/examples-page.mjs](../../site/examples-page.mjs), [site/style.css](../../site/style.css), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/website-browser.md](../../docs/verification/website-browser.md), [scripts/check-site-runtime.mjs](../../scripts/check-site-runtime.mjs), [site/test/website-notice.test.mjs](../../site/test/website-notice.test.mjs), [site/test/site-organization.test.mjs](../../site/test/site-organization.test.mjs)
+**Code/test references:** [site/host.mjs](../../site/host.mjs), [site/worker.mjs](../../site/worker.mjs), [site/build.mjs](../../site/build.mjs), [site/website-notice.mjs](../../site/website-notice.mjs), [site/website-notice.css](../../site/website-notice.css), [site/navigation.mjs](../../site/navigation.mjs), [site/guide-pages.mjs](../../site/guide-pages.mjs), [site/examples-page.mjs](../../site/examples-page.mjs), [site/style.css](../../site/style.css), [site/footer.mjs](../../site/footer.mjs), [site/footer.css](../../site/footer.css), [site/test/host.test.mjs](../../site/test/host.test.mjs), [docs/verification/website-browser.md](../../docs/verification/website-browser.md), [scripts/check-site-runtime.mjs](../../scripts/check-site-runtime.mjs), [site/test/website-notice.test.mjs](../../site/test/website-notice.test.mjs), [site/test/site-organization.test.mjs](../../site/test/site-organization.test.mjs)
 
 <a id="req-product-consent-evidence"></a>
 

@@ -1,9 +1,9 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-PRIVACY-SIGNALS REQ-PRODUCT-PROCESSING-CHOICES
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createConsent} from 'notabenda';
-import {createConsentRuntime} from 'notabenda/consent';
-import {compileLegalDocuments,createProcessingNotice} from 'notabenda/content';
+import {createConsent} from '@notabenda/core';
+import {createConsentRuntime} from '@notabenda/core/consent';
+import {compileLegalDocuments,createProcessingNotice} from '@notabenda/core/content';
 import {performanceInventories} from '../../../scripts/performance-inventories.mjs';
 import {measureConsent,summarize} from '../../../scripts/consent-performance.mjs';
 const data=await performanceInventories();

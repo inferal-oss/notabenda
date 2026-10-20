@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-MOBILE
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createTermsOffer} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createTermsOffer} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 export async function localizedAgreementFiles(base){
  const c=structuredClone(base);c.site.id='juniper-agreement';for(const item of c.storage)item.name=item.name.replace('juniper-pt',c.site.id);for(const [kind,doc] of Object.entries(c.documents))doc.route='/localization/agreement/'+kind;
  if(c.consent?.information?.rights)c.consent.information.rights.url='/localization/agreement/privacy#nb-privacy-section-rights';

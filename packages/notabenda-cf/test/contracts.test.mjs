@@ -2,8 +2,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture} from '../../notabenda/test/helpers.mjs';
-import {compileLegalDocuments,createContractActionDefinition,canonicalJson,sha256} from 'notabenda/content';
-import {recordLegalRelease,registerContractActionDefinition,contractActionOperationRef,recordContractDeclaration,claimContractDelivery,settleContractDelivery,cancelContractDelivery,createContractDeclarationStore,createEvidenceLifecycle,createAdminWorker} from 'notabenda-cf';
+import {compileLegalDocuments,createContractActionDefinition,canonicalJson,sha256} from '@notabenda/core/content';
+import {recordLegalRelease,registerContractActionDefinition,contractActionOperationRef,recordContractDeclaration,claimContractDelivery,settleContractDelivery,cancelContractDelivery,createContractDeclarationStore,createEvidenceLifecycle,createAdminWorker} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 const instant='2026-10-18T12:00:00.000Z';
 const reject=(promise,code)=>assert.rejects(promise,error=>error.code===code);

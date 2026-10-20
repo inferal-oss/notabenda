@@ -9,8 +9,8 @@ The distinction matters for the requirements catalog. GDPR Article 13 addresses 
 ## Build and render
 
 ```js
-import {compileLegalDocuments, createCollectionNotice} from 'notabenda/content';
-import {renderCollectionNotice, collectionNoticeIds} from 'notabenda';
+import {compileLegalDocuments, createCollectionNotice} from '@notabenda/core/content';
+import {renderCollectionNotice, collectionNoticeIds} from '@notabenda/core';
 
 const build = compileLegalDocuments(config);
 const notice = createCollectionNotice(build.artifact, {
@@ -65,7 +65,7 @@ Add a complete optional `localization.collection` dictionary to the site before 
 
 The v2 notice uses `collection-v2` and retains the selected messages, locale, explicit direction and copy revision. Set details/privacy-link labels in the dictionary; per-notice overrides are rejected for this version. The selected descriptor is bounded to 16 KiB, and the complete notice keeps its 64 KiB limit. English configurations without the dictionary retain v1 output and their existing context-label options.
 
-`verifyCollectionNotice(notice, artifact, options)` from `notabenda/content` reconstructs the selected notice against its intact retained release and checks content identity, facts and copy. Use it when loading a trusted descriptor for deployment or review. Structural normalization alone validates shape and safe links; it does not authenticate an author or compare an archive. Neither check proves presentation or legal sufficiency. Advancing wording requires a new copy revision and notice/release; it does not change cookie permission scopes.
+`verifyCollectionNotice(notice, artifact, options)` from `@notabenda/core/content` reconstructs the selected notice against its intact retained release and checks content identity, facts and copy. Use it when loading a trusted descriptor for deployment or review. Structural normalization alone validates shape and safe links; it does not authenticate an author or compare an archive. Neither check proves presentation or legal sufficiency. Advancing wording requires a new copy revision and notice/release; it does not change cookie permission scopes.
 
 Try the [static Portuguese example](/localization/collection/). Its details and pinned policy remain readable without scripts. The surrounding form illustration has no submission route or evidence store. The same core markup is used by React and Astro; review language, layout and applicability independently.
 
@@ -80,14 +80,14 @@ Optional package CSS uses the existing namespaced tokens, light/dark surfaces, l
 ## React and Astro
 
 ```jsx
-import {CollectionNotice} from 'notabenda/react/documents';
+import {CollectionNotice} from '@notabenda/core/react/documents';
 // This server-safe wrapper requires no provider, hooks or client hydration.
 <CollectionNotice notice={notice} idPrefix="contact-privacy" headingLevel={3} />
 ```
 
 ```astro
 ---
-import CollectionNotice from 'notabenda/astro/CollectionNotice.astro';
+import CollectionNotice from '@notabenda/core/astro/CollectionNotice.astro';
 ---
 <CollectionNotice notice={notice} idPrefix="contact-privacy" headingLevel={3} />
 ```

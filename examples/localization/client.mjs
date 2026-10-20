@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-BR-COOKIE-UI
-import {createConsentRuntime,mountControls} from 'notabenda/consent';
+import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 const config=await (await fetch('/localization/runtime.json')).json();
 const consent=createConsentRuntime(config);
 consent.registerService('reading',{purposes:['suggestions'],start({signal}){

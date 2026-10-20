@@ -2,8 +2,8 @@
 import {createElement} from 'react';
 import {renderToString} from 'react-dom/server';
 import {build as bundle} from 'esbuild';
-import {createConsentRuntime} from 'notabenda/consent';
-import {compileLegalDocuments,compileConsentRuntimeConfig} from 'notabenda/content';
+import {createConsentRuntime} from '@notabenda/core/consent';
+import {compileLegalDocuments,compileConsentRuntimeConfig} from '@notabenda/core/content';
 import {exampleConsentConfig} from '../static/choices-build.mjs';
 import {App} from './view.mjs';
 

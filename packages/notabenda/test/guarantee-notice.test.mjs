@@ -6,10 +6,10 @@ import {JSDOM} from 'jsdom';
 import {build} from 'esbuild';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {LegalGuaranteeNotice} from 'notabenda/react/documents';
-import {buildLegalGuaranteeNotice,verifyLegalGuaranteeNotice} from 'notabenda/guarantees/content';
-import {guaranteeNoticeLanguages,normalizeLegalGuaranteeNotice,renderLegalGuaranteeNotice} from 'notabenda/guarantees';
-import {sha256} from 'notabenda/content';
+import {LegalGuaranteeNotice} from '@notabenda/core/react/documents';
+import {buildLegalGuaranteeNotice,verifyLegalGuaranteeNotice} from '@notabenda/core/guarantees/content';
+import {guaranteeNoticeLanguages,normalizeLegalGuaranteeNotice,renderLegalGuaranteeNotice} from '@notabenda/core/guarantees';
+import {sha256} from '@notabenda/core/content';
 const options={language:'en',reviewStatus:'reviewed'};
 const wording={title:'Test title',imageAlt:'Test artwork alternative; full wording alongside.',fullSizeLink:'Full size',informationLink:'More information'};
 
@@ -35,5 +35,5 @@ test('static rendering preserves the full image, readable source text, attributi
  const {notice}=await buildLegalGuaranteeNotice({...options,wording:{...wording,title:'<script>unsafe</script>'}}),html=renderLegalGuaranteeNotice(notice,{idPrefix:'rights',headingLevel:3})+renderLegalGuaranteeNotice(notice,{idPrefix:'rights-title'}),dom=new JSDOM(html),d=dom.window.document;
  assert.equal(d.querySelector('script,iframe,form,button,input,svg,style'),null);assert.equal(d.querySelector('h3').textContent,'<script>unsafe</script>');assert.equal(d.querySelector('img').getAttribute('src'),notice.asset.url);assert.equal(d.querySelector('img').getAttribute('width'),String(Math.round(notice.asset.width)));assert.equal(d.querySelector('.nb-guarantee-text p').textContent,notice.textAlternative);assert.ok([...d.querySelectorAll('a')].some(a=>a.href===notice.informationUrl));assert.match(d.body.textContent,/European Union/);const ids=[...d.querySelectorAll('[id]')].map(el=>el.id);assert.equal(ids.length,new Set(ids).size);assert.equal(d.querySelector('[hidden],details'),null);dom.window.close();
  assert.match(renderToStaticMarkup(createElement(LegalGuaranteeNotice,{notice,idPrefix:'react'})),/data-guarantee-notice-id/);
- const result=await build({stdin:{contents:"export {renderLegalGuaranteeNotice} from 'notabenda/guarantees'",resolveDir:process.cwd()},bundle:true,platform:'browser',write:false,metafile:true});const inputs=Object.keys(result.metafile.inputs);assert.ok(inputs.every(p=>!/(?:\.svg$|manifest\.json|node:|\/content\.|\/config\.|catalog|react|astro)/u.test(p)));
+ const result=await build({stdin:{contents:"export {renderLegalGuaranteeNotice} from '@notabenda/core/guarantees'",resolveDir:process.cwd()},bundle:true,platform:'browser',write:false,metafile:true});const inputs=Object.keys(result.metafile.inputs);assert.ok(inputs.every(p=>!/(?:\.svg$|manifest\.json|node:|\/content\.|\/config\.|catalog|react|astro)/u.test(p)));
 });

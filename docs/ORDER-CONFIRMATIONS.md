@@ -1,11 +1,11 @@
 # Customer confirmation archives and delivery
 
-Use `notabenda-cf/order-confirmations` after your host decides that a contract has concluded. It retains a complete customer copy and optional attachments, then queues one stable delivery job. It does not turn an order admission into a contract, send email itself or install a scheduler.
+Use `@notabenda/cloudflare/order-confirmations` after your host decides that a contract has concluded. It retains a complete customer copy and optional attachments, then queues one stable delivery job. It does not turn an order admission into a contract, send email itself or install a scheduler.
 
 ## Supply the customer copy
 
 ```ts
-import {preparePaidOrderConfirmation} from 'notabenda-cf/order-confirmations';
+import {preparePaidOrderConfirmation} from '@notabenda/cloudflare/order-confirmations';
 
 const archive = await preparePaidOrderConfirmation(storage, {
   request: admittedRequest,
@@ -47,7 +47,7 @@ Files are limited to 16 per confirmation, 2 MiB each and 8 MiB in aggregate. Exa
 ```ts
 import {
   readPaidOrderConfirmation, dispatchPaidOrderConfirmation,
-} from 'notabenda-cf/order-confirmations';
+} from '@notabenda/cloudflare/order-confirmations';
 
 const result = await dispatchPaidOrderConfirmation(storage, hostCheckoutContext, {
   async deliver({lease, signal}) {

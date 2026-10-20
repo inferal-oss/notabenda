@@ -1,13 +1,13 @@
 # Contract declarations
 
-Use `notabenda/contracts` to capture a cancellation or withdrawal declaration through a native form or your own interface. The backend stores the declaration and creates separate acknowledgement and application jobs. Your host must dispatch those jobs and determine which regional rules apply. Cookie choices, marketing permissions and terms agreements use separate workflows.
+Use `@notabenda/core/contracts` to capture a cancellation or withdrawal declaration through a native form or your own interface. The backend stores the declaration and creates separate acknowledgement and application jobs. Your host must dispatch those jobs and determine which regional rules apply. Cookie choices, marketing permissions and terms agreements use separate workflows.
 
 The host decides where the action is applicable and provides a usable entry route. Nothing infers a withdrawal deadline, contract existence, identity, cancellation date, refund, sector exception or applicable original terms. The document references below identify the form's archived disclosures, not which terms governed an earlier contract.
 
 ## Define the form
 
 ```ts
-import {compileLegalDocuments, createContractActionDefinition} from 'notabenda/content';
+import {compileLegalDocuments, createContractActionDefinition} from '@notabenda/core/content';
 
 const release = compileLegalDocuments(reviewedSite);
 const definition = createContractActionDefinition(release.artifact, {
@@ -27,7 +27,7 @@ All profiles collect a name, free-form contract/part description and confirmatio
 ## Mount an explicit action
 
 ```ts
-import {createContractAction, mountContractAction} from 'notabenda/contracts';
+import {createContractAction, mountContractAction} from '@notabenda/core/contracts';
 
 const action = createContractAction(definition, {
   operationRef: hostOperationRef,
@@ -40,7 +40,7 @@ const field = mountContractAction(container, {action});
 
 Mount outside another form. Existing host facts can prefill fields without making the visitor re-enter them. For `de-cancellation`, include `cancellation: {kind: '', reason: '', ending: ''}` in the initial draft, or omit `initial` for empty defaults.
 
-The native cancellation form presents its final action directly on the confirmation page. Withdrawal uses an explicit details-review state before its final action. There is no unsolicited dialog, login, cookie dependency or mount-time transport. The headless controller exposes `setFields`, `review`, `edit`, `submit`, snapshots and subscriptions for host rendering. Optional `notabenda/styles.css` supplies namespaced, token-based styles.
+The native cancellation form presents its final action directly on the confirmation page. Withdrawal uses an explicit details-review state before its final action. There is no unsolicited dialog, login, cookie dependency or mount-time transport. The headless controller exposes `setFields`, `review`, `edit`, `submit`, snapshots and subscriptions for host rendering. Optional `@notabenda/core/styles.css` supplies namespaced, token-based styles.
 
 The native form re-reads its visible values before review or submission. Invalid edits cannot send an older draft. Pinned document links announce that they open a new tab, preserving the form.
 
@@ -55,7 +55,7 @@ import {
   recordLegalRelease, registerContractActionDefinition,
   contractActionOperationRef, recordContractDeclaration,
   createContractDeclarationStore,
-} from 'notabenda-cf';
+} from '@notabenda/cloudflare';
 
 await recordLegalRelease(storage, release.artifact);
 await registerContractActionDefinition(storage, definition, {siteId});

@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-ASTRO
 import base from '../../../static/notabenda.config.json' with {type:'json'};
-import {compileLegalDocuments} from 'notabenda/content';
+import {compileLegalDocuments} from '@notabenda/core/content';
 import {exampleConsentConfig} from '../../../static/choices-build.mjs';
 
 const config=exampleConsentConfig(base);config.site.id='juniper-astro';

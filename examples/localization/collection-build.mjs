@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-COLLECTION-NOTICE REQ-PRODUCT-MOBILE
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createCollectionNotice} from 'notabenda/content';
-import {renderCollectionNotice,renderLegalLinks,collectionNoticeIds} from 'notabenda';
+import {compileLegalDocuments,createCollectionNotice} from '@notabenda/core/content';
+import {renderCollectionNotice,renderLegalLinks,collectionNoticeIds} from '@notabenda/core';
 /** Static illustration: no submission route, transport, scripts or session. */
 export async function localizedCollectionFiles(base){
  const c=structuredClone(base);c.site.id='juniper-collection-pt';delete c.consent;c.storage=[];

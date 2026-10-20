@@ -58,7 +58,7 @@ export async function createConfigSchema(){
   const shape=convert(root);
   return {$schema:'https://json-schema.org/draft/2020-12/schema',$id:`https://notabenda.org/schemas/${metadata.version}/site-config.schema.json`,
    title:'Notabenda SiteConfig',description:'Authoring shape generated from the installed SiteConfig type. Unknown fields are rejected to catch misspellings. No default values or legal decisions are supplied. Run notabenda check for cross-field, policy, URL, size and review rules.',
-   'x-notabenda':{package:metadata.name,version:metadata.version,type:'SiteConfig',typeExport:'notabenda',kind:'authoring-shape',completeRuntimeValidation:false,validation:'notabenda check --config FILE --json',previewValidation:'notabenda check --config FILE --preview --json',requirementIds:['REQ-PRODUCT-AGENT-INTEGRATION','REQ-PRODUCT-CONFIG']},
+   'x-notabenda':{package:metadata.name,version:metadata.version,type:'SiteConfig',typeExport:'@notabenda/core',kind:'authoring-shape',completeRuntimeValidation:false,validation:'notabenda check --config FILE --json',previewValidation:'notabenda check --config FILE --preview --json',requirementIds:['REQ-PRODUCT-AGENT-INTEGRATION','REQ-PRODUCT-CONFIG']},
    ...shape,$defs:defs};
  }finally{api.close();}
 }

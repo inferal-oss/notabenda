@@ -3952,7 +3952,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Installable npm API, CLI, types, styles, and Apache license",
       "kind": "product-standard",
-      "summary": "Pack a dependency-free browser/SSR API and separate build-time tools without publishing.",
+      "summary": "Pack @notabenda/core, @notabenda/cloudflare and @notabenda/authoring with usable scoped exports, local CLI binaries, types and optional styles. Preserve retained protocol identifiers; no npm publication is performed.",
       "appliesWhen": "The corresponding package feature is used.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -3973,13 +3973,18 @@
         "packages/notabenda/package.json",
         "packages/notabenda/src/headless.ts",
         "packages/notabenda/scripts/consent-styles.mjs",
-        "scripts/measure-bundles.mjs"
+        "scripts/measure-bundles.mjs",
+        "packages/notabenda-cf/package.json",
+        "packages/notabenda-authoring/package.json",
+        "packages/notabenda-cf/bin/notabenda-cf.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/package.test.mjs",
         "packages/notabenda/test/cli.test.mjs",
         "packages/notabenda/test/delivery.test.mjs",
-        "site/test/delivery.test.mjs"
+        "site/test/delivery.test.mjs",
+        "packages/notabenda-authoring/test/package.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs"
       ]
     },
     {
@@ -4243,7 +4248,9 @@
         "site/navigation.mjs",
         "site/guide-pages.mjs",
         "site/examples-page.mjs",
-        "site/style.css"
+        "site/style.css",
+        "site/footer.mjs",
+        "site/footer.css"
       ],
       "testRefs": [
         "site/test/host.test.mjs",

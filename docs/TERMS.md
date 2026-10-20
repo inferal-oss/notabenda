@@ -7,7 +7,7 @@ Try [the agreement example](https://notabenda.org/agreement/) and [its Portugues
 ## Build and retain the offer
 
 ```ts
-import { compileLegalDocuments, createTermsOffer } from 'notabenda/content';
+import { compileLegalDocuments, createTermsOffer } from '@notabenda/core/content';
 
 const build = compileLegalDocuments(reviewedConfig);
 const offer = createTermsOffer(build.artifact, {
@@ -33,7 +33,7 @@ Legal pages and acceptance can share the selected site language. Add the complet
 import {
   recordLegalRelease, registerTermsOffer, setActiveTermsOffer,
   recordTermsAcceptance, createTermsAcceptanceStore,
-} from 'notabenda-cf';
+} from '@notabenda/cloudflare';
 
 // Trusted deployment/application code, using transactional DO storage.
 const scope = { siteId: reviewedConfig.site.id, scopeId: 'account-terms' };
@@ -65,8 +65,8 @@ Offer payloads are bounded to 16 KiB, acceptance requests to 2 KiB, inspectable 
 ## Mount the control
 
 ```ts
-import { createTermsAcceptance, mountTermsAcceptance, TermsAcceptanceError } from 'notabenda';
-import 'notabenda/styles.css'; // optional
+import { createTermsAcceptance, mountTermsAcceptance, TermsAcceptanceError } from '@notabenda/core';
+import '@notabenda/core/styles.css'; // optional
 
 const acceptance = createTermsAcceptance(offer, {
   operationId: operation.id,

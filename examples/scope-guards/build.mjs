@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-CONFIG REQ-PRODUCT-MOBILE
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 import {exampleConsentConfig} from '../static/choices-build.mjs';
 export async function scopeGuardFiles(base){
  const config=exampleConsentConfig(base);config.site.id='juniper-scope-guards';config.storage=[];

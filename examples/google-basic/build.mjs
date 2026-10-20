@@ -1,7 +1,7 @@
 // @requirements REQ-GOOGLE-MODE REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 import {exampleConsentConfig} from '../static/choices-build.mjs';
 export async function googleBasicFiles(base){
  const config=exampleConsentConfig(base);config.site.id='juniper-google-basic';const necessaryPurposes=new Set(config.services.filter(s=>s.id==='privacy-choices').flatMap(s=>s.purposeIds));config.purposes=config.purposes.filter(p=>p.id==='measurement'||necessaryPurposes.has(p.id));config.services=config.services.filter(s=>s.id==='privacy-choices');config.storage=config.storage.filter(s=>s.serviceId==='privacy-choices');for(const item of config.storage)item.name=item.name.replace('juniper-choices',config.site.id);

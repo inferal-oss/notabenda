@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
 import {test} from 'node:test';import assert from 'node:assert/strict';
 import {mkdtemp,writeFile,mkdir,symlink,readFile,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join,resolve} from 'node:path';import {execFileSync,spawnSync} from 'node:child_process';import {build} from 'esbuild';
-import {normalizeServiceCatalog,searchServiceCatalog,createCatalogServiceDraft} from 'notabenda/catalog';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {scanProjectServices} from 'notabenda/catalog/project';import {validateSiteConfig} from 'notabenda';
+import {normalizeServiceCatalog,searchServiceCatalog,createCatalogServiceDraft} from '@notabenda/core/catalog';import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';import {scanProjectServices} from '@notabenda/core/catalog/project';import {validateSiteConfig} from '@notabenda/core';
 const root=resolve(new URL('../../../',import.meta.url).pathname),cli=join(root,'packages/notabenda/dist/cli.js');
 const small=()=>{const c=structuredClone(serviceCatalogSeed);c.products=c.products.filter(p=>['stripe-payments','aws-sdk','sentry-monitoring','cloudflare-workers'].includes(p.id));const providers=new Set(c.products.map(p=>p.providerId));c.providers=c.providers.filter(p=>providers.has(p.id));const sources=new Set(c.products.flatMap(p=>p.sourceIds));c.sources=c.sources.filter(s=>sources.has(s.id));return c;};
 test('the offline seed preserves licensed unreviewed source metadata and backend reference candidates',()=>{
@@ -38,7 +38,7 @@ test('the catalog npx workflow searches references and scans without a site conf
  r=spawnSync(process.execPath,[cli,'discover','--project',dir,'--out-dir',out],{cwd:dir,encoding:'utf8'});assert.notEqual(r.status,0);for(const flags of [['--project',dir,'--capture','capture.json'],['--project',dir,'--project',dir],['--project',dir,'--limit','5']])assert.notEqual(spawnSync(process.execPath,[cli,'discover',...flags],{cwd:dir,encoding:'utf8'}).status,0);
 }));
 test('ordinary consent delivery excludes catalog data and project scanning from its actual browser graph',async()=>{
- const result=await build({stdin:{contents:"export {createConsentRuntime,mountControls} from 'notabenda/consent';",resolveDir:root},bundle:true,write:false,metafile:true,platform:'browser',format:'esm'});assert.ok(Object.keys(result.metafile.inputs).every(p=>!p.includes('/catalog')&&!p.includes('node:')));
+ const result=await build({stdin:{contents:"export {createConsentRuntime,mountControls} from '@notabenda/core/consent';",resolveDir:root},bundle:true,write:false,metafile:true,platform:'browser',format:'esm'});assert.ok(Object.keys(result.metafile.inputs).every(p=>!p.includes('/catalog')&&!p.includes('node:')));
 });
 test('npx project PATH shims cannot replace the system Git used for file selection',async()=>fixture(async dir=>{
  await writeFile(join(dir,'package.json'),'{"dependencies":{"stripe":"1"}}');await mkdir(join(dir,'bin'));await writeFile(join(dir,'bin/git'),'#!/bin/sh\necho EXECUTED > "'+join(dir,'SHIM_EXECUTED')+'"\nexit 128\n',{mode:0o700});
@@ -48,7 +48,7 @@ test('catalog JSON parse failures never echo malformed source values to the term
  const file=join(dir,'catalog.json');await writeFile(file,'{"secret":"DO_NOT_ECHO_THIS_VALUE",');const r=spawnSync(process.execPath,[cli,'catalog','search','stripe','--catalog',file],{cwd:dir,encoding:'utf8'});assert.notEqual(r.status,0);assert.doesNotMatch(r.stderr,/DO_NOT_ECHO_THIS_VALUE/);assert.match(r.stderr,/bounded UTF-8 JSON/);
 }));
 test('a reviewed ordinary service proposal feeds existing configuration and script-free legal release rendering',async()=>{
- const {fixture}=await import('./helpers.mjs'),{compileLegalDocuments}=await import('notabenda/content');const config=await fixture({reviewed:true});const draft=createCatalogServiceDraft(serviceCatalogSeed,'stripe-payments',{id:'catalog-payments',purposeIds:[config.purposes[0].id],location:'Operator-declared processing location',provider:'Operator-confirmed Stripe entity',privacyUrl:'https://stripe.com/privacy'});config.services.push(draft.service);
+ const {fixture}=await import('./helpers.mjs'),{compileLegalDocuments}=await import('@notabenda/core/content');const config=await fixture({reviewed:true});const draft=createCatalogServiceDraft(serviceCatalogSeed,'stripe-payments',{id:'catalog-payments',purposeIds:[config.purposes[0].id],location:'Operator-declared processing location',provider:'Operator-confirmed Stripe entity',privacyUrl:'https://stripe.com/privacy'});config.services.push(draft.service);
  assert.equal(validateSiteConfig(config).valid,true);const release=compileLegalDocuments(config);assert.match(release.files['privacy/index.html'],/Stripe payment libraries/);assert.match(release.files['privacy/index.html'],/Operator-confirmed Stripe entity/);assert.doesNotMatch(release.files['privacy/index.html'],/<script/);
 });
 test('array-coerced enums and provider references are rejected rather than broadening matches',()=>{

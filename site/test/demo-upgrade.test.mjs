@@ -7,7 +7,7 @@ import {join} from 'node:path';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {build} from 'esbuild';
-import {createConsentNotice,createProcessingNotice,createContractActionDefinition} from 'notabenda/content';
+import {createConsentNotice,createProcessingNotice,createContractActionDefinition} from '@notabenda/core/content';
 import {createSyntheticStorage} from '../../packages/notabenda-cf/examples/synthetic.mjs';
 import {DemoWorkspace} from '../worker.mjs';
 import current from '../dist/server-data.json' with {type:'json'};

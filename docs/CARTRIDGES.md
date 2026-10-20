@@ -21,6 +21,8 @@ The library shows every pack, grouped by the job it does. Use the links at the t
 
 The regional packs cover those named mechanisms; they are not complete country coverage.
 
+The original overview covers additional jobs that are not yet selectable packs. See the [pack roadmap](PACK-ROADMAP.md) for the next privacy, consumer-transaction and regional setup paths.
+
 ## Prepare it your way
 
 The website offers two paths. Choose **Set up my site** for a local questionnaire, or **Give to my agent** for an integration brief. Neither requires an account or uploads your answers. Save the draft and private report before leaving the tab.
@@ -49,7 +51,7 @@ Save `setup.private.json` outside public assets. To resume, pass it as `--answer
 
 Each pack explains its outcome and one key distinction, links to a working example, and resolves the existing integration guides, config fields, questions and checks. When cookie choices need privacy information, the plan asks you to inspect or reuse that foundation. It does not assume another feature must be installed from scratch.
 
-The reusable model is available from `notabenda/packs`: `packLibrary`, `selectPacks`, `planPacks`, `createPackSetupPlan`, `readPackSelection` and `formatPackBrief`. `mountSetup` accepts a `cartridges` selection for focused setup. Its `getDraft()` preserves pending answers separately from a prepared plan; `setCartridges(selection)` changes the focused work without replacing the editing session.
+The reusable model is available from `@notabenda/core/packs`: `packLibrary`, `selectPacks`, `planPacks`, `createPackSetupPlan`, `readPackSelection` and `formatPackBrief`. `mountSetup` accepts a `cartridges` selection for focused setup. Its `getDraft()` preserves pending answers separately from a prepared plan; `setCartridges(selection)` changes the focused work without replacing the editing session.
 
 ## Assess regional rules
 
@@ -71,12 +73,12 @@ The pack approach is being carried through the rest of the product. Advanced con
 
 ## Put the library in your own application
 
-The website and new Cloudflare starter use the same component exported by `notabenda/packs/ui`. Include `notabenda/styles.css` for the questionnaire and `notabenda/packs.css` for the library. Both are separate from the smaller visitor consent stylesheet.
+The website and new Cloudflare starter use the same component exported by `@notabenda/core/packs/ui`. Include `@notabenda/core/styles.css` for the questionnaire and `@notabenda/core/packs.css` for the library. Both are separate from the smaller visitor consent stylesheet.
 
 ```js
-import {mountPackConsole} from 'notabenda/packs/ui';
-import 'notabenda/styles.css';
-import 'notabenda/packs.css';
+import {mountPackConsole} from '@notabenda/core/packs/ui';
+import '@notabenda/core/styles.css';
+import '@notabenda/core/packs.css';
 
 const console = mountPackConsole(document.querySelector('#setup'), {
   documentationBase: '/help/notabenda',
@@ -103,10 +105,10 @@ After preparing a pack draft, choose **Preview pages**. It opens the privacy, co
 
 The reader shows the configuration supplied to it, including placeholders and existing review declarations. It does not verify that those declarations match actual practices. Outside links have no navigable destination inside this preview. It loads neither separate MD/MDX project files nor a running website. Use the project's authoring build to review those authored files and custom components; this reader covers config-generated pages and supplied structured sections.
 
-The viewer is also available independently. Include `notabenda/styles.css` and `notabenda/packs.css` and mount it on your own page:
+The viewer is also available independently. Include `@notabenda/core/styles.css` and `@notabenda/core/packs.css` and mount it on your own page:
 
 ```js
-import {mountLegalPreview} from 'notabenda/setup/preview';
+import {mountLegalPreview} from '@notabenda/core/setup/preview';
 
 const preview = mountLegalPreview(document.querySelector('#preview'), {
   config: draftConfig,
@@ -125,4 +127,4 @@ The website and new Cloudflare starter serve the reader module only when it is r
 
 ## Compatibility
 
-`notabenda cartridges`, `wizard --cartridges`, the `notabenda/cartridges` imports and their existing function names remain supported. Saved reports keep their `cartridges` field and pinned revisions; changing the display name does not require migrating a draft. New examples use `packs` commands and import paths.
+`notabenda cartridges`, `wizard --cartridges`, the `@notabenda/core/cartridges` imports and their existing function names remain supported. Saved reports keep their `cartridges` field and pinned revisions; changing the display name does not require migrating a draft. New examples use `packs` commands and import paths.

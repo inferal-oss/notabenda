@@ -8,7 +8,7 @@ A small Cloudflare Worker with one SQLite-backed Durable Object per configured s
 4. Run `npm run dev`. Open the configured admin path on the loopback URL Wrangler prints. The same host hook applies in development; bring your own local host session or access adapter.
 5. After reviewing your own routing, authorization and data lifecycle, run `npm run deploy` explicitly with your own Cloudflare account. Wrangler owns account selection and deployment. This command can provision a Worker and Durable Object namespace. There is no auto-deploy or prescribed CI integration.
 
-The packages are currently unpublished developer previews. From a Notabenda checkout, build them and pack `notabenda` and `notabenda-cf` with `npm pack --workspace notabenda --workspace notabenda-cf --pack-destination /your/output/directory`. In this project, install both explicit local tarballs with `npm install /path/to/notabenda-0.1.0.tgz /path/to/notabenda-cf-0.1.0.tgz`. Install the declared Wrangler/esbuild development tools using your normal package workflow. When published, ordinary `npm install` can resolve the declared package versions.
+The packages are currently unpublished developer previews. From a Notabenda checkout, build them and pack `@notabenda/core` and `@notabenda/cloudflare` with `npm pack --workspace @notabenda/core --workspace @notabenda/cloudflare --pack-destination /your/output/directory`. In this project, install both explicit local tarballs with `npm install /path/to/notabenda-core-0.1.0.tgz /path/to/notabenda-cloudflare-0.1.0.tgz`. Install the declared Wrangler/esbuild development tools using your normal package workflow. When published, ordinary `npm install` can resolve the declared package versions.
 
 ## What is available
 
@@ -22,7 +22,7 @@ The binding name, class export and configured site ID determine where data lives
 
 ## Local diagnostics
 
-`npx notabenda-cf doctor --json` emits a versioned report with requirement IDs, local blockers and manual review items. Use `--config wrangler.jsonc --env staging` to explicitly select a JSON/JSONC config and named environment. Named environments must declare their own evidence binding. The command never imports host/settings code, reads environment-file values, installs, builds, contacts Cloudflare or changes files. It checks the generated starter contract; custom dynamic/Vite/TOML setups need separate Wrangler validation. Filename and manifest checks cannot prove private-content absence, authorization behavior, package integrity or record lifecycle safety.
+`npx @notabenda/cloudflare doctor --json` emits a versioned report with requirement IDs, local blockers and manual review items. Use `--config wrangler.jsonc --env staging` to explicitly select a JSON/JSONC config and named environment. Named environments must declare their own evidence binding. The command never imports host/settings code, reads environment-file values, installs, builds, contacts Cloudflare or changes files. It checks the generated starter contract; custom dynamic/Vite/TOML setups need separate Wrangler validation. Filename and manifest checks cannot prove private-content absence, authorization behavior, package integrity or record lifecycle safety.
 
 ## Operations and removal
 

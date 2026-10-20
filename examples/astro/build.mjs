@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {release} from './src/lib/config.mjs';
 import {permissionExample} from './src/lib/permission.mjs';
 import {writeBuildFiles} from '../../packages/notabenda/dist/files.js';
-import {createRetainedReleaseFiles} from 'notabenda/content';
+import {createRetainedReleaseFiles} from '@notabenda/core/content';
 
 export async function astroFiles() {
   const generated=new URL('./.generated/public/',import.meta.url);

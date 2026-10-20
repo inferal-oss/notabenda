@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
-import {createConsent} from 'notabenda';
-import {createConsentRuntime} from 'notabenda/consent';
+import {createConsent} from '@notabenda/core';
+import {createConsentRuntime} from '@notabenda/core/consent';
 import {performanceInventories} from './performance-inventories.mjs';
 import {measureConsent} from './consent-performance.mjs';
 import {cpus} from 'node:os';

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-RETAINED-RELEASES
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createRetainedReleaseFiles} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createRetainedReleaseFiles} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 
 export async function retainedReleaseExample(){
   const config=JSON.parse(await readFile(new URL('../static/notabenda.config.json',import.meta.url),'utf8'));config.site.id='juniper-releases';

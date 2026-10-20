@@ -6,8 +6,8 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {describeIntegration,selectIntegration} from 'notabenda/integration';
-import {setupQuestions,createSetupPlan} from 'notabenda/setup';
+import {describeIntegration,selectIntegration} from '@notabenda/core/integration';
+import {setupQuestions,createSetupPlan} from '@notabenda/core/setup';
 import {fixture} from './helpers.mjs';
 const cli=fileURLToPath(new URL('../dist/cli.js',import.meta.url));
 

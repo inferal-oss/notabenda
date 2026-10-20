@@ -3,8 +3,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {renderCollectionNotice} from 'notabenda';
-import {verifyCollectionNotice} from 'notabenda/content';
+import {renderCollectionNotice} from '@notabenda/core';
+import {verifyCollectionNotice} from '@notabenda/core/content';
 import {serveHost} from '../host.mjs';
 const root=new URL('../dist/public/',import.meta.url);
 test('the localized collection example is static, exact, styled and needs no evidence workspace',async()=>{

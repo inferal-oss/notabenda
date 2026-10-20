@@ -3,8 +3,8 @@ import rehypeParse from 'rehype-parse';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeStringify from 'rehype-stringify';
 import type {Root,RootContent,Element,ElementContent,Nodes} from 'hast';
-import type {DocumentKind,LegalSection} from 'notabenda';
-import {sha256} from 'notabenda/content';
+import type {DocumentKind,LegalSection} from '@notabenda/core';
+import {sha256} from '@notabenda/core/content';
 import {AuthoringError} from './frontmatter.js';
 
 const tags=['a','p','h2','h3','h4','h5','h6','strong','em','del','ul','ol','li','blockquote','pre','code','hr','br','div','span','aside','section','details','summary','table','thead','tbody','tfoot','tr','th','td','caption','img','sup','sub'];

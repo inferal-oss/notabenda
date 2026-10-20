@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createLegalDocument, renderLegalDocument, renderLegalPage, renderLegalLinks, validateSiteConfig } from 'notabenda';
+import { createLegalDocument, renderLegalDocument, renderLegalPage, renderLegalLinks, validateSiteConfig } from '@notabenda/core';
 import { fixture } from './helpers.mjs';
 
 // @requirements REQ-PRODUCT-DOCUMENTS REQ-EU-NOTICE REQ-NZ-NOTICE

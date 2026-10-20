@@ -2,7 +2,7 @@
 
 > Self-hosted legal pages, privacy controls and optional evidence records. Apache 2.0.
 
-Developer preview: packages have not been published to npm. Use a trusted workspace build or locally packed tarballs. The JSON CLI and optional Markdown/MDX build API are separate.
+Developer preview: packages have not been published to npm. The package names are `@notabenda/core`, `@notabenda/cloudflare` and `@notabenda/authoring`. Use a trusted workspace build or locally packed tarballs. The installed CLI binaries remain `notabenda` and `notabenda-cf`. The JSON CLI and optional Markdown/MDX build API are separate.
 
 Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
 

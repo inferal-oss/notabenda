@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {verifyTechnologyCollectionNotice} from 'notabenda/technology';
+import {verifyTechnologyCollectionNotice} from '@notabenda/core/technology';
 const root=new URL('../dist/public/',import.meta.url),key='notabenda:choices:v1:juniper-technology',profile='juniper-technology:interests';
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 async function run(callback,{local={},session={},blocked=false}={}){

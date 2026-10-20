@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { compileLegalDocuments } from 'notabenda/content';
-import { createAdminWorker, createDocumentHistory, recordLegalRelease } from 'notabenda-cf';
+import { compileLegalDocuments } from '@notabenda/core/content';
+import { createAdminWorker, createDocumentHistory, recordLegalRelease } from '@notabenda/cloudflare';
 import { createSyntheticStorage } from '../../notabenda-cf/examples/synthetic.mjs';
 import { fixture } from './helpers.mjs';
 

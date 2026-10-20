@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-DISCOVERY
 import {test} from 'node:test';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
-import {normalizeBrowserRuleSet,captureBrowserCatalog,recognizeLegacyBrowserCapture,analyzeBrowserCatalogCapture,normalizeBrowserCatalogCapture} from 'notabenda/catalog/browser';
-import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';
+import {normalizeBrowserRuleSet,captureBrowserCatalog,recognizeLegacyBrowserCapture,analyzeBrowserCatalogCapture,normalizeBrowserCatalogCapture} from '@notabenda/core/catalog/browser';
+import {browserCatalogSeed} from '@notabenda/core/catalog/browser/seed';
 const labels={routeLabel:'Public page',scenario:'Explicit capture'};
 function capture({html='',resources=[],globals={},cookies='',localKeys=[],performance}={}){
  const dom=new JSDOM(html,{url:'https://site.example.test/page?PAGE_PRIVATE_ID#PRIVATE_FRAGMENT'});let reads=0;

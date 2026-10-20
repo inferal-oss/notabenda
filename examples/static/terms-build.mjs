@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import { readFile } from 'node:fs/promises';
-import { compileLegalDocuments, createTermsOffer } from 'notabenda/content';
-import { renderLegalLinks } from 'notabenda';
+import { compileLegalDocuments, createTermsOffer } from '@notabenda/core/content';
+import { renderLegalLinks } from '@notabenda/core';
 
 export async function agreementFiles(base) {
   const files = {};

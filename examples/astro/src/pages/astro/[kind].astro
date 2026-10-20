@@ -1,6 +1,6 @@
 ---
 // @requirements REQ-PRODUCT-ASTRO
-import LegalDocument from 'notabenda/astro/LegalDocument.astro';
+import LegalDocument from '@notabenda/core/astro/LegalDocument.astro';
 import Layout from '../../layouts/Layout.astro';
 import {publicConfig} from '../../lib/config.mjs';
 export function getStaticPaths(){return ['privacy','cookies','terms'].map(kind=>({params:{kind}}));}

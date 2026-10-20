@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {paintChoices} from './choices-status.mjs';
-import {createConsentRuntime,mountControls} from 'notabenda/consent';
+import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 
 const config = await (await fetch(location.pathname.startsWith('/dark/') ? '/dark/choices/site.json' : '/choices/site.json')).json();
 const consent = createConsentRuntime(config);

@@ -2,8 +2,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent} from 'notabenda';
-import {mountAstroConsent} from 'notabenda/astro/client';
+import {createConsent} from '@notabenda/core';
+import {mountAstroConsent} from '@notabenda/core/astro/client';
 import {fixture} from './helpers.mjs';
 import {exampleConsentConfig} from '../../../examples/static/choices-build.mjs';
 

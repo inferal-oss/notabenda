@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-MOBILE REQ-PRODUCT-RETAINED-RELEASES
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createRetainedReleaseFiles} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createRetainedReleaseFiles} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 const entries=[
  ['access','access','Access your information','Ask about the personal information associated with your use of the studio.','For information relating to you; the operator handles any appropriate identity checks.','Explore the access workflow'],
  ['correction','correction','Correct information','Find the next step for correcting information that is incomplete or inaccurate.','Describe the information you want reviewed through the operator’s designated channel.','Explore the correction workflow'],

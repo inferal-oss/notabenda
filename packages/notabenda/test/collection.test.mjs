@@ -2,8 +2,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {normalizeCollectionNotice,renderCollectionNotice,collectionNoticeIds} from 'notabenda';
-import {compileLegalDocuments,createCollectionNotice,canonicalJson,sha256} from 'notabenda/content';
+import {normalizeCollectionNotice,renderCollectionNotice,collectionNoticeIds} from '@notabenda/core';
+import {compileLegalDocuments,createCollectionNotice,canonicalJson,sha256} from '@notabenda/core/content';
 import {fixture} from './helpers.mjs';
 const settings={scopeId:'contact',purposeIds:['enquiries'],reviewStatus:'reviewed',wording:{title:'About your message',intro:'We use the information you choose to send to respond to your enquiry.'}};
 const build=async()=>compileLegalDocuments(await fixture({reviewed:true}));

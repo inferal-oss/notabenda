@@ -2,9 +2,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,createEmbedService,hasGlobalPrivacyControl,getPrivacySignalRestrictions,toPublicConfig,validateSiteConfig,renderLegalDocument,mountControls} from 'notabenda';
-import {compileLegalDocuments,createConsentNotice} from 'notabenda/content';
-import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from 'notabenda-cf';
+import {createConsent,createEmbedService,hasGlobalPrivacyControl,getPrivacySignalRestrictions,toPublicConfig,validateSiteConfig,renderLegalDocument,mountControls} from '@notabenda/core';
+import {compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
+import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 

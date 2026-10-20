@@ -4,7 +4,7 @@
 // @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE
 import {test} from 'node:test';
 import {readFile} from 'node:fs/promises';
-import {readPaidOrderReview} from 'notabenda-cf/orders';
+import {readPaidOrderReview} from '@notabenda/cloudflare/orders';
 const readAsset=asset=>readFile(new URL('../dist/public'+asset.url,import.meta.url));
 import assert from 'node:assert/strict';
 import {serveOrderDemo} from '../order-demo.mjs';
@@ -61,7 +61,7 @@ test('a pre-archive request keeps its exact outcome and inspector alongside new 
  const detail=await orderDemoAdmin(new Request(origin+'/demo/admin/orders/record?id='+receipt.id),storage);assert.equal(detail.status,200);assert.match(await detail.text(),/Information presented/);const list=await orderDemoAdmin(new Request(origin+'/demo/admin/orders'),storage);assert.equal(list.status,200);assert.match(await list.text(),new RegExp(receipt.id));
 });
 test('confirmation examples seed once, keep complete private customer files and expose separate pending/uncertain/accepted histories',async()=>{
- const {seedOrderConfirmations}=await import('../order-confirmation-seed.mjs'),{createPaidOrderStore}=await import('notabenda-cf/orders'),storage=createSyntheticStorage([]);await seedOrderConfirmations(storage,data);await seedOrderConfirmations(storage,data);const store=createPaidOrderStore(storage,{siteId:'juniper-order-example',scopeId:'checkout',allowPreview:true}),page=await store.list({query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50});assert.equal(page.records.length,3);assert.deepEqual(page.records.map(r=>r.data.confirmationDelivery.status).sort(),['accepted','pending','uncertain']);
+ const {seedOrderConfirmations}=await import('../order-confirmation-seed.mjs'),{createPaidOrderStore}=await import('@notabenda/cloudflare/orders'),storage=createSyntheticStorage([]);await seedOrderConfirmations(storage,data);await seedOrderConfirmations(storage,data);const store=createPaidOrderStore(storage,{siteId:'juniper-order-example',scopeId:'checkout',allowPreview:true}),page=await store.list({query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50});assert.equal(page.records.length,3);assert.deepEqual(page.records.map(r=>r.data.confirmationDelivery.status).sort(),['accepted','pending','uncertain']);
  const id=page.records[0].id,response=await orderDemoAdmin(new Request(origin+'/demo/admin/orders/order-confirmation?id='+id),storage);assert.equal(response.status,200);assert.match(await response.text(),/Customer copy/);const archive=await store.getOrderConfirmation(id),file=archive.manifest.files.find(f=>f.role==='confirmation'),download=await orderDemoAdmin(new Request(origin+'/demo/admin/orders/order-confirmation-file?id='+id+'&file='+file.id),storage);assert.equal(download.status,200);assert.match(download.headers.get('content-disposition'),/attachment/);assert.deepEqual(new Uint8Array(await download.arrayBuffer()),await store.getOrderConfirmationFile(id,file.id));assert.equal(JSON.stringify(page.records).includes('destinationVersion'),false);
 });
 test('interrupted confirmation demo seeding rolls back its active sample and resumes without duplicates',async()=>{

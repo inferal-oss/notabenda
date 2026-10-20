@@ -14,26 +14,26 @@ const run=(cwd,command,args)=>{const result=spawnSync(command,args,{cwd,encoding
 test('package contains the versioned skill and its commands work after offline local installation',async()=>{
  const cwd=await mkdtemp(join(tmpdir(),'notabenda-agent-'));
  try{
-  const packed=JSON.parse(run(root,'npm',['pack','--workspace','notabenda','--ignore-scripts','--json','--pack-destination',cwd]));
+  const packed=JSON.parse(run(root,'npm',['pack','--workspace','@notabenda/core','--ignore-scripts','--json','--pack-destination',cwd]));
   for(const path of ['dist/skill/SKILL.md','dist/skill/agents/openai.yaml','dist/skill/references/configuration-target.md','dist/site-config.schema.json'])assert.ok(packed[0].files.some(file=>file.path===path),path);
   await writeFile(join(cwd,'package.json'),JSON.stringify({name:'agent-smoke-test',private:true,type:'module'}));
   run(cwd,'npm',['install','--offline','--ignore-scripts','--no-audit','--no-fund','--omit=optional',join(cwd,packed[0].filename)]);
-  const skill=await readFile(join(cwd,'node_modules/notabenda/dist/skill/SKILL.md'),'utf8');
-  assert.equal(await readFile(join(cwd,'node_modules/notabenda/dist/skill/references/configuration-target.md'),'utf8'),await readFile(new URL('../../../skills/notabenda/references/configuration-target.md',import.meta.url),'utf8'));
+  const skill=await readFile(join(cwd,'node_modules/@notabenda/core/dist/skill/SKILL.md'),'utf8');
+  assert.equal(await readFile(join(cwd,'node_modules/@notabenda/core/dist/skill/references/configuration-target.md'),'utf8'),await readFile(new URL('../../../skills/notabenda/references/configuration-target.md',import.meta.url),'utf8'));
   assert.equal(skill,await readFile(new URL('../../../skills/notabenda/SKILL.md',import.meta.url),'utf8'));
   const localSchema=JSON.parse(run(cwd,'npx',['--no-install','notabenda','schema','--json']));
-  const resolvedSchema=run(cwd,process.execPath,['--input-type=module','-e',"console.log(import.meta.resolve('notabenda/config/schema.json'))"]).trim();
+  const resolvedSchema=run(cwd,process.execPath,['--input-type=module','-e',"console.log(import.meta.resolve('@notabenda/core/config/schema.json'))"]).trim();
   assert.deepEqual(JSON.parse(await readFile(new URL(resolvedSchema),'utf8')),localSchema);
   assert.equal(localSchema['x-notabenda'].completeRuntimeValidation,false);
   const consentShape=JSON.parse(run(cwd,'npx',['--no-install','notabenda','schema','consent','--json']));assert.equal(consentShape['x-notabenda'].path,'consent');
   const metadata=parse(/^---\n([\s\S]+?)\n---/u.exec(skill)[1]);assert.equal(metadata.name,'notabenda');assert.ok(metadata.description.length<1024);assert.deepEqual(Object.keys(metadata).sort(),['description','name']);
-  const ui=parse(await readFile(join(cwd,'node_modules/notabenda/dist/skill/agents/openai.yaml'),'utf8'));assert.ok(ui.interface.default_prompt.includes('$notabenda'));
-  assert.equal(run(cwd,process.execPath,['--input-type=module','-e',"console.log(import.meta.resolve('notabenda/skill/SKILL.md'))"]).trim(),new URL('file://'+await realpath(join(cwd,'node_modules/notabenda/dist/skill/SKILL.md'))).href);
+  const ui=parse(await readFile(join(cwd,'node_modules/@notabenda/core/dist/skill/agents/openai.yaml'),'utf8'));assert.ok(ui.interface.default_prompt.includes('$notabenda'));
+  assert.equal(run(cwd,process.execPath,['--input-type=module','-e',"console.log(import.meta.resolve('@notabenda/core/skill/SKILL.md'))"]).trim(),new URL('file://'+await realpath(join(cwd,'node_modules/@notabenda/core/dist/skill/SKILL.md'))).href);
   // Extract the documented commands, rather than maintaining a second recipe.
   const commands=skill.split('\n').filter(line=>line.startsWith('npx --no-install notabenda '));
   run(cwd,process.execPath,[cli,'init']);
   const original=await readFile(join(cwd,'notabenda.config.json'),'utf8');
-  const reference=await readFile(join(cwd,'node_modules/notabenda/dist/skill/references/configuration-target.md'),'utf8');
+  const reference=await readFile(join(cwd,'node_modules/@notabenda/core/dist/skill/references/configuration-target.md'),'utf8');
   const selectionCommand=reference.split('\n').find(line=>line.startsWith('npx --no-install notabenda describe --selection '));assert.ok(selectionCommand);
   await writeFile(join(cwd,'integration-selection.json'),JSON.stringify({schemaVersion:1,answers:{'explicit-agreement':'yes'}}));
   const selected=JSON.parse(run(cwd,'npx',selectionCommand.split(' ').slice(1)));

@@ -1,22 +1,22 @@
-# notabenda-cf
+# @notabenda/cloudflare
 
 Optional, dependency-free Cloudflare integration for **read-only evidence inspection** and **immutable legal-document archives**. The host supplies authentication and authorization. Recording helpers run through host-owned calls, separately from public document rendering.
 
 ## Start a project
 
-After installing the local preview package, run `npx notabenda-cf init --out-dir ./privacy-backend --site-id your-site`. It creates a new standalone Worker project with SQLite storage, the responsive admin, local setup assets and a host authorization stub that denies access until implemented. Existing directories are never replaced, and initialization performs no install, login or deployment.
+After installing the local preview package, run `npx @notabenda/cloudflare init --out-dir ./privacy-backend --site-id your-site`. It creates a new standalone Worker project with SQLite storage, the responsive admin, local setup assets and a host authorization stub that denies access until implemented. Existing directories are never replaced, and initialization performs no install, login or deployment.
 
 The generated project supplies `build`, `doctor` (read-only local checks), `check` (Wrangler dry run), `dev` and explicit `deploy` scripts. The packages remain unpublished; its README explains installing local tarballs. See [the starter guide](../../docs/CLOUDFLARE-STARTER.md) for project files, permission separation, private archive RPC, deployment and removal.
 
-`npx notabenda-cf doctor [--directory PATH] [--config wrangler.jsonc] [--env staging] [--json]` reports bounded local starter issues and separate manual reviews. It never executes project code, loads credentials, installs, builds or deploys. A successful check still needs to be followed by host authorization and lifecycle testing. See [doctor scope and report format](../../docs/CLOUDFLARE-DOCTOR.md).
+`npx @notabenda/cloudflare doctor [--directory PATH] [--config wrangler.jsonc] [--env staging] [--json]` reports bounded local starter issues and separate manual reviews. It never executes project code, loads credentials, installs, builds or deploys. A successful check still needs to be followed by host authorization and lifecycle testing. See [doctor scope and report format](../../docs/CLOUDFLARE-DOCTOR.md).
 
 ## Host-owned authorization
 
 Every worker request calls a mandatory `authorize` hook. The host verifies the caller and returns an already scoped `RecordStore`, or `null` to deny access. Missing hooks throw at construction; denied, malformed, or failed grants return a generic 403. No URL accepts a Durable Object ID, namespace, or authorization scope. The host selects those before returning the store.
 
 ```ts
-import { createAdminWorker, createDurableObjectStore } from 'notabenda-cf';
-import type { DurableStorage } from 'notabenda-cf';
+import { createAdminWorker, createDurableObjectStore } from '@notabenda/cloudflare';
+import type { DurableStorage } from '@notabenda/cloudflare';
 
 // Inside an existing Durable Object, use its ctx.storage.
 export function mountEvidence(
@@ -90,7 +90,7 @@ All fields returned by the scoped store are included without redaction. Source h
 ## Immutable release history and readable differences
 
 ```ts
-import { recordLegalRelease, createDocumentHistory, createAdminWorker } from 'notabenda-cf';
+import { recordLegalRelease, createDocumentHistory, createAdminWorker } from '@notabenda/cloudflare';
 
 // artifact is the JSON artifact produced by notabenda/content, including
 // manifest, publicConfig, pages, and structured documents.
@@ -131,7 +131,7 @@ The host can opt into `registerTermsOffer`, `setActiveTermsOffer`, `recordTermsA
 
 ```ts
 import { registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance,
-  createTermsAcceptanceStore } from 'notabenda-cf';
+  createTermsAcceptanceStore } from '@notabenda/cloudflare';
 
 // build-time offer from notabenda/content; release already archived.
 const scope = {siteId: 'site-one', scopeId: 'account-terms'};
@@ -163,13 +163,13 @@ See the [cookie evidence guide](../../docs/CONSENT-EVIDENCE.md) for the complete
 
 ## Paid orders
 
-The optional `notabenda-cf/orders` entry retains complete reviews and original producer files, activates quotes with compare-and-swap revisions, and records one admission per host-selected checkout intent. A mandatory local decision returns host reservation writes; those commit atomically with the receipt and replay guard. Exact outcomes remain recoverable after quote expiry or replacement. External payments, fulfillment, contract formation and confirmation need separate host workflows.
+The optional `@notabenda/cloudflare/orders` entry retains complete reviews and original producer files, activates quotes with compare-and-swap revisions, and records one admission per host-selected checkout intent. A mandatory local decision returns host reservation writes; those commit atomically with the receipt and replay guard. Exact outcomes remain recoverable after quote expiry or replacement. External payments, fulfillment, contract formation and confirmation need separate host workflows.
 
 `createPaidOrderStore` supplies small searchable summaries. Return `allowOrderArchive:true` from your admin authorization hook to allow the full retained-review page and original-file inspection; `allowExport` remains independent and never follows these large archives. Downloads are attachments, image views are sandboxed, and every request is authorized again. Retirement can fence and purge one intent’s private reviews, files, attempts and event after host eligibility/hold review and external-job fencing. See [the paid-order guide](../../docs/PAID-ORDERS.md) for API examples, bounds and recovery requirements.
 
 ## Routes, security and previews
 
-The optional `notabenda-authoring` build package accepts Markdown and MDX with YAML frontmatter. Register its **private `release.archive` envelope**, rather than the public `release.artifact`, to retain original source atomically with the rendered release. Source attachments must match declared hashes and byte counts. Ordinary history search does not return raw source. See the [authoring guide](../../docs/AUTHORING.md) for integration and size limits.
+The optional `@notabenda/authoring` build package accepts Markdown and MDX with YAML frontmatter. Register its **private `release.archive` envelope**, rather than the public `release.artifact`, to retain original source atomically with the rendered release. Source attachments must match declared hashes and byte counts. Ordinary history search does not return raw source. See the [authoring guide](../../docs/AUTHORING.md) for integration and size limits.
 
 `createDocumentHistory` also supplies `getSource(releaseId, kind)`. Authenticated `/source?id=RELEASE_ID&kind=terms` and `/source-diff?before=RELEASE_ID&after=RELEASE_ID&kind=terms` routes display escaped original text. They never evaluate stored MDX. Expose this hook only when the caller is authorized to inspect private source. A custom authorized store may omit `getSource`; source routes then return 404 and their entry links are omitted. Release comparison distinguishes source changes from rendered-body changes, so a component update or source-only edit is visible to reviewers.
 
@@ -180,8 +180,8 @@ The default mount is `/admin/notabenda`. Routes are the base list, `/record?id=.
 `examples/synthetic.mjs` exports `syntheticRecords` and `createSyntheticStorage(records?, prefix?)` for a local preview or tests. The fake supports `get`, `put`, `list`, and serialized test transactions. It is not persistent storage and is not an authentication provider. Never replace production authorization with an unconditional demo grant.
 
 ```sh
-npm run build --workspace notabenda-cf
-npm run test --workspace notabenda-cf
+npm run build --workspace @notabenda/cloudflare
+npm run test --workspace @notabenda/cloudflare
 ```
 
 Tests simulate Worker requests and DO storage, including denied/failed authorization, scope isolation, search pagination, XSS, sanitized failures, atomic history, idempotence, hash validation, and escaped differences. No Cloudflare deployment is performed by these tests.
@@ -217,7 +217,7 @@ An explicitly finalized release can include a digest-bound selected-reference at
 
 ## Customer confirmations
 
-The optional `notabenda-cf/order-confirmations` subpath retains complete personally addressed host files and queues a recoverable delivery job. Hosts supply contract facts, reviewed content, a fixed destination version, authentication, provider and scheduling. Admin inspection uses a separate `allowOrderConfirmation` permission; original files download as inert attachments. Provider acceptance remains distinct from recipient delivery. See the [confirmation guide](../../docs/ORDER-CONFIRMATIONS.md).
+The optional `@notabenda/cloudflare/order-confirmations` subpath retains complete personally addressed host files and queues a recoverable delivery job. Hosts supply contract facts, reviewed content, a fixed destination version, authentication, provider and scheduling. Admin inspection uses a separate `allowOrderConfirmation` permission; original files download as inert attachments. Provider acceptance remains distinct from recipient delivery. See the [confirmation guide](../../docs/ORDER-CONFIRMATIONS.md).
 
 ## Workspace overview and record finder
 
@@ -226,7 +226,7 @@ New generated starters open a workspace overview before individual evidence view
 For an existing host, mount `createWorkspaceOverviewWorker` at your admin root:
 
 ```js
-import {createWorkspaceOverviewWorker} from 'notabenda-cf';
+import {createWorkspaceOverviewWorker} from '@notabenda/cloudflare';
 
 const overview = createWorkspaceOverviewWorker({
   basePath: '/admin/privacy',

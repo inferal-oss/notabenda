@@ -1,13 +1,13 @@
 # Dispatch contract declarations
 
-Use the `notabenda-cf` runners to dispatch a captured declaration to your acknowledgement provider and application. Each runner leases a job, limits the callback to the remaining lease time and records the result. Your host supplies authorization, scheduling and retry policy.
+Use the `@notabenda/cloudflare` runners to dispatch a captured declaration to your acknowledgement provider and application. Each runner leases a job, limits the callback to the remaining lease time and records the result. Your host supplies authorization, scheduling and retry policy.
 
 First [register the form and capture the declaration](CONTRACT-ACTIONS.md). Keep dispatch behind trusted application code or private bindings. The host resolves the site/action context; a visitor cannot select another store, job or provider destination.
 
 ## Connect the two destinations
 
 ```ts
-import {dispatchContractDeclaration} from 'notabenda-cf';
+import {dispatchContractDeclaration} from '@notabenda/cloudflare';
 
 const result = await dispatchContractDeclaration(storage, receipt.id, context, {
   acknowledgement: {

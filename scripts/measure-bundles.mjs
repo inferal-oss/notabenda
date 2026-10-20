@@ -10,18 +10,18 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 export async function measureBundles(){
  const profiles=[];
  for(const [id,entry,exports,budgetBytes] of [
-  ['compiled-local','notabenda/consent','createConsentRuntime,mountControls',15*1024],
-  ['compiled-required','notabenda/consent','createConsentRuntime,mountControls',null],
-  ['react-compiled','notabenda/react/consent','ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed',null],
-  ['service-directory','notabenda/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],
-  ['paid-order-review','notabenda/orders','renderPaidOrderReview',null],
-  ['paid-order-action','notabenda/orders','createPaidOrderAction,mountPaidOrderAction',null],
-  ['storage-exceptions','notabenda/storage-exceptions','createStorageExceptions,createIndexedDBStorageExceptionJournal',null],
-  ['storage-exception-controls','notabenda/storage-exceptions/ui','mountStorageExceptionControls,rejectAllOptionalActivity',null],
-  ['headless','notabenda/headless','createConsent',null],
-  ['core-controls','notabenda','createConsent,mountControls',15*1024],
+  ['compiled-local','@notabenda/core/consent','createConsentRuntime,mountControls',15*1024],
+  ['compiled-required','@notabenda/core/consent','createConsentRuntime,mountControls',null],
+  ['react-compiled','@notabenda/core/react/consent','ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed',null],
+  ['service-directory','@notabenda/core/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],
+  ['paid-order-review','@notabenda/core/orders','renderPaidOrderReview',null],
+  ['paid-order-action','@notabenda/core/orders','createPaidOrderAction,mountPaidOrderAction',null],
+  ['storage-exceptions','@notabenda/core/storage-exceptions','createStorageExceptions,createIndexedDBStorageExceptionJournal',null],
+  ['storage-exception-controls','@notabenda/core/storage-exceptions/ui','mountStorageExceptionControls,rejectAllOptionalActivity',null],
+  ['headless','@notabenda/core/headless','createConsent',null],
+  ['core-controls','@notabenda/core','createConsent,mountControls',15*1024],
  ]){
-  const additionalImports=id==='compiled-required'?[{entry:'notabenda/consent/evidence',exports:['requiredConsentEvidence']}]:id==='react-compiled'?[{entry:'notabenda/consent',exports:['createConsentRuntime']}]:[];
+  const additionalImports=id==='compiled-required'?[{entry:'@notabenda/core/consent/evidence',exports:['requiredConsentEvidence']}]:id==='react-compiled'?[{entry:'@notabenda/core/consent',exports:['createConsentRuntime']}]:[];
   const imports=[{entry,exports:exports.split(',')},...additionalImports],external=id==='react-compiled'?['react']:[];
   const result=await build({stdin:{contents:imports.map(i=>`export {${i.exports.join(',')}} from '${i.entry}';`).join('\n'),resolveDir:root,sourcefile:'bundle-measure.mjs'},bundle:true,minify:true,format:'esm',platform:'browser',target:'es2022',external,write:false,metafile:true,logLevel:'silent'});
   const output=result.outputFiles[0].contents,inputs=Object.entries(Object.values(result.metafile.outputs)[0].inputs).filter(([,v])=>v.bytesInOutput>0).map(([path])=>path).sort();
@@ -30,7 +30,7 @@ export async function measureBundles(){
  }
  for(const [id,file,budgetBytes] of [['consent-css','consent.css',5*1024],['all-component-css','styles.css',null],['service-directory-css','services.css',null],['storage-exception-css','storage-exceptions.css',null],['technology-notice-css','technology.css',null]]){
   const bytes=await readFile(new URL('../packages/notabenda/dist/'+file,import.meta.url)),gzipBytes=gzipSync(bytes,{level:9}).length;
-  profiles.push({id,entry:'notabenda/'+file,bytes:bytes.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs:['packages/notabenda/dist/'+file]});
+  profiles.push({id,entry:'@notabenda/core/'+file,bytes:bytes.length,gzipBytes,budgetBytes,withinBudget:budgetBytes===null?null:gzipBytes<=budgetBytes,inputs:['packages/notabenda/dist/'+file]});
  }
  return {schemaVersion:1,tool:{name:'esbuild',version:esbuildVersion,target:'es2022',format:'esm',minify:true},compression:{name:'gzip',level:9},profiles,allBudgetsMet:profiles.every(p=>p.withinBudget!==false)};
 }

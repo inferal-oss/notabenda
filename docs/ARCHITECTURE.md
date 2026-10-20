@@ -8,6 +8,8 @@ Start with one job or combine several. Each pack below opens its place in the se
 
 <!-- notabenda:packs -->
 
+The library is smaller than the component API. The [pack roadmap](PACK-ROADMAP.md) identifies existing components that still need their own guided setup path.
+
 ## Build, browser and optional backend
 
 <!-- notabenda:diagram storage -->

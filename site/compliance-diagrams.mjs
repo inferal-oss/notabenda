@@ -45,7 +45,7 @@ export const complianceViews={
   stages:[
    {id:'build',title:'Your build',subtitle:'Reviewed inputs → pinned output',nodes:[
     node('inputs','Inventory & authored content','Public processing facts, reviewed wording and optional Markdown/MDX sources.','authoring','Build inputs'),
-    node('compile','Compile & release','Validate configuration, render documents and pin the released content and runtime settings.','package','notabenda / authoring'),
+    node('compile','Compile & release','Validate configuration, render documents and pin the released content and runtime settings.','package','@notabenda/core + authoring'),
     node('public','Static public assets','Serve legal pages, selected runtime configuration and retained public revisions with the site.','releases','Site deployment')
    ]},
    {id:'browser',title:'Visitor browser',subtitle:'Information, controls and local state',nodes:[
@@ -55,7 +55,7 @@ export const complianceViews={
    ]},
    {id:'backend',title:'Optional host backend',subtitle:'Authorize before reaching storage',nodes:[
     node('admission','Host authorization & admission','Resolve the site, person or session context, authorize access and validate bounded recording requests.','cloudflare-starter','Host application / Worker'),
-    node('durable','Durable records & archives','Use scoped Durable Objects for evidence, released wording, private source and applicable delivery jobs.','cloudflare','notabenda-cf / SQLite DO'),
+    node('durable','Durable records & archives','Use scoped Durable Objects for evidence, released wording, private source and applicable delivery jobs.','cloudflare','@notabenda/cloudflare / SQLite DO'),
     node('operator','Operator workspace & lifecycle','Search and compare evidence, grant exports separately, and apply host retention, holds and erasure policy.','evidence-lifecycle','Authorized operator')
    ]}
   ],relations:['The build serves public assets to the browser.','Configured host transports connect selected actions to scoped backend recording.'],

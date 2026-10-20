@@ -6,9 +6,9 @@ The optional `scripts/measure-bundles.mjs` measures real bundled public imports 
 
 The consent stylesheet is generated from the canonical `styles.css`. Tests compare each retained rule’s declarations, relative cascade order and surrounding media/layer conditions against that source. Focus, native dialog backdrop, reduced motion, forced colors, safe areas, hidden-state and print rules remain present. The main component stylesheet remains byte-identical to its canonical source. The service directory has an independent stylesheet and does not increase consent CSS. No remote assets or CSS imports are introduced.
 
-The `notabenda/headless` export uses the exact existing consent factory and contains no mounting or rendering exports. An import test installs throwing browser-global getters before loading it. Bundle graph checks exclude backend, Node build tooling and framework code; the headless graph excludes DOM-control and document-rendering modules. Packed installation/type coverage includes the new entry and CSS export.
+The `@notabenda/core/headless` export uses the exact existing consent factory and contains no mounting or rendering exports. An import test installs throwing browser-global getters before loading it. Bundle graph checks exclude backend, Node build tooling and framework code; the headless graph excludes DOM-control and document-rendering modules. Packed installation/type coverage includes the new entry and CSS export.
 
-The compiled `notabenda/consent` entry validates a bounded descriptor produced by the full build-time compiler. It shares the compatibility state machine; exact material scopes are reconstructed independently of input key order. A separately imported opaque required-evidence adapter fails closed if missing or forged. The smaller local graph excludes full site validation and the receipt implementation. Native controls, media/storage/Google adapters and the Astro client bridge accept the narrower controller; The optional `notabenda/react/consent` entry accepts the compiled inventory; `notabenda/react` keeps its existing full-controller contract.
+The compiled `@notabenda/core/consent` entry validates a bounded descriptor produced by the full build-time compiler. It shares the compatibility state machine; exact material scopes are reconstructed independently of input key order. A separately imported opaque required-evidence adapter fails closed if missing or forged. The smaller local graph excludes full site validation and the receipt implementation. Native controls, media/storage/Google adapters and the Astro client bridge accept the narrower controller; The optional `@notabenda/core/react/consent` entry accepts the compiled inventory; `@notabenda/core/react` keeps its existing full-controller contract.
 
 Local and required-receipt suites run through both public factories. Additional tests exercise malformed descriptors before browser capabilities, field-order parity, private-data projection, mandatory adapter mode, failed command preparation, unavailable UUID generation, retirement and cross-tab changes. New records always declare local/required authority; markerless and required positives cannot become local grants. Valid negatives and independently parsed regional prompt memory remain, with no storage rewrite during parsing.
 
@@ -21,12 +21,12 @@ Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 | `createConsentRuntime` + `mountControls`, compiled local | 12.18 KiB | 15 KiB | Within target |
 | Same plus `requiredConsentEvidence` | 15.68 KiB | Report separately | Optional receipt implementation |
 | Compiled runtime + React consent bindings, React peer external | 13.20 KiB | Report separately | Excludes React and React DOM |
-| `createConsent` from `notabenda/headless` | 16.59 KiB | Report only | Same existing engine |
+| `createConsent` from `@notabenda/core/headless` | 16.59 KiB | Report only | Same existing engine |
 | `createConsent` + `mountControls` | 19.50 KiB | 15 KiB | Over target |
-| `notabenda/consent.css` | 2.21 KiB | 5 KiB | Within target |
-| `notabenda/styles.css`, main component collection | 10.19 KiB | Report separately | Includes document/operator/form layouts, purpose authoring and optional catalog picker |
-| `notabenda/services`, model + render + local search | 10.68 KiB | Report separately | No reference dataset, Node or backend |
-| `notabenda/services.css` | 1.73 KiB | Report separately | Independent directory styling |
+| `@notabenda/core/consent.css` | 2.21 KiB | 5 KiB | Within target |
+| `@notabenda/core/styles.css`, main component collection | 10.19 KiB | Report separately | Includes document/operator/form layouts, purpose authoring and optional catalog picker |
+| `@notabenda/core/services`, model + render + local search | 10.68 KiB | Report separately | No reference dataset, Node or backend |
+| `@notabenda/core/services.css` | 1.73 KiB | Report separately | Independent directory styling |
 
 The transfer figures exclude a site’s configuration payload, page layout/theme, sample integration code and framework adapters. The cookie example’s actual browser entry bundles its own UI/example code as well; it does not represent the library-only size profile.
 

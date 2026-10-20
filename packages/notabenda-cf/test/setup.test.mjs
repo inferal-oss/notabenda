@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CF-ADMIN
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createSetupWorker} from 'notabenda-cf';
+import {createSetupWorker} from '@notabenda/cloudflare';
 const options={basePath:'/workspace/setup',scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css'};
 test('setup worker requires host access on every request and never accepts questionnaire answers as server writes',async()=>{
   assert.throws(()=>createSetupWorker(options));for(const result of [false,null,{},'yes']){let called=0;const worker=createSetupWorker({...options,authorize(){called++;return result;}});assert.equal((await worker.fetch(new Request('https://example.test/workspace/setup'),{})).status,403);assert.equal(called,1);}

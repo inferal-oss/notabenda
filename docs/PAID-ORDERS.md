@@ -6,7 +6,7 @@ The preview includes three [working examples](/orders/mixed/): a lamp with a mon
 
 ## Define the information, then issue a quote
 
-`notabenda-authoring/orders` supplies `createPaidOrderDefinition`, `createPaidOrderReview` and `verifyPaidOrderReview`. The authoring package runs in a trusted build or server process. `notabenda/orders` supplies the static renderer, a headless action controller and a small vanilla view; it has no runtime dependencies.
+`@notabenda/authoring/orders` supplies `createPaidOrderDefinition`, `createPaidOrderReview` and `verifyPaidOrderReview`. The authoring package runs in a trusted build or server process. `@notabenda/core/orders` supplies the static renderer, a headless action controller and a small vanilla view; it has no runtime dependencies.
 
 A definition contains:
 
@@ -34,7 +34,7 @@ import {
   createPaidOrderDefinition,
   createPaidOrderReview,
   verifyPaidOrderReview,
-} from 'notabenda-authoring/orders';
+} from '@notabenda/authoring/orders';
 
 const definition = createPaidOrderDefinition(reviewedDefinitionInput);
 const quote = await pricingSystem.issueQuote({
@@ -48,9 +48,9 @@ verifyPaidOrderReview(review, originalLabelFiles);
 `originalLabelFiles` maps each label’s exact public URL to its original `Uint8Array`. Verification checks the original bytes and product association. Publish and retain those files yourself. Label preparation and production review are described in [the label guide](GUARANTEE-LABELS.md).
 
 ```js
-import 'notabenda/orders.css';
-import 'notabenda/guarantees.css'; // when goods have labels
-import {createPaidOrderAction, mountPaidOrderAction} from 'notabenda/orders';
+import '@notabenda/core/orders.css';
+import '@notabenda/core/guarantees.css'; // when goods have labels
+import {createPaidOrderAction, mountPaidOrderAction} from '@notabenda/core/orders';
 
 const action = createPaidOrderAction(review, {
   submit: (request, {signal}) => checkoutApi.admit(request, {signal}),
@@ -64,7 +64,7 @@ const view = mountPaidOrderAction(container, {
 
 The mounted view keeps required facts expanded, puts the full producer label beside its good, and places the native payment button after the information. It waits for required label images and rechecks the rendered facts, action wording and image readiness immediately before dispatch. Keep this whole surface visible in the final checkout step. Do not add a sticky duplicate action that bypasses the information. Assess actual image legibility, placement and accessibility in your layout; successful image loading alone does not prove these.
 
-For static information, use `renderPaidOrderReview`, `PaidOrderReview` from `notabenda/react/documents`, or `notabenda/astro/PaidOrderReview.astro`. These render no payment action. A React app can mount the vanilla view in an effect and call `view.destroy()` during cleanup. The host owns the controller: keep it while an attempt is pending and reconcile before replacing its quote or creating another order. Each view needs a unique lowercase ID prefix of at most 90 characters. Heading levels 2 and 3 are supported.
+For static information, use `renderPaidOrderReview`, `PaidOrderReview` from `@notabenda/core/react/documents`, or `@notabenda/core/astro/PaidOrderReview.astro`. These render no payment action. A React app can mount the vanilla view in an effect and call `view.destroy()` during cleanup. The host owns the controller: keep it while an attempt is pending and reconcile before replacing its quote or creating another order. Each view needs a unique lowercase ID prefix of at most 90 characters. Heading levels 2 and 3 are supported.
 
 Headless clients must call `setPresentationReady(true, optionalGuard)` only after displaying all required information and label images. The optional synchronous guard is checked again just before first dispatch. Structural normalization and client hashes are integrity checks, not authentication or proof of what a person read.
 
@@ -86,13 +86,13 @@ Persist `getRecoveryRequest()` together with the exact review before transmissio
 
 ## Cloudflare archives and admission
 
-`notabenda-cf/orders` supplies a dependency-free backend for the review, original files, checkout activation and request receipt. Authentication, CSRF protection and checkout authorization stay in your host. Resolve `siteId`, `scopeId` and `checkoutId` there; never copy them from browser JSON. A checkout ID identifies one purchase intent and remains stable across quote revisions. Issue a fresh ID only for a separately authorized new order. Its public digest is not a credential.
+`@notabenda/cloudflare/orders` supplies a dependency-free backend for the review, original files, checkout activation and request receipt. Authentication, CSRF protection and checkout authorization stay in your host. Resolve `siteId`, `scopeId` and `checkoutId` there; never copy them from browser JSON. A checkout ID identifies one purchase intent and remains stable across quote revisions. Issue a fresh ID only for a separately authorized new order. Its public digest is not a credential.
 
 ```ts
 import {
   paidOrderCheckoutRef, archivePaidOrderAsset, archivePaidOrderReview,
   activatePaidOrderReview, admitPaidOrder, getPaidOrderAttempt,
-} from 'notabenda-cf/orders';
+} from '@notabenda/cloudflare/orders';
 
 const context = {
   siteId: 'your-shop', scopeId: 'checkout', checkoutId: checkout.intentId,
@@ -135,8 +135,8 @@ The host callback allows at most 32 reads, 256 KiB of returned read data, and 16
 ### Inspect orders in admin
 
 ```ts
-import {createAdminWorker} from 'notabenda-cf';
-import {createPaidOrderStore} from 'notabenda-cf/orders';
+import {createAdminWorker} from '@notabenda/cloudflare';
+import {createPaidOrderStore} from '@notabenda/cloudflare/orders';
 
 const admin = createAdminWorker({
   basePath: '/backoffice/orders', title: 'Order requests',

@@ -6,7 +6,7 @@ Setup now includes explicit [cookie control settings authoring](SETUP.md#configu
 
 Build priorities and concrete deliverables are indexed in [FEATURES.md](FEATURES.md). Individual obligations, applicability conditions, sources, and verification scenarios live in the [requirements catalog](requirements/README.md), generated from [regulatory/catalog.json](../regulatory/catalog.json). Each rule and test must refer to its applicable `REQ-*` IDs. Research, legal review, implementation, and automated verification are separate statuses.
 
-Markdown/MDX authoring with YAML frontmatter is implemented through the optional build-time `notabenda-authoring` package. It preserves private source archives, static custom-component output and source/rendered comparisons. The JSON CLI is unchanged; see [AUTHORING.md](AUTHORING.md).
+Markdown/MDX authoring with YAML frontmatter is implemented through the optional build-time `@notabenda/authoring` package. It preserves private source archives, static custom-component output and source/rendered comparisons. The JSON CLI is unchanged; see [AUTHORING.md](AUTHORING.md).
 
 The optional React 19 subpaths now connect cookie and ordinary form-permission provider/hooks and native controls to the same host-owned controller, with conservative SSR/hydration and server-safe structured legal wrappers. See [REACT.md](REACT.md). Optional Astro components and a page-lifecycle bridge now accompany a real static-build example; see [ASTRO.md](ASTRO.md). Broader framework/platform verification remains pending.
 
@@ -28,7 +28,7 @@ flowchart TD
   F --> E
   E --> G[Declared service loaders and embeds]
   E --> H[Local preference storage]
-  E -. optional receipts .-> I[notabenda-cf Worker]
+  E -. optional receipts .-> I[@notabenda/cloudflare Worker]
   J[Authenticated application backend] --> I
   I --> K[Operator-selected records and archives]
   L[Authenticated operator tools] --> I
@@ -82,10 +82,10 @@ Version material consent scope separately from general artifact revisions. A new
 
 ```sh
 # After installing the preview package locally
-npm install notabenda
-npx notabenda init
-npx notabenda check
-npx notabenda build
+npm install @notabenda/core
+npx @notabenda/core init
+npx @notabenda/core check
+npx @notabenda/core build
 ```
 
 `init` creates a small inventory and explicit content placeholders. `check` validates missing facts, undeclared services, unsupported profiles, and draft content. `build` emits static legal documents, public runtime config, and a versioned evidence artifact. Production mode rejects unresolved placeholders and unreviewed generated content; bring-your-own reviewed documents remain supported.
@@ -97,8 +97,8 @@ The initial [standalone discovery tool](DISCOVERY.md) captures buffered resource
 Current runtime API (configure explicit consent scope and lifetimes in the site inventory first):
 
 ```ts
-import { createConsent, mountControls } from 'notabenda';
-import 'notabenda/styles.css';
+import { createConsent, mountControls } from '@notabenda/core';
+import '@notabenda/core/styles.css';
 import publicConfig from './legal/notabenda.public.json';
 
 const consent = createConsent(publicConfig);
@@ -133,7 +133,7 @@ Provide privacy/cookie/terms link components, a persistent preferences trigger, 
 | --- | --- | --- |
 | Static/local | npm package or self-hosted script, generated documents, local choices | No durable controller-held event history; not equivalent to recorded consent evidence |
 | Existing backend | Configure a transport implementation | Operator owns storage, trusted identity binding, retention, and export |
-| Cloudflare | Deploy notabenda-cf; configure same-origin `/api/privacy` where possible | Durable browser receipts plus trusted application records |
+| Cloudflare | Deploy @notabenda/cloudflare; configure same-origin `/api/privacy` where possible | Durable browser receipts plus trusted application records |
 
 When JavaScript or storage is unavailable, optional integrations remain blocked and documents remain accessible. Show functional limitations where relevant. Avoid displaying a useless consent banner on sites with no optional processing, while preserving applicable notices and privacy-choice routes.
 
@@ -215,7 +215,7 @@ Provide a visible entry, appropriate form and review/confirmation step, durable 
 
 The optional CF contract-action store uses its own declaration schema and lifecycle class, idempotent receipts and independent application/acknowledgement jobs. Pending dispatch is durable before a declaration is acknowledged. Host authorization, channel delivery and contractual fulfillment still need integration and verification. A frontend-only “success” state is insufficient. Any need for a queue or delivery provider is specific to this optional reliable-dispatch requirement, not a dependency of the core cookie runtime. External delivery and fulfillment remain operator responsibilities unless explicitly configured and verified.
 
-## 7. notabenda-cf: deliberately small
+## 7. @notabenda/cloudflare: deliberately small
 
 The current optional package supplies a read-only, mountable admin Worker, a host-scoped Durable Object storage adapter, transactional document-release history, and opt-in transactional terms-offer/acceptance helpers. Authentication/authorization is supplied by the host through a mandatory hook, with no package login system. The hook returns an already scoped store; browser URLs do not select arbitrary DOs or namespaces. See [the CF package guide](../packages/notabenda-cf/README.md) for actual APIs and limits.
 
@@ -254,13 +254,13 @@ Cloudflare D1 supports jurisdiction constraints at database creation. Use a juri
 
 ### Deployment experience
 
-The initial `npx notabenda-cf init` is now implemented. It exclusively creates a new local project with a denying host hook, configured-site DO routing, shared admin/setup, private archive RPC and explicit Wrangler build/check/dev/deploy scripts. It does not run installation or deployment. See [CLOUDFLARE-STARTER.md](CLOUDFLARE-STARTER.md); the [read-only local doctor](CLOUDFLARE-DOCTOR.md) now checks starter declarations and reports separate manual acceptance. Remote provisioning and broader operational rollout checks remain open.
+The initial `npx @notabenda/cloudflare init` is now implemented. It exclusively creates a new local project with a denying host hook, configured-site DO routing, shared admin/setup, private archive RPC and explicit Wrangler build/check/dev/deploy scripts. It does not run installation or deployment. See [CLOUDFLARE-STARTER.md](CLOUDFLARE-STARTER.md); the [read-only local doctor](CLOUDFLARE-DOCTOR.md) now checks starter declarations and reports separate manual acceptance. Remote provisioning and broader operational rollout checks remain open.
 
 ```sh
 # Implemented optional backend setup
-npx notabenda-cf init
+npx @notabenda/cloudflare init
 # In the new project, review auth/settings and install local preview packages.
-npx notabenda-cf doctor
+npx @notabenda/cloudflare doctor
 # Review and run the explicit generated Wrangler build/check/deploy scripts.
 ```
 
@@ -290,7 +290,7 @@ Order matters: prove enforcement and artifact identity before expanding document
 
 Ship milestones 1–2 as a clearly labeled frontend preview if useful. Milestone 3b is needed only for deployments that use the applicable contract actions. A production claim involving recorded evidence waits for milestone 3 and its operational checks. Full regional support waits for the corresponding review, regardless of engineering completion. Research across the broader catalog starts with milestone 0 and continues through every phase; it is not deferred until regional runtime work.
 
-Browser delivery now has an explicit `notabenda/headless` export, a consent-only stylesheet derived from canonical styles and a self-contained bundled cookie example. Optional `npm run size` / `size:check` tooling reports real entry graphs and gzip sizes. Consent CSS is below its 5 KiB target; the existing fully validating core-plus-controls entry remains above 15 KiB. A compiled runtime entry and separate required-evidence adapter now share the compatibility state engine. Build-time full validation plus bounded browser validation preserves exact material scope encoding and synchronous binding errors; local plus native controls meets 15 KiB gzip. React now has a separate consent-only entry with the same bridge behavior and a narrower honest getter, while its compatibility entry retains the full config contract. Required receipt code is measured separately. New stored-choice provenance prevents a missing adapter from reusing a required or ambiguous historical grant; negatives and regional prompt memory remain. Optional Node/browser tools now measure fresh-controller setup, granted snapshots and synchronous local choice calls with the actual native controls. Shared snapshot work is reduced while live restrictions remain checked. The fully validating compatibility entry, full page startup/paint, receipt/processing configurations and broader platforms still need size/performance work; see [controller timing](verification/consent-performance.md). See [delivery verification](verification/browser-delivery.md).
+Browser delivery now has an explicit `@notabenda/core/headless` export, a consent-only stylesheet derived from canonical styles and a self-contained bundled cookie example. Optional `npm run size` / `size:check` tooling reports real entry graphs and gzip sizes. Consent CSS is below its 5 KiB target; the existing fully validating core-plus-controls entry remains above 15 KiB. A compiled runtime entry and separate required-evidence adapter now share the compatibility state engine. Build-time full validation plus bounded browser validation preserves exact material scope encoding and synchronous binding errors; local plus native controls meets 15 KiB gzip. React now has a separate consent-only entry with the same bridge behavior and a narrower honest getter, while its compatibility entry retains the full config contract. Required receipt code is measured separately. New stored-choice provenance prevents a missing adapter from reusing a required or ambiguous historical grant; negatives and regional prompt memory remain. Optional Node/browser tools now measure fresh-controller setup, granted snapshots and synchronous local choice calls with the actual native controls. Shared snapshot work is reduced while live restrictions remain checked. The fully validating compatibility entry, full page startup/paint, receipt/processing configurations and broader platforms still need size/performance work; see [controller timing](verification/consent-performance.md). See [delivery verification](verification/browser-delivery.md).
 
 ## 10. Tests that determine whether this works
 

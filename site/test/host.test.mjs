@@ -20,7 +20,7 @@ const state=storage=>({storage,blockConcurrencyWhile:callback=>callback()});
 // @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
 test('guarantee examples preserve selected official bytes, show text and use no scripts or evidence store',async()=>{
  const root=new URL('../dist/public/',import.meta.url),env={ASSETS:{fetch:async()=>new Response('Static guarantee notice')},WORKSPACE:{get(){throw Error('A static guarantee display does not open records.');}}};
- const {sha256}=await import('notabenda/content');
+ const {sha256}=await import('@notabenda/core/content');
  for(const prefix of ['','dark/']){const path=prefix+'guarantees/',html=await readFile(new URL(path+'index.html',root),'utf8'),n=JSON.parse(await readFile(new URL(path+'notice.json',root),'utf8')),svg=await readFile(new URL(n.asset.url.slice(1),root),'utf8');assert.equal(sha256(svg),n.asset.sha256);assert.match(html,/nb-demo-guarantees/);assert.match(html,/guarantees\.css/);assert.match(html,/LEGAL/);assert.ok(html.includes(n.informationUrl));assert.doesNotMatch(html,/<script|<form|<input|data:image\/png/);const response=await serveHost(request('/'+path),env);assert.equal(response.status,200);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);}
 });
 
@@ -30,7 +30,7 @@ test('indirect collection examples share the modern frame, expose usable text an
  for(const prefix of ['','dark/']){
   const path=prefix+'indirect-collection/',html=await readFile(new URL(path+'index.html',root),'utf8'),n=JSON.parse(await readFile(new URL(path+'notice.json',root),'utf8')),text=await readFile(new URL(path+'notice.txt',root),'utf8');
   assert.match(html,/example-pages\.css/);assert.match(html,/nb-demo-indirect-collection/);assert.match(html,/data-indirect-notice-id=/);assert.doesNotMatch(html,/<script|<form|<input/);assert.match(text,/We have collected/);assert.match(text,/https:\/\/[^\s]+\/artifacts\/[a-f0-9]{64}\/privacy.html/);
-  assert.ok(html.includes('href="'+n.document.url+'"'));const privacy=await readFile(new URL(n.document.url.slice(1),root),'utf8');const {sha256}=await import('notabenda/content');assert.equal(sha256(privacy),n.document.sha256);
+  assert.ok(html.includes('href="'+n.document.url+'"'));const privacy=await readFile(new URL(n.document.url.slice(1),root),'utf8');const {sha256}=await import('@notabenda/core/content');assert.equal(sha256(privacy),n.document.sha256);
   assert.match(await readFile(new URL(path+'advance.txt',root),'utf8'),/We plan to collect/);
   const response=await serveHost(request('/'+path),env);assert.equal(response.status,200);assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src/);
  }
@@ -359,7 +359,7 @@ test('standalone discovery examples ship local optional tools and leave legal ro
 
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-REACT
 test('shared example framing preserves the exact framework-owned SSR tree',async()=>{
- const [{JSDOM},{createElement},{renderToString},{createConsentRuntime},{App}]=await Promise.all([import('jsdom'),import('react'),import('react-dom/server'),import('notabenda/consent'),import('../../examples/react/view.mjs')]);
+ const [{JSDOM},{createElement},{renderToString},{createConsentRuntime},{App}]=await Promise.all([import('jsdom'),import('react'),import('react-dom/server'),import('@notabenda/core/consent'),import('../../examples/react/view.mjs')]);
  const root=new URL('../dist/public/',import.meta.url);
  for(const prefix of ['','dark/']){
   const page=JSON.parse(await readFile(new URL(prefix+'react/site.json',root),'utf8')),controller=createConsentRuntime(page.runtime,{}),config=page.runtime.inventory;
@@ -393,7 +393,7 @@ test('lifecycle workspace explains holds and purge progress, resumes interrupted
 
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 test('trusted retired demo contexts return terminal 410 on reads and writes, rather than empty heads or retryable failures',async()=>{
- const {createEvidenceLifecycle}=await import('notabenda-cf');const storage=createSyntheticStorage([]),workspace=new EvidenceWorkspace(state(storage),{ADMIN_KEY:key});await workspace.initialize();
+ const {createEvidenceLifecycle}=await import('@notabenda/cloudflare');const storage=createSyntheticStorage([]),workspace=new EvidenceWorkspace(state(storage),{ADMIN_KEY:key});await workspace.initialize();
  const targets=[{family:'consent',siteId:data.recordedConsent.notice.siteId,scopeId:data.recordedConsent.notice.scopeId,streamId:'synthetic-admin-cookie-demo'},{family:'processing',siteId:data.processing.notice.siteId,scopeId:data.processing.notice.scopeId,streamId:'synthetic-admin-processing-demo'},{family:'terms',siteId:data.agreements[0].offer.siteId,subjectId:'synthetic-admin-demo'}];
  for(const target of targets){const controller=await createEvidenceLifecycle(storage,target);await controller.retire({requestId:crypto.randomUUID(),reason:'operator-erasure',eligibleAt:'2026-10-18T12:00:00.000Z',legalHold:false});}
  const headers={...auth,Origin:'https://example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'};
@@ -426,7 +426,7 @@ test('every interactive example uses the shared visual foundation across framewo
 
 // @requirements REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-DEMO-WORKSPACE
 test('notice wording updates seed a separate example journey without changing retained receipts or breaking existing workspaces',async()=>{
- const {seedConsentExample}=await import('../../examples/consent-evidence.mjs'),{compileLegalDocuments,createConsentNotice}=await import('notabenda/content');
+ const {seedConsentExample}=await import('../../examples/consent-evidence.mjs'),{compileLegalDocuments,createConsentNotice}=await import('@notabenda/core/content');
  const storage=createSyntheticStorage([]),first=await seedConsentExample(storage,data.consent),oldRecords=await Promise.all(first.records.map(id=>first.store.get(id)));
  const config=structuredClone(data.consent.artifact.publicConfig);config.purposes[0].description+=' More precise purpose wording.';
  const build=compileLegalDocuments(config,{mode:'preview'}),notice=createConsentNotice(build.artifact,{scopeId:data.consent.notice.scopeId},{mode:'preview'}),next={artifact:build.artifact,notice};
@@ -478,7 +478,7 @@ test('catalog-reference releases keep public legal bytes unchanged and private c
   assert.ok(document.querySelector('link[href="/assets/demo-marker.css"]'));
  }
  for(const path of ['index.html','examples/index.html','guide/package/index.html','website-privacy/index.html'])assert.doesNotMatch(await readFile(new URL(path,root),'utf8'),/class="demo-corner"/,path);
- const {createWorkspaceOverviewWorker}=await import('notabenda-cf');
+ const {createWorkspaceOverviewWorker}=await import('@notabenda/cloudflare');
  const demoHome=()=>createWorkspaceOverviewWorker({basePath:'/demo/admin',authorize:()=>({areas:[]})}).fetch(new Request('https://example.test/demo/admin'),{});
  const marked=await markDemoResponse(await demoHome()),html=await marked.text();assert.match(html,/class="demo-corner"/);
  const again=await markDemoResponse(new Response(html,{headers:{'Content-Type':'text/html'}}));assert.equal((await again.text()).match(/class="demo-corner"/gu).length,1);

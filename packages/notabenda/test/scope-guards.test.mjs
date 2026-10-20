@@ -3,10 +3,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,mountControls,ScopeGuardError,evaluateScopeGuards,toPublicConfig,validateSiteConfig,createTermsAcceptance} from 'notabenda';
-import {compileLegalDocuments,createConsentNotice,createTermsOffer,createCollectionNotice,canonicalJson,sha256} from 'notabenda/content';
-import {createSetupPlan,readSetupAnswers} from 'notabenda/setup';
-import {createConsentEvidenceStore,createAdminWorker,recordLegalRelease,registerConsentNotice,setActiveConsentNotice,getConsentHead,recordConsentChoice,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance} from 'notabenda-cf';
+import {createConsent,mountControls,ScopeGuardError,evaluateScopeGuards,toPublicConfig,validateSiteConfig,createTermsAcceptance} from '@notabenda/core';
+import {compileLegalDocuments,createConsentNotice,createTermsOffer,createCollectionNotice,canonicalJson,sha256} from '@notabenda/core/content';
+import {createSetupPlan,readSetupAnswers} from '@notabenda/core/setup';
+import {createConsentEvidenceStore,createAdminWorker,recordLegalRelease,registerConsentNotice,setActiveConsentNotice,getConsentHead,recordConsentChoice,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 const at=Date.parse('2026-10-18T12:00:00.000Z');

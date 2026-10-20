@@ -3,8 +3,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {renderCartridgeConsole,mountCartridgeConsole} from 'notabenda/cartridges/ui';
-import {selectCartridges,createCartridgeSetupPlan} from 'notabenda/cartridges';
+import {renderCartridgeConsole,mountCartridgeConsole} from '@notabenda/core/cartridges/ui';
+import {selectCartridges,createCartridgeSetupPlan} from '@notabenda/core/cartridges';
 
 const selection=selectCartridges(['cookie-choices']);
 function browser(html='<main id="mount"></main>'){
@@ -81,7 +81,7 @@ test('all eight packs are discoverable without opening a disclosure, including i
  }finally{dom.window.close();}
 });
 test('pack import aliases share the original implementation and persisted contract',async()=>{
- const packs=await import('notabenda/packs'),old=await import('notabenda/cartridges'),ui=await import('notabenda/packs/ui');
+ const packs=await import('@notabenda/core/packs'),old=await import('@notabenda/core/cartridges'),ui=await import('@notabenda/core/packs/ui');
  assert.equal(packs.packLibrary,old.cartridgeLibrary);assert.equal(packs.selectPacks,old.selectCartridges);assert.equal(packs.planPacks,old.planCartridges);assert.equal(ui.mountPackConsole,mountCartridgeConsole);assert.equal(ui.renderPackConsole,renderCartridgeConsole);
  const selected=packs.selectPacks(['terms-agreement']);assert.deepEqual(packs.readPackSelection({cartridges:selected}),selected);
  const pkg=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));assert.equal(pkg.exports['./packs.css'],pkg.exports['./cartridges.css']);

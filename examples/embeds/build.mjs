@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-EMBEDS
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments} from 'notabenda/content';
-import {renderEmbedPlaceholder,renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {renderEmbedPlaceholder,renderLegalLinks} from '@notabenda/core';
 import {exampleConsentConfig} from '../static/choices-build.mjs';
 
 export async function embedFiles(base){

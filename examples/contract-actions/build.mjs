@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createContractActionDefinition} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createContractActionDefinition} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 export function contractActionExample(base){
  const config=structuredClone(base);config.site.id='juniper-contract-actions';config.site.name='Juniper Notes';for(const [kind,doc] of Object.entries(config.documents))doc.route='/contract-actions/'+kind;
  const build=compileLegalDocuments(config,{mode:'preview'}),definitions={};

@@ -1,7 +1,7 @@
 // Retained pre-archive demo receipts keep their original inspector.
 // @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {renderWorkspaceShell,escapeHtml as e} from '../packages/notabenda-cf/dist/render.js';
-import {renderPaidOrderReview,normalizePaidOrderReview,formatPaidOrderMoney} from 'notabenda/orders';
+import {renderPaidOrderReview,normalizePaidOrderReview,formatPaidOrderMoney} from '@notabenda/core/orders';
 import {adminPresentation} from './admin-presentation.mjs';
 const base='/demo/admin/orders',prefix='demo/orders/received/';
 export async function legacyOrderDemoAdmin(request,storage){

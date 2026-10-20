@@ -4,7 +4,7 @@ import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {build} from 'esbuild';
 import {pathToFileURL,fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
-import {compileConsentRuntimeConfig,compileLegalDocuments,createConsentNotice} from 'notabenda/content';
+import {compileConsentRuntimeConfig,compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
 import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
 export async function buildControlsLayoutFixture(output=new URL('../.local/controls-layout/',import.meta.url)) {
  await mkdir(output,{recursive:true});
@@ -23,7 +23,7 @@ export async function buildControlsLayoutFixture(output=new URL('../.local/contr
   await write(copy+'.notice.json',JSON.stringify(notice));
   for(const [path,content] of Object.entries(release.files))if(path.startsWith('artifacts/'))await write(path,content);
  }
- const script=`import {createConsentRuntime,mountControls} from 'notabenda/consent';
+ const script=`import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 const params=new URL(location.href).searchParams;
 const copy=params.get('copy')==='long'?'long':'normal';
 document.documentElement.dir=params.get('direction')==='rtl'?'rtl':'ltr';

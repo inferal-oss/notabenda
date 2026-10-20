@@ -161,7 +161,7 @@ test('form permissions use isolated session/contact bindings, acknowledged order
  const withdrawal={schemaVersion:1,offerId:offer.offerId,requestId:crypto.randomUUID(),action:'withdraw',expectedStreamRef:first.streamRef,clientAt:new Date().toISOString()};assert.equal((await post(a,withdrawal)).status,200);const replay=await(await post(a,command)).json();assert.deepEqual(replay.receipt,grant.receipt);assert.equal(replay.state.permitted,false);
  const detailPath='/demo/admin/permissions/record?id='+grant.receipt.id;const detail=await serveHost(req(detailPath,{headers:headers(a)}),env);assert.equal(detail.status,200);const html=await detail.text();for(const phrase of ['Historical action','Grant recorded','No current permission','Exact permission statement'])assert.ok(html.includes(phrase));assert.doesNotMatch(html,/href="\/backoffice/);assert.equal((await serveHost(req(detailPath,{headers:headers(b)}),env)).status,404);
  const exported=await serveHost(req('/demo/admin/permissions/export.json?q=withdrawn',{headers:headers(a)}),env);assert.equal(exported.status,200);assert.match(await exported.text(),/currentState/);
- const {createEvidenceLifecycle}=await import('notabenda-cf'),entry=[...objects.values()][0],target={family:'permissions',siteId:offer.siteId,scopeId:offer.permissionId,streamId:entry.workspace.contextId('reader-profile:email-generation-1')},lifecycle=await createEvidenceLifecycle(entry.storage,target);await lifecycle.retire({requestId:crypto.randomUUID(),reason:'operator-erasure',eligibleAt:new Date().toISOString(),legalHold:false});assert.equal((await serveHost(req('/demo/permissions/state',{headers:headers(a)}),env)).status,410);assert.equal((await post(a,command)).status,410);assert.equal((await current(b)).revision,0);
+ const {createEvidenceLifecycle}=await import('@notabenda/cloudflare'),entry=[...objects.values()][0],target={family:'permissions',siteId:offer.siteId,scopeId:offer.permissionId,streamId:entry.workspace.contextId('reader-profile:email-generation-1')},lifecycle=await createEvidenceLifecycle(entry.storage,target);await lifecycle.retire({requestId:crypto.randomUUID(),reason:'operator-erasure',eligibleAt:new Date().toISOString(),legalHold:false});assert.equal((await serveHost(req('/demo/permissions/state',{headers:headers(a)}),env)).status,410);assert.equal((await post(a,command)).status,410);assert.equal((await current(b)).revision,0);
 });
 
 test('permission example routes bind only entry pages and retain script-free public privacy documents',async()=>{
@@ -174,7 +174,7 @@ test('permission example routes bind only entry pages and retain script-free pub
 
 test('permission controls mount before the first read and keep withdrawal usable through failure and timeout',async()=>{
  const {JSDOM}=await import('jsdom'),{readFile}=await import('node:fs/promises');
- const {createFormPermission,mountFormPermission,FormPermissionError,createIndexedDBFormPermissionJournal}=await import('notabenda');const {IDBFactory}=await import('fake-indexeddb');
+ const {createFormPermission,mountFormPermission,FormPermissionError,createIndexedDBFormPermissionJournal}=await import('@notabenda/core');const {IDBFactory}=await import('fake-indexeddb');
  const {formPermissionFiles}=await import('../../examples/form-permissions/build.mjs');
  const base=JSON.parse(await readFile(new URL('../../examples/static/notabenda.config.json',import.meta.url),'utf8'));
  const files=await formPermissionFiles(base),source=await readFile(new URL('../../examples/form-permissions/client.mjs',import.meta.url),'utf8');

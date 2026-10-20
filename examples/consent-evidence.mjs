@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-CONSENT-EVIDENCE
 // Fixed fictional reports for inspecting the ledger. This does not capture visitor choices.
-import { recordLegalRelease, registerConsentNotice, setActiveConsentNotice, recordConsentChoice, createConsentEvidenceStore } from 'notabenda-cf';
+import { recordLegalRelease, registerConsentNotice, setActiveConsentNotice, recordConsentChoice, createConsentEvidenceStore } from '@notabenda/cloudflare';
 export async function seedConsentExample(storage,{artifact,notice}) {
   const context={siteId:notice.siteId,scopeId:notice.scopeId,streamId:'fictional-cookie-stream:'+notice.noticeId,allowPreview:true};
   await recordLegalRelease(storage,artifact); await registerConsentNotice(storage,notice,context);

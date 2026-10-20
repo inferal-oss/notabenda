@@ -28,9 +28,9 @@ for(const widget of ['consent','consent-preferences','consent-dark','consent-dar
 const {pages,...publicData}=data;await writeFile(new URL('data.json',output),JSON.stringify(publicData));
 await copyFile(new URL('../node_modules/axe-core/axe.min.js',import.meta.url),new URL('axe.min.js',output));
 await copyFile(new URL('../node_modules/axe-core/LICENSE',import.meta.url),new URL('axe-core-LICENSE.txt',output));
-const widgetSource=`import {createConsentRuntime,mountControls} from 'notabenda/consent';
-import {createTermsAcceptance,mountTermsAcceptance,createFormPermission,mountFormPermission} from 'notabenda';
-import {mountSetup} from 'notabenda/setup/ui';
+const widgetSource=`import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
+import {createTermsAcceptance,mountTermsAcceptance,createFormPermission,mountFormPermission} from '@notabenda/core';
+import {mountSetup} from '@notabenda/core/setup/ui';
 export async function mountFixture(){
  const params=new URL(location.href).searchParams,mode=params.get('widget');if(params.get('expanded')==='1')for(const details of document.querySelectorAll('details'))details.open=true;if(!mode)return {kind:'static',expanded:params.get('expanded')==='1'};let state;
  const d=await fetch('/qa-a11y/data.json').then(r=>r.json()),host=document.querySelector('#widget,[data-notabenda-setup]');

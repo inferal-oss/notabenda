@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-REACT
 import {createElement as h,useEffect,useState} from 'react';
-import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed} from 'notabenda/react/consent';
+import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed} from '@notabenda/core/react/consent';
 
 function Purpose({id,name}) {
   const allowed=usePurposeAllowed(id);

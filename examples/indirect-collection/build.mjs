@@ -1,7 +1,7 @@
 // @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
-import {compileLegalDocuments,createIndirectCollectionNotice} from 'notabenda/content';
-import {renderIndirectCollectionNotice,formatIndirectCollectionNotice} from 'notabenda/collection/indirect';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createIndirectCollectionNotice} from '@notabenda/core/content';
+import {renderIndirectCollectionNotice,formatIndirectCollectionNotice} from '@notabenda/core/collection/indirect';
+import {renderLegalLinks} from '@notabenda/core';
 
 export async function indirectCollectionFiles(base){
   const files={};

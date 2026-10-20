@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {cartridgeLibrary} from 'notabenda/cartridges';
+import {cartridgeLibrary} from '@notabenda/core/cartridges';
 import {cartridgePage} from '../cartridge-page.mjs';
 import {mountCartridgeConsole} from '../cartridges-app.mjs';
 import {serveHost} from '../host.mjs';

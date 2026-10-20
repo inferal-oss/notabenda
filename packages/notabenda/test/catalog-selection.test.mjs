@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y
 import {test} from 'node:test';import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';import {mkdtemp,writeFile,readFile,rm} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';import {spawnSync} from 'node:child_process';
-import {createCatalogSelectionPlan,normalizeCatalogServiceSelection,normalizeSetupCatalogSelections,readSetupCatalogSelections} from 'notabenda/catalog/selection';
-import {mountCatalogPicker} from 'notabenda/catalog/ui';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {createSetupPlan,readSetupAnswers} from 'notabenda/setup';import {mountSetup} from 'notabenda/setup/ui';import {compileLegalDocuments} from 'notabenda/content';import {fixture} from './helpers.mjs';
+import {createCatalogSelectionPlan,normalizeCatalogServiceSelection,normalizeSetupCatalogSelections,readSetupCatalogSelections} from '@notabenda/core/catalog/selection';
+import {mountCatalogPicker} from '@notabenda/core/catalog/ui';import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';import {createSetupPlan,readSetupAnswers} from '@notabenda/core/setup';import {mountSetup} from '@notabenda/core/setup/ui';import {compileLegalDocuments} from '@notabenda/core/content';import {fixture} from './helpers.mjs';
 const answers={schemaVersion:1,markets:[],answers:{}};
 const choice=()=>({productId:'stripe-payments',serviceId:'payments',purposeIds:['enquiries'],provider:'Explicit operator-confirmed entity',location:'Operator-selected region',privacyUrl:'https://stripe.com/privacy',justification:'PRIVATE_REASON_SENTINEL',confirmed:true});
 const selected=async()=>createCatalogSelectionPlan(await fixture({reviewed:true}),serviceCatalogSeed,choice());

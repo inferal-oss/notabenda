@@ -40,7 +40,7 @@ Processing classification and any GPC/recorded opt-out policy remain independent
 ## Register once, before any Google integration
 
 ```ts
-import {registerGoogleBasic} from 'notabenda/google';
+import {registerGoogleBasic} from '@notabenda/core/google';
 
 const google = registerGoogleBasic({
   consent, // the existing host-owned controller

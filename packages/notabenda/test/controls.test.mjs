@@ -2,7 +2,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {mountControls} from 'notabenda';
+import {mountControls} from '@notabenda/core';
 import {consentProfiles} from './consent-profiles.mjs';
 import {fixture} from './helpers.mjs';
 async function setup(factory,configure=()=>{}){

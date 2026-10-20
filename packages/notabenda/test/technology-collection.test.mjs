@@ -7,9 +7,9 @@ import {readFile,mkdtemp,writeFile,rm} from 'node:fs/promises';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {createTechnologyCollectionNotice,normalizeTechnologyCollectionNotice,verifyTechnologyCollectionNotice,renderTechnologyCollectionNotice,technologyCollectionScope} from 'notabenda/technology';
-import {compileLegalDocuments,createConsentNotice,canonicalJson,sha256} from 'notabenda/content';
-import {mountControls} from 'notabenda';
+import {createTechnologyCollectionNotice,normalizeTechnologyCollectionNotice,verifyTechnologyCollectionNotice,renderTechnologyCollectionNotice,technologyCollectionScope} from '@notabenda/core/technology';
+import {compileLegalDocuments,createConsentNotice,canonicalJson,sha256} from '@notabenda/core/content';
+import {mountControls} from '@notabenda/core';
 import {technologyExampleConfig,technologySettings} from '../../../examples/technology/config.mjs';
 import {fixture} from './helpers.mjs';
 import {frenchTechnologyLocalization} from './fixtures/technology-fr.mjs';
@@ -24,7 +24,7 @@ test('the documented builder example typechecks against installed exports and re
  const root=fileURLToPath(new URL('../../../',import.meta.url)),cwd=await mkdtemp(join(root,'.local/technology-types-'));
  try{
   const guide=await readFile(new URL('../../../docs/TECHNOLOGY-COLLECTION.md',import.meta.url),'utf8'),example=/```ts\n([\s\S]+?)\n```/u.exec(guide)[1],file=join(cwd,'example.mts');
-  const source="import type {SiteConfig} from 'notabenda';\ndeclare const config:SiteConfig;\n"+example+'\n';await writeFile(file,source);
+  const source="import type {SiteConfig} from '@notabenda/core';\ndeclare const config:SiteConfig;\n"+example+'\n';await writeFile(file,source);
   const compiler=join(root,'node_modules/typescript/bin/tsc'),run=()=>spawnSync(process.execPath,[compiler,'--noEmit','--target','es2022','--module','nodenext','--moduleResolution','nodenext','--strict','--skipLibCheck',file],{cwd,encoding:'utf8',timeout:30000});
   let result=run();assert.equal(result.status,0,result.stdout+result.stderr);
   await writeFile(file,source+"technologyCollectionScope({...declaration,functions:['invented']});\n");result=run();assert.notEqual(result.status,0);assert.match(result.stdout+result.stderr,/invented/u);
@@ -99,5 +99,5 @@ for(const [name,create] of consentProfiles){
 test('material declarations change scope; presentation copy changes only the descriptor identity',async()=>{
  const c=await config(),s=settings(),a=release(c),first=createTechnologyCollectionNotice(a,s),copy=structuredClone(s);copy.wording.title='Your reading preferences';assert.equal(technologyCollectionScope(copy),technologyCollectionScope(s));assert.notEqual(createTechnologyCollectionNotice(a,copy).noticeId,first.noticeId);
  for(const mutate of [s=>s.functions=['identification'],s=>s.technologyDescription+=' New processing.',s=>s.activationInstructions+=' Changed action.',s=>s.revision='two']){const changed=structuredClone(s);mutate(changed);assert.notEqual(technologyCollectionScope(changed),technologyCollectionScope(s));assert.throws(()=>createTechnologyCollectionNotice(a,changed));}
- const result=await bundle({stdin:{contents:"import {createConsentRuntime,mountControls} from 'notabenda/consent'; export {createConsentRuntime,mountControls};",resolveDir:process.cwd(),sourcefile:'technology-graph.mjs'},bundle:true,platform:'browser',format:'esm',write:false,metafile:true});assert.equal(Object.keys(result.metafile.inputs).some(p=>p.includes('technology-collection')||p.includes('release-files')),false);
+ const result=await bundle({stdin:{contents:"import {createConsentRuntime,mountControls} from '@notabenda/core/consent'; export {createConsentRuntime,mountControls};",resolveDir:process.cwd(),sourcefile:'technology-graph.mjs'},bundle:true,platform:'browser',format:'esm',write:false,metafile:true});assert.equal(Object.keys(result.metafile.inputs).some(p=>p.includes('technology-collection')||p.includes('release-files')),false);
 });

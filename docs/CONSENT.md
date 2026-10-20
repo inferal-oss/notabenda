@@ -28,7 +28,7 @@ Build the consent descriptor alongside your legal pages:
 
 ```ts
 // Build/server code; defaults to reviewed production content.
-import { compileConsentRuntimeConfig } from 'notabenda/content';
+import { compileConsentRuntimeConfig } from '@notabenda/core/content';
 
 const runtime = compileConsentRuntimeConfig(siteConfig, { evidence: 'local' });
 // Serialize runtime to a same-origin public JSON asset.
@@ -36,8 +36,8 @@ const runtime = compileConsentRuntimeConfig(siteConfig, { evidence: 'local' });
 
 ```ts
 // Browser code
-import { createConsentRuntime, mountControls } from 'notabenda/consent';
-import 'notabenda/consent.css'; // optional, existing theme variables work
+import { createConsentRuntime, mountControls } from '@notabenda/core/consent';
+import '@notabenda/core/consent.css'; // optional, existing theme variables work
 
 const response = await fetch('/consent-runtime.json');
 if (!response.ok) throw new Error('Privacy choices could not be loaded.');
@@ -49,7 +49,7 @@ mountControls(document.querySelector('#privacy-controls')!, { consent });
 Choose `evidence: 'required'` when a host receipt must precede permission. The mode has no default and cannot silently downgrade when an adapter is missing:
 
 ```ts
-import { requiredConsentEvidence } from 'notabenda/consent/evidence';
+import { requiredConsentEvidence } from '@notabenda/core/consent/evidence';
 
 const consent = createConsentRuntime(requiredRuntimeConfig, undefined, {
   evidence: requiredConsentEvidence({
@@ -66,7 +66,7 @@ Compilation validates the **whole** site, including terms and operator facts, th
 
 The compiled profile accepts at most 256 purposes, 256 services and 512 storage entries; optional runtime scope remains limited to 40 purposes and 80 services. The descriptor is at most 256 KiB UTF-8, IDs are at most 120 characters, ordinary text fields are at most 4,096 characters and version/scope fields are at most 200. The existing 64K-character local-choice record limit also applies. Oversized inputs fail explicitly. Use `{mode: 'preview', evidence: 'local'}` only for deliberate draft previews.
 
-`getConfig()` returns `ConsentRuntimeInventory`, which contains only the fields above. Existing `createConsent`/`notabenda/headless` APIs still synchronously validate a complete configuration and return the complete public config. Native controls, media, storage cleanup, Google Basic and the Astro client bridge accept either controller. React hosts can use `notabenda/react/consent` with either controller. Its hook returns the smaller inventory honestly. The existing `notabenda/react` entry retains its full-controller contract; use `createConsent` with that compatibility entry. See [React integration](REACT.md).
+`getConfig()` returns `ConsentRuntimeInventory`, which contains only the fields above. Existing `createConsent`/`@notabenda/core/headless` APIs still synchronously validate a complete configuration and return the complete public config. Native controls, media, storage cleanup, Google Basic and the Astro client bridge accept either controller. React hosts can use `@notabenda/core/react/consent` with either controller. Its hook returns the smaller inventory honestly. The existing `@notabenda/core/react` entry retains its full-controller contract; use `createConsent` with that compatibility entry. See [React integration](REACT.md).
 
 The light and midnight cookie examples use this compiled entry. Optional `npm run size` reports local, required-receipt and compatibility bundles separately; adopters choose their own CI policy. See [delivery verification](verification/browser-delivery.md).
 
@@ -77,8 +77,8 @@ New choice records carry `authorizationMode: 'local' | 'required'`, even when a 
 ## Register before loading
 
 ```ts
-import { createConsent, mountControls } from 'notabenda';
-import 'notabenda/styles.css'; // optional
+import { createConsent, mountControls } from '@notabenda/core';
+import '@notabenda/core/styles.css'; // optional
 
 const consent = createConsent(publicSiteConfig);
 consent.registerService('sample-metrics', {
@@ -167,7 +167,7 @@ The design reviewed [CookieConsent script management](https://cookieconsent.ores
 
 ## Headless imports and component styles
 
-For a custom cookie-choice interface, import `createConsent` from `notabenda/headless`. It is the same validated controller as the root export, including required-receipt behavior. For the native controls, add `mountControls` from `notabenda` and optional `notabenda/consent.css`. The consent-only stylesheet is derived from the canonical styles and preserves the same tokens and accessibility rules. Use the complete `notabenda/styles.css` when you also need full document, setup or other component layouts.
+For a custom cookie-choice interface, import `createConsent` from `@notabenda/core/headless`. It is the same validated controller as the root export, including required-receipt behavior. For the native controls, add `mountControls` from `@notabenda/core` and optional `@notabenda/core/consent.css`. The consent-only stylesheet is derived from the canonical styles and preserves the same tokens and accessibility rules. Use the complete `@notabenda/core/styles.css` when you also need full document, setup or other component layouts.
 
 The local light/midnight cookie examples use the smaller stylesheet and a bundled browser entry. The full configuration and required-evidence implementation still contribute to the existing JavaScript controller; its measured core-plus-controls bundle remains above the 15 KiB target. [Measurements and limits](verification/browser-delivery.md) remain explicit.
 

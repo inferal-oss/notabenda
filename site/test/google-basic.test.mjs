@@ -3,8 +3,8 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {createConsent,mountControls} from 'notabenda';
-import {registerGoogleBasic} from 'notabenda/google';
+import {createConsent,mountControls} from '@notabenda/core';
+import {registerGoogleBasic} from '@notabenda/core/google';
 import {serveHost} from '../host.mjs';
 const root=new URL('../dist/public/',import.meta.url);
 

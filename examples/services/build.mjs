@@ -1,9 +1,9 @@
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
 import {build} from 'esbuild';
-import {toPublicConfig} from 'notabenda';
-import {compileLegalDocuments} from 'notabenda/content';
-import {renderServiceDirectoryPage} from 'notabenda/services';
+import {toPublicConfig} from '@notabenda/core';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {renderServiceDirectoryPage} from '@notabenda/core/services';
 export function serviceExampleConfig(base){
  const config=structuredClone(base);config.site.id='juniper-services';
  const purpose=(id,name,description,dataCategories,retention)=>({id,name,description,dataCategories,retention,legalBasis:'Illustrative basis; assess actual processing before use.',collection:{source:'direct',description:'Information supplied by a visitor or their browser.',required:false,consequences:'Related optional features may be unavailable.'}});
@@ -30,7 +30,7 @@ export function serviceExampleConfig(base){
 export async function serviceDirectoryFiles(base){
  const config=serviceExampleConfig(base),release=compileLegalDocuments(config,{mode:'preview'});
  const css=await readFile(new URL('../../packages/notabenda/dist/services.css',import.meta.url),'utf8');
- const browser=await build({stdin:{contents:"import {mountServiceDirectory} from 'notabenda/services';const target=document.querySelector('[data-directory-root]');if(target)fetch('/services/site.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(config=>mountServiceDirectory(target,config,{idPrefix:'site-services',mode:'preview'})).catch(()=>{});",resolveDir:new URL('../../',import.meta.url).pathname},bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});
+ const browser=await build({stdin:{contents:"import {mountServiceDirectory} from '@notabenda/core/services';const target=document.querySelector('[data-directory-root]');if(target)fetch('/services/site.json').then(r=>{if(!r.ok)throw Error();return r.json();}).then(config=>mountServiceDirectory(target,config,{idPrefix:'site-services',mode:'preview'})).catch(()=>{});",resolveDir:new URL('../../',import.meta.url).pathname},bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});
  const page=(dark=false)=>renderServiceDirectoryPage(config,{idPrefix:'site-services',mode:'preview',stylesheetUrl:dark?'/assets/services-dark.css':'/assets/services.css'}).replace('<main id="main">','<main id="main"><div data-directory-root>').replace('</main>','</div></main>').replace('</body>','<script type="module" src="/assets/services.mjs"></script></body>');
  const dark='\n@layer example{.nb-service-page{color-scheme:dark;--nb-page-bg:#10121d;--nb-surface:#171b2b;--nb-soft:#202539;--nb-text:#eef0fc;--nb-muted:#adb5ce;--nb-line:#343b56;--nb-accent:#bdc4ff;--nb-focus:#a5acff}}';
  return {...Object.fromEntries(Object.entries(release.files).map(([path,value])=>[path.startsWith('notabenda.')?'services/'+path:path,value])),'services/index.html':page(),'dark/services/index.html':page(true),'services/site.json':JSON.stringify(toPublicConfig(config,{mode:'preview'})),'assets/services.css':css,'assets/services-dark.css':css+dark,'assets/services.mjs':browser.outputFiles[0].text};

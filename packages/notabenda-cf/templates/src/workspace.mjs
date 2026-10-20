@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-CF-HISTORY
-import {createAdminWorker,createWorkspaceOverviewWorker,createDocumentHistory,createConsentEvidenceStore,createTermsAcceptanceStore,createProcessingRestrictionStore,createFormPermissionStore,createContractDeclarationStore,recordLegalRelease,validateLegalSourceArchive} from 'notabenda-cf';
+import {createAdminWorker,createWorkspaceOverviewWorker,createDocumentHistory,createConsentEvidenceStore,createTermsAcceptanceStore,createProcessingRestrictionStore,createFormPermissionStore,createContractDeclarationStore,recordLegalRelease,validateLegalSourceArchive} from '@notabenda/cloudflare';
 import {settings} from './settings.mjs';
 import {presentation} from './host.mjs';
 

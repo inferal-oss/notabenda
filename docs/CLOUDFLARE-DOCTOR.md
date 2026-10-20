@@ -1,13 +1,13 @@
 # Check a Cloudflare starter
 
-Run `npx notabenda-cf doctor` inside the project created by `notabenda-cf init`. It reads the local starter and explains what needs attention. It does not run your JavaScript, build, install dependencies, load credentials, contact Cloudflare or modify files.
+Run `npx @notabenda/cloudflare doctor` inside the project created by `notabenda-cf init`. It reads the local starter and explains what needs attention. It does not run your JavaScript, build, install dependencies, load credentials, contact Cloudflare or modify files.
 
 The packages are unpublished previews. Install the explicit local tarballs first, as described in the [starter guide](CLOUDFLARE-STARTER.md). New starters include `npm run doctor`; existing starters can use the installed CLI directly.
 
 ```sh
-npx notabenda-cf doctor
-npx notabenda-cf doctor --directory ./privacy-backend --json
-npx notabenda-cf doctor --config wrangler.jsonc --env staging
+npx @notabenda/cloudflare doctor
+npx @notabenda/cloudflare doctor --directory ./privacy-backend --json
+npx @notabenda/cloudflare doctor --config wrangler.jsonc --env staging
 ```
 
 Paths are relative to the selected project. The default search requires exactly one `wrangler.json` or `wrangler.jsonc`; choose `--config` when both exist. JSONC comments and trailing commas are supported. The selected configuration, Worker entry, settings, authorization and asset files must stay inside that project.

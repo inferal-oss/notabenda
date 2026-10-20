@@ -1,7 +1,7 @@
 import {consentProfiles} from './consent-profiles.mjs';
 import { test as nodeTest } from 'node:test';
 import assert from 'node:assert/strict';
-import { toPublicConfig, validateSiteConfig } from 'notabenda';
+import { toPublicConfig, validateSiteConfig } from '@notabenda/core';
 import { fixture } from './helpers.mjs';
 // @requirements REQ-PRODUCT-CONSENT-RUNTIME
 

@@ -1,5 +1,5 @@
 {
-  "name": "notabenda-cf",
+  "name": "@notabenda/cloudflare",
   "version": "0.1.0",
   "description": "Optional Cloudflare evidence storage, contract handoff runners and host-authorized backoffice.",
   "type": "module",
@@ -40,5 +40,8 @@
   },
   "bin": {
     "notabenda-cf": "./bin/notabenda-cf.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -5,10 +5,10 @@ import {mkdtemp,readFile,writeFile,mkdir,rm,stat,symlink} from 'node:fs/promises
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {serviceCatalogSeed} from 'notabenda/catalog/seed';
+import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';
 import {reviewSetupCatalog} from '../dist/setup-catalog-cli.js';
-import {createSetupPlan} from 'notabenda/setup';
-import {createCatalogSelectionPlan} from 'notabenda/catalog/selection';
+import {createSetupPlan} from '@notabenda/core/setup';
+import {createCatalogSelectionPlan} from '@notabenda/core/catalog/selection';
 import {fixture} from './helpers.mjs';
 const cli=new URL('../dist/cli.js',import.meta.url).pathname;
 const answers={schemaVersion:1,markets:[],answers:{'personal-data':{choice:'yes',justification:'PRIVATE_SETUP_NOTE'}}};

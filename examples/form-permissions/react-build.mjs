@@ -2,7 +2,7 @@
 import {createElement} from 'react';
 import {renderToString} from 'react-dom/server';
 import {build} from 'esbuild';
-import {createFormPermission} from 'notabenda';
+import {createFormPermission} from '@notabenda/core';
 import {ReactPermissionApp} from './react-view.mjs';
 export async function reactPermissionFiles(offer,frames){
  const files={};for(const dark of [false,true]){const path=(dark?'dark/':'')+'form-permissions',controller=createFormPermission(offer,{allowPreview:true,streamRef:'0'.repeat(64),read:async()=>{throw Error('No transport during SSR');},submit:async()=>{throw Error('No transport during SSR');}});let html;try{html=renderToString(createElement(ReactPermissionApp,{controller,offer,dark}));}finally{controller.destroy();}

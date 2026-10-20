@@ -47,14 +47,14 @@ When `privacy.rightsUrl` is omitted, public config links it to `rightsCenter.rou
 `compileLegalDocuments` emits the supporting rights page alongside privacy, cookie and terms output. The same page survives Markdown/MDX legal authoring. Include it with the rest of the compiler's files.
 
 ```ts
-import {renderRightsCenter, renderRightsPage} from 'notabenda';
+import {renderRightsCenter, renderRightsPage} from '@notabenda/core';
 
 // Fragment inside an existing layout. Prefixes must be unique within the document.
 const html = renderRightsCenter(config, {mode: 'preview', idPrefix: 'privacy-help', headingLevel: 2});
 const page = renderRightsPage(config, {mode: 'preview', stylesheetUrl: '/assets/notabenda.css'});
 ```
 
-React: `RightsCenter` from `notabenda/react/documents`. Astro: `notabenda/astro/RightsCenter.astro`. Both use the same validated static renderer and need no provider, hydration or browser controller. Styles are optional, inherit the host font and use the same semantic tokens as other package surfaces.
+React: `RightsCenter` from `@notabenda/core/react/documents`. Astro: `@notabenda/core/astro/RightsCenter.astro`. Both use the same validated static renderer and need no provider, hydration or browser controller. Styles are optional, inherit the host font and use the same semantic tokens as other package surfaces.
 
 The declaration is included in the artifact's hashed public configuration. The supporting page is **outside** the three immutable legal-document kinds and their exact pinned HTML; it is a current navigation surface, not a new archived legal document. Host deployments own the availability and behavior of its linked application routes. Keep explanatory legal text in the appropriate versioned privacy document when it must be part of that retained record.
 

@@ -2,9 +2,9 @@
 import {JSDOM} from 'jsdom';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createTermsAcceptance, mountTermsAcceptance, TermsAcceptanceError, normalizeTermsOffer } from 'notabenda';
-import { compileLegalDocuments, createTermsOffer, canonicalJson, sha256 } from 'notabenda/content';
-import { recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, createTermsAcceptanceStore, createAdminWorker, createEvidenceLifecycle } from 'notabenda-cf';
+import { createTermsAcceptance, mountTermsAcceptance, TermsAcceptanceError, normalizeTermsOffer } from '@notabenda/core';
+import { compileLegalDocuments, createTermsOffer, canonicalJson, sha256 } from '@notabenda/core/content';
+import { recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, createTermsAcceptanceStore, createAdminWorker, createEvidenceLifecycle } from '@notabenda/cloudflare';
 import { createSyntheticStorage } from '../../notabenda-cf/examples/synthetic.mjs';
 import { fixture } from './helpers.mjs';
 

@@ -11,7 +11,7 @@ For a non-English native interface, add the complete `localization.formPermissio
 ## Build a reviewed offer
 
 ```ts
-import {createFormPermissionOffer} from 'notabenda/content';
+import {createFormPermissionOffer} from '@notabenda/core/content';
 
 const offer = createFormPermissionOffer(artifact, {
   permissionId: 'product-news-email', // stable across pages and revisions
@@ -38,8 +38,8 @@ The builder validates the public artifact and pins its privacy HTML/content hash
 ## Host-bound frontend
 
 ```ts
-import {createFormPermission, mountFormPermission} from 'notabenda';
-import 'notabenda/styles.css';
+import {createFormPermission, mountFormPermission} from '@notabenda/core';
+import '@notabenda/core/styles.css';
 
 const permission = createFormPermission(offer, {
   streamRef, // supplied by your authenticated application, for this contact generation
@@ -62,7 +62,7 @@ The host decides how optional recording failures interact with its primary form.
 ## Recover an unconfirmed action
 
 ```ts
-import {createFormPermission, createIndexedDBFormPermissionJournal} from 'notabenda';
+import {createFormPermission, createIndexedDBFormPermissionJournal} from '@notabenda/core';
 
 const journal = createIndexedDBFormPermissionJournal();
 const permission = createFormPermission(offer, {
@@ -95,7 +95,7 @@ import {
   registerFormPermissionOffer, setActiveFormPermissionOffer,
   formPermissionStreamRef, getFormPermissionState,
   recordFormPermission, createFormPermissionStore,
-} from 'notabenda-cf';
+} from '@notabenda/cloudflare';
 
 const scope = {siteId: 'example-site', permissionId: 'product-news-email'};
 // First archive the matching release with recordLegalRelease.
@@ -133,4 +133,4 @@ The EDPB discusses purpose granularity, evidence and easy withdrawal; the CRTC d
 
 ## React integration
 
-`notabenda/react` provides `FormPermissionProvider`, `FormPermissionField`, `useFormPermissionController`, `useFormPermissionSnapshot` and `useFormPermissionAllowed`. They reuse this controller without mount-time reads, writes or retries. The host creates and destroys the controller, deliberately reads saved state and owns its optional journal. Server snapshots remain unchecked and off; ordinary form submission stays independent. See [React form permissions](REACT.md#ordinary-form-permissions). `notabenda/astro/FormPermissionField.astro` and `mountAstroFormPermission` in `notabenda/astro/client` provide the matching named Astro field and page-lifecycle bridge. See [Astro form permissions](ASTRO.md#ordinary-form-permissions). Background delivery remains separate work.
+`@notabenda/core/react` provides `FormPermissionProvider`, `FormPermissionField`, `useFormPermissionController`, `useFormPermissionSnapshot` and `useFormPermissionAllowed`. They reuse this controller without mount-time reads, writes or retries. The host creates and destroys the controller, deliberately reads saved state and owns its optional journal. Server snapshots remain unchecked and off; ordinary form submission stays independent. See [React form permissions](REACT.md#ordinary-form-permissions). `@notabenda/core/astro/FormPermissionField.astro` and `mountAstroFormPermission` in `@notabenda/core/astro/client` provide the matching named Astro field and page-lifecycle bridge. See [Astro form permissions](ASTRO.md#ordinary-form-permissions). Background delivery remains separate work.

@@ -6,7 +6,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {compileLegalDocuments,createRetainedReleaseFiles,canonicalJson,sha256} from 'notabenda/content';
+import {compileLegalDocuments,createRetainedReleaseFiles,canonicalJson,sha256} from '@notabenda/core/content';
 import {validateLegalArtifact} from '../../notabenda-cf/dist/history.js';
 import {authoringExample} from '../../../examples/authoring/build.mjs';
 import {fixture} from './helpers.mjs';

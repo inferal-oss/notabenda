@@ -8,9 +8,9 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {JSDOM} from 'jsdom';
-import {createSetupPlan,normalizeSetupAnswers,setupQuestions,setupMarkets,readSetupAnswers} from 'notabenda/setup';
-import {mountSetup} from 'notabenda/setup/ui';
-import {compileLegalDocuments} from 'notabenda/content';
+import {createSetupPlan,normalizeSetupAnswers,setupQuestions,setupMarkets,readSetupAnswers} from '@notabenda/core/setup';
+import {mountSetup} from '@notabenda/core/setup/ui';
+import {compileLegalDocuments} from '@notabenda/core/content';
 import {fixture} from './helpers.mjs';
 const input=()=>({schemaVersion:1,markets:[],answers:{}});
 const cli=new URL('../dist/cli.js',import.meta.url).pathname;
@@ -138,7 +138,7 @@ test('imported assessment notes start visible and remain private through direct 
 
 /** @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-DISCOVERY */
 test('browser setup advises offline project discovery without running it or treating findings as configured services',()=>{
- const f=browser(),ui=mountSetup(f.container,{documentationBase:'/guide'}),guide=f.container.querySelector('.nb-setup-discovery');assert.ok(guide);assert.equal(guide.querySelector('code').textContent,'npx notabenda discover --project . --out-dir ./service-review');assert.equal(guide.querySelector('a').getAttribute('href'),'/guide/service-catalog#search-a-project-with-npx');assert.ok(guide.querySelector('.nb-setup-command-flag'));assert.equal(guide.querySelector('pre').tabIndex,0);assert.equal(guide.querySelectorAll('button,form,script,iframe').length,0);assert.match(guide.textContent,/before selecting services/);assert.match(guide.textContent,/server dependencies or infrastructure/);assert.match(guide.textContent,/some services may be missed/);submit(f);const review=f.container.querySelector('[aria-label="Setup recommendations"] .nb-setup-discovery');assert.ok(review);assert.equal(review.querySelector('code').textContent,guide.querySelector('code').textContent);assert.equal(review.closest('[hidden]'),null);assert.equal(ui.getPlan().config.services.length,0);assert.equal(ui.getPlan().report.catalogSelections,undefined);submit(f);assert.equal(f.container.querySelectorAll('[aria-label="Setup recommendations"] .nb-setup-discovery').length,1);ui.destroy();f.dom.window.close();
+ const f=browser(),ui=mountSetup(f.container,{documentationBase:'/guide'}),guide=f.container.querySelector('.nb-setup-discovery');assert.ok(guide);assert.equal(guide.querySelector('code').textContent,'npx @notabenda/core discover --project . --out-dir ./service-review');assert.equal(guide.querySelector('a').getAttribute('href'),'/guide/service-catalog#search-a-project-with-npx');assert.ok(guide.querySelector('.nb-setup-command-flag'));assert.equal(guide.querySelector('pre').tabIndex,0);assert.equal(guide.querySelectorAll('button,form,script,iframe').length,0);assert.match(guide.textContent,/before selecting services/);assert.match(guide.textContent,/server dependencies or infrastructure/);assert.match(guide.textContent,/some services may be missed/);submit(f);const review=f.container.querySelector('[aria-label="Setup recommendations"] .nb-setup-discovery');assert.ok(review);assert.equal(review.querySelector('code').textContent,guide.querySelector('code').textContent);assert.equal(review.closest('[hidden]'),null);assert.equal(ui.getPlan().config.services.length,0);assert.equal(ui.getPlan().report.catalogSelections,undefined);submit(f);assert.equal(f.container.querySelectorAll('[aria-label="Setup recommendations"] .nb-setup-discovery').length,1);ui.destroy();f.dom.window.close();
 });
 
 /** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE */

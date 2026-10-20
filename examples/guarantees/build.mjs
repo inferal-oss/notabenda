@@ -1,8 +1,8 @@
 // @requirements REQ-EU-GUARANTEE-NOTICE REQ-PRODUCT-GUARANTEE-NOTICE
 import {producerGuaranteeFiles} from './product-build.mjs';
 import {readFile} from 'node:fs/promises';
-import {buildLegalGuaranteeNotice} from 'notabenda/guarantees/content';
-import {renderLegalGuaranteeNotice} from 'notabenda/guarantees';
+import {buildLegalGuaranteeNotice} from '@notabenda/core/guarantees/content';
+import {renderLegalGuaranteeNotice} from '@notabenda/core/guarantees';
 export async function guaranteeFiles(){
  const built=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}),files={...built.files,'assets/guarantees.css':await readFile(new URL('../../packages/notabenda/dist/guarantees.css',import.meta.url),'utf8')};
  for(const prefix of ['','/dark']){

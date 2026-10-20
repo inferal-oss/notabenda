@@ -20,7 +20,7 @@ async function fixture(){
  const result=spawnSync(process.execPath,[cli,'init','--out-dir',target],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);
  return {directory,target,async ready(){
   await mkdir(join(target,'public/assets'),{recursive:true});await writeFile(join(target,'public/assets/setup.mjs'),'export {};');await writeFile(join(target,'public/assets/setup-preview.mjs'),'export {};');await writeFile(join(target,'public/assets/notabenda.css'),':root {}');await writeFile(join(target,'public/assets/cartridges.css'),'.cartridge-shell {}');
-  for(const name of ['notabenda','notabenda-cf','esbuild','wrangler']){await mkdir(join(target,'node_modules',name),{recursive:true});await writeFile(join(target,'node_modules',name,'package.json'),JSON.stringify({name,version:'0.1.0'}));}
+  for(const name of ['@notabenda/core','@notabenda/cloudflare','esbuild','wrangler']){await mkdir(join(target,'node_modules',name),{recursive:true});await writeFile(join(target,'node_modules',name,'package.json'),JSON.stringify({name,version:'0.1.0'}));}
   // This file would fail if imported. Existence is not an authorization verdict.
   await writeFile(join(target,'src/authorize.mjs'),"throw new Error('DOCTOR-MUST-NOT-EXECUTE'); export async function authorizeHostRequest(){return {inspect:true};}\n");
  },cleanup:()=>rm(directory,{recursive:true,force:true})};
@@ -86,11 +86,11 @@ test('CLI checks selected directory, rejects unknown/duplicate/missing arguments
 test('metadata checks never read entries/assets and private aliases or external dependency symlinks cannot cross the content-read boundary',async()=>{
  const f=await fixture();let originalRead;try{
   await f.ready();await writeFile(join(f.target,'.dev.vars'),'PRIVATE-DOCTOR-SENTINEL');await config(f.target,raw=>{raw.main='.dev.vars';});
-  const external=join(f.directory,'external-package');await mkdir(external);await writeFile(join(external,'package.json'),JSON.stringify({name:'notabenda',version:'0.1.0',privateValue:'PRIVATE-DOCTOR-SENTINEL'}));await rm(join(f.target,'node_modules/notabenda'),{recursive:true});await symlink(external,join(f.target,'node_modules/notabenda'));
+  const external=join(f.directory,'external-package');await mkdir(external);await writeFile(join(external,'package.json'),JSON.stringify({name:'@notabenda/core',version:'0.1.0',privateValue:'PRIVATE-DOCTOR-SENTINEL'}));await rm(join(f.target,'node_modules/@notabenda/core'),{recursive:true});await symlink(external,join(f.target,'node_modules/@notabenda/core'));
   await rm(join(f.target,'src/settings.mjs'));await symlink(join(f.target,'.dev.vars'),join(f.target,'src/settings.mjs'));
   const reads=[];originalRead=fs.promises.readFile;fs.promises.readFile=async function(path,...args){reads.push(String(path));return originalRead.call(this,path,...args);};syncBuiltinESMExports();
   const report=await inspectProject({directory:f.target});for(const id of ['WORKER-ENTRY','SITE-SETTINGS','DEPENDENCY-NOTABENDA'])assert.equal(check(report,id).status,'error',id);
-  assert.equal(reads.some(path=>path.includes('.dev.vars')||path.includes('external-package')||path.includes('node_modules/notabenda/')||path.includes('public/assets/')),false,reads.join('\n'));
+  assert.equal(reads.some(path=>path.includes('.dev.vars')||path.includes('external-package')||path.includes('node_modules/@notabenda/core/')||path.includes('public/assets/')),false,reads.join('\n'));
   await config(f.target,raw=>{raw.main='src/worker.mjs';});reads.length=0;const second=await inspectProject({directory:f.target});assert.equal(check(second,'WORKER-ENTRY').status,'pass');assert.equal(reads.some(path=>path.endsWith('/src/worker.mjs')||path.includes('public/assets/')),false);
   await symlink(join(f.target,'.dev.vars'),join(f.target,'private-alias.json'));reads.length=0;assert.equal(check(await inspectProject({directory:f.target,config:'private-alias.json'}),'CONFIG').status,'error');assert.equal(reads.some(path=>path.includes('.dev.vars')),false);
  }finally{if(originalRead){fs.promises.readFile=originalRead;syncBuiltinESMExports();}await f.cleanup();}

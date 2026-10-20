@@ -2,9 +2,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createContractAction,mountContractAction,normalizeContractActionDefinition} from 'notabenda/contracts';
-import {compileLegalDocuments,createContractActionDefinition} from 'notabenda/content';
-import {recordLegalRelease,registerContractActionDefinition,contractActionOperationRef,recordContractDeclaration} from 'notabenda-cf';
+import {createContractAction,mountContractAction,normalizeContractActionDefinition} from '@notabenda/core/contracts';
+import {compileLegalDocuments,createContractActionDefinition} from '@notabenda/core/content';
+import {recordLegalRelease,registerContractActionDefinition,contractActionOperationRef,recordContractDeclaration} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 const reject=(promise,code)=>assert.rejects(promise,error=>error.code===code);

@@ -7,8 +7,8 @@ import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {JSDOM} from 'jsdom';
-import {packLibrary,selectPacks,planPacks,formatPackBrief} from 'notabenda/packs';
-import {mountSetup} from 'notabenda/setup/ui';
+import {packLibrary,selectPacks,planPacks,formatPackBrief} from '@notabenda/core/packs';
+import {mountSetup} from '@notabenda/core/setup/ui';
 import {fixture} from './helpers.mjs';
 
 function browser(selection,options={}){

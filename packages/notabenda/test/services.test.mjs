@@ -5,10 +5,10 @@ import {JSDOM} from 'jsdom';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {build} from 'esbuild';
-import {createServiceInventory,createServiceDirectory,renderServiceDirectory,renderServiceDirectoryPage,mountServiceDirectory} from 'notabenda/services';
-import {ServiceDirectory} from 'notabenda/react/documents';
-import {createLegalDocument} from 'notabenda';
-import {compileLegalDocuments} from 'notabenda/content';
+import {createServiceInventory,createServiceDirectory,renderServiceDirectory,renderServiceDirectoryPage,mountServiceDirectory} from '@notabenda/core/services';
+import {ServiceDirectory} from '@notabenda/core/react/documents';
+import {createLegalDocument} from '@notabenda/core';
+import {compileLegalDocuments} from '@notabenda/core/content';
 import {fixture} from './helpers.mjs';
 import {serviceExampleConfig} from '../../../examples/services/build.mjs';
 const settings={idPrefix:'test-services'};
@@ -58,5 +58,5 @@ test('optional search preserves existing details and focus, filters locally, ann
 
 test('invalid mount input leaves host content intact and actual browser directory graphs exclude seed, Node and backend code',async()=>{
  const c=await config(),dom=new JSDOM('<div id="root"><p>Keep this content</p></div>'),target=dom.window.document.getElementById('root');assert.throws(()=>mountServiceDirectory(target,c,{idPrefix:'bad id'}));assert.equal(target.textContent,'Keep this content');
- const bundle=await build({stdin:{contents:"export {renderServiceDirectory,mountServiceDirectory} from 'notabenda/services';",resolveDir:new URL('../../../',import.meta.url).pathname},bundle:true,write:false,metafile:true,platform:'browser',format:'esm'});assert.ok(Object.keys(bundle.metafile.inputs).every(path=>!path.includes('/catalog')&&!path.includes('node:')&&!path.includes('notabenda-cf')));dom.window.close();
+ const bundle=await build({stdin:{contents:"export {renderServiceDirectory,mountServiceDirectory} from '@notabenda/core/services';",resolveDir:new URL('../../../',import.meta.url).pathname},bundle:true,write:false,metafile:true,platform:'browser',format:'esm'});assert.ok(Object.keys(bundle.metafile.inputs).every(path=>!path.includes('/catalog')&&!path.includes('node:')&&!path.includes('@notabenda/cloudflare')));dom.window.close();
 });

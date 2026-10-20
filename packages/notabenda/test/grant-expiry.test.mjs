@@ -1,10 +1,10 @@
 // @requirements REQ-IE-CONSENT-DURATION REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-CONFIG
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createConsent,validateSiteConfig,toPublicConfig,normalizeConsentNotice} from 'notabenda';
-import {compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig,canonicalJson,sha256} from 'notabenda/content';
-import {createConsentRuntime} from 'notabenda/consent';
-import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from 'notabenda-cf';
+import {createConsent,validateSiteConfig,toPublicConfig,normalizeConsentNotice} from '@notabenda/core';
+import {compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig,canonicalJson,sha256} from '@notabenda/core/content';
+import {createConsentRuntime} from '@notabenda/core/consent';
+import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {grantExpiresAt,sixCalendarMonthsAfter,receiptGrantExpiresAt} from '../dist/grant-expiry-policy.js';
 import {consentProfiles} from './consent-profiles.mjs';
@@ -73,7 +73,7 @@ for(const [profile,create] of consentProfiles)test(`${profile}: required evidenc
 // @requirements REQ-PRODUCT-SETUP
 // Exercise the real noninteractive wizard boundary, not only the recommendation helper.
 test('Irish setup advice is shared by CLI/admin and never enables or extends grants',async()=>{
- const {createSetupPlan,readSetupAnswers}=await import('notabenda/setup');const {mountSetup}=await import('notabenda/setup/ui');const {JSDOM}=await import('jsdom');const {mkdtemp,writeFile,readFile,rm}=await import('node:fs/promises');const {tmpdir}=await import('node:os');const {join}=await import('node:path');const {spawnSync}=await import('node:child_process');
+ const {createSetupPlan,readSetupAnswers}=await import('@notabenda/core/setup');const {mountSetup}=await import('@notabenda/core/setup/ui');const {JSDOM}=await import('jsdom');const {mkdtemp,writeFile,readFile,rm}=await import('node:fs/promises');const {tmpdir}=await import('node:os');const {join}=await import('node:path');const {spawnSync}=await import('node:child_process');
  const f=await setup(),ordinary=structuredClone(f.config);delete ordinary.consent.grantExpiryPolicy;const answers={schemaVersion:1,markets:['IE','FR','IT','ES'],answers:{'optional-storage':{choice:'yes',justification:'PRIVATE_DURATION_ASSESSMENT'}}};const plan=createSetupPlan(answers,{config:ordinary});assert.equal(plan.report.questionnaireVersion,'5');assert.equal(plan.config.consent.grantExpiryPolicy,undefined);assert.equal(plan.config.consent.grantLifetimeDays,365);assert.equal(plan.report.recommendations.find(r=>r.id==='irish-grant-expiry').status,'review');assert.ok(plan.report.recommendations.find(r=>r.id==='market-IE').requirementIds.includes('REQ-IE-CONSENT-DURATION'));assert.doesNotMatch(JSON.stringify(plan.config),/PRIVATE_DURATION/);
  for(const version of ['1','2','3','4'])assert.deepEqual(readSetupAnswers({schemaVersion:1,questionnaireVersion:version,kind:'private-setup-report',answers}),plan.report.answers);
  const dom=new JSDOM('<div id="setup"></div>');dom.window.URL.createObjectURL=()=> 'blob:example';dom.window.URL.revokeObjectURL=()=>{};const host=dom.window.document.querySelector('#setup'),ui=mountSetup(host,{config:ordinary,answers,documentationBase:'/guide'});host.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));assert.deepEqual(ui.getPlan().report.recommendations,plan.report.recommendations);assert.ok(host.querySelector('a[href="/guide/requirements#req-ie-consent-duration"]'));ui.destroy();dom.window.close();

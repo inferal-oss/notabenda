@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-EU-ORDER-ACTION REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-DEMO-WORKSPACE
 // Host wiring only. The reusable package owns archives, activation, admission and recovery.
-import {archivePaidOrderAsset,archivePaidOrderReview,activatePaidOrderReview,getPaidOrderCheckoutState,readPaidOrderReview,paidOrderCheckoutRef,admitPaidOrder,getPaidOrderAttempt,PaidOrderRecordError} from 'notabenda-cf/orders';
-import {normalizePaidOrderReview,copyPaidOrderData} from 'notabenda/orders';
+import {archivePaidOrderAsset,archivePaidOrderReview,activatePaidOrderReview,getPaidOrderCheckoutState,readPaidOrderReview,paidOrderCheckoutRef,admitPaidOrder,getPaidOrderAttempt,PaidOrderRecordError} from '@notabenda/cloudflare/orders';
+import {normalizePaidOrderReview,copyPaidOrderData} from '@notabenda/core/orders';
 import {canonicalJson,sha256} from '../packages/notabenda-cf/dist/history.js';
 import {serveLegacyOrderDemo} from './order-demo-legacy.mjs';
 export const orderDemoSite='juniper-order-example',orderDemoScope='checkout';

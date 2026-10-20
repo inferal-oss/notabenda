@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-DEMO-WORKSPACE
-import {createFormPermission,createIndexedDBFormPermissionJournal,FormPermissionError} from 'notabenda';
-import {mountAstroFormPermission} from 'notabenda/astro/client';
+import {createFormPermission,createIndexedDBFormPermissionJournal,FormPermissionError} from '@notabenda/core';
+import {mountAstroFormPermission} from '@notabenda/core/astro/client';
 import {demoSessionEnded} from '../../../static/demo-session.mjs';
 const readMeta=name=>document.querySelector(`meta[name=${name}]`)?.content;
 const generation=readMeta('notabenda-demo-generation'),streamRef=readMeta('notabenda-permission-stream'),offer=JSON.parse(readMeta('notabenda-permission-offer'));

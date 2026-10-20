@@ -3,9 +3,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createFormPermission,FormPermissionError,mountFormPermission,normalizeFormPermissionOffer,formPermissionGrantSupported} from 'notabenda';
-import {compileLegalDocuments,createFormPermissionOffer,canonicalJson,sha256} from 'notabenda/content';
-import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission,createFormPermissionStore,createAdminWorker,createEvidenceLifecycle,createEvidenceLifecycleStore} from 'notabenda-cf';
+import {createFormPermission,FormPermissionError,mountFormPermission,normalizeFormPermissionOffer,formPermissionGrantSupported} from '@notabenda/core';
+import {compileLegalDocuments,createFormPermissionOffer,canonicalJson,sha256} from '@notabenda/core/content';
+import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission,createFormPermissionStore,createAdminWorker,createEvidenceLifecycle,createEvidenceLifecycleStore} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 const at='2026-10-18T12:00:00.000Z';
@@ -117,7 +117,7 @@ test('hung reads and withdrawal acknowledgments time out, retry the same nonce, 
  const f=await setup(),commands=[];let attempts=0;const c=await controller(f,{timeoutMs:100,read:()=>new Promise(()=>{}),async submit(command){commands.push(command);const result=await write(f,command);if(attempts++===0)return new Promise(()=>{});return result;}});await reject(c.refresh(),'recording-failed');await reject(c.withdraw(),'recording-failed');assert.equal(c.getSnapshot().allowed,false);await c.withdraw();assert.deepEqual(commands[0],commands[1]);assert.equal(c.getSnapshot().current.revision,1);c.destroy();
 });
 
-async function journalPair(){const {IDBFactory}=await import('fake-indexeddb'),{createIndexedDBFormPermissionJournal}=await import('notabenda');const indexedDB=new IDBFactory(),databaseName='permission-test';return [0,1].map(()=>createIndexedDBFormPermissionJournal({indexedDB,databaseName,broadcastChannel:null}));}
+async function journalPair(){const {IDBFactory}=await import('fake-indexeddb'),{createIndexedDBFormPermissionJournal}=await import('@notabenda/core');const indexedDB=new IDBFactory(),databaseName='permission-test';return [0,1].map(()=>createIndexedDBFormPermissionJournal({indexedDB,databaseName,broadcastChannel:null}));}
 const key=f=>`notabenda:permission:v1:${f.offer.siteId}:${f.offer.permissionId}:${f.ref}`;
 
 test('transactional journal survives lost grant acknowledgment and reload without automatic delivery or changed nonce',async()=>{

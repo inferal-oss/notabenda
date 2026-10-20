@@ -6,9 +6,9 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {spawnSync} from 'node:child_process';
 import {JSDOM} from 'jsdom';
-import {cartridgeLibrary,selectCartridges,normalizeCartridgeSelection,planCartridges,createCartridgeSetupPlan,readCartridgeSelection,formatCartridgeBrief} from 'notabenda/cartridges';
-import {mountSetup} from 'notabenda/setup/ui';
-import {readSetupAnswers} from 'notabenda/setup';
+import {cartridgeLibrary,selectCartridges,normalizeCartridgeSelection,planCartridges,createCartridgeSetupPlan,readCartridgeSelection,formatCartridgeBrief} from '@notabenda/core/cartridges';
+import {mountSetup} from '@notabenda/core/setup/ui';
+import {readSetupAnswers} from '@notabenda/core/setup';
 import {fixture} from './helpers.mjs';
 const cli=new URL('../dist/cli.js',import.meta.url).pathname;
 

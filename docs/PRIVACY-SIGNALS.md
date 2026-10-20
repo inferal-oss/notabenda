@@ -30,7 +30,7 @@ Generated privacy documents include the supplied explanation as an escaped secti
 ## Browser runtime
 
 ```js
-import {createConsent, mountControls} from 'notabenda';
+import {createConsent, mountControls} from '@notabenda/core';
 const consent = createConsent(publicConfig);
 mountControls(document.querySelector('#privacy-controls'), {consent});
 
@@ -65,7 +65,7 @@ The native controls explain an active/unavailable signal restriction while prese
 ## Server and edge boundary
 
 ```js
-import {hasGlobalPrivacyControl, getPrivacySignalRestrictions, createConsent} from 'notabenda';
+import {hasGlobalPrivacyControl, getPrivacySignalRestrictions, createConsent} from '@notabenda/core';
 
 const observed = hasGlobalPrivacyControl(request);
 const restrictions = getPrivacySignalRestrictions(publicConfig, {

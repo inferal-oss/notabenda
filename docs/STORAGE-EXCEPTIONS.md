@@ -11,7 +11,7 @@ This is an opt-in software mechanism. Ordinary configurations retain their conse
 Add `storageExceptions` to the normal site configuration. Each entry has a stable `id`, positive integer `revision`, explicit service/purpose/storage IDs, title, description, profile, conditions and review status. Storage owned by the entry uses `classification: 'exception'` and its `exceptionId`. It never becomes necessary storage or a consent grant.
 
 ```ts
-import type {StorageExceptionEntry} from 'notabenda';
+import type {StorageExceptionEntry} from '@notabenda/core';
 
 const appearance: StorageExceptionEntry = {
   id: 'reading-layout', revision: 1,
@@ -48,9 +48,9 @@ Increment an entry's revision when its material facts change, including its info
 ```ts
 import {
   createStorageExceptions, createIndexedDBStorageExceptionJournal,
-} from 'notabenda/storage-exceptions';
-import {mountStorageExceptionControls} from 'notabenda/storage-exceptions/ui';
-import 'notabenda/storage-exceptions.css';
+} from '@notabenda/core/storage-exceptions';
+import {mountStorageExceptionControls} from '@notabenda/core/storage-exceptions/ui';
+import '@notabenda/core/storage-exceptions.css';
 import publicConfig from './legal/notabenda.public.json';
 
 const journal = createIndexedDBStorageExceptionJournal();
@@ -98,7 +98,7 @@ The existing exact-key cleanup adapter accepts `{exceptions: settings}` in place
 Consent's default accept/reject labels scope themselves to “these services” when exception storage exists. Accepting consent never clears an objection. A deliberately broad “turn off all optional features” action must close both controllers:
 
 ```ts
-import {rejectAllOptionalActivity} from 'notabenda/storage-exceptions/ui';
+import {rejectAllOptionalActivity} from '@notabenda/core/storage-exceptions/ui';
 await rejectAllOptionalActivity(consent, settings);
 ```
 

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-CF-ADMIN
-import {createSetupWorker} from 'notabenda-cf';
+import {createSetupWorker} from '@notabenda/cloudflare';
 import {settings} from './settings.mjs';
 
 export function presentation(){return {

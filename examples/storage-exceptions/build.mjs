@@ -2,8 +2,8 @@
 // @requirements REQ-UK-EXCEPTIONS REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
 import {build as bundle} from 'esbuild';
-import {compileLegalDocuments} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 import {storageExceptionExampleConfig} from './config.mjs';
 export async function storageExceptionFiles(base){
  const build=compileLegalDocuments(storageExceptionExampleConfig(base),{mode:'preview'});

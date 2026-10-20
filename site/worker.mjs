@@ -4,18 +4,18 @@
 import {seedOrderConfirmations} from './order-confirmation-seed.mjs';
 import {orderDemoAdmin,createOrderDemoStore} from './order-demo-admin.mjs';
 import {serveOrderDemo,hasOrderDemoAttempt} from './order-demo.mjs';
-import {registerContractActionDefinition,recordContractDeclaration,createContractDeclarationStore,ContractActionRecordError} from 'notabenda-cf';
+import {registerContractActionDefinition,recordContractDeclaration,createContractDeclarationStore,ContractActionRecordError} from '@notabenda/cloudflare';
 import {contractContext} from './contract-context.mjs';
 import {seedContractDeclarations} from './contract-seed.mjs';
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS
-import {registerFormPermissionOffer,setActiveFormPermissionOffer,getFormPermissionState,recordFormPermission,createFormPermissionStore,FormPermissionRecordError} from 'notabenda-cf';
+import {registerFormPermissionOffer,setActiveFormPermissionOffer,getFormPermissionState,recordFormPermission,createFormPermissionStore,FormPermissionRecordError} from '@notabenda/cloudflare';
 import {seedFormPermissionJourneys} from './permission-seed.mjs';
 import {permissionContext} from './permission-context.mjs';
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
 // @requirements REQ-PRODUCT-CF-HOST
-import { EvidenceLifecycleError, createAdminWorker, createWorkspaceOverviewWorker, createDocumentHistory, createDurableObjectStore, createTermsAcceptanceStore, createConsentEvidenceStore, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, TermsRecordError } from 'notabenda-cf';
+import { EvidenceLifecycleError, createAdminWorker, createWorkspaceOverviewWorker, createDocumentHistory, createDurableObjectStore, createTermsAcceptanceStore, createConsentEvidenceStore, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, TermsRecordError } from '@notabenda/cloudflare';
 import {adminPresentation} from './admin-presentation.mjs';
 import { seedConsentExample } from '../examples/consent-evidence.mjs';
 import {seedEvidenceLifecycle,lifecycleDemoPrefix} from '../examples/lifecycle.mjs';
@@ -23,8 +23,8 @@ import data from './dist/server-data.json' with {type:'json'};
 import {seedDemoWorkspace} from './demo-seed.mjs';
 import {decorateDemoAdmin} from './demo-presentation.mjs';
 import { canonicalRequest, hostAuthorization, protectedResponse, readDemoRequest, serveHost } from './host.mjs';
-import {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,ProcessingRecordError} from 'notabenda-cf';
-import {registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,ConsentRecordError} from 'notabenda-cf';
+import {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,ProcessingRecordError} from '@notabenda/cloudflare';
+import {registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,ConsentRecordError} from '@notabenda/cloudflare';
 
 export default {fetch:serveHost};
 

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // Maintainer test fixture only. The runner binds loopback and supplies an ephemeral test capability.
 import {DurableObject} from 'cloudflare:workers';
-import {recordLegalRelease,registerContractActionDefinition,recordContractDeclaration,claimContractDelivery,settleContractDelivery,dispatchContractDeclaration,dispatchContractDelivery,createContractDeclarationStore} from 'notabenda-cf';
+import {recordLegalRelease,registerContractActionDefinition,recordContractDeclaration,claimContractDelivery,settleContractDelivery,dispatchContractDeclaration,dispatchContractDelivery,createContractDeclarationStore} from '@notabenda/cloudflare';
 import data from '../../site/dist/server-data.json' with {type:'json'};
 const definition=data.contractActions.definitions.withdrawal;
 export default {async fetch(request,env){

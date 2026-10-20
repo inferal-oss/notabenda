@@ -3,10 +3,10 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
 import {IDBFactory} from 'fake-indexeddb';
-import {createFormPermission,createIndexedDBFormPermissionJournal} from 'notabenda';
-import {mountAstroFormPermission} from 'notabenda/astro/client';
-import {createFormPermissionOffer,compileLegalDocuments} from 'notabenda/content';
-import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission} from 'notabenda-cf';
+import {createFormPermission,createIndexedDBFormPermissionJournal} from '@notabenda/core';
+import {mountAstroFormPermission} from '@notabenda/core/astro/client';
+import {createFormPermissionOffer,compileLegalDocuments} from '@notabenda/core/content';
+import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 async function setup(extra={}){

@@ -1,17 +1,17 @@
 # Use Notabenda with React
 
-The optional `notabenda/react` entry point connects React 19 to the same controller used by vanilla integrations. It supplies a provider, subscription hooks, native consent controls and a preferences button. Static document components also have a separate server-safe `notabenda/react/documents` entry point.
+The optional `@notabenda/core/react` entry point connects React 19 to the same controller used by vanilla integrations. It supplies a provider, subscription hooks, native consent controls and a preferences button. Static document components also have a separate server-safe `@notabenda/core/react/documents` entry point.
 
-The default `notabenda` entry remains framework-independent and has no runtime dependencies. React is an optional peer: install your own React 19 application dependencies when using the React adapter. Packages remain an unpublished developer preview; use workspace builds or local tarballs.
+The default `@notabenda/core` entry remains framework-independent and has no runtime dependencies. React is an optional peer: install your own React 19 application dependencies when using the React adapter. Packages remain an unpublished developer preview; use workspace builds or local tarballs.
 
 ## Use the compiled consent entry
 
-For browser applications that already compile the site inventory, import the provider, hooks and controls from `notabenda/react/consent`:
+For browser applications that already compile the site inventory, import the provider, hooks and controls from `@notabenda/core/react/consent`:
 
 ```jsx
-import {createConsentRuntime} from 'notabenda/consent';
-import {ConsentProvider, ConsentControls, PreferencesButton} from 'notabenda/react/consent';
-import 'notabenda/consent.css'; // optional
+import {createConsentRuntime} from '@notabenda/core/consent';
+import {ConsentProvider, ConsentControls, PreferencesButton} from '@notabenda/core/react/consent';
+import '@notabenda/core/consent.css'; // optional
 
 // Build-time: compileConsentRuntimeConfig(siteConfig, {evidence: 'local'})
 const response = await fetch('/consent-runtime.json');
@@ -25,23 +25,23 @@ root.render(<ConsentProvider controller={consent}>
 </ConsentProvider>);
 ```
 
-This entry accepts both compiled and complete-config controllers. Its `useConsentController()` returns `ConsentStateController`, whose `getConfig()` is the smaller `ConsentRuntimeInventory`. It does not promise operator contacts, terms authoring or other workflow configuration. The existing `notabenda/react` provider and hook retain their complete-config controller contract. A compiled controller cannot be passed to that compatibility provider in TypeScript.
+This entry accepts both compiled and complete-config controllers. Its `useConsentController()` returns `ConsentStateController`, whose `getConfig()` is the smaller `ConsentRuntimeInventory`. It does not promise operator contacts, terms authoring or other workflow configuration. The existing `@notabenda/core/react` provider and hook retain their complete-config controller contract. A compiled controller cannot be passed to that compatibility provider in TypeScript.
 
 Import a provider and its hooks/components from the **same entry point**. Each entry has a separately typed context; mixing them throws an explanatory error instead of pretending that a smaller controller has a complete config. Controls ownership is shared: the same controller can have only one native controls mount, including across the two entries. Multiple preference buttons remain supported.
 
-Both entries share subscription, SSR/hydration, effective-permission and controls behavior. Required evidence is selected on the compiled descriptor and supplied through `requiredConsentEvidence` from `notabenda/consent/evidence` when constructing the controller; React never creates or downgrades that adapter. The [consent guide](CONSENT.md) covers its bounded descriptor and stored-choice migration.
+Both entries share subscription, SSR/hydration, effective-permission and controls behavior. Required evidence is selected on the compiled descriptor and supplied through `requiredConsentEvidence` from `@notabenda/core/consent/evidence` when constructing the controller; React never creates or downgrades that adapter. The [consent guide](CONSENT.md) covers its bounded descriptor and stored-choice migration.
 
-The consent-only entry does not import static document renderers or form-permission controls. Render legal documents with the separate server-safe `notabenda/react/documents` entry when needed, and use `notabenda/react` for ordinary form permissions. React remains an optional host-supplied peer. `npm run size` reports the compiled React integration separately with that peer external; its number excludes React and React DOM and is not an application transfer-size claim.
+The consent-only entry does not import static document renderers or form-permission controls. Render legal documents with the separate server-safe `@notabenda/core/react/documents` entry when needed, and use `@notabenda/core/react` for ordinary form permissions. React remains an optional host-supplied peer. `npm run size` reports the compiled React integration separately with that peer external; its number excludes React and React DOM and is not an application transfer-size claim.
 
 ## Own the controller outside React
 
 Create one browser controller before optional integrations can start, register their lifecycles once, then pass it into React. Do not create a controller during render or register services inside an effect that React may repeat.
 
 ```jsx
-import { createConsent } from 'notabenda';
-import { ConsentProvider, ConsentControls, PreferencesButton } from 'notabenda/react';
+import { createConsent } from '@notabenda/core';
+import { ConsentProvider, ConsentControls, PreferencesButton } from '@notabenda/core/react';
 import { createRoot } from 'react-dom/client';
-import 'notabenda/styles.css'; // Optional; the same theme tokens apply.
+import '@notabenda/core/styles.css'; // Optional; the same theme tokens apply.
 
 const consent = createConsent(publicConfig);
 consent.registerService('optional-metrics', {
@@ -74,7 +74,7 @@ React's development [StrictMode](https://react.dev/reference/react/StrictMode) r
 ## Read state and build your own interface
 
 ```jsx
-import { useConsentController, useConsentSnapshot, usePurposeAllowed } from 'notabenda/react';
+import { useConsentController, useConsentSnapshot, usePurposeAllowed } from '@notabenda/core/react';
 
 function MeasurementStatus() {
   const consent = useConsentController();
@@ -109,7 +109,7 @@ Control cleanup removes its UI without changing shared `preferencesOpen` state. 
 ## Render legal documents on the server
 
 ```jsx
-import { LegalDocument, LegalLinks } from 'notabenda/react/documents';
+import { LegalDocument, LegalLinks } from '@notabenda/core/react/documents';
 
 export function PrivacyPage({ publicConfig }) {
   return <YourPageLayout>
@@ -133,7 +133,7 @@ Required receipts are still configured at controller construction through its th
 
 ## Working example and verification
 
-Run `npm run dev` and open the [React example](http://127.0.0.1:4178/react) or [midnight theme](http://127.0.0.1:4178/dark/react). [Example source](../examples/react/view.mjs) separates host bootstrap, shared view and the build. The light/midnight cookie example now uses the compiled controller and `notabenda/react/consent`, with a small descriptor and explicit legal-link metadata. Only this optional example bundles React; vanilla pages do not fetch it.
+Run `npm run dev` and open the [React example](http://127.0.0.1:4178/react) or [midnight theme](http://127.0.0.1:4178/dark/react). [Example source](../examples/react/view.mjs) separates host bootstrap, shared view and the build. The light/midnight cookie example now uses the compiled controller and `@notabenda/core/react/consent`, with a small descriptor and explicit legal-link metadata. Only this optional example bundles React; vanilla pages do not fetch it.
 
 `REQ-PRODUCT-REACT` links implementation and tests. Tests cover core escaping, conservative SSR, hydration recovery, immutable/cached snapshots, StrictMode cleanup, controller replacement, required-receipt gating, storage changes without render-time effects, and packed consumer types. DOM simulations do not replace real-browser layout, dialog and assistive-technology verification.
 
@@ -146,7 +146,7 @@ For configured [privacy signals](PRIVACY-SIGNALS.md), `useServiceAllowed(service
 Use a separate controller and provider for each stable purpose/channel and host-bound person/contact generation. These controls share the [form permission controller](FORM-PERMISSIONS.md), exact offers, recovery journal and optional backend with vanilla integrations.
 
 ```jsx
-import {FormPermissionProvider, FormPermissionField} from 'notabenda/react';
+import {FormPermissionProvider, FormPermissionField} from '@notabenda/core/react';
 
 function AccountPreferences({permission}) {
   return <FormPermissionProvider controller={permission}>

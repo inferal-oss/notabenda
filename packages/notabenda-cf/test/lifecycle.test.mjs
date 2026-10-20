@@ -4,9 +4,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture} from '../../notabenda/test/helpers.mjs';
-import {compileLegalDocuments,createConsentNotice,createProcessingNotice,createTermsOffer} from 'notabenda/content';
+import {compileLegalDocuments,createConsentNotice,createProcessingNotice,createTermsOffer} from '@notabenda/core/content';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
-import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,createConsentEvidenceStore,registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance,createTermsAcceptanceStore,createEvidenceLifecycle,createEvidenceLifecycleStore,createDurableObjectStore,createAdminWorker} from 'notabenda-cf';
+import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,createConsentEvidenceStore,registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance,createTermsAcceptanceStore,createEvidenceLifecycle,createEvidenceLifecycleStore,createDurableObjectStore,createAdminWorker} from '@notabenda/cloudflare';
 const instant='2026-10-18T12:00:00.000Z',scopeId='privacy-workflow',streamId='opaque-alder',subjectId='subject-alder';
 const query={query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50};
 const decision=()=>({requestId:crypto.randomUUID(),reason:'operator-erasure',eligibleAt:instant,legalHold:false});

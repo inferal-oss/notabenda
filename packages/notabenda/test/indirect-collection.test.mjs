@@ -5,9 +5,9 @@ import {JSDOM} from 'jsdom';
 import {build as bundle} from 'esbuild';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {IndirectCollectionNotice as ReactNotice} from 'notabenda/react/documents';
-import {normalizeIndirectCollectionNotice,renderIndirectCollectionNotice,formatIndirectCollectionNotice} from 'notabenda/collection/indirect';
-import {compileLegalDocuments,createIndirectCollectionNotice,verifyIndirectCollectionNotice,createCollectionNotice,canonicalJson,sha256} from 'notabenda/content';
+import {IndirectCollectionNotice as ReactNotice} from '@notabenda/core/react/documents';
+import {normalizeIndirectCollectionNotice,renderIndirectCollectionNotice,formatIndirectCollectionNotice} from '@notabenda/core/collection/indirect';
+import {compileLegalDocuments,createIndirectCollectionNotice,verifyIndirectCollectionNotice,createCollectionNotice,canonicalJson,sha256} from '@notabenda/core/content';
 import {fixture} from './helpers.mjs';
 
 async function scenario({reviewed=true,source='indirect'}={}){
@@ -104,5 +104,5 @@ test('renderer escapes all public text and React stays server-safe; optional ren
   assert.equal(dom.window.document.querySelector('script,img,style,iframe'),null);assert.match(dom.window.document.body.textContent,/<img src=x onerror=bad\(\)>/);const ids=[...dom.window.document.querySelectorAll('[id]')].map(el=>el.id);assert.equal(ids.length,new Set(ids).size);dom.window.close();
   for(const idPrefix of ['','../bad','bad"'])assert.throws(()=>renderIndirectCollectionNotice(n,{idPrefix}));assert.throws(()=>renderIndirectCollectionNotice(n,{idPrefix:'good',headingLevel:1}));
   assert.match(renderToStaticMarkup(createElement(ReactNotice,{notice:n,idPrefix:'react'})),/data-indirect-notice-id/);
-  const result=await bundle({stdin:{contents:"export {renderIndirectCollectionNotice} from 'notabenda/collection/indirect'",resolveDir:process.cwd()},bundle:true,write:false,platform:'browser',metafile:true});assert.ok(Object.keys(result.metafile.inputs).every(path=>!/(?:node:|react|astro|catalog|\/content\.|\/config\.)/u.test(path)));
+  const result=await bundle({stdin:{contents:"export {renderIndirectCollectionNotice} from '@notabenda/core/collection/indirect'",resolveDir:process.cwd()},bundle:true,write:false,platform:'browser',metafile:true});assert.ok(Object.keys(result.metafile.inputs).every(path=>!/(?:node:|react|astro|catalog|\/content\.|\/config\.)/u.test(path)));
 });

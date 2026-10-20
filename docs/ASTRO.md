@@ -8,8 +8,8 @@ This preview is tested with **Astro 7.4.0**, which needs Node.js 22.22 or later.
 
 ```astro
 ---
-import LegalDocument from 'notabenda/astro/LegalDocument.astro';
-import LegalLinks from 'notabenda/astro/LegalLinks.astro';
+import LegalDocument from '@notabenda/core/astro/LegalDocument.astro';
+import LegalLinks from '@notabenda/core/astro/LegalLinks.astro';
 import publicConfig from '../legal/notabenda.public.json';
 ---
 <html lang="en">
@@ -21,7 +21,7 @@ import publicConfig from '../legal/notabenda.public.json';
 </html>
 ```
 
-The components add no scripts or framework hydration. Astro's [static routes](https://docs.astro.build/en/guides/routing/) decide the page URL. Keep those routes consistent with `documents.*.route` in the configuration. Import the optional `notabenda/styles.css`, or use your own host layout and stylesheet.
+The components add no scripts or framework hydration. Astro's [static routes](https://docs.astro.build/en/guides/routing/) decide the page URL. Keep those routes consistent with `documents.*.route` in the configuration. Import the optional `@notabenda/core/styles.css`, or use your own host layout and stylesheet.
 
 `LegalDocument` accepts `config`, `kind`, optional `mode` and `class`. Production is the default and requires a reviewed document. Use `mode="preview"` to show drafts explicitly. `LegalLinks` accepts `config` and optional `class`; its ordinary anchors do not imply consent or terms agreement.
 
@@ -33,8 +33,8 @@ In a shared interactive layout:
 
 ```astro
 ---
-import ConsentControls from 'notabenda/astro/ConsentControls.astro';
-import PreferencesButton from 'notabenda/astro/PreferencesButton.astro';
+import ConsentControls from '@notabenda/core/astro/ConsentControls.astro';
+import PreferencesButton from '@notabenda/core/astro/PreferencesButton.astro';
 ---
 <main><slot /></main>
 <footer>
@@ -42,8 +42,8 @@ import PreferencesButton from 'notabenda/astro/PreferencesButton.astro';
   <ConsentControls preferencesLabel="Privacy choices" />
 </footer>
 <script>
-  import { createConsent } from 'notabenda';
-  import { mountAstroConsent } from 'notabenda/astro/client';
+  import { createConsent } from '@notabenda/core';
+  import { mountAstroConsent } from '@notabenda/core/astro/client';
   import publicConfig from '../legal/notabenda.public.json';
 
   const consent = createConsent(publicConfig);
@@ -92,7 +92,7 @@ Astro has an optional field component and named browser bridge around the [same 
 
 ```astro
 ---
-import FormPermissionField from 'notabenda/astro/FormPermissionField.astro';
+import FormPermissionField from '@notabenda/core/astro/FormPermissionField.astro';
 import publicOffer from '../legal/product-news.offer.json';
 ---
 <FormPermissionField id="product-news" offerId={publicOffer.offerId}>
@@ -105,8 +105,8 @@ The component emits a static fallback and an empty mount. It supplies no account
 In the application's processed browser bootstrap:
 
 ```js
-import {createFormPermission} from 'notabenda';
-import {mountAstroFormPermission} from 'notabenda/astro/client';
+import {createFormPermission} from '@notabenda/core';
+import {mountAstroFormPermission} from '@notabenda/core/astro/client';
 
 // Host-supplied public offer, opaque contact-generation reference and authorized transports.
 const permission = createFormPermission(publicOffer, {

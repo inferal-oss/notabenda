@@ -8,13 +8,13 @@ A [complete sourced product example](GUARANTEE-PRODUCER-EXAMPLE.md) shows the or
 
 ## Supply a finished file
 
-The optional `notabenda-authoring/guarantees` build entry contains the image parsers. The frontend entry `notabenda/guarantees/label` remains dependency-free. Install the preview packages from your checkout; they have not been published to npm.
+The optional `@notabenda/authoring/guarantees` build entry contains the image parsers. The frontend entry `@notabenda/core/guarantees/label` remains dependency-free. Install the preview packages from your checkout; they have not been published to npm.
 
 ```ts
 import {readFile, mkdir, writeFile} from 'node:fs/promises';
 import {dirname, join} from 'node:path';
-import {buildDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
-import {renderDurabilityGuaranteeLabel} from 'notabenda/guarantees/label';
+import {buildDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
+import {renderDurabilityGuaranteeLabel} from '@notabenda/core/guarantees/label';
 
 const file = await readFile('./producer-assets/kettle-100-garan.png');
 const result = buildDurabilityGuaranteeLabel({
@@ -64,12 +64,12 @@ ICC profiles are outside this version’s supported export subset. Ask the produ
 
 ## Render and retain
 
-Load `notabenda/guarantees.css`, or supply reviewed styles for the same markup. The full-label view keeps readable product, brand, model and duration text beside the complete image, a full-size link and the prescribed [durability guarantee information destination](https://europa.eu/youreurope/commercial-guarantee-durability/index.htm). React exports `DurabilityGuaranteeLabel` from `notabenda/react/documents`; Astro supplies `notabenda/astro/DurabilityGuaranteeLabel.astro`. Both accept `label`, `idPrefix`, an optional heading level and explicit `allowPreview`.
+Load `@notabenda/core/guarantees.css`, or supply reviewed styles for the same markup. The full-label view keeps readable product, brand, model and duration text beside the complete image, a full-size link and the prescribed [durability guarantee information destination](https://europa.eu/youreurope/commercial-guarantee-durability/index.htm). React exports `DurabilityGuaranteeLabel` from `@notabenda/core/react/documents`; Astro supplies `@notabenda/core/astro/DurabilityGuaranteeLabel.astro`. Both accept `label`, `idPrefix`, an optional heading level and explicit `allowPreview`.
 
 The image is an ordinary `<img>`, never inline SVG. Preserve its ratio, colours, complete bounds and visibility. Check actual delivery and readability on the target page and devices. The readable facts and alternative text do not turn a broken or missing image into a successful prescribed-label display. This renderer supplies the product label only. The [paid-order integration](PAID-ORDERS.md) places it beside its item in the expanded final review and checks required image readiness before the action. Customer copies and delivery use the separate [confirmation integration](ORDER-CONFIRMATIONS.md).
 
 The descriptor identity binds the product, producer facts, duration, review state, wording, statement link, asset path and original file hash. `normalizeDurabilityGuaranteeLabel` only validates and clones its structure. At build time, `verifyDurabilityGuaranteeLabel(label, originalBytes)` recomputes the descriptor identity, original file hash and decoded metadata. Neither authenticates a producer or reviewer. Browser metadata does not enforce image integrity.
 
-Retain the descriptor **and original bytes** when changing an offer or label. The emitted asset uses a same-origin content-addressed URL; keep old URLs available while retained records need them. These files are not automatically included in the legal-document DO archive or its size budget. The optional `notabenda-cf/orders` backend retains original files separately with an order review, explicit host authorization and intent-level retirement; see [paid orders](PAID-ORDERS.md). The host owns publication, access policy and retention decisions. Do not put customer/order data, private qualification notes, upload filenames or source paths into the public descriptor.
+Retain the descriptor **and original bytes** when changing an offer or label. The emitted asset uses a same-origin content-addressed URL; keep old URLs available while retained records need them. These files are not automatically included in the legal-document DO archive or its size budget. The optional `@notabenda/cloudflare/orders` backend retains original files separately with an order review, explicit host authorization and intent-level retirement; see [paid orders](PAID-ORDERS.md). The host owns publication, access policy and retention decisions. Do not put customer/order data, private qualification notes, upload filenames or source paths into the public descriptor.
 
 See [verification and remaining acceptance work](verification/guarantees.md).

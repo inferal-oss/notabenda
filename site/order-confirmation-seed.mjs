@@ -1,9 +1,9 @@
 // @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-ORDER-CONFIRMATION REQ-PRODUCT-DEMO-WORKSPACE
 // Synthetic host wiring. It sends no messages and creates no real contracts or payments.
-import {archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,paidOrderCheckoutRef} from 'notabenda-cf/orders';
-import {preparePaidOrderConfirmation,claimPaidOrderConfirmation,settlePaidOrderConfirmation} from 'notabenda-cf/order-confirmations';
-import {normalizePaidOrderReview,formatPaidOrderMoney} from 'notabenda/orders';
+import {archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,paidOrderCheckoutRef} from '@notabenda/cloudflare/orders';
+import {preparePaidOrderConfirmation,claimPaidOrderConfirmation,settlePaidOrderConfirmation} from '@notabenda/cloudflare/order-confirmations';
+import {normalizePaidOrderReview,formatPaidOrderMoney} from '@notabenda/core/orders';
 import {canonicalJson,sha256} from '../packages/notabenda-cf/dist/history.js';
 import {orderDemoSite,orderDemoScope} from './order-demo.mjs';
 const samples=[{id:'one',name:'Alex Morgan',reference:'JN-1042',at:'2026-10-17T09:35:00.000Z',status:'accepted'},{id:'two',name:'Casey Reed',reference:'JN-1043',at:'2026-10-18T11:10:00.000Z',status:'uncertain'},{id:'three',name:'Rowan Ellis',reference:'JN-1044',at:'2026-10-19T08:20:00.000Z',status:'pending'}];

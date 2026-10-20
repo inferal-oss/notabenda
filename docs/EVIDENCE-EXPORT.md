@@ -56,7 +56,7 @@ These reads do not supply snapshot isolation. Inserts behind a prior cursor, mod
 A trusted host can use the same bounded reader without mounting the UI:
 
 ```ts
-import {createEvidenceExportSegment} from 'notabenda-cf';
+import {createEvidenceExportSegment} from '@notabenda/cloudflare';
 
 // Authorize first and resolve a fixed store independently of untrusted input.
 const segment = await createEvidenceExportSegment(authorizedStore, {

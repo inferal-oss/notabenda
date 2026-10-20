@@ -52,7 +52,7 @@ There is no `reviewed:true`, host boolean, preview option or generic checkbox th
 ## Explain the result
 
 ```ts
-import {evaluateScopeGuards, ScopeGuardError} from 'notabenda';
+import {evaluateScopeGuards, ScopeGuardError} from '@notabenda/core';
 
 const result = evaluateScopeGuards(publicConfig);
 // status: unassessed | restricted | no-declared-restrictions

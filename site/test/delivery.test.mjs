@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {build} from 'esbuild';
 import {JSDOM} from 'jsdom';
-import {createConsentRuntime} from 'notabenda/consent';
+import {createConsentRuntime} from '@notabenda/core/consent';
 
 test('cookie examples serve component styles while their legal documents retain the complete stylesheet',async()=>{
  const root=new URL('../dist/public/',import.meta.url);

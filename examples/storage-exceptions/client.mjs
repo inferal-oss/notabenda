@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-STORAGE-EXCEPTIONS
 // @requirements REQ-UK-EXCEPTIONS REQ-PRODUCT-STORAGE-CLEANUP
-import {createStorageExceptions,createIndexedDBStorageExceptionJournal} from 'notabenda/storage-exceptions';
-import {mountStorageExceptionControls,rejectAllOptionalActivity} from 'notabenda/storage-exceptions/ui';
-import {createConsent,registerStorageService} from 'notabenda';
+import {createStorageExceptions,createIndexedDBStorageExceptionJournal} from '@notabenda/core/storage-exceptions';
+import {mountStorageExceptionControls,rejectAllOptionalActivity} from '@notabenda/core/storage-exceptions/ui';
+import {createConsent,registerStorageService} from '@notabenda/core';
 const d=document,$=id=>d.getElementById(id),message=$('example-status');
 try{
  const response=await fetch('/storage-exceptions/site.json',{credentials:'omit'});if(!response.ok)throw Error();const config=await response.json(),journal=createIndexedDBStorageExceptionJournal(),exceptions=createStorageExceptions(config,{journal,allowPreview:true}),consent=createConsent(config),adapters=[],services=[];

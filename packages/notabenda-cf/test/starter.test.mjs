@@ -11,8 +11,8 @@ import {pathToFileURL,fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 import {fixture} from '../../notabenda/test/helpers.mjs';
-import {compileLegalDocuments} from 'notabenda/content';
-import {compileAuthoredDocuments} from 'notabenda-authoring';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {compileAuthoredDocuments} from '@notabenda/authoring';
 const root=fileURLToPath(new URL('../../../',import.meta.url)),cli=fileURLToPath(new URL('../bin/notabenda-cf.mjs',import.meta.url));
 const run=(cwd,args)=>spawnSync(process.execPath,[cli,...args],{cwd,encoding:'utf8'});
 async function directory(){return mkdtemp(join(tmpdir(),'notabenda-cf-starter-'));}
@@ -25,7 +25,7 @@ test('CLI creates a standalone project with declared SQLite storage, local build
  const cwd=await directory();try{
   const target=await scaffold(cwd),config=JSON.parse(await readFile(join(target,'wrangler.json'),'utf8')),pkg=JSON.parse(await readFile(join(target,'package.json'),'utf8'));
   assert.deepEqual(config.exports,{EvidenceWorkspace:{type:'durable-object',storage:'sqlite'}});assert.equal(config.migrations,undefined);assert.equal(config.assets.run_worker_first,true);assert.equal(config.routes,undefined);assert.equal(config.account_id,undefined);assert.equal(config.observability.enabled,false);
-  assert.match(pkg.scripts.check,/--dry-run/);assert.equal(pkg.dependencies['notabenda-cf'],'0.1.0');assert.equal(pkg.dependencies.notabenda,'0.1.0');assert.equal(pkg.private,true);
+  assert.match(pkg.scripts.check,/--dry-run/);assert.equal(pkg.dependencies['@notabenda/cloudflare'],'0.1.0');assert.equal(pkg.dependencies['@notabenda/core'],'0.1.0');assert.equal(pkg.private,true);
   assert.match(await readFile(join(target,'LICENSE'),'utf8'),/Apache License/);assert.match(await readFile(join(target,'.gitignore'),'utf8'),/\.dev.vars/);
   const {authorizeHostRequest}=await import(pathToFileURL(join(target,'src/authorize.mjs')));assert.equal(await authorizeHostRequest(new Request('https://example.test/'),{}),null);
   await assert.rejects(readFile(join(target,'.dev.vars')),e=>e.code==='ENOENT');await assert.rejects(readFile(join(target,'package-lock.json')),e=>e.code==='ENOENT');

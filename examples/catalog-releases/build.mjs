@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-RETAINED-RELEASES
-import {compileLegalDocuments,createRetainedReleaseFiles} from 'notabenda/content';
-import {createCatalogSelectionPlan} from 'notabenda/catalog/selection';
-import {attachCatalogReview} from 'notabenda/catalog/release';
+import {compileLegalDocuments,createRetainedReleaseFiles} from '@notabenda/core/content';
+import {createCatalogSelectionPlan} from '@notabenda/core/catalog/selection';
+import {attachCatalogReview} from '@notabenda/core/catalog/release';
 const catalog={schemaVersion:1,kind:'notabenda-service-catalog',id:'example-provider-reference',revision:'example-1',sources:[{id:'provider-docs',url:'https://docs.example.test/cedar-mail',revision:'reference-1',checkedOn:null,access:'reference-only',license:'Apache-2.0',note:'Example reference for the catalog-history demonstration.'}],providers:[{id:'cedar',revision:'provider-1',name:'Cedar Mail',aliases:[],sourceIds:['provider-docs'],review:'unreviewed'}],products:[{id:'cedar-email',revision:'product-1',providerId:'cedar',name:'Cedar email delivery',aliases:[],description:'Email delivery reference for the sample site.',categories:['email'],delivery:['backend'],sourceIds:['provider-docs'],review:'unreviewed',identifiers:[],storageHints:[]}]};
 export function catalogReleaseExample(base){
  const input=structuredClone(base);input.site.id='juniper-catalog-releases';input.services=[];input.storage=[];for(const [kind,doc] of Object.entries(input.documents))doc.route='/catalog-releases/'+kind;

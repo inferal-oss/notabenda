@@ -7,8 +7,8 @@ import {createRoot} from 'react-dom/client';
 import {spawnSync} from 'node:child_process';
 import {build} from 'esbuild';
 import {JSDOM} from 'jsdom';
-import * as legacy from 'notabenda/react';
-import * as compiled from 'notabenda/react/consent';
+import * as legacy from '@notabenda/core/react';
+import * as compiled from '@notabenda/core/react/consent';
 import {consentProfiles} from './consent-profiles.mjs';
 import {fixture} from './helpers.mjs';
 async function setup(factory){
@@ -52,8 +52,8 @@ test('both entries share controls ownership across separately typed providers an
 });
 
 test('compiled React import is SSR safe and its actual graph excludes full config, document/form renderers and frameworks other than its React peer',async()=>{
- const script=`for(const k of ['window','document','navigator'])Object.defineProperty(globalThis,k,{get(){throw Error(k)},configurable:true});const api=await import('notabenda/react/consent');if(typeof api.ConsentProvider!=='function')process.exit(1);`;
+ const script=`for(const k of ['window','document','navigator'])Object.defineProperty(globalThis,k,{get(){throw Error(k)},configurable:true});const api=await import('@notabenda/core/react/consent');if(typeof api.ConsentProvider!=='function')process.exit(1);`;
  const child=spawnSync(process.execPath,['--input-type=module','-e',script],{cwd:new URL('../../../',import.meta.url),encoding:'utf8',timeout:10000});assert.equal(child.status,0,child.stderr);
- const result=await build({stdin:{contents:"export * from 'notabenda/react/consent';",resolveDir:new URL('../../../',import.meta.url).pathname},bundle:true,write:false,metafile:true,format:'esm',platform:'browser',external:['react']});
+ const result=await build({stdin:{contents:"export * from '@notabenda/core/react/consent';",resolveDir:new URL('../../../',import.meta.url).pathname},bundle:true,write:false,metafile:true,format:'esm',platform:'browser',external:['react']});
  const output=Object.values(result.metafile.outputs)[0],inputs=Object.keys(output.inputs);assert.ok(inputs.some(p=>p.endsWith('/react-consent-bindings.js')));assert.ok(inputs.every(p=>!/(?:\/config|\/consent|consent-evidence|react-documents|react-form-permission|form-permission|documents|rights-policy|content|setup|discovery)\.js$/u.test(p)));assert.deepEqual(output.imports.map(i=>i.path),['react']);
 });

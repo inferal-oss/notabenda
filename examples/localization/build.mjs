@@ -5,8 +5,8 @@ import {localizedAgreementFiles} from './agreement-build.mjs';
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
 import {build as bundle} from 'esbuild';
-import {compileLegalDocuments,compileConsentRuntimeConfig} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,compileConsentRuntimeConfig} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 import {localizedExampleConfig} from './config.mjs';
 export async function localizationFiles(base){
  const config=localizedExampleConfig(base),build=compileLegalDocuments(config,{mode:'preview',stylesheetUrl:'/assets/notabenda.css'});

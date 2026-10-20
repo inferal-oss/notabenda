@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-DEMO-WORKSPACE
-import {recordContractDeclaration,claimContractDelivery,settleContractDelivery} from 'notabenda-cf';
+import {recordContractDeclaration,claimContractDelivery,settleContractDelivery} from '@notabenda/cloudflare';
 const samples=[
  {key:'reading-return',route:'withdrawal',name:'Arden Vale',contract:'Juniper Notes · annual reading plan · JN-24031',email:'arden@example.test',at:'2026-10-16T09:12:00.000Z',application:'accepted',acknowledgement:'accepted'},
  {key:'monthly-ending',route:'cancellation',name:'Casey Reed',contract:'Juniper Notes · monthly studio · JN-24042',email:'casey@example.test',at:'2026-10-17T11:35:00.000Z',cancellation:{kind:'ordinary',reason:'',ending:'Zum Ende des laufenden Abrechnungszeitraums'},acknowledgement:'accepted'},

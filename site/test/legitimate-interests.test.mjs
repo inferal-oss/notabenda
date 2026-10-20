@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {verifyCollectionNotice} from 'notabenda/content';
+import {verifyCollectionNotice} from '@notabenda/core/content';
 const root=new URL('../dist/public/',import.meta.url),read=path=>readFile(new URL(path,root),'utf8');
 
 test('light and dark collection examples show the same reviewed-as-draft interests and exact pinned release',async()=>{

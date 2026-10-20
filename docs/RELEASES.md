@@ -8,7 +8,7 @@ An old terms agreement or privacy-choice record points to the wording shown at t
 
 ```ts
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments, createRetainedReleaseFiles} from 'notabenda/content';
+import {compileLegalDocuments, createRetainedReleaseFiles} from '@notabenda/core/content';
 
 const current = compileLegalDocuments(currentConfig);
 const previous = JSON.parse(await readFile('./legal/releases/prior.json', 'utf8'));
@@ -24,7 +24,7 @@ Save `build.artifact`, or the public `artifacts/ID.json` emitted by the compiler
 The JSON CLI supports the same path:
 
 ```sh
-npx notabenda build --config legal/current.json --out-dir public-legal \
+npx @notabenda/core build --config legal/current.json --out-dir public-legal \
   --retain-artifact legal/releases/previous.json \
   --retain-artifact legal/releases/earlier.json
 ```

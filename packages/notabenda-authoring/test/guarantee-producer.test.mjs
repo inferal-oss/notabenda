@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {spawnSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
+import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
 const root=new URL('../../../examples/guarantees/producer/',import.meta.url);
 
 test('the sourced complete producer fixture preserves fixed artwork and binds outlined fields to product facts',()=>{

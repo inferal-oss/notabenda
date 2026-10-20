@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-REACT
 import {createElement,StrictMode} from 'react';
 import {hydrateRoot} from 'react-dom/client';
-import {createConsentRuntime} from 'notabenda/consent';
+import {createConsentRuntime} from '@notabenda/core/consent';
 import {App} from './view.mjs';
 
 const container=document.getElementById('react-root');

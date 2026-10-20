@@ -1,6 +1,6 @@
 # Technology functions and activation
 
-Use the optional build-time `notabenda/technology` entry to describe a declared service’s identification, location or profiling functions before offering activation. The [working example](/technology/) builds a browser-only reading-interest profile after a saved choice. Every article remains available while the profile is off.
+Use the optional build-time `@notabenda/core/technology` entry to describe a declared service’s identification, location or profiling functions before offering activation. The [working example](/technology/) builds a browser-only reading-interest profile after a saved choice. Every article remains available while the profile is off.
 
 This initial `qc-private-technology-v1` profile supports the mechanics linked to `REQ-QC-PROFILING`. It does not determine Québec applicability, necessity or legal basis, perform legal review, or support biometrics, specialized high-risk processing or entirely automated decision workflows.
 
@@ -13,8 +13,8 @@ import {
   technologyCollectionScope,
   createTechnologyCollectionNotice,
   renderTechnologyCollectionNotice,
-} from 'notabenda/technology';
-import { compileLegalDocuments } from 'notabenda/content';
+} from '@notabenda/core/technology';
+import { compileLegalDocuments } from '@notabenda/core/content';
 
 const declaration = {
   profile: 'qc-private-technology-v1',
@@ -75,9 +75,9 @@ Render the technology description, functions, purpose, default-off explanation a
 The static renderer emits semantic HTML with no JavaScript dependency. It does not activate the service or attach a click handler. Its controls link is a safe root-relative host destination. Connect that destination to your actual controls; following it must not itself grant permission.
 
 ```ts
-import { createConsentRuntime, mountControls } from 'notabenda/consent';
-import 'notabenda/consent.css';
-import 'notabenda/technology.css';
+import { createConsentRuntime, mountControls } from '@notabenda/core/consent';
+import '@notabenda/core/consent.css';
+import '@notabenda/core/technology.css';
 
 const consent = createConsentRuntime(compiledRuntime);
 consent.registerService('reading-profile', {

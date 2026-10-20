@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-REACT REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-DEMO-WORKSPACE
 import {createElement as h,StrictMode} from 'react';
 import {hydrateRoot} from 'react-dom/client';
-import {createFormPermission,createIndexedDBFormPermissionJournal,FormPermissionError} from 'notabenda';
+import {createFormPermission,createIndexedDBFormPermissionJournal,FormPermissionError} from '@notabenda/core';
 import {ReactPermissionApp} from './react-view.mjs';
 import {demoSessionEnded} from '/assets/demo-session.mjs';
 const container=document.getElementById('react-permission-root'),generation=document.querySelector('meta[name=notabenda-demo-generation]')?.content;

@@ -5,7 +5,7 @@ description: Set up or update Notabenda in a website, including site configurati
 
 # Integrate Notabenda
 
-Use the installed package's documentation and types for its version. The current website describes the developer preview; packages have not been published to npm. In this workspace, build with `npm run build` and run `node packages/notabenda/dist/cli.js`. In a consuming project, install a trusted local tarball first, then use its local CLI. Do not let `npx` fetch an unrelated registry package if Notabenda is absent.
+Package names are `@notabenda/core`, `@notabenda/cloudflare` and `@notabenda/authoring`; installed CLI binaries remain `notabenda` and `notabenda-cf`. Use the installed package's documentation and types for its version. The current website describes the developer preview; packages have not been published to npm. In this workspace, build with `npm run build` and run `node packages/notabenda/dist/cli.js`. In a consuming project, install a trusted local tarball first, then use its local CLI. Do not let `npx` fetch an unrelated registry package if Notabenda is absent.
 
 Read [the documentation index](https://notabenda.org/llms.txt), then fetch only the guides needed for the task. Markdown guides have `/index.md` after their guide URL, for example `https://notabenda.org/guide/setup/index.md`.
 
@@ -50,7 +50,7 @@ Read `validation.authoringShape` before the runtime diagnostics. It checks exact
 
 Follow [configuration](https://notabenda.org/guide/package/index.md) and [service review](https://notabenda.org/guide/service-catalog/index.md). Ask for material facts that the project cannot establish; leave unknowns and drafts explicit. Do not invent operator contacts, legal bases, retention periods, exemptions or regional applicability. Locale is presentation, not jurisdiction selection. No complete jurisdiction pack is production-supported; consult individual requirement status and primary sources.
 
-The JSON CLI supports `init`, `check` and `build`. Markdown/MDX authoring uses the separate `notabenda-authoring` build API, not a CLI flag. Follow [authoring](https://notabenda.org/guide/authoring/index.md): YAML frontmatter supplies kind, title, route, version, effective date, review declaration and optional stable section IDs. Terms require supplied wording. Only compile trusted MDX: its imports and components execute as project code during the build. Keep original source archives private.
+The JSON CLI supports `init`, `check` and `build`. Markdown/MDX authoring uses the separate `@notabenda/authoring` build API, not a CLI flag. Follow [authoring](https://notabenda.org/guide/authoring/index.md): YAML frontmatter supplies kind, title, route, version, effective date, review declaration and optional stable section IDs. Terms require supplied wording. Only compile trusted MDX: its imports and components execute as project code during the build. Keep original source archives private.
 
 Use preview mode while drafting:
 

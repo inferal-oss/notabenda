@@ -1,6 +1,6 @@
 # Recorded processing opt-outs
 
-Cookie permission and permission to sell, share or use data for targeted advertising are separate questions. `createProcessingChoices` supplies an explicit opt-out, local pending recovery and a host-confirmed restriction state. It has no grant, reset, automatic expiry or re-opt-in method. `notabenda-cf` provides the corresponding transactional ledger and authorized search view.
+Cookie permission and permission to sell, share or use data for targeted advertising are separate questions. `createProcessingChoices` supplies an explicit opt-out, local pending recovery and a host-confirmed restriction state. It has no grant, reset, automatic expiry or re-opt-in method. `@notabenda/cloudflare` provides the corresponding transactional ledger and authorized search view.
 
 This mechanism implements `REQ-PRODUCT-PROCESSING-CHOICES`. It contributes to, and does not complete, `REQ-US-CA-CHOICES`. Reviewed applicability, alternative request methods, identity continuity, downstream handling, sensitive-information rights and retention remain operator work. A cookie banner alone does not supply the California sale/sharing opt-out method. See the [catalog entry](requirements/README.md#req-us-ca-choices) and its primary regulation source.
 
@@ -9,7 +9,7 @@ This mechanism implements `REQ-PRODUCT-PROCESSING-CHOICES`. It contributes to, a
 Explicitly classify **every** configured service with `processingActivities`: any of `sale`, `sharing`, `targeted-advertising`, or `[]`. This records a technical classification supplied by the operator; the library does not determine the legal meaning of a vendor's activity.
 
 ```ts
-import {compileLegalDocuments, createProcessingNotice} from 'notabenda/content';
+import {compileLegalDocuments, createProcessingNotice} from '@notabenda/core/content';
 
 const release = compileLegalDocuments(reviewedConfig);
 const notice = createProcessingNotice(release.artifact, {
@@ -32,7 +32,7 @@ import {
   recordLegalRelease, registerProcessingNotice,
   getProcessingHead, recordProcessingRestriction,
   createProcessingRestrictionStore,
-} from 'notabenda-cf';
+} from '@notabenda/cloudflare';
 
 await recordLegalRelease(storage, release.artifact);
 await registerProcessingNotice(storage, notice, {siteId: notice.siteId});
@@ -60,8 +60,8 @@ Each transaction appends an immutable event and replaces the context's head with
 ## Connect the browser
 
 ```ts
-import {createProcessingChoices, mountProcessingChoices, createConsent} from 'notabenda';
-import 'notabenda/styles.css';
+import {createProcessingChoices, mountProcessingChoices, createConsent} from '@notabenda/core';
+import '@notabenda/core/styles.css';
 
 const processing = createProcessingChoices(notice, {
   streamRef: trustedContext.streamRef,

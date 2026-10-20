@@ -1,5 +1,5 @@
 import {parseDocument,visit} from 'yaml';
-import type {DocumentKind,DocumentConfig} from 'notabenda';
+import type {DocumentKind,DocumentConfig} from '@notabenda/core';
 
 export const MAX_SOURCE_BYTES=24576;
 export class AuthoringError extends Error {

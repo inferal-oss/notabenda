@@ -3,9 +3,9 @@ import {consentProfiles} from './consent-profiles.mjs';
 import {JSDOM} from 'jsdom';
 import {test as nodeTest} from 'node:test';
 import assert from 'node:assert/strict';
-import {mountControls,ConsentEvidenceError} from 'notabenda';
-import {compileLegalDocuments,createConsentNotice} from 'notabenda/content';
-import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,createConsentEvidenceStore,createEvidenceLifecycle} from 'notabenda-cf';
+import {mountControls,ConsentEvidenceError} from '@notabenda/core';
+import {compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
+import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,createConsentEvidenceStore,createEvidenceLifecycle} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 // @requirements REQ-PRODUCT-CONSENT-EVIDENCE REQ-EU-CONSENT REQ-PRODUCT-CONSENT-RUNTIME

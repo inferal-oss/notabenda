@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE REQ-EU-INTERESTS-DISCLOSURE
-import {compileLegalDocuments,createCollectionNotice} from 'notabenda/content';
-import {renderCollectionNotice,renderLegalLinks,collectionNoticeIds} from 'notabenda';
+import {compileLegalDocuments,createCollectionNotice} from '@notabenda/core/content';
+import {renderCollectionNotice,renderLegalLinks,collectionNoticeIds} from '@notabenda/core';
 export async function collectionFiles(base){
   const files={};
   for(const prefix of ['','/dark']){

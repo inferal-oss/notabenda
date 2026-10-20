@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {readFile} from 'node:fs/promises';
-import {compileConsentRuntimeConfig} from 'notabenda/content';
+import {compileConsentRuntimeConfig} from '@notabenda/core/content';
 export async function performanceInventories(){
  const fixture=JSON.parse(await readFile(new URL('../examples/static/notabenda.config.json',import.meta.url),'utf8'));
  return [2,12,40].map(count=>{

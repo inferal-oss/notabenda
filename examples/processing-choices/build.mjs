@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createProcessingNotice} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createProcessingNotice} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 import {exampleConsentConfig} from '../static/choices-build.mjs';
 
 export async function processingFiles(base){

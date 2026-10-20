@@ -26,7 +26,7 @@ Origins restrict the **initial requested URL**. They do not constrain redirects,
 ## Mount one group, then its media
 
 ```js
-import {createConsent, createEmbedService, mountControls} from 'notabenda';
+import {createConsent, createEmbedService, mountControls} from '@notabenda/core';
 import publicConfig from './legal/notabenda.public.json';
 
 const consent = createConsent(publicConfig);
@@ -58,7 +58,7 @@ The placeholder button opens the existing preferences UI. It makes **no** consen
 ## Inert server rendering
 
 ```js
-import {renderEmbedPlaceholder} from 'notabenda';
+import {renderEmbedPlaceholder} from '@notabenda/core';
 const fallback = renderEmbedPlaceholder({
   title: 'A tour of the project',
   description: 'Optional media stays unloaded until you allow it.',
@@ -78,7 +78,7 @@ Do not place a live `src`, `srcset`, CSS background, remote poster, preload, pre
 - Iframes default to an empty sandbox and `referrerpolicy="no-referrer"`. The optional `sandbox` array lifts only explicitly selected restrictions; `allow` is an explicit iframe Permissions Policy string. There are no `srcdoc`, raw HTML, arbitrary attributes or broad default capabilities. Same-origin frames cannot request both `allow-scripts` and `allow-same-origin` through this adapter. Review redirects and use a separate origin for untrusted scripted content.
 - An image error restores its explanatory placeholder, with no automatic retries. Reload or deliberately dispose/remount the surface after investigating. An iframe load event cannot prove the remote page successfully loaded, so the UI reports permission rather than claiming success. See the browser's [iframe reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe) and [image reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/img).
 
-Import `notabenda/styles.css` for optional responsive card/media styles, or replace the low-specificity `.nb-embed*` rules. Existing theme tokens control surfaces, text, borders and actions. Native iframe/image titles and alternatives come from the supplied plain text.
+Import `@notabenda/core/styles.css` for optional responsive card/media styles, or replace the low-specificity `.nb-embed*` rules. Existing theme tokens control surfaces, text, borders and actions. Native iframe/image titles and alternatives come from the supplied plain text.
 
 ## Try the example
 

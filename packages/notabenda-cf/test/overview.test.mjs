@@ -3,7 +3,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createWorkspaceOverviewWorker,matchesRecord} from 'notabenda-cf';
+import {createWorkspaceOverviewWorker,matchesRecord} from '@notabenda/cloudflare';
 const request=(suffix='',method='GET')=>new Request('https://host.example.test/ops'+suffix,{method});
 const record=(id,subject='reader')=>({id,data:{kind:'inspection-note',subjectId:subject,label:'Matching review',occurredAt:'2026-10-18T12:00:00.000Z'}});
 function area(id='choices',overrides={}){return {id,title:id,description:'Inspect recorded evidence.',href:'/ops/'+id,primary:true,store:{list:async()=>({records:[]}),get:async()=>undefined},...overrides};}

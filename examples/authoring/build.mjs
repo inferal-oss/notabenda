@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-RETAINED-RELEASES
 import {readFile} from 'node:fs/promises';
 import {createElement} from 'react';
-import {createRetainedReleaseFiles} from 'notabenda/content';
-import {compileAuthoredDocuments,readDocumentSource} from 'notabenda-authoring';
+import {createRetainedReleaseFiles} from '@notabenda/core/content';
+import {compileAuthoredDocuments,readDocumentSource} from '@notabenda/authoring';
 
 export async function authoringExample() {
   const config=JSON.parse(await readFile(new URL('../static/notabenda.config.json',import.meta.url),'utf8'));

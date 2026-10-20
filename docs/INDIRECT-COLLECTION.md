@@ -1,6 +1,6 @@
 # Information collected from another source
 
-Use a separate notice when someone’s information comes from a partner, referring organisation or another source. The optional `notabenda/collection/indirect` entry renders static HTML or a plain-text body from reviewed public facts and an exact privacy release. Try the [light example](/indirect-collection) or [midnight example](/dark/indirect-collection).
+Use a separate notice when someone’s information comes from a partner, referring organisation or another source. The optional `@notabenda/core/collection/indirect` entry renders static HTML or a plain-text body from reviewed public facts and an exact privacy release. Try the [light example](/indirect-collection) or [midnight example](/dark/indirect-collection).
 
 The first profile addresses New Zealand IPP3A notification particulars: collection, purpose, recipients, collecting/holding agency, any particular statutory authority, and access/correction rights. The rule took effect on 1 May 2026. Timing is as soon as reasonably practicable, unless notified sooner; the component sets no universal deadline. [OPC principle text, IPP3A(1)–(2)](https://www.privacy.org.nz/privacy-principles/3a/), [OPC guidance](https://www.privacy.org.nz/resources-and-learning/a-z-topics/ipp3a/).
 
@@ -15,11 +15,11 @@ import {
   compileLegalDocuments,
   createIndirectCollectionNotice,
   verifyIndirectCollectionNotice,
-} from 'notabenda/content';
+} from '@notabenda/core/content';
 import {
   renderIndirectCollectionNotice,
   formatIndirectCollectionNotice,
-} from 'notabenda/collection/indirect';
+} from '@notabenda/core/collection/indirect';
 
 const release = compileLegalDocuments(config);
 const notice = createIndirectCollectionNotice(release.artifact, {
@@ -63,7 +63,7 @@ The collecting and holding agency is the release’s public controller name, add
 
 Both renderers expose the core particulars directly. `advance` renders future collection wording; `collected` renders past collection wording. Review your custom intro to match. Neither phase asserts that notification has been delivered. Direct-form mandatory/consequence wording is retained in the bound purpose facts but is not rendered as an indirect disclosure.
 
-HTML is a web fragment with semantic headings and ordinary links, no scripts, form controls or storage. Root-relative links stay relative to the deployment serving the notice and its pinned artifacts. Use `notabenda/styles.css` and override `.nb-indirect-notice`, `.nb-collection-purpose` and the shared CSS variables. The plain-text formatter resolves privacy, rights and law links against the pinned site origin. It creates a body, not an email MIME message or an email-client-tested HTML template. The example text uses example destinations; replace them with actual public routes in your configuration.
+HTML is a web fragment with semantic headings and ordinary links, no scripts, form controls or storage. Root-relative links stay relative to the deployment serving the notice and its pinned artifacts. Use `@notabenda/core/styles.css` and override `.nb-indirect-notice`, `.nb-collection-purpose` and the shared CSS variables. The plain-text formatter resolves privacy, rights and law links against the pinned site origin. It creates a body, not an email MIME message or an email-client-tested HTML template. The example text uses example destinations; replace them with actual public routes in your configuration.
 
 The build checks manifest/config/privacy metadata, content and HTML integrity. Identity covers the full selected purpose facts, indirect categories, phase, public collector, reviewed wording, recipient/rights/law decisions and pinned privacy reference. IDs used for layout are outside identity. Keep the release’s pinned files available after later policy changes. Both production privacy and notice wording must be reviewed; previews need `{mode:'preview'}` at build/verification and `{allowPreview:true}` at rendering/formatting.
 
@@ -72,14 +72,14 @@ The build checks manifest/config/privacy metadata, content and HTML integrity. I
 ## React and Astro
 
 ```jsx
-import {IndirectCollectionNotice} from 'notabenda/react/documents';
+import {IndirectCollectionNotice} from '@notabenda/core/react/documents';
 
 <IndirectCollectionNotice notice={notice} idPrefix="referral" headingLevel={2} />
 ```
 
 ```astro
 ---
-import IndirectCollectionNotice from 'notabenda/astro/IndirectCollectionNotice.astro';
+import IndirectCollectionNotice from '@notabenda/core/astro/IndirectCollectionNotice.astro';
 import notice from '../referral-notice.json';
 ---
 <IndirectCollectionNotice notice={notice} idPrefix="referral" />

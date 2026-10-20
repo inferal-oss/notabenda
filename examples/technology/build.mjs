@@ -1,9 +1,9 @@
 // @requirements REQ-QC-PROFILING REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
 import {build as bundle} from 'esbuild';
-import {compileLegalDocuments,compileConsentRuntimeConfig} from 'notabenda/content';
-import {createTechnologyCollectionNotice,renderTechnologyCollectionNotice} from 'notabenda/technology';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,compileConsentRuntimeConfig} from '@notabenda/core/content';
+import {createTechnologyCollectionNotice,renderTechnologyCollectionNotice} from '@notabenda/core/technology';
+import {renderLegalLinks} from '@notabenda/core';
 import {technologyExampleConfig,technologySettings} from './config.mjs';
 export async function technologyFiles(base){
  const config=technologyExampleConfig(base),build=compileLegalDocuments(config,{mode:'preview'}),notice=createTechnologyCollectionNotice(build.artifact,technologySettings,{mode:'preview'});

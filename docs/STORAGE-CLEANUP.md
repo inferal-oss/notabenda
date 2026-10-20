@@ -3,7 +3,7 @@
 Use `registerStorageService` when one consent-managed optional producer owns exact browser storage items. The host keeps responsibility for stopping the producer; the adapter adds storage cleanup to that lifecycle. Try [the working example](/storage-cleanup).
 
 ```js
-import {createConsent, registerStorageService} from 'notabenda';
+import {createConsent, registerStorageService} from '@notabenda/core';
 const consent = createConsent(config);
 const memory = registerStorageService({
   consent,

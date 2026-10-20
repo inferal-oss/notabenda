@@ -1,9 +1,9 @@
 // @requirements REQ-PRODUCT-ORDER-CONFIRMATION REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // Test-only loopback fixture. No public deployment or external messages.
 import {DurableObject} from 'cloudflare:workers';
-import {recordLegalRelease} from 'notabenda-cf';
-import {archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,getPaidOrderAttempt,paidOrderCheckoutRef} from 'notabenda-cf/orders';
-import {preparePaidOrderConfirmation,readPaidOrderConfirmation,readPaidOrderConfirmationFile,claimPaidOrderConfirmation,settlePaidOrderConfirmation,dispatchPaidOrderConfirmation} from 'notabenda-cf/order-confirmations';
+import {recordLegalRelease} from '@notabenda/cloudflare';
+import {archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,getPaidOrderAttempt,paidOrderCheckoutRef} from '@notabenda/cloudflare/orders';
+import {preparePaidOrderConfirmation,readPaidOrderConfirmation,readPaidOrderConfirmationFile,claimPaidOrderConfirmation,settlePaidOrderConfirmation,dispatchPaidOrderConfirmation} from '@notabenda/cloudflare/order-confirmations';
 import {canonicalJson,sha256} from '../../packages/notabenda-cf/dist/history.js';
 import {orderBytesHash} from '../../packages/notabenda-cf/dist/order-blobs.js';
 import data from '../../site/dist/server-data.json' with {type:'json'};

@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {serveHost} from '../host.mjs';
-import {renderServiceDirectory} from 'notabenda/services';
+import {renderServiceDirectory} from '@notabenda/core/services';
 const root=new URL('../dist/public/',import.meta.url);
 test('both directory themes share the exact confirmed inventory and keep search scoped to example routes',async()=>{
  const config=JSON.parse(await readFile(new URL('services/site.json',root),'utf8'));assert.equal(config.services.length,4);assert.equal(config.private,undefined);

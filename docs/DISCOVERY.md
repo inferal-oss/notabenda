@@ -2,15 +2,15 @@
 
 Requirements: `REQ-PRODUCT-DISCOVERY`, `REQ-AU-PIXELS`.
 
-Capture the current page's resource references and accessible storage names, then compare them with your declared inventory. For dependency and infrastructure references, run `npx notabenda discover --project . --out-dir ./service-review` from your project folder. Use both views when reviewing providers: a browser capture cannot inspect your backend source, and a source match does not prove that a service runs in production.
+Capture the current page's resource references and accessible storage names, then compare them with your declared inventory. For dependency and infrastructure references, run `npx @notabenda/core discover --project . --out-dir ./service-review` from your project folder. Use both views when reviewing providers: a browser capture cannot inspect your backend source, and a source match does not prove that a service runs in production.
 
 ## Optional provider recognition
 
 The catalog also supports [project discovery](SERVICE-CATALOG.md) and an optional browser recognizer (`REQ-PRODUCT-SERVICE-DETECTION`). Neither changes the site's inventory automatically.
 
 ```ts
-import {captureBrowserCatalog, analyzeBrowserCatalogCapture} from 'notabenda/catalog/browser';
-import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';
+import {captureBrowserCatalog, analyzeBrowserCatalogCapture} from '@notabenda/core/catalog/browser';
+import {browserCatalogSeed} from '@notabenda/core/catalog/browser/seed';
 
 // Run from an operator tool, after choosing the scenario to capture.
 const captured = captureBrowserCatalog(
@@ -34,8 +34,8 @@ Snapshots are limited to 512 KiB, 100 rules, 256 total signals, 16 signals per r
 To add catalog review to the existing UI, pass `browserRules: browserCatalogSeed` to `mountDiscovery`. It exposes `getCatalogReport()` plus separate catalog-capture and rule-snapshot downloads. Its new local search, status filters, native condition disclosures and source links preserve the captured report. The seed remains an explicit import outside normal visitor consent bundles.
 
 ```sh
-npx notabenda catalog detect --capture notabenda-catalog-capture.json --out-dir ./browser-review
-npx notabenda catalog detect --capture notabenda-catalog-capture.json --rules trusted-rules.json --json
+npx @notabenda/core catalog detect --capture notabenda-catalog-capture.json --out-dir ./browser-review
+npx @notabenda/core catalog detect --capture notabenda-catalog-capture.json --rules trusted-rules.json --json
 ```
 
 The CLI reads one explicit local capture, never launches a browser, and creates a new private output directory without overwriting existing files. Old version-1 captures can be analyzed with the packaged seed or `--rules FILE`, but contain no paths, globals or DOM markers; only origin-only rules and storage-name signals can contribute. This retrospective mode is explicitly labeled. Review remains separate from setup selection, permission and publication.
@@ -47,7 +47,7 @@ Try [the working example](/discovery). It uses fictional local storage: allow sa
 ## Capture in a browser
 
 ```ts
-import {captureDiscovery, analyzeDiscovery} from 'notabenda/discovery';
+import {captureDiscovery, analyzeDiscovery} from '@notabenda/core/discovery';
 
 // Invoke deliberately in an authorized developer/operator context.
 const capture = captureDiscovery({routeLabel:'Public landing', scenario:'Rejected optional'});
@@ -65,8 +65,8 @@ DOM inspection covers script/image/frame/media/object sources, selected image `c
 ## Optional local review UI
 
 ```ts
-import {mountDiscovery} from 'notabenda/discovery/ui';
-import 'notabenda/styles.css';
+import {mountDiscovery} from '@notabenda/core/discovery/ui';
+import '@notabenda/core/styles.css';
 
 const tool = mountDiscovery(document.querySelector('#developer-tools')!, {
   config: siteConfig,
@@ -82,12 +82,12 @@ The UI reads only after its explicit capture action. It creates local JSON downl
 ## Review through the CLI
 
 ```sh
-npx notabenda discover --config notabenda.config.json --capture capture.json
-npx notabenda discover --config notabenda.config.json \
+npx @notabenda/core discover --config notabenda.config.json --capture capture.json
+npx @notabenda/core discover --config notabenda.config.json \
   --capture initial.json --capture rejected.json --capture allowed.json \
   --out-dir discovery-review
 # Machine-readable output, when you explicitly want it:
-npx notabenda discover --capture capture.json --json
+npx @notabenda/core discover --capture capture.json --json
 ```
 
 The command reads explicit local JSON inputs; it does not crawl, launch a browser or execute project modules. Supply 1–20 version-1 capture files, each up to 1 MiB, and a JSON inventory up to 512 KiB. By default captures must match the configured site’s exact origin, including scheme/port. For a deliberate staging or loopback review, supply `--capture-origin http://127.0.0.1:4179` (or `captureOrigin` in the analysis/UI options). Both `configuredOrigin` and `observedOrigin` remain explicit in the report, and captured origins are never relabelled as production. An override is an operator scope decision, not evidence that the environments behave alike.

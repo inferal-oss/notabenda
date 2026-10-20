@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-STORAGE-CLEANUP
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 import {exampleConsentConfig} from '../static/choices-build.mjs';
 export async function storageCleanupFiles(base){
   const config=exampleConsentConfig(base);config.site.id='juniper-storage-cleanup';config.purposes=config.purposes.filter(p=>p.id!=='suggestions');config.services=config.services.filter(s=>s.id!=='sample-suggestions');config.storage=config.storage.filter(s=>s.serviceId==='privacy-choices');

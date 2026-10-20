@@ -2,7 +2,7 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {build as bundle} from 'esbuild';
 import { readFile } from 'node:fs/promises';
-import { compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig } from 'notabenda/content';
+import { compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig } from '@notabenda/core/content';
 import {renderChoicesPage} from './choices-page.mjs';
 
 export function exampleConsentConfig(base) {

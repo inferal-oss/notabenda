@@ -1,6 +1,6 @@
 # The project website and Cloudflare host example
 
-This directory keeps the website separate from the reusable packages. It builds a static landing page, readable documentation and fictional examples, then mounts `notabenda-cf` inside a host Worker with a SQLite-backed Durable Object. All example operators, documents, subjects and records are synthetic.
+This directory keeps the website separate from the reusable packages. It builds a static landing page, readable documentation and fictional examples, then mounts `@notabenda/cloudflare` inside a host Worker with a SQLite-backed Durable Object. All example operators, documents, subjects and records are synthetic.
 
 From the repository root:
 

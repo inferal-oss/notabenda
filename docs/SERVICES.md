@@ -9,8 +9,8 @@ Try the [light example](/services) and [midnight example](/dark/services). The e
 ## Native HTML and local search
 
 ```ts
-import {renderServiceDirectory, mountServiceDirectory} from 'notabenda/services';
-import 'notabenda/services.css';
+import {renderServiceDirectory, mountServiceDirectory} from '@notabenda/core/services';
+import '@notabenda/core/services.css';
 
 // Server or build: no script required for reading cards and opening details.
 const html = renderServiceDirectory(reviewedConfig, {
@@ -34,16 +34,16 @@ For server-rendered filters, supply `query` and/or `purposeId`; the result state
 ## React and Astro
 
 ```tsx
-import {ServiceDirectory} from 'notabenda/react/documents';
-import 'notabenda/services.css';
+import {ServiceDirectory} from '@notabenda/core/react/documents';
+import '@notabenda/core/services.css';
 
 <ServiceDirectory config={reviewedConfig} idPrefix="services" headingLevel={2} />
 ```
 
 ```astro
 ---
-import ServiceDirectory from 'notabenda/astro/ServiceDirectory.astro';
-import 'notabenda/services.css';
+import ServiceDirectory from '@notabenda/core/astro/ServiceDirectory.astro';
+import '@notabenda/core/services.css';
 ---
 <ServiceDirectory config={reviewedConfig} idPrefix="services" headingLevel={2} />
 ```

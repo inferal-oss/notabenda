@@ -7,9 +7,9 @@ The current Consumer Rights Directive distinguishes the general goods notice in 
 ## Build one selected notice
 
 ```js
-import {buildLegalGuaranteeNotice} from 'notabenda/guarantees/content';
-import {renderLegalGuaranteeNotice} from 'notabenda/guarantees';
-import 'notabenda/guarantees.css';
+import {buildLegalGuaranteeNotice} from '@notabenda/core/guarantees/content';
+import {renderLegalGuaranteeNotice} from '@notabenda/core/guarantees';
+import '@notabenda/core/guarantees.css';
 
 const result = await buildLegalGuaranteeNotice({
   language: 'en',
@@ -40,7 +40,7 @@ The graphics remain subject to their prescribed use conditions. Attribution appe
 
 `normalizeLegalGuaranteeNotice` validates a bounded structural copy against this source edition’s known asset metadata; it does not recompute identity or fetch an image. `verifyLegalGuaranteeNotice` additionally recomputes descriptor identity. Neither authenticates a reviewer, proves factual accuracy or enforces image integrity in the browser. Serve the emitted bytes unchanged and retain the descriptor and its referenced files. Future source editions must preserve earlier assets and metadata rather than silently replacing this edition.
 
-React uses `LegalGuaranteeNotice` from `notabenda/react/documents`; Astro uses `notabenda/astro/LegalGuaranteeNotice.astro`. Both accept `notice`, a unique `idPrefix`, an optional `headingLevel` and explicit `allowPreview`. They render the same static markup with no hydration, consent or checkout action.
+React uses `LegalGuaranteeNotice` from `@notabenda/core/react/documents`; Astro uses `@notabenda/core/astro/LegalGuaranteeNotice.astro`. Both accept `notice`, a unique `idPrefix`, an optional `headingLevel` and explicit `allowPreview`. They render the same static markup with no hydration, consent or checkout action.
 
 ## Product labels and the order component
 

@@ -2,7 +2,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,registerStorageService} from 'notabenda';
+import {createConsent,registerStorageService} from '@notabenda/core';
 import {fixture} from './helpers.mjs';
 const deferred=()=>{let resolve;const promise=new Promise(done=>{resolve=done;});return {promise,resolve};};
 const access=values=>({getItem:key=>values.get(key)??null,removeItem:key=>values.delete(key),setItem:(key,value)=>values.set(key,value)});

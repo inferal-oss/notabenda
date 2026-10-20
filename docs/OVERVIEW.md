@@ -2,9 +2,9 @@
 
 **An open-source toolkit for self-hosted legal pages, privacy controls and evidence storage.**
 
-The intended install is an npm package. Most work happens in the frontend or at build time: describe processing, generate or render documents, mount controls, and gate optional services. The optional **notabenda-cf** package provides mountable Cloudflare workers, Durable Object storage adapters, an evidence backoffice, and document-release history. The host application supplies authentication and authorization. Distinct evidence ingestion and optional bounded contract handoff runners are implemented; provider connections, scheduling and operational acceptance belong to the host.
+The intended install is an npm package. Most work happens in the frontend or at build time: describe processing, generate or render documents, mount controls, and gate optional services. The optional **@notabenda/cloudflare** package provides mountable Cloudflare workers, Durable Object storage adapters, an evidence backoffice, and document-release history. The host application supplies authentication and authorization. Distinct evidence ingestion and optional bounded contract handoff runners are implemented; provider connections, scheduling and operational acceptance belong to the host.
 
-Status: developer preview, **19 October 2026**. Document/configuration tools, controls, evidence APIs, history, framework integrations and isolated examples are implemented, with remaining regional, operational and release work tracked per feature. No package has been published to npm. The npm registry returned “not found” for `notabenda` and `notabenda-cf` on this date; names are not reserved.
+Status: developer preview, **20 October 2026**. Document/configuration tools, controls, evidence APIs, history, framework integrations and isolated examples are implemented, with remaining regional, operational and release work tracked per feature. No package has been published to npm. The `@notabenda` npm organization is reserved; the planned public packages are `@notabenda/core`, `@notabenda/cloudflare` and `@notabenda/authoring`.
 
 ## Build areas, in priority order
 
@@ -48,7 +48,7 @@ On withdrawal, stop future work, invoke teardown/disable hooks, remove accessibl
 
 Build inline collection notices, purpose/channel-specific permission fields, explicit terms acceptance, and withdrawal actions. Keep required contract actions, optional marketing permission, and cookie preferences distinct. Avoid the generic required “I accept the privacy policy” checkbox.
 
-Add `notabenda-cf` for artifact registration, anonymous browser receipts, authenticated application events, export, erasure, and scheduled retention cleanup. Also support an existing backend through a transport interface. Browser choices continue to work independently of network delivery; record acknowledgments and failed delivery honestly.
+Add `@notabenda/cloudflare` for artifact registration, anonymous browser receipts, authenticated application events, export, erasure, and scheduled retention cleanup. Also support an existing backend through a transport interface. Browser choices continue to work independently of network delivery; record acknowledgments and failed delivery honestly.
 
 Receipts link choices to exact released wording, configuration, language, and server receipt time. Anonymous reports remain distinct from trusted account/form events. Do not collect full form payloads or visitor fingerprints just to record a choice.
 
@@ -98,13 +98,13 @@ Every implemented rule should reference its `REQ-*` items and actual tests. Unti
 
 | Package/import | What an adopter gets |
 | --- | --- |
-| `notabenda` | Typed config, consent state, vanilla controls, service gating |
-| `notabenda/headless` | State/actions for custom markup |
-| `notabenda/react` | Optional provider, hooks, and components |
-| `notabenda/styles.css` | Optional token-based styles |
-| `notabenda/content` | Build-time document tools |
-| `notabenda/google` | Optional Basic Consent Mode adapter |
-| `notabenda-cf` | Optional host-authorized workers, Durable Object adapters, evidence inspection, and document history; capture, lifecycle tools and local starter/doctor; operational rollout remains host-owned |
+| `@notabenda/core` | Typed config, consent state, vanilla controls, service gating |
+| `@notabenda/core/headless` | State/actions for custom markup |
+| `@notabenda/core/react` | Optional provider, hooks, and components |
+| `@notabenda/core/styles.css` | Optional token-based styles |
+| `@notabenda/core/content` | Build-time document tools |
+| `@notabenda/core/google` | Optional Basic Consent Mode adapter |
+| `@notabenda/cloudflare` | Optional host-authorized workers, Durable Object adapters, evidence inspection, and document history; capture, lifecycle tools and local starter/doctor; operational rollout remains host-owned |
 
 Target at most **15 KiB gzip** for core plus vanilla controls and **5 KiB gzip** for default CSS, excluding documents, locales, framework code, and optional adapters. Measure before making performance claims. Browser imports must exclude the CLI, document build tooling, React unless requested, and backend code.
 

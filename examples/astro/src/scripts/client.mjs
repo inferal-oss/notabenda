@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-ASTRO
-import {createConsent} from 'notabenda';
-import {mountAstroConsent} from 'notabenda/astro/client';
+import {createConsent} from '@notabenda/core';
+import {mountAstroConsent} from '@notabenda/core/astro/client';
 
 let controller;
 try {

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-DEMO-WORKSPACE
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,createFormPermissionOffer} from 'notabenda/content';
-import {renderLegalLinks} from 'notabenda';
+import {compileLegalDocuments,createFormPermissionOffer} from '@notabenda/core/content';
+import {renderLegalLinks} from '@notabenda/core';
 const attribute=value=>value.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 export async function localizedPermissionFiles(base){
  const c=structuredClone(base);c.site.id='juniper-permissions';delete c.consent;c.storage=[];

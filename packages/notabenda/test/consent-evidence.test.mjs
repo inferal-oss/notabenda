@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { createConsent, normalizeConsentNotice, defaultConsentWording } from 'notabenda';
-import { compileLegalDocuments, createConsentNotice, canonicalJson, sha256 } from 'notabenda/content';
-import { recordLegalRelease, registerConsentNotice, setActiveConsentNotice, recordConsentChoice, getConsentHead, createConsentEvidenceStore, createAdminWorker } from 'notabenda-cf';
+import { createConsent, normalizeConsentNotice, defaultConsentWording } from '@notabenda/core';
+import { compileLegalDocuments, createConsentNotice, canonicalJson, sha256 } from '@notabenda/core/content';
+import { recordLegalRelease, registerConsentNotice, setActiveConsentNotice, recordConsentChoice, getConsentHead, createConsentEvidenceStore, createAdminWorker } from '@notabenda/cloudflare';
 import { createSyntheticStorage } from '../../notabenda-cf/examples/synthetic.mjs';
 import { fixture } from './helpers.mjs';
 

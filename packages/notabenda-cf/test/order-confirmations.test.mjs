@@ -2,10 +2,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
-import {createPaidOrderDefinition,createPaidOrderReview} from 'notabenda-authoring/orders';
-import {archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,getPaidOrderAttempt,paidOrderCheckoutRef,createPaidOrderStore} from 'notabenda-cf/orders';
-import {preparePaidOrderConfirmation,readPaidOrderConfirmation,readPaidOrderConfirmationFile,claimPaidOrderConfirmation,settlePaidOrderConfirmation,cancelPaidOrderConfirmation,dispatchPaidOrderConfirmation} from 'notabenda-cf/order-confirmations';
-import {createEvidenceLifecycle,createAdminWorker,createEvidenceExportSegment} from 'notabenda-cf';
+import {createPaidOrderDefinition,createPaidOrderReview} from '@notabenda/authoring/orders';
+import {archivePaidOrderReview,activatePaidOrderReview,admitPaidOrder,getPaidOrderAttempt,paidOrderCheckoutRef,createPaidOrderStore} from '@notabenda/cloudflare/orders';
+import {preparePaidOrderConfirmation,readPaidOrderConfirmation,readPaidOrderConfirmationFile,claimPaidOrderConfirmation,settlePaidOrderConfirmation,cancelPaidOrderConfirmation,dispatchPaidOrderConfirmation} from '@notabenda/cloudflare/order-confirmations';
+import {createEvidenceLifecycle,createAdminWorker,createEvidenceExportSegment} from '@notabenda/cloudflare';
 const at='2026-10-19T12:00:00.000Z',encode=s=>new TextEncoder().encode(s),reject=(p,code)=>assert.rejects(p,e=>e.code===code),query={query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50};
 async function fixture({checkoutId='intent-one',storage=createSyntheticStorage([])}={}){
  const clock={value:at},context={siteId:'confirmation-shop',scopeId:'checkout',checkoutId,now:()=>new Date(clock.value)},ref=await paidOrderCheckoutRef(context),definition=createPaidOrderDefinition({profile:'eu-paid-distance-order-v1',siteId:context.siteId,locale:'en',direction:'ltr',reviewStatus:'reviewed',documents:[],items:[{id:'service',productId:'consultation',name:'Planning appointment',kind:'service',characteristics:['One remote appointment'],commitment:{duration:'One appointment',termination:'No renewal',minimum:'One appointment'},guarantee:null}]}),fixed=amountMinor=>({kind:'fixed',amountMinor}),quote={quoteId:'quote-one',revision:'one',contextRef:ref,definitionId:definition.definitionId,issuedAt:at,expiresAt:'2026-10-19T12:15:00.000Z',lines:[{itemId:'service',quantity:1}],pricing:{currency:'EUR',fractionDigits:2,payments:[{id:'appointment',lineIds:['service'],label:'Appointment',amount:fixed('12000'),due:{kind:'now'},recurrence:{kind:'once'}}],totalPrice:fixed('12000'),dueNow:fixed('12000'),taxAndChargesNotice:'VAT included'}},review=createPaidOrderReview(definition,quote),request={schemaVersion:1,requestId:crypto.randomUUID(),reviewId:review.reviewId,definitionId:definition.definitionId,quoteId:quote.quoteId,quoteRevision:quote.revision,contextRef:ref};

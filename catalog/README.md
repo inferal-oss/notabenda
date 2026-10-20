@@ -16,7 +16,7 @@ python3 scripts/build-service-catalog.py
 python3 scripts/build-service-catalog.py --check
 ```
 
-The generated `packages/notabenda/src/catalog-data.json` is committed data. Ordinary installation/build performs no download. The default consent browser graph never imports the seed. The optional `notabenda/catalog/seed` entry and CLI load it explicitly.
+The generated `packages/notabenda/src/catalog-data.json` is committed data. Ordinary installation/build performs no download. The default consent browser graph never imports the seed. The optional `@notabenda/core/catalog/seed` entry and CLI load it explicitly.
 
 Catalog normalization and search do not contact providers. No provider privacy text, legal role, transfer mechanism, hosting-region guarantee or legal classification is supplied by the backend seed. Upstream cookie categories and retention strings remain explicitly reported hints. They are never automatically copied into an adopter's purposes, legal basis, storage declaration or consent settings.
 

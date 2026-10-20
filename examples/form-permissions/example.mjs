@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-ASTRO
-import {compileLegalDocuments,createFormPermissionOffer} from 'notabenda/content';
+import {compileLegalDocuments,createFormPermissionOffer} from '@notabenda/core/content';
 export function formPermissionExample(base){
  const config=structuredClone(base);config.site.id='juniper-permissions';config.controller.name='Juniper Notes Cooperative';
  config.purposes=[{id:'product-news',name:'Product news',description:'Email updates about Juniper Notes and its reading tools.',legalBasis:'Optional affirmative permission. Messaging applicability and request particulars require review before deployment.',dataCategories:['Purpose and channel choice','Opaque contact-generation reference','Request, revision and recording timestamps'],retention:'This workspace is cleared after one day without use.',collection:{source:'direct',description:'An explicit permission choice in the account settings.',required:false,consequences:'Email updates remain off without a current permission.'}}];

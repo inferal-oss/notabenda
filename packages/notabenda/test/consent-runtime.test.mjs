@@ -2,10 +2,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {compileConsentRuntimeConfig,compileLegalDocuments,createConsentNotice} from 'notabenda/content';
-import {createConsentRuntime,mountControls} from 'notabenda/consent';
-import {requiredConsentEvidence,ConsentEvidenceError} from 'notabenda/consent/evidence';
-import {createConsent,toPublicConfig} from 'notabenda';
+import {compileConsentRuntimeConfig,compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
+import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
+import {requiredConsentEvidence,ConsentEvidenceError} from '@notabenda/core/consent/evidence';
+import {createConsent,toPublicConfig} from '@notabenda/core';
 import {consentScopes} from '../dist/consent-notice.js';
 import {consentProfiles} from './consent-profiles.mjs';
 import {fixture} from './helpers.mjs';
@@ -85,7 +85,7 @@ for(const [profile,controller] of consentProfiles){
 }
 
 test('new browser entries import without browser globals or build-only Node dependencies',()=>{
- const script=`for(const key of ['window','document','navigator'])Object.defineProperty(globalThis,key,{get(){throw Error(key)},configurable:true});for(const entry of ['notabenda/consent','notabenda/consent/evidence'])await import(entry);`;
+ const script=`for(const key of ['window','document','navigator'])Object.defineProperty(globalThis,key,{get(){throw Error(key)},configurable:true});for(const entry of ['@notabenda/core/consent','@notabenda/core/consent/evidence'])await import(entry);`;
  const child=spawnSync(process.execPath,['--input-type=module','-e',script],{cwd:new URL('../../../',import.meta.url),encoding:'utf8',timeout:10000});assert.equal(child.status,0,child.stderr);assert.equal(typeof mountControls,'function');
 });
 

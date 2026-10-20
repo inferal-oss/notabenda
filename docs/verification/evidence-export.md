@@ -4,7 +4,7 @@ Requirements: `REQ-PRODUCT-EVIDENCE-EXPORT`, `REQ-PRODUCT-CF-ADMIN`.
 
 The automated suite covers separate export permission and per-download reauthorization; exact filters and scoped records; response attachment/security headers; no source lookups; empty continuing segments; complete forward traversal of a synthetic filtered store; malformed queries; UTF-8 ordering; backward/inconsistent cursors; duplicate or out-of-filter adapter records; record size/scan bounds; hostile metadata escaping; record bodies excluded from preview HTML; live changes between preview and download; and a 50-record attachment within the serialized byte budget.
 
-Commands: `npm run build --workspace notabenda-cf`, `node --test packages/notabenda-cf/test/export.test.mjs packages/notabenda-cf/test/admin.test.mjs`. Packed npm consumer checks exercise public declarations and the helper. Website host tests cover protected export routes and the real scoped history projection. The local Workers runtime script checks the SQLite-backed download and its continuation independently of browser download UI.
+Commands: `npm run build --workspace @notabenda/cloudflare`, `node --test packages/notabenda-cf/test/export.test.mjs packages/notabenda-cf/test/admin.test.mjs`. Packed npm consumer checks exercise public declarations and the helper. Website host tests cover protected export routes and the real scoped history projection. The local Workers runtime script checks the SQLite-backed download and its continuation independently of browser download UI.
 
 Browser inspection and actual command results are recorded below. No test establishes legal sufficiency, complete subject-data disclosure, a frozen snapshot, external artifact availability, authenticity, or retention/erasure completion.
 

@@ -1,8 +1,8 @@
 // @requirements REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
-import {renderDurabilityGuaranteeLabel} from 'notabenda/guarantees/label';
+import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
+import {renderDurabilityGuaranteeLabel} from '@notabenda/core/guarantees/label';
 export async function producerGuaranteeFiles(){
  const options=JSON.parse(await readFile(new URL('./producer/config.json',import.meta.url),'utf8'));
  const source=await readFile(new URL('./producer/juniper-jw-01.svg',import.meta.url)),provenance=JSON.parse(await readFile(new URL('./producer/manifest.json',import.meta.url),'utf8'));

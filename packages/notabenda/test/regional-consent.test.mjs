@@ -1,7 +1,7 @@
 // @requirements REQ-FR-SCOPE REQ-DE-DEVICE REQ-IE-DEVICE REQ-PRODUCT-CONSENT-RUNTIME
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {validateSiteConfig} from 'notabenda';
+import {validateSiteConfig} from '@notabenda/core';
 import {consentProfiles} from './consent-profiles.mjs';
 import {fixture} from './helpers.mjs';
 

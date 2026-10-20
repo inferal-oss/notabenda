@@ -6,7 +6,7 @@ import {adminPresentation} from './admin-presentation.mjs';
 import {isDemoRoute,serveDemo} from './demo-host.mjs';
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES
 // @requirements REQ-PRODUCT-CF-HOST
-import {createSetupWorker} from 'notabenda-cf';
+import {createSetupWorker} from '@notabenda/cloudflare';
 // Website integration only. Authentication is deliberately outside both reusable packages.
 export function canonicalRequest(request) {
   const url = new URL(request.url);

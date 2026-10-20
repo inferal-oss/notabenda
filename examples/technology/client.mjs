@@ -1,5 +1,5 @@
 // @requirements REQ-QC-PROFILING
-import {createConsentRuntime,mountControls} from 'notabenda/consent';
+import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 const response=await fetch('/technology/runtime.json');if(!response.ok)throw Error('Privacy settings unavailable.');
 const consent=createConsentRuntime(await response.json()),key='juniper-technology:interests',output=document.querySelector('#profile-state'),suggestion=document.querySelector('#profile-suggestion');
 // Remove only this feature's old data when a saved grant no longer authorizes it.

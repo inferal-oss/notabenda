@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-SETUP REQ-PRODUCT-CONFIG REQ-PRODUCT-SCOPE-GUARDS REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-A11Y REQ-EU-INTERESTS-DISCLOSURE
 import {test} from 'node:test';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
-import {normalizeDraftPurpose,createPurposeDraftPlan} from 'notabenda/setup/purposes';import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';
-import {mountSetup} from 'notabenda/setup/ui';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {validateSiteConfig,renderLegalDocument} from 'notabenda';
+import {normalizeDraftPurpose,createPurposeDraftPlan} from '@notabenda/core/setup/purposes';import {mountPurposeEditor} from '@notabenda/core/setup/purposes/ui';
+import {mountSetup} from '@notabenda/core/setup/ui';import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';import {validateSiteConfig,renderLegalDocument} from '@notabenda/core';
 import {reviewSetupPurposes} from '../dist/setup-purpose-cli.js';import {createStarterConfig} from '../dist/starter.js';import {fixture} from './helpers.mjs';import {consentProfiles} from './consent-profiles.mjs';
 const purpose=()=>({id:'support',name:'Respond to support enquiries',description:'Reply to messages sent through the contact form.',legalBasis:'{{purposes.support.legalBasis}}',dataCategories:['Email address','Message content'],retention:'{{purposes.support.retention}}',collection:{source:'direct',description:'Contact form',required:false,consequences:'{{purposes.support.collection.consequences}}'}});
 function browser(){const dom=new JSDOM('<div id="root"></div>',{url:'https://operator.example.test/setup'});dom.window.URL.createObjectURL=()=> 'blob:purpose-test';dom.window.URL.revokeObjectURL=()=>{};return {dom,container:dom.window.document.getElementById('root')};}

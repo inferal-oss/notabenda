@@ -5,15 +5,15 @@ import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {renderRightsCenter,renderRightsPage,renderLegalLinks,toPublicConfig,validateSiteConfig,createConsent} from 'notabenda';
-import {RightsCenter} from 'notabenda/react/documents';
-import {compileLegalDocuments} from 'notabenda/content';
-import {compileAuthoredDocuments} from 'notabenda-authoring';
-import {recordLegalRelease,createDocumentHistory} from 'notabenda-cf';
+import {renderRightsCenter,renderRightsPage,renderLegalLinks,toPublicConfig,validateSiteConfig,createConsent} from '@notabenda/core';
+import {RightsCenter} from '@notabenda/core/react/documents';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {compileAuthoredDocuments} from '@notabenda/authoring';
+import {recordLegalRelease,createDocumentHistory} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {rightsExampleConfig,rightsFiles} from '../../../examples/rights/build.mjs';
 import {fixture} from './helpers.mjs';
-import {createSetupPlan} from 'notabenda/setup';
+import {createSetupPlan} from '@notabenda/core/setup';
 const configured=async()=>rightsExampleConfig(await fixture({reviewed:true}),{reviewed:true});
 
 test('guided setup recommends operator-owned rights entry points without inventing actions and reopens review on imported pages',async()=>{

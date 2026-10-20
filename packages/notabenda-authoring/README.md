@@ -1,11 +1,11 @@
-# notabenda-authoring
+# @notabenda/authoring
 
 Write legal documents in Markdown or MDX, with YAML frontmatter for titles, versions, routes and review status. Bring your own static MDX components and keep exact source alongside immutable rendered releases.
 
-This optional **build-time** package leaves the `notabenda` browser core framework-independent. It needs Node.js 22 or later. Apache 2.0. Currently an unpublished developer preview.
+This optional **build-time** package leaves the `@notabenda/core` browser core framework-independent. It needs Node.js 22 or later. Apache 2.0. Currently an unpublished developer preview.
 
 ```js
-import { compileAuthoredDocuments, readDocumentSource } from 'notabenda-authoring';
+import { compileAuthoredDocuments, readDocumentSource } from '@notabenda/authoring';
 
 const terms = await readDocumentSource('./legal/terms.md');
 const release = await compileAuthoredDocuments(siteConfig, { terms }, { mode: 'preview' });
@@ -34,7 +34,7 @@ Production builds require reviewed documents. `sectionIds` maps level-two headin
 
 For MDX, pass `components` and `componentsRevision` to `readDocumentSource`. Components render to validated static HTML during the build; no React runtime is shipped to visitors. MDX is trusted executable project code. Do not evaluate untrusted uploads. Scripts, frames, forms, inline styles, remote images and suspended fallbacks are rejected in published output.
 
-`release.files` and `release.artifact` contain public rendered output and hashes. **`release.archive` contains original source and must remain private.** It can be atomically registered with `recordLegalRelease` from `notabenda-cf`; source inspection and comparisons use the host's existing authorization hook.
+`release.files` and `release.artifact` contain public rendered output and hashes. **`release.archive` contains original source and must remain private.** It can be atomically registered with `recordLegalRelease` from `@notabenda/cloudflare`; source inspection and comparisons use the host's existing authorization hook.
 
 Source limit: 24 KiB per document. Rendered body: 48 KiB. Combined private archive: 124 KiB. Markdown, MDX, metadata, component output, source integrity and private inspection are covered by tests.
 
@@ -42,6 +42,6 @@ Full guide: [docs/AUTHORING.md](../../docs/AUTHORING.md). Working example: [exam
 
 ## Finished producer guarantee labels
 
-The optional `notabenda-authoring/guarantees` entry imports finished producer PNG/JPEG/outlined-SVG files without changing their bytes. `buildDurabilityGuaranteeLabel` requires explicit qualifying facts and binds a product to its file; `verifyDurabilityGuaranteeLabel` checks the descriptor and supplied original bytes. Image parsers remain build-only. Preparation of the prescribed artwork, offer review, host retention and actual display acceptance remain the adopter’s work. See [product labels](../../docs/GUARANTEE-LABELS.md). **REQ-EU-GUARANTEE-LABEL**.
+The optional `@notabenda/authoring/guarantees` entry imports finished producer PNG/JPEG/outlined-SVG files without changing their bytes. `buildDurabilityGuaranteeLabel` requires explicit qualifying facts and binds a product to its file; `verifyDurabilityGuaranteeLabel` checks the descriptor and supplied original bytes. Image parsers remain build-only. Preparation of the prescribed artwork, offer review, host retention and actual display acceptance remain the adopter’s work. See [product labels](../../docs/GUARANTEE-LABELS.md). **REQ-EU-GUARANTEE-LABEL**.
 
-`notabenda-authoring/orders` creates reviewed order definitions, binds live host quotes and verifies original guarantee-label files. It does not calculate commercial prices or execute orders. See [paid orders](../../docs/PAID-ORDERS.md).
+`@notabenda/authoring/orders` creates reviewed order definitions, binds live host quotes and verifies original guarantee-label files. It does not calculate commercial prices or execute orders. See [paid orders](../../docs/PAID-ORDERS.md).

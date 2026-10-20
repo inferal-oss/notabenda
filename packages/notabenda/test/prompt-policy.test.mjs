@@ -3,9 +3,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,mountControls,toPublicConfig,validateSiteConfig,defaultConsentWording,normalizeConsentNotice} from 'notabenda';
-import {compileLegalDocuments,createConsentNotice,canonicalJson,sha256} from 'notabenda/content';
-import {recordLegalRelease,registerConsentNotice} from 'notabenda-cf';
+import {createConsent,mountControls,toPublicConfig,validateSiteConfig,defaultConsentWording,normalizeConsentNotice} from '@notabenda/core';
+import {compileLegalDocuments,createConsentNotice,canonicalJson,sha256} from '@notabenda/core/content';
+import {recordLegalRelease,registerConsentNotice} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 

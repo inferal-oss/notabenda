@@ -7,13 +7,13 @@ import {createElement as h,StrictMode,act} from 'react';
 import {renderToString,renderToStaticMarkup} from 'react-dom/server';
 import {createRoot,hydrateRoot} from 'react-dom/client';
 import {JSDOM} from 'jsdom';
-import {createProcessingChoices,renderLegalDocument,renderLegalLinks} from 'notabenda';
-import * as compatibilityReact from 'notabenda/react';
-import * as compiledReact from 'notabenda/react/consent';
+import {createProcessingChoices,renderLegalDocument,renderLegalLinks} from '@notabenda/core';
+import * as compatibilityReact from '@notabenda/core/react';
+import * as compiledReact from '@notabenda/core/react/consent';
 import {consentProfiles} from './consent-profiles.mjs';
-import {LegalDocument,LegalLinks,CollectionNotice} from 'notabenda/react/documents';
-import {compileLegalDocuments,createConsentNotice,createProcessingNotice,createCollectionNotice} from 'notabenda/content';
-import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from 'notabenda-cf';
+import {LegalDocument,LegalLinks,CollectionNotice} from '@notabenda/core/react/documents';
+import {compileLegalDocuments,createConsentNotice,createProcessingNotice,createCollectionNotice} from '@notabenda/core/content';
+import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 import {App} from '../../../examples/react/view.mjs';
@@ -169,7 +169,7 @@ test('the example hydrates without recovery when a saved choice starts optional 
 // @requirements REQ-PRODUCT-COLLECTION-NOTICE
 test('React collection notice renders exact core static markup without a provider, hooks or implied acceptance',async()=>{
   const config=await fixture({reviewed:true});const notice=createCollectionNotice(compileLegalDocuments(config).artifact,{scopeId:'contact',purposeIds:['enquiries'],reviewStatus:'reviewed',wording:{title:'About your enquiry',intro:'Fictional collection context.'}});
-  const {renderCollectionNotice}=await import('notabenda');assert.equal(renderToStaticMarkup(h(CollectionNotice,{notice,idPrefix:'contact-notice',headingLevel:3,className:'host-wrap'})),`<div class="host-wrap">${renderCollectionNotice(notice,{idPrefix:'contact-notice',headingLevel:3})}</div>`);
+  const {renderCollectionNotice}=await import('@notabenda/core');assert.equal(renderToStaticMarkup(h(CollectionNotice,{notice,idPrefix:'contact-notice',headingLevel:3,className:'host-wrap'})),`<div class="host-wrap">${renderCollectionNotice(notice,{idPrefix:'contact-notice',headingLevel:3})}</div>`);
   notice.reviewStatus='draft';assert.throws(()=>renderToStaticMarkup(h(CollectionNotice,{notice,idPrefix:'contact-notice'})));assert.match(renderToStaticMarkup(h(CollectionNotice,{notice,idPrefix:'contact-notice',allowPreview:true})),/Draft collection notice/);
 });
 

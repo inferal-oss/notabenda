@@ -1,5 +1,5 @@
 {
-  "name": "notabenda",
+  "name": "@notabenda/core",
   "version": "0.1.0",
   "description": "Reusable site configuration and static privacy, cookie, and terms documents.",
   "type": "module",
@@ -293,5 +293,8 @@
   "devDependencies": {
     "react": "19.3.1",
     "@types/react": "19.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

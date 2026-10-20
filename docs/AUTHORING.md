@@ -2,7 +2,7 @@
 
 Keep shared operator, processing, service and storage facts in site configuration. Write document-specific metadata in **YAML frontmatter**, then use Markdown for prose or MDX for your own static components. Both formats feed the same immutable release and evidence workflow.
 
-The optional `notabenda-authoring` package runs in Node.js during your build. The browser core and Cloudflare backend retain zero runtime dependencies. Packages are currently an unpublished developer preview; use workspace builds or local tarballs.
+The optional `@notabenda/authoring` package runs in Node.js during your build. The browser core and Cloudflare backend retain zero runtime dependencies. Packages are currently an unpublished developer preview; use workspace builds or local tarballs.
 
 ## One metadata format for both
 
@@ -41,7 +41,7 @@ Required fields are `kind` (`privacy`, `cookies`, `terms`), `title`, `route`, `v
 
 ```js
 import { readFile } from 'node:fs/promises';
-import { compileAuthoredDocuments, readDocumentSource } from 'notabenda-authoring';
+import { compileAuthoredDocuments, readDocumentSource } from '@notabenda/authoring';
 
 const config = JSON.parse(await readFile('./site.config.json', 'utf8'));
 const terms = await readDocumentSource('./legal/terms.md');
@@ -81,7 +81,7 @@ review:
 
 ```js
 import { createElement } from 'react';
-import { compileAuthoredDocuments, readDocumentSource } from 'notabenda-authoring';
+import { compileAuthoredDocuments, readDocumentSource } from '@notabenda/authoring';
 
 const terms = await readDocumentSource('./legal/terms.mdx', {
   componentsRevision: 'policy-components-3',
@@ -109,7 +109,7 @@ The actual rendered output is validated and sanitized before hashes and readable
 ## Archive source privately
 
 ```js
-import { recordLegalRelease, createDocumentHistory } from 'notabenda-cf';
+import { recordLegalRelease, createDocumentHistory } from '@notabenda/cloudflare';
 
 // The host supplies authenticated access and a scoped Durable Object storage binding.
 await recordLegalRelease(storage, release.archive, {

@@ -2,7 +2,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,mkdtemp,writeFile,rm} from 'node:fs/promises';
-import {renderLegalDocument} from 'notabenda';
+import {renderLegalDocument} from '@notabenda/core';
 import {astroFiles} from '../../../examples/astro/build.mjs';
 import {publicConfig} from '../../../examples/astro/src/lib/config.mjs';
 

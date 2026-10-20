@@ -1,7 +1,7 @@
 // @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE
 // Compatibility for already issued pre-archive demo quotes. New quotes use order-demo.mjs.
 // Website demo integration. This admits sample requests only; it never executes payments or contracts.
-import {normalizePaidOrderReview,copyPaidOrderData} from 'notabenda/orders';
+import {normalizePaidOrderReview,copyPaidOrderData} from '@notabenda/core/orders';
 const canonical=v=>v&&typeof v==='object'?Array.isArray(v)?'['+v.map(canonical).join(',')+']':'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
 const digest=async value=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(canonical(value))))].map(b=>b.toString(16).padStart(2,'0')).join('');
 const validRequest=v=>v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).sort().join(',')===['schemaVersion','requestId','reviewId','definitionId','quoteId','quoteRevision','contextRef'].sort().join(',')&&v.schemaVersion===1&&/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(v.requestId)&&['reviewId','definitionId','contextRef'].every(k=>typeof v[k]==='string'&&/^[a-f0-9]{64}$/u.test(v[k]))&&typeof v.quoteId==='string'&&v.quoteId.length<=120&&typeof v.quoteRevision==='string'&&v.quoteRevision.length<=120;

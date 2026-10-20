@@ -1,6 +1,6 @@
 # Evidence lifecycle
 
-Use `notabenda-cf` to retire an evidence context, apply a legal hold or purge its matching payloads in resumable batches. The backoffice displays progress and supports search and export. Run lifecycle commands through your authorized backend; the admin UI is read-only.
+Use `@notabenda/cloudflare` to retire an evidence context, apply a legal hold or purge its matching payloads in resumable batches. The backoffice displays progress and supports search and export. Run lifecycle commands through your authorized backend; the admin UI is read-only.
 
 Start from [REQ-PRODUCT-EVIDENCE-LIFECYCLE](requirements/README.md#req-product-evidence-lifecycle). The related [REQ-EU-RETENTION-ERASURE](requirements/README.md#req-eu-retention-erasure) remains partial and legally unreviewed. The research locators are [GDPR Articles 5, 17 and 19](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng). Engineering tests do not decide legal necessity, retention periods, applicable exceptions or recipient duties.
 
@@ -9,7 +9,7 @@ Start from [REQ-PRODUCT-EVIDENCE-LIFECYCLE](requirements/README.md#req-product-e
 Consent and processing targets select one `siteId`, `scopeId`, and host-resolved `streamId`. Terms targets select a whole `subjectId` across all terms scopes within one site. The prefix must match the ledger's configuration. Identity and tenant selection belong to the trusted host; never accept an arbitrary browser-supplied target or prefix.
 
 ```ts
-import {createEvidenceLifecycle} from 'notabenda-cf';
+import {createEvidenceLifecycle} from '@notabenda/cloudflare';
 
 // After host authorization, identity resolution and eligibility/hold review:
 const lifecycle = await createEvidenceLifecycle(ctx.storage, {
@@ -62,7 +62,7 @@ Map only a trusted, authenticated host retirement response to the corresponding 
 | Recorded processing opt-out | `ProcessingChoicesError('context-retired')` |
 | Terms acceptance | `TermsAcceptanceError('context-retired')` |
 
-The example website maps the backend error to HTTP 410 with `{code:'context-retired'}`. These error classes are exported by `notabenda`. A random object with a `code` property is not treated as authoritative terminal status.
+The example website maps the backend error to HTTP 410 with `{code:'context-retired'}`. These error classes are exported by `@notabenda/core`. A random object with a `code` property is not treated as authoritative terminal status.
 
 The current controller then remains `retired`: cookie grants and retries stop, terms resubmission/editing stops, and processing keeps every covered activity blocked. Local restrictions and uncertain outbox data are preserved; server retirement does not silently erase browser intent. Cookie rejection still works locally. Hosts must provide a contact or new authorized workflow when appropriate, and govern local data separately.
 
@@ -80,7 +80,7 @@ The library cannot detect a missing manifest or discover deleted subjects from a
 ## Review in the backoffice
 
 ```ts
-import {createAdminWorker, createEvidenceLifecycleStore} from 'notabenda-cf';
+import {createAdminWorker, createEvidenceLifecycleStore} from '@notabenda/cloudflare';
 
 const admin = createAdminWorker({
   basePath: '/admin/lifecycle',

@@ -11,9 +11,9 @@ import {build} from 'esbuild';
 import {JSDOM} from 'jsdom';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
-import {normalizeDurabilityGuaranteeLabel,renderDurabilityGuaranteeLabel,durabilityGuaranteeInformationUrl} from 'notabenda/guarantees/label';
-import {DurabilityGuaranteeLabel} from 'notabenda/react/documents';
+import {buildDurabilityGuaranteeLabel,verifyDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
+import {normalizeDurabilityGuaranteeLabel,renderDurabilityGuaranteeLabel,durabilityGuaranteeInformationUrl} from '@notabenda/core/guarantees/label';
+import {DurabilityGuaranteeLabel} from '@notabenda/core/react/documents';
 // Structural file fixtures only. None is a prescribed complete GARAN artwork or a legal acceptance fixture.
 const options={product:{id:'kettle-one',name:'Kettle One'},producer:{brand:'Example Maker',model:'K-100'},durationYears:5,qualification:{offeredByProducer:true,noAdditionalCost:true,coversEntireGood:true,informationProvidedToTrader:true},reviewStatus:'reviewed',locale:'en'};
 const pixels=Buffer.from([255,0,0,255,0,255,0,255,0,0,255,255,255,255,255,255]);
@@ -85,7 +85,7 @@ test('static views preserve product association, readable facts, full-size image
  const label=buildDurabilityGuaranteeLabel({...options,product:{...options.product,name:'<script>escape</script>'},statementUrl:'https://producer.example/terms'},svg()).label;
  const dom=new JSDOM(renderDurabilityGuaranteeLabel(label,{idPrefix:'product',headingLevel:3})),doc=dom.window.document;assert.equal(doc.querySelector('script,iframe,svg,style,form,input,button,[hidden],details'),null);assert.equal(doc.querySelector('h3').textContent,label.wording.title);assert.equal(doc.querySelector('.nb-guarantee-product').textContent,label.product.name);assert.deepEqual([...doc.querySelectorAll('dd')].map(n=>n.textContent),[label.producer.brand,label.producer.model,label.wording.durationValue]);assert.equal(doc.querySelector('[data-product-id]').dataset.productId,label.product.id);assert.equal(doc.querySelector('img').getAttribute('src'),label.asset.url);assert.equal(doc.querySelector('img').getAttribute('alt'),label.wording.imageAlt);assert.deepEqual([...doc.querySelectorAll('a')].map(n=>n.getAttribute('href')),[label.informationUrl,label.statementUrl,label.asset.url]);dom.window.close();
  assert.match(renderToStaticMarkup(createElement(DurabilityGuaranteeLabel,{label,idPrefix:'react'})),/data-guarantee-label-id/);
- for(const entry of ['notabenda','notabenda/guarantees/label','notabenda/react/documents']){const graph=await build({stdin:{contents:`export * from '${entry}';`,resolveDir:process.cwd()},bundle:true,platform:'browser',write:false,metafile:true,external:['react']});assert.ok(Object.keys(graph.metafile.inputs).every(p=>!/(?:pngjs|jpeg-js|xmldom|guarantee-label-(?:build|image)|notabenda-authoring)/u.test(p)));}
+ for(const entry of ['@notabenda/core','@notabenda/core/guarantees/label','@notabenda/core/react/documents']){const graph=await build({stdin:{contents:`export * from '${entry}';`,resolveDir:process.cwd()},bundle:true,platform:'browser',write:false,metafile:true,external:['react']});assert.ok(Object.keys(graph.metafile.inputs).every(p=>!/(?:pngjs|jpeg-js|xmldom|guarantee-label-(?:build|image)|notabenda-authoring)/u.test(p)));}
  const css=await readFile(new URL('../../notabenda/dist/guarantees.css',import.meta.url),'utf8');assert.match(css,/filter:none;clip-path:none/);assert.match(css,/forced-color-adjust:none/);
 });
 
@@ -96,7 +96,7 @@ test('SVG aggregates embedded decoded pixels and image count before decoding the
 });
 
 test('malformed stylesheet suffixes have bounded processing and aggregate CSS budgets',()=>{
- const source=`import {buildDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
+ const source=`import {buildDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
 const options=${JSON.stringify(options)};
 for(const css of ['a'.repeat(99999),'.x{fill:white;}'+ ' '.repeat(99000)]){const bytes=Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><style>'+css+'</style></svg>');try{buildDurabilityGuaranteeLabel(options,bytes);}catch{}}`;
  const result=spawnSync(process.execPath,['--input-type=module','-e',source],{cwd:process.cwd(),encoding:'utf8',timeout:3000});assert.equal(result.error,undefined,result.error?.message);assert.equal(result.status,0,result.stderr);
@@ -117,6 +117,6 @@ for(const css of ['a'.repeat(99999),'.x{fill:white;}'+ ' '.repeat(99000)]){const
  ])assert.throws(()=>buildDurabilityGuaranteeLabel(options,svg(body)),/Unsupported producer label asset/);
  const selectors=Array.from({length:1000},(_,i)=>`.c${i}`).join(','),declarations=Array.from({length:1000},(_,i)=>`clip-path:url(#a${i});`).join(''),clips=Array.from({length:1000},(_,i)=>`<clipPath id="a${i}"><rect width="1" height="1"/></clipPath>`).join('');
  const hostile=svg(`<style>${selectors}{${declarations}}</style><defs>${clips}</defs>`);
- const result=spawnSync(process.execPath,['--input-type=module','-e',`import {buildDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';try{buildDurabilityGuaranteeLabel(${JSON.stringify(options)},Buffer.from(${JSON.stringify(hostile.toString('base64'))},'base64'));process.exit(2);}catch(e){if(!/CSS clip (?:association|expansion) limit/.test(e.message))throw e;}`],{timeout:5000,encoding:'utf8'});
+ const result=spawnSync(process.execPath,['--input-type=module','-e',`import {buildDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';try{buildDurabilityGuaranteeLabel(${JSON.stringify(options)},Buffer.from(${JSON.stringify(hostile.toString('base64'))},'base64'));process.exit(2);}catch(e){if(!/CSS clip (?:association|expansion) limit/.test(e.message))throw e;}`],{timeout:5000,encoding:'utf8'});
  assert.equal(result.error,undefined);assert.equal(result.status,0,result.stderr);
  });

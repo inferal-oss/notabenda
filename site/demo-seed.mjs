@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE
 // Deliberately fictional journeys generated through the same immutable ledger APIs as integrations.
-import {recordConsentChoice,recordTermsAcceptance,recordProcessingRestriction} from 'notabenda-cf';
+import {recordConsentChoice,recordTermsAcceptance,recordProcessingRestriction} from '@notabenda/cloudflare';
 const uuid=n=>`d3e00000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 export async function seedDemoWorkspace(storage,data){
  const marker='demo/seed-v1';if(await storage.get(marker))return;

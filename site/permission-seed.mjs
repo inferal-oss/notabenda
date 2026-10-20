@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-DEMO-WORKSPACE
-import {recordFormPermission,formPermissionStreamRef,getFormPermissionState} from 'notabenda-cf';
+import {recordFormPermission,formPermissionStreamRef,getFormPermissionState} from '@notabenda/cloudflare';
 const uuid=n=>`f03a0000-0000-4000-8000-${String(n).padStart(12,'0')}`;
 export async function seedFormPermissionJourneys(storage,data){
  const offer=data.formPermissions.offer,marker='demo/form-permission-seed/'+offer.offerId;

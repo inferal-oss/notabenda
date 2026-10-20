@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 // @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y REQ-PRODUCT-CONSENT-RUNTIME
-import {renderLegalLinks} from 'notabenda';
+import {renderLegalLinks} from '@notabenda/core';
 const e=value=>String(value).replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const leaf='<svg viewBox="0 0 32 32" width="28" height="28" fill="none" aria-hidden="true"><path d="M8 25V10m0 9C8 8 17 5 25 6c1 9-4 17-17 13Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const icon=(kind)=>kind==='measurement'?'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 18V12m7 6V6m7 12v-9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>':'<svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>';

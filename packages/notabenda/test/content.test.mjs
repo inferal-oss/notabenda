@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { compileLegalDocuments, canonicalJson, sha256 } from 'notabenda/content';
+import { compileLegalDocuments, canonicalJson, sha256 } from '@notabenda/core/content';
 import { fixture } from './helpers.mjs';
 
 // @requirements REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CONFIG

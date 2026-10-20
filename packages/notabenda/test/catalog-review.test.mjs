@@ -1,9 +1,9 @@
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SETUP REQ-PRODUCT-A11Y */
 import {test} from 'node:test';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';
-import {createCatalogSelectionPlan,normalizeSetupCatalogSelections} from 'notabenda/catalog/selection';
-import {prepareCatalogSelectionReview,confirmCatalogSelectionReview,readSetupCatalogRevisions,normalizeCatalogSelectionRevisions} from 'notabenda/catalog/review';
-import {mountCatalogSelectionReview} from 'notabenda/catalog/ui';import {serviceCatalogSeed} from 'notabenda/catalog/seed';
-import {createSetupPlan} from 'notabenda/setup';import {mountSetup} from 'notabenda/setup/ui';import {compileLegalDocuments} from 'notabenda/content';
+import {createCatalogSelectionPlan,normalizeSetupCatalogSelections} from '@notabenda/core/catalog/selection';
+import {prepareCatalogSelectionReview,confirmCatalogSelectionReview,readSetupCatalogRevisions,normalizeCatalogSelectionRevisions} from '@notabenda/core/catalog/review';
+import {mountCatalogSelectionReview} from '@notabenda/core/catalog/ui';import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';
+import {createSetupPlan} from '@notabenda/core/setup';import {mountSetup} from '@notabenda/core/setup/ui';import {compileLegalDocuments} from '@notabenda/core/content';
 import {fixture} from './helpers.mjs';import {promptCatalogSelectionReview} from '../dist/catalog-review-cli.js';
 const answers={schemaVersion:1,markets:[],answers:{}};
 const initial=async()=>createCatalogSelectionPlan(await fixture({reviewed:true}),serviceCatalogSeed,{productId:'stripe-payments',serviceId:'payments',purposeIds:['enquiries'],provider:'Reviewed entity',location:'Region A',justification:'OLD_PRIVATE_REASON',confirmed:true});

@@ -1,7 +1,7 @@
 // @requirements REQ-EU-ORDER-ACTION REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-SAFE-CONTENT
 import {createHash} from 'node:crypto';
-import {normalizePaidOrderDefinition,normalizePaidOrderQuote,normalizePaidOrderReview,copyPaidOrderData,paidOrderEnglishWording} from 'notabenda/orders';
-import type {PaidOrderDefinition,PaidOrderQuote,PaidOrderReview,PaidOrderWording} from 'notabenda/orders';
+import {normalizePaidOrderDefinition,normalizePaidOrderQuote,normalizePaidOrderReview,copyPaidOrderData,paidOrderEnglishWording} from '@notabenda/core/orders';
+import type {PaidOrderDefinition,PaidOrderQuote,PaidOrderReview,PaidOrderWording} from '@notabenda/core/orders';
 import {verifyDurabilityGuaranteeLabel} from './guarantee-label-build.js';
 type Options={allowPreview?:boolean};
 export type PaidOrderDefinitionInput=Omit<PaidOrderDefinition,'schemaVersion'|'kind'|'renderingPolicy'|'definitionId'|'wording'>&{wording?:PaidOrderWording};

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-CONSENT-EVIDENCE
 // Explicit synthetic local fixtures. No visitor context, public ingestion or deletion endpoint.
-import {createEvidenceLifecycle,recordLegalRelease,registerConsentNotice,recordConsentChoice,registerProcessingNotice,recordProcessingRestriction,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance,getProcessingHead} from 'notabenda-cf';
+import {createEvidenceLifecycle,recordLegalRelease,registerConsentNotice,recordConsentChoice,registerProcessingNotice,recordProcessingRestriction,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance,getProcessingHead} from '@notabenda/cloudflare';
 export const lifecycleDemoPrefix='host/lifecycle-demo/';
 const at='2026-10-18T12:00:00.000Z',now=()=>new Date(at);
 const requests={complete:'00000000-0000-4000-8000-000000000081',held:'00000000-0000-4000-8000-000000000082',pending:'00000000-0000-4000-8000-000000000083',processing:'00000000-0000-4000-8000-000000000084',terms:'00000000-0000-4000-8000-000000000085'};

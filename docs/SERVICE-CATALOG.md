@@ -2,9 +2,9 @@
 
 ## Search a project with npx
 
-After installing the preview package, run `npx notabenda discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
+After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
 
-For a single interactive workflow, run `npx notabenda wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
+For a single interactive workflow, run `npx @notabenda/core wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
 
 Requirements: `REQ-PRODUCT-SERVICE-CATALOG`, `REQ-PRODUCT-SERVICE-DETECTION`. Search providers or inspect discovery candidates, confirm the actual site use, and add selected services to configuration. Setup retains the selected reference facts and private notes. Explicit selected-reference release archival is available; see [feature status](FEATURES.md#feat-service-catalog) for coverage.
 
@@ -15,21 +15,21 @@ A versioned catalog should connect service selection, discovery, disclosures and
 Install the locally packed developer-preview package first; it is not published on npm yet. These commands then use that installed package:
 
 ```sh
-npx notabenda catalog search email --delivery backend
-npx notabenda catalog search stripe --json
-npx notabenda discover --project .
-npx notabenda discover --project . --out-dir ./service-review
+npx @notabenda/core catalog search email --delivery backend
+npx @notabenda/core catalog search stripe --json
+npx @notabenda/core discover --project .
+npx @notabenda/core discover --project . --out-dir ./service-review
 ```
 
-From this repository after `npm run build`, use `node packages/notabenda/dist/cli.js` in place of `npx notabenda`. `--catalog FILE` selects a custom version-1 JSON catalog for either command. Catalog search accepts `--delivery browser|backend|infrastructure` and `--limit 1–100`; project scan deliberately rejects browser capture/config flags. No site config is needed for reference search or static scanning.
+From this repository after `npm run build`, use `node packages/notabenda/dist/cli.js` in place of `npx --no-install notabenda`. `--catalog FILE` selects a custom version-1 JSON catalog for either command. Catalog search accepts `--delivery browser|backend|infrastructure` and `--limit 1–100`; project scan deliberately rejects browser capture/config flags. No site config is needed for reference search or static scanning.
 
 The seed has 363 provider identities and 402 product/reference entries, including 39 original backend/provider references, three additional browser-product references and 2,278 imported storage hints. The imported names are reference labels, not verified legal entities. Backend sources explicitly have `access: reference-only` and `checkedOn: null`; recorded homepages do not establish provider-practice verification. Upstream cookie categories and retention are reported hints, not site configuration defaults.
 
 ```ts
 import {
   normalizeServiceCatalog, searchServiceCatalog, createCatalogServiceDraft,
-} from 'notabenda/catalog';
-import {serviceCatalogSeed} from 'notabenda/catalog/seed';
+} from '@notabenda/core/catalog';
+import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';
 
 const catalog = normalizeServiceCatalog(serviceCatalogSeed);
 const candidates = searchServiceCatalog(catalog, 'stripe', {delivery: 'backend'});
@@ -41,7 +41,7 @@ const draft = createCatalogServiceDraft(catalog, 'stripe-payments', {
 // detached snapshot for your review/export. Neither is written or activated.
 ```
 
-`notabenda/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `notabenda/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
+`@notabenda/core/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `@notabenda/core/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
 
 Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and Terraform resource/data names. It labels development dependencies separately. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
 
@@ -51,7 +51,7 @@ Git projects use Git's ignored-file selection with filesystem monitoring disable
 
 The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
 
-The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `notabenda/catalog/selection` exports explicit draft selection and private pin validation; `notabenda/catalog/ui` supplies the optional local picker. Use the explicit release finalizer below to retain selected references with policies.
+The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `@notabenda/core/catalog/selection` exports explicit draft selection and private pin validation; `@notabenda/core/catalog/ui` supplies the optional local picker. Use the explicit release finalizer below to retain selected references with policies.
 
 ## Design direction
 
@@ -142,9 +142,9 @@ Admin setup and `catalog review` share the explicit [re-review workflow](SETUP.m
 Finalize a static or Markdown/MDX build with the current confirmed selections before creating notices or offers:
 
 ```ts
-import {compileLegalDocuments} from 'notabenda/content';
-import {attachCatalogReview} from 'notabenda/catalog/release';
-import {readSetupCatalogSelections} from 'notabenda/catalog/selection';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {attachCatalogReview} from '@notabenda/core/catalog/release';
+import {readSetupCatalogSelections} from '@notabenda/core/catalog/selection';
 
 const compiled = compileLegalDocuments(reviewedSiteConfig);
 const release = attachCatalogReview(compiled, readSetupCatalogSelections(privateReport));
@@ -161,7 +161,7 @@ Stale service disclosures or purpose facts, duplicate service IDs, empty selecti
 The static CLI reads an explicit report and writes an exclusive private directory outside the public output, with directory/file modes 0700/0600 and an ignore file:
 
 ```sh
-npx notabenda build --preview --config notabenda.config.json \
+npx @notabenda/core build --preview --config notabenda.config.json \
   --catalog-report setup.private.json \
   --private-out-dir ./private-release --out-dir ./public-legal
 ```
@@ -181,8 +181,8 @@ Profiles describe documented options. They do not supply the site's provider ent
 Inspect a product before selecting it:
 
 ```sh
-npx notabenda catalog show supabase-platform
-npx notabenda catalog show resend-email --json
+npx @notabenda/core catalog show supabase-platform
+npx @notabenda/core catalog show resend-email --json
 ```
 
 Interactive setup prints these notes before asking about actual use. The browser picker displays them before the site fields. Its optional **Use reference privacy URL** action fills only an empty field; manually entered URLs are preserved, and editing a proposal clears its review confirmation. Notes do not silently become public policy prose.
@@ -190,7 +190,7 @@ Interactive setup prints these notes before asking about actual use. The browser
 Hosts can render one product without loading the bundled seed:
 
 ```js
-import {renderCatalogProductProfile} from 'notabenda/catalog/profile';
+import {renderCatalogProductProfile} from '@notabenda/core/catalog/profile';
 
 const html = renderCatalogProductProfile(yourCatalog, 'supabase-platform', {
   headingLevel: 3,
@@ -198,7 +198,7 @@ const html = renderCatalogProductProfile(yourCatalog, 'supabase-platform', {
 });
 ```
 
-Use `notabenda/styles.css` for default styling. The renderer escapes text, links only validated references, and performs no requests. It creates no form controls or settings. `readCatalogProductProfile` returns detached selected-product notes and sources; `formatCatalogProductProfile` provides terminal text.
+Use `@notabenda/core/styles.css` for default styling. The renderer escapes text, links only validated references, and performs no requests. It creates no form controls or settings. `readCatalogProductProfile` returns detached selected-product notes and sources; `formatCatalogProductProfile` provides terminal text.
 
 A profile is bounded to 16 KiB, eight facts, six document links and eight questions. Each cited source must belong to the product; fact sources must have been retrieved. Document links must match a cited generic HTTPS URL without a query, fragment or credentials. These structural checks cannot prove a URL is public; catalog authors must review that too. Keep tenant IDs, contract copies and private answers outside reference catalogs. Questions may have no source when they are editorial prompts, rather than provider claims.
 

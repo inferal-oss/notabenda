@@ -1,9 +1,9 @@
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-RETAINED-RELEASES REQ-PRODUCT-AUTHORING REQ-EU-INTERESTS-DISCLOSURE
 import {test} from 'node:test';import assert from 'node:assert/strict';
 import {readFile,mkdtemp,writeFile,rm,stat,symlink} from 'node:fs/promises';import {tmpdir} from 'node:os';import {join} from 'node:path';import {spawnSync} from 'node:child_process';
-import {attachCatalogReview} from 'notabenda/catalog/release';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {createCatalogSelectionPlan} from 'notabenda/catalog/selection';import {createSetupPlan} from 'notabenda/setup';
-import {compileLegalDocuments,createRetainedReleaseFiles,canonicalJson,sha256,createTermsOffer} from 'notabenda/content';import {compileAuthoredDocuments} from 'notabenda-authoring';
-import {recordLegalRelease,createDocumentHistory,validateLegalSourceArchive,createAdminWorker} from 'notabenda-cf';import {validateLegalArtifact,validateStoredLegalRelease} from '../../notabenda-cf/dist/history.js';
+import {attachCatalogReview} from '@notabenda/core/catalog/release';import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';import {createCatalogSelectionPlan} from '@notabenda/core/catalog/selection';import {createSetupPlan} from '@notabenda/core/setup';
+import {compileLegalDocuments,createRetainedReleaseFiles,canonicalJson,sha256,createTermsOffer} from '@notabenda/core/content';import {compileAuthoredDocuments} from '@notabenda/authoring';
+import {recordLegalRelease,createDocumentHistory,validateLegalSourceArchive,createAdminWorker} from '@notabenda/cloudflare';import {validateLegalArtifact,validateStoredLegalRelease} from '../../notabenda-cf/dist/history.js';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';import {fixture} from './helpers.mjs';
 const selected=async()=>createCatalogSelectionPlan(await fixture({reviewed:true}),serviceCatalogSeed,{productId:'stripe-payments',serviceId:'payments',purposeIds:['enquiries'],provider:'Explicit entity',location:'Selected region',justification:'PRIVATE_JUSTIFICATION_SENTINEL',confirmed:true});
 

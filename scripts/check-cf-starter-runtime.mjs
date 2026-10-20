@@ -7,8 +7,8 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {fixture} from '../packages/notabenda/test/helpers.mjs';
-import {compileLegalDocuments} from 'notabenda/content';
-import {compileAuthoredDocuments} from 'notabenda-authoring';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {compileAuthoredDocuments} from '@notabenda/authoring';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),port=Number(process.env.NOTABENDA_STARTER_CHECK_PORT??4181);
 if(!Number.isInteger(port)||port<4181||port>4190)throw Error('Use a loopback test port from 4181 to 4190.');

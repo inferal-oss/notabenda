@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-CF-ADMIN
 // Technical fixtures only. All records are in-memory; no operational account, auth or data is read.
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,compileConsentRuntimeConfig,createTermsOffer,createFormPermissionOffer} from 'notabenda/content';
-import {createAdminWorker,createDurableObjectStore,createDocumentHistory,recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,getFormPermissionState,formPermissionStreamRef,createSetupWorker} from 'notabenda-cf';
+import {compileLegalDocuments,compileConsentRuntimeConfig,createTermsOffer,createFormPermissionOffer} from '@notabenda/core/content';
+import {createAdminWorker,createDurableObjectStore,createDocumentHistory,recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,getFormPermissionState,formPermissionStreamRef,createSetupWorker} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../packages/notabenda-cf/examples/synthetic.mjs';
 import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
 export async function accessibilityFixtureData(){

@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import * as contracts from 'notabenda/contracts';
+import * as contracts from '@notabenda/core/contracts';
 import {serveHost} from '../host.mjs';
 import {DemoWorkspace} from '../worker.mjs';
 import {createSyntheticStorage} from '../../packages/notabenda-cf/examples/synthetic.mjs';

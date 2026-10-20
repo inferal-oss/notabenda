@@ -1,8 +1,8 @@
 ---
 // @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-MOBILE
 import {ClientRouter} from 'astro:transitions';
-import FormPermissionField from 'notabenda/astro/FormPermissionField.astro';
-import LegalLinks from 'notabenda/astro/LegalLinks.astro';
+import FormPermissionField from '@notabenda/core/astro/FormPermissionField.astro';
+import LegalLinks from '@notabenda/core/astro/LegalLinks.astro';
 import {permissionExample} from '../lib/permission.mjs';
 export interface Props {review?:boolean}
 const {review=false}=Astro.props;

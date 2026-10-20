@@ -6,10 +6,10 @@ import {createRoot,hydrateRoot} from 'react-dom/client';
 import {renderToString} from 'react-dom/server';
 import {JSDOM} from 'jsdom';
 import {IDBFactory} from 'fake-indexeddb';
-import {createFormPermission,createIndexedDBFormPermissionJournal} from 'notabenda';
-import {createFormPermissionOffer,compileLegalDocuments} from 'notabenda/content';
-import {FormPermissionProvider,FormPermissionField,useFormPermissionController,useFormPermissionSnapshot,useFormPermissionAllowed} from 'notabenda/react';
-import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission} from 'notabenda-cf';
+import {createFormPermission,createIndexedDBFormPermissionJournal} from '@notabenda/core';
+import {createFormPermissionOffer,compileLegalDocuments} from '@notabenda/core/content';
+import {FormPermissionProvider,FormPermissionField,useFormPermissionController,useFormPermissionSnapshot,useFormPermissionAllowed} from '@notabenda/core/react';
+import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 async function setup(extra={}){

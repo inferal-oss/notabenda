@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { defineSite, validateSiteConfig, toPublicConfig, SiteConfigError } from 'notabenda';
+import { defineSite, validateSiteConfig, toPublicConfig, SiteConfigError } from '@notabenda/core';
 import { createStarterConfig } from '../dist/starter.js';
 import { fixture } from './helpers.mjs';
 

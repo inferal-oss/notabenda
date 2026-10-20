@@ -1,6 +1,6 @@
 # Cookie-choice evidence
 
-The optional ledger in `notabenda-cf` stores host-received cookie-choice reports against an immutable notice and legal-document release. It provides transactional ordering and a read-only compliance view. `createConsent` remains local-only by default; configuring its third argument enables **required-receipt mode**, which blocks optional services until the exact local choice matches the server's current record. An ordinary local grant is not remotely recorded.
+The optional ledger in `@notabenda/cloudflare` stores host-received cookie-choice reports against an immutable notice and legal-document release. It provides transactional ordering and a read-only compliance view. `createConsent` remains local-only by default; configuring its third argument enables **required-receipt mode**, which blocks optional services until the exact local choice matches the server's current record. An ordinary local grant is not remotely recorded.
 
 The [EDPB consent guidelines, §§5.1–5.2](https://www.edpb.europa.eu/system/files/documents/files/file1/edpb_guidelines_202005_consent_en.pdf) discuss evidence of the information provided and how/when a choice was made, minimization, context-dependent renewal, and easy withdrawal. The fields below are an engineering design, not a regulator-mandated schema or proof of valid consent. Legal applicability and review remain the operator's responsibility.
 
@@ -9,7 +9,7 @@ The [EDPB consent guidelines, §§5.1–5.2](https://www.edpb.europa.eu/system/f
 Build a notice alongside the legal documents:
 
 ```js
-import { compileLegalDocuments, createConsentNotice } from 'notabenda/content';
+import { compileLegalDocuments, createConsentNotice } from '@notabenda/core/content';
 
 const { artifact } = compileLegalDocuments(reviewedConfig);
 const notice = createConsentNotice(artifact, {
@@ -28,7 +28,7 @@ The notice pins the privacy/cookie HTML and structured-content hashes, version a
 import {
   recordLegalRelease, registerConsentNotice, setActiveConsentNotice,
   recordConsentChoice, getConsentHead, createConsentEvidenceStore,
-} from 'notabenda-cf';
+} from '@notabenda/cloudflare';
 
 const site = { siteId: 'sample-site' }; // Trusted host configuration.
 await recordLegalRelease(ctx.storage, artifact);
@@ -89,7 +89,7 @@ The website’s `/demo/admin/choices` contains realistic fictional journeys. Pub
 ## Browser delivery and required permission
 
 ```js
-import {createConsent, mountControls, ConsentEvidenceError} from 'notabenda';
+import {createConsent, mountControls, ConsentEvidenceError} from '@notabenda/core';
 
 const consent = createConsent(config, undefined, {
   evidence: {

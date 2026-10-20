@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {validateSiteConfig} from 'notabenda';
+import {validateSiteConfig} from '@notabenda/core';
 import {serveHost} from '../host.mjs';
 
 test('the static exception example publishes draft profiles, local bundled runtime and its specialist guide without allocating admin storage',async()=>{

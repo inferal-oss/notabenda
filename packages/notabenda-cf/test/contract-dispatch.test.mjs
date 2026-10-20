@@ -2,8 +2,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {fixture} from '../../notabenda/test/helpers.mjs';
-import {compileLegalDocuments,createContractActionDefinition} from 'notabenda/content';
-import {recordLegalRelease,registerContractActionDefinition,recordContractDeclaration,dispatchContractDelivery,dispatchContractDeclaration,claimContractDelivery,settleContractDelivery,cancelContractDelivery,createEvidenceLifecycle} from 'notabenda-cf';
+import {compileLegalDocuments,createContractActionDefinition} from '@notabenda/core/content';
+import {recordLegalRelease,registerContractActionDefinition,recordContractDeclaration,dispatchContractDelivery,dispatchContractDeclaration,claimContractDelivery,settleContractDelivery,cancelContractDelivery,createEvidenceLifecycle} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 
 async function setup(){

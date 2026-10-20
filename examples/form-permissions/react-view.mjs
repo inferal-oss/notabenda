@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-REACT REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-MOBILE
 import {createElement as h,useState,useEffect} from 'react';
-import {FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot} from 'notabenda/react';
+import {FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot} from '@notabenda/core/react';
 function Workspace({offer,dark=false}){
  const state=useFormPermissionSnapshot(),[ready,setReady]=useState(false),[result,setResult]=useState('A local draft. Email permission is recorded separately.');useEffect(()=>{setReady(true);},[]);
  const current=state.status==='retired'?'Context closed':state.recovery?.withdrawalPending?'Withdrawal awaiting confirmation':['loading','submitting'].includes(state.status)?'Awaiting confirmation':state.status==='error'?'Not confirmed':state.allowed?'Permission recorded':state.current?.reason==='withdrawn'?'Withdrawn':state.current?'Off':'Not checked';

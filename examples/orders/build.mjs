@@ -1,8 +1,8 @@
 // @requirements REQ-EU-ORDER-ACTION REQ-EU-GUARANTEE-LABEL REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {readFile} from 'node:fs/promises';
-import {createPaidOrderDefinition,createPaidOrderReview} from 'notabenda-authoring/orders';
-import {buildDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
-import {renderPaidOrderReview} from 'notabenda/orders';
+import {createPaidOrderDefinition,createPaidOrderReview} from '@notabenda/authoring/orders';
+import {buildDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
+import {renderPaidOrderReview} from '@notabenda/core/orders';
 const fixed=amountMinor=>({kind:'fixed',amountMinor});
 export async function paidOrderFiles(){
  const bytes=await readFile(new URL('../guarantees/producer/juniper-jw-01.svg',import.meta.url)),settings=JSON.parse(await readFile(new URL('../guarantees/producer/config.json',import.meta.url),'utf8')),built=buildDurabilityGuaranteeLabel(settings,bytes),files={...built.files,[built.label.asset.url.slice(1).replace(/\.svg$/u,'.NOTICE.txt')]:await readFile(new URL('../guarantees/producer/NOTICE.md',import.meta.url),'utf8'),'assets/orders.css':await readFile(new URL('../../packages/notabenda/dist/orders.css',import.meta.url),'utf8'),'assets/orders.mjs':await readFile(new URL('./client.mjs',import.meta.url),'utf8')};

@@ -8,6 +8,8 @@ Choose a job: publish privacy pages, manage cookie choices, or ask for agreement
 
 **Developer preview.** The packages have not been published to npm yet. The frontend includes legal pages, cookie choices, form permissions and terms agreements, with optional React and Astro adapters. The Cloudflare package adds scoped evidence, document history and operator tools. Regional coverage and operational integration remain partial. See the [current scope](docs/SCOPE.md) and [feature status](docs/FEATURES.md).
 
+The packages are **`@notabenda/core`**, **`@notabenda/cloudflare`** and **`@notabenda/authoring`**. The npm organization is reserved; use local builds for now. [Package names and installation](docs/PACKAGES.md).
+
 Start with the [pack library](https://notabenda.org/start/) or explore the [documentation](https://notabenda.org/guide/) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
 
 Start with the [compliance component map](https://notabenda.org/guide/compliance-map/) to see what notices, permissions, contract actions and evidence serve. The separate [software and storage diagram](https://notabenda.org/guide/architecture/) shows how those parts fit into a site and optional backend.
@@ -47,7 +49,7 @@ For the project website and isolated Cloudflare demo, run `npm run site:dev`. Se
 The package can be packed and installed locally. Publishing is a separate step.
 
 ```sh
-npm pack --workspace notabenda --pack-destination /tmp
+npm pack --workspace @notabenda/core --pack-destination /tmp
 ```
 
 Try [gated media](http://127.0.0.1:4178/embeds): iframe and image placeholders share one declared service, wait for permission, and return when you withdraw. [Integration guide](docs/EMBEDS.md).
@@ -63,33 +65,33 @@ Try [retained document versions](http://127.0.0.1:4178/releases): a clean deploy
 After installing the local tarball, create a configuration and preview your documents:
 
 ```sh
-npx notabenda init
+npx @notabenda/core init
 # Fill in your facts and supply appropriate terms.
-npx notabenda check --preview
-npx notabenda build --preview
+npx @notabenda/core check --preview
+npx @notabenda/core build --preview
 ```
 
 One config describes the operator, processing purposes, services, storage, retention, rights, and document versions. It produces ordinary static pages, public configuration, and a versioned artifact for your own history/evidence backend.
 
-For guided setup, run `npx notabenda wizard` or use the [setup screen](https://notabenda.org/demo/admin/setup). Describe your processing purposes, review providers and keep private reasons alongside the resulting draft. Unknown legal basis or retention stays unresolved for review. [Setup guide](docs/SETUP.md).
+For guided setup, run `npx @notabenda/core wizard` or use the [setup screen](https://notabenda.org/demo/admin/setup). Describe your processing purposes, review providers and keep private reasons alongside the resulting draft. Unknown legal basis or retention stays unresolved for review. [Setup guide](docs/SETUP.md).
 
 Use the renderer inside your own layout, too:
 
 ```ts
-import { renderLegalDocument, renderLegalLinks } from 'notabenda';
-import 'notabenda/styles.css'; // optional
+import { renderLegalDocument, renderLegalLinks } from '@notabenda/core';
+import '@notabenda/core/styles.css'; // optional
 
 const privacyArticle = renderLegalDocument(siteConfig, 'privacy');
 const legalFooter = renderLegalLinks(siteConfig);
 ```
 
-No framework or runtime dependencies are required. The build-time API lives separately at `notabenda/content`. See the [package guide](packages/notabenda/README.md) for configuration, rendering, review declarations, and artifacts.
+No framework or runtime dependencies are required. The build-time API lives separately at `@notabenda/core/content`. See the [package guide](packages/notabenda/README.md) for configuration, rendering, review declarations, and artifacts.
 
-The optional [`notabenda-authoring`](packages/notabenda-authoring/README.md) build package accepts **Markdown and MDX with YAML frontmatter**, including your own static components. Publish the HTML and keep source revisions in the authenticated history workspace. [Authoring guide](docs/AUTHORING.md) · [Working example](http://127.0.0.1:4178/authored/terms).
+The optional [`@notabenda/authoring`](packages/notabenda-authoring/README.md) build package accepts **Markdown and MDX with YAML frontmatter**, including your own static components. Publish the HTML and keep source revisions in the authenticated history workspace. [Authoring guide](docs/AUTHORING.md) · [Working example](http://127.0.0.1:4178/authored/terms).
 
-For React, import the optional `notabenda/react` provider, hooks and controls, or `notabenda/react/documents` for server-rendered legal content. They use the same consent engine. [React guide](docs/REACT.md) · [Live example](http://127.0.0.1:4178/react).
+For React, import the optional `@notabenda/core/react` provider, hooks and controls, or `@notabenda/core/react/documents` for server-rendered legal content. They use the same consent engine. [React guide](docs/REACT.md) · [Live example](http://127.0.0.1:4178/react).
 
-For Astro, packaged `.astro` components render static legal pages, and `notabenda/astro/client` keeps controls connected through client navigation. [Astro guide](docs/ASTRO.md) · [Real Astro example](http://127.0.0.1:4178/astro/).
+For Astro, packaged `.astro` components render static legal pages, and `@notabenda/core/astro/client` keeps controls connected through client navigation. [Astro guide](docs/ASTRO.md) · [Real Astro example](http://127.0.0.1:4178/astro/).
 
 Give visitors a clear next step with an optional [privacy request page](docs/RIGHTS.md). Supply the actions, scope and links to your actual workflows, plus a public contact. The static page works without JavaScript and shares the same theme tokens. [Light example](http://127.0.0.1:4179/rights/) · [Midnight example](http://127.0.0.1:4179/dark/rights/). Request handling belongs to your application.
 
@@ -105,9 +107,9 @@ Public content is escaped, links and routes are checked, and private operator me
 
 The [requirements catalog](docs/requirements/README.md) connects sources to individual obligations, planned features, implementation files, and tests. Regional behavior is recorded item by item. Research, legal review, and implementation have separate statuses.
 
-The optional [`notabenda-cf` component](packages/notabenda-cf/README.md) adds host-authorized, scoped access to stored evidence and document history. Authentication belongs to your application. The backoffice provides evidence search, record details and policy/terms comparisons. Its Durable Object adapter and history APIs power the website's isolated demo and can be plugged into your own host integration.
+The optional [`@notabenda/cloudflare` component](packages/notabenda-cf/README.md) adds host-authorized, scoped access to stored evidence and document history. Authentication belongs to your application. The backoffice provides evidence search, record details and policy/terms comparisons. Its Durable Object adapter and history APIs power the website's isolated demo and can be plugged into your own host integration.
 
-Start your own backend with `npx notabenda-cf init`. It creates a local Worker project with SQLite storage, the admin and guided setup; you supply your existing authorization hook. Nothing is installed or deployed automatically. [Cloudflare starter guide](docs/CLOUDFLARE-STARTER.md).
+Start your own backend with `npx @notabenda/cloudflare init`. It creates a local Worker project with SQLite storage, the admin and guided setup; you supply your existing authorization hook. Nothing is installed or deployed automatically. [Cloudflare starter guide](docs/CLOUDFLARE-STARTER.md).
 
 For stored evidence, [lifecycle tools](docs/EVIDENCE-LIFECYCLE.md) let your backend apply holds, close a context and remove matching payloads in resumable steps. The read-only workspace explains the progress and what remains. Try it through `npm run site:dev` at [evidence lifecycle](http://127.0.0.1:4179/demo/admin/lifecycle).
 

@@ -4,9 +4,9 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {JSDOM} from 'jsdom';
-import {createPaidOrderDefinition,createPaidOrderReview,verifyPaidOrderReview} from 'notabenda-authoring/orders';
-import {createPaidOrderAction,mountPaidOrderAction,renderPaidOrderReview,normalizePaidOrderReview,formatPaidOrderMoney,copyPaidOrderData} from 'notabenda/orders';
-import {buildDurabilityGuaranteeLabel} from 'notabenda-authoring/guarantees';
+import {createPaidOrderDefinition,createPaidOrderReview,verifyPaidOrderReview} from '@notabenda/authoring/orders';
+import {createPaidOrderAction,mountPaidOrderAction,renderPaidOrderReview,normalizePaidOrderReview,formatPaidOrderMoney,copyPaidOrderData} from '@notabenda/core/orders';
+import {buildDurabilityGuaranteeLabel} from '@notabenda/authoring/guarantees';
 const time='2026-10-19T12:00:00.000Z',expiry='2026-10-19T12:10:00.000Z',fixed=amountMinor=>({kind:'fixed',amountMinor});
 const definitionInput=({schemaVersion,kind,renderingPolicy,definitionId,...input})=>input;
 const calculatedTotal={kind:'calculated',method:'€129 for the lamp plus €6 per month for planning.',reason:'The membership continues until cancelled, so its total depends on its duration.'};
@@ -41,7 +41,7 @@ test('mixed goods and subscriptions bind separate commitments, exact totals and 
 
 test('browser order entries exclude authoring, Node, frameworks and evidence storage; static rendering excludes action transport',async()=>{
  const {build}=await import('esbuild');for(const names of ['renderPaidOrderReview','createPaidOrderAction,mountPaidOrderAction']){
-  const result=await build({stdin:{contents:`export {${names}} from 'notabenda/orders';`,resolveDir:process.cwd()},bundle:true,format:'esm',platform:'browser',minify:true,write:false,metafile:true});
+  const result=await build({stdin:{contents:`export {${names}} from '@notabenda/core/orders';`,resolveDir:process.cwd()},bundle:true,format:'esm',platform:'browser',minify:true,write:false,metafile:true});
   const used=Object.entries(Object.values(result.metafile.outputs)[0].inputs).filter(([,v])=>v.bytesInOutput>0).map(([path])=>path).join('\n');assert.doesNotMatch(used,/notabenda-authoring|notabenda-cf|node:|react|astro|catalog/);if(names==='renderPaidOrderReview')assert.doesNotMatch(used,/paid-order-action|paid-order-ui/);
  }
 });

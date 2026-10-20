@@ -33,10 +33,10 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
   const env = { ...process.env, npm_config_cache: join(cwd, 'cache'), npm_config_update_notifier: 'false' };
   const npm = (...args) => spawnSync('npm', args, { cwd, encoding: 'utf8', env });
   try {
-    const packed = spawnSync('npm', ['pack', '--workspace', 'notabenda', '--workspace', 'notabenda-cf', '--json', '--ignore-scripts', '--pack-destination', cwd], { cwd: root, encoding: 'utf8', env });
+    const packed = spawnSync('npm', ['pack', '--workspace', '@notabenda/core', '--workspace', '@notabenda/cloudflare', '--json', '--ignore-scripts', '--pack-destination', cwd], { cwd: root, encoding: 'utf8', env });
     assert.equal(packed.status, 0, packed.stderr);
     const packages = JSON.parse(packed.stdout);
-    const manifest = packages.find(p => p.name === 'notabenda');
+    const manifest = packages.find(p => p.name === '@notabenda/core');
     assert.equal(packages.length, 2);
     for (const item of packages) {
       assert.ok(item.files.some(f => f.path === 'LICENSE'));
@@ -53,73 +53,75 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     await writeFile(join(cwd, 'package.json'), '{"private":true,"type":"module"}');
     const installed = npm('install', '--offline', '--ignore-scripts', '--no-audit', '--no-fund', ...packages.map(item => join(cwd, item.filename)));
     assert.equal(installed.status, 0, installed.stderr);
-    const installedPackage = JSON.parse(await readFile(join(cwd, 'node_modules/notabenda/package.json'), 'utf8'));
+    const installedPackage = JSON.parse(await readFile(join(cwd, 'node_modules/@notabenda/core/package.json'), 'utf8'));
+    assert.equal(installedPackage.name,'@notabenda/core');assert.equal(installedPackage.publishConfig.access,'public');assert.deepEqual(Object.keys(installedPackage.bin),['notabenda']);
     assert.equal(installedPackage.license, 'Apache-2.0');
     assert.equal(Object.keys(installedPackage.dependencies ?? {}).length, 0);
     await assert.rejects(readFile(join(cwd,'node_modules/react/package.json'),'utf8'),error=>error.code==='ENOENT');
     await assert.rejects(readFile(join(cwd,'node_modules/astro/package.json'),'utf8'),error=>error.code==='ENOENT');
-    const cfPackage = JSON.parse(await readFile(join(cwd, 'node_modules/notabenda-cf/package.json'), 'utf8'));
+    const cfPackage = JSON.parse(await readFile(join(cwd, 'node_modules/@notabenda/cloudflare/package.json'), 'utf8'));
+    assert.equal(cfPackage.name,'@notabenda/cloudflare');assert.equal(cfPackage.publishConfig.access,'public');
     assert.equal(cfPackage.license, 'Apache-2.0');
     assert.equal(Object.keys(cfPackage.dependencies ?? {}).length, 0);
     assert.equal(cfPackage.bin['notabenda-cf'],'./bin/notabenda-cf.mjs');
-    const cfManifest=packages.find(item=>item.name==='notabenda-cf');assert.ok(cfManifest.files.some(file=>file.path==='templates/src/worker.mjs'));assert.ok(cfManifest.files.some(file=>file.path==='bin/notabenda-cf.mjs'));
-    const cfInit=spawnSync(process.execPath,[join(cwd,'node_modules/notabenda-cf/bin/notabenda-cf.mjs'),'init','--out-dir',join(cwd,'backend'),'--site-id','packed-preview'],{cwd,encoding:'utf8'});assert.equal(cfInit.status,0,cfInit.stderr);
+    const cfManifest=packages.find(item=>item.name==='@notabenda/cloudflare');assert.ok(cfManifest.files.some(file=>file.path==='templates/src/worker.mjs'));assert.ok(cfManifest.files.some(file=>file.path==='bin/notabenda-cf.mjs'));
+    const cfInit=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/cloudflare/bin/notabenda-cf.mjs'),'init','--out-dir',join(cwd,'backend'),'--site-id','packed-preview'],{cwd,encoding:'utf8'});assert.equal(cfInit.status,0,cfInit.stderr);
     const generated=JSON.parse(await readFile(join(cwd,'backend/wrangler.json'),'utf8'));assert.equal(generated.assets.run_worker_first,true);assert.equal(generated.exports.EvidenceWorkspace.storage,'sqlite');
     const generatedAuth=await import(pathToFileURL(join(cwd,'backend/src/authorize.mjs')));assert.equal(await generatedAuth.authorizeHostRequest(new Request('https://example.test/'),{}),null);
-    const cfDoctor=spawnSync(process.execPath,[join(cwd,'node_modules/notabenda-cf/bin/notabenda-cf.mjs'),'doctor','--directory',join(cwd,'backend'),'--json'],{cwd,encoding:'utf8'});assert.equal(cfDoctor.status,1,cfDoctor.stderr);const doctorReport=JSON.parse(cfDoctor.stdout);assert.equal(doctorReport.productionReadiness,'not-assessed');assert.equal(doctorReport.checks.find(item=>item.id==='AUTHORIZATION').status,'error');assert.ok(cfManifest.files.some(file=>file.path==='bin/doctor.mjs'));
-    const headlessImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsent} from 'notabenda/headless';import {createConsent as legacy} from 'notabenda';if(createConsent!==legacy)process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(headlessImport.status,0,headlessImport.stderr);
-    const runtimeImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentRuntime,mountControls} from 'notabenda/consent';import {requiredConsentEvidence} from 'notabenda/consent/evidence';import {compileConsentRuntimeConfig} from 'notabenda/content';if([createConsentRuntime,mountControls,requiredConsentEvidence,compileConsentRuntimeConfig].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(runtimeImport.status,0,runtimeImport.stderr);
+    const cfDoctor=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/cloudflare/bin/notabenda-cf.mjs'),'doctor','--directory',join(cwd,'backend'),'--json'],{cwd,encoding:'utf8'});assert.equal(cfDoctor.status,1,cfDoctor.stderr);const doctorReport=JSON.parse(cfDoctor.stdout);assert.equal(doctorReport.productionReadiness,'not-assessed');assert.equal(doctorReport.checks.find(item=>item.id==='AUTHORIZATION').status,'error');assert.ok(cfManifest.files.some(file=>file.path==='bin/doctor.mjs'));
+    const headlessImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsent} from '@notabenda/core/headless';import {createConsent as legacy} from '@notabenda/core';if(createConsent!==legacy)process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(headlessImport.status,0,headlessImport.stderr);
+    const runtimeImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentRuntime,mountControls} from '@notabenda/core/consent';import {requiredConsentEvidence} from '@notabenda/core/consent/evidence';import {compileConsentRuntimeConfig} from '@notabenda/core/content';if([createConsentRuntime,mountControls,requiredConsentEvidence,compileConsentRuntimeConfig].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(runtimeImport.status,0,runtimeImport.stderr);
     // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
     for(const file of ['dist/catalog-profile.js','dist/catalog-profile.d.ts','dist/catalog-plain.js','dist/catalog-selection.js','dist/catalog-ui.js','dist/catalog-review.js','dist/catalog-review-ui.js','dist/catalog-review-cli.js','dist/service-directory.js','dist/services.css','dist/astro/ServiceDirectory.astro','dist/catalog-data.json','dist/catalog/schema.json','dist/catalog/NOTICE.txt','dist/catalog/open-cookie-database-LICENSE.txt'])assert.ok(manifest.files.some(f=>f.path===file),file);
-    const catalogImport=spawnSync(process.execPath,['--input-type=module','-e',"import {normalizeServiceCatalog,searchServiceCatalog} from 'notabenda/catalog';import {serviceCatalogSeed} from 'notabenda/catalog/seed';import {scanProjectServices} from 'notabenda/catalog/project';if(normalizeServiceCatalog(serviceCatalogSeed).providers.length!==363||!searchServiceCatalog(serviceCatalogSeed,'email',{delivery:'backend'}).length||typeof scanProjectServices!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(catalogImport.status,0,catalogImport.stderr);
+    const catalogImport=spawnSync(process.execPath,['--input-type=module','-e',"import {normalizeServiceCatalog,searchServiceCatalog} from '@notabenda/core/catalog';import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';import {scanProjectServices} from '@notabenda/core/catalog/project';if(normalizeServiceCatalog(serviceCatalogSeed).providers.length!==363||!searchServiceCatalog(serviceCatalogSeed,'email',{delivery:'backend'}).length||typeof scanProjectServices!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(catalogImport.status,0,catalogImport.stderr);
     for(const file of ['dist/catalog-browser.js','dist/catalog-browser-policy.js','dist/catalog-browser-capture.js','dist/catalog-browser-cli.js','dist/catalog-browser-ui.js','dist/catalog-browser-data.json','dist/discovery-capture.js'])assert.ok(manifest.files.some(f=>f.path===file),file);
-    const browserImport=spawnSync(process.execPath,['--input-type=module','-e',"import {normalizeBrowserRuleSet,captureBrowserCatalog,analyzeBrowserCatalogCapture} from 'notabenda/catalog/browser';import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';import {mountBrowserCatalogReview} from 'notabenda/catalog/browser/ui';if(normalizeBrowserRuleSet(browserCatalogSeed).rules.length!==7||[captureBrowserCatalog,analyzeBrowserCatalogCapture,mountBrowserCatalogReview].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(browserImport.status,0,browserImport.stderr);
-    const catalogCli=spawnSync(process.execPath,[join(cwd,'node_modules/notabenda/dist/cli.js'),'catalog','search','stripe','--delivery','backend','--json'],{cwd,encoding:'utf8'});assert.equal(catalogCli.status,0,catalogCli.stderr);assert.equal(JSON.parse(catalogCli.stdout).results[0].product.id,'stripe-payments');
+    const browserImport=spawnSync(process.execPath,['--input-type=module','-e',"import {normalizeBrowserRuleSet,captureBrowserCatalog,analyzeBrowserCatalogCapture} from '@notabenda/core/catalog/browser';import {browserCatalogSeed} from '@notabenda/core/catalog/browser/seed';import {mountBrowserCatalogReview} from '@notabenda/core/catalog/browser/ui';if(normalizeBrowserRuleSet(browserCatalogSeed).rules.length!==7||[captureBrowserCatalog,analyzeBrowserCatalogCapture,mountBrowserCatalogReview].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(browserImport.status,0,browserImport.stderr);
+    const catalogCli=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/core/dist/cli.js'),'catalog','search','stripe','--delivery','backend','--json'],{cwd,encoding:'utf8'});assert.equal(catalogCli.status,0,catalogCli.stderr);assert.equal(JSON.parse(catalogCli.stdout).results[0].product.id,'stripe-payments');
     for(const file of ['dist/setup-catalog-cli.js','dist/cli-json.js','dist/catalog-node.js'])assert.ok(manifest.files.some(f=>f.path===file),file);
     await mkdir(join(cwd,'project'));await writeFile(join(cwd,'project/package.json'),JSON.stringify({dependencies:{stripe:'PRIVATE_DEPENDENCY_VERSION'}}));await writeFile(join(cwd,'project-answers.json'),JSON.stringify({schemaVersion:1,markets:[],answers:{}}));
-    const projectWizard=spawnSync(process.execPath,[join(cwd,'node_modules/notabenda/dist/cli.js'),'wizard','--answers','project-answers.json','--project','project','--out-dir','project-setup'],{cwd,encoding:'utf8'});assert.equal(projectWizard.status,0,projectWizard.stderr);const projectReport=JSON.parse(await readFile(join(cwd,'project-setup/discovery.private.json'),'utf8'));assert.ok(projectReport.findings.some(f=>f.productId==='stripe-payments'));assert.doesNotMatch(JSON.stringify(projectReport),/PRIVATE_DEPENDENCY_VERSION/);assert.deepEqual(JSON.parse(await readFile(join(cwd,'project-setup/notabenda.config.json'),'utf8')).services,[]);
+    const projectWizard=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/core/dist/cli.js'),'wizard','--answers','project-answers.json','--project','project','--out-dir','project-setup'],{cwd,encoding:'utf8'});assert.equal(projectWizard.status,0,projectWizard.stderr);const projectReport=JSON.parse(await readFile(join(cwd,'project-setup/discovery.private.json'),'utf8'));assert.ok(projectReport.findings.some(f=>f.productId==='stripe-payments'));assert.doesNotMatch(JSON.stringify(projectReport),/PRIVATE_DEPENDENCY_VERSION/);assert.deepEqual(JSON.parse(await readFile(join(cwd,'project-setup/notabenda.config.json'),'utf8')).services,[]);
     for(const file of ['dist/setup-purpose.js','dist/setup-purpose-ui.js','dist/setup-purpose-cli.js'])assert.ok(manifest.files.some(f=>f.path===file),file);
-    const setupImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createSetupPlan} from 'notabenda/setup';import {mountSetup} from 'notabenda/setup/ui';import {createPurposeDraftPlan,normalizeDraftPurpose} from 'notabenda/setup/purposes';import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';import {registerStorageService} from 'notabenda';import {createSetupWorker} from 'notabenda-cf';if([mountSetup,createPurposeDraftPlan,normalizeDraftPurpose,mountPurposeEditor,registerStorageService,createSetupWorker].some(f=>typeof f!=='function')||createSetupPlan({schemaVersion:1,markets:[],answers:{}}).report.productionReady!==false)process.exit(1)"],{cwd,encoding:'utf8'});assert.equal(setupImport.status,0,setupImport.stderr);
-    const imported = spawnSync(process.execPath, ['--input-type=module', '-e', "import {validateSiteConfig, createTermsAcceptance, mountTermsAcceptance, createEmbedService, renderEmbedPlaceholder, hasGlobalPrivacyControl, getPrivacySignalRestrictions, createProcessingChoices, mountProcessingChoices} from 'notabenda'; import {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from 'notabenda/content'; import {createAdminWorker, recordTermsAcceptance, createTermsAcceptanceStore} from 'notabenda-cf'; if(validateSiteConfig(null).valid || [hasGlobalPrivacyControl,getPrivacySignalRestrictions,createProcessingChoices,mountProcessingChoices,createEmbedService,renderEmbedPlaceholder,compileLegalDocuments,createTermsOffer,createRetainedReleaseFiles,createTermsAcceptance,mountTermsAcceptance,recordTermsAcceptance,createTermsAcceptanceStore].some(value=>typeof value !== 'function') || typeof createAdminWorker({authorize:()=>null}).fetch !== 'function') process.exit(1)"], { cwd, encoding: 'utf8' });
+    const setupImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createSetupPlan} from '@notabenda/core/setup';import {mountSetup} from '@notabenda/core/setup/ui';import {createPurposeDraftPlan,normalizeDraftPurpose} from '@notabenda/core/setup/purposes';import {mountPurposeEditor} from '@notabenda/core/setup/purposes/ui';import {registerStorageService} from '@notabenda/core';import {createSetupWorker} from '@notabenda/cloudflare';if([mountSetup,createPurposeDraftPlan,normalizeDraftPurpose,mountPurposeEditor,registerStorageService,createSetupWorker].some(f=>typeof f!=='function')||createSetupPlan({schemaVersion:1,markets:[],answers:{}}).report.productionReady!==false)process.exit(1)"],{cwd,encoding:'utf8'});assert.equal(setupImport.status,0,setupImport.stderr);
+    const imported = spawnSync(process.execPath, ['--input-type=module', '-e', "import {validateSiteConfig, createTermsAcceptance, mountTermsAcceptance, createEmbedService, renderEmbedPlaceholder, hasGlobalPrivacyControl, getPrivacySignalRestrictions, createProcessingChoices, mountProcessingChoices} from '@notabenda/core'; import {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from '@notabenda/core/content'; import {createAdminWorker, recordTermsAcceptance, createTermsAcceptanceStore} from '@notabenda/cloudflare'; if(validateSiteConfig(null).valid || [hasGlobalPrivacyControl,getPrivacySignalRestrictions,createProcessingChoices,mountProcessingChoices,createEmbedService,renderEmbedPlaceholder,compileLegalDocuments,createTermsOffer,createRetainedReleaseFiles,createTermsAcceptance,mountTermsAcceptance,recordTermsAcceptance,createTermsAcceptanceStore].some(value=>typeof value !== 'function') || typeof createAdminWorker({authorize:()=>null}).fetch !== 'function') process.exit(1)"], { cwd, encoding: 'utf8' });
     assert.equal(imported.status, 0, imported.stderr);
-    const cli = spawnSync(process.execPath, [join(cwd, 'node_modules/notabenda/dist/cli.js'), '--help'], { cwd, encoding: 'utf8' });
+    const cli = spawnSync(process.execPath, [join(cwd, 'node_modules/@notabenda/core/dist/cli.js'), '--help'], { cwd, encoding: 'utf8' });
     assert.equal(cli.status, 0, cli.stderr);
-    await writeFile(join(cwd, 'consumer.ts'), "import {defineSite, type SiteConfig, renderLegalDocument, createTermsAcceptance, createEmbedService, type ConsentController} from 'notabenda';\nimport {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from 'notabenda/content';\nimport {createAdminWorker, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, createTermsAcceptanceStore, type HistoryStorage} from 'notabenda-cf';\ndeclare const config: SiteConfig;\ndeclare const storage: HistoryStorage;\nconst release = compileLegalDocuments(defineSite(config));\nrenderLegalDocument(release.publicConfig, 'privacy');\nrecordLegalRelease(storage, release.artifact);\ncreateAdminWorker({authorize: () => null});\nconst offer = createTermsOffer(release.artifact, {scopeId:'signup',statement:'I agree to these sample terms.',actionLabel:'Record agreement'});\nconst scope = {siteId:config.site.id,scopeId:'signup'};\nregisterTermsOffer(storage,offer,scope);\nsetActiveTermsOffer(storage,offer.offerId,scope);\ncreateTermsAcceptance(offer,{operationId:'operation-one',submit:body=>recordTermsAcceptance(storage,body,{...scope,subjectId:'subject-one',operationId:'operation-one'})});\ncreateTermsAcceptanceStore(storage,scope);\ndeclare const consent: ConsentController;\nconst media = createEmbedService({consent,serviceId:'optional-media'});\ndeclare const container: HTMLElement;\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional',alt:'Alternative'});\n// @ts-expect-error image requires alternative text\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional'});\n// @ts-expect-error unknown document kind\nrenderLegalDocument(config, 'unknown');\n");
+    await writeFile(join(cwd, 'consumer.ts'), "import {defineSite, type SiteConfig, renderLegalDocument, createTermsAcceptance, createEmbedService, type ConsentController} from '@notabenda/core';\nimport {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from '@notabenda/core/content';\nimport {createAdminWorker, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, createTermsAcceptanceStore, type HistoryStorage} from '@notabenda/cloudflare';\ndeclare const config: SiteConfig;\ndeclare const storage: HistoryStorage;\nconst release = compileLegalDocuments(defineSite(config));\nrenderLegalDocument(release.publicConfig, 'privacy');\nrecordLegalRelease(storage, release.artifact);\ncreateAdminWorker({authorize: () => null});\nconst offer = createTermsOffer(release.artifact, {scopeId:'signup',statement:'I agree to these sample terms.',actionLabel:'Record agreement'});\nconst scope = {siteId:config.site.id,scopeId:'signup'};\nregisterTermsOffer(storage,offer,scope);\nsetActiveTermsOffer(storage,offer.offerId,scope);\ncreateTermsAcceptance(offer,{operationId:'operation-one',submit:body=>recordTermsAcceptance(storage,body,{...scope,subjectId:'subject-one',operationId:'operation-one'})});\ncreateTermsAcceptanceStore(storage,scope);\ndeclare const consent: ConsentController;\nconst media = createEmbedService({consent,serviceId:'optional-media'});\ndeclare const container: HTMLElement;\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional',alt:'Alternative'});\n// @ts-expect-error image requires alternative text\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional'});\n// @ts-expect-error unknown document kind\nrenderLegalDocument(config, 'unknown');\n");
     await writeFile(join(cwd, 'consumer.ts'), await readFile(join(cwd, 'consumer.ts'),'utf8') + `
-import {normalizeServiceCatalog, searchServiceCatalog, createCatalogServiceDraft, type ServiceCatalog} from 'notabenda/catalog';
-import {serviceCatalogSeed} from 'notabenda/catalog/seed';
-import {renderCatalogProductProfile,readCatalogProductProfile,formatCatalogProductProfile} from 'notabenda/catalog/profile';
+import {normalizeServiceCatalog, searchServiceCatalog, createCatalogServiceDraft, type ServiceCatalog} from '@notabenda/core/catalog';
+import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';
+import {renderCatalogProductProfile,readCatalogProductProfile,formatCatalogProductProfile} from '@notabenda/core/catalog/profile';
 renderCatalogProductProfile(serviceCatalogSeed,'stripe-payments');readCatalogProductProfile(serviceCatalogSeed,'stripe-payments');formatCatalogProductProfile(serviceCatalogSeed,'stripe-payments');
-import {createCatalogSelectionPlan,readSetupCatalogSelections} from 'notabenda/catalog/selection';
-import {mountCatalogPicker} from 'notabenda/catalog/ui';
-import {createPurposeDraftPlan,normalizeDraftPurpose,type PurposeDraftChange} from 'notabenda/setup/purposes';
-import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';
+import {createCatalogSelectionPlan,readSetupCatalogSelections} from '@notabenda/core/catalog/selection';
+import {mountCatalogPicker} from '@notabenda/core/catalog/ui';
+import {createPurposeDraftPlan,normalizeDraftPurpose,type PurposeDraftChange} from '@notabenda/core/setup/purposes';
+import {mountPurposeEditor} from '@notabenda/core/setup/purposes/ui';
 const purposeChange:PurposeDraftChange={action:'add',purpose:normalizeDraftPurpose(config.purposes[0])};
 createPurposeDraftPlan(config,purposeChange);mountPurposeEditor(container,{getConfig:()=>config,onChange:plan=>plan.config});
 // @ts-expect-error purpose removal must carry the previously reviewed purpose facts
 createPurposeDraftPlan(config,{action:'remove',purposeId:'support'});
 const selected=createCatalogSelectionPlan(config,serviceCatalogSeed,{productId:'stripe-payments',serviceId:'payments',purposeIds:['checkout'],provider:'Selected entity',location:'Selected region',justification:'Reviewed actual use',confirmed:true});
 readSetupCatalogSelections(selected);mountCatalogPicker(container,{catalog:serviceCatalogSeed,getConfig:()=>config,onSelect:result=>result.config});
-import {createServiceDirectory,renderServiceDirectory,mountServiceDirectory} from 'notabenda/services';
+import {createServiceDirectory,renderServiceDirectory,mountServiceDirectory} from '@notabenda/core/services';
 createServiceDirectory(config);renderServiceDirectory(config,{idPrefix:'services'});mountServiceDirectory(container,config,{idPrefix:'services'});
-import {captureBrowserCatalog,analyzeBrowserCatalogCapture,normalizeBrowserRuleSet,type BrowserCatalogCapture} from 'notabenda/catalog/browser';
-import {browserCatalogSeed} from 'notabenda/catalog/browser/seed';
-import {mountBrowserCatalogReview} from 'notabenda/catalog/browser/ui';
+import {captureBrowserCatalog,analyzeBrowserCatalogCapture,normalizeBrowserRuleSet,type BrowserCatalogCapture} from '@notabenda/core/catalog/browser';
+import {browserCatalogSeed} from '@notabenda/core/catalog/browser/seed';
+import {mountBrowserCatalogReview} from '@notabenda/core/catalog/browser/ui';
 const rules=normalizeBrowserRuleSet(browserCatalogSeed);
 const browserCapture:BrowserCatalogCapture=captureBrowserCatalog({routeLabel:'Landing',scenario:'Rejected'},rules);
 analyzeBrowserCatalogCapture(browserCapture,{expectedRules:rules});mountBrowserCatalogReview(container,browserCapture);
 // @ts-expect-error capture requires deliberate scenario context
 captureBrowserCatalog({routeLabel:'Landing'},rules);
-import {scanProjectServices} from 'notabenda/catalog/project';
+import {scanProjectServices} from '@notabenda/core/catalog/project';
 const catalog:ServiceCatalog=normalizeServiceCatalog(serviceCatalogSeed);
 searchServiceCatalog(catalog,'stripe',{delivery:'backend'});
 createCatalogServiceDraft(catalog,'stripe-payments',{id:'payments',purposeIds:['checkout'],location:'Selected host location'});
 scanProjectServices('.',catalog);
 // @ts-expect-error unknown catalog filter
 searchServiceCatalog(catalog,'stripe',{delivery:'automatic'});
-import {createProcessingChoices, mountProcessingChoices} from 'notabenda';
-import {createProcessingNotice} from 'notabenda/content';
-import {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore} from 'notabenda-cf';
+import {createProcessingChoices, mountProcessingChoices} from '@notabenda/core';
+import {createProcessingNotice} from '@notabenda/core/content';
+import {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore} from '@notabenda/cloudflare';
 const notice=createProcessingNotice(release.artifact,{scopeId:'privacy-choices',activities:['sale'],wording:{title:'Privacy choices',description:'Fictional choice',actionLabel:'Opt out'}});
 registerProcessingNotice(storage,notice,{siteId:notice.siteId});
 const processingContext={siteId:notice.siteId,scopeId:notice.scopeId,streamId:'opaque-context'};
@@ -131,11 +133,11 @@ const retained=createRetainedReleaseFiles([release.artifact],{siteId:config.site
 // @ts-expect-error retained publication needs an explicit site
 createRetainedReleaseFiles([release.artifact],{});
 `);
-    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {createFormPermission,mountFormPermission,createIndexedDBFormPermissionJournal,type FormPermissionJournal,type FormPermissionResult} from 'notabenda';\nimport {createFormPermissionOffer} from 'notabenda/content';\nimport {recordFormPermission,getFormPermissionState,formPermissionStreamRef,type FormPermissionResult as StoredFormPermissionResult} from 'notabenda-cf';\nconst permissionTypes=(result:StoredFormPermissionResult):FormPermissionResult=>result;\ndeclare const journal:FormPermissionJournal;\nvoid [createIndexedDBFormPermissionJournal,journal,createFormPermission,mountFormPermission,createFormPermissionOffer,recordFormPermission,getFormPermissionState,formPermissionStreamRef,permissionTypes];\n`);
-    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {createConsent as createHeadlessConsent,type ConsentController as HeadlessConsentController} from 'notabenda/headless';\nconst headlessController:HeadlessConsentController=createHeadlessConsent(config);\nimport {createSetupPlan,readSetupAnswers,type SetupAnswers} from 'notabenda/setup';\nimport {mountSetup} from 'notabenda/setup/ui';\nimport {registerStorageService} from 'notabenda';\nimport {createSetupWorker} from 'notabenda-cf';\nconst setupAnswers:SetupAnswers={schemaVersion:1,markets:[],answers:{}};\nconst setupPlan=createSetupPlan(readSetupAnswers(setupAnswers),{config});\nmountSetup(container,{answers:setupPlan.report});\nregisterStorageService({consent,serviceId:'sample',targets:[{storageId:'sample-storage'}],start:()=>()=>{}});\ncreateSetupWorker({authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css'});\n`);
-    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderCollectionNotice,collectionNoticeIds,type CollectionNotice} from 'notabenda';\nimport {createCollectionNotice} from 'notabenda/content';\nconst collectionNotice:CollectionNotice=createCollectionNotice(release.artifact,{scopeId:'contact',purposeIds:['enquiries'],reviewStatus:'reviewed',wording:{title:'About your message',intro:'Fictional context.'}});\nrenderCollectionNotice(collectionNotice,{idPrefix:collectionNoticeIds('contact').rootId,headingLevel:3});\n// @ts-expect-error no h1 or implied acceptance mode\nrenderCollectionNotice(collectionNotice,{idPrefix:'contact',headingLevel:1});\n`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {createFormPermission,mountFormPermission,createIndexedDBFormPermissionJournal,type FormPermissionJournal,type FormPermissionResult} from '@notabenda/core';\nimport {createFormPermissionOffer} from '@notabenda/core/content';\nimport {recordFormPermission,getFormPermissionState,formPermissionStreamRef,type FormPermissionResult as StoredFormPermissionResult} from '@notabenda/cloudflare';\nconst permissionTypes=(result:StoredFormPermissionResult):FormPermissionResult=>result;\ndeclare const journal:FormPermissionJournal;\nvoid [createIndexedDBFormPermissionJournal,journal,createFormPermission,mountFormPermission,createFormPermissionOffer,recordFormPermission,getFormPermissionState,formPermissionStreamRef,permissionTypes];\n`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {createConsent as createHeadlessConsent,type ConsentController as HeadlessConsentController} from '@notabenda/core/headless';\nconst headlessController:HeadlessConsentController=createHeadlessConsent(config);\nimport {createSetupPlan,readSetupAnswers,type SetupAnswers} from '@notabenda/core/setup';\nimport {mountSetup} from '@notabenda/core/setup/ui';\nimport {registerStorageService} from '@notabenda/core';\nimport {createSetupWorker} from '@notabenda/cloudflare';\nconst setupAnswers:SetupAnswers={schemaVersion:1,markets:[],answers:{}};\nconst setupPlan=createSetupPlan(readSetupAnswers(setupAnswers),{config});\nmountSetup(container,{answers:setupPlan.report});\nregisterStorageService({consent,serviceId:'sample',targets:[{storageId:'sample-storage'}],start:()=>()=>{}});\ncreateSetupWorker({authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css'});\n`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderCollectionNotice,collectionNoticeIds,type CollectionNotice} from '@notabenda/core';\nimport {createCollectionNotice} from '@notabenda/core/content';\nconst collectionNotice:CollectionNotice=createCollectionNotice(release.artifact,{scopeId:'contact',purposeIds:['enquiries'],reviewStatus:'reviewed',wording:{title:'About your message',intro:'Fictional context.'}});\nrenderCollectionNotice(collectionNotice,{idPrefix:collectionNoticeIds('contact').rootId,headingLevel:3});\n// @ts-expect-error no h1 or implied acceptance mode\nrenderCollectionNotice(collectionNotice,{idPrefix:'contact',headingLevel:1});\n`);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createEvidenceExportSegment,type RecordStore,type EvidenceExportSegment} from 'notabenda-cf';
+import {createEvidenceExportSegment,type RecordStore,type EvidenceExportSegment} from '@notabenda/cloudflare';
 declare const authorizedStore:RecordStore;
 const exported:EvidenceExportSegment=await createEvidenceExportSegment(authorizedStore,{query:'',kind:'',keyPrefix:'',from:'',to:'',limit:25},{scopeLabel:'Authorized scope'});
 createAdminWorker({authorize:()=>({store:authorizedStore,allowExport:true})});
@@ -143,8 +145,8 @@ createAdminWorker({authorize:()=>({store:authorizedStore,allowExport:true})});
 createAdminWorker({authorize:()=>({store:authorizedStore,allowExport:'yes'})});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {captureDiscovery,analyzeDiscovery,type DiscoveryCapture} from 'notabenda/discovery';
-import {mountDiscovery} from 'notabenda/discovery/ui';
+import {captureDiscovery,analyzeDiscovery,type DiscoveryCapture} from '@notabenda/core/discovery';
+import {mountDiscovery} from '@notabenda/core/discovery/ui';
 const capture:DiscoveryCapture=captureDiscovery({routeLabel:'Public landing',scenario:'Initial load'});
 analyzeDiscovery(config,[capture]);
 mountDiscovery(container,{config});
@@ -152,8 +154,8 @@ mountDiscovery(container,{config});
 captureDiscovery({routeLabel:'Public landing'});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createEvidenceLifecycle,createEvidenceLifecycleStore,EvidenceLifecycleError,type LifecycleStorage,type EvidenceLifecycleState} from 'notabenda-cf';
-import {ConsentEvidenceError,ProcessingChoicesError,TermsAcceptanceError} from 'notabenda';
+import {createEvidenceLifecycle,createEvidenceLifecycleStore,EvidenceLifecycleError,type LifecycleStorage,type EvidenceLifecycleState} from '@notabenda/cloudflare';
+import {ConsentEvidenceError,ProcessingChoicesError,TermsAcceptanceError} from '@notabenda/core';
 declare const lifecycleStorage:LifecycleStorage;
 const lifecycle=await createEvidenceLifecycle(lifecycleStorage,{family:'consent',siteId:'site-one',scopeId:'cookie-choices',streamId:'host-resolved'});
 const retirement:EvidenceLifecycleState=await lifecycle.retire({requestId:crypto.randomUUID(),reason:'retention-expired',eligibleAt:new Date().toISOString(),legalHold:false});
@@ -167,14 +169,14 @@ createEvidenceLifecycle(lifecycleStorage,{family:'terms',siteId:'site-one',subje
 lifecycle.purge({requestId:crypto.randomUUID(),legalHold:true});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {evaluateScopeGuards,ScopeGuardError,type ScopeGuardPolicy,type ScopeGuardDecision} from 'notabenda';
+import {evaluateScopeGuards,ScopeGuardError,type ScopeGuardPolicy,type ScopeGuardDecision} from '@notabenda/core';
 const guards:ScopeGuardPolicy={version:1,revision:'assessment-2',site:{children:'absent',sensitiveData:'absent',highRiskProfiling:'unknown',regulatedSector:'absent'}};
 const guardConfig={...config,scopeGuards:guards};const decision:ScopeGuardDecision=evaluateScopeGuards(guardConfig);new ScopeGuardError(decision.blockedPurposeIds);
 // @ts-expect-error a review boolean cannot override a scope guard
 const invalidGuard:ScopeGuardPolicy={...guards,reviewed:true};
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {renderRightsCenter,renderRightsPage,type RightsCenterConfig,type RightsActionKind} from 'notabenda';
+import {renderRightsCenter,renderRightsPage,type RightsCenterConfig,type RightsActionKind} from '@notabenda/core';
 declare const rightsCenter:RightsCenterConfig;
 const rightsAction:RightsActionKind='appeal';
 renderRightsCenter({...config,rightsCenter},{idPrefix:'account-rights',headingLevel:3});renderRightsPage({...config,rightsCenter});
@@ -184,8 +186,8 @@ const invalidRightsAction:RightsActionKind='verified-deletion';
 renderRightsCenter({...config,rightsCenter},{headingLevel:6});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {registerGoogleBasic,createGoogleBasicBrowserEnvironment,type GoogleBasicSnapshot} from 'notabenda/google';
-import {type GoogleBasicConfig} from 'notabenda';
+import {registerGoogleBasic,createGoogleBasicBrowserEnvironment,type GoogleBasicSnapshot} from '@notabenda/core/google';
+import {type GoogleBasicConfig} from '@notabenda/core';
 const googleConfig:GoogleBasicConfig={version:1,tagIds:['G-TEST1234'],signals:{analytics_storage:['measurement'],ad_storage:[],ad_user_data:[],ad_personalization:[]}};
 const google=registerGoogleBasic({consent,serviceId:'measurement'},createGoogleBasicBrowserEnvironment({document:container.ownerDocument}));
 const googleState:GoogleBasicSnapshot=google.getSnapshot();google.event('page_view',{page_title:'Reviewed page'});
@@ -195,9 +197,9 @@ google.config('AW-12345',{});
 const incompleteGoogle:GoogleBasicConfig={...googleConfig,signals:{analytics_storage:['measurement']}};
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createContractAction, mountContractAction, type ContractActionDefinition} from 'notabenda/contracts';
-import {createContractActionDefinition} from 'notabenda/content';
-import {registerContractActionDefinition, recordContractDeclaration, claimContractDelivery, settleContractDelivery, createContractDeclarationStore, dispatchContractDelivery, dispatchContractDeclaration} from 'notabenda-cf';
+import {createContractAction, mountContractAction, type ContractActionDefinition} from '@notabenda/core/contracts';
+import {createContractActionDefinition} from '@notabenda/core/content';
+import {registerContractActionDefinition, recordContractDeclaration, claimContractDelivery, settleContractDelivery, createContractDeclarationStore, dispatchContractDelivery, dispatchContractDeclaration} from '@notabenda/cloudflare';
 const contractDefinition=createContractActionDefinition(release.artifact,{actionId:'contract-withdrawal',revision:'one',profile:'eu-withdrawal',reviewStatus:'reviewed'});
 const action=createContractAction(contractDefinition,{operationRef:'a'.repeat(64),submit:async()=>({})});
 mountContractAction(container,{action});
@@ -214,9 +216,9 @@ dispatchContractDeclaration(storage,'a'.repeat(64),dispatchContext,{application:
 createContractActionDefinition(release.artifact,{actionId:'contract-withdrawal',revision:'one',profile:'universal',reviewStatus:'reviewed'});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createConsentRuntime,mountControls as mountCompiledControls,type ConsentRuntimeInventory} from 'notabenda/consent';
-import {requiredConsentEvidence,type ConsentEvidenceOptions} from 'notabenda/consent/evidence';
-import {compileConsentRuntimeConfig} from 'notabenda/content';
+import {createConsentRuntime,mountControls as mountCompiledControls,type ConsentRuntimeInventory} from '@notabenda/core/consent';
+import {requiredConsentEvidence,type ConsentEvidenceOptions} from '@notabenda/core/consent/evidence';
+import {compileConsentRuntimeConfig} from '@notabenda/core/content';
 const runtimeConfig=compileConsentRuntimeConfig(config,{evidence:'local'});
 const smallController=createConsentRuntime(runtimeConfig);
 const smallInventory:ConsentRuntimeInventory=smallController.getConfig();
@@ -233,8 +235,8 @@ compileConsentRuntimeConfig(config,{});
 createConsentRuntime(runtimeConfig,undefined,{evidence:{}});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createIndirectCollectionNotice,verifyIndirectCollectionNotice} from 'notabenda/content';
-import {renderIndirectCollectionNotice,formatIndirectCollectionNotice,type IndirectCollectionNoticeSettings} from 'notabenda/collection/indirect';
+import {createIndirectCollectionNotice,verifyIndirectCollectionNotice} from '@notabenda/core/content';
+import {renderIndirectCollectionNotice,formatIndirectCollectionNotice,type IndirectCollectionNoticeSettings} from '@notabenda/core/collection/indirect';
 const indirectSettings:IndirectCollectionNoticeSettings={profile:'nz-ipp3a',scopeId:'referrals',phase:'advance',reviewStatus:'reviewed',wording:{title:'Referral',intro:'Partner referral context.'},collections:[{purposeId:'enquiries',dataCategories:['Reply address'],sourceDescription:'A partner studio.',authority:{kind:'not-relied-on'}}],recipientStatement:'Our enquiries team.',accessCorrection:{statement:'Ask for access or correction.',url:'mailto:privacy@example.test'}};
 const indirectNotice=createIndirectCollectionNotice(release.artifact,indirectSettings);
 verifyIndirectCollectionNotice(indirectNotice,release.artifact);
@@ -244,20 +246,20 @@ formatIndirectCollectionNotice(indirectNotice);
 const invalidPhase:IndirectCollectionNoticeSettings={...indirectSettings,phase:'sent'};
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {buildLegalGuaranteeNotice,verifyLegalGuaranteeNotice} from 'notabenda/guarantees/content';
-import {renderLegalGuaranteeNotice,guaranteeNoticeLanguages} from 'notabenda/guarantees';
+import {buildLegalGuaranteeNotice,verifyLegalGuaranteeNotice} from '@notabenda/core/guarantees/content';
+import {renderLegalGuaranteeNotice,guaranteeNoticeLanguages} from '@notabenda/core/guarantees';
 const guarantee=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true});
 renderLegalGuaranteeNotice(guarantee.notice,{idPrefix:'guarantee',allowPreview:true});
 verifyLegalGuaranteeNotice(guarantee.notice,{allowPreview:true});
 // @ts-expect-error selected official languages only
 buildLegalGuaranteeNotice({language:'zz',reviewStatus:'reviewed'});
 `);
-    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderDurabilityGuaranteeLabel,normalizeDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from 'notabenda/guarantees/label';\ndeclare const label:DurabilityGuaranteeLabel;normalizeDurabilityGuaranteeLabel(label);renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n`);
-    const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from 'notabenda/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
-    const controlsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentDraftPlan} from 'notabenda/setup/consent';import {mountConsentEditor} from 'notabenda/setup/consent/ui';if([createConsentDraftPlan,mountConsentEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(controlsImport.status,0,controlsImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderDurabilityGuaranteeLabel,normalizeDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from '@notabenda/core/guarantees/label';\ndeclare const label:DurabilityGuaranteeLabel;normalizeDurabilityGuaranteeLabel(label);renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n`);
+    const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from '@notabenda/core/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
+    const controlsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentDraftPlan} from '@notabenda/core/setup/consent';import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';if([createConsentDraftPlan,mountConsentEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(controlsImport.status,0,controlsImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createConsentDraftPlan,type ConsentDraftSettings} from 'notabenda/setup/consent';
-import {mountConsentEditor} from 'notabenda/setup/consent/ui';
+import {createConsentDraftPlan,type ConsentDraftSettings} from '@notabenda/core/setup/consent';
+import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';
 declare const settings:ConsentDraftSettings;
 const controlsDraft=createConsentDraftPlan(config,{baseline:config,settings});
 const controlsEditor=mountConsentEditor(container,{getConfig:()=>controlsDraft.config,onChange:plan=>{void plan.blockedPurposeIds;}});

@@ -3,8 +3,8 @@
 // @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // @requirements REQ-EU-ORDER-ACTION REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
-import {createAdminWorker,matchesRecord} from 'notabenda-cf';
-import {createPaidOrderStore} from 'notabenda-cf/orders';
+import {createAdminWorker,matchesRecord} from '@notabenda/cloudflare';
+import {createPaidOrderStore} from '@notabenda/cloudflare/orders';
 import {normalizeRecordQuery,compareRecordKeys} from '../packages/notabenda-cf/dist/export.js';
 import {legacyOrderDemoAdmin} from './order-demo-admin-legacy.mjs';
 import {orderDemoSite,orderDemoScope} from './order-demo.mjs';

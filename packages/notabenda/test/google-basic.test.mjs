@@ -2,10 +2,10 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM,ResourceLoader,VirtualConsole} from 'jsdom';
-import {createConsent,toPublicConfig,validateSiteConfig} from 'notabenda';
-import {registerGoogleBasic,createGoogleBasicBrowserEnvironment} from 'notabenda/google';
-import {compileLegalDocuments,createConsentNotice} from 'notabenda/content';
-import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,getConsentHead,recordConsentChoice} from 'notabenda-cf';
+import {createConsent,toPublicConfig,validateSiteConfig} from '@notabenda/core';
+import {registerGoogleBasic,createGoogleBasicBrowserEnvironment} from '@notabenda/core/google';
+import {compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
+import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,getConsentHead,recordConsentChoice} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 const denied={analytics_storage:'denied',ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'};

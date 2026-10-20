@@ -1,8 +1,8 @@
 /** @requirements REQ-EU-GUARANTEE-LABEL */
 import {createHash} from 'node:crypto';
-import {canonicalJson} from 'notabenda/content';
-import {normalizeDurabilityGuaranteeLabel,durabilityGuaranteeInformationUrl} from 'notabenda/guarantees/label';
-import type {DurabilityGuaranteeLabel,DurabilityGuaranteeWording} from 'notabenda/guarantees/label';
+import {canonicalJson} from '@notabenda/core/content';
+import {normalizeDurabilityGuaranteeLabel,durabilityGuaranteeInformationUrl} from '@notabenda/core/guarantees/label';
+import type {DurabilityGuaranteeLabel,DurabilityGuaranteeWording} from '@notabenda/core/guarantees/label';
 import {inspectDurabilityGuaranteeImage} from './guarantee-label-image.js';
 export interface DurabilityGuaranteeBuildOptions {
  product:DurabilityGuaranteeLabel['product'];producer:DurabilityGuaranteeLabel['producer'];durationYears:number;

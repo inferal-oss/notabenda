@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
-import {packLibrary} from 'notabenda/packs';
+import {packLibrary} from '@notabenda/core/packs';
 import {fromMarkdown} from 'mdast-util-from-markdown';
 
 const groups=[['basics','Start here'],['more','Add a function'],['regional','Regional rules']];

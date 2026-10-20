@@ -2,7 +2,7 @@
 import {reactPermissionFiles} from './react-build.mjs';
 import {readFile} from 'node:fs/promises';
 import {formPermissionExample} from './example.mjs';
-import {renderLegalLinks} from 'notabenda';
+import {renderLegalLinks} from '@notabenda/core';
 const attribute=value=>value.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 export async function formPermissionFiles(base){
  const {build,offer,retained}=formPermissionExample(base);

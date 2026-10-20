@@ -3,9 +3,9 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {mountLegalPreview} from 'notabenda/setup/preview';
-import {mountSetup} from 'notabenda/setup/ui';
-import {selectCartridges} from 'notabenda/cartridges';
+import {mountLegalPreview} from '@notabenda/core/setup/preview';
+import {mountSetup} from '@notabenda/core/setup/ui';
+import {selectCartridges} from '@notabenda/core/cartridges';
 import {fixture} from './helpers.mjs';
 function browser(){
  const dom=new JSDOM('<main><button id="opener">Read pages</button><div id="mount"></div></main>',{url:'https://adopter.example.test/setup'}),d=dom.window.document;

@@ -9,7 +9,7 @@ The [Portuguese example](/localization/) includes a [complete message file](../e
 Set `site.locale` to a canonical BCP 47 locale such as `pt-BR` and add `localization`:
 
 ```ts
-import type { SiteLocalization } from 'notabenda';
+import type { SiteLocalization } from '@notabenda/core';
 import messages from './messages.json';
 
 const localization: SiteLocalization = {
@@ -64,7 +64,7 @@ The host must also translate its declared purpose names, descriptions, service f
 
 For privacy and cookie pages with `source: 'generated'`, supply the complete `generatedDocuments` dictionary. Its templates cover every generated heading, sentence, collection-source label, storage type and classification. Refer to the example for the exact required placeholders. A missing template rejects the configuration rather than producing mixed-language prose.
 
-For `source: 'supplied'`, `generatedDocuments` can be omitted. Supply structured sections or Markdown/MDX through `notabenda-authoring`, with the usual YAML frontmatter. Authored components still run only at build time under the existing static-content policy. Generated and supplied content share the selected document chrome.
+For `source: 'supplied'`, `generatedDocuments` can be omitted. Supply structured sections or Markdown/MDX through `@notabenda/authoring`, with the usual YAML frontmatter. Authored components still run only at build time under the existing static-content policy. Generated and supplied content share the selected document chrome.
 
 English configurations without a `localization` property keep the original rendering and consent-scope encoding. Existing retained releases remain available at their original addresses.
 
@@ -77,7 +77,7 @@ import {
   compileLegalDocuments,
   compileConsentRuntimeConfig,
   createConsentNotice,
-} from 'notabenda/content';
+} from '@notabenda/core/content';
 
 const build = compileLegalDocuments(localizedSite, { mode: 'preview' });
 const runtime = compileConsentRuntimeConfig(localizedSite, {

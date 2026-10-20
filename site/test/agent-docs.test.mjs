@@ -7,7 +7,7 @@ import {fromMarkdown} from 'mdast-util-from-markdown';
 import {JSDOM} from 'jsdom';
 import {rewriteMarkdown,skillFiles} from '../agent-docs.mjs';
 import {serveHost} from '../host.mjs';
-import {describeIntegration} from 'notabenda/integration';
+import {describeIntegration} from '@notabenda/core/integration';
 const root=new URL('../dist/public/',import.meta.url);
 // These session-backed routes are exercised by demo/host integration tests.
 const dynamic=new Set(['/demo/admin/agreements','/demo/admin/choices','/demo/admin/evidence','/demo/admin/history','/demo/admin/lifecycle','/demo/admin/processing','/demo/admin/setup']);
@@ -73,8 +73,8 @@ test('website integration reference uses the installed engine and every target g
 
 // Package and current website schema bytes stay together, including its canonical ID.
 test('public schema matches the package and its canonical version URL',async()=>{
- const packaged=await readFile(fileURLToPath(import.meta.resolve('notabenda/config/schema.json')),'utf8');
+ const packaged=await readFile(fileURLToPath(import.meta.resolve('@notabenda/core/config/schema.json')),'utf8');
  assert.equal(await read('site-config.schema.json'),packaged);
  const schema=JSON.parse(packaged);assert.equal(await read(new URL(schema.$id).pathname.slice(1)),packaged);
- const reference=JSON.parse(await read('integration-reference.json'));assert.equal(reference.configContract.schema.packageExport,'notabenda/config/schema.json');
+ const reference=JSON.parse(await read('integration-reference.json'));assert.equal(reference.configContract.schema.packageExport,'@notabenda/core/config/schema.json');
 });

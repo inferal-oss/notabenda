@@ -1,15 +1,15 @@
 // @requirements REQ-PRODUCT-CF-HOST
 import {demoStorageNote,portugueseDemoStorageNote} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
-import {contractActionOperationRef} from 'notabenda-cf';
+import {contractActionOperationRef} from '@notabenda/cloudflare';
 import {contractContext} from './contract-context.mjs';
 import {adminPresentation} from './admin-presentation.mjs';
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE
 import {demoExpired} from './demo-presentation.mjs';
 import {markDemoResponse} from './demo-marker.mjs';
-import {createSetupWorker} from 'notabenda-cf';
+import {createSetupWorker} from '@notabenda/cloudflare';
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS
-import {formPermissionStreamRef} from 'notabenda-cf';
+import {formPermissionStreamRef} from '@notabenda/cloudflare';
 import {permissionContext} from './permission-context.mjs';
 import data from './dist/server-data.json' with {type:'json'};
 const cookieBase='notabenda_demo';

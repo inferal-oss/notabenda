@@ -1,6 +1,6 @@
 # Guided setup
 
-Run `npx notabenda wizard` after installing the package, or use the [demo setup screen](/demo/admin/setup). The packages are unpublished. From this repository, run `node packages/notabenda/dist/cli.js wizard` after `npm run build`.
+Run `npx @notabenda/core wizard` after installing the package, or use the [demo setup screen](/demo/admin/setup). The packages are unpublished. From this repository, run `node packages/notabenda/dist/cli.js wizard` after `npm run build`.
 
 The wizard collects site details, processing practices and supporting notes, then produces a draft configuration and private report. Every practice supports **Yes**, **No** and **Not sure**. Necessary-storage items have separate justification fields.
 
@@ -9,12 +9,12 @@ One versioned engine powers the CLI and browser UI. Recommendations name the rel
 ## CLI
 
 ```sh
-npx notabenda wizard
+npx @notabenda/core wizard
 # Keep existing inventory/runtime settings; write to a NEW review directory.
-npx notabenda wizard --config ./notabenda.config.json --out-dir ./setup-review
+npx @notabenda/core wizard --config ./notabenda.config.json --out-dir ./setup-review
 # Repeatable noninteractive input, including a previously exported private report:
-npx notabenda wizard --answers ./answers.json --out-dir ./setup-review-2
-npx notabenda wizard --answers ./setup-review/setup.private.json \
+npx @notabenda/core wizard --answers ./answers.json --out-dir ./setup-review-2
+npx @notabenda/core wizard --answers ./setup-review/setup.private.json \
   --config ./setup-review/notabenda.config.json --out-dir ./setup-review-3
 ```
 
@@ -35,7 +35,7 @@ A minimal answers file:
 }
 ```
 
-Question/market IDs and public fact fields are exported from `notabenda/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 4 accepts private reports from revisions 1 through 4. Missing new questions remain unresolved.
+Question/market IDs and public fact fields are exported from `@notabenda/core/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 4 accepts private reports from revisions 1 through 4. Missing new questions remain unresolved.
 
 ## Review regional consent timing
 
@@ -46,8 +46,8 @@ The market list includes France, Germany, Ireland, Italy and Spain as separate c
 After installing the local preview, opt into a project scan in the same command:
 
 ```sh
-npx notabenda wizard --project . --out-dir ./setup-review
-npx notabenda wizard --project ./app --config ./notabenda.config.json \
+npx @notabenda/core wizard --project . --out-dir ./setup-review
+npx @notabenda/core wizard --project ./app --config ./notabenda.config.json \
   --catalog ./service-catalog.json --out-dir ./setup-review
 ```
 
@@ -61,7 +61,7 @@ With a project scan, setup also writes **`discovery.private.json`**, using priva
 
 ```sh
 # Noninteractive: retain new findings without automatically selecting providers.
-npx notabenda wizard --answers ./answers.json --project ./app \
+npx @notabenda/core wizard --answers ./answers.json --project ./app \
   --out-dir ./setup-review
 ```
 
@@ -90,7 +90,7 @@ Unknown or present scope restrictions continue to block the affected purposes. E
 For a custom operator workflow, use the same model:
 
 ```ts
-import {createConsentDraftPlan} from 'notabenda/setup/consent';
+import {createConsentDraftPlan} from '@notabenda/core/setup/consent';
 
 const reviewed = structuredClone(currentConfig);
 // settings contains the five explicitly chosen core fields:
@@ -105,12 +105,12 @@ currentConfig = proposal.config;
 
 Keep the reviewed baseline while the operator edits, then read the current config again at save time. The model rejects public configuration changes made in between. It returns a detached public draft, marks document reviews as draft and preserves other public settings. Keep private host data separately; this API does not return it.
 
-The standalone editor is exported from `notabenda/setup/consent/ui`:
+The standalone editor is exported from `@notabenda/core/setup/consent/ui`:
 
 ```ts
-import {mountConsentEditor} from 'notabenda/setup/consent/ui';
-import 'notabenda/styles.css';
-import 'notabenda/packs.css';
+import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';
+import '@notabenda/core/styles.css';
+import '@notabenda/core/packs.css';
 
 const editor = mountConsentEditor(document.querySelector('#controls-editor')!, {
   getConfig: () => currentConfig,
@@ -126,7 +126,7 @@ The editor owns no storage, network, deployment or visitor controller. A host ca
 ## Browser and Cloudflare integration
 
 ```js
-import {mountSetup} from 'notabenda/setup/ui';
+import {mountSetup} from '@notabenda/core/setup/ui';
 const ui = mountSetup(document.querySelector('#setup'), {
   documentationBase: '/guide', // optional; defaults to https://notabenda.org/guide
 });
@@ -137,12 +137,12 @@ ui.destroy();
 
 The UI runs locally in the operator's tab. Config/report imports use local files; answers are not uploaded or stored in browser persistence. Downloads are explicit. Editing invalidates earlier export links; object URLs are revoked on edits and destruction. Reloading loses unsaved notes. Reimport keeps notes by storage ID, including removed items in the private report. Resuming a report replaces current answers, so save any notes you want to retain first. Import its matching config separately.
 
-Use `notabenda/styles.css` for the shared components and `notabenda/packs.css` for pack selection and the consent settings editor. Both are optional stylesheets; the host can supply its own design.
+Use `@notabenda/core/styles.css` for the shared components and `@notabenda/core/packs.css` for pack selection and the consent settings editor. Both are optional stylesheets; the host can supply its own design.
 
 The browser interface has six navigable stages: start/import, public facts, markets, practices, storage justifications and review. Start includes local processing-purpose authoring and optional catalog search. Practice questions appear in a grid with direct yes/no/not-sure choices; supporting notes can be expanded separately. Moving between stages preserves notes; revisiting a section does not regenerate or activate anything. Preparing recommendations reveals current downloads, and an edit removes those downloads until you prepare a new review. Unknown answers stay explicit review items.
 
 ```js
-import {createSetupWorker} from 'notabenda-cf';
+import {createSetupWorker} from '@notabenda/cloudflare';
 export default createSetupWorker({
   basePath: '/admin/setup',
   authorize: (request, env) => hostCanConfigure(request, env),
@@ -190,8 +190,8 @@ The optional **Legitimate interests** field holds public wording explaining the 
 For a custom UI, optional browser-safe APIs are available:
 
 ```js
-import {createPurposeDraftPlan} from 'notabenda/setup/purposes';
-import {mountPurposeEditor} from 'notabenda/setup/purposes/ui';
+import {createPurposeDraftPlan} from '@notabenda/core/setup/purposes';
+import {mountPurposeEditor} from '@notabenda/core/setup/purposes/ui';
 
 // reviewedPurpose is your complete public Purpose object.
 const added = createPurposeDraftPlan(config, {action: 'add', purpose: reviewedPurpose});
@@ -216,10 +216,10 @@ Interactive CLI setup offers an optional reference search after the questionnair
 The admin setup example offers the same review in **Start → Find a service in the reference catalog**. A host opts in with `catalog` or `loadCatalog`:
 
 ```js
-import {mountSetup} from 'notabenda/setup/ui';
+import {mountSetup} from '@notabenda/core/setup/ui';
 const setup = mountSetup(container, {
   config: existingPublicConfig,
-  loadCatalog: () => import('notabenda/catalog/seed')
+  loadCatalog: () => import('@notabenda/core/catalog/seed')
     .then(module => module.serviceCatalogSeed),
 });
 ```
@@ -244,16 +244,16 @@ The current operator service name, provider, location, privacy link and purpose 
 For a focused terminal workflow:
 
 ```sh
-npx notabenda catalog review --config notabenda.config.json \
+npx @notabenda/core catalog review --config notabenda.config.json \
   --report setup.private.json --service payments --out-dir renewed-review
 # Explicitly compare the shipped reference seed instead of the pinned reference:
-npx notabenda catalog review --config notabenda.config.json \
+npx @notabenda/core catalog review --config notabenda.config.json \
   --report setup.private.json --service payments --latest --out-dir renewed-latest
 ```
 
 `--catalog FILE` uses a chosen offline catalog instead of `--latest`. The command needs a terminal, displays both versions and asks for a new reason and confirmation. Cancellation writes nothing. Confirmation requires a new output directory, writes a draft config plus ignored private report with restricted local permissions, and preserves the input files. This focused review preserves current site/contact/scope/review settings; historical questionnaire answers remain context and are not reapplied. Other stale selections still need review before a report can be exported. No modules, installers, network requests or deployment commands execute.
 
-Headless integrations use `prepareCatalogSelectionReview(config, previous, optionalCatalog)` and `confirmCatalogSelectionReview(config, comparison, {confirmed:true, justification})` from `notabenda/catalog/review`. The first operation is a detached proposal; confirmation checks the full current service and selected purposes against the displayed snapshot. Store the returned `revision` privately. `createSetupPlan` accepts `catalogSelectionRevisions`; `preserveConfig:true` regenerates advisory reports for an explicit current config without applying historical answers or reopening document reviews. Hosts choose authorization, storage and release archival.
+Headless integrations use `prepareCatalogSelectionReview(config, previous, optionalCatalog)` and `confirmCatalogSelectionReview(config, comparison, {confirmed:true, justification})` from `@notabenda/core/catalog/review`. The first operation is a detached proposal; confirmation checks the full current service and selected purposes against the displayed snapshot. Store the returned `revision` privately. `createSetupPlan` accepts `catalogSelectionRevisions`; `preserveConfig:true` regenerates advisory reports for an explicit current config without applying historical answers or reopening document reviews. Hosts choose authorization, storage and release archival.
 
 
 ### Assess practices in a grid
