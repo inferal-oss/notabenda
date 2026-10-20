@@ -2,19 +2,19 @@
   <img src="docs/assets/logo.svg" alt="notabenda" width="380">
 </p>
 
-<p align="center">Compliance cartridges for your site.</p>
+<p align="center">Compliance packs for your site.</p>
 
-Choose a job: publish privacy pages, manage cookie choices, or ask for agreement to terms. Notabenda keeps the required facts, components and integration checks together as a cartridge. Prepare a draft, connect it to your site, and add more when you need it. Host the pages and controls yourself, with your own design.
+Choose a job: publish privacy pages, manage cookie choices, or ask for agreement to terms. Notabenda keeps the required facts, components and integration checks together as a pack. Prepare a draft, connect it to your site, and add more when you need it. Host the pages and controls yourself, with your own design.
 
 **Developer preview.** The packages have not been published to npm yet. The frontend includes legal pages, cookie choices, form permissions and terms agreements, with optional React and Astro adapters. The Cloudflare package adds scoped evidence, document history and operator tools. Regional coverage and operational integration remain partial. See the [current scope](docs/SCOPE.md) and [feature status](docs/FEATURES.md).
 
-Start with the [cartridge library](https://notabenda.org/start/) or explore the [documentation](https://notabenda.org/guide/) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
+Start with the [pack library](https://notabenda.org/start/) or explore the [documentation](https://notabenda.org/guide/) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
 
 Start with the [compliance component map](https://notabenda.org/guide/compliance-map/) to see what notices, permissions, contract actions and evidence serve. The separate [software and storage diagram](https://notabenda.org/guide/architecture/) shows how those parts fit into a site and optional backend.
 
 ## Set up with an agent
 
-Choose cartridges in the [product flow](https://notabenda.org/start/) and select **Give to my agent**. After explicit local installation, `notabenda cartridges cookie-choices --json` gives the same installed job contract; `wizard --cartridges cookie-choices --answers FILE` carries the selection into a draft and private report. [Cartridge guide](docs/CARTRIDGES.md).
+Choose packs in the [product flow](https://notabenda.org/start/) and select **Give to my agent**. After explicit local installation, `notabenda packs cookie-choices --json` gives the same installed job contract; `wizard --packs cookie-choices --answers FILE` carries the selection into a draft and private report. [Pack guide](docs/CARTRIDGES.md).
 
 Give your coding agent the [Notabenda integration skill](skills/notabenda/SKILL.md). It covers discovery, configuration, documents, controls and the optional backend. After local installation, `npx --no-install notabenda describe --json` gives agents a version-matched map of requested outcomes, config fields, facts still needed and host work. The [agent setup guide](docs/AGENT-SETUP.md) explains installation; [llms.txt](https://notabenda.org/llms.txt) links to Markdown documentation.
 

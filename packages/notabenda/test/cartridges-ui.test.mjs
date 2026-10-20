@@ -17,7 +17,7 @@ test('reusable SSR has no website routing assumptions and validates host destina
  const html=renderCartridgeConsole(),{dom,d}=browser(html);
  try{
   assert.equal(d.querySelectorAll('h1').length,2);assert.equal(d.querySelector('[data-cartridge-setup]').hidden,true);
-  assert.equal(d.querySelectorAll('a').length,1); // hidden agent download, activated only in the browser
+  assert.equal(d.querySelectorAll('a').length,4); // three shelf links and the hidden agent download
   assert.doesNotMatch(html,/\/demo\/admin|\/guide\/|notabenda\.org|<script|<style/);
   for(const url of ['javascript:alert(1)','//remote.test','https://remote.test/x','/x?secret=1','/a/../b','/x" onclick="bad'])assert.throws(()=>renderCartridgeConsole({mapUrl:url}));
   assert.throws(()=>renderCartridgeConsole({exampleLinks:{unknown:'/try'}}));
@@ -65,4 +65,23 @@ test('package publishes separate cartridge defaults without changing the visitor
  assert.equal(pkg.exports['./cartridges.css'],'./dist/cartridges.css');assert.ok(pkg.sideEffects.includes('./dist/cartridges.css'));
  const css=await readFile(new URL('../dist/cartridges.css',import.meta.url),'utf8');assert.match(css,/prefers-reduced-motion/);assert.match(css,/forced-colors/);assert.match(css,/--nb-action-bg/);
  const ordinary=await readFile(new URL('../dist/styles.css',import.meta.url),'utf8');assert.doesNotMatch(ordinary,/cartridge-deck/);
+});
+
+test('all eight packs are discoverable without opening a disclosure, including in multiple consoles',()=>{
+ const {dom,d}=browser(renderCartridgeConsole()+renderCartridgeConsole());
+ try{
+  const ids=[...d.querySelectorAll('[id]')].map(el=>el.id);assert.equal(new Set(ids).size,ids.length);
+  for(const root of d.querySelectorAll('[data-cartridge-console]')){
+   assert.match(root.querySelector('.pack-index').textContent,/8 packs for your site/);
+   assert.deepEqual([...root.querySelectorAll('.pack-shelf')].map(el=>el.querySelectorAll('[data-cartridge]').length),[3,3,2]);
+   for(const card of root.querySelectorAll('[data-cartridge]'))assert.equal(card.closest('details,[hidden]'),null);
+   for(const link of root.querySelectorAll('.pack-index a'))assert.ok(root.querySelector(link.getAttribute('href')));
+  }
+ }finally{dom.window.close();}
+});
+test('pack import aliases share the original implementation and persisted contract',async()=>{
+ const packs=await import('notabenda/packs'),old=await import('notabenda/cartridges'),ui=await import('notabenda/packs/ui');
+ assert.equal(packs.packLibrary,old.cartridgeLibrary);assert.equal(packs.selectPacks,old.selectCartridges);assert.equal(packs.planPacks,old.planCartridges);assert.equal(ui.mountPackConsole,mountCartridgeConsole);assert.equal(ui.renderPackConsole,renderCartridgeConsole);
+ const selected=packs.selectPacks(['terms-agreement']);assert.deepEqual(packs.readPackSelection({cartridges:selected}),selected);
+ const pkg=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));assert.equal(pkg.exports['./packs.css'],pkg.exports['./cartridges.css']);
 });

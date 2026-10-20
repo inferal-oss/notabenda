@@ -16,7 +16,7 @@ const library=[
 ] as const;
 export type CartridgeId=typeof library[number]['id'];
 export interface CartridgeSelection {schemaVersion:1;selected:{id:CartridgeId;revision:'1'}[]}
-const invalid=():never=>{throw Error('Use known cartridge IDs and their installed revisions; cartridge selections must be bounded data-only objects.');};
+const invalid=():never=>{throw Error('Use known pack IDs and their installed revisions; pack selections must be bounded data-only objects.');};
 function record(input:unknown,keys:string[]):Record<string,unknown>{
  if(!input||typeof input!=='object'||Array.isArray(input)||![Object.prototype,null].includes(Object.getPrototypeOf(input)))return invalid();
  if(Reflect.ownKeys(input).length!==keys.length)return invalid();
@@ -59,7 +59,7 @@ export function planCartridges(input:unknown){
  });
 }
 export function createCartridgeSetupPlan(selection:unknown,answers:unknown,options:Parameters<typeof createSetupPlan>[1]={}):SetupPlan {
- const normalized=normalizeCartridgeSelection(selection);if(!normalized.selected.length)throw Error('Choose at least one cartridge before preparing a scoped draft.');
+ const normalized=normalizeCartridgeSelection(selection);if(!normalized.selected.length)throw Error('Choose at least one pack before preparing a scoped draft.');
  const plan=createSetupPlan(answers,options);plan.report.cartridges=normalized;return plan;
 }
 /** Focus the on-screen/terminal advice; complete diagnostics and wider review remain in the private report. */
@@ -69,7 +69,11 @@ export function cartridgeRecommendations(selection:unknown,recommendations:Setup
 }
 /** An agent handoff describes work. It contains no operator answers or private justifications. */
 export function formatCartridgeBrief(input:unknown):string {
- const plan=planCartridges(input);if(!plan.selection.selected.length)throw Error('Choose a cartridge before preparing a setup brief.');
+ const plan=planCartridges(input);if(!plan.selection.selected.length)throw Error('Choose a pack before preparing a setup brief.');
  const ids=plan.selection.selected.map(c=>c.id).join(',');
- return `Set up Notabenda for these cartridges: ${plan.cartridges.map(c=>c.title).join(', ')}.\n\nInspect the existing project and preserve unrelated behavior. Reuse existing supporting configuration and documents. Read the installed cartridge plan with:\n\nnpx --no-install notabenda cartridges ${plan.selection.selected.map(c=>c.id).join(' ')} --json\n\nRead the version-matched integration guides, gather the selected facts and leave unknowns unresolved. Use the installed skill when available. Prepare a private answers file, then run:\n\nnpx --no-install notabenda wizard --cartridges ${ids} --answers ./answers.json --out-dir ./notabenda-setup\n\nAdd --config FILE when an inventory already exists. Compare the draft before applying changes.\n\n${plan.cartridges.map(c=>`${c.title}: ${c.lesson}`).join('\n\n')}\n\n${plan.policyProposals.map(p=>`Proposed policy for applicability review: ${p.path} / ${p.profile}; required fields: ${p.requiredFields.join(', ')}. Selection has not enabled it.`).join('\n')}\n\nConnect the actual host integration and test the selected scenarios. Report changed files, unresolved facts, review needs and real verification results. A selected cartridge or passing config check does not establish legal compliance or a verified deployment. Packages are unpublished previews: use an explicitly installed local build; do not install an unrelated registry package.\n`;
+ return `Set up Notabenda for these packs: ${plan.cartridges.map(c=>c.title).join(', ')}.\n\nInspect the existing project and preserve unrelated behavior. Reuse existing supporting configuration and documents. Read the installed pack plan with:\n\nnpx --no-install notabenda packs ${plan.selection.selected.map(c=>c.id).join(' ')} --json\n\nRead the version-matched integration guides, gather the selected facts and leave unknowns unresolved. Use the installed skill when available. Prepare a private answers file, then run:\n\nnpx --no-install notabenda wizard --packs ${ids} --answers ./answers.json --out-dir ./notabenda-setup\n\nAdd --config FILE when an inventory already exists. Compare the draft before applying changes.\n\n${plan.cartridges.map(c=>`${c.title}: ${c.lesson}`).join('\n\n')}\n\n${plan.policyProposals.map(p=>`Proposed policy for applicability review: ${p.path} / ${p.profile}; required fields: ${p.requiredFields.join(', ')}. Selection has not enabled it.`).join('\n')}\n\nConnect the actual host integration and test the selected scenarios. Report changed files, unresolved facts, review needs and real verification results. A selected pack or passing config check does not establish legal compliance or a verified deployment. Packages are unpublished previews: use an explicitly installed local build; do not install an unrelated registry package.\n`;
 }
+
+/** Pack naming aliases; stored selections and revisions retain their existing data contract. */
+export {cartridgeLibrary as packLibrary,selectCartridges as selectPacks,planCartridges as planPacks,createCartridgeSetupPlan as createPackSetupPlan,readCartridgeSelection as readPackSelection,normalizeCartridgeSelection as normalizePackSelection,formatCartridgeBrief as formatPackBrief};
+export type {CartridgeId as PackId,CartridgeSelection as PackSelection};

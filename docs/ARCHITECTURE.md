@@ -2,6 +2,8 @@
 
 The [compliance map](COMPLIANCE-MAP.md) explains what each component serves. This diagram shows where the supporting software runs and where its information is kept.
 
+Choose the jobs you need in the [library of eight packs](/start). It groups the basics, additional functions and regional rules. The diagram below shows the software they share, rather than a count of available packs.
+
 ## Build, browser and optional backend
 
 <!-- notabenda:diagram storage -->

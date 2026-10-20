@@ -57,4 +57,6 @@ For optional maintainer runtime verification, build the workspace and run `node 
 
 See [the CF API](../packages/notabenda-cf/README.md), [scope decisions](SCOPE.md), [deployment feature status](FEATURES.md#feat-deployment) and [verification](verification/cloudflare-starter.md).
 
-Setup starts with the reusable cartridge library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all three generated assets.
+Setup starts with the reusable pack library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all generated setup and preview assets.
+
+The page reader is built as `assets/setup-preview.mjs` and loaded when an operator requests a preview. It requires the same configuration permission as setup; the local doctor checks its presence.

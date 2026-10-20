@@ -47,8 +47,8 @@ test('each example appears in exactly one subgroup and area overviews connect gu
  }
  const producer=await page('/guide/guarantee-producer-example');assert.equal(producer.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/contracts/');assert.ok(producer.querySelector('.guide-context a[href="/guide/guarantee-labels"]'));assert.ok(producer.querySelector('.guide-context a[href="/guarantees/product/"]'));
  assert.equal(sectionForGuide('/guide/verification/paid-orders').id,'contracts');assert.equal(sectionForGuide('/guide/verification/consent-focus').id,'privacy-choices');assert.equal(sectionForGuide('/guide/verification/regional-consent').id,'privacy-choices');
- const home=await page('/'),overview=await page('/guide');assert.deepEqual([...home.querySelectorAll('.home-start h3')].map(h=>h.textContent),['Privacy pages','Cookie choices','Terms agreement']);assert.equal(home.querySelectorAll('.home-start a[href="/start"]').length,3);assert.ok(overview.querySelector('a[href="/start"]'));assert.deepEqual([...overview.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
- assert.equal(home.querySelectorAll('.foundation,.closing').length,0);assert.equal(overview.querySelectorAll('.guide-topic').length,6);
+ const home=await page('/'),overview=await page('/guide');assert.deepEqual([...home.querySelectorAll('.home-start h3')].map(h=>h.textContent),['Privacy pages','Cookie choices','Terms agreement']);assert.equal(home.querySelectorAll('.home-start .guide-topic-grid a[href="/start"]').length,3);assert.ok(overview.querySelector('a[href="/start"]'));assert.deepEqual([...overview.querySelectorAll('.starter-path a')].map(a=>a.getAttribute('href')),['/guide/package','/guide/authoring','/guide/consent']);
+ assert.match(home.querySelector('.home-start>p a[href="/start"]').textContent,/Browse all 8 packs/u);assert.equal(home.querySelectorAll('.foundation,.closing').length,0);assert.equal(overview.querySelectorAll('.guide-topic').length,6);
 });
 
 test('shared stages preserve a single primary home and an ordered path through all areas',async()=>{

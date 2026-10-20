@@ -6,7 +6,7 @@
 const guide=(slug,label)=>({href:'/guide/'+slug,label});
 const topic=(id,title,href,description,guideSlug,variants=[],section='')=>({id,title,href,description,guide:'/guide/'+guideSlug,variants:variants.map(([label,href])=>({label,href})),section});
 export const siteSections=[
- {id:'start',title:'Start here',description:'Configure your site, identify services and choose the components you need.',guides:[guide('cartridges','Cartridges'),guide('compliance-map','Compliance map'),guide('architecture','Software & storage'),guide('package','Package & configuration'),guide('setup','Guided setup'),guide('discovery','Project discovery'),guide('service-catalog','Service catalog')],topics:[
+ {id:'start',title:'Start here',description:'Configure your site, identify services and choose the components you need.',guides:[guide('cartridges','Packs'),guide('compliance-map','Compliance map'),guide('architecture','Software & storage'),guide('package','Package & configuration'),guide('setup','Guided setup'),guide('discovery','Project discovery'),guide('service-catalog','Service catalog')],topics:[
   topic('setup','Guided setup','/demo/admin/setup','Work through site practices and keep the reasons behind each configuration choice.','setup'),
   topic('discovery','Service discovery','/discovery','Inspect detected services and review what belongs in your site configuration.','discovery')
  ]},

@@ -18,7 +18,8 @@
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
         "Type-derived installed authoring JSON Schema and focused field lookup, with exact known keys/type values and separate runtime validation and host checks.",
         "Standalone installed-shape checks in read-only assessment, bounded field diagnostics and selected-target prerequisites for scope assessment, localized interfaces and independent storage-exception controls.",
-        "Cartridge-led product entry, shared installed job registry, focused setup questions and version-pinned draft/report/agent handoff; advanced product conversion remains in progress."
+        "Pack-led product entry, shared installed job registry, focused setup questions and version-pinned draft/report/agent handoff; advanced product conversion remains in progress.",
+        "Optional local reader for configured draft pages with the existing document renderer and separate on-demand delivery."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -38,7 +39,8 @@
         "packages/notabenda/scripts/config-schema.mjs",
         "packages/notabenda/src/schema-cli.ts",
         "packages/notabenda/src/integration-assessment.ts",
-        "packages/notabenda/scripts/config-shape-validator.mjs"
+        "packages/notabenda/scripts/config-shape-validator.mjs",
+        "packages/notabenda/src/setup-preview.ts"
       ]
     },
     {
@@ -2064,7 +2066,8 @@
         "REQ-PRODUCT-AGENT-INTEGRATION",
         "REQ-PRODUCT-COMPLIANCE-MAP",
         "REQ-PRODUCT-CARTRIDGES",
-        "REQ-PRODUCT-WORKSPACE-OVERVIEW"
+        "REQ-PRODUCT-WORKSPACE-OVERVIEW",
+        "REQ-PRODUCT-DRAFT-PREVIEW"
       ]
     }
   ],
@@ -6541,9 +6544,9 @@
     {
       "id": "REQ-PRODUCT-CARTRIDGES",
       "jurisdiction": "PRODUCT",
-      "title": "Cartridge-led setup with focused facts and a reusable handoff",
+      "title": "Pack-led setup with focused facts and a reusable handoff",
       "kind": "product-standard",
-      "summary": "Present bounded functional jobs and specific regulatory overlays as versioned cartridges. Resolve their existing integration contracts, ask only the selected job questions and carry selections, explicit answers and draft config through export/resume. Keep requested work separate from supporting foundations and actual verification.",
+      "summary": "Present bounded functional jobs and specific regulatory overlays as versioned packs. Resolve their existing integration contracts, ask only the selected job questions and carry selections, explicit answers and draft config through export/resume. Keep requested work separate from supporting foundations and actual verification. Show every installed pack by default in named groups, with counts and direct navigation; additional functions and regional packs must not be hidden.",
       "appliesWhen": "Choosing, preparing or resuming Notabenda integration work in the website, CLI or reusable setup UI.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -6559,7 +6562,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Initial product flow and draft/agent handoff. Selecting a cartridge does not activate a policy, establish applicability, alter an existing deployment or prove verification. Remaining interfaces and advanced flows still need the same product treatment. Regional cartridges describe named preview mechanisms, not complete country packs.",
+      "caveats": "Initial product flow and draft/agent handoff. Selecting a pack does not activate a policy, establish applicability, alter an existing deployment or prove verification. Remaining interfaces and advanced flows still need the same product treatment. Regional packs describe named preview mechanisms, not complete country packs.",
       "implementationRefs": [
         "packages/notabenda/src/cartridges.ts",
         "packages/notabenda/src/cartridges-cli.ts",
@@ -6585,7 +6588,7 @@
         "packages/notabenda-cf/test/setup.test.mjs",
         "packages/notabenda-cf/test/starter.test.mjs"
       ],
-      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected cartridge revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access."
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All eight packs are shown in three shelves with a counted index."
     },
     {
       "id": "REQ-PRODUCT-WORKSPACE-OVERVIEW",
@@ -6607,7 +6610,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "The overview does not prove current permission, installed cartridges, complete history, newest events, a snapshot or legal compliance. Host adapters and destination authorization remain host responsibilities.",
+      "caveats": "The overview does not prove current permission, installed packs, complete history, newest events, a snapshot or legal compliance. Host adapters and destination authorization remain host responsibilities.",
       "implementationRefs": [
         "packages/notabenda-cf/src/overview.ts",
         "packages/notabenda-cf/src/admin-style.ts",
@@ -6624,6 +6627,46 @@
         "site/test/demo.test.mjs",
         "docs/verification/workspace-overview.md",
         "site/test/order-demo.test.mjs"
+      ]
+    },
+    {
+      "id": "REQ-PRODUCT-DRAFT-PREVIEW",
+      "jurisdiction": "PRODUCT",
+      "title": "Deliberate local preview of configured legal pages",
+      "kind": "product-standard",
+      "summary": "Offer an optional reader for the prepared draft using the ordinary document renderer. Keep a fixed public snapshot, preserve review declarations, disable outside navigation and reject stale asynchronous previews without changing the draft or deployment.",
+      "appliesWhen": "Previewing config-based legal pages during pack setup or through the optional standalone viewer.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-DRAFT-PREVIEW"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Config-only reading preview. Separate MD/MDX project files and custom components, live widgets, actual deployment identity and legal content review remain separate work. JSDOM checks do not prove native browser focus behavior.",
+      "implementationRefs": [
+        "packages/notabenda/src/setup-preview.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/cartridges.css",
+        "site/build.mjs",
+        "examples/setup/build.mjs",
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/bin/doctor.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/setup-preview.test.mjs",
+        "site/test/setup-preview.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "packages/notabenda-cf/test/doctor.test.mjs",
+        "docs/verification/draft-preview.md"
       ]
     }
   ],
@@ -7917,6 +7960,22 @@
         "site/test/demo.test.mjs",
         "docs/verification/workspace-overview.md",
         "site/test/order-demo.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-DRAFT-PREVIEW",
+      "requirementIds": [
+        "REQ-PRODUCT-DRAFT-PREVIEW"
+      ],
+      "status": "automated",
+      "expected": "Fixed public snapshot, no persistence/publication/review mutation, safe text, inert outside links, isolated IDs and stale-load cancellation. Separate on-demand delivery and generated-starter configuration access remain checked.",
+      "testRefs": [
+        "packages/notabenda/test/setup-preview.test.mjs",
+        "site/test/setup-preview.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "packages/notabenda-cf/test/doctor.test.mjs",
+        "docs/verification/draft-preview.md"
       ]
     }
   ],

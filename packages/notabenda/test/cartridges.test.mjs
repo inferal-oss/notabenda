@@ -83,10 +83,10 @@ test('CLI plans are read-only and scoped wizard exports resume without silently 
  try{
   await writeFile(join(cwd,'notabenda.config.mjs'),"throw Error('PRIVATE must not execute')");const before=await readdir(cwd);
   const planResult=run('cartridges','cookie-choices','--json');assert.equal(planResult.status,0,planResult.stderr);const plan=JSON.parse(planResult.stdout);assert.deepEqual(plan.cartridges.map(c=>c.id),['cookie-choices']);assert.deepEqual(await readdir(cwd),before);
-  assert.equal(run('cartridges','--json').status,0);assert.match(run('cartridges','cookie-choices','--brief').stdout,/wizard --cartridges cookie-choices/u);
+  assert.equal(run('cartridges','--json').status,0);assert.equal(run('packs','cookie-choices','--json').stdout,planResult.stdout);assert.match(run('packs').stdout,/Choose a pack/u);assert.notEqual(run('wizard','--packs','cookie-choices','--cartridges','cookie-choices','--answers','answers.json').status,0);assert.match(run('cartridges','cookie-choices','--brief').stdout,/wizard --packs cookie-choices/u);
   for(const args of [['cartridges','invented'],['cartridges','--brief'],['cartridges','cookie-choices','--json','--brief'],['check','--cartridges','cookie-choices']])assert.notEqual(run(...args).status,0);
   await writeFile(join(cwd,'answers.json'),JSON.stringify(plan.reference.targetAnswersTemplate));
-  const first=run('wizard','--cartridges','cookie-choices','--answers','answers.json');assert.equal(first.status,0,first.stderr);
+  const first=run('wizard','--packs','cookie-choices','--answers','answers.json');assert.equal(first.status,0,first.stderr);
   const report=JSON.parse(await readFile(join(cwd,'notabenda-setup/setup.private.json'),'utf8'));assert.deepEqual(report.cartridges,selectCartridges(['cookie-choices']));assert.equal(report.answers.answers['consumer-payments'],undefined);
   const resume=run('wizard','--answers','notabenda-setup/setup.private.json','--config','notabenda-setup/notabenda.config.json','--out-dir','resumed');assert.equal(resume.status,0,resume.stderr);assert.deepEqual(JSON.parse(await readFile(join(cwd,'resumed/setup.private.json'),'utf8')).cartridges,report.cartridges);
   const conflict=run('wizard','--cartridges','privacy-pages','--answers','notabenda-setup/setup.private.json','--out-dir','conflict');assert.notEqual(conflict.status,0);assert.ok(!(await readdir(cwd)).includes('conflict'));

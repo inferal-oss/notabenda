@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -11,6 +12,7 @@ import {mountSetup} from 'notabenda/setup/ui';
 import {mountCartridgeConsole} from 'notabenda/cartridges/ui';
 import {selectCartridges} from 'notabenda/cartridges';
 import {createWorkspaceOverviewWorker} from 'notabenda-cf';
+import {mountLegalPreview} from 'notabenda/setup/preview';
 const shell='<!doctype html><html lang="en"><head><title>Component check</title></head><body><main id="main"><h1>Settings</h1><div id="component"></div></main></body></html>';
 function visibleLabels(document){
  const words=value=>value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -20,6 +22,14 @@ function visibleLabels(document){
  }
 }
 function clean(result){assert.deepEqual(result.violations,[],result.label);assert.deepEqual(result.structural,[],result.label);assert.deepEqual(result.warnings,[],result.label);assert.equal(result.incomplete.some(v=>v.id==='aria-prohibited-attr'),false,result.label+' has unresolved naming semantics');assert.equal(result.environment,'jsdom-semantic-only');assert.deepEqual(result.excludedRules,['color-contrast','label-content-name-mismatch']);}
+
+// @requirements REQ-PRODUCT-CARTRIDGES
+test('the deliberate page preview names its dialog, document choices and legal contents',async()=>{
+ const data=await accessibilityFixtureData(),audit=await createAccessibilityAudit(shell,{label:'local document preview'}),d=audit.dom.window.document;
+ audit.dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};audit.dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
+ const ui=mountLegalPreview(d.querySelector('#component'),{config:data.config});
+ try{ui.open();for(const kind of ['privacy','cookies','terms']){const buttons=[...d.querySelectorAll('.nb-legal-preview-navigation button')];buttons[['privacy','cookies','terms'].indexOf(kind)].click();clean(await audit.scan());}}finally{ui.destroy();audit.close();}
+});
 
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 test('operator overview and cross-area finder have native labels, headings and reachable records',async()=>{

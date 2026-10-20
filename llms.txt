@@ -6,7 +6,7 @@ Developer preview: packages have not been published to npm. Use a trusted worksp
 
 Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
 
-Start with a cartridge job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda cartridges [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --cartridges ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
+Browse all eight packs in three visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
 
 ## Skill
 

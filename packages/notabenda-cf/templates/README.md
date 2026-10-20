@@ -32,4 +32,6 @@ To stop serving the integration, remove its routes or host mount and preserve an
 
 Code uses Apache-2.0. Supplied legal content retains its own authorship and licensing. The setup recommendations, stored records and successful build do not establish legal compliance.
 
-Setup starts with the reusable cartridge library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all three generated assets.
+Setup starts with the reusable cartridge library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all generated setup and preview assets.
+
+The page reader is built as `assets/setup-preview.mjs` and loaded when an operator requests a preview. It requires the same configuration permission as setup; the local doctor checks its presence.

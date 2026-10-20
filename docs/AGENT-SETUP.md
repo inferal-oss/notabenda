@@ -11,7 +11,7 @@ Report the facts still needed for review before publishing.
 
 Start with the [compliance map](COMPLIANCE-MAP.md) to distinguish information, choices, contract actions and evidence. The separate [software/storage diagram](ARCHITECTURE.md) shows which work belongs in the build, browser and host backend.
 
-For a product task, start from [cartridges](CARTRIDGES.md): a bounded job such as privacy pages, cookie choices or terms agreement. Use `notabenda cartridges ID --json` to read the installed job, existing target contract and relevant unknown-answer template. `wizard --cartridges ID --answers FILE` retains that scope in the private report. Reuse supporting work; selecting a cartridge does not prove a connected or verified integration.
+For a product task, start from [packs](CARTRIDGES.md): a bounded job such as privacy pages, cookie choices or terms agreement. Use `notabenda packs ID --json` to read the installed job, existing target contract and relevant unknown-answer template. `wizard --packs ID --answers FILE` retains that scope in the private report. Reuse supporting work; selecting a pack does not prove a connected or verified integration.
 
 ## Install the skill
 

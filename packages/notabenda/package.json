@@ -243,7 +243,23 @@
       "import": "./dist/cartridges-ui.js",
       "default": "./dist/cartridges-ui.js"
     },
-    "./cartridges.css": "./dist/cartridges.css"
+    "./cartridges.css": "./dist/cartridges.css",
+    "./setup/preview": {
+      "types": "./dist/setup-preview.d.ts",
+      "import": "./dist/setup-preview.js",
+      "default": "./dist/setup-preview.js"
+    },
+    "./packs": {
+      "types": "./dist/cartridges.d.ts",
+      "import": "./dist/cartridges.js",
+      "default": "./dist/cartridges.js"
+    },
+    "./packs/ui": {
+      "types": "./dist/cartridges-ui.d.ts",
+      "import": "./dist/cartridges-ui.js",
+      "default": "./dist/cartridges-ui.js"
+    },
+    "./packs.css": "./dist/cartridges.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

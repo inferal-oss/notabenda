@@ -19,7 +19,7 @@ import {describeIntegration,selectIntegration} from './integration-reference.js'
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess|schema|cartridges> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess|schema|packs> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
@@ -39,8 +39,8 @@ of selected targets, explicit configuration and optional wizard practice answers
 Reports minimum missing config, relevant unknowns, validation and unverified host work.
 Never writes a draft or enables features. Exit zero means a report was produced, not readiness.
 
-cartridges [ID ...] [--json | --brief]  List jobs, prepare a cartridge plan or an agent brief.
-Wizard --cartridges ID,ID focuses questions on selected jobs and retains selection in the private report.
+packs [ID ...] [--json | --brief]  List jobs, prepare a pack plan or an agent brief.
+Wizard --packs ID,ID focuses questions on selected jobs and retains selection in the private report.
 
 All configuration is JSON; no module execution or network access is required.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
@@ -76,7 +76,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
-  if(command==='cartridges'){await (await import('./cartridges-cli.js')).runCartridgesCli(args);return;}
+  if(command==='packs'||command==='cartridges'){await (await import('./cartridges-cli.js')).runCartridgesCli(args);return;}
   if(command==='schema'){await (await import('./schema-cli.js')).runSchemaCli(args);return;}
   if(command==='assess'){
     const options:Record<string,string>=Object.create(null);let json=false;const seen=new Set<string>();
@@ -120,7 +120,8 @@ async function main(): Promise<void> {
   const retainedPaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
-    const flag = args.shift()!;
+    const rawFlag = args.shift()!;
+    const flag = rawFlag === '--packs' ? '--cartridges' : rawFlag;
     if (seen.has(flag)&&flag!=='--retain-artifact') throw new Error('Duplicate CLI option.');
     seen.add(flag);
     if (flag === '--preview') preview = true;
@@ -138,7 +139,7 @@ async function main(): Promise<void> {
   if (seen.has('--retain-artifact') && command !== 'build') throw new Error('--retain-artifact is only valid for build.');
   if (json && command !== 'check') throw new Error('--json is only valid for check.');
   if (preview && command === 'init') throw new Error('init always creates a draft; --preview applies to check/build.');
-  if(cartridges&&command!=='wizard')throw Error('--cartridges is only valid for wizard.');
+  if(cartridges&&command!=='wizard')throw Error('--packs is only valid for wizard.');
   if(answersPath&&command!=='wizard')throw new Error('--answers is only valid for wizard.');
   if((projectDirectory||catalogPath)&&command!=='wizard')throw new Error('--project and --catalog apply only to wizard or the separate discover/catalog commands.');
   if(catalogPath&&!projectDirectory)throw new Error('Wizard --catalog requires --project DIRECTORY.');
