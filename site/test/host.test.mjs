@@ -176,7 +176,7 @@ test('authored examples publish static HTML while source inspection stays authen
   // Public guide Markdown and the selected skill are deliberate assets; authored policy sources remain private.
   const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));
   assert.equal(manifest.some(path=>/\.mdx$/u.test(path)),false);
-  assert.ok(manifest.filter(path=>/\.md$/u.test(path)).every(path=>/^guide\/.+\/index\.md$/u.test(path)||path==='skills/notabenda/SKILL.md'));
+  assert.ok(manifest.filter(path=>/\.md$/u.test(path)).every(path=>/^guide\/.+\/index\.md$/u.test(path)||['skills/notabenda/SKILL.md','skills/notabenda/references/configuration-target.md'].includes(path)));
   assert.ok(manifest.includes('guide/authoring/index.html'));
 });
 

@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {fromMarkdown} from 'mdast-util-from-markdown';
 
-export const skillFiles=['SKILL.md','agents/openai.yaml'];
+export const skillFiles=['SKILL.md','agents/openai.yaml','references/configuration-target.md'];
 export const markdownRoute=route=>route.replace(/\/$/u,'')+'/index.md';
 
 // Edit parsed link destinations only, retaining authored prose, code and tables.

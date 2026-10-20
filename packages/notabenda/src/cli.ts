@@ -13,21 +13,25 @@ import { validateSiteConfig, SiteConfigError } from './config.js';
 import { compileLegalDocuments,createRetainedReleaseFiles } from './content.js';
 import { writeBuildFiles } from './files.js';
 import { createStarterConfig } from './starter.js';
+// @requirements REQ-PRODUCT-AGENT-INTEGRATION
+import {describeIntegration} from './integration-reference.js';
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
 init   Write a draft notabenda.config.json without overwriting an existing file.
 check  Validate configuration (production checks by default; --preview permits drafts).
 build  Generate static legal pages, public configuration and a versioned artifact.
+describe [TARGET ...] [--json]  Read-only integration map, facts, actual setup question IDs
+and unknown-answer template. No project scan or config mutation. Omit targets to list all.
 
 All configuration is JSON; no module execution or network access is required.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
 Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config FILE
-imports an existing config. Output requires a new directory and never overwrites. --json applies to check.
+imports an existing config. Output requires a new directory and never overwrites. --json applies to check and describe.
 Wizard --project DIRECTORY explicitly scans supported source/dependency identifiers and
 offers actual-use review in interactive setup; --catalog FILE selects its reference catalog.
 With --answers, findings are saved privately without adding services automatically.
@@ -58,6 +62,12 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='describe'){
+    const json=args.includes('--json');if(args.filter(a=>a==='--json').length>1||args.some(a=>a.startsWith('-')&&a!=='--json'))throw Error('describe accepts target IDs and one optional --json only.');
+    const reference=describeIntegration(args.filter(a=>a!=='--json'));
+    const {name,version}=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));
+    console.log(json?JSON.stringify({package:{name,version},...reference},null,2):`${name} ${version} · integration targets\n`+reference.targets.map((t:{id:string;outcome:string})=>`${t.id}: ${t.outcome}`).join('\n')+'\n\nUse --json for config paths, host work, facts, setup questions and verification. Advisory only; nothing enabled or written.');return;
+  }
   if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');

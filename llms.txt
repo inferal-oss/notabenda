@@ -9,6 +9,8 @@ Use the installed package documentation and types for its version. Discovery fin
 ## Skill
 
 - [Notabenda integration skill](https://notabenda.org/skills/notabenda/SKILL.md): Reusable instructions for an agent integrating or updating the library.
+- [Configuration target selection](https://notabenda.org/skills/notabenda/references/configuration-target.md): Match the user's requested behavior to facts, config changes, host work and acceptance scenarios.
+- [Machine-readable integration reference](https://notabenda.org/integration-reference.json): Current preview targets, actual setup question IDs and an explicit unknown-answer template. Prefer the installed `notabenda describe --json` for version matching.
 
 ## Start here
 

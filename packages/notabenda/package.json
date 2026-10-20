@@ -212,7 +212,13 @@
     },
     "./storage-exceptions.css": "./dist/storage-exceptions.css",
     "./skill/SKILL.md": "./dist/skill/SKILL.md",
-    "./skill/agents/openai.yaml": "./dist/skill/agents/openai.yaml"
+    "./skill/agents/openai.yaml": "./dist/skill/agents/openai.yaml",
+    "./integration": {
+      "types": "./dist/integration-reference.d.ts",
+      "import": "./dist/integration-reference.js",
+      "default": "./dist/integration-reference.js"
+    },
+    "./skill/references/configuration-target.md": "./dist/skill/references/configuration-target.md"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

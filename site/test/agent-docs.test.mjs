@@ -6,6 +6,7 @@ import {fromMarkdown} from 'mdast-util-from-markdown';
 import {JSDOM} from 'jsdom';
 import {rewriteMarkdown,skillFiles} from '../agent-docs.mjs';
 import {serveHost} from '../host.mjs';
+import {describeIntegration} from 'notabenda/integration';
 const root=new URL('../dist/public/',import.meta.url);
 // These session-backed routes are exercised by demo/host integration tests.
 const dynamic=new Set(['/demo/admin/agreements','/demo/admin/choices','/demo/admin/evidence','/demo/admin/history','/demo/admin/lifecycle','/demo/admin/processing','/demo/admin/setup']);
@@ -15,7 +16,7 @@ function nodes(node,type){return [...(node.type===type?[node]:[]),...(node.child
 test('curated index targets existing public Markdown and distributes the exact skill',async()=>{
  const index=await read('llms.txt');assert.equal(index,await readFile(new URL('../../llms.txt',import.meta.url),'utf8'));
  const links=nodes(fromMarkdown(index),'link');assert.ok(links.length>=20);
- for(const link of links){const url=new URL(link.url);assert.equal(url.origin,'https://notabenda.org');assert.match(url.pathname,/\/(?:index\.md|SKILL\.md)$/u);await access(new URL(url.pathname.slice(1),root));}
+ for(const link of links){const url=new URL(link.url);assert.equal(url.origin,'https://notabenda.org');assert.match(url.pathname,/(?:\.md|\/integration-reference\.json)$/u);await access(new URL(url.pathname.slice(1),root));}
  for(const path of skillFiles)assert.equal(await read('skills/notabenda/'+path),await readFile(new URL('../../skills/notabenda/'+path,import.meta.url),'utf8'));
  const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));
  assert.deepEqual(manifest.filter(p=>p.startsWith('skills/')),skillFiles.map(p=>'skills/notabenda/'+p).sort());
@@ -53,10 +54,18 @@ test('Markdown destination rewriting preserves code, titles, nested labels and r
 
 test('agent files are read-only public assets with explicit types and no demo session or storage',async()=>{
  const env={ASSETS:{fetch:async request=>new Response(await read(new URL(request.url).pathname.slice(1)),{headers:{'Content-Type':'application/octet-stream'}})},WORKSPACE:{get(){throw Error('No operator namespace');}},DEMO_WORKSPACES:{get(){throw Error('No demo namespace');}}};
- for(const path of ['/llms.txt','/guide/setup/index.md','/skills/notabenda/SKILL.md','/skills/notabenda/agents/openai.yaml']){
+ for(const path of ['/llms.txt','/guide/setup/index.md','/skills/notabenda/SKILL.md','/skills/notabenda/agents/openai.yaml','/skills/notabenda/references/configuration-target.md','/integration-reference.json']){
   const request=new Request('https://example.test'+path),response=await serveHost(request,env);assert.equal(response.status,200);
-  assert.match(response.headers.get('Content-Type'),path.endsWith('.md')?/^text\/markdown/u:/^text\/plain/u);
+  assert.match(response.headers.get('Content-Type'),path.endsWith('.md')?/^text\/markdown/u:path.endsWith('.json')?/^application\/json/u:/^text\/plain/u);
   assert.equal(response.headers.get('Set-Cookie'),null);assert.match(response.headers.get('Cache-Control'),/no-transform/u);
   assert.equal((await serveHost(new Request(request,{method:'POST'}),env)).status,405);
  }
+});
+
+test('website integration reference uses the installed engine and every target guide is available',async()=>{
+ const reference=JSON.parse(await read('integration-reference.json')),{package:metadata,...body}=reference;
+ assert.equal(metadata.version,JSON.parse(await readFile(new URL('../../packages/notabenda/package.json',import.meta.url),'utf8')).version);
+ assert.deepEqual(body,describeIntegration());
+ for(const guide of new Set([...body.targets.flatMap(t=>t.guides),...body.questions.map(q=>q.guide)]))await access(new URL(new URL(guide).pathname.slice(1),root));
+ const document=new JSDOM(await read('guide/agent-setup/index.html')).window.document;assert.ok(document.querySelector('a[href="/integration-reference.json"]'));
 });

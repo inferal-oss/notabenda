@@ -12,7 +12,7 @@ Explore the [website and documentation](https://notabenda.org) or try the [examp
 
 ## Set up with an agent
 
-Give your coding agent the [Notabenda integration skill](skills/notabenda/SKILL.md). It covers discovery, configuration, documents, controls and the optional backend. The [agent setup guide](docs/AGENT-SETUP.md) explains installation; [llms.txt](https://notabenda.org/llms.txt) links to Markdown documentation.
+Give your coding agent the [Notabenda integration skill](skills/notabenda/SKILL.md). It covers discovery, configuration, documents, controls and the optional backend. After local installation, `npx --no-install notabenda describe --json` gives agents a version-matched map of requested outcomes, config fields, facts still needed and host work. The [agent setup guide](docs/AGENT-SETUP.md) explains installation; [llms.txt](https://notabenda.org/llms.txt) links to Markdown documentation.
 
 ## Try it
 

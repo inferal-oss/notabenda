@@ -23,7 +23,7 @@ Updated 19 October 2026. This records accepted product decisions; implementation
 
 ## Agent integration
 
-Ship a reusable integration skill with the package and website, plus a concise `llms.txt` linking to Markdown versions of the maintained guides. Keep CLI/API examples aligned with the installed version, preserve existing site settings and retained releases, and leave material facts and legal review explicit. Discovery findings and private reports remain separate from public output; host authorization, deployment and optional CI remain adopter decisions. See [agent setup](AGENT-SETUP.md).
+Ship a reusable integration skill with the package and website, plus a concise `llms.txt` linking to Markdown versions of the maintained guides. Provide a read-only installed `describe` command and matching API/public JSON reference. Connect requested outcomes to prerequisites, real config paths, separate host work, facts needed, current wizard question IDs, unknown-answer templates and acceptance scenarios. Verify advertised paths against actual `SiteConfig` types. Keep CLI/API examples aligned with the installed version, preserve existing site settings and retained releases, and leave material facts and legal review explicit. Discovery findings and private reports remain separate from public output; host authorization, deployment and optional CI remain adopter decisions. See [agent setup](AGENT-SETUP.md).
 
 ## Guided setup
 

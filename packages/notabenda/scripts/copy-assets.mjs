@@ -17,4 +17,5 @@ for(const [source,target] of [['schema.json','schema.json'],['NOTICE','NOTICE.tx
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 // One maintained skill, distributed with the installed package version.
 await mkdir(new URL('../dist/skill/agents/',import.meta.url),{recursive:true});
-for(const path of ['SKILL.md','agents/openai.yaml'])await copyFile(new URL('../../../skills/notabenda/'+path,import.meta.url),new URL('../dist/skill/'+path,import.meta.url));
+await mkdir(new URL('../dist/skill/references/',import.meta.url),{recursive:true});
+for(const path of ['SKILL.md','agents/openai.yaml','references/configuration-target.md'])await copyFile(new URL('../../../skills/notabenda/'+path,import.meta.url),new URL('../dist/skill/'+path,import.meta.url));

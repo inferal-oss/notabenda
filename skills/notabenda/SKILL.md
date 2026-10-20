@@ -9,7 +9,15 @@ Use the installed package's documentation and types for its version. The current
 
 Read [the documentation index](https://notabenda.org/llms.txt), then fetch only the guides needed for the task. Markdown guides have `/index.md` after their guide URL, for example `https://notabenda.org/guide/setup/index.md`.
 
-## 1. Inspect the host project
+## 1. Determine the target and inspect the host project
+
+Read [configuration target selection](references/configuration-target.md). Distinguish documents, interactive controls, recorded evidence and host workflows. Do not enable adjacent features by default. Use the installed integration map and record a short brief: requested outcomes, existing integration, confirmed facts with provenance, material unknowns, exact config changes, host work and acceptance scenarios.
+
+```sh
+npx --no-install notabenda describe cookie-consent terms-agreement --json
+```
+
+Select the target IDs that match the actual request; omit IDs to list all. The read-only JSON supplies config paths, prerequisite targets, facts needed, setup question IDs, an unknown-answer template and checks. Its `hostWork` entries are application tasks, not JSON config fields. Read installed `SiteConfig` declarations for exact types. The map advises work; it does not enable it or decide applicability. If no package is installed, use [the current preview reference](https://notabenda.org/integration-reference.json).
 
 Identify its framework, build command, routes, existing legal documents, optional service loaders and authorization. Find the current Notabenda config before creating another. Preserve existing facts, restrictions, runtime settings, routes and review history. Propose targeted changes rather than replacing the inventory with a starter.
 

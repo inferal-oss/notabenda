@@ -15,10 +15,11 @@ test('package contains the versioned skill and its commands work after offline l
  const cwd=await mkdtemp(join(tmpdir(),'notabenda-agent-'));
  try{
   const packed=JSON.parse(run(root,'npm',['pack','--workspace','notabenda','--ignore-scripts','--json','--pack-destination',cwd]));
-  for(const path of ['dist/skill/SKILL.md','dist/skill/agents/openai.yaml'])assert.ok(packed[0].files.some(file=>file.path===path),path);
+  for(const path of ['dist/skill/SKILL.md','dist/skill/agents/openai.yaml','dist/skill/references/configuration-target.md'])assert.ok(packed[0].files.some(file=>file.path===path),path);
   await writeFile(join(cwd,'package.json'),JSON.stringify({name:'agent-smoke-test',private:true,type:'module'}));
   run(cwd,'npm',['install','--offline','--ignore-scripts','--no-audit','--no-fund','--omit=optional',join(cwd,packed[0].filename)]);
   const skill=await readFile(join(cwd,'node_modules/notabenda/dist/skill/SKILL.md'),'utf8');
+  assert.equal(await readFile(join(cwd,'node_modules/notabenda/dist/skill/references/configuration-target.md'),'utf8'),await readFile(new URL('../../../skills/notabenda/references/configuration-target.md',import.meta.url),'utf8'));
   assert.equal(skill,await readFile(new URL('../../../skills/notabenda/SKILL.md',import.meta.url),'utf8'));
   const metadata=parse(/^---\n([\s\S]+?)\n---/u.exec(skill)[1]);assert.equal(metadata.name,'notabenda');assert.ok(metadata.description.length<1024);assert.deepEqual(Object.keys(metadata).sort(),['description','name']);
   const ui=parse(await readFile(join(cwd,'node_modules/notabenda/dist/skill/agents/openai.yaml'),'utf8'));assert.ok(ui.interface.default_prompt.includes('$notabenda'));

@@ -14,7 +14,8 @@
         "Requirement-linked recommendations, unknowns/conflicts and private justifications; reviewable draft config exports with no automatic activation.",
         "Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling.",
         "Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts.",
-        "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization."
+        "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
+        "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -29,7 +30,8 @@
         "packages/notabenda/src/catalog-node.ts",
         "skills/notabenda/SKILL.md",
         "site/agent-docs.mjs",
-        "llms.txt"
+        "llms.txt",
+        "packages/notabenda/src/integration-reference.ts"
       ]
     },
     {
@@ -471,7 +473,8 @@
         "Optional Cloudflare deployment commands, same-origin configuration, and install/uninstall instructions.",
         "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Remote provisioning and operational rollout verification remain separate.",
         "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open.",
-        "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization."
+        "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
+        "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -494,7 +497,8 @@
         "packages/notabenda-cf/bin/doctor.mjs",
         "skills/notabenda/SKILL.md",
         "site/agent-docs.mjs",
-        "llms.txt"
+        "llms.txt",
+        "packages/notabenda/src/integration-reference.ts"
       ]
     },
     {
@@ -6004,7 +6008,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Agent integration skill and public Markdown documentation",
       "kind": "product-standard",
-      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries.",
+      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios.",
       "appliesWhen": "An agent helps an adopter configure, update or validate a Notabenda integration.",
       "sourceRefs": [
         {
@@ -6037,15 +6041,19 @@
         "site/guide-pages.mjs",
         "packages/notabenda/package.json",
         "packages/notabenda/scripts/copy-assets.mjs",
-        "docs/AGENT-SETUP.md"
+        "docs/AGENT-SETUP.md",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/cli.ts",
+        "skills/notabenda/references/configuration-target.md"
       ],
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",
         "docs/verification/agent-integration.md",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "packages/notabenda/test/integration-reference.test.mjs"
       ],
-      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores."
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled."
     }
   ],
   "verification": [
@@ -7222,12 +7230,13 @@
         "REQ-PRODUCT-AGENT-INTEGRATION"
       ],
       "status": "automated",
-      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure.",
+      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files.",
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",
         "docs/verification/agent-integration.md",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "packages/notabenda/test/integration-reference.test.mjs"
       ]
     }
   ],
