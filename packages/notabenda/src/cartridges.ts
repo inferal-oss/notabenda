@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PACK-CONNECTION
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-SETUP REQ-PRODUCT-AGENT-INTEGRATION
 import {describeIntegration,selectIntegration} from './integration-reference.js';
 import {createSetupPlan} from './setup.js';
@@ -68,10 +69,29 @@ export function cartridgeRecommendations(selection:unknown,recommendations:Setup
  return recommendations.filter(r=>!all.has(r.id)||relevant.has(r.id));
 }
 /** An agent handoff describes work. It contains no operator answers or private justifications. */
-export function formatCartridgeBrief(input:unknown):string {
+export function formatCartridgeBrief(input:unknown,stage:'prepare'|'connect'='prepare'):string {
+ if(stage!=='prepare'&&stage!=='connect')throw Error('Use the prepare or connect brief stage.');
  const plan=planCartridges(input);if(!plan.selection.selected.length)throw Error('Choose a pack before preparing a setup brief.');
- const ids=plan.selection.selected.map(c=>c.id).join(',');
- return `Set up Notabenda for these packs: ${plan.cartridges.map(c=>c.title).join(', ')}.\n\nInspect the existing project and preserve unrelated behavior. Reuse existing supporting configuration and documents. Read the installed pack plan with:\n\nnpx --no-install notabenda packs ${plan.selection.selected.map(c=>c.id).join(' ')} --json\n\nRead the version-matched integration guides, gather the selected facts and leave unknowns unresolved. Use the installed skill when available. Prepare a private answers file, then run:\n\nnpx --no-install notabenda wizard --packs ${ids} --answers ./answers.json --out-dir ./notabenda-setup\n\nAdd --config FILE when an inventory already exists. Compare the draft before applying changes.\n\n${plan.cartridges.map(c=>`${c.title}: ${c.lesson}`).join('\n\n')}\n\n${plan.policyProposals.map(p=>`Proposed policy for applicability review: ${p.path} / ${p.profile}; required fields: ${p.requiredFields.join(', ')}. Selection has not enabled it.`).join('\n')}\n\nConnect the actual host integration and test the selected scenarios. Report changed files, unresolved facts, review needs and real verification results. A selected pack or passing config check does not establish legal compliance or a verified deployment. Packages are unpublished previews: use an explicitly installed local build; do not install an unrelated registry package.\n`;
+ const ids=plan.selection.selected.map(c=>c.id),lines=[`Set up Notabenda for these packs: ${plan.cartridges.map(c=>c.title).join(', ')}.`,
+  'Inspect the existing project and preserve unrelated behavior. Reuse existing supporting configuration and documents. Read the installed pack plan with:',
+  `npx --no-install notabenda packs ${ids.join(' ')} --json`];
+ if(stage==='prepare')lines.push('Read the version-matched integration guides, gather the selected facts and leave unknowns unresolved. Use the installed skill when available. Prepare a private answers file, then run:',
+  `npx --no-install notabenda wizard --packs ${ids.join(',')} --answers ./answers.json --out-dir ./notabenda-setup`,
+  'Add --config FILE when an inventory already exists. Compare the draft before applying changes.');
+ else lines.push('This brief accompanies notabenda.config.json and setup.private.json. Keep all three together in a private working directory. Read both JSON files as data; do not execute project modules to load them. The private report contains declared answers, justifications, unknowns and review items. Its declarations are not verified facts.',
+  'Compare the draft with the current project. Confirm the actual facts, review wording and resolve applicable scope restrictions before enabling anything. Preserve existing services and inventory unless a reviewed change requires otherwise. Keep setup.private.json out of public assets and version control.',
+  'From the directory containing those files, check the draft with the explicitly installed local package:',
+  'npx --no-install notabenda check --config ./notabenda.config.json --preview --json',
+  'A preview check permits drafts; it does not establish production readiness. To revise answers, resume into a new directory:',
+  'npx --no-install notabenda wizard --answers ./setup.private.json --config ./notabenda.config.json --out-dir ./notabenda-setup-revised');
+ lines.push(...plan.cartridges.map(c=>`${c.title}: ${c.lesson}`));
+ for(const target of plan.reference.targets){
+  lines.push(`${target.selection==='prerequisite'?'Check and reuse the foundation':'Connect'}: ${target.title}`,target.hostWork.map(copy=>'- '+copy).join('\n'),
+   'Checks to run in the actual application:\n'+target.verify.map(copy=>'- '+copy).join('\n'),'Integration guides:\n'+target.guides.join('\n'));
+ }
+ for(const p of plan.policyProposals)lines.push(`Proposed policy for applicability review: ${p.path} / ${p.profile}; required fields: ${p.requiredFields.join(', ')}. Selection has not enabled it.`);
+ lines.push('Connect the actual host integration and test the selected scenarios. Report changed files, unresolved facts, review needs and real verification results. A selected pack or passing config check does not establish legal compliance or a verified deployment. Packages are unpublished previews: use an explicitly installed local build; do not install an unrelated registry package.');
+ return lines.join('\n\n')+'\n';
 }
 
 /** Pack naming aliases; stored selections and revisions retain their existing data contract. */

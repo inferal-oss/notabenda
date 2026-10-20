@@ -1,5 +1,6 @@
+// @requirements REQ-PRODUCT-PACK-CONNECTION
 // @requirements REQ-PRODUCT-CARTRIDGES
-import {selectCartridges,readCartridgeSelection,planCartridges,createCartridgeSetupPlan,cartridgeRecommendations} from './cartridges.js';
+import {selectCartridges,readCartridgeSelection,planCartridges,createCartridgeSetupPlan,formatCartridgeBrief,cartridgeRecommendations} from './cartridges.js';
 import {readSetupCatalogRevisions} from './catalog-review.js';
 // @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -52,10 +53,12 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
   await mkdir(directory,{mode:0o700});
   await writeFile(join(directory,'notabenda.config.json'),JSON.stringify(plan.config,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile(join(directory,'setup.private.json'),JSON.stringify(plan.report,null,2)+'\n',{flag:'wx',mode:0o600});
+  if(selection)await writeFile(join(directory,'notabenda-setup-brief.txt'),formatCartridgeBrief(selection,'connect'),{flag:'wx',mode:0o600});
   if(project)await writeFile(join(directory,'discovery.private.json'),JSON.stringify(project.report,null,2)+'\n',{flag:'wx',mode:0o600});
   await writeFile(join(directory,'.gitignore'),'setup.private.json\n'+(project?'discovery.private.json\n':''),{flag:'wx'});
   if(project)console.log(`Saved ${project.report.findings.length} project candidate(s) separately in discovery.private.json; coverage ${project.report.coverage.limited?'limited':'bounded'}. Findings never add services without actual-use confirmation.`);
   console.log(`Created a draft config and private setup report in ${options.outDir}.`);
+  if(selection)console.log('Saved notabenda-setup-brief.txt with the selected connection steps and application checks. Keep it alongside the config and private report for your coding agent.');
   for(const recommendation of selection?cartridgeRecommendations(selection,plan.report.recommendations):plan.report.recommendations)if(recommendation.status!=='declared-no')console.log(`${recommendation.status}: ${recommendation.title}\n  ${recommendation.reason}\n  ${recommendation.requirementIds.join(', ')}\n  Config / integration: ${recommendation.configPaths.join(', ')}\n  Guide: https://notabenda.org/guide/${recommendation.guide}`);
   console.log(`${selection?'Complete private report: ':''}${plan.report.reviewItems.length} review items; ${plan.report.diagnostics.filter(d=>d.severity==='error').length} production validation errors. Review locally; no services were enabled or deployed.`);
 }

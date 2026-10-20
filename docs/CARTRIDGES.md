@@ -59,7 +59,13 @@ Review applicability and wording before applying a policy. These are preview mec
 
 ## Connect and check
 
-The current flow produces a draft config, private report and agent brief. Your host still connects the actual components, loaders or recording transport. The selected integration reference lists the scenarios to test. Publication and deployment verification are separate from preparing a draft.
+After preparing the draft, **Connect to your site** shows the selected pack's integration tasks and a direct guide link. Expand **Checks to run in your application** for its acceptance scenarios. **Existing foundations to check** keeps shared work separate: reuse an existing privacy-page or consent integration when it already does the job. Regional proposals show only the selected policy path, profile and required fields; they remain disabled until the host applies an appropriate reviewed change.
+
+**Review selected facts** returns to the questionnaire without losing the prepared draft. Editing an answer or changing packs invalidates the old guide and downloads, so the next draft reflects the new scope. Selection actions stay in reach while browsing the entire pack library.
+
+The browser offers three downloads: `notabenda.config.json`, `setup.private.json` and `notabenda-setup-brief.txt`. A scoped terminal wizard now writes the same three files into its new output directory. Keep them together in a private working directory when handing work to an agent. The connection brief names those files, includes the installed target tasks and checks, supplies a preview-validation command and explains how to resume into a new directory. Operator answers and justifications remain in the private report; they are not copied into the brief.
+
+`formatPackBrief(selection)` prepares the initial planning brief. `formatPackBrief(selection, 'connect')` prepares the post-draft handoff used by the UI and scoped wizard. Both reference the installed integration contract. These instructions do not run tests or mark a pack installed or verified. The host still connects the actual components, loaders or recording transport and verifies the result in its application. Publication and deployment verification remain separate steps.
 
 The pack approach is being carried through the rest of the product. Advanced configuration remains available in the guides; existing APIs continue to work.
 

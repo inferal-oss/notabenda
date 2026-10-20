@@ -1,0 +1,26 @@
+// @requirements REQ-PRODUCT-PACK-CONNECTION REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-A11Y
+import type {planCartridges} from './cartridges.js';
+
+/** Render the installed integration contract; no completion state or host actions are owned here. */
+export function appendPackConnectionGuide(container:HTMLElement,scope:ReturnType<typeof planCartridges>,docs:string):void {
+ const doc=container.ownerDocument;
+ const node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
+ const list=(items:readonly string[])=>{const ul=node('ul');for(const copy of items)ul.append(node('li',copy));return ul;};
+ const guideLink=(slug:string)=>{const a=node('a','Read integration guide');a.href=docs+'/'+slug;a.className='nb-setup-connection-guide';return a;};
+ const root=node('section');root.className='nb-setup-connection';root.append(node('h3','Connect to your site'),node('p','Use these steps yourself or give the downloaded files to your coding agent. Run the checks in your application after connecting each pack.'));
+ for(const pack of scope.cartridges){
+  const article=node('article');article.className='nb-setup-connection-pack';article.dataset.pack=pack.id;
+  article.append(node('h4',pack.title),node('p',pack.lesson),guideLink(pack.guide));
+  const targets=scope.reference.targets.filter(t=>pack.targetIds.some(id=>id===t.id));
+  article.append(node('h5','Connect'),list([...new Set(targets.flatMap(t=>t.hostWork))]));
+  const proposal=scope.policyProposals.find(p=>p.cartridgeId===pack.id);
+  if(proposal){const policy=node('aside');policy.className='nb-setup-connection-policy';policy.append(node('strong','Assess this policy before enabling it'),node('p',proposal.path+' · '+proposal.profile),node('p','Required fields: '+proposal.requiredFields.join(', ')+'. Selection has not enabled this policy.'));article.append(policy);}
+  const checks=node('details');checks.className='nb-setup-connection-checks';checks.append(node('summary','Checks to run in your application'),list([...new Set(targets.flatMap(t=>t.verify))]));article.append(checks);root.append(article);
+ }
+ const supporting=scope.reference.targets.filter(t=>t.selection==='prerequisite');
+ if(supporting.length){
+  const existing=node('details');existing.className='nb-setup-connection-foundations';existing.append(node('summary','Existing foundations to check'),node('p','Reuse the foundations your site already has. Check their behavior before adding another implementation.'));
+  for(const target of supporting){const section=node('section');section.dataset.foundation=target.id;section.append(node('h4',target.title),list(target.hostWork));const checks=node('details');checks.append(node('summary','Foundation checks'),list(target.verify));section.append(checks);const slug=target.guides[0]!.replace('https://notabenda.org/guide/','').replace('/index.md','');section.append(guideLink(slug));existing.append(section);}root.append(existing);
+ }
+ container.append(root);
+}

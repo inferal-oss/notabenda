@@ -50,6 +50,20 @@ test('reusable cartridge library and its focused setup retain semantic names and
  }finally{ui.destroy();audit.close();}
 });
 
+// @requirements REQ-PRODUCT-PACK-CONNECTION
+test('selected connection tasks, check disclosures and foundation guides have semantic structure',async()=>{
+ const audit=await createAccessibilityAudit(shell.replace('<h1>Settings</h1>',''),{label:'pack connection guide'}),d=audit.dom.window.document;
+ audit.dom.window.URL.createObjectURL=()=> 'blob:semantic-fixture';audit.dom.window.URL.revokeObjectURL=()=>{};
+ const ui=mountCartridgeConsole(d.querySelector('#component'),{cartridges:selectCartridges(['cookie-choices','terms-agreement','it-repeat-prompts'])});
+ try{
+  d.querySelector('.cartridge-library').dispatchEvent(new audit.dom.window.Event('submit',{cancelable:true,bubbles:true}));
+  d.querySelector('.nb-setup-form').dispatchEvent(new audit.dom.window.Event('submit',{cancelable:true,bubbles:true}));
+  assert.ok(d.querySelector('.nb-setup-connection'));clean(await audit.scan());
+  for(const details of d.querySelectorAll('.nb-setup-connection details'))details.open=true;
+  clean(await audit.scan());
+ }finally{ui.destroy();audit.close();}
+});
+
 test('the semantic guard catches real markup defects while retaining incomplete results',async()=>{
  for(const tag of new Set(axe.getRules().flatMap(rule=>rule.tags).filter(tag=>/^wcag(?:2|21|22)a{1,2}$/u.test(tag))))assert.ok(accessibilityTags.includes(tag),tag);
  const good=await auditAccessibility(shell);clean(good);assert.ok(good.incomplete.every(r=>Array.isArray(r.nodes)));
