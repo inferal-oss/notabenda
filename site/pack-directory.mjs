@@ -11,7 +11,7 @@ export function packDirectory(){
  const packs=packLibrary();
  return `<nav class="pack-directory" aria-label="All ${packs.length} packs">${groups.map(([id,title])=>{
   const items=packs.filter(p=>p.shelf===id);
-  return `<section class="pack-directory-group" data-pack-group="${id}"><header><h3>${title}</h3><span>${items.length} packs</span></header><ul>${items.map(p=>`<li><a href="/start/#pack-${p.id}" data-pack-link="${p.id}"><span class="pack-token pack-token-${p.shelf}" aria-hidden="true">${String(packs.indexOf(p)+1).padStart(2,'0')}</span><span><strong>${e(p.title)}</strong><span>${e(p.outcome)}</span></span><span class="pack-directory-arrow" aria-hidden="true">↗</span></a></li>`).join('')}</ul></section>`;
+  return `<section class="pack-directory-group" data-pack-group="${id}"><header><h3>${title}</h3><span>${items.length} packs</span></header><ul>${items.map(p=>`<li><a href="/start/#pack-${p.id}" data-pack-link="${p.id}"><span class="pack-token pack-token-${p.shelf} pack-token-${p.id}" aria-hidden="true"><span class="pack-token-number">${String(packs.indexOf(p)+1).padStart(2,'0')}</span><span class="pack-token-glyph"><i></i><i></i><i></i></span><span class="pack-token-contacts"><span></span><span></span></span></span><span><strong>${e(p.title)}</strong><span>${e(p.outcome)}</span></span><span class="pack-directory-arrow" aria-hidden="true">↗</span></a></li>`).join('')}</ul></section>`;
  }).join('')}<p class="pack-directory-note">Regional packs cover the named timing rules. Review applicability before enabling them.</p></nav>`;
 }
 export function packDirectoryMarkdown(){

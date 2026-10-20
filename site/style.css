@@ -112,12 +112,21 @@
  .pack-directory ul,.prose .pack-directory ul{list-style:none;margin:0;padding:0}.pack-directory li,.prose .pack-directory li{margin:0;padding:0;border-bottom:1px solid var(--line)}
  .pack-directory li>a{display:flex;align-items:start;gap:.8rem;padding:1.1rem .25rem;text-decoration:none;min-height:100px;border-radius:5px;color:inherit}.pack-directory li>a:hover{background:#f2f0f7}.pack-directory li>a:focus-visible{outline:3px solid #675394;outline-offset:3px}
  .pack-directory li>a>span:nth-child(2){display:flex;flex-direction:column;gap:.4rem;min-width:0}.pack-directory strong{font-size:.875rem;font-weight:550;line-height:1.5;letter-spacing:-.02em}.pack-directory li>a>span:nth-child(2)>span{font-size:.75rem;line-height:1.65;color:var(--muted)}.pack-directory-arrow{font-size:.75rem;color:var(--muted);margin-left:auto;flex-shrink:0}
- .pack-token{position:relative;display:grid;place-items:center;width:30px;height:38px;flex-shrink:0;border:1px solid #c8c1d5;border-radius:5px 5px 2px 2px;background:#ece8f3;box-shadow:inset 0 0 0 2px #fff7;color:#60536f;font-size:.625rem;font-weight:600;font-variant-numeric:tabular-nums}.pack-token::after{content:'';position:absolute;bottom:0;left:7px;right:7px;height:3px;background:repeating-linear-gradient(90deg,#998ba7 0 2px,transparent 2px 4px)}.pack-token-more{background:#e8eeeb;border-color:#bccdc3;color:#4b6558}.pack-token-regional{background:#f0ebe0;border-color:#cfc4ae;color:#6e5e3f}
+ /* Small versions of the flat packs in /start, with a downward keyed card edge. */
+ .pack-token{--pack-pcb:#b4bdb1;position:relative;display:block;width:44px;height:34px;margin-top:2px;margin-bottom:6px;flex-shrink:0;border:1px solid #c8c1d5;border-radius:5px;background:#ece8f3;color:#60536f;font-weight:600;font-variant-numeric:tabular-nums}
+ .pack-token-number{position:absolute;right:4px;top:3px;font-size:6px;line-height:1;letter-spacing:.02em}
+ .pack-token-glyph{position:absolute;left:8px;top:6px;display:flex;flex-direction:column;justify-content:center;gap:3px;width:18px;height:20px;padding:4px;border:1px solid #a69bb6;border-radius:2px;background:#ffffff90}
+ .pack-token-glyph>i{display:block;height:1px;border-radius:1px;background:#8f819f}.pack-token-glyph>i:first-child{width:65%;height:3px;background:#77668e}.pack-token-glyph>i:last-child{width:80%}
+ .pack-token-contacts{display:flex;gap:3px;position:absolute;bottom:-5px;left:5px;right:5px;height:7px;background:linear-gradient(var(--pack-pcb),var(--pack-pcb)) top/100% 2px no-repeat}
+ .pack-token-contacts>span{flex:12;min-width:0;border:1px solid var(--pack-pcb);border-top-width:2px;border-radius:0 0 1px 1px;background:repeating-linear-gradient(90deg,#b7a477 0 1px,var(--pack-pcb) 1px 2px)}.pack-token-contacts>span:first-child{flex:5}
+ .pack-token-cookie-choices .pack-token-glyph{border-color:#8ca99b;background:#f5f9f6}.pack-token-cookie-choices .pack-token-glyph>i{width:100%;height:3px;background:#b4c6bc}.pack-token-cookie-choices .pack-token-glyph>i:first-child{background:#648a75}
+ .pack-token-more{background:#e8eeeb;border-color:#bccdc3;color:#4b6558}.pack-token-regional{background:#f0ebe0;border-color:#cfc4ae;color:#6e5e3f}
+
  .pack-directory>.pack-directory-note,.prose .pack-directory>.pack-directory-note{grid-column:1/-1;font-size:.75rem;line-height:1.7;color:var(--muted);margin:1rem 0 0}
  .prose .pack-directory-group>header{padding-bottom:.6rem}.prose .pack-directory>.pack-directory-note{margin-top:1rem}
  @media(max-width:800px){.pack-directory{grid-template-columns:1fr;gap:1.5rem}.pack-directory-group ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:1.25rem}}
  @media(max-width:550px){.pack-directory-group ul,.prose .pack-directory-group ul{grid-template-columns:1fr}.pack-directory li>a,.prose .pack-directory li>a{min-height:88px}.pack-directory li>a>span:nth-child(2)>span{font-size:.8125rem}.pack-directory-group>header h3,.prose .pack-directory-group>header h3{font-size:.9375rem}}
- @media(forced-colors:active){.pack-token{border-color:CanvasText;box-shadow:none}.pack-directory li>a:focus-visible{outline-color:Highlight}}
+ @media(forced-colors:active){.pack-token{border-color:CanvasText;box-shadow:none}.pack-token-glyph{border-color:CanvasText}.pack-token-glyph>i,.pack-token-contacts>span{background:CanvasText}.pack-token-contacts>span{border-color:CanvasText}.pack-directory li>a:focus-visible{outline-color:Highlight}}
 }
 
 /* @requirements REQ-PRODUCT-PRIVACY-PACKS REQ-PRODUCT-MOBILE */
