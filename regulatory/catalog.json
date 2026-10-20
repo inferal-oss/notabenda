@@ -6581,7 +6581,9 @@
         "packages/notabenda/src/cartridges.css",
         "packages/notabenda-cf/src/setup.ts",
         "packages/notabenda-cf/templates/src/setup.mjs",
-        "packages/notabenda-cf/templates/scripts/build-assets.mjs"
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs",
+        "site/pack-directory.mjs",
+        "site/style.css"
       ],
       "testRefs": [
         "packages/notabenda/test/cartridges.test.mjs",
@@ -6589,9 +6591,10 @@
         "docs/verification/cartridges.md",
         "packages/notabenda/test/cartridges-ui.test.mjs",
         "packages/notabenda-cf/test/setup.test.mjs",
-        "packages/notabenda-cf/test/starter.test.mjs"
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "site/test/site-organization.test.mjs"
       ],
-      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All eight packs are shown in three shelves with a counted index."
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All eight packs are shown in three shelves with a counted index. The homepage and architecture guide list all eight packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
     },
     {
       "id": "REQ-PRODUCT-WORKSPACE-OVERVIEW",

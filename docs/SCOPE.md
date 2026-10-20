@@ -206,4 +206,6 @@ Pack draft review includes an optional local page reader. It renders a fixed pub
 
 The product calls these jobs **packs** and keeps the existing physical pack artwork. All eight installed packs are visible in three groups, with an index showing the group counts. Additional functions and regional mechanisms are not hidden in a foldout. The three basics are a starting point, not the full library. Existing command/import aliases and saved selections remain compatible (REQ-PRODUCT-CARTRIDGES).
 
+Pack discovery must work before entering setup. The homepage and architecture guide show the complete installed library in groups, with each name linked to its setup card. The main navigation carries the pack count, and the setup index names all eight. Shared registry data supplies the website overview and its text version; no separate marketing list determines availability.
+
 Scoped draft preparation includes a pack-specific connection guide and a matching saved agent brief (REQ-PRODUCT-PACK-CONNECTION). It reuses installed target tasks, checks and guide links, distinguishes foundations, and preserves exact disabled regional proposals. The scoped CLI saves the brief beside the config and private report with owner-only permissions. Neither the guide nor a generated brief records installation, completion or verified deployment.

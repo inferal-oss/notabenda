@@ -7,7 +7,28 @@ import {cartridgeLibrary} from 'notabenda/cartridges';
 import {cartridgePage} from '../cartridge-page.mjs';
 import {mountCartridgeConsole} from '../cartridges-app.mjs';
 import {serveHost} from '../host.mjs';
+import {packDirectory,expandPackDirectory} from '../pack-directory.mjs';
 const root=new URL('../dist/public/',import.meta.url);
+test('home and architecture expose every installed pack with a direct, existing setup target',async()=>{
+ const library=cartridgeLibrary(),setup=new JSDOM(await readFile(new URL('start/index.html',root),'utf8')).window.document;
+ for(const route of ['index.html','guide/architecture/index.html']){
+  const d=new JSDOM(await readFile(new URL(route,root),'utf8')).window.document;
+  assert.match(d.querySelector('header nav a[href="/start"]').textContent,/Packs 8/);
+  assert.deepEqual([...d.querySelectorAll('.pack-directory-group')].map(group=>group.querySelectorAll('[data-pack-link]').length),[3,3,2]);
+  const links=[...d.querySelectorAll('[data-pack-link]')];assert.deepEqual(links.map(a=>a.dataset.packLink),library.map(p=>p.id));
+  for(const a of links){assert.equal(a.closest('details,[hidden]'),null);const url=new URL(a.href,'https://example.test');assert.equal(url.pathname,'/start/');const target=setup.querySelector(url.hash);assert.equal(target.dataset.cartridge,a.dataset.packLink);assert.equal(target.tabIndex,-1);}
+ }
+ const markdown=await readFile(new URL('guide/architecture/index.md',root),'utf8');
+ for(const p of library)assert.ok(markdown.includes(`[${p.title}](/start/#pack-${p.id})`));
+ assert.doesNotMatch(markdown,/notabenda:packs|pack-directory/u);
+});
+test('pack overview expansion leaves code samples alone and produces an equivalent text list',()=>{
+ const marker='<!-- notabenda:packs -->',code='```html\n'+marker+'\n```';
+ assert.equal(expandPackDirectory(code,{graphical:true}),code);
+ assert.equal(new JSDOM(packDirectory()).window.document.querySelectorAll('[data-pack-link]').length,8);
+ assert.equal(expandPackDirectory(marker,{graphical:true}),packDirectory());
+ for(const p of cartridgeLibrary())assert.ok(expandPackDirectory(marker).includes(p.outcome));
+});
 test('the product front door exposes all eight packs in three visible groups',async()=>{
  const html=await readFile(new URL('start/index.html',root),'utf8'),dom=new JSDOM(html),d=dom.window.document;
  try{
