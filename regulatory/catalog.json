@@ -7880,7 +7880,8 @@
         "examples/localization/indirect-messages.json",
         "examples/localization/build.mjs",
         "examples/static/choices-build.mjs",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "skills/notabenda/SKILL.md"
       ],
       "testRefs": [
         "packages/notabenda/test/indirect-localization.test.mjs",
