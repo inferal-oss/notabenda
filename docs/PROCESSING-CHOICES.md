@@ -92,3 +92,16 @@ The backoffice store exposes validated events, exact notice wording and policy r
 The ledger confirms receipt of an instruction. The application still has to stop server jobs, exports and relevant vendor processing, propagate requests and complete required notices. The toolkit's confirmation wording does not assert that those operations happened. Keep their outcomes in appropriate application records and test them separately.
 
 The [local example](../examples/processing-choices/build.mjs) uses fictional first-party services and a context isolated to the browser’s demo session. Both development commands use the SQLite-backed Worker host, with password-free `/demo/admin` review and one-day idle cleanup. It is a demonstration of session isolation, not an identity or production-retention design. See the [verification record](verification/processing-choices-browser.md).
+
+<!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
+## Language and interface copy
+
+For a non-English recorded opt-out, supply the complete `localization.processingChoices` message set in the site inventory before compiling. [The Portuguese messages](../examples/localization/processing-messages.json) cover every status, retry, preview notice and local-recovery problem. Keep the notice's title, explanation and action label in `settings.wording`, in the same intended language; translate the privacy document and inventory separately. These are host-supplied drafts, not a reviewed translation catalog or a jurisdiction selection.
+
+The optional dictionary shares the site's canonical locale, direction, localization revision and review declaration. Each message is plain text without placeholders or markup. `retryLabel` allows 120 UTF-8 bytes, other messages 2,000, and the complete selected interface is bounded to 8 KiB including metadata. Missing or extra keys, invalid metadata, accessors and oversized sets fail. A non-English notice without this dictionary cannot be built. Unrelated signals-only use needs no dictionary.
+
+Localized notices use schema version 2 and retain the selected messages. Existing schema-1 English notices and request/receipt formats remain supported. The Cloudflare recorder verifies the selected message set against its exact retained release, so a rehashed substitute translation is rejected. Native controls set explicit `lang` and `dir` and use no per-message English fallback.
+
+Revise `localization.revision` and retain the new release when copy changes. A new notice does not clear restrictions or abandon pending requests: recovery sends the original notice ID and request UUID, and that older notice/archive must remain available. Copy-only edits leave cookie-consent scope unchanged. The dictionary is excluded from consent-only runtime and notice projections. Never rename a stream or scope merely to reset an opt-out.
+
+Try [the Portuguese opt-out example](/localization/processing/). Record an opt-out, then allow cookies: the separately classified counter can run while the covered suggestion service stays blocked. Reload in the same session to recover the restriction. Inspect its exact wording through the demo backoffice. Real account mapping and downstream effects still need host integration. See [verification](verification/processing-localization.md).

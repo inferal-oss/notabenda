@@ -29,7 +29,8 @@
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Dismissible copyable agent-instruction drawer for selected plans and prepared drafts, with manual clipboard fallback and stale-draft cleanup.",
-        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives."
+        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
+        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -107,7 +108,22 @@
         "packages/notabenda/src/content.ts",
         "examples/authoring/build.mjs",
         "site/host.mjs",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "packages/notabenda/src/processing-localization-policy.ts",
+        "packages/notabenda/src/processing.ts",
+        "packages/notabenda/src/processing-choices.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda-cf/src/processing-localization-policy.ts",
+        "packages/notabenda-cf/src/processing.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "examples/localization/processing-build.mjs",
+        "examples/localization/processing-client.mjs",
+        "examples/localization/processing.css",
+        "examples/localization/processing-messages.json",
+        "site/build.mjs",
+        "site/demo-host.mjs",
+        "examples/static/choices-build.mjs",
+        "packages/notabenda-cf/src/render.ts"
       ]
     },
     {
@@ -500,12 +516,33 @@
       "deliverables": [
         "Sale/sharing/targeted-advertising controls, applicable GPC handling, and signal-status messaging.",
         "Notice-at-collection entry points and relevant sensitive-data restrictions.",
-        "Server-readable restrictions and adapters to stop corresponding downstream processing."
+        "Server-readable restrictions and adapters to stop corresponding downstream processing.",
+        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions."
       ],
       "implementationRefs": [
         "packages/notabenda/src/privacy-signals.ts",
         "packages/notabenda/src/processing-choices.ts",
-        "packages/notabenda-cf/src/processing.ts"
+        "packages/notabenda-cf/src/processing.ts",
+        "packages/notabenda/src/processing-localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/processing.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda-cf/src/processing-localization-policy.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "examples/localization/processing-build.mjs",
+        "examples/localization/processing-client.mjs",
+        "examples/localization/processing.css",
+        "examples/localization/processing-messages.json",
+        "examples/localization/build.mjs",
+        "site/build.mjs",
+        "site/host.mjs",
+        "site/demo-host.mjs",
+        "site/worker.mjs",
+        "site/navigation.mjs",
+        "examples/static/choices-build.mjs",
+        "packages/notabenda-cf/src/render.ts"
       ]
     },
     {
@@ -880,7 +917,8 @@
         "Archived selected consent copy, independent presentation/disclosure revisions, exact material scopes and frontend/backend validation parity.",
         "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
         "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open.",
-        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment."
+        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
+        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions."
       ],
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
@@ -921,7 +959,25 @@
         "packages/notabenda/src/cartridges.ts",
         "packages/notabenda/src/integration-reference.ts",
         "examples/localization/storage-build.mjs",
-        "examples/localization/storage-client.mjs"
+        "examples/localization/storage-client.mjs",
+        "packages/notabenda/src/processing-localization-policy.ts",
+        "packages/notabenda/src/processing.ts",
+        "packages/notabenda/src/processing-choices.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda-cf/src/processing-localization-policy.ts",
+        "packages/notabenda-cf/src/processing.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "examples/localization/processing-build.mjs",
+        "examples/localization/processing-client.mjs",
+        "examples/localization/processing.css",
+        "examples/localization/processing-messages.json",
+        "site/build.mjs",
+        "site/host.mjs",
+        "site/demo-host.mjs",
+        "site/worker.mjs",
+        "site/navigation.mjs",
+        "examples/static/choices-build.mjs",
+        "packages/notabenda-cf/src/render.ts"
       ]
     }
   ],
@@ -2254,7 +2310,8 @@
         "REQ-PRODUCT-RELEASE-CANDIDATE",
         "REQ-PRODUCT-RECORDING-INSPECTION",
         "REQ-PRODUCT-AGENT-HANDOFF",
-        "REQ-PRODUCT-AUTHORED-PREVIEW"
+        "REQ-PRODUCT-AUTHORED-PREVIEW",
+        "REQ-PRODUCT-PROCESSING-LOCALIZATION"
       ]
     }
   ],
@@ -7597,6 +7654,62 @@
         "docs/verification/authored-preview.md"
       ],
       "implementationNote": "Optional build-time reader and deterministic stored public ZIP, exact public-map validation, immutable snapshots and static isolated frames. Configuration preview copy and agent integration reference distinguish the two workflows."
+    },
+    {
+      "id": "REQ-PRODUCT-PROCESSING-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Complete retained localization for recorded processing opt-outs",
+      "kind": "product-standard",
+      "summary": "Supply one complete selected status/recovery dictionary with explicit language and direction, retain it with the exact notice and preserve restrictions and pending identities across copy revisions.",
+      "appliesWhen": "An operator provides recorded processing opt-out controls in an explicitly selected language.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-LOCALIZATION",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PROCESSING-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Host wording and translation review, legal applicability, identity mapping and downstream enforcement remain separate. Signals-only handling needs no recorded-interface dictionary. Copy changes cannot reset restrictions.",
+      "implementationRefs": [
+        "packages/notabenda/src/processing-localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/processing.ts",
+        "packages/notabenda/src/processing-choices.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda-cf/src/processing-localization-policy.ts",
+        "packages/notabenda-cf/src/processing.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "examples/localization/processing-build.mjs",
+        "examples/localization/processing-client.mjs",
+        "examples/localization/processing.css",
+        "examples/localization/processing-messages.json",
+        "examples/localization/build.mjs",
+        "site/build.mjs",
+        "site/host.mjs",
+        "site/demo-host.mjs",
+        "site/worker.mjs",
+        "site/navigation.mjs",
+        "examples/static/choices-build.mjs",
+        "packages/notabenda-cf/src/render.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/processing-localization.test.mjs",
+        "packages/notabenda/test/processing.test.mjs",
+        "site/test/processing-localization.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/processing-localization.md"
+      ],
+      "implementationNote": "Schema-2 notices retain a bounded complete selected interface; existing schema-1 English notices and request/receipt formats remain valid. Standalone CF validation matches exact archived copy. Native controls translate all states and recovery paths with explicit lang/dir."
     }
   ],
   "verification": [
@@ -9158,6 +9271,21 @@
         "packages/notabenda/test/setup-preview.test.mjs",
         "site/test/authored-preview.test.mjs",
         "docs/verification/authored-preview.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PROCESSING-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-PROCESSING-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Complete selected copy and metadata remain bound to the retained release; substitution and schema downgrade fail. Original requests survive copy revisions without duplicate events or weakened restrictions. All native states, RTL, real localized bootstrap and session-scoped recording/inspection remain usable.",
+      "testRefs": [
+        "packages/notabenda/test/processing-localization.test.mjs",
+        "packages/notabenda/test/processing.test.mjs",
+        "site/test/processing-localization.test.mjs",
+        "site/test/demo.test.mjs",
+        "docs/verification/processing-localization.md"
       ]
     }
   ],

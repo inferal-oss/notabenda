@@ -328,7 +328,7 @@ The installed pack UI now supplies optional server rendering, browser mounting/h
 
 The optional backend now has a shared overview and cross-area record finder. New CF starters and the project website use three primary evidence jobs, folded additional areas and bounded continuation into the existing search views. Evidence-bound pack installation/verification and richer operator follow-through remain open; a displayed record is not a readiness signal.
 
-Draft review now includes a deliberate local preview of config-based privacy, cookie and terms pages. The same renderer and default styles serve this reader, with a fixed public snapshot and inert outside links. Separate authored MD/MDX/custom-component previews, live widget behavior and evidence-bound connection/deployment verification remain open.
+Draft review now includes a deliberate local preview of config-based privacy, cookie and terms pages. The same renderer and default styles serve this reader, with a fixed public snapshot and inert outside links. The separate compiled release reader covers Markdown, MDX and static custom-component output. Live widget behavior and evidence-bound connection/deployment verification remain open.
 
 Prepared drafts now show selected pack connection work and application checks from the installed integration reference, with shared foundations listed for reuse. Browser and scoped CLI output use the same connection-stage agent brief and actual config/report filenames. The UI can return to selected facts, and edits invalidate prior guidance/downloads. This is actionable integration guidance; evidence-bound installation and deployment checks remain open.
 
@@ -356,3 +356,6 @@ Browser agent handoffs now show their stage-specific instructions in a shared di
 
 <!-- @requirements REQ-PRODUCT-AUTHORED-PREVIEW -->
 Compiled Markdown/MDX output now has an optional static release reader and deterministic public ZIP export. It verifies the exact compiler file map, retains original HTML and source/component identities, keeps source archives separate and reuses the publication checker after export. Setup configuration previews are explicitly named; they do not adopt a separate compiled build or run browser MDX. Live widget and evidence-bound installation verification remain open.
+
+<!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
+Recorded processing opt-outs now retain complete host-supplied status/recovery messages with explicit language and direction. The recorder verifies selected copy against its archive; copy revisions preserve restrictions and original pending requests. The Portuguese example uses the same session-isolated recorder and demonstrates separate cookie permission. Broader interface localization, translation review and actual account/downstream handling remain open.

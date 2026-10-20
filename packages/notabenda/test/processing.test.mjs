@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES REQ-US-CA-CHOICES
 import {test} from 'node:test';
@@ -115,7 +116,7 @@ test('queued starts and effectful service checks resample another tab restrictio
 
 test('the UI distinguishes pending recording from confirmation, and event search excludes internal ledger keys',async()=>{
   const f=await setup(),gate=deferred();const p=createProcessingChoices(f.notice,{...f.options,async submit(body){await gate.promise;return f.options.submit(body);}},{storage:f.local.storage});await p.settled();
-  const dom=new JSDOM('<div></div>');const ui=mountProcessingChoices(dom.window.document.querySelector('div'),p);const button=dom.window.document.querySelector('button');button.click();assert.match(dom.window.document.querySelector('[role=status]').textContent,/Waiting for the host/);gate.resolve();await p.settled();assert.match(dom.window.document.querySelector('[role=status]').textContent,/host has recorded/);assert.equal(button.disabled,true);
+  const dom=new JSDOM('<div></div>');const ui=mountProcessingChoices(dom.window.document.querySelector('div'),p);const button=dom.window.document.querySelector('button');button.click();assert.match(dom.window.document.querySelector('[role=status]').textContent,/Waiting for the record/);gate.resolve();await p.settled();assert.match(dom.window.document.querySelector('[role=status]').textContent,/opt-out is recorded/);assert.equal(button.disabled,true);
   const store=createProcessingRestrictionStore(f.storage,{siteId:f.config.site.id});const page=await store.list({query:'',kind:'',from:'',to:'',keyPrefix:'',limit:50});assert.equal(page.records.length,1);assert.equal(page.records[0].data.kind,'processing-restriction');assert.equal(page.records[0].data.notice.wording.title,f.notice.wording.title);
   const denied=await createAdminWorker({authorize:()=>null}).fetch(new Request('https://example.test/'));assert.equal(denied.status,403);ui.destroy();p.destroy();dom.window.close();
 });

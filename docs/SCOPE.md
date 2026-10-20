@@ -254,3 +254,6 @@ Use a read-only instruction drawer for browser agent handoffs rather than forcin
 
 <!-- @requirements REQ-PRODUCT-AUTHORED-PREVIEW -->
 Authored previews operate on an explicit compiler result after trusted MDX evaluation. Generate a separate script-free reader and a public ZIP from the same snapshot; preserve original bytes and validate the exact allowed public file map. Reading frames use a static markup projection, disable links/images/fonts and isolate scripts/forms while allowing local styles. Private source/paths/components remain outside both public maps. Preview artifacts need explicit permission; no inferred project read, server, publication, applicability or review state is introduced.
+
+<!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
+Recorded opt-out interface translations are complete, versioned host-supplied dictionaries retained with schema-2 notices; existing English schema-1 notices and request/receipt formats remain supported. Copy changes never reset a restriction or replace an in-flight request's identity. Language selection is separate from applicability and substantive notice wording; the package provides no translation approval or re-opt-in mechanism.

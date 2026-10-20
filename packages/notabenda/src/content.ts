@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
+import {selectProcessingLocalization} from './processing-localization-policy.js';
 import {selectCollectionLocalization} from './collection-localization-policy.js';
 import {selectFormPermissionLocalization} from './form-permission-localization-policy.js';
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
@@ -48,12 +50,13 @@ export const sha256 = (value: string): string => createHash('sha256').update(val
 
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES Pin a separate opt-out action to its privacy release. */
 export function createProcessingNotice(artifact:LegalArtifact,settings:{scopeId:string;activities:ProcessingActivity[];wording:ProcessingNotice['wording']},options:ValidationOptions={}):ProcessingNotice {
-  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
   const config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
+  if(!config.localization?.processingChoices&&!/^en(?:-|$)/iu.test(config.site.locale))throw Error('Localized processing choices need localization.processingChoices messages.');
+  const localization=config.localization?.processingChoices?selectProcessingLocalization(config.localization):undefined;
   if(config.services.some(service=>!service.processingActivities))throw new Error('Explicitly classify every service before building processing choices.');
   const d=artifact.manifest.documents.find(doc=>doc.kind==='privacy');if(!d)throw new Error('The release needs a privacy document.');
   const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
-  const n=normalizeProcessingNotice({schemaVersion:1,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,activities:settings.activities,services:processingServiceScope(config.services),wording:settings.wording,document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
+  const n=normalizeProcessingNotice({schemaVersion:localization?2:1,...(localization?{localization}:{}),noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId:artifact.manifest.artifactId,mode:artifact.manifest.mode,activities:settings.activities,services:processingServiceScope(config.services),wording:settings.wording,document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
   const {noticeId:_,...descriptor}=n;return {...n,noticeId:sha256(canonicalJson(descriptor))};
 }
 
@@ -217,7 +220,6 @@ export function verifyCollectionNotice(input:unknown,artifact:LegalArtifact,opti
  * Does not determine lawful collection, exceptions, notification timing or delivery.
  */
 export function createIndirectCollectionNotice(artifact:LegalArtifact,input:IndirectCollectionNoticeSettings,options:ValidationOptions={}):IndirectCollectionNotice {
-  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
   const s=normalizeIndirectCollectionNoticeSettings(input);
   const bad=():never=>{throw Error('Select declared indirect-collection facts from an intact public privacy release.');};
   if(options.mode!==undefined&&options.mode!=='production'&&options.mode!=='preview')return bad();

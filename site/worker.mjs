@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-RECORDING-INSPECTION
 import {createRecordingInspectionWorker,getConsentRecordingSelection,getTermsRecordingSelection,getFormPermissionRecordingSelection} from '@notabenda/cloudflare';
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
@@ -41,8 +42,10 @@ export class EvidenceWorkspace {
     this.ready = this.state.blockConcurrencyWhile(async()=>{
       for(const release of data.releases) await recordLegalRelease(this.state.storage,release.artifact,release.metadata);
       for(const {offer} of data.agreements) await registerTermsOffer(this.state.storage,offer,{siteId:offer.siteId,allowPreview:true});
-      await recordLegalRelease(this.state.storage,data.processing.artifact);
-      await registerProcessingNotice(this.state.storage,data.processing.notice,{siteId:data.processing.notice.siteId,allowPreview:true});
+      for(const example of [data.processing,data.localizedProcessing]){
+        await recordLegalRelease(this.state.storage,example.artifact);
+        await registerProcessingNotice(this.state.storage,example.notice,{siteId:example.notice.siteId,allowPreview:true});
+      }
       await recordLegalRelease(this.state.storage,data.formPermissions.artifact);
       await registerFormPermissionOffer(this.state.storage,data.formPermissions.offer,{siteId:data.formPermissions.offer.siteId,allowPreview:true});
       await recordLegalRelease(this.state.storage,data.localizedFormPermissions.artifact);
@@ -87,10 +90,10 @@ export class EvidenceWorkspace {
         const result=path.endsWith('/state')?await getFormPermissionState(this.state.storage,context):await recordFormPermission(this.state.storage,body,context);
         return protectedResponse(Response.json(result));
       }
-      if(path==='/demo/processing/head'||path==='/demo/processing/record') {
+      if(/^\/demo\/processing\/(?:pt\/)?(?:head|record)$/u.test(path)) {
         const body=path.endsWith('/record')?await readDemoRequest(request):undefined;
         if(path.endsWith('/head')&&!['GET','HEAD'].includes(request.method))return protectedResponse(new Response('Method not allowed.',{status:405}));
-        await this.initialize();const notice=data.processing.notice;
+        await this.initialize();const notice=path.startsWith('/demo/processing/pt/')?data.localizedProcessing.notice:data.processing.notice;
         const context={siteId:notice.siteId,scopeId:notice.scopeId,streamId:this.contextId('synthetic-admin-processing-demo'),provenance:'explicit-opt-out',allowPreview:true};
         const result=path.endsWith('/head')?await getProcessingHead(this.state.storage,context):await recordProcessingRestriction(this.state.storage,body,context);
         return protectedResponse(Response.json(result));

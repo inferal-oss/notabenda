@@ -1,0 +1,8 @@
+<!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
+# Recorded opt-out localization verification
+
+Package tests validate complete selected metadata/messages, canonical locale/direction, size and plain-text limits, explicit preview admission and dictionary accessor rejection. The independently generated backend validator rejects translated notices that do not match the exact retained release, including rehashed substitutions and schema downgrades. Existing English processing tests continue to cover ordering, concurrent restrictions, outages, terminal retirement and immutable retry behavior.
+
+A lost-acknowledgment test changes localization copy, reloads the controller with the new notice and recovers the original request ID against its original archive. It verifies one stored event, retained original wording, persistent restrictions and unchanged cookie scope. Native rendering tests cover every status, local recovery failure, pending acknowledgment, RTL metadata and detached buttons. Cookie acceptance cannot lift the separate restriction.
+
+Website tests exercise the actual Portuguese bootstrap, independent service eligibility, session-scoped recorder and private inspection. Different sessions and the English scope cannot read or receive its record; nested legal pages remain static without allocating storage. Semantic scans cover initial, pending, recorded, error and retired presentations. Native-browser checks cover the mobile layout, deliberate opt-out, subsequent cookie acceptance, record inspection and reload recovery. These checks do not constitute reviewed translation, broader platform acceptance or verification of an adopter's downstream processing.

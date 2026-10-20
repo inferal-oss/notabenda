@@ -1,0 +1,14 @@
+{
+  "retryLabel": "Tentar registrar novamente",
+  "draft": "Prévia — este aviso e sua tradução precisam de revisão.",
+  "checking": "Consultando as restrições salvas. O tratamento abrangido permanece desativado.",
+  "ready": "Nenhuma oposição foi registrada neste contexto. Isso não concede permissão.",
+  "saving": "Restrito neste navegador. Aguardando a confirmação do registro.",
+  "recorded": "Sua oposição foi registrada. O site também precisa aplicá-la ao seu tratamento de dados.",
+  "error": "Não foi possível confirmar o registro. O tratamento abrangido permanece desativado. Tente novamente.",
+  "retired": "Este contexto foi encerrado. O tratamento abrangido permanece desativado. Entre em contato com o responsável pelo site.",
+  "destroyed": "Este controle de privacidade foi encerrado.",
+  "needsConfirmation": "Uma restrição local foi mantida, mas a solicitação original não pôde ser recuperada. Use o botão de oposição para registrá-la com este aviso. Restrições fora deste aviso precisam ser verificadas pelo responsável pelo site.",
+  "recoveryUnavailable": "A recuperação local está indisponível. Uma solicitação sem confirmação pode ser perdida ao recarregar.",
+  "recoveryInvalid": "Os dados de recuperação local precisam de verificação."
+}

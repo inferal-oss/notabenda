@@ -128,7 +128,7 @@ See the [collection guide](COLLECTION.md#language-and-release-verification) and 
 
 This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls and static direct-collection notices. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Service-directory UI, indirect-collection notice UI, processing-choice UI and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Service-directory UI, indirect-collection notice UI and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.
 
@@ -167,3 +167,10 @@ Translate the entry titles and descriptions, `preferenceNotice`, information-lin
 The native root uses explicit `lang` and `dir`. Removing it closes its presentation gate and leaves retained controls inert; it does not destroy the host controller. Test long translations, direction, pending actions and unavailable persistence in the actual layout.
 
 Try [storage settings in Portuguese](/localization/storage/). This demonstrates host-supplied language over the existing declared UK profiles. Language does not select a jurisdiction, establish eligibility or provide a reviewed regional translation. See [the verification record](verification/storage-localization.md).
+
+<!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
+## Recorded processing opt-outs
+
+Native processing opt-outs now support a complete `localization.processingChoices` message set. It translates status, retry, preview and recovery copy; substantive notice wording, inventory facts and privacy documents remain separately authored. [The Portuguese file](../examples/localization/processing-messages.json) lists all twelve fields. The selected interface shares the site's locale, direction, revision and review declaration, with no per-key English fallback. See [processing choices](PROCESSING-CHOICES.md#language-and-interface-copy) for byte limits and schema compatibility.
+
+The recorder binds these messages to the retained legal release. Updating copy does not clear restrictions or change cookie scopes, and pending requests keep their original notice identity. The [Portuguese example](/localization/processing/) demonstrates separate cookie permission and a retained opt-out using a California-oriented scenario; language does not determine applicability. Translation review and actual downstream enforcement remain host work.

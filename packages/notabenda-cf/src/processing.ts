@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
+import {normalizeProcessingLocalization,selectProcessingLocalization} from './processing-localization-policy.js';
+import type {ProcessingLocalization} from './processing-localization-policy.js';
 // @requirements REQ-EU-RETENTION-ERASURE
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import {canonicalJson,sha256,validateStoredLegalRelease} from './history.js';
@@ -37,7 +40,8 @@ function options(storage:HistoryStorage,context:ProcessingStoreOptions){
 }
 async function noticeValue(input:unknown,context:ProcessingStoreOptions):Promise<ObjectValue>{
   const n=normalized(input,'invalid-notice');
-  if(!exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','activities','services','wording','document'])||n.schemaVersion!==1||n.siteId!==context.siteId||!hash(n.noticeId)||!hash(n.artifactId)||!slug(n.scopeId)||typeof n.mode!=='string'||!['production','preview'].includes(n.mode)||!activities(n.activities))return fail('invalid-notice');
+  if(!exact(n,['schemaVersion','noticeId','siteId','scopeId','artifactId','mode','activities','services','wording','document',...(n.schemaVersion===2?['localization']:[])])||n.schemaVersion!==1&&n.schemaVersion!==2||n.siteId!==context.siteId||!hash(n.noticeId)||!hash(n.artifactId)||!slug(n.scopeId)||typeof n.mode!=='string'||!['production','preview'].includes(n.mode)||!activities(n.activities))return fail('invalid-notice');
+  if(n.schemaVersion===2){try{normalizeProcessingLocalization(n.localization,{allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   if(!Array.isArray(n.services)||n.services.length>80)return fail('invalid-notice');
   const ids=new Set<string>();for(const raw of n.services){const s=object(raw);if(!exact(s,['id','activities'])||!slug(s.id)||ids.has(s.id)||!Array.isArray(s.activities)||s.activities.length>3||new Set(s.activities).size!==s.activities.length||s.activities.some(a=>typeof a!=='string'||!activityNames.includes(a)))return fail('invalid-notice');ids.add(s.id);}
   const w=object(n.wording),d=object(n.document);
@@ -51,7 +55,12 @@ async function verifyArchive(tx:Pick<HistoryTransaction,'get'>,n:ObjectValue,con
   const m=object(a.manifest);if(m.artifactId!==n.artifactId||m.siteId!==context.siteId||m.mode!==n.mode)return fail('scope-mismatch');
   const d=object((m.documents as JsonValue[]).find(raw=>object(raw).kind==='privacy')),given=object(n.document);
   for(const key of ['title','version','effectiveDate','sha256','contentSha256','reviewStatus'])if(d[key]!==given[key])return fail('invalid-notice');
-  const c=object(a.publicConfig);if(!Array.isArray(c.services)||c.services.some(raw=>{const v=object(raw).processingActivities;return !Array.isArray(v)||v.length>3||new Set(v).size!==v.length||v.some(item=>typeof item!=='string'||!activityNames.includes(item));}))return fail('invalid-notice');
+  const c=object(a.publicConfig);
+  if(c.localization!==undefined&&object(c.localization).processingChoices!==undefined){
+    let selected:ProcessingLocalization;try{selected=normalizeProcessingLocalization(selectProcessingLocalization(object(c.localization) as unknown as ProcessingLocalization),{locale:String(object(c.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}
+    if(n.localization===undefined||canonicalJson(n.localization)!==canonicalJson(selected as unknown as JsonValue))return fail('invalid-notice');
+  }else if(n.localization!==undefined||!/^en(?:-|$)/iu.test(String(object(c.site).locale)))return fail('invalid-notice');
+if(!Array.isArray(c.services)||c.services.some(raw=>{const v=object(raw).processingActivities;return !Array.isArray(v)||v.length>3||new Set(v).size!==v.length||v.some(item=>typeof item!=='string'||!activityNames.includes(item));}))return fail('invalid-notice');
   const services=(c.services as JsonValue[]).map(raw=>{const s=object(raw);return {id:s.id!,activities:[...(s.processingActivities as JsonValue[])].sort()};}).sort((a,b)=>String(a.id)<String(b.id)?-1:String(a.id)>String(b.id)?1:0);if(canonicalJson(services)!==canonicalJson(n.services!))return fail('invalid-notice');
 }
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES Registration archives wording; it grants no processing and publishes nothing. */

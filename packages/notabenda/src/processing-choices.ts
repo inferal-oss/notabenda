@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
+import type {ProcessingMessages} from './processing-localization-policy.js';
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import {normalizeProcessingNotice,processingActivities,processingCopy,processingExact,processingHash,processingObject,validProcessingActivities} from './processing.js';
 import type {ProcessingNotice,ProcessingRequest,ProcessingReceipt,ProcessingHead} from './processing.js';
@@ -134,13 +136,28 @@ export function createProcessingChoices(input:unknown,options:ProcessingChoicesO
   track((async()=>{await refresh();if(queue.length)await retry();})());return controller;
 }
 
+const englishProcessingMessages:ProcessingMessages={
+ retryLabel:'Try recording again',draft:'Preview — this opt-out notice needs review.',
+ checking:'Checking saved restrictions. Covered processing stays off.',
+ ready:'No opt-out is recorded for this context. This does not grant permission.',
+ saving:'Restricted in this browser. Waiting for the record to be confirmed.',
+ recorded:'Your opt-out is recorded. The site must also apply it to its processing.',
+ error:'The record could not be confirmed. Covered processing stays off. Try again.',
+ retired:'This processing context has closed. Covered processing stays off. Contact the site operator for help.',
+ destroyed:'This privacy control has closed.',
+ needsConfirmation:'A local restriction remains, but its request could not be recovered. Use the opt-out action to record it with this notice. Restrictions outside this notice need host review.',
+ recoveryUnavailable:'Local recovery is unavailable; an unconfirmed request may be lost on reload.',
+ recoveryInvalid:'Local recovery data needs review.',
+};
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES A separate deliberate opt-out surface, never a cookie consent toggle. */
 export function mountProcessingChoices(container:HTMLElement,controller:ProcessingChoicesController):{destroy():void}{
-  const notice=controller.getNotice(),doc=container.ownerDocument,root=doc.createElement('section');root.className='nb-processing-choices';root.setAttribute('aria-label',notice.wording.title);
+  const notice=controller.getNotice(),m=notice.localization?.processingChoices??englishProcessingMessages,doc=container.ownerDocument,root=doc.createElement('section');root.className='nb-processing-choices';root.lang=notice.localization?.locale??'en';root.dir=notice.localization?.direction??'ltr';root.setAttribute('aria-label',notice.wording.title);
   const title=doc.createElement('h2');title.textContent=notice.wording.title;const description=doc.createElement('p');description.textContent=notice.wording.description;const status=doc.createElement('p');status.setAttribute('role','status');
-  const action=doc.createElement('button');action.type='button';action.className='nb-choice-button';action.textContent=notice.wording.actionLabel;const retryButton=doc.createElement('button');retryButton.type='button';retryButton.className='nb-text-button';retryButton.textContent='Try recording again';
-  const link=doc.createElement('a');link.href=notice.document.url;link.textContent=notice.document.title;root.append(title,description,status,action,retryButton,link);container.append(root);
+  const action=doc.createElement('button');action.type='button';action.className='nb-choice-button';action.textContent=notice.wording.actionLabel;const retryButton=doc.createElement('button');retryButton.type='button';retryButton.className='nb-text-button';retryButton.textContent=m.retryLabel;
+  const link=doc.createElement('a');link.href=notice.document.url;link.textContent=notice.document.title;root.append(title,description);
+  if(notice.mode==='preview'||notice.document.reviewStatus!=='reviewed'){const draft=doc.createElement('p');draft.className='nb-draft';draft.textContent=m.draft;root.append(draft);}
+  root.append(status,action,retryButton,link);container.append(root);
   const optOut=()=>{void controller.optOut();},retry=()=>{void controller.retry();};action.addEventListener('click',optOut);retryButton.addEventListener('click',retry);
-  const unsubscribe=controller.subscribe(state=>{status.textContent=(state.needsConfirmation?'A local restriction remains, but its request could not be recovered. Use the opt-out action to record it with this notice. Restrictions outside this notice need host review.':({checking:'Checking retained restrictions. Covered processing stays off.',ready:'No retained restriction was reported for this context. This does not grant permission.',saving:'Restricted in this browser. Waiting for the host to confirm the record.',recorded:'The host has recorded restrictions for this context. Downstream application handling is separate.',error:'The restriction could not be confirmed. Covered processing stays off. Retry before leaving this page.',retired:'This processing context has closed. Covered processing stays off. Contact the site operator for a new workflow.',destroyed:'This privacy control has closed.'})[state.status])+(state.persistence==='unavailable'?' Local recovery is unavailable; an unconfirmed request may be lost on reload.':state.persistence==='invalid'?' Local recovery data needs review.':'');action.disabled=state.destroyed||state.status==='retired'||state.status==='saving'||notice.activities.every(a=>state.restrictedActivities.includes(a))&&state.status==='recorded';retryButton.hidden=state.destroyed||state.needsConfirmation||state.status!=='error';});
+  const unsubscribe=controller.subscribe(state=>{status.textContent=[state.needsConfirmation?m.needsConfirmation:m[state.status],state.persistence==='unavailable'?m.recoveryUnavailable:state.persistence==='invalid'?m.recoveryInvalid:''].filter(Boolean).join(' ');action.disabled=state.destroyed||state.status==='retired'||state.status==='saving'||notice.activities.every(a=>state.restrictedActivities.includes(a))&&state.status==='recorded';retryButton.hidden=state.destroyed||state.needsConfirmation||state.status!=='error';});
   return {destroy(){unsubscribe();action.removeEventListener('click',optOut);retryButton.removeEventListener('click',retry);root.remove();}};
 }

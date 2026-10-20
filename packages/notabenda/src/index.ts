@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
+export type {ProcessingMessages,ProcessingLocalization} from './processing-localization-policy.js';
 export type {RightsMessages} from './rights-localization-policy.js';
 export {renderRightsCenter,renderRightsPage} from './rights.js';
 export type {RightsCenterRenderOptions} from './rights.js';

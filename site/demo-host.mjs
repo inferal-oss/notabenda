@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-CF-HOST
 import {demoStorageNote,portugueseDemoStorageNote} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -22,9 +23,9 @@ const localizedPermissionPage=/^\/localization\/permission(?:\/(?:index\.html)?)
 // @requirements REQ-PRODUCT-TERMS-ADAPTERS
 const frameworkAgreementPage=/^\/(?:(?:dark\/)?agreement\/react|agreement\/astro(?:\/review)?)(?:\/(?:index\.html)?)?$/u;
 // Only interactive entry documents receive a session; nested legal pages and offer assets stay static.
-const isPage=path=>frameworkAgreementPage.test(path)||localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/agreement|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
+const isPage=path=>frameworkAgreementPage.test(path)||localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/(?:agreement|processing)|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
 const admin=/^\/demo\/admin(?:\/|$)/u;
-const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing)\/(?:head|record)|permissions\/(?:pt\/)?(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
+const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing(?:\/pt)?)\/(?:head|record)|permissions\/(?:pt\/)?(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
 export const isDemoRoute=path=>isPage(path)||admin.test(path)||api.test(path);
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 const digest=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
