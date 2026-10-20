@@ -1,31 +1,37 @@
+// @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-SAFE-CONTENT REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {toPublicConfig,documentKinds} from './config.js';
+import {renderRightsCenter} from './rights.js';
 import {renderLegalDocument} from './documents.js';
 import type {DocumentKind} from './types.js';
 
-export interface LegalPreviewOptions {config:unknown;initialDocument?:DocumentKind;onClose?:()=>void}
+export type PreviewPageKind=DocumentKind|'rights';
+export interface LegalPreviewOptions {config:unknown;initialDocument?:PreviewPageKind;onClose?:()=>void}
 export interface MountedLegalPreview {open():void;close():void;destroy():void}
 /** A deliberate, local reading preview. It never publishes, changes review status or runs authored MDX. */
 export function mountLegalPreview(container:HTMLElement,options:LegalPreviewOptions):MountedLegalPreview {
  const doc=container.ownerDocument,view=doc.defaultView;
- if(!view||!options||options.initialDocument!==undefined&&!documentKinds.includes(options.initialDocument)||options.onClose!==undefined&&typeof options.onClose!=='function')throw Error('Use a document window, known document kind and optional close callback.');
+ if(!view||!options||options.initialDocument!==undefined&&!([...documentKinds,'rights'] as string[]).includes(options.initialDocument)||options.onClose!==undefined&&typeof options.onClose!=='function')throw Error('Use a document window, known document kind and optional close callback.');
  // Project to declared public facts before creating DOM; private reports are never accepted here.
  const config=structuredClone(toPublicConfig(options.config,{mode:'preview'})),instance='nb-preview-'+crypto.randomUUID();
- const pages=new Map(documentKinds.map(kind=>[kind,renderLegalDocument(config,kind,{mode:'preview'})]));
+ const pages=new Map<PreviewPageKind,string>(documentKinds.map(kind=>[kind,renderLegalDocument(config,kind,{mode:'preview'})]));
+ const unsupportedRights=!!config.rightsCenter&&!/^en(?:-|$)/iu.test(config.site.locale);
+ if(config.rightsCenter&&!unsupportedRights)pages.set('rights',renderRightsCenter(config,{mode:'preview',idPrefix:'nb-rights-preview',headingLevel:2}));
+ if(options.initialDocument==='rights'&&!pages.has('rights'))throw Error(unsupportedRights?'The packaged privacy request preview currently supports English only; keep the site locale.':'Declare a supported request page before previewing it.');
  const node=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const el=doc.createElement(tag);if(text!==undefined)el.textContent=text;return el;};
  const dialog=node('dialog');dialog.className='nb-legal-preview';dialog.setAttribute('aria-labelledby',instance+'-title');dialog.setAttribute('aria-describedby',instance+'-note');
  const header=node('header');header.className='nb-legal-preview-header';
  const title=node('h2','Preview your pages');title.id=instance+'-title';title.tabIndex=-1;
  const close=node('button','Close preview');close.type='button';close.className='nb-legal-preview-close';
- const note=node('p','This shows declared configuration, including placeholders. Outside links are disabled. Your site is unchanged.');note.id=instance+'-note';
+ const note=node('p','This shows declared configuration, including placeholders. Outside links are disabled. Your site is unchanged.'+(unsupportedRights?' The request-page preview is unavailable: its packaged renderer currently supports English only.':''));note.id=instance+'-note';
  header.append(title,close,note);dialog.append(header);
  const navigation=node('nav');navigation.className='nb-legal-preview-navigation';navigation.setAttribute('aria-label','Preview document');
  const paper=node('div');paper.className='nb-legal-preview-paper';
  const status=node('p');status.className='nb-legal-preview-status';status.setAttribute('role','status');
  dialog.append(navigation,status,paper);let destroyed=false,opener:HTMLElement|null=null;
- const buttons=new Map<DocumentKind,HTMLButtonElement>();
- function select(kind:DocumentKind){
+ const buttons=new Map<PreviewPageKind,HTMLButtonElement>();
+ function select(kind:PreviewPageKind){
   paper.innerHTML=pages.get(kind)!;
   const contents=paper.querySelector<HTMLElement>('.nb-contents');
   if(contents){const details=node('details');details.className='nb-legal-preview-contents';details.append(node('summary',contents.getAttribute('aria-label')??'On this page'));contents.replaceWith(details);details.append(contents);}
@@ -38,10 +44,11 @@ export function mountLegalPreview(container:HTMLElement,options:LegalPreviewOpti
    else{anchor.removeAttribute('href');anchor.setAttribute('role','link');anchor.setAttribute('aria-disabled','true');anchor.title='Link inactive in this local preview.';}
   }
   for(const [id,button] of buttons)button.setAttribute('aria-pressed',String(id===kind));
-  status.textContent=config.documents[kind].title+' · Version '+config.documents[kind].version;
+  status.textContent=kind==='rights'?config.rightsCenter!.title+' · Supporting page · Revision '+config.rightsCenter!.revision:config.documents[kind].title+' · Version '+config.documents[kind].version;
   paper.scrollTop=0;
  }
- for(const kind of documentKinds){const button=node('button',config.documents[kind].title);button.type='button';button.addEventListener('click',()=>{if(!destroyed)select(kind);});navigation.append(button);buttons.set(kind,button);}
+ for(const kind of pages.keys()){const button=node('button',kind==='rights'?config.rightsCenter!.title:config.documents[kind].title);button.type='button';button.addEventListener('click',()=>{if(!destroyed)select(kind);});navigation.append(button);buttons.set(kind,button);}
+ if(unsupportedRights){const unavailable=node('button',config.rightsCenter!.title+' — English renderer only');unavailable.type='button';unavailable.disabled=true;navigation.append(unavailable);}
  select(options.initialDocument??'privacy');
  const click=(event:MouseEvent)=>{
   const target=event.target instanceof view.Element?event.target.closest('a'):null;if(!target||!paper.contains(target))return;

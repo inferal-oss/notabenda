@@ -60,3 +60,6 @@ const brief = formatPackBrief(selection, 'connect', {config: draftConfig});
 `missing`, `needs-review`, `declared` and `host-work` describe input state only. `productionReady` is always false. A declaration is unverified, and the checks do not run builders, visit destinations, deliver notices, inspect a deployed integration or decide legal applicability. Keep the review private. Saved review objects are ignored on resume and rebuilt from the supplied config.
 
 Questionnaire revision 6 adds the focused questions. Reports from revisions 1–5 remain readable; missing new answers remain unresolved. Existing pack IDs and revisions, imported restrictions and saved private notes are preserved. [Engineering verification](verification/privacy-packs.md).
+
+<!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
+The **Privacy requests** pack has a [page editor and explicit CLI proposal](RIGHTS-AUTHORING.md) for actual destinations, scope, public fallback and next steps. Saving also updates the privacy link after confirmation. Its native presentation is English-only; requests still go to the host application.

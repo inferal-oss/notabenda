@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING
 // @requirements REQ-EU-ORDER-ACTION
@@ -257,6 +258,21 @@ buildLegalGuaranteeNotice({language:'zz',reviewStatus:'reviewed'});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderDurabilityGuaranteeLabel,normalizeDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from '@notabenda/core/guarantees/label';\ndeclare const label:DurabilityGuaranteeLabel;normalizeDurabilityGuaranteeLabel(label);renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n`);
     const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from '@notabenda/core/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
+    for(const file of ['dist/setup-rights.js','dist/setup-rights-ui.js','dist/setup-rights-cli.js','dist/setup-rights.d.ts','dist/setup-rights-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
+    const rightsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createRightsDraftPlan,normalizeRightsDraftInput} from '@notabenda/core/setup/rights';import {mountRightsEditor} from '@notabenda/core/setup/rights/ui';if([createRightsDraftPlan,normalizeRightsDraftInput,mountRightsEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(rightsImport.status,0,rightsImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createRightsDraftPlan,normalizeRightsDraftInput,type RightsDraftSettings} from '@notabenda/core/setup/rights';
+import {mountRightsEditor} from '@notabenda/core/setup/rights/ui';
+import {mountLegalPreview,type PreviewPageKind} from '@notabenda/core/setup/preview';
+declare const rightsSettings:RightsDraftSettings;
+const rightsDraft=createRightsDraftPlan(config,{baseline:config,settings:rightsSettings,linkPrivacyToPage:true});
+mountRightsEditor(container,{getConfig:()=>rightsDraft.config,onChange:plan=>{void plan.privacyLink.to;}}).refresh({discardDraft:true});
+const supportingKind:PreviewPageKind='rights';mountLegalPreview(container,{config:rightsDraft.config,initialDocument:supportingKind});
+// @ts-expect-error changing the privacy link needs explicit acknowledgement
+createRightsDraftPlan(config,{baseline:config,settings:rightsSettings});
+// @ts-expect-error page authoring cannot self-declare reviewed status
+rightsSettings.reviewStatus='reviewed';
+`);
     const controlsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentDraftPlan} from '@notabenda/core/setup/consent';import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';if([createConsentDraftPlan,mountConsentEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(controlsImport.status,0,controlsImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {createConsentDraftPlan,type ConsentDraftSettings} from '@notabenda/core/setup/consent';

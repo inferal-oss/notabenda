@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-RIGHTS-AUTHORING
+import {applySetupRightsFile,reviewSetupRights} from './setup-rights-cli.js';
 // @requirements REQ-PRODUCT-PRIVACY-PACKS
 // @requirements REQ-PRODUCT-CONSENT-AUTHORING
 import {reviewSetupConsent} from './setup-consent-cli.js';
@@ -24,13 +26,14 @@ import {createSetupPlan,readSetupAnswers,setupQuestions,setupMarkets,setupFactFi
 import {toPublicConfig} from './config.js';
 import type {SetupAnswers,SetupChoice} from './setup.js';
 const readJson=(path:string)=>readCliJson(path,512*1024,'Setup input must be ordinary UTF-8 JSON no larger than 512 KiB.');
-export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string;cartridgeIds?:string[]}):Promise<void>{
+export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string;cartridgeIds?:string[];rightsPath?:string}):Promise<void>{
   if(options.catalogPath&&!options.projectDirectory)throw Error('Wizard --catalog requires an explicit --project directory.');
   if(!options.answersPath&&(!process.stdin.isTTY||!process.stdout.isTTY))throw new Error('Interactive setup needs a terminal. Supply --answers FILE for noninteractive use.');
   const directory=resolve(options.outDir);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
   let selection=options.cartridgeIds?selectCartridges(options.cartridgeIds):undefined;
   let base=options.configPath?toPublicConfig(await readJson(options.configPath),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];let catalogSelectionRevisions:ReturnType<typeof readSetupCatalogRevisions>=[];
   if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);const resumed=readCartridgeSelection(input);if(selection&&resumed&&JSON.stringify(selection)!==JSON.stringify(resumed))throw Error('Selected packs conflict with the saved report. Resume it without --packs or prepare a separate plan.');selection??=resumed;catalogSelections=readSetupCatalogSelections(input);catalogSelectionRevisions=readSetupCatalogRevisions(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});}
+  if(options.rightsPath)base=await applySetupRightsFile(base,options.rightsPath);
   let project: {catalog:ServiceCatalog;report:ProjectServiceReport}|undefined;
   if(options.projectDirectory){const catalog=await loadServiceCatalog(options.catalogPath);console.log('Scanning the explicitly selected project locally; no project code, installers or network probes run.');project={catalog,report:await scanProjectServices(options.projectDirectory,catalog)};}
   if(!options.answersPath){
@@ -48,6 +51,7 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
       if(Array.isArray(inventory))for(const item of inventory)if(item.classification==='necessary')result.storageJustifications![item.id]=await ask(`Private justification for necessary storage “${item.id}”: `);
       const reviewed=await reviewSetupCatalog(base,catalogSelections,ask,project);base=reviewed.base;catalogSelections=reviewed.selections;
       base=await reviewSetupConsent(base,ask);
+      if(!options.rightsPath&&(!selection||planCartridges(selection).reference.targets.some(t=>t.id==='privacy-rights')))base=await reviewSetupRights(base,ask);
       answers=result;
     }finally{ui.close();}
   }

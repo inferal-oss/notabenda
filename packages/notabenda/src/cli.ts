@@ -54,6 +54,8 @@ Only check-publication makes explicit network requests.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
 Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config FILE
 imports an existing config. Output requires a new directory and never overwrites. --json applies to check, describe, assess, packs and check-publication.
+Wizard --rights FILE applies a complete versioned request-page proposal with explicit
+linkPrivacyToPage: true; it updates the local draft page and its privacy link.
 Wizard --project DIRECTORY explicitly scans supported source/dependency identifiers and
 offers actual-use review in interactive setup; --catalog FILE selects its reference catalog.
 With --answers, findings are saved privately without adding services automatically.
@@ -125,7 +127,7 @@ async function main(): Promise<void> {
   if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
-  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
+  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
   const retainedPaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
@@ -135,10 +137,10 @@ async function main(): Promise<void> {
     seen.add(flag);
     if (flag === '--preview') preview = true;
     else if (flag === '--json') json = true;
-    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges') {
+    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights') {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw new Error('CLI option requires a value.');
-      if(flag==='--cartridges')cartridges=value;else if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
+      if(flag==='--rights')rightsPath=value;else if(flag==='--cartridges')cartridges=value;else if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
     } else throw new Error('Unknown CLI option. Run notabenda --help.');
   }
   if((catalogReportPath||privateOutDir)&&(command!=='build'||!catalogReportPath||!privateOutDir))throw Error('Build requires --catalog-report and --private-out-dir together.');
@@ -149,10 +151,11 @@ async function main(): Promise<void> {
   if (json && command !== 'check') throw new Error('--json is only valid for check.');
   if (preview && command === 'init') throw new Error('init always creates a draft; --preview applies to check/build.');
   if(cartridges&&command!=='wizard')throw Error('--packs is only valid for wizard.');
+  if(rightsPath&&command!=='wizard')throw Error('--rights is only valid for wizard.');
   if(answersPath&&command!=='wizard')throw new Error('--answers is only valid for wizard.');
   if((projectDirectory||catalogPath)&&command!=='wizard')throw new Error('--project and --catalog apply only to wizard or the separate discover/catalog commands.');
   if(catalogPath&&!projectDirectory)throw new Error('Wizard --catalog requires --project DIRECTORY.');
-  if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({...(cartridges?{cartridgeIds:cartridges.split(',')}:{}),outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{}),...(projectDirectory?{projectDirectory}:{}),...(catalogPath?{catalogPath}:{})});return;}
+  if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({...(cartridges?{cartridgeIds:cartridges.split(',')}:{}),outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{}),...(rightsPath?{rightsPath}:{}),...(projectDirectory?{projectDirectory}:{}),...(catalogPath?{catalogPath}:{})});return;}
   if (command === 'init') {
     await writeFile(resolve(configPath), JSON.stringify(createStarterConfig(), null, 2) + '\n', { flag: 'wx' });
     console.log('Created draft site configuration. Replace sample facts and supply appropriate reviewed content before production use.');

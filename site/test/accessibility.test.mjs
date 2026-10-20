@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 import {test} from 'node:test';
@@ -14,6 +15,7 @@ import {selectCartridges} from '@notabenda/core/cartridges';
 import {createWorkspaceOverviewWorker} from '@notabenda/cloudflare';
 import {mountLegalPreview} from '@notabenda/core/setup/preview';
 import {mountConsentEditor} from '@notabenda/core/setup/consent/ui';
+import {mountRightsEditor} from '@notabenda/core/setup/rights/ui';
 const shell='<!doctype html><html lang="en"><head><title>Component check</title></head><body><main id="main"><h1>Settings</h1><div id="component"></div></main></body></html>';
 function visibleLabels(document){
  const words=value=>value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu,' ').trim();
@@ -122,4 +124,11 @@ test('operator evidence, release details, document comparison and setup use the 
  for(const page of data.pages){const audit=await createAccessibilityAudit(page.html,{label:page.name});try{for(const pre of audit.dom.window.document.querySelectorAll('pre'))assert.equal(pre.tabIndex,0,page.name+' keyboard-scrollable text');clean(await audit.scan());}finally{audit.close();}}
  const audit=await createAccessibilityAudit(shell,{label:'mounted setup'}),ui=mountSetup(audit.dom.window.document.querySelector('#component'),{config:data.config});
  try{clean(await audit.scan());visibleLabels(audit.dom.window.document);const reason=audit.dom.window.document.querySelector('.nb-setup-practice-notes textarea');for(const value of ['Operator supplied a private supporting note.','']){reason.value=value;reason.dispatchEvent(new audit.dom.window.Event('input',{bubbles:true}));visibleLabels(audit.dom.window.document);}}finally{ui.destroy();audit.close();}
+});
+
+// @requirements REQ-PRODUCT-RIGHTS-AUTHORING
+test('request page editor exposes labeled fields, grouped destinations and link confirmation',async()=>{
+ const data=await accessibilityFixtureData(),audit=await createAccessibilityAudit(shell,{label:'request page editor'}),d=audit.dom.window.document;
+ const ui=mountRightsEditor(d.querySelector('#component'),{getConfig:()=>data.config,onChange:()=>{}});
+ try{ui.open();clean(await audit.scan());d.querySelector('.nb-setup-rights-actions button').click();assert.ok(d.activeElement.hasAttribute('aria-invalid'));clean(await audit.scan());const add=[...d.querySelectorAll('button')].find(b=>b.textContent==='Add destination');add.click();clean(await audit.scan());}finally{ui.destroy();audit.close();}
 });

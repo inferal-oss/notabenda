@@ -327,3 +327,6 @@ The optional backend now has a shared overview and cross-area record finder. New
 Draft review now includes a deliberate local preview of config-based privacy, cookie and terms pages. The same renderer and default styles serve this reader, with a fixed public snapshot and inert outside links. Separate authored MD/MDX/custom-component previews, live widget behavior and evidence-bound connection/deployment verification remain open.
 
 Prepared drafts now show selected pack connection work and application checks from the installed integration reference, with shared foundations listed for reuse. Browser and scoped CLI output use the same connection-stage agent brief and actual config/report filenames. The UI can return to selected facts, and edits invalidate prior guidance/downloads. This is actionable integration guidance; evidence-bound installation and deployment checks remain open.
+
+<!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
+Privacy-request setup includes an explicit public-page editor, atomic page/ privacy-link draft API and versioned CLI proposal. It requires actual destinations, contact, scope and wording; it supplies no entitlement or intake process. Changed public content needs a new revision. The packaged page/editor are English-only. See [request-page authoring](https://notabenda.org/guide/rights-authoring/).

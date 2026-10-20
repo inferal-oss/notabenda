@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-SPECIALIST-PACKS
 // @requirements REQ-PRODUCT-CONSUMER-PACKS
 // @requirements REQ-PRODUCT-PUBLICATION-CHECK
@@ -59,7 +60,7 @@ const targets:Record<string,Target>={
  },
  'privacy-rights':{
   requiredConfigPaths:['rightsCenter'],
-  title:'Privacy request entry points',outcome:'A static page leading to the host’s real request workflows.',configPaths:['privacy','rightsCenter'],hostWork:['Supply real routes/contact fallback and implement request intake and fulfillment.'],questionIds:['personal-data','privacy-request-routes'],factsNeeded:['Available rights and action scope','Actual destinations, contact and next steps'],guides:['rights'],prerequisites:['legal-pages'],verify:['The page works without JavaScript and with keyboard navigation.','Every action reaches the intended host workflow while logged out or without a suitable account.','The public fallback works when the account route cannot be used.','Navigation never claims that a request was submitted, acknowledged or fulfilled.']
+  title:'Privacy request entry points',outcome:'A static page leading to the host’s real request workflows.',configPaths:['privacy','rightsCenter'],hostWork:['Use the request-page editor or wizard --rights proposal for explicit public wording, destinations and fallback. Saving changes privacy.rightsUrl to the page route only after an explicit decision. The native page and editor currently support English only.','Implement and verify request intake and fulfillment separately; retained-page checks cannot verify these workflows.'],questionIds:['personal-data','privacy-request-routes'],factsNeeded:['Available rights and action scope','Actual destinations, contact and next steps'],guides:['rights'],prerequisites:['legal-pages'],verify:['The page works without JavaScript and with keyboard navigation.','Every action reaches the intended host workflow while logged out or without a suitable account.','The public fallback works when the account route cannot be used.','Navigation never claims that a request was submitted, acknowledged or fulfilled.']
  },
  'collection-notice':{
   requiredConfigPaths:['purposes'],

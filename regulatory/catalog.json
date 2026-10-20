@@ -2079,7 +2079,8 @@
         "REQ-PRODUCT-PRIVACY-PACKS",
         "REQ-PRODUCT-PUBLICATION-CHECK",
         "REQ-PRODUCT-CONSUMER-PACKS",
-        "REQ-PRODUCT-SPECIALIST-PACKS"
+        "REQ-PRODUCT-SPECIALIST-PACKS",
+        "REQ-PRODUCT-RIGHTS-AUTHORING"
       ]
     }
   ],
@@ -6910,6 +6911,49 @@
         "packages/notabenda/test/specialist-packs.test.mjs",
         "docs/verification/specialist-packs.md"
       ]
+    },
+    {
+      "id": "REQ-PRODUCT-RIGHTS-AUTHORING",
+      "jurisdiction": "PRODUCT",
+      "title": "Explicit privacy request page and privacy-link draft authoring",
+      "kind": "product-standard",
+      "summary": "Author complete public request-page settings through a bounded baseline-bound API, operator editor and versioned CLI JSON proposal. Require actual destinations, scope, public fallback, next steps, revision and an explicit atomic privacy-link decision; preserve unrelated facts and show an inert supporting-page preview.",
+      "appliesWhen": "An operator explicitly configures or edits a request-page draft.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-RIGHTS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-RIGHTS-AUTHORING"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "The native page and authoring support English only. Authoring supplies no entitlement, intake, identity, response deadline, fulfillment or appeal workflow. Historical revision uniqueness, applicable submission methods and working destinations remain host work. The supporting page stays outside the three pinned legal-document kinds.",
+      "implementationRefs": [
+        "packages/notabenda/src/setup-rights.ts",
+        "packages/notabenda/src/setup-rights-ui.ts",
+        "packages/notabenda/src/setup-rights-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/setup-preview.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/cartridges.css",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/setup-rights.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/rights-authoring.md"
+      ],
+      "implementationNote": "Complete explicit settings and current public baseline are validated before returning a detached draft. Changing the public page requires a different current revision and resets review. Privacy route/link update together after explicit acknowledgement. UI cancel/import/reset and CLI final confirmation fence stale work. Preview links cannot navigate or contact workflows."
     }
   ],
   "verification": [
@@ -8296,6 +8340,20 @@
       "testRefs": [
         "packages/notabenda/test/specialist-packs.test.mjs",
         "docs/verification/specialist-packs.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-RIGHTS-AUTHORING",
+      "requirementIds": [
+        "REQ-PRODUCT-RIGHTS-AUTHORING"
+      ],
+      "status": "automated",
+      "expected": "Detached atomic page/link edits, explicit complete settings, no inferred destinations/rights, revision and stale-baseline checks, preserved unrelated settings, inert supporting preview, English limitation, UI/CLI parity and packaged strict types.",
+      "testRefs": [
+        "packages/notabenda/test/setup-rights.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/accessibility.test.mjs",
+        "docs/verification/rights-authoring.md"
       ]
     }
   ],

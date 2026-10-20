@@ -238,3 +238,6 @@ Supply complete versioned messages for legal pages, cookie-choice controls and t
 The [privacy packs](../../docs/PRIVACY-PACKS.md) add focused form/indirect notices, request entry points and processing opt-out setup. `reviewPackInputs` and `packGroups` are exported from `@notabenda/core/packs`. The scoped report and optional third `formatPackBrief` argument identify missing/manual inputs without copying config values or marking anything configured.
 
 The Node-only `@notabenda/core/publication` API and `notabenda check-publication` command compare an intended public artifact with four deployed pinned files. See [publication checks](../../docs/PUBLICATION-CHECK.md) for explicit network authority, limits and unverified work.
+
+<!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
+Privacy-request setup includes an explicit public-page editor, atomic page/ privacy-link draft API and versioned CLI proposal. It requires actual destinations, contact, scope and wording; it supplies no entitlement or intake process. Changed public content needs a new revision. The packaged page/editor are English-only. See [request-page authoring](https://notabenda.org/guide/rights-authoring/).

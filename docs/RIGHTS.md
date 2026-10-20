@@ -4,6 +4,10 @@ A rights page links visitors to the operator's request workflows. Configure the 
 
 The first implementation is navigation and public information. It does not collect request contents, verify identity, submit or acknowledge a request, produce a personal-data export, delete application data or process an appeal. The [feature remains partial](FEATURES.md#feat-rights); those application workflows remain separate.
 
+The packaged renderer currently supports English only. Keep other site locales intact; a collection-notice dictionary does not translate this supporting page.
+
+Use the [request-page setup editor or explicit CLI proposal](RIGHTS-AUTHORING.md) to author a local draft, or supply the declaration directly below.
+
 ## Configure the entry page
 
 ```ts
@@ -38,7 +42,7 @@ All fields are public. Keep private assessments in private metadata or the setup
 
 Kinds classify the configured action; they do not decide entitlement or authenticate a request. The operator supplies the scope explanation, next-step text and destinations. Review them together with the actual application workflow. Production output requires `reviewStatus: 'reviewed'`; this is the operator's content declaration, not legal review supplied by the package. Placeholders, duplicate IDs, unsafe links, conflicting routes, hidden success flags and unknown schema fields fail validation.
 
-The [setup wizard](SETUP.md) recommends this optional field when reviewing personal-data practices. It never creates actions or destinations. Imported declarations keep their actions and links while returning `reviewStatus` to draft, so the resulting configuration needs an explicit content review before production.
+The [setup wizard](SETUP.md) recommends this optional field when reviewing personal-data practices. Practice answers alone never create actions or destinations. Its explicit request-page editor and `wizard --rights FILE` accept complete operator-supplied settings and an explicit privacy-link decision. Imported declarations keep their actions and links while returning `reviewStatus` to draft, so the resulting configuration needs an explicit content review before production.
 
 When `privacy.rightsUrl` is omitted, public config links it to `rightsCenter.route`. If supplied, it must agree with that route. Generated privacy notices and legal-link footers then point to the same entry page. Ordinary supplied legal content remains supplied; the compiler does not rewrite it to claim additional rights.
 

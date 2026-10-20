@@ -35,7 +35,7 @@ A minimal answers file:
 }
 ```
 
-Question/market IDs and public fact fields are exported from `@notabenda/core/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 4 accepts private reports from revisions 1 through 4. Missing new questions remain unresolved.
+Question/market IDs and public fact fields are exported from `@notabenda/core/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 8 accepts private reports from revisions 1 through 8. Missing new questions remain unresolved.
 
 ## Review regional consent timing
 
@@ -266,3 +266,8 @@ The browser setup displays the project-discovery command beside service selectio
 
 
 To retain the current catalog references with a policy release, use [the build finalizer](SERVICE-CATALOG.md#retain-selections-with-policy-releases) after document compilation. It checks pins against final service/purpose facts and excludes private reasons, answers and review history. Keep the resulting archive outside public assets.
+
+<!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
+## Configure privacy request links
+
+The **Privacy requests** pack now opens a structured editor for actual public wording, destinations, fallback contact and next steps. Saving requires an explicit privacy-link replacement decision and returns the page to draft. The same bounded proposal works with `wizard --rights FILE`. The native page and editor currently support English only. See [request-page authoring](RIGHTS-AUTHORING.md) for the complete JSON format, local preview and host responsibilities.

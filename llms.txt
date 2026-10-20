@@ -59,3 +59,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Consumer packs](https://notabenda.org/guide/consumer-packs/index.md): Five separate transaction jobs, fixed profile-language limits, manual builder inputs and the exact confirmation admission/archive dependency.
 
 - [Specialist packs](https://notabenda.org/guide/specialist-packs/index.md): Technology declaration/consent scope, separate assessed storage objections and one document-level Google Basic adapter.
+
+## Request-page authoring
+
+- [Explicit request-page settings](https://notabenda.org/guide/rights-authoring/index.md): Structured setup editor, complete versioned `wizard --rights FILE` proposal and `@notabenda/core/setup/rights` API. Require actual public destinations/contact, scope, next steps, a revision and explicit `linkPrivacyToPage: true`; no rights or workflows are inferred. Page and privacy link change atomically in the local draft. The native page/editor are English-only. Preview destinations are inert; host intake and fulfillment remain separate.
