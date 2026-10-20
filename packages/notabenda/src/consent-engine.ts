@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-BUNDLE-BUDGET
 // @requirements REQ-IE-CONSENT-DURATION
 import {grantExpiresAt,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
 import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
@@ -24,6 +25,7 @@ import {browserGlobalPrivacyControl,evaluatePrivacySignals} from './privacy-sign
 import type {GlobalPrivacyControlStatus} from './privacy-signal-policy.js';
 import {processingServiceScope} from './processing.js';
 import type {ProcessingChoicesController} from './processing-choices.js';
+import type {ProcessingActivity,Service} from './types.js';
 import {evaluatePromptPolicy,latestPromptPolicyMemory,parsePromptPolicyMemory} from './prompt-policy.js';
 import type {PromptPolicyDecision,PromptPolicyMemory} from './prompt-policy.js';
 
@@ -61,6 +63,7 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
   const scopeGuards=evaluateScopeGuards(config);
   const scopeBlocked=(id:string)=>scopeGuards.blockedPurposeIds.includes(id);
   if (!policy) throw new Error('Declare consent purposes, services, scopes, and lifetimes in the site configuration.');
+  const inventoryServices=new Map(config.services.map(service=>[service.id,service]));
   // @requirements REQ-PRODUCT-PROCESSING-CHOICES Bind one immutable host context before any service can register.
   const processing=options.processingChoices;
   if(processing){const n=processing.getNotice();if(processing.getSnapshot().destroyed||n.siteId!==config.site.id||JSON.stringify(n.services)!==JSON.stringify(processingServiceScope(config.services))||n.document.version!==config.documents.privacy.version||n.document.effectiveDate!==config.documents.privacy.effectiveDate)throw new Error('Bind processing choices to this site, classified services and privacy version.');}
@@ -117,9 +120,14 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     try {return !!env.storage&&env.storage.getItem(storageKey)===savedRaw;} catch {return false;}
   }
   function allowed(id: string): boolean { return !destroyed && !scopeBlocked(id) && scopes.has(id) && status(id) === 'granted' && (!evidence || sharedMatches()&&evidence.allows(id,record.evidence)); }
-  function serviceAllowed(id: string): boolean {
-    const service = config.services.find(item => item.id === id)!;
-    return service.purposeIds.every(allowed)&&!Object.hasOwn(signalRestrictions()?.restrictedServices??{},id)&&!(service.processingActivities??[]).some(activity=>processing?.getSnapshot().blockedActivities.includes(activity));
+  // Read each declared service's restrictions directly. Building the complete
+  // public signal map for every service makes granted snapshots quadratic.
+  function serviceRestricted(service:Pick<Service,'processingActivities'>,blocked:ProcessingActivity[]|undefined):boolean {
+    return (service.processingActivities??[]).some(activity=>!!config.privacySignals&&gpcStatus!=='not-observed'&&config.privacySignals.globalPrivacyControl.appliesTo.includes(activity)||!!blocked?.includes(activity));
+  }
+  function serviceAllowed(id: string,blocked?:ProcessingActivity[]): boolean {
+    const service = inventoryServices.get(id)!;
+    return service.purposeIds.every(allowed)&&!serviceRestricted(service,blocked??processing?.getSnapshot().blockedActivities);
   }
   function promptDecision():PromptPolicyDecision|undefined {
     const rule=policy!.promptPolicy;
@@ -131,9 +139,9 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     if(receipt&&!record.evidence&&Object.values(purposes).includes('granted')) receipt.requiresChoice=true;
     const privacySignals=signalRestrictions();
     const processingChoices=processing?.getSnapshot();
-    const promptable=(id:string)=>!scopeBlocked(id)&&policy!.services.some(s=>{const service=config.services.find(service=>service.id===s.id)!;return service.purposeIds.includes(id)&&!Object.hasOwn(privacySignals?.restrictedServices??{},s.id)&&!(service.processingActivities??[]).some(activity=>processingChoices?.blockedActivities.includes(activity));});
+    const promptable=(id:string)=>!scopeBlocked(id)&&policy!.services.some(s=>{const service=inventoryServices.get(s.id)!;return service.purposeIds.includes(id)&&!serviceRestricted(service,processingChoices?.blockedActivities);});
     const decision=promptDecision();
-    return { purposes, scopeGuards:structuredClone(scopeGuards), permissions: Object.fromEntries(policy!.purposes.map(p => [p.id, allowed(p.id)])), servicePermissions:Object.fromEntries(policy!.services.map(s=>[s.id,serviceAllowed(s.id)])), services: Object.fromEntries(policy!.services.map(s => [s.id, services.get(s.id)?.phase ?? 'blocked'])), shouldPrompt: !destroyed && receipt?.status!=='retired' && now() >= record.dismissedUntil && decision?.allowsPrompt!==false && (Object.entries(purposes).some(([id,value]) => (value === 'unknown' || value === 'expired')&&promptable(id)) || (!!receipt?.requiresChoice||!!decision?.requiresChoice)&&policy!.purposes.some(p=>promptable(p.id))), preferencesOpen, persistence: readable && !writeFailed ? 'available' : 'unavailable', destroyed, ...(receipt?{evidence:receipt}:{}),...(privacySignals?{privacySignals}:{}),...(processingChoices?{processingChoices}:{}),...(decision?{promptDecision:decision}:{}) };
+    return { purposes, scopeGuards:structuredClone(scopeGuards), permissions: Object.fromEntries(policy!.purposes.map(p => [p.id, allowed(p.id)])), servicePermissions:Object.fromEntries(policy!.services.map(s=>[s.id,serviceAllowed(s.id,processingChoices?.blockedActivities)])), services: Object.fromEntries(policy!.services.map(s => [s.id, services.get(s.id)?.phase ?? 'blocked'])), shouldPrompt: !destroyed && receipt?.status!=='retired' && now() >= record.dismissedUntil && decision?.allowsPrompt!==false && (Object.entries(purposes).some(([id,value]) => (value === 'unknown' || value === 'expired')&&promptable(id)) || (!!receipt?.requiresChoice||!!decision?.requiresChoice)&&policy!.purposes.some(p=>promptable(p.id))), preferencesOpen, persistence: readable && !writeFailed ? 'available' : 'unavailable', destroyed, ...(receipt?{evidence:receipt}:{}),...(privacySignals?{privacySignals}:{}),...(processingChoices?{processingChoices}:{}),...(decision?{promptDecision:decision}:{}) };
   }
   function emit(): void { for (const listener of [...listeners]) { try { listener(snapshot()); } catch { /* Observers cannot prevent withdrawal or corrupt the state engine. */ } } }
   function track(task: Promise<void>): void { pending.add(task); void task.finally(() => pending.delete(task)); }
@@ -282,7 +290,7 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
     },
     registerService(id, lifecycle) {
       live();
-      const service = config.services.find(item => item.id === id);
+      const service = inventoryServices.get(id);
       if (!policy.services.some(item => item.id === id) || !service || services.has(id) || !lifecycle || typeof lifecycle.start !== 'function' || !Array.isArray(lifecycle.purposes) || [...lifecycle.purposes].sort().join('\0') !== [...service.purposeIds].sort().join('\0')) throw new Error('Register one lifecycle with exactly the declared purposes of a consent-managed service.');
       const entry: RunningService = { lifecycle: { purposes: [...lifecycle.purposes], start: lifecycle.start }, phase: 'blocked', removed: false };
       services.set(id, entry); update();

@@ -22,7 +22,10 @@
     "example:astro": "npm run build && node examples/astro/build.mjs",
     "site:build:production": "npm run build && node site/build.mjs --production",
     "size": "npm run build && node scripts/measure-bundles.mjs",
-    "size:check": "npm run build && node scripts/measure-bundles.mjs --check"
+    "size:check": "npm run build && node scripts/measure-bundles.mjs --check",
+    "perf": "npm run build && node scripts/measure-consent-performance.mjs",
+    "perf:fixture": "npm run build && node scripts/build-performance-fixture.mjs",
+    "perf:serve": "node scripts/serve-performance.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

@@ -1133,3 +1133,13 @@ Read SC 2.5.3 and its explanation of visible label text in accessible names for 
 **Type:** technical-specification. **Checked:** 2026-10-19. **Access:** read.
 
 Core specification read for local definitions/references, schema dialect and compound schema behavior. Used for an authoring-shape aid, not regulatory applicability or complete runtime validation.
+
+<a id="src-w3c-high-resolution-time"></a>
+
+## SRC-W3C-HIGH-RESOLUTION-TIME
+
+[W3C High Resolution Time](https://www.w3.org/TR/hr-time-3/)
+
+**Type:** technical-specification. **Checked:** 2026-10-19. **Access:** read.
+
+Working Draft of 1 September 2026 read for monotonic performance.now timestamps and explicitly limited/coarsened resolution. Used for measurement semantics only, not a regulatory deadline or real-user performance claim.

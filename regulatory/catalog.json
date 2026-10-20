@@ -497,7 +497,8 @@
         "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open.",
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
-        "Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open."
+        "Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open.",
+        "Optional Node/browser controller timing tools with synthetic inventories, actual native controls, retained distributions and explicit limits; broader page/paint/platform performance remains open."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -529,7 +530,10 @@
         "scripts/accessibility-browser-app.mjs",
         "packages/notabenda/src/setup-ui.ts",
         "examples/google-basic/build.mjs",
-        "scripts/serve-accessibility.mjs"
+        "scripts/serve-accessibility.mjs",
+        "scripts/measure-consent-performance.mjs",
+        "scripts/build-performance-fixture.mjs",
+        "scripts/serve-performance.mjs"
       ]
     },
     {
@@ -1779,6 +1783,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Core specification read for local definitions/references, schema dialect and compound schema behavior. Used for an authoring-shape aid, not regulatory applicability or complete runtime validation."
+    },
+    {
+      "id": "SRC-W3C-HIGH-RESOLUTION-TIME",
+      "title": "W3C High Resolution Time",
+      "url": "https://www.w3.org/TR/hr-time-3/",
+      "kind": "technical-specification",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Working Draft of 1 September 2026 read for monotonic performance.now timestamps and explicitly limited/coarsened resolution. Used for measurement semantics only, not a regulatory deadline or real-user performance claim."
     }
   ],
   "jurisdictions": [
@@ -5379,9 +5392,14 @@
       "jurisdiction": "PRODUCT",
       "title": "Measured browser delivery and optional component styles",
       "kind": "product-standard",
-      "summary": "Measure actual browser bundles and published CSS; target 15 KiB gzip for core plus vanilla controls and 5 KiB for default consent CSS, reporting broader optional surfaces separately. Preserve validation and effective-permission behavior.",
+      "summary": "Measure actual browser bundles and published CSS; target 15 KiB gzip for core plus vanilla controls and 5 KiB for default consent CSS, reporting broader optional surfaces separately. Preserve validation and effective-permission behavior. Measure fresh-controller setup, granted snapshots and synchronous choice calls through public factories with explicit synthetic inputs, sample distributions and timing limits.",
       "appliesWhen": "Documenting or releasing browser runtime and stylesheet entry points.",
-      "sourceRefs": [],
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-W3C-HIGH-RESOLUTION-TIME",
+          "locator": "Introduction; sections 5, 7.1 and 9.1: monotonic timestamps, now() and clock resolution."
+        }
+      ],
       "discoverySourceIds": [],
       "featureIds": [
         "FEAT-DEPLOYMENT",
@@ -5408,16 +5426,25 @@
         "packages/notabenda/src/consent-runtime.ts",
         "packages/notabenda/src/consent-evidence-factory.ts",
         "packages/notabenda/src/consent-runtime-evidence.ts",
-        "packages/notabenda/src/react-consent.ts"
+        "packages/notabenda/src/react-consent.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "scripts/consent-performance.mjs",
+        "scripts/performance-inventories.mjs",
+        "scripts/measure-consent-performance.mjs",
+        "scripts/build-performance-fixture.mjs",
+        "scripts/performance-browser-app.mjs",
+        "scripts/serve-performance.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/browser-delivery.md",
         "site/test/delivery.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs",
-        "packages/notabenda/test/react-consent.test.mjs"
+        "packages/notabenda/test/react-consent.test.mjs",
+        "packages/notabenda/test/consent-performance.test.mjs",
+        "docs/verification/consent-performance.md"
       ],
-      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target."
+      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-CATALOG",
@@ -7331,12 +7358,14 @@
         "REQ-PRODUCT-BUNDLE-BUDGET"
       ],
       "status": "partial",
-      "expected": "Compiled local consent plus controls stays below 15 KiB gzip and excludes full site validation, evidence implementation and build/backend/framework modules; exact scope and lifecycle parity tests pass. Required receipt and compatibility profiles are reported separately. Consent CSS stays below 5 KiB; compatibility target and interaction timing remain open.",
+      "expected": "Compiled local consent plus controls stays below 15 KiB gzip and excludes full site validation, evidence implementation and build/backend/framework modules; exact scope and lifecycle parity tests pass. Required receipt and compatibility profiles are reported separately. Consent CSS stays below 5 KiB; compatibility target, full page startup/interaction and broader platforms remain open. Synthetic fresh-constructor, snapshot and synchronous choice distributions are reported without timing pass/fail gates; semantic tests retain fresh restrictions, expiry, detached snapshots and lifecycle cleanup.",
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/browser-delivery.md",
         "site/test/delivery.test.mjs",
-        "packages/notabenda/test/consent-runtime.test.mjs"
+        "packages/notabenda/test/consent-runtime.test.mjs",
+        "packages/notabenda/test/consent-performance.test.mjs",
+        "docs/verification/consent-performance.md"
       ]
     },
     {

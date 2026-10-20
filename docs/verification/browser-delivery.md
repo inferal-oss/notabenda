@@ -12,7 +12,7 @@ The compiled `notabenda/consent` entry validates a bounded descriptor produced b
 
 Local and required-receipt suites run through both public factories. Additional tests exercise malformed descriptors before browser capabilities, field-order parity, private-data projection, mandatory adapter mode, failed command preparation, unavailable UUID generation, retirement and cross-tab changes. New records always declare local/required authority; markerless and required positives cannot become local grants. Valid negatives and independently parsed regional prompt memory remain, with no storage rewrite during parsing.
 
-The compiled local profile meets its target. Compatibility core JavaScript still exceeds 15 KiB, and startup/interaction timing and cross-browser performance remain unfinished; the catalog keeps the overall item partial.
+The compiled local profile meets its target. Compatibility core JavaScript still exceeds 15 KiB. The [controller timing tools](consent-performance.md) now measure synthetic fresh setup, snapshots and synchronous local choice calls; full page startup/paint and cross-browser performance remain unfinished; the catalog keeps the overall item partial.
 
 Measurement on 19 October 2026 with esbuild 0.28.2 and gzip level 9:
 
@@ -43,3 +43,5 @@ This milestone passed 417 package tests and 60 site tests (477 total), catalog v
 The current measurement includes the native-control focus/accessibility refinement in [consent focus verification](consent-focus.md). That refinement preserves the compiled local target; the compatibility entry remains above target.
 
 The later technology-notice milestone on 19 October 2026 measured compiled local runtime plus controls at **14.90 KiB gzip**, required-receipt runtime at **18.71 KiB**, and compatibility core plus controls at **25.29 KiB**. Consent CSS remains **2.59 KiB**; the separate `technology.css` is **0.70 KiB**. The optional build/server technology declaration module is absent from the compiled browser graph. These are transfer-size measurements, not interaction timings; the earlier table records the first compiled-entry milestone.
+
+The controller-performance refinement measures compiled local plus controls at **14.89 KiB gzip** (15,252 bytes), with compatibility core plus controls at **25.29 KiB** (25,895 bytes). The targets are unchanged. Service inventory indexing and direct per-service restrictions reduce repeated snapshot work without caching permissions across queries. See [the timing method and limits](consent-performance.md).
