@@ -6,7 +6,7 @@ import {createConsentEngine} from './consent-engine.js';
 import type {ConsentOptions,ConsentEnvironment,ConsentStateController} from './consent-types.js';
 export type {ConsentRuntimeConfig,ConsentRuntimeInventory} from './consent-runtime-config.js';
 export type {RequiredConsentEvidence} from './consent-evidence-factory.js';
-export type {ConsentStateController,ConsentSnapshot,ConsentEnvironment,ChoiceStorage,ChoiceStatus,ServiceLifecycle,ServiceStatus} from './consent-types.js';
+export type {ConsentStateController,ConsentSnapshot,ConsentEnvironment,ChoiceStorage,ChoiceStatus,ServiceLifecycle,ServiceStatus,ServiceRegistration} from './consent-types.js';
 export {mountControls} from './controls.js';
 export {defaultConsentWording} from './consent-notice.js';
 export {ScopeGuardError} from './scope-guards.js';

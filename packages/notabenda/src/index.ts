@@ -25,7 +25,7 @@ export {createProcessingChoices,mountProcessingChoices,ProcessingChoicesError} f
 export {registerStorageService} from './storage-cleanup.js';
 export type {CookieCleanupScope,StorageCleanupTarget,StorageAccess,StorageCleanupEnvironment,StorageCleanupResult,StorageCleanupReport,StorageServiceSnapshot,StorageServiceOptions,StorageServiceController} from './storage-cleanup.js';
 export type {ProcessingChoicesSnapshot,ProcessingChoicesOptions,ProcessingChoicesEnvironment,ProcessingChoicesController} from './processing-choices.js';
-export type { ConsentStateController, ConsentController, ConsentOptions, ConsentEnvironment, ConsentSnapshot, ChoiceStorage, ChoiceStatus, ServiceLifecycle, ServiceStatus } from './consent.js';
+export type { ConsentStateController, ConsentController, ConsentOptions, ConsentEnvironment, ConsentSnapshot, ChoiceStorage, ChoiceStatus, ServiceLifecycle, ServiceStatus, ServiceRegistration } from './consent.js';
 export type {PromptPolicyDecision} from './prompt-policy.js';
 export type * from './types.js';
 

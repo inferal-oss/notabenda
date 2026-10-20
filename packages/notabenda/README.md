@@ -244,3 +244,5 @@ Privacy-request setup includes an explicit public-page editor, atomic page/ priv
 
 <!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
 Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).
+
+Use the optional [connection inspector](../../docs/CONNECTION-INSPECTION.md) to compare the intended consent descriptor with the actual controller and identify missing lifecycle registrations. It leaves publication and application testing explicitly unverified.

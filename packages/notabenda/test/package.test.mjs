@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
@@ -281,8 +282,17 @@ createRightsDraftPlan(config,{baseline:config,settings:rightsSettings});
 rightsSettings.reviewStatus='reviewed';
 `);
     for(const file of ['dist/setup-storage.js','dist/setup-storage-ui.js','dist/setup-storage-cli.js','dist/setup-storage.d.ts','dist/setup-storage-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
+    const inspectionImport=spawnSync(process.execPath,['--input-type=module','-e',"import {inspectConsentConnection} from '@notabenda/core/consent/inspect';if(typeof inspectConsentConnection!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(inspectionImport.status,0,inspectionImport.stderr);
     const storageImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createStorageDraftPlan,normalizeStorageDraftInput} from '@notabenda/core/setup/storage';import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';if([createStorageDraftPlan,normalizeStorageDraftInput,mountStorageEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(storageImport.status,0,storageImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {inspectConsentConnection,type ConsentConnectionInspection} from '@notabenda/core/consent/inspect';
+import {type ServiceRegistration} from '@notabenda/core/consent';
+import type {ConsentRuntimeConfig} from '@notabenda/core/consent';
+declare const descriptor:ConsentRuntimeConfig;
+const diagnosticController=createConsentRuntime(descriptor);
+const registrations:Record<string,ServiceRegistration>=diagnosticController.getServiceRegistrations();
+const connectionReport:ConsentConnectionInspection=inspectConsentConnection(diagnosticController,{expected:descriptor});
+void registrations;void connectionReport;
 import {createStorageDraftPlan,type StorageDraftItem} from '@notabenda/core/setup/storage';
 import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';
 declare const storageItem:StorageDraftItem;
@@ -338,5 +348,6 @@ test('browser/SSR entry graph has no Node imports or runtime framework dependenc
   await walk(new URL('../dist/discovery-ui.js', import.meta.url));
   await walk(new URL('../dist/setup-storage.js', import.meta.url));
   await walk(new URL('../dist/setup-storage-ui.js', import.meta.url));
+  await walk(new URL('../dist/consent-inspect.js', import.meta.url));
   assert.ok(seen.size >= 3);
 });

@@ -145,3 +145,5 @@ The website and new Cloudflare starter serve the reader module only when it is r
 
 <!-- @requirements REQ-PRODUCT-CARTRIDGES -->
 The pack artwork uses a flat, downward-facing keyed card edge with separate muted contact banks and an open notch. It remains decorative and hidden from assistive technology; selection continues to use the labeled native checkbox and visible selected state. Reduced-motion and forced-color preferences retain usable selection controls. Visual changes are reviewed in local desktop/mobile previews before publication.
+
+For cookie packs, [inspect the actual connection](CONNECTION-INSPECTION.md) after registering the real lifecycles. A matching inventory and registration count remain separate from published files and tested application behavior.

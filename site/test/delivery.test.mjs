@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-PACKAGE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,10 +18,12 @@ test('cookie examples serve component styles while their legal documents retain 
  assert.equal(await readFile(new URL('assets/consent.css',root),'utf8'),await readFile(new URL('../../packages/notabenda/dist/consent.css',import.meta.url),'utf8'));
 });
 
-test('the local cookie browser entry is an actual self-contained bundle rather than a raw package export graph',async()=>{
+test('the cookie runtime stays bundled and only its optional inspector is a separate dynamic import',async()=>{
  const script=await readFile(new URL('../dist/public/assets/consent.mjs',import.meta.url),'utf8');
  const parsed=await build({stdin:{contents:script,sourcefile:'published-consent.mjs'},bundle:false,platform:'browser',format:'esm',target:'es2022',write:false,metafile:true,logLevel:'silent'});
- assert.deepEqual(Object.values(parsed.metafile.outputs)[0].imports,[]);assert.match(script,/sample-measurements/u);assert.match(script,/\/choices\/site\.json/u);assert.doesNotMatch(script,/\/assets\/runtime\/|notabenda-cf|node:fs|localhost:|ADMIN_KEY/u);
+ assert.deepEqual(Object.values(parsed.metafile.outputs)[0].imports,[{path:'/assets/connection-inspector.mjs',kind:'dynamic-import',external:true}]);
+ const inspector=await readFile(new URL('../dist/public/assets/connection-inspector.mjs',import.meta.url),'utf8'),inspectionGraph=await build({stdin:{contents:inspector,sourcefile:'inspection.mjs'},bundle:false,platform:'browser',format:'esm',target:'es2022',write:false,metafile:true,logLevel:'silent'});
+ assert.deepEqual(Object.values(inspectionGraph.metafile.outputs)[0].imports,[]);assert.doesNotMatch(inspector,/node:|\/assets\/runtime\/|ADMIN_KEY/u);assert.match(script,/sample-measurements/u);assert.match(script,/\/choices\/site\.json/u);assert.doesNotMatch(script,/\/assets\/runtime\/|notabenda-cf|node:fs|localhost:|ADMIN_KEY/u);
 });
 
 

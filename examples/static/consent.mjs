@@ -21,3 +21,7 @@ consent.subscribe(paintChoices);
 mountControls(document.querySelector('#privacy-controls'), { consent });
 document.querySelector('#review-choices').addEventListener('click', () => consent.openPreferences());
 window.addEventListener('pagehide', event => { if (!event.persisted) consent.destroy(); });
+
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
+const inspection=document.querySelector('[data-connection-inspector]');
+if(inspection){let inspector,loading=false,ended=false;const inspect=inspection.querySelector('button'),status=inspection.querySelector('[role=status]');inspect.addEventListener('click',async()=>{if(inspector||loading)return;loading=true;inspect.disabled=true;try{const module=await import('/assets/connection-inspector.mjs');if(ended)return;inspector=module.mountConnectionInspector(inspection,consent,config);}catch{status.textContent='Connection inspection is unavailable. Your choices are unchanged.';}finally{inspect.disabled=false;loading=false;}});window.addEventListener('pagehide',event=>{if(!event.persisted){ended=true;inspector?.destroy();}});}

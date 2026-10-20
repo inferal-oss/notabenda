@@ -188,3 +188,5 @@ An optional [calendar grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-si
 ## Author settings through setup
 
 The [cookie control settings editor](SETUP.md#configure-cookie-control-settings) and interactive wizard author enrollment, public material versions and separate memory periods from the actual inventory. They preserve scope restrictions and existing timing policies. Saving prepares a draft; registering actual service lifecycles and reviewing publication remain host work.
+
+The optional [connection inspector](CONNECTION-INSPECTION.md) reads the actual controller’s registration map and lifecycle phases, and can compare the intended compiled consent inventory. It does not refresh, start services or replace network/storage tests.

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 // @requirements REQ-IE-CONSENT-DURATION
 import {grantExpiresAt,sameGrantExpiryPolicy} from './grant-expiry-policy.js';
@@ -296,6 +297,7 @@ export function createConsentEngine<Config extends ConsentRuntimeInventory>(conf
       services.set(id, entry); update();
       return () => { entry.removed = true; reconcileService(id, entry); emit(); };
     },
+    getServiceRegistrations:()=>Object.fromEntries(policy.services.map(s=>[s.id,services.has(s.id)?services.get(s.id)!.removed?'removed':'registered':'missing'])),
     refresh,
     refreshEvidence() {refresh();return evidence?.settled()??Promise.resolve();},
     retryEvidence() {return evidence?.retry()??Promise.resolve();},

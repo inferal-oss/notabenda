@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-EU-INTERESTS-DISCLOSURE
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {build as bundle} from 'esbuild';
@@ -39,7 +40,8 @@ export async function choiceFiles(base) {
   }
   result['assets/choices-status.mjs']=await readFile(new URL('./choices-status.mjs',import.meta.url),'utf8');
   result['assets/choices-page.css']=await readFile(new URL('./choices-page.css',import.meta.url),'utf8');
-  result['assets/consent.mjs'] = (await bundle({entryPoints:[new URL('./consent.mjs',import.meta.url).pathname],bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,write:false})).outputFiles[0].text;
+  result['assets/connection-inspector.mjs']=(await bundle({entryPoints:[new URL('./connection-inspector.mjs',import.meta.url).pathname],bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,write:false})).outputFiles[0].text;
+  result['assets/consent.mjs'] = (await bundle({entryPoints:[new URL('./consent.mjs',import.meta.url).pathname],external:['/assets/connection-inspector.mjs'],bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,write:false})).outputFiles[0].text;
   const recorded=structuredClone(config);recorded.site.id='juniper-recorded-choices';
   for(const item of recorded.storage)if(item.serviceId==='privacy-choices')item.name=item.name.replace('juniper-choices',recorded.site.id);
   const memory=recorded.purposes.find(p=>p.id==='remember-choices');memory.description='Remember the fictional choice and its server recording reference in this demonstration.';memory.dataCategories.push('Opaque host stream digest','Choice request identifier');recorded.services.find(s=>s.id==='privacy-choices').location='This browser and host-owned demonstration storage; locality depends on deployment.';memory.collection.description='An explicit choice in the protected fictional demonstration.';memory.retention='Local preference lifetimes as declared above. Server demonstration records have no automated deletion; production requires a reviewed retention policy.';

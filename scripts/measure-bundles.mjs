@@ -11,6 +11,7 @@ export async function measureBundles(){
  const profiles=[];
  for(const [id,entry,exports,budgetBytes] of [
   ['compiled-local','@notabenda/core/consent','createConsentRuntime,mountControls',15*1024],
+  ['connection-inspection','@notabenda/core/consent/inspect','inspectConsentConnection',null],
   ['compiled-required','@notabenda/core/consent','createConsentRuntime,mountControls',null],
   ['react-compiled','@notabenda/core/react/consent','ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed',null],
   ['service-directory','@notabenda/core/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],

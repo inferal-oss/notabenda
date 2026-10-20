@@ -23,7 +23,8 @@
         "Selected pack connection work, application checks and foundation reuse, with the same saved connection-stage brief in browser and scoped terminal drafts; actual deployment verification remains host work.",
         "Explicit local consent settings authoring in the UI and CLI, including service/purpose enrollment, material versions and separate lifetimes; existing policies and restrictive scope facts are preserved.",
         "Complete host-supplied privacy-request page messages with matching locale/direction/review metadata, inert local preview and separate operator-owned request workflows.",
-        "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review."
+        "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review.",
+        "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -64,7 +65,18 @@
         "packages/notabenda/src/setup-storage-ui.ts",
         "packages/notabenda/src/setup-storage-cli.ts",
         "packages/notabenda/src/cli.ts",
-        "packages/notabenda/src/cartridges.css"
+        "packages/notabenda/src/cartridges.css",
+        "packages/notabenda/src/consent-inspect.ts",
+        "packages/notabenda/src/consent-inventory.ts",
+        "packages/notabenda/src/consent-compile.ts",
+        "packages/notabenda/src/consent-types.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/static/connection-inspector.mjs",
+        "examples/static/consent.mjs",
+        "examples/static/choices-page.mjs",
+        "examples/static/choices-page.css",
+        "examples/static/choices-build.mjs"
       ]
     },
     {
@@ -254,7 +266,8 @@
         "Declared service loaders and teardown hooks; inert scripts, images, and embeds until allowed.",
         "Separate device-access permission from downstream processing restrictions.",
         "Stop future work, remove accessible declared storage, and surface vendor/reload limitations after withdrawal.",
-        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open."
+        "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
+        "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -274,7 +287,18 @@
         "packages/notabenda/src/service-runner.ts",
         "packages/notabenda/src/consent-engine.ts",
         "docs/verification/regional-consent.md",
-        "packages/notabenda/src/grant-expiry-policy.ts"
+        "packages/notabenda/src/grant-expiry-policy.ts",
+        "packages/notabenda/src/consent-inspect.ts",
+        "packages/notabenda/src/consent-inventory.ts",
+        "packages/notabenda/src/consent-compile.ts",
+        "packages/notabenda/src/consent-types.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/static/connection-inspector.mjs",
+        "examples/static/consent.mjs",
+        "examples/static/choices-page.mjs",
+        "examples/static/choices-page.css",
+        "examples/static/choices-build.mjs"
       ]
     },
     {
@@ -2123,7 +2147,8 @@
         "REQ-PRODUCT-SPECIALIST-PACKS",
         "REQ-PRODUCT-RIGHTS-AUTHORING",
         "REQ-PRODUCT-RIGHTS-LOCALIZATION",
-        "REQ-PRODUCT-STORAGE-AUTHORING"
+        "REQ-PRODUCT-STORAGE-AUTHORING",
+        "REQ-PRODUCT-CONNECTION-INSPECTION"
       ]
     }
   ],
@@ -7090,6 +7115,50 @@
         "docs/verification/storage-authoring.md"
       ],
       "implementationNote": "A closed atomic batch changes only declared storage and explicit affected enrolled service versions. The complete public baseline rejects stale work. Old declarations and scope changes remain in a separate private review; config/source files are not overwritten. UI search pages are bounded; unapplied edits remain separate, while saves invalidate prepared exports. Actual compatibility/compiled runtimes reject old grants under the new scope and preserve restrictive refusal/solicitation behavior. Browser-safe platform hashing detaches declarations before awaiting and rechecks the current host baseline before adoption. Cancel/import/reset/destroy abandon pending work. Exact storage names are preserved; stale cards reopen current facts. The cumulative private review retains each site context across reset/import, bounded to 128 steps/512 KiB, and must be downloadable before adoption. Setup configs remain within the 512 KiB import bound."
+    },
+    {
+      "id": "REQ-PRODUCT-CONNECTION-INSPECTION",
+      "jurisdiction": "PRODUCT",
+      "title": "Read-only consent inventory and lifecycle-registration inspection",
+      "kind": "product-standard",
+      "summary": "Distinguish missing lifecycle registrations from registered-but-blocked services on the supplied actual controller. Compare an optional intended compiled consent inventory without taking consent actions; leave publication and application behavior explicitly unverified.",
+      "appliesWhen": "An operator or agent inspects a cookie-service connection before application tests.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-ENFORCEMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CONNECTION-INSPECTION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "In-process controller observations are not authenticated receipts. Registration does not prove resource behavior or truthful callbacks. Comparison excludes other packs, evidence mode and deployed files. Broader evidence-bound pack readiness remains incomplete.",
+      "implementationRefs": [
+        "packages/notabenda/src/consent-inspect.ts",
+        "packages/notabenda/src/consent-inventory.ts",
+        "packages/notabenda/src/consent-compile.ts",
+        "packages/notabenda/src/consent-types.ts",
+        "packages/notabenda/src/consent-engine.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/static/connection-inspector.mjs",
+        "examples/static/consent.mjs",
+        "examples/static/choices-page.mjs",
+        "examples/static/choices-page.css",
+        "examples/static/choices-build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/consent-inspect.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/connection-inspection.test.mjs",
+        "docs/verification/connection-inspection.md",
+        "site/test/delivery.test.mjs"
+      ],
+      "implementationNote": "Both runtime profiles expose detached enrollment maps. An optional browser-safe inspector uses the shared compiler projection, reports phases without awaiting or refreshing, and separates configuration, registration, publication and behavior. The lazy example invalidates snapshots after controller changes."
     }
   ],
   "verification": [
@@ -8520,6 +8589,21 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/accessibility.test.mjs",
         "docs/verification/storage-authoring.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CONNECTION-INSPECTION",
+      "requirementIds": [
+        "REQ-PRODUCT-CONNECTION-INSPECTION"
+      ],
+      "status": "automated",
+      "expected": "Real profiles distinguish missing, blocked, active, transitional, removed, failed-cleanup and destroyed states without writes, backend requests or permission actions; required-evidence snapshots preserve local storage freshness reads. Expected inventory differences, excluded other packs, hostile-input rejection, detached maps, installed types and a stale-result-invalidating example remain explicit.",
+      "testRefs": [
+        "packages/notabenda/test/consent-inspect.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/connection-inspection.test.mjs",
+        "docs/verification/connection-inspection.md",
+        "site/test/delivery.test.mjs"
       ]
     }
   ],

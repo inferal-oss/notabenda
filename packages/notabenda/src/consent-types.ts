@@ -8,6 +8,8 @@ import type {PrivacySignalSnapshot} from './privacy-signal-policy.js';
 import type {ProcessingChoicesController,ProcessingChoicesSnapshot} from './processing-choices.js';
 import type {PromptPolicyDecision} from './prompt-policy.js';
 export type ChoiceStatus = 'unknown' | 'granted' | 'denied' | 'withdrawn' | 'expired';
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
+export type ServiceRegistration = 'missing' | 'registered' | 'removed';
 export type ServiceStatus = 'blocked' | 'starting' | 'active' | 'stopping' | 'reload-required';
 export interface ConsentSnapshot {
   purposes: Record<string, ChoiceStatus>;
@@ -49,6 +51,8 @@ export interface ServiceLifecycle {
 export interface ConsentStateController<Config extends ConsentRuntimeInventory = ConsentRuntimeInventory> {
   getSnapshot(): ConsentSnapshot;
   getConfig(): Config;
+  /** Read-only enrollment inspection; registration alone proves no resource behavior. */
+  getServiceRegistrations(): Record<string, ServiceRegistration>;
   getNotice(): ConsentNotice|undefined;
   subscribe(listener: (state: ConsentSnapshot) => void): () => void;
   choose(choices: Record<string, boolean>): { persisted: boolean };

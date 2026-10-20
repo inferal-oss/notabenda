@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-PRODUCT-RIGHTS-AUTHORING
 // @requirements REQ-PRODUCT-SPECIALIST-PACKS
@@ -32,8 +33,8 @@ const targets:Record<string,Target>={
  'cookie-consent':{
   requiredConfigPaths:['consent','consent.purposes','consent.services'],
   title:'Cookie and optional-service controls',outcome:'Optional loaders run only while their declared purpose/service permission is effective.',
-  configPaths:['purposes','services','storage','consent','consent.purposes','consent.services','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders.','Choose vanilla, React or Astro controls around the same controller.'],
-  questionIds:['optional-storage','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Actual optional loaders, storage names/types and cleanup targets','Purpose/service IDs and deliberate material scope revisions','Grant/refusal lifetimes and dismissal interval','Scope assessments; present or unknown specialized processing remains gated'],guides:['consent','storage-cleanup','scope-guards','react','astro'],prerequisites:['legal-pages'],verify:['No optional request on initial load or after rejection.','Granular grants start only the selected work.','Withdrawal stops owned work and clears declared markers.','Reload, changed scopes and failure states retain restrictions.']
+  configPaths:['purposes','services','storage','consent','consent.purposes','consent.services','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders. Inspect the actual controller with @notabenda/core/consent/inspect; registration and matching inventory do not prove application behavior.','Choose vanilla, React or Astro controls around the same controller.'],
+  questionIds:['optional-storage','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Actual optional loaders, storage names/types and cleanup targets','Purpose/service IDs and deliberate material scope revisions','Grant/refusal lifetimes and dismissal interval','Scope assessments; present or unknown specialized processing remains gated'],guides:['consent','connection-inspection','storage-cleanup','scope-guards','react','astro'],prerequisites:['legal-pages'],verify:['No optional request on initial load or after rejection.','Granular grants start only the selected work.','Withdrawal stops owned work and clears declared markers.','Reload, changed scopes and failure states retain restrictions.']
  },
  'technology-functions':{
   requiredConfigPaths:['scopeGuards'],

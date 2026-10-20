@@ -294,6 +294,11 @@
       "types": "./dist/setup-storage-ui.d.ts",
       "import": "./dist/setup-storage-ui.js",
       "default": "./dist/setup-storage-ui.js"
+    },
+    "./consent/inspect": {
+      "types": "./dist/consent-inspect.d.ts",
+      "import": "./dist/consent-inspect.js",
+      "default": "./dist/consent-inspect.js"
     }
   },
   "bin": {
