@@ -13,6 +13,69 @@ import {fixture} from './helpers.mjs';
 const selection=answers=>({schemaVersion:1,answers});
 const assess=(config,decisions,answers)=>assessIntegration({config,selection:selection(decisions),...(answers?{answers}:{})});
 
+test('assessment enforces the installed authoring shape separately from runtime semantics',async()=>{
+ const original=await fixture({reviewed:true});
+ const cases=[
+  [c=>{c.conset={privateValue:'PRIVATE-VALUE'};},'/conset','additionalProperties'],
+  [c=>{c.services[0].resourceOrigin=['PRIVATE-VALUE'];},'/services/0/resourceOrigin','additionalProperties'],
+  [c=>{delete c.controller.address;},'/controller/address','required'],
+  [c=>{c.site.locale=42;},'/site/locale','type'],
+  [c=>{c.documents.terms.review.status='PRIVATE-VALUE';},'/documents/terms/review/status','enum']
+ ];
+ for(const [change,path,code] of cases){
+  const config=structuredClone(original);change(config);const before=structuredClone(config),report=assess(config,{documents:'yes'});
+  assert.equal(report.status,'invalid-config');assert.equal(report.validation.authoringShape.valid,false);
+  assert.ok(report.validation.authoringShape.diagnostics.some(d=>d.instancePath===path&&d.code===code),path);
+  assert.deepEqual(config,before);assert.equal(report.productionReady,false);
+  assert.doesNotMatch(JSON.stringify(report.validation.authoringShape),/PRIVATE-VALUE/u);
+ }
+ const unknown=structuredClone(original);unknown.conset={};const typo=assess(unknown,{documents:'yes'});
+ assert.equal(typo.validation.preview.valid,true);assert.equal(typo.validation.production.valid,true);
+ assert.equal(typo.validation.authoringShape.valid,false);assert.equal(typo.status,'invalid-config');
+ const semantic=structuredClone(original);semantic.services[0].purposeIds=['missing-purpose'];
+ const invalid=assess(semantic,{documents:'yes'});assert.equal(invalid.validation.authoringShape.valid,true);assert.equal(invalid.validation.preview.valid,false);assert.equal(invalid.status,'invalid-config');
+ // Private application metadata is explicitly allowed; its values stay private.
+ original.private={arbitrary:{nested:['PRIVATE-VALUE',true,null,1]}};
+ const valid=assess(original,{documents:'yes'});assert.equal(valid.validation.authoringShape.valid,true);assert.doesNotMatch(JSON.stringify(valid),/PRIVATE-VALUE/u);
+});
+
+test('schema diagnostics preserve JSON Pointer escaping and limit report size',async()=>{
+ const config=await fixture();config['bad/key~name']='PRIVATE-VALUE';
+ const report=assess(config,{documents:'yes'});assert.ok(report.validation.authoringShape.diagnostics.some(d=>d.instancePath==='/bad~1key~0name'));
+ for(let i=0;i<120;i++)config['unexpected'+i]='PRIVATE-VALUE';
+ const many=assess(config,{documents:'yes'}).validation.authoringShape;assert.equal(many.diagnostics.length,100);assert.equal(many.truncated,true);assert.doesNotMatch(JSON.stringify(many),/PRIVATE-VALUE/u);
+});
+
+test('selected native interfaces require only their own non-English dictionaries',async()=>{
+ const {localizedExampleConfig}=await import('../../../examples/localization/config.mjs');
+ const config=localizedExampleConfig(await fixture());delete config.localization.terms;
+ const docs=assess(config,{documents:'yes'});assert.equal(docs.validation.authoringShape.valid,true);assert.equal(docs.validation.preview.valid,true);assert.equal(docs.missingRequiredConfig.length,0);
+ const agreement=assess(config,{'explicit-agreement':'yes'});assert.ok(agreement.missingRequiredConfig.some(f=>f.path==='localization.terms'));assert.equal(agreement.missingRequiredConfig.some(f=>f.path==='localization.formPermission'),false);
+ const form=assess(config,{'form-permission':'yes'});assert.ok(form.missingRequiredConfig.some(f=>f.path==='localization.formPermission'));assert.equal(form.missingRequiredConfig.some(f=>f.path==='localization.terms'),false);assert.ok(form.missingRequiredConfig.some(f=>f.path==='scopeGuards'));
+ const dictionary=JSON.parse(await readFile(new URL('../../../examples/localization/form-messages.json',import.meta.url),'utf8'));config.localization.formPermission=dictionary;config.scopeGuards={version:1,revision:'test-1',site:{children:'unknown',sensitiveData:'unknown',highRiskProfiling:'unknown',regulatedSector:'unknown'}};
+ assert.equal(assess(config,{'form-permission':'yes'}).missingRequiredConfig.length,0);
+ delete config.localization;config.site.locale='en-GB';const english=assess(config,{'form-permission':'yes','explicit-agreement':'yes'});
+ assert.equal(english.validation.preview.valid,true);assert.equal(english.missingRequiredConfig.some(f=>f.path.startsWith('localization.')),false);
+ // Nothing about the selected locale introduces a regional target or policy.
+ assert.equal(form.targets.some(t=>t.id==='regional-consent'),false);assert.equal(Object.hasOwn(config,'consent'),true);
+});
+
+test('form permission guidance exposes the guard prerequisite and actual grant support boundary',async()=>{
+ const config=await fixture({reviewed:true}),report=assess(config,{'form-permission':'yes'});
+ assert.equal(report.status,'needs-input');assert.ok(report.missingRequiredConfig.some(f=>f.targetId==='form-permissions'&&f.path==='scopeGuards'));
+ for(const id of ['children','sensitive-data','high-risk-profiling','regulated-sector'])assert.ok(report.questions.some(q=>q.id===id&&q.status==='needs-answer'));
+ assert.ok(report.targets.find(t=>t.id==='form-permissions').hostWorkToVerify.some(task=>task.includes('formPermissionGrantSupported(offer)')));
+ assert.equal(config.scopeGuards,undefined);
+});
+
+test('exception settings select their own prerequisites without demanding consent enrollment',async()=>{
+ const config=await fixture({reviewed:true}),report=assess(config,{'assessed-storage-exceptions':'yes','optional-service-control':'no'});
+ assert.deepEqual(report.requestedTargetIds,['storage-exceptions']);assert.deepEqual(report.prerequisiteTargetIds,['legal-pages']);
+ assert.deepEqual(report.missingRequiredConfig.map(f=>f.path),['storageExceptions','storageExceptions.entries','scopeGuards']);
+ assert.equal(report.targets.some(t=>t.id==='cookie-consent'),false);assert.equal(report.targets.some(t=>t.id==='regional-consent'),false);
+ assert.equal(Object.hasOwn(config,'consent'),false);assert.equal(Object.hasOwn(config,'storageExceptions'),false);
+});
+
 test('assessment identifies missing control config without inventing values or adding a backend',async()=>{
  const config=await fixture(),before=structuredClone(config);
  const result=assess(config,{'optional-service-control':'yes'});

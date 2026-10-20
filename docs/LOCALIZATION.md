@@ -106,10 +106,20 @@ The operator detail shows the recorded language, copy revision and resolved decl
 
 Try the [Portuguese agreement](https://notabenda.org/localization/agreement/). Its recorded assertion is kept in that browser’s isolated demo workspace and can be inspected from its agreement records.
 
+## Form permissions
+
+Add the optional complete `localization.formPermission` dictionary before building an ordinary purpose/channel permission interface. The [Portuguese message file](../examples/localization/form-messages.json) supplies all 27 fields, including status, recovery, details, links and accessible action labels. The required placeholders are `policy: {version}`, `information: {information}`, `retention: {retention}` and `providers: {providers}`. Other fields accept no placeholders. Each text field keeps the plain-text limits above; action/link labels allow 120 bytes. The complete selected form-localization descriptor allows 16 KiB and its offer allows 32 KiB.
+
+Supply the statement, grant/withdraw labels, optionality, withdrawal explanation and channel label in the same language through `createFormPermissionOffer`. Purpose facts, recipients and retention text must also be translated by the host. The v2 offer pins the complete selected dictionary, locale, direction and copy revision. Cloudflare registration compares it against the retained release, so changing the hash alone cannot replace the declared text or downgrade a localized offer to v1.
+
+A change to these messages needs a new copy revision, release and material offer revision. Existing English offers without a dictionary retain v1 behavior. Exact pending v1 actions remain retryable after a v2 activation; they retain their original request and archive references. New grants still need the current offer, head and activation, while withdrawal stays independent. Form text is excluded from compiled cookie inventories and cookie purpose scopes.
+
+Try the [Portuguese form permission](https://notabenda.org/localization/permission/). It stores choices in that browser's demo workspace, separate from the English permission example, and sends no email. Operator inspection shows the retained language, revision and complete declared message templates. A template records offered wording, not which interface states a person saw. This remains one selected language per release; routing across equivalent multilingual permissions is host work.
+
 ## Supported interfaces
 
-This contract covers legal document pages/links, native consent controls and their React/Astro bridges, and the native terms-acceptance widget. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
+This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget and ordinary form-permission controls. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Service-directory UI, collection/form-permission UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Service-directory UI, direct-collection notice UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.

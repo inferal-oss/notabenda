@@ -10,7 +10,7 @@ Use the installed package documentation and types for its version. Discovery fin
 
 - [Notabenda integration skill](https://notabenda.org/skills/notabenda/SKILL.md): Reusable instructions for an agent integrating or updating the library.
 - [Configuration target selection](https://notabenda.org/skills/notabenda/references/configuration-target.md): Match the user's requested behavior to facts, config changes, host work and acceptance scenarios.
-- [Machine-readable integration reference](https://notabenda.org/integration-reference.json): Current preview targets, relevant practice-answer templates and config prerequisites. Prefer installed `notabenda describe --json` and read-only `assess` for version-matched project assessment.
+- [Machine-readable integration reference](https://notabenda.org/integration-reference.json): Current preview targets, relevant practice-answer templates and config prerequisites. Prefer installed `notabenda describe --json` and read-only `assess` for version-matched target, authoring-shape and runtime checks. Consent controls and assessed storage exceptions are separate targets.
 
 - [Configuration authoring schema](https://notabenda.org/site-config.schema.json): Current preview field shapes, required properties and allowed type values generated from SiteConfig. Prefer installed `notabenda schema [PATH] --json`; always run `check` for semantic rules.
 

@@ -165,10 +165,12 @@ const processingNotice=JSON.parse(files['processing-choices/notice.json']);
 const processing={notice:processingNotice,artifact:JSON.parse(files[`artifacts/${processingNotice.artifactId}.json`])};
 const permissionOffer=JSON.parse(files['form-permissions/offer.json']);
 const formPermissions={offer:permissionOffer,artifact:JSON.parse(files[`artifacts/${permissionOffer.artifactId}.json`])};
+const localizedPermissionOffer=JSON.parse(files['localization/permission/offer.json']);
+const localizedFormPermissions={offer:localizedPermissionOffer,artifact:JSON.parse(files[`artifacts/${localizedPermissionOffer.artifactId}.json`])};
 const paidOrders=Object.fromEntries(['mixed','deferred','conditional'].map(route=>[route,JSON.parse(files['orders/'+route+'/template.json'])]));
 const contractDefinitions=Object.fromEntries(['withdrawal','cancellation'].map(route=>[route,JSON.parse(files['contract-actions/'+route+'/definition.json'])]));
 const contractActions={definitions:contractDefinitions,artifact:JSON.parse(files['artifacts/'+contractDefinitions.withdrawal.artifactId+'.json'])};
-const server={releases,agreements,consent,recordedConsent,processing,formPermissions,contractActions,paidOrders,evidence:syntheticRecords}; server.version=createHash('sha256').update(JSON.stringify(server)).digest('hex');
+const server={releases,agreements,consent,recordedConsent,processing,formPermissions,localizedFormPermissions,contractActions,paidOrders,evidence:syntheticRecords}; server.version=createHash('sha256').update(JSON.stringify(server)).digest('hex');
 await writeBuildFiles(output,files);
 for(const path of media) { await mkdir(dirname(resolve(output,path)),{recursive:true}); await copyFile(resolve(root,path),resolve(output,path)); }
 await writeFile(new URL('./dist/server-data.json',import.meta.url),JSON.stringify(server));

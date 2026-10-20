@@ -7,6 +7,7 @@ interface Target {
  title:string; outcome:string; configPaths:string[]; hostWork:string[];
  questionIds:SetupQuestionId[]; factsNeeded:string[]; guides:string[];
  prerequisites:string[]; verify:string[]; requiredConfigPaths?:string[];
+ conditionalConfig?:{when:'site-locale-not-english';requiredPaths:string[];reason:string}[];
 }
 const targets:Record<string,Target>={
  'legal-pages':{
@@ -31,12 +32,23 @@ const targets:Record<string,Target>={
   requiredConfigPaths:['scopeGuards'],
   title:'Technology collection notices',outcome:'A static, versioned disclosure of identification, location or profiling functions and their activation method.',configPaths:['purposes','services','consent.services.scope','scopeGuards','documents.privacy'],hostWork:['Use the optional build-only notabenda/technology API; supply reviewed function/activation copy and assign technologyCollectionScope(settings) before compiling.','Place the notice before every activation opportunity, including global choices; use existing gated lifecycles and on-demand native controls when appropriate.','Retain the exact descriptor separately from its legal artifact. Ordinary consent receipts do not automatically archive this supplemental notice.'],questionIds:['technology-functions'],factsNeeded:['Actual covered technology, provider and all collection purposes','Necessity, applicable scope and specialized processing assessment','Public function declarations, activation instructions, complete host-language labels and review','Fresh service material scope and actual cleanup'],guides:['technology-collection','consent','scope-guards'],prerequisites:['cookie-consent'],verify:['The disclosure and activation instructions render without JavaScript.','Opening the controls does not activate the function.','Old generic grants cannot start the new function.','Actual service starts, withdrawal, receipt failure and processing restrictions retain the existing gates.']
  },
+ 'storage-exceptions':{
+  requiredConfigPaths:['storageExceptions','storageExceptions.entries','scopeGuards'],
+  title:'Assessed storage-exception settings',outcome:'Separate objection controls for explicitly assessed supported storage uses, with their own preference journal and lifecycles.',
+  configPaths:['storageExceptions','storageExceptions.entries','scopeGuards','purposes','services.processingActivities','storage'],
+  hostWork:['Assess the selected supported profile and each declared condition; do not select it from a country or locale alone.','Register exception-owned lifecycles, hydrate the journal and present the information/objection controls before starting work. Keep exception services/purposes out of consent enrollment.','Use the headless controller with host-supplied wording for non-English UI; the packaged exception controls currently require English.'],
+  questionIds:['children','sensitive-data','high-risk-profiling','regulated-sector'],
+  factsNeeded:['Actual service, purpose and storage ownership; technical separation from consent-managed work','Supported profile, every eligibility condition and independent processing basis assessment','Information, free objection route, preference storage and reviewed scope facts'],
+  guides:['storage-exceptions','scope-guards','storage-cleanup'],prerequisites:['legal-pages'],
+  verify:['Initial hydration and presentation precede any managed work.','Objection immediately stops owned work and survives reload and material revisions.','Journal failure, stale tabs and unknown/present restricted scopes keep the service off.','Cookie acceptance never clears an objection.']
+ },
  'embeds':{
   title:'Gated media',outcome:'Remote media stays inert until its service is permitted.',configPaths:['services.resourceOrigins'],
   hostWork:['Use inert placeholders and consent-gated resource mounting; audit initial markup and resource hints.'],questionIds:['embeds'],factsNeeded:['Initial resource origins','Actual media elements and their owning service'],guides:['embeds'],prerequisites:['cookie-consent'],verify:['No remote src/hint before permission.','Withdrawal restores the placeholder without granting a new choice.']
  },
  'terms-agreement':{
-  title:'Explicit agreement to terms',outcome:'An unchecked action bound to an exact terms revision with an acknowledged receipt.',configPaths:['documents.terms'],
+  conditionalConfig:[{when:'site-locale-not-english',requiredPaths:['localization.terms'],reason:'The native non-English acceptance interface needs the complete selected terms dictionary.'}],
+  title:'Explicit agreement to terms',outcome:'An unchecked action bound to an exact terms revision with an acknowledged receipt.',configPaths:['documents.terms','localization.terms'],
   hostWork:['Create/register the exact offer; bind a host context and transport to the agreement control.','A terms page alone is not an agreement flow. Keep cookie preferences separate.'],questionIds:['terms-agreement'],factsNeeded:['Action requiring agreement','Exact terms version and action wording','Host context identity, receipt admission and failure/retry behavior'],guides:['terms'],prerequisites:['legal-pages'],verify:['Initially unchecked.','Displayed document matches the offer revision.','Failure cannot appear acknowledged; successful receipt remains inspectable.']
  },
  'privacy-rights':{
@@ -47,7 +59,9 @@ const targets:Record<string,Target>={
   title:'Processing opt-outs and browser signals',outcome:'Separate restrictions on declared processing activities.',configPaths:['services.processingActivities','privacySignals'],hostWork:['Connect GPC and any recorded opt-out workflow to downstream/account restrictions; cookie acceptance cannot lift them.'],questionIds:['processing-opt-outs'],factsNeeded:['Actual sale/sharing/targeted-advertising flows','Explicit applicability assessment and public explanation','Host identity, durable restriction handling and downstream effects'],guides:['privacy-signals','processing-choices'],prerequisites:['legal-pages'],verify:['Applicable signals restrict the declared processing.','Cookie acceptance does not remove a separate opt-out.','Confirm downstream effects, beyond the browser indicator.']
  },
  'form-permissions':{
-  title:'Separate form permissions',outcome:'Optional purpose/channel permission independent of submitting the surrounding form.',configPaths:['purposes'],hostWork:['Create the exact permission offer and implement host context, transport, receipt and withdrawal.'],questionIds:['personal-data','receipts'],factsNeeded:['Purpose, channel and optional wording','Action/context identity and durable acknowledgement policy'],guides:['form-permissions'],prerequisites:['legal-pages'],verify:['Form submission never silently grants permission.','Unchecked/failure states remain off.','Independent withdrawal and reload recovery work.']
+  requiredConfigPaths:['scopeGuards'],
+  conditionalConfig:[{when:'site-locale-not-english',requiredPaths:['localization.formPermission'],reason:'The native non-English permission interface needs the complete selected form-permission dictionary.'}],
+  title:'Separate form permissions',outcome:'Optional purpose/channel permission independent of submitting the surrounding form.',configPaths:['purposes','scopeGuards','localization.formPermission'],hostWork:['Create the exact permission offer and implement host context, transport, receipt and withdrawal.','Check formPermissionGrantSupported(offer) for the selected purpose. Missing, unknown or present restricted-scope facts keep ordinary grants off; resolve facts or use a separately supported process, never change them to absent to unlock the control.'],questionIds:['personal-data','receipts','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Purpose, channel and optional wording','Action/context identity and durable acknowledgement policy','Supported scope assessment for the actual purpose, including any purpose override'],guides:['form-permissions'],prerequisites:['legal-pages'],verify:['Form submission never silently grants permission.','Unchecked/failure states remain off.','Independent withdrawal and reload recovery work.']
  },
  'consumer-contracts':{
   title:'Consumer purchase and contract flows',outcome:'Selected reviewed pre-purchase disclosures, payment action, confirmations or contract declaration flows.',configPaths:['terms.audience','terms.serviceType','documents.terms'],hostWork:['Review each applicable flow separately: host quotes, payment/fulfillment, confirmations, withdrawal/cancellation, guarantees and delivery jobs are distinct.'],questionIds:['consumer-payments','consumer-distance-contracts','consumer-continuing-contracts','receipts'],factsNeeded:['Actual goods/services/digital content and consumer audience','How/where a contract forms, price/renewal obligations and applicable exclusions/windows','Required customer documents, delivery destination and independent host jobs'],guides:['paid-orders','order-confirmations','contract-actions','contract-dispatch','guarantees','guarantee-labels'],prerequisites:['legal-pages'],verify:['Final price/commitment and action match the host’s exact offer.','Receipt/storage is not presented as payment, recipient delivery or contract fulfillment.','Test each selected flow and its host handoff separately.']
@@ -71,7 +85,8 @@ const targets:Record<string,Target>={
 const selectionQuestions=[
  {id:'documents',targetId:'legal-pages',question:'Do you want to add or update static privacy, cookie or terms documents?'},
  {id:'authored-sources',targetId:'authored-documents',question:'Do you want to maintain documents as Markdown or trusted MDX with frontmatter?'},
- {id:'optional-service-control',targetId:'cookie-consent',question:'Do you want visitors to control optional scripts or browser storage?'},
+ {id:'optional-service-control',targetId:'cookie-consent',question:'Do you want consent-based controls for optional scripts or browser storage?'},
+ {id:'assessed-storage-exceptions',targetId:'storage-exceptions',question:'Do you want separate objection settings for an explicitly assessed supported storage-exception profile?'},
  {id:'technology-notice',targetId:'technology-functions',question:'Do you want to disclose identification, location or profiling technology and explain its voluntary activation?'},
  {id:'remote-media',targetId:'embeds',question:'Do you want remote media to stay unloaded until its service is permitted?'},
  {id:'explicit-agreement',targetId:'terms-agreement',question:'Do you want an explicit acceptance action bound to an exact terms revision?'},

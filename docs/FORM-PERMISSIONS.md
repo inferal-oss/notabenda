@@ -4,6 +4,10 @@ Use one stable permission for one declared purpose and one channel. Keep it sepa
 
 The current mechanism provides a build descriptor, headless controller, optional vanilla field, trusted Cloudflare ledger, inspection/export and evidence lifecycle support. Light and midnight website examples use isolated session workspaces and connect to permission history. Framework wrappers and regional form packs remain in progress. Optional transactional browser recovery is available below. It does not send messages or verify identity/contact ownership.
 
+## Language and retained wording
+
+For a non-English native interface, add the complete `localization.formPermission` dictionary to the site before compiling its release. Supply the offer's statement/actions, channel label and public facts in that language too. The v2 offer and backend registration pin the selected messages to the retained release; no per-key English fallback is used. English configurations without a dictionary retain v1 support. See [the localization contract](LOCALIZATION.md#form-permissions) for all fields, placeholders, size bounds and revision rules, and the [Portuguese example](https://notabenda.org/localization/permission/).
+
 ## Build a reviewed offer
 
 ```ts

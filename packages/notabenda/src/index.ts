@@ -42,3 +42,5 @@ export type {SiteLocalization,DocumentMessages,GeneratedDocumentMessages} from '
 export type {ConsentLocalization,ConsentMessages} from './localization-policy.js';
 
 export type {TermsLocalization,TermsMessages} from './terms-localization-policy.js';
+
+export type {FormPermissionLocalization,FormPermissionMessages} from './form-permission-localization-policy.js';

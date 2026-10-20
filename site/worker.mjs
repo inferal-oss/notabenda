@@ -41,12 +41,15 @@ export class EvidenceWorkspace {
       await registerProcessingNotice(this.state.storage,data.processing.notice,{siteId:data.processing.notice.siteId,allowPreview:true});
       await recordLegalRelease(this.state.storage,data.formPermissions.artifact);
       await registerFormPermissionOffer(this.state.storage,data.formPermissions.offer,{siteId:data.formPermissions.offer.siteId,allowPreview:true});
+      await recordLegalRelease(this.state.storage,data.localizedFormPermissions.artifact);
+      await registerFormPermissionOffer(this.state.storage,data.localizedFormPermissions.offer,{siteId:data.localizedFormPermissions.offer.siteId,allowPreview:true});
       await recordLegalRelease(this.state.storage,data.contractActions.artifact);
       for(const definition of Object.values(data.contractActions.definitions))await registerContractActionDefinition(this.state.storage,definition,{siteId:definition.siteId,allowPreview:true});
       const marker = 'host/demo-bootstrap/' + data.version;
       if(!await this.state.storage.get(marker)) {
         for(const {offer} of data.agreements) await setActiveTermsOffer(this.state.storage,offer.offerId,{siteId:offer.siteId,scopeId:offer.scopeId,allowPreview:true});
         await setActiveFormPermissionOffer(this.state.storage,data.formPermissions.offer.offerId,{siteId:data.formPermissions.offer.siteId,permissionId:data.formPermissions.offer.permissionId,allowPreview:true});
+        await setActiveFormPermissionOffer(this.state.storage,data.localizedFormPermissions.offer.offerId,{siteId:data.localizedFormPermissions.offer.siteId,permissionId:data.localizedFormPermissions.offer.permissionId,allowPreview:true});
         // These are explicitly synthetic examples, never visitor reports.
         for(const record of data.evidence) await this.state.storage.put('host/synthetic-evidence/'+record.id,record.data);
         await seedConsentExample(this.state.storage,data.consent);
@@ -72,10 +75,10 @@ export class EvidenceWorkspace {
         await this.initialize();const definition=data.contractActions.definitions[contractRoute];
         return protectedResponse(Response.json(await recordContractDeclaration(this.state.storage,body,contractContext(definition,this.generation))));
       }
-      if(path==='/demo/permissions/state'||path==='/demo/permissions/record') {
+      if(/^\/demo\/permissions\/(?:pt\/)?(?:state|record)$/u.test(path)) {
         const body=path.endsWith('/record')?await readDemoRequest(request):undefined;
         if(path.endsWith('/state')&&!['GET','HEAD'].includes(request.method))return protectedResponse(new Response('Method not allowed.',{status:405}));
-        await this.initialize();const offer=data.formPermissions.offer;
+        await this.initialize();const offer=path.startsWith('/demo/permissions/pt/')?data.localizedFormPermissions.offer:data.formPermissions.offer;
         const context=permissionContext(offer,this.generation);
         const result=path.endsWith('/state')?await getFormPermissionState(this.state.storage,context):await recordFormPermission(this.state.storage,body,context);
         return protectedResponse(Response.json(result));

@@ -2,6 +2,18 @@
 import {selectIntegration} from './integration-reference.js';
 import {readSetupAnswers,createSetupPlan} from './setup.js';
 import {validateSiteConfig} from './config.js';
+import validateShape from './site-config-validator.js';
+
+/** Paths are private diagnostics; values and private notes are never copied. */
+function authoringShape(input:unknown){
+ const valid=validateShape(input),errors=validateShape.errors??[];
+ const escape=(part:string)=>part.replace(/~/gu,'~0').replace(/\//gu,'~1');
+ const messages:Record<string,string>={required:'Required field is missing.',additionalProperties:'Unknown configuration field.',type:'Value has the wrong type.',const:'Value does not match this policy alternative.',enum:'Value is not an allowed choice.',anyOf:'Value does not match a complete allowed alternative.'};
+ return {valid,diagnostics:errors.slice(0,100).map(error=>{
+  const child=error.keyword==='required'?error.params.missingProperty:error.keyword==='additionalProperties'?error.params.additionalProperty:undefined;
+  return {instancePath:error.instancePath+(typeof child==='string'?'/'+escape(child):''),schemaPath:error.schemaPath,code:error.keyword,message:messages[error.keyword]??'Value does not match the authoring shape.'};
+ }),truncated:errors.length>100};
+}
 
 /** JSON data only, including through the API. Never invoke a caller's getters/toJSON. */
 function plainInput(input:unknown):Record<string,unknown>{
@@ -49,14 +61,18 @@ function observe(config:unknown,path:string){
 export function assessIntegration(input:unknown){
  const data=plainInput(input),selection=selectIntegration(data.selection),reference=selection.reference;
  const answers=data.answers===undefined?undefined:readSetupAnswers(data.answers);
- const preview=validateSiteConfig(data.config,{mode:'preview'}),production=validateSiteConfig(data.config,{mode:'production'});
+ const shape=authoringShape(data.config),preview=validateSiteConfig(data.config,{mode:'preview'}),production=validateSiteConfig(data.config,{mode:'production'});
  const questions=reference.questions.filter(q=>reference.relevantQuestionIds.includes(q.id)).map(q=>{
   const answer=answers?.answers[q.id];return {...q,choice:answer?.choice??'unknown',justificationRecorded:!!answer?.justification,
    status:!answer||answer.choice==='unknown'?'needs-answer':!answer.justification?'needs-support':'recorded-unverified'};
  });
+ const site=(data.config as Record<string,unknown>)?.site,locale=site&&typeof site==='object'?(site as Record<string,unknown>).locale:undefined;
+ // Evaluate known target-specific authoring requirements only after shape/runtime
+ // validation. A language is never evidence of a regional policy or legal basis.
+ const nonEnglish=shape.valid&&preview.valid&&typeof locale==='string'&&!/^en(?:-|$)/iu.test(locale);
  const targets=reference.targets.map(t=>({
   id:t.id,selection:t.selection,outcome:t.outcome,guides:t.guides,
-  configuration:t.configPaths.map(path=>({...observe(data.config,path),requiredForTarget:t.requiredConfigPaths?.includes(path)??false})),
+  configuration:t.configPaths.map(path=>({...observe(data.config,path),requiredForTarget:(t.requiredConfigPaths?.includes(path)??false)||(nonEnglish&&!!t.conditionalConfig?.some(rule=>rule.when==='site-locale-not-english'&&rule.requiredPaths.includes(path)))})),
   factsToConfirm:t.factsNeeded,hostWorkToVerify:t.hostWork,acceptanceScenarios:t.verify
  }));
  const missingRequiredConfig=targets.flatMap(t=>t.configuration.filter(f=>f.requiredForTarget&&f.state!=='declared').map(f=>({targetId:t.id,path:f.path,state:f.state})));
@@ -68,7 +84,7 @@ export function assessIntegration(input:unknown){
   return !current||typeof current!=='object'||(current as Record<string,unknown>)[key!]!==asserted;
  }).map(([factId,path])=>({factId,path,action:'Reconcile the explicit answer with the current config; neither value was changed.'}));
  // Reuse the wizard's conflict/restriction advice without modifying the supplied config.
- const sharedReview=preview.valid&&answers?createSetupPlan(answers,{config:data.config,preserveConfig:true}).report:undefined;
+ const sharedReview=shape.valid&&preview.valid&&answers?createSetupPlan(answers,{config:data.config,preserveConfig:true}).report:undefined;
  const practiceConflicts=sharedReview?.reviewItems.filter(item=>item.startsWith('Conflict:'))??[];
  const sharedReviewItems=sharedReview?.reviewItems.filter(item=>{
   const question=reference.questions.find(q=>item.startsWith(q.title));
@@ -77,10 +93,10 @@ export function assessIntegration(input:unknown){
  return {
   schemaVersion:1,kind:'private-integration-assessment',requestedTargetIds:selection.requestedTargetIds,prerequisiteTargetIds:selection.prerequisiteTargetIds,
   unresolvedScopeQuestionIds:selection.unresolvedQuestionIds,prerequisiteReview:selection.prerequisiteReview,
-  status:!preview.valid?'invalid-config':!targets.length?'no-targets':missingRequiredConfig.length||factConflicts.length||practiceConflicts.length||questions.some(q=>q.status!=='recorded-unverified')?'needs-input':!production.valid?'needs-review':'needs-verification',
+  status:!shape.valid||!preview.valid?'invalid-config':!targets.length?'no-targets':missingRequiredConfig.length||factConflicts.length||practiceConflicts.length||questions.some(q=>q.status!=='recorded-unverified')?'needs-input':!production.valid?'needs-review':'needs-verification',
   productionReady:false,configContract:reference.configContract,
   boundaries:{readsOnlyExplicitInputs:true,writesFiles:false,executesProjectCode:false,changesConfig:false,activatesFeatures:false,declaredIsNotVerified:true,legalReview:false},
-  validation:{preview,production},missingRequiredConfig,factConflicts,practiceConflicts,questions,targets,
+  validation:{authoringShape:shape,preview,production},missingRequiredConfig,factConflicts,practiceConflicts,questions,targets,
   recommendations:sharedReview?.recommendations.filter(r=>reference.relevantQuestionIds.includes(r.id as typeof reference.relevantQuestionIds[number])||r.status==='review')??[],
   sharedReviewItems,
   limits:['Configuration presence and recorded answers do not establish factual correctness, applicability or host behavior.','Missing optional paths can be intentional. Required paths are minimum target prerequisites, not a complete feature test.','Questionnaire review items may concern the broader inventory; they do not add targets.','No inferred values, draft configuration or operator-private values are returned. Keep this assessment private; diagnostic paths may identify inventory entries.']

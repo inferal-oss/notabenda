@@ -16,7 +16,8 @@
         "Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts.",
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
-        "Type-derived installed authoring JSON Schema and focused field lookup, with exact known keys/type values and separate runtime validation and host checks."
+        "Type-derived installed authoring JSON Schema and focused field lookup, with exact known keys/type values and separate runtime validation and host checks.",
+        "Standalone installed-shape checks in read-only assessment, bounded field diagnostics and selected-target prerequisites for scope assessment, localized interfaces and independent storage-exception controls."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -34,7 +35,9 @@
         "llms.txt",
         "packages/notabenda/src/integration-reference.ts",
         "packages/notabenda/scripts/config-schema.mjs",
-        "packages/notabenda/src/schema-cli.ts"
+        "packages/notabenda/src/schema-cli.ts",
+        "packages/notabenda/src/integration-assessment.ts",
+        "packages/notabenda/scripts/config-shape-validator.mjs"
       ]
     },
     {
@@ -292,7 +295,11 @@
         "packages/notabenda/src/indirect-collection.ts",
         "packages/notabenda/src/astro/IndirectCollectionNotice.astro",
         "packages/notabenda/src/setup.ts",
-        "examples/indirect-collection/build.mjs"
+        "examples/indirect-collection/build.mjs",
+        "packages/notabenda/src/form-permission-localization-policy.ts",
+        "packages/notabenda-cf/src/form-permission-localization-policy.ts",
+        "examples/localization/permission-build.mjs",
+        "examples/localization/permission.mjs"
       ]
     },
     {
@@ -697,7 +704,7 @@
       "title": "Versioned host-supplied localization",
       "status": "partial",
       "deliverables": [
-        "Complete versioned host-supplied messages for legal documents, consent controls and ordinary terms acceptance, including status/accessibility text, selected language and explicit direction.",
+        "Complete versioned host-supplied messages for legal documents, consent controls ordinary terms acceptance and form permissions, including status/accessibility text, selected language and explicit direction.",
         "Archived selected consent copy, independent presentation/disclosure revisions, exact material scopes and frontend/backend validation parity.",
         "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
         "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open."
@@ -726,7 +733,13 @@
         "packages/notabenda-cf/src/terms.ts",
         "packages/notabenda-cf/src/render.ts",
         "examples/localization/agreement-build.mjs",
-        "examples/localization/agreement.mjs"
+        "examples/localization/agreement.mjs",
+        "packages/notabenda/src/form-permission-localization-policy.ts",
+        "packages/notabenda/src/form-permission.ts",
+        "packages/notabenda-cf/src/form-permission-localization-policy.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "examples/localization/permission-build.mjs",
+        "examples/localization/permission.mjs"
       ]
     }
   ],
@@ -5119,7 +5132,11 @@
         "examples/astro/src/layouts/PermissionLayout.astro",
         "examples/astro/src/scripts/permission-client.mjs",
         "examples/astro/src/pages/form-permissions/astro/index.astro",
-        "examples/astro/src/pages/form-permissions/astro/review.astro"
+        "examples/astro/src/pages/form-permissions/astro/review.astro",
+        "packages/notabenda/src/form-permission-localization-policy.ts",
+        "packages/notabenda-cf/src/form-permission-localization-policy.ts",
+        "examples/localization/permission-build.mjs",
+        "examples/localization/permission.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
@@ -5132,9 +5149,10 @@
         "packages/notabenda/test/astro-form-permission.test.mjs",
         "packages/notabenda/test/astro-package.test.mjs",
         "packages/notabenda/test/astro-build.test.mjs",
-        "site/test/astro-permission.test.mjs"
+        "site/test/astro-permission.test.mjs",
+        "packages/notabenda/test/form-permission-localization.test.mjs"
       ],
-      "implementationNote": "Ordinary opt-in/withdrawal mechanics, scoped history, isolated examples and optional IndexedDB recovery are implemented. Exact pending requests, withdrawal epochs and head/activation fences survive reload; stale-tab grants and storage failures are covered. React provider/hooks/native field and light/midnight examples reuse that controller with no mount-time network or ordinary-form writes. Wider platform acceptance and regional packs remain incomplete. Named Astro fields and a navigation bridge reuse the same permission controller without mount/page-load transport. Exact-offer matching, duplicate ownership, draft/pending retention, actual two-page builds and host session/contact/offer replacement are checked."
+      "implementationNote": "Ordinary opt-in/withdrawal mechanics, scoped history, isolated examples and optional IndexedDB recovery are implemented. Exact pending requests, withdrawal epochs and head/activation fences survive reload; stale-tab grants and storage failures are covered. React provider/hooks/native field and light/midnight examples reuse that controller with no mount-time network or ordinary-form writes. Wider platform acceptance and regional packs remain incomplete. Named Astro fields and a navigation bridge reuse the same permission controller without mount/page-load transport. Exact-offer matching, duplicate ownership, draft/pending retention, actual two-page builds and host session/contact/offer replacement are checked. Complete optional host-supplied fixed/status/recovery messages use v2 offers and retained-release comparison; English v1 behavior and exact historical retries remain supported. Direct-collection notice UI localization and broader regional/platform coverage remain separate work."
     },
     {
       "id": "REQ-EU-MARKETING",
@@ -6156,10 +6174,10 @@
     {
       "id": "REQ-PRODUCT-LOCALIZATION",
       "jurisdiction": "PRODUCT",
-      "title": "Complete versioned messages for legal pages, consent controls and terms acceptance",
+      "title": "Complete versioned messages for legal pages, consent, terms and form permissions",
       "kind": "product-standard",
-      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent and terms-interface copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts.",
-      "appliesWhen": "An operator supplies the optional localization declaration for legal pages, cookie-choice controls or ordinary terms acceptance.",
+      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent, terms-interface and form-permission copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts.",
+      "appliesWhen": "An operator supplies the optional localization declaration for legal pages, cookie-choice controls ordinary terms acceptance or form permissions.",
       "sourceRefs": [],
       "discoverySourceIds": [],
       "featureIds": [
@@ -6174,7 +6192,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages, cookie-choice controls and ordinary terms acceptance; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent or an enforceable agreement.",
+      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages, cookie-choice controls ordinary terms acceptance and form permissions; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent or an enforceable agreement.",
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
         "packages/notabenda/src/document-localization.ts",
@@ -6199,14 +6217,21 @@
         "packages/notabenda-cf/src/terms.ts",
         "packages/notabenda-cf/src/render.ts",
         "examples/localization/agreement-build.mjs",
-        "examples/localization/agreement.mjs"
+        "examples/localization/agreement.mjs",
+        "packages/notabenda/src/form-permission-localization-policy.ts",
+        "packages/notabenda/src/form-permission.ts",
+        "packages/notabenda-cf/src/form-permission-localization-policy.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "examples/localization/permission-build.mjs",
+        "examples/localization/permission.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
         "docs/verification/localization.md",
         "site/test/localization.test.mjs",
         "packages/notabenda/test/terms-localization.test.mjs",
-        "site/test/demo.test.mjs"
+        "site/test/demo.test.mjs",
+        "packages/notabenda/test/form-permission-localization.test.mjs"
       ]
     },
     {
@@ -6214,7 +6239,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Agent integration skill and public Markdown documentation",
       "kind": "product-standard",
-      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features. Reconcile explicit configuration and practice answers with selected targets using a read-only assessment; distinguish minimum missing fields, conflicts, declarations, review and unverified host behavior. Expose a version-matched, type-derived authoring schema with field lookup so agents can inspect exact known keys, required fields and allowed type values before making targeted changes; preserve the separate runtime validator and unresolved factual decisions.",
+      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features. Reconcile explicit configuration and practice answers with selected targets using a read-only assessment; distinguish minimum missing fields, conflicts, declarations, review and unverified host behavior. Expose a version-matched, type-derived authoring schema with field lookup so agents can inspect exact known keys, required fields and allowed type values before making targeted changes; preserve the separate runtime validator and unresolved factual decisions. Assessment also enforces the installed authoring shape, reports bounded exact JSON Pointer errors and evaluates declared target-specific conditional prerequisites without altering facts.",
       "appliesWhen": "An agent helps an adopter configure, update or validate a Notabenda integration.",
       "sourceRefs": [
         {
@@ -6257,7 +6282,9 @@
         "skills/notabenda/references/configuration-target.md",
         "packages/notabenda/src/integration-assessment.ts",
         "packages/notabenda/scripts/config-schema.mjs",
-        "packages/notabenda/src/schema-cli.ts"
+        "packages/notabenda/src/schema-cli.ts",
+        "packages/notabenda/scripts/config-shape-validator.mjs",
+        "packages/notabenda/src/site-config-validator.d.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
@@ -6268,7 +6295,7 @@
         "packages/notabenda/test/integration-assessment.test.mjs",
         "packages/notabenda/test/config-schema.test.mjs"
       ],
-      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness. The package build generates a draft 2020-12 authoring schema from SiteConfig using the pinned build-only TypeScript API. Unsupported constructs fail the build. Read-only schema field lookup returns referenced definitions, optional ancestors, array item paths and alternative-parent context without reading project inputs or suggesting default facts. Unknown keys reject in the authoring shape; runtime cross-field, policy, URL, bound and review rules remain separate. An offline packed-install test resolves the exact schema export and runs full/field CLI commands without a compiler runtime dependency."
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness. The package build generates a draft 2020-12 authoring schema from SiteConfig using the pinned build-only TypeScript API. Unsupported constructs fail the build. Read-only schema field lookup returns referenced definitions, optional ancestors, array item paths and alternative-parent context without reading project inputs or suggesting default facts. Unknown keys reject in the authoring shape; runtime cross-field, policy, URL, bound and review rules remain separate. An offline packed-install test resolves the exact schema export and runs full/field CLI commands without a compiler runtime dependency. A build-time Ajv standalone validator enforces that authoring shape during read-only assessment without runtime compiler/schema-library dependencies. Unknown fields ignored by runtime projection still produce invalid-config. The target map distinguishes assessed storage exceptions from consent enrollment, requires form scope assessment and exposes conditional non-English terms/form dictionaries."
     },
     {
       "id": "REQ-BR-COOKIE-RIGHTS-LINK",
@@ -7272,7 +7299,7 @@
         "REQ-PRODUCT-FORM-PERMISSIONS"
       ],
       "status": "automated",
-      "expected": "Exact offers and host stream preconditions; CAS/activation ordering; independent withdrawals including failed/hung first reads; safe nonce retries; monotonic responses; scoped lifecycle and read-time evidence; isolated session routing and local SQLite restart. Broader UI/platform acceptance tracked separately. Transactional reload recovery preserves original command/artifact binding, storage failures never bypass withdrawal, and keyboard focus survives hidden controls. React form fields preserve conservative SSR/hydration, immutable snapshots, host ownership, form independence and explicit exact-request recovery through remount. Astro form fields preserve exact-offer named binding, host-owned draft/pending state and no automatic transport across navigation; the host closes replaced session/contact/offer contexts before refreshing the bridge.",
+      "expected": "Exact offers and host stream preconditions; CAS/activation ordering; independent withdrawals including failed/hung first reads; safe nonce retries; monotonic responses; scoped lifecycle and read-time evidence; isolated session routing and local SQLite restart. Broader UI/platform acceptance tracked separately. Transactional reload recovery preserves original command/artifact binding, storage failures never bypass withdrawal, and keyboard focus survives hidden controls. React form fields preserve conservative SSR/hydration, immutable snapshots, host ownership, form independence and explicit exact-request recovery through remount. Astro form fields preserve exact-offer named binding, host-owned draft/pending state and no automatic transport across navigation; the host closes replaced session/contact/offer contexts before refreshing the bridge. Localized v2 interface copy must match the retained release, and a pending v1 withdrawal retries its original command after v2 activation.",
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
         "docs/verification/form-permissions.md",
@@ -7282,7 +7309,8 @@
         "packages/notabenda/test/astro-form-permission.test.mjs",
         "packages/notabenda/test/astro-package.test.mjs",
         "packages/notabenda/test/astro-build.test.mjs",
-        "site/test/astro-permission.test.mjs"
+        "site/test/astro-permission.test.mjs",
+        "packages/notabenda/test/form-permission-localization.test.mjs"
       ]
     },
     {
@@ -7550,13 +7578,14 @@
         "REQ-PRODUCT-LOCALIZATION"
       ],
       "status": "automated",
-      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently. Terms offers bind complete widget copy to the retained release, require a matching receipt, preserve v1 English behavior and support private language/copy inspection.",
+      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently. Terms offers bind complete widget copy to the retained release, require a matching receipt, preserve v1 English behavior and support private language/copy inspection. Form offers pin complete fixed/recovery messages, reject archive mismatches or a v1 downgrade, preserve exact pending v1 withdrawals across localized activation and do not change cookie scopes; isolated demo routes retain exact language/copy.",
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
         "docs/verification/localization.md",
         "site/test/localization.test.mjs",
         "packages/notabenda/test/terms-localization.test.mjs",
-        "site/test/demo.test.mjs"
+        "site/test/demo.test.mjs",
+        "packages/notabenda/test/form-permission-localization.test.mjs"
       ]
     },
     {
@@ -7565,7 +7594,7 @@
         "REQ-PRODUCT-AGENT-INTEGRATION"
       ],
       "status": "automated",
-      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness. Assessment detects missing target config and contradictory facts, limits questions to selected/prerequisite work, preserves inputs and private values, rejects executable/non-file inputs, and never declares readiness from valid config or recorded answers. Generated authoring schemas match actual types, pass draft 2020-12 schema validation, reject field/literal errors and preserve nested policy alternatives and mapped message keys. Every advertised target path resolves offline with no project reads or writes; a structurally valid unknown purpose reference still fails the runtime validator.",
+      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness. Assessment detects missing target config and contradictory facts, limits questions to selected/prerequisite work, preserves inputs and private values, rejects executable/non-file inputs, and never declares readiness from valid config or recorded answers. Generated authoring schemas match actual types, pass draft 2020-12 schema validation, reject field/literal errors and preserve nested policy alternatives and mapped message keys. Every advertised target path resolves offline with no project reads or writes; a structurally valid unknown purpose reference still fails the runtime validator. Assessment enforces the installed shape independently of runtime validation, omits rejected values, escapes JSON Pointer paths, caps errors and checks conditional selected-interface dictionaries. Form scope prerequisites/questions and exception-only target separation remain explicit.",
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",

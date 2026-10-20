@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-LOCALIZATION
+import {normalizeFormPermissionLocalization,selectFormPermissionLocalization} from './form-permission-localization-policy.js';
+import type {FormPermissionLocalization} from './form-permission-localization-policy.js';
 // @requirements REQ-EU-CONSENT REQ-CA-MEANINGFUL REQ-EU-MARKETING REQ-CA-CASL-OPTIN
 /** @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-EVIDENCE-LIFECYCLE REQ-PRODUCT-SCOPE-GUARDS */
 import {canonicalJson,sha256,validateStoredLegalRelease} from './history.js';
@@ -37,7 +40,8 @@ function safeLink(v:unknown):boolean {
 }
 async function offerValue(input:unknown,context:FormPermissionStoreOptions):Promise<Value>{
   const n=normalized(input,'invalid-offer',32768);
-  if(!exact(n,['schemaVersion','offerId','siteId','permissionId','purposeId','channel','revision','artifactId','mode','reviewStatus','document','facts','wording','withdrawalUrl','deliveryWindowSeconds'])||n.schemaVersion!==1||!hash(n.offerId)||!hash(n.artifactId)||n.siteId!==context.siteId||!slug(n.permissionId)||!slug(n.purposeId)||!text(n.revision,200)||!['production','preview'].some(v=>n.mode===v)||!['draft','reviewed'].some(v=>n.reviewStatus===v)||!safeLink(n.withdrawalUrl)||!Number.isInteger(n.deliveryWindowSeconds)||Number(n.deliveryWindowSeconds)<30||Number(n.deliveryWindowSeconds)>3600)return fail('invalid-offer');
+  if(!exact(n,['schemaVersion','offerId','siteId','permissionId','purposeId','channel','revision','artifactId','mode','reviewStatus','document','facts','wording','withdrawalUrl','deliveryWindowSeconds',...(n.schemaVersion===2?['localization']:[])])||(n.schemaVersion!==1&&n.schemaVersion!==2)||!hash(n.offerId)||!hash(n.artifactId)||n.siteId!==context.siteId||!slug(n.permissionId)||!slug(n.purposeId)||!text(n.revision,200)||!['production','preview'].some(v=>n.mode===v)||!['draft','reviewed'].some(v=>n.reviewStatus===v)||!safeLink(n.withdrawalUrl)||!Number.isInteger(n.deliveryWindowSeconds)||Number(n.deliveryWindowSeconds)<30||Number(n.deliveryWindowSeconds)>3600)return fail('invalid-offer');
+  if(n.schemaVersion===2){try{normalizeFormPermissionLocalization(n.localization,{allowPreview:context.allowPreview===true});}catch{return fail('invalid-offer');}}
   const c=object(n.channel),w=object(n.wording),d=object(n.document),f=object(n.facts);
   if(!exact(c,['id','label'])||!slug(c.id)||!text(c.label,120)||!exact(w,['title','statement','grantLabel','withdrawLabel','optionality','withdrawalExplanation'])||Object.entries(w).some(([k,v])=>!text(v,k.endsWith('Label')?120:k==='title'?300:2000))||!exact(f,['controller','purpose','recipients','privacy','scopeGuard'])||!exact(d,['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus'])||!text(d.title,300)||!text(d.version,200)||d.url!==`/artifacts/${n.artifactId}/privacy.html`||!hash(d.sha256)||!hash(d.contentSha256)||typeof d.effectiveDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/u.test(d.effectiveDate)||!Number.isFinite(Date.parse(d.effectiveDate))||new Date(d.effectiveDate).toISOString().slice(0,10)!==d.effectiveDate||!['draft','reviewed'].some(v=>d.reviewStatus===v))return fail('invalid-offer');
   if(!context.allowPreview&&(n.mode!=='production'||n.reviewStatus!=='reviewed'||d.reviewStatus!=='reviewed'))return fail('invalid-offer');
@@ -53,6 +57,10 @@ async function verifyArchive(tx:Pick<HistoryTransaction,'get'>,offer:Value,conte
   const recipients=c.services.map(object).filter(s=>Array.isArray(s.purposeIds)&&s.purposeIds.includes(offer.purposeId!)).map(s=>({id:s.id!,name:s.name!,provider:s.provider!,location:s.location!,purposeIds:[offer.purposeId!],...(s.privacyUrl?{privacyUrl:s.privacyUrl}:{})}));
   const privacy=object(c.privacy);const facts={controller:c.controller!,purpose,recipients,privacy:{rights:privacy.rights!,transfers:privacy.transfers!,automatedDecisions:privacy.automatedDecisions!,complaints:privacy.complaints!,...(privacy.rightsUrl?{rightsUrl:privacy.rightsUrl}:{})},scopeGuard};
   if(canonicalJson(facts as unknown as JsonValue)!==canonicalJson(offer.facts!))return fail('invalid-offer');
+  if(c.localization!==undefined&&object(c.localization).formPermission!==undefined){
+    let selected:FormPermissionLocalization;try{selected=normalizeFormPermissionLocalization(selectFormPermissionLocalization(object(c.localization) as unknown as FormPermissionLocalization),{locale:String(object(c.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-offer');}
+    if(offer.schemaVersion!==2||canonicalJson(selected as unknown as JsonValue)!==canonicalJson(offer.localization!))return fail('invalid-offer');
+  }else if(offer.localization!==undefined||!/^en(?:-|$)/iu.test(String(object(c.site).locale)))return fail('invalid-offer');
   const d=object((m.documents as JsonValue[]).find(raw=>object(raw).kind==='privacy')),given=object(offer.document);for(const key of ['title','version','effectiveDate','sha256','contentSha256','reviewStatus'])if(d[key]!==given[key])return fail('invalid-offer');
   return scopeGuard!==null&&scopeGuardFields.every(field=>scopeGuard.facts[field]==='absent');
 }

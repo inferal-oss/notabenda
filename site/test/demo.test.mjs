@@ -105,6 +105,24 @@ test('the demo session recovery message is terminal-specific, text-only and does
 });
 
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-EVIDENCE-LIFECYCLE
+// @requirements REQ-PRODUCT-LOCALIZATION
+test('localized form permissions keep their language, exact copy and session isolated from English permissions',async()=>{
+ const {env}=environment(),a=await session(env),b=await session(env),offer=data.localizedFormPermissions.offer;
+ const current=async(s,pt=true)=>{const response=await serveHost(req('/demo/permissions/'+(pt?'pt/':'')+'state',{headers:headers(s)}),env);assert.equal(response.status,200);return response.json();};
+ const first=await current(a),other=await current(b);assert.notEqual(first.streamRef,other.streamRef);assert.equal(first.revision,0);assert.equal(first.permitted,false);
+ const command={schemaVersion:1,offerId:offer.offerId,requestId:crypto.randomUUID(),action:'grant',expectedStreamRef:first.streamRef,expectedRevision:first.revision,expectedActivation:first.activeRevision,clientAt:new Date().toISOString()};
+ const post=(s,pt=true)=>serveHost(req('/demo/permissions/'+(pt?'pt/':'')+'record',{method:'POST',headers:{...headers(s),Origin:'https://demo.example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(command)}),env);
+ const response=await post(a);assert.equal(response.status,200);const grant=await response.json();assert.equal(grant.state.permitted,true);
+ assert.equal((await current(b)).permitted,false);assert.equal((await current(a,false)).permitted,false);assert.equal((await post(b)).status,409);assert.equal((await post(a,false)).status,409);
+ const detailPath='/demo/admin/permissions/record?id='+grant.receipt.id,detail=await serveHost(req(detailPath,{headers:headers(a)}),env),html=await detail.text();
+ assert.equal(detail.status,200);for(const text of ['Declared interface wording','pt-BR',offer.wording.statement,offer.localization.formPermission.error])assert.ok(html.includes(text),text);
+ assert.doesNotMatch(html,/href="\/backoffice/u);assert.equal((await serveHost(req(detailPath,{headers:headers(b)}),env)).status,404);
+ for(const path of ['/localization/permission/','/localization/permission/index.html']){
+  const page=await serveHost(req(path,{headers:headers(a)}),env),body=await page.text();assert.equal(page.status,200);assert.match(body,new RegExp('content="'+first.streamRef+'"'));assert.match(body,/class="demo-corner"/u);assert.ok(!body.includes(a.cookie.split('=')[1]));
+ }
+ const legal=await serveHost(req('/localization/permission/privacy/'),env);assert.equal(legal.status,200);assert.equal(legal.headers.get('Set-Cookie'),null);
+});
+
 test('form permissions use isolated session/contact bindings, acknowledged ordering and scoped admin evidence',async()=>{
  const {env,objects}=environment(),a=await session(env),b=await session(env),offer=data.formPermissions.offer;
  const current=async s=>{const r=await serveHost(req('/demo/permissions/state',{headers:headers(s)}),env);assert.equal(r.status,200);return r.json();};

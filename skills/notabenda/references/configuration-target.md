@@ -15,6 +15,10 @@ npx --no-install notabenda describe cookie-consent terms-agreement --json
 
 Config paths describe fields in `SiteConfig`, exported from `notabenda`. A path through an array describes its item field. `hostWork` and `hostWorkRefs` are application tasks, **not fields to insert into the config**. The CLI does not accept arbitrary `host` settings. Markdown/MDX uses the separate authoring API. Use the installed schema for exact known fields and allowed type values; the map and schema do not decide legal applicability.
 
+Choose consent controls and assessed storage exceptions separately. `storage-exceptions` has legal pages as supporting work, with its own information, objection journal and service lifecycles; it does not require consent enrollment. Its supported profiles and every eligibility condition need an explicit assessment. A locale or country is insufficient.
+
+For `form-permissions`, establish `scopeGuards` and test `formPermissionGrantSupported(offer)` for the actual selected purpose, including overrides. Unknown or present restricted facts keep ordinary grants off. They require resolution or a separately supported process, never a convenient `absent` declaration. The map's `conditionalConfig` also identifies the complete terms/form dictionary required for a selected non-English native interface. Unrelated dictionaries are not required.
+
 ## Read exact field shapes
 
 ```sh
@@ -83,8 +87,8 @@ The optional API is `assessIntegration({selection, config, answers})` from `nota
 Read the result in this order:
 
 1. `requestedTargetIds` and `prerequisiteReview`: confirm the intended work and reuse existing support.
-2. `validation.preview`: fix structural errors before drafting. `validation.production` separately reports draft/review errors.
-3. `missingRequiredConfig`: minimum sections needed by selected targets. For example, optional-service control needs `consent`; an inventory alone does not configure it.
+2. `validation.authoringShape`: fix exact-key, required-field, type and policy-alternative errors first. Diagnostics use JSON Pointer `instancePath` and schema-rule `schemaPath`, omit rejected values and are capped at 100 (`truncated` requests another pass). Then inspect `validation.preview` for semantic errors and `validation.production` for review errors. A runtime validator can accept extra keys that the authoring shape correctly rejects.
+3. `missingRequiredConfig`: minimum sections needed by selected targets, including applicable `conditionalConfig` rules. For example, optional-service control needs `consent`; an inventory alone does not configure it.
 4. `questions`, `factConflicts` and `practiceConflicts`: collect relevant missing facts, support declared answers, and reconcile disagreements without overwriting either input.
 5. `targets[].configuration`: observed paths and coverage through arrays. `absent`, `empty` or `partial` optional fields can be intentional. `declared` only reports presence, not correct values, legal suitability or runtime coverage.
 6. `factsToConfirm`, `hostWorkToVerify` and `acceptanceScenarios`: verify the actual host behavior. These remain open even with valid configuration and recorded answers.

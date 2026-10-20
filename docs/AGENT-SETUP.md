@@ -42,6 +42,8 @@ Omit the path for the full schema. It is generated from `SiteConfig` on each pac
 
 The schema rejects unknown fields to catch misspellings. It covers authoring shape, including required fields, literal choices and policy alternatives. Runtime validation additionally checks IDs, relationships, URL safety, policy bounds, complete review and other semantic rules. Use `check --preview --json` while drafting, then the ordinary production `check --json` after review. Passing the schema alone is insufficient. A schema reference can be associated through editor settings; `$schema` is not a `SiteConfig` field to add to the inventory.
 
+The target map distinguishes consent-based controls from `storage-exceptions`, whose services use a separate objection controller and must stay outside consent enrollment. Form permissions require an explicit `scopeGuards` assessment; unknown or present restricted facts cannot be changed to `absent` to make a control work. For non-English native interfaces, the map declares conditional requirements for `localization.terms` and `localization.formPermission`. A valid translated policy page alone does not configure those controls.
+
 For an ambiguous request, use the reference's `selectionQuestions` to clarify the distinctions that matter. Its `selectionTemplate` accepts explicit `yes`, `no` and `unknown` task decisions. Save a private selection file and run:
 
 ```sh
@@ -59,6 +61,8 @@ npx --no-install notabenda assess --selection ./integration-selection.json --con
 ```
 
 Start the practice answers from the selected reference's `targetAnswersTemplate`. The optional `--answers` accepts an answers file or a saved private setup report. The read-only assessment reports relevant unknowns, minimum missing config, contradictory facts, preview/production diagnostics and host tasks to verify. It never copies sample values into the config. Field presence is reported as a declaration, with coverage through inventory arrays; it does not prove content or behavior. Keep the report private. Exit zero means a report was produced, and `productionReady` remains false. The API equivalent is `assessIntegration({selection, config, answers})` from `notabenda/integration/assessment`.
+
+Read `validation.authoringShape` first. Assessment runs the installed generated schema as well as both runtime validation modes. Shape diagnostics use JSON Pointer `instancePath`, identify the schema rule and never copy the rejected value. They catch unknown fields even where runtime projection would ignore them. Up to 100 diagnostics are returned; `truncated` means fix those and rerun. `invalid-config` takes precedence over the other assessment states when either the shape or preview rules fail. Native-interface dictionaries become required only for the selected target and a valid non-English configuration; unrelated optional dictionaries remain optional.
 
 ## Documentation without the page layout
 

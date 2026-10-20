@@ -1,5 +1,6 @@
 import {createConsentStyles} from './consent-styles.mjs';
 import {createConfigSchema} from './config-schema.mjs';
+import {createConfigShapeValidator} from './config-shape-validator.mjs';
 import { copyFile, chmod, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 await copyFile(new URL('../src/styles.css', import.meta.url), new URL('../dist/styles.css', import.meta.url));
 await copyFile(new URL('../src/services.css', import.meta.url), new URL('../dist/services.css', import.meta.url));
@@ -18,7 +19,12 @@ await mkdir(new URL('../dist/catalog/',import.meta.url),{recursive:true});
 for(const [source,target] of [['schema.json','schema.json'],['NOTICE','NOTICE.txt'],['sources/open-cookie-database/LICENSE','open-cookie-database-LICENSE.txt']])await copyFile(new URL('../../../catalog/'+source,import.meta.url),new URL('../dist/catalog/'+target,import.meta.url));
 
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
-await writeFile(new URL('../dist/site-config.schema.json',import.meta.url),JSON.stringify(await createConfigSchema(),null,2)+'\n');
+const configSchema=await createConfigSchema();
+await writeFile(new URL('../dist/site-config.schema.json',import.meta.url),JSON.stringify(configSchema,null,2)+'\n');
+await writeFile(new URL('../dist/site-config-validator.js',import.meta.url),createConfigShapeValidator(configSchema));
+await copyFile(new URL('../src/site-config-validator.d.ts',import.meta.url),new URL('../dist/site-config-validator.d.ts',import.meta.url));
+await mkdir(new URL('../dist/licenses/',import.meta.url),{recursive:true});
+await copyFile(new URL('../../../node_modules/ajv/LICENSE',import.meta.url),new URL('../dist/licenses/ajv-LICENSE.txt',import.meta.url));
 // One maintained skill, distributed with the installed package version.
 await mkdir(new URL('../dist/skill/agents/',import.meta.url),{recursive:true});
 await mkdir(new URL('../dist/skill/references/',import.meta.url),{recursive:true});

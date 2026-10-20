@@ -21,7 +21,7 @@ export const siteSections=[
   topic('cookies','Cookie choices','/choices','Accept, reject or choose purposes, then see which declared services may run.','consent',[['Dark','/dark/choices']]),
   topic('embeds','Gated media','/embeds','Keep frames and images inert until their declared service is allowed.','embeds'),
   topic('storage','Storage cleanup','/storage-cleanup','Remove declared browser markers after withdrawal while leaving unrelated storage alone.','storage-cleanup'),
-  topic('permissions','Form permissions','/form-permissions','Record an optional purpose and channel, with independent withdrawal and recovery.','form-permissions',[['React','/form-permissions/react/'],['Astro','/form-permissions/astro/']]),
+  topic('permissions','Form permissions','/form-permissions','Record an optional purpose and channel, with independent withdrawal and recovery.','form-permissions',[['React','/form-permissions/react/'],['Astro','/form-permissions/astro/'],['Portuguese','/localization/permission/']]),
   topic('signals','Global Privacy Control','/privacy-signals','Apply a browser privacy signal independently of optional cookie preferences.','privacy-signals'),
   topic('opt-outs','Processing opt-outs','/processing-choices','Record restrictions and inspect their current state alongside the original request.','processing-choices'),
   topic('exceptions','UK storage settings','/storage-exceptions','Separate on/off settings for declared statistical and appearance exceptions.','storage-exceptions',[],'Specialist controls'),

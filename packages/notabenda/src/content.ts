@@ -1,3 +1,4 @@
+import {selectFormPermissionLocalization} from './form-permission-localization-policy.js';
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 // @requirements REQ-IE-CONSENT-DURATION
 import {selectTermsLocalization} from './terms-localization-policy.js';
@@ -173,8 +174,7 @@ export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:str
 /** @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE
  * Create a display descriptor from a trusted public compiler artifact, never from form values.
  */
-export function createCollectionNotice(artifact:LegalArtifact,settings:CollectionNoticeSettings,options:ValidationOptions={}):CollectionNotice {
-  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
+function directCollectionFacts(artifact:LegalArtifact,settings:CollectionNoticeSettings,options:ValidationOptions={}) {
   const bad=():never=>{throw new Error('Select declared direct-collection purposes from an intact public legal release.');};
   if(options.mode!==undefined&&!['production','preview'].includes(options.mode))return bad();
   if(!artifact||!settings||!settings.wording||!Array.isArray(settings.purposeIds)||!settings.purposeIds.length||settings.purposeIds.length>8||new Set(settings.purposeIds).size!==settings.purposeIds.length)return bad();
@@ -188,7 +188,11 @@ export function createCollectionNotice(artifact:LegalArtifact,settings:Collectio
   const purposes=settings.purposeIds.map(id=>{const purpose=config.purposes.find(p=>p.id===id);if(!purpose||purpose.collection.source==='indirect')return bad();return purpose;});
   const recipients=config.services.filter(s=>s.purposeIds.some(id=>settings.purposeIds.includes(id))).map(s=>({id:s.id,name:s.name,provider:s.provider,location:s.location,purposeIds:s.purposeIds.filter(id=>settings.purposeIds.includes(id)),...(s.privacyUrl?{privacyUrl:s.privacyUrl}:{})}));
   const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
-  const n=normalizeCollectionNotice({schemaVersion:1,renderingPolicy:'collection-v1',locale:config.site.locale,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId,mode:manifest.mode,reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:settings.wording.privacyLinkLabel??'Read the privacy policy'},controller:config.controller,purposes,recipients,privacy:{rights:config.privacy.rights,transfers:config.privacy.transfers,automatedDecisions:config.privacy.automatedDecisions,complaints:config.privacy.complaints,...(config.privacy.rightsUrl?{rightsUrl:config.privacy.rightsUrl}:{})},document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
+  return {schemaVersion:1 as const,renderingPolicy:'collection-v1' as const,locale:config.site.locale,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId,mode:manifest.mode,reviewStatus:settings.reviewStatus,controller:config.controller,purposes,recipients,privacy:{rights:config.privacy.rights,transfers:config.privacy.transfers,automatedDecisions:config.privacy.automatedDecisions,complaints:config.privacy.complaints,...(config.privacy.rightsUrl?{rightsUrl:config.privacy.rightsUrl}:{})},document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}};
+}
+export function createCollectionNotice(artifact:LegalArtifact,settings:CollectionNoticeSettings,options:ValidationOptions={}):CollectionNotice {
+  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
+  const n=normalizeCollectionNotice({...directCollectionFacts(artifact,settings,options),wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:settings.wording.privacyLinkLabel??'Read the privacy policy'}},{allowPreview:options.mode==='preview'});
   const {noticeId:_,...noticeDescriptor}=n;return {...n,noticeId:sha256(canonicalJson(noticeDescriptor))};
 }
 
@@ -229,8 +233,10 @@ export function verifyIndirectCollectionNotice(input:unknown,artifact:LegalArtif
 
 /** @requirements REQ-PRODUCT-FORM-PERMISSIONS Pin one stable purpose/channel permission to a reviewed privacy release. */
 export function createFormPermissionOffer(artifact:LegalArtifact,settings:FormPermissionSettings,options:ValidationOptions={}):FormPermissionOffer {
-  const notice=createCollectionNotice(artifact,{scopeId:settings.permissionId,purposeIds:[settings.purposeId],reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.statement}},options);
+  if(!artifact.publicConfig.localization?.formPermission)requireEnglishSurface(artifact.publicConfig,'Form permission without localization.formPermission');
+  const localization=artifact.publicConfig.localization?.formPermission?selectFormPermissionLocalization(artifact.publicConfig.localization):undefined;
+  const notice=directCollectionFacts(artifact,{scopeId:settings.permissionId,purposeIds:[settings.purposeId],reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.statement}},options);
   const guard=scopeGuardContext(artifact.publicConfig.scopeGuards,settings.purposeId)??null;
-  const value=normalizeFormPermissionOffer({schemaVersion:1,offerId:'0'.repeat(64),siteId:notice.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:notice.artifactId,mode:notice.mode,reviewStatus:settings.reviewStatus,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard},wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},{allowPreview:options.mode==='preview'});
+  const value=normalizeFormPermissionOffer({schemaVersion:localization?2:1,...(localization?{localization}:{}),offerId:'0'.repeat(64),siteId:notice.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:notice.artifactId,mode:notice.mode,reviewStatus:settings.reviewStatus,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard},wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},{allowPreview:options.mode==='preview'});
   const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))};
 }

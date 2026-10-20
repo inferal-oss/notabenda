@@ -18,6 +18,7 @@ test('explicit task decisions select only requested outcomes and their supportin
   [{'optional-service-control':'yes'},['cookie-consent'],['legal-pages']],
   [{'optional-service-control':'yes','stored-evidence':'yes'},['cookie-consent','evidence'],['legal-pages']],
   [{'technology-notice':'yes'},['technology-functions'],['legal-pages','cookie-consent']],
+  [{'assessed-storage-exceptions':'yes'},['storage-exceptions'],['legal-pages']],
   [{'remote-media':'yes'},['embeds'],['legal-pages','cookie-consent']],
   [{'translated-copy':'yes'},['localization'],['legal-pages']],
   [{'service-investigation':'yes'},['discovery'],[]]
@@ -28,7 +29,7 @@ test('explicit task decisions select only requested outcomes and their supportin
   assert.equal(result.reference.targets.some(t=>t.id==='evidence'),requested.includes('evidence'));
   assert.equal(result.reference.targets.some(t=>t.id==='regional-consent'),false,'language does not select regional timing');
  }
- const blank=selectIntegration(describeIntegration().selectionTemplate);assert.deepEqual(blank.reference.targets,[]);assert.equal(blank.unresolvedQuestionIds.length,14);
+ const blank=selectIntegration(describeIntegration().selectionTemplate);assert.deepEqual(blank.reference.targets,[]);assert.equal(blank.unresolvedQuestionIds.length,15);
  const declined=Object.fromEntries(describeIntegration().selectionQuestions.map(q=>[q.id,'no']));
  const noWork=selectIntegration({schemaVersion:1,answers:declined});assert.deepEqual(noWork.reference.targets,[]);assert.equal(noWork.status,'scope-recorded');assert.equal(noWork.productionReady,false);
  const existing=selectIntegration({schemaVersion:1,answers:{...declined,'explicit-agreement':'yes'}});assert.deepEqual(existing.requestedTargetIds,['terms-agreement']);assert.deepEqual(existing.prerequisiteReview.map(p=>[p.targetId,p.scopeChoice]),[['legal-pages','no']]);
@@ -93,7 +94,7 @@ test('every advertised config path typechecks against the installed SiteConfig d
 test('setup questions stay connected to real IDs and unknown answers preserve imported runtime settings',async()=>{
  const reference=describeIntegration(),ids=new Set(setupQuestions.map(q=>q.id));
  assert.deepEqual(reference.questions.map(q=>q.id),setupQuestions.map(q=>q.id));
- for(const target of reference.targets){for(const id of target.questionIds)assert.ok(ids.has(id),id);for(const id of target.prerequisites)assert.ok(reference.targets.some(t=>t.id===id),id);for(const path of target.requiredConfigPaths??[])assert.ok(target.configPaths.includes(path),path);assert.ok(target.factsNeeded.length&&target.verify.length);}
+ for(const target of reference.targets){for(const id of target.questionIds)assert.ok(ids.has(id),id);for(const id of target.prerequisites)assert.ok(reference.targets.some(t=>t.id===id),id);for(const path of [...target.requiredConfigPaths??[],...target.conditionalConfig?.flatMap(rule=>rule.requiredPaths)??[]])assert.ok(target.configPaths.includes(path),path);assert.ok(target.factsNeeded.length&&target.verify.length);}
  assert.ok(Object.values(reference.answersTemplate.answers).every(a=>a.choice==='unknown'&&a.justification===''));
  const config=await fixture();config.consent={purposes:[...new Set(config.services.flatMap(s=>s.purposeIds))].map(id=>({id,scope:'host-scope-v9'})),services:config.services.map(s=>({id:s.id,scope:'host-service-v3'})),grantLifetimeDays:30,refusalLifetimeDays:90,dismissalMinutes:60};
  const plan=createSetupPlan(reference.answersTemplate,{config});

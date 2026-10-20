@@ -19,6 +19,8 @@ npx --no-install notabenda describe cookie-consent terms-agreement --json
 
 Select the target IDs that match the actual request; omit IDs to list all. The read-only JSON supplies config paths, prerequisite targets, facts needed, setup question IDs, an unknown-answer template and checks. Its `hostWork` entries are application tasks, not JSON config fields. Use `notabenda schema PATH --json` for exact field shapes and allowed type values, then `check` for semantic validation. The schema supplies no defaults or facts. The map advises work; it does not enable it or decide applicability. If no package is installed, use [the current preview reference](https://notabenda.org/integration-reference.json).
 
+Use `storage-exceptions` for an explicitly assessed supported exception/objection workflow; it is separate from consent enrollment. Form permissions need scope assessment and an actually supported offer. Non-English native terms/form controls need their own complete dictionary, beyond localized documents. Consult `conditionalConfig` in the map; never change unknown facts to unlock a feature.
+
 When the requested outcome is ambiguous, use the map's `selectionQuestions` and `selectionTemplate`. Record supported task decisions as `yes` or `no`; keep unanswered ones `unknown`. Resolve the private selection file with `describe --selection FILE --json`. An empty selection requests nothing. Ask only the distinctions that affect the current task; do not require the operator to complete all questions. Scope decisions are separate from wizard practice answers, applicability and review. Inspect prerequisite work against what the project already supplies before adding it.
 
 Identify its framework, build command, routes, existing legal documents, optional service loaders and authorization. Find the current Notabenda config before creating another. Preserve existing facts, restrictions, runtime settings, routes and review history. Propose targeted changes rather than replacing the inventory with a starter.
@@ -38,9 +40,11 @@ For an existing config, reconcile selected work with the actual inventory before
 npx --no-install notabenda assess --selection ./integration-selection.json --config ./notabenda.config.json --answers ./answers.json --json
 ```
 
-Use `targetAnswersTemplate` from the selected reference to focus practice questions on this task. Omit `--answers` while facts are unknown; it also accepts a saved private setup report. Assessment is read-only. Inspect `missingRequiredConfig`, `factConflicts`, `practiceConflicts`, both validation results and target host work. `declared` means a field exists, not that its content is true or the feature works. Optional absent fields do not automatically need filling. A successful command only means it produced a report; run the host acceptance scenarios before claiming completion. Keep this report private.
+Use `targetAnswersTemplate` from the selected reference to focus practice questions on this task. Omit `--answers` while facts are unknown; it also accepts a saved private setup report. Assessment is read-only. Inspect `missingRequiredConfig`, `factConflicts`, `practiceConflicts`, authoring-shape and both runtime validation results, plus target host work. `declared` means a field exists, not that its content is true or the feature works. Optional absent fields do not automatically need filling. A successful command only means it produced a report; run the host acceptance scenarios before claiming completion. Keep this report private.
 
 Discovery findings are candidates. Confirm actual use, provider entity, processing location, purposes, data, storage, retention and supporting facts before adding services. Backend-only providers can be missed. A match never grants consent, proves necessity or supplies a legal basis. Keep discovery captures, setup reports and justifications outside public assets; inspect them before sharing. Discovery and CI remain the adopter's decision.
+
+Read `validation.authoringShape` before the runtime diagnostics. It checks exact installed fields and alternatives; errors use JSON Pointer paths and omit rejected values. Fix shape/preview failures and rerun. A valid inventory still needs the selected control's actual offer, host lifecycle and acceptance checks.
 
 ## 2. Draft the inventory and documents
 
