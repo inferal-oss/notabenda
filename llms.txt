@@ -41,6 +41,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 ## Evidence and scope
 
 - [Cloudflare starter](https://notabenda.org/guide/cloudflare-starter/index.md): Optional local scaffold; host-owned authorization.
+- [Remote SQLite recovery](https://notabenda.org/guide/cloudflare-remote-recovery/index.md): Explicit optional maintainer command with a new disposable Worker, native SQL/KV bookmark restore, non-restored gate, later hold/erasure replay and verified namespace-first cleanup. Deployed package rehearsal; complete host and all-family recovery remain open.
 - [Backend recovery rehearsal](https://notabenda.org/guide/cloudflare-recovery/index.md): Optional maintainer check using two local SQLite objects, a private KV snapshot and later retirement replay. No production restore endpoint; hosts must reconcile complete retirement and hold decisions before reopening every access path.
 - [Backend API](https://notabenda.org/guide/cloudflare/index.md): Stored evidence, history and separately authorized inspection.
 - [Consent evidence](https://notabenda.org/guide/consent-evidence/index.md): Notice binding, receipts and failure behavior.

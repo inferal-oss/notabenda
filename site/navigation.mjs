@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
@@ -107,6 +108,7 @@ export const orderedSiteSections=siteStages.flatMap(stage=>stage.areaIds.map(id=
 export const guideSections=[...orderedSiteSections,referenceSection];
 export const stageForSection=section=>siteStages.find(stage=>stage.areaIds.includes(section.id));
 const guideParents={
+ 'cloudflare-remote-recovery':{slug:'cloudflare-recovery',label:'Recovery rehearsal',kind:'Remote maintainer check'},
  'guarantee-producer-example':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Example source',description:'This page explains the prepared example and its source files. Start with the integration guide to add a label to your own site.'},
  'guarantee-asset-notice':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Asset provenance'},
  'authoring-package':{slug:'authoring',label:'Markdown & MDX',kind:'Package reference'},
@@ -132,7 +134,7 @@ export function areaContinuation(section,kind='guide'){
 export const normalizeGuideRoute=route=>route.replace(/\/$/u,'');
 export const guideSectionUrl=section=>'/guide/areas/'+section.id+'/';
 export const exampleSectionUrl=section=>'/examples/'+section.id+'/';
-const reportParents={accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
+const reportParents={'cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
 export function sectionForGuide(route){
  const current=normalizeGuideRoute(route),area=guideSections.find(s=>normalizeGuideRoute(guideSectionUrl(s))===current);
  if(area)return area;

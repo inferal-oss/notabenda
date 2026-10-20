@@ -46,6 +46,8 @@ npm run cf:recovery:remote -- --cleanup .local/cf-remote-recovery-RUN_ID
 
 Do not create another run to conceal an unresolved resource. If the command refuses because ownership changed, investigate the recorded Worker and namespace identities before doing anything destructive. Retain the private run until cleanup is verified.
 
+The remote sequence above passed on 20 October 2026, including provider-confirmed cleanup. See the [verification report](verification/cloudflare-remote-recovery.md) for its exact scope.
+
 ## Limits
 
 A Time Travel bookmark refers to the existing provider object. It is not a portable backup, an off-provider copy, a cross-account restore or a retention policy. Cloudflare documents a 30-day recovery window and excludes local development from this feature; check the current [SQLite storage documentation](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/) for your deployment.
