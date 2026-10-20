@@ -1,0 +1,18 @@
+{
+  "draft": "Aviso sobre coleta indireta — rascunho para revisão.",
+  "draftText": "RASCUNHO — para revisão.",
+  "advance": "Planejamos coletar informações sobre você de outra fonte.",
+  "collected": "Coletamos informações sobre você de outra fonte.",
+  "informationLabel": "Informações",
+  "sourceLabel": "Fonte",
+  "lawHeading": "Lei específica",
+  "requires": "Exige esta coleta",
+  "authorises": "Autoriza esta coleta",
+  "lawLinkLabel": "Ler a lei",
+  "recipientsHeading": "Destinatários previstos",
+  "collectorHeading": "Organização que coleta e mantém as informações",
+  "accessHeading": "Acesso e correção",
+  "accessLinkLabel": "Solicitar acesso ou correção",
+  "effectiveDate": "Em vigor desde {effectiveDate}",
+  "listSeparator": ", "
+}

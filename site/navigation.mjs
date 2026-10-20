@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-AUTHORED-PREVIEW
@@ -27,7 +28,7 @@ export const siteSections=[
   topic('services','Service directory','/services','Explain declared third parties and the purposes, data and storage associated with them.','services',[['Dark','/dark/services'],['Português','/localization/services/']]),
   topic('technology','Technology functions','/technology/','Disclose an optional interest profile and explain how visitors activate or stop it.','technology-collection'),
   topic('collection','Collection notice','/collection','Show privacy information beside a form, linked to an exact policy revision.','collection',[['Portuguese','/localization/collection/']]),
-  topic('indirect-collection','Indirect collection notice','/indirect-collection','Explain information received from another source, including advance-notice text.','indirect-collection'),
+  topic('indirect-collection','Indirect collection notice','/indirect-collection','Explain information received from another source, including advance-notice text.','indirect-collection',[['Português','/localization/indirect/']]),
   topic('rights','Privacy request entry points','/rights','Give people clear contact and application routes for privacy requests.','rights',[['Portuguese','/localization/rights/']])
  ]},
  {id:'privacy-choices',title:'Manage privacy choices',description:'Cookie preferences, optional permissions and controls for tracking and processing.',guides:[guide('specialist-packs','Technology, storage & tags'),guide('consent','Cookie choices'),guide('connection-inspection','Inspect a connection'),guide('embeds','Gated media'),guide('storage-cleanup','Storage cleanup'),guide('form-permissions','Form permissions'),guide('privacy-signals','Global Privacy Control'),guide('processing-choices','Recorded opt-outs'),guide('google-basic','Google Basic'),guide('regional-prompts','Consent timing'),guide('scope-guards','Scope guards')],topics:[

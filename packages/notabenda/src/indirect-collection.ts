@@ -1,3 +1,9 @@
+// @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
+import {normalizeIndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
+import type {IndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
+import {formatMessage} from './localization-policy.js';
+export {normalizeIndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
+export type {IndirectCollectionLocalization,IndirectCollectionMessages} from './indirect-collection-localization-policy.js';
 // @requirements REQ-EU-INTERESTS-DISCLOSURE Inventory compatibility; this remains the explicit NZ notice profile.
 import {isLegitimateInterests} from './purpose-disclosures.js';
 /** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE
@@ -26,7 +32,7 @@ export interface IndirectCollectionNoticeSettings {
   accessCorrection:{statement:string;url:string};
 }
 export interface IndirectCollectionNotice extends Omit<IndirectCollectionNoticeSettings,'collections'> {
-  schemaVersion:1;kind:'indirect-collection-notice';renderingPolicy:'indirect-collection-v1';
+  schemaVersion:1|2;kind:'indirect-collection-notice';renderingPolicy:'indirect-collection-v1'|'indirect-collection-v2';localization?:IndirectCollectionLocalization;
   noticeId:string;siteId:string;siteUrl:string;locale:string;artifactId:string;mode:BuildMode;
   /** This profile uses the same indirect collector as the collecting and holding agency. */
   collector:{name:string;email:string;address:string};
@@ -93,8 +99,9 @@ export function normalizeIndirectCollectionNoticeSettings(input:unknown):Indirec
 export function normalizeIndirectCollectionNotice(input:unknown,options:{allowPreview?:boolean}={}):IndirectCollectionNotice {
   if(options.allowPreview!==undefined&&typeof options.allowPreview!=='boolean')return invalid();
   const v=copy(input);
-  if(!object(v)||!exact(v,['schemaVersion','kind','renderingPolicy','noticeId','siteId','siteUrl','locale','artifactId','mode','collector','document','profile','scopeId','phase','reviewStatus','wording','collections','recipientStatement','accessCorrection'])||v.schemaVersion!==1||v.kind!=='indirect-collection-notice'||v.renderingPolicy!=='indirect-collection-v1'||!hash(v.noticeId)||!hash(v.artifactId)||!slug(v.siteId)||!link(v.siteUrl)||!/^https:/iu.test(v.siteUrl)||typeof v.locale!=='string'||!/^en(?:-[A-Za-z0-9]+)*$/iu.test(v.locale)||(v.mode!=='preview'&&v.mode!=='production')||!settings(v,true))return invalid();
+  if(!object(v)||!exact(v,['schemaVersion','kind','renderingPolicy','noticeId','siteId','siteUrl','locale','artifactId','mode','collector','document','profile','scopeId','phase','reviewStatus','wording','collections','recipientStatement','accessCorrection',...(v.schemaVersion===2?['localization']:[])])||(v.schemaVersion!==1&&v.schemaVersion!==2)||v.kind!=='indirect-collection-notice'||v.renderingPolicy!==(v.schemaVersion===2?'indirect-collection-v2':'indirect-collection-v1')||!hash(v.noticeId)||!hash(v.artifactId)||!slug(v.siteId)||!link(v.siteUrl)||!/^https:/iu.test(v.siteUrl)||typeof v.locale!=='string'||v.schemaVersion===1&&!/^en(?:-[A-Za-z0-9]+)*$/iu.test(v.locale)||(v.mode!=='preview'&&v.mode!=='production')||!settings(v,true))return invalid();
   try{Intl.getCanonicalLocales(v.locale);}catch{return invalid();}
+  if(v.schemaVersion===2)v.localization=normalizeIndirectCollectionLocalization(v.localization,{locale:v.locale as string,allowPreview:options.allowPreview===true}) as unknown as Record<string,unknown>;
   const c=v.collector,d=v.document;
   if(!object(c)||!exact(c,['name','email','address'])||!text(c.name,300)||!text(c.address)||!text(c.email,300)||!isSafeLink('mailto:'+c.email))return invalid();
   if(!object(d)||!exact(d,['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus'])||!text(d.title,300)||!text(d.version,200)||!date(d.effectiveDate)||!hash(d.sha256)||!hash(d.contentSha256)||(d.reviewStatus!=='reviewed'&&d.reviewStatus!=='draft')||d.url!==`/artifacts/${v.artifactId}/privacy.html`)return invalid();
@@ -104,10 +111,32 @@ export function normalizeIndirectCollectionNotice(input:unknown,options:{allowPr
 const escape=(v:string)=>v.replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const fact=(n:IndirectCollectionNotice)=>n.phase==='advance'?'We plan to collect information about you from another source.':'We have collected information about you from another source.';
 const absolute=(n:IndirectCollectionNotice,url:string)=>new URL(url,new URL(n.siteUrl).origin).href;
+function renderLocalizedNotice(n:IndirectCollectionNotice,options:IndirectCollectionRenderOptions):string {
+  const l=n.localization!,m=l.indirectCollection,e=escape;
+  const h='h'+(options.headingLevel??2),sub='h'+Math.min(6,(options.headingLevel??2)+1),lawHeading='h'+Math.min(6,(options.headingLevel??2)+2),id=options.idPrefix;
+  const b=(value:string)=>`<bdi dir="auto">${e(value)}</bdi>`;
+  const a=(label:string,url:string)=>`<a href="${e(url)}">${b(label)}</a>`;
+  const pair=(label:string,value:string)=>`<div><dt>${e(label)}</dt><dd>${b(value)}</dd></div>`;
+  const draft=n.mode==='preview'||n.reviewStatus==='draft'||n.document.reviewStatus==='draft'||l.reviewStatus==='draft';
+  const effective=e(m.effectiveDate).replace(/\{effectiveDate\}/gu,`<time datetime="${n.document.effectiveDate}">${b(n.document.effectiveDate)}</time>`);
+  return `<section class="nb-collection-notice nb-indirect-notice" id="${id}-notice" lang="${e(l.locale)}" dir="${l.direction}" aria-labelledby="${id}-title" data-indirect-notice-id="${n.noticeId}" data-collection-phase="${n.phase}"><${h} id="${id}-title">${b(n.wording.title)}</${h}>${draft?`<p class="nb-draft" role="note">${e(m.draft)}</p>`:''}<p>${e(m[n.phase])}</p><p>${b(n.wording.intro)}</p>${n.collections.map(c=>`<section class="nb-collection-purpose"><${sub}>${b(c.purpose.name)}</${sub}><p>${b(c.purpose.description)}</p><dl>${pair(m.informationLabel,c.dataCategories.join(m.listSeparator))}${pair(m.sourceLabel,c.sourceDescription)}</dl>${c.authority.kind==='specified'?`<section><${lawHeading}>${e(m.lawHeading)}</${lawHeading}><ul>${c.authority.laws.map(law=>`<li>${b(law.title)} · ${b(law.provision)} · ${e(m[law.relationship==='requires'?'requires':'authorises'])}${law.url?` · ${a(m.lawLinkLabel,law.url)}`:''}</li>`).join('')}</ul></section>`:''}</section>`).join('')}<section><${sub}>${e(m.recipientsHeading)}</${sub}><p>${b(n.recipientStatement)}</p></section><section><${sub}>${e(m.collectorHeading)}</${sub}><p>${b(n.collector.name)} · ${b(n.collector.address)}</p><p>${a(n.collector.email,'mailto:'+n.collector.email)}</p></section><section><${sub}>${e(m.accessHeading)}</${sub}><p>${b(n.accessCorrection.statement)}</p><p>${a(m.accessLinkLabel,n.accessCorrection.url)}</p></section><p class="nb-collection-policy">${a(n.document.title,n.document.url)} <span class="nb-collection-version">· ${b(n.document.version)} · ${effective}</span></p></section>`;
+}
+function formatLocalizedNotice(n:IndirectCollectionNotice):string {
+  const l=n.localization!,m=l.indirectCollection;
+  const draft=n.mode==='preview'||n.reviewStatus==='draft'||n.document.reviewStatus==='draft'||l.reviewStatus==='draft';
+  const parts=[n.wording.title,...(draft?[m.draftText]:[]),m[n.phase],n.wording.intro];
+  for(const c of n.collections){
+    parts.push(`${c.purpose.name}\n${c.purpose.description}\n${m.informationLabel}: ${c.dataCategories.join(m.listSeparator)}\n${m.sourceLabel}: ${c.sourceDescription}`);
+    if(c.authority.kind==='specified')for(const law of c.authority.laws)parts.push(`${m.lawHeading}: ${law.title} · ${law.provision}\n${m[law.relationship==='requires'?'requires':'authorises']}${law.url?'\n'+absolute(n,law.url):''}`);
+  }
+  parts.push(m.recipientsHeading+'\n'+n.recipientStatement,`${m.collectorHeading}\n${n.collector.name}\n${n.collector.address}\n${n.collector.email}`,`${m.accessHeading}\n${n.accessCorrection.statement}\n${absolute(n,n.accessCorrection.url)}`,`${n.document.title} · ${n.document.version} · ${formatMessage(m.effectiveDate,{effectiveDate:n.document.effectiveDate})}\n${absolute(n,n.document.url)}`);
+  return parts.join('\n\n')+'\n';
+}
 /** Static web fragment. All notification particulars are visible; no consent, receipt or transport. */
 export function renderIndirectCollectionNotice(input:unknown,options:IndirectCollectionRenderOptions):string {
   const n=normalizeIndirectCollectionNotice(input,{allowPreview:options?.allowPreview===true});
   if(!options||!slug(options.idPrefix)||options.headingLevel!==undefined&&![2,3,4,5,6].includes(options.headingLevel))throw Error('Use a unique lowercase ID prefix and heading level 2–6.');
+  if(n.localization)return renderLocalizedNotice(n,options);
   const e=escape,h='h'+(options.headingLevel??2),sub='h'+Math.min(6,(options.headingLevel??2)+1),lawHeading='h'+Math.min(6,(options.headingLevel??2)+2),id=options.idPrefix;
   const a=(label:string,url:string)=>`<a href="${e(url)}">${e(label)}</a>`;
   const pair=(label:string,value:string)=>`<div><dt>${label}</dt><dd>${e(value)}</dd></div>`;
@@ -116,6 +145,7 @@ export function renderIndirectCollectionNotice(input:unknown,options:IndirectCol
 /** Plain-text body for host delivery. URLs are absolute; this is not an email template or delivery record. */
 export function formatIndirectCollectionNotice(input:unknown,options:{allowPreview?:boolean}={}):string {
   const n=normalizeIndirectCollectionNotice(input,options);
+  if(n.localization)return formatLocalizedNotice(n);
   const parts=[n.wording.title,...(n.mode==='preview'||n.reviewStatus==='draft'||n.document.reviewStatus==='draft'?['DRAFT — for review.']:[]),fact(n),n.wording.intro];
   for(const c of n.collections){parts.push(`${c.purpose.name}\n${c.purpose.description}\nInformation: ${c.dataCategories.join(', ')}\nSource: ${c.sourceDescription}`);if(c.authority.kind==='specified')for(const l of c.authority.laws)parts.push(`Particular law: ${l.title} · ${l.provision}\n${l.relationship==='requires'?'Requires this collection':'Authorises this collection'}${l.url?'\n'+absolute(n,l.url):''}`);}
   parts.push('Intended recipients\n'+n.recipientStatement,`Collecting and holding agency\n${n.collector.name}\n${n.collector.address}\n${n.collector.email}`,`Access and correction\n${n.accessCorrection.statement}\n${absolute(n,n.accessCorrection.url)}`,`${n.document.title} · ${n.document.version} · Effective ${n.document.effectiveDate}\n${absolute(n,n.document.url)}`);

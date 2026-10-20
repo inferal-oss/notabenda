@@ -265,3 +265,8 @@ Browser setup recovery: `/start/` opts into expiring, tab-local draft storage (2
 <!-- @requirements REQ-PRODUCT-SERVICE-LOCALIZATION -->
 
 Declared service-directory localization: a complete host-authored dictionary, explicit locale/direction/review, static and enhanced native rendering, shared React/Astro output, local literal search and count formatting. Preserve exact legacy English rendering and exclude display copy from cookie material scopes. Store the dictionary in normal legal releases; do not auto-translate provider facts or infer applicability from language. Indirect-collection and operator chrome remain separate work.
+
+<!-- @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION -->
+## Indirect notice language
+
+Support a complete optional `localization.indirectCollection` dictionary shared by static HTML and plain-text notices. Keep the site language, collection phase and supported NZ profile as separate explicit facts. Retain selected copy with its release and v2 notice identity; preserve v1 English output and independent cookie scopes. Direct-form messages do not substitute for missing indirect messages. Language supplies no jurisdiction, legal review, transport or notification evidence.

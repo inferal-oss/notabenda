@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
+export type {IndirectCollectionMessages,IndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION
 export type {ServiceDirectoryMessages,ServiceDirectoryLocalization} from './service-directory-localization.js';
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION

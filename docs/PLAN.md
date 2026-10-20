@@ -359,3 +359,6 @@ Compiled Markdown/MDX output now has an optional static release reader and deter
 
 <!-- @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION -->
 Recorded processing opt-outs now retain complete host-supplied status/recovery messages with explicit language and direction. The recorder verifies selected copy against its archive; copy revisions preserve restrictions and original pending requests. The Portuguese example uses the same session-isolated recorder and demonstrates separate cookie permission. Broader interface localization, translation review and actual account/downstream handling remain open.
+
+<!-- @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION -->
+Indirect-collection notices now support complete host-supplied copy in HTML and plain text, with explicit language/direction, archive-bound identity and both collection phases. Pack and agent setup point to the separate dictionary. English v1 output remains exact. Broader regional coverage, translation review and actual notification remain open.

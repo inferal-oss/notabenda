@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE REQ-EU-INTERESTS-DISCLOSURE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';

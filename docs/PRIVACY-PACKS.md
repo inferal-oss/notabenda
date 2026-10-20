@@ -28,7 +28,7 @@ Use `indirect-collection` when information comes from another source. This has a
 
 The supported `nz-ipp3a` implementation requires an explicit applicability assessment. Supply the advance/collected phase, exact indirect category subsets, sources, recipients, authority declarations, access/correction route and reviewed wording against the pinned release. Arrange actual notification, timing and any required evidence separately. A rendered fragment does not establish notification.
 
-The current indirect renderer is **English-only**. The direct form-notice dictionary does not translate it. Another site locale remains a review item; do not change the site's actual language to bypass the limit. This is an implementation preview with unreviewed legal coverage, not complete or production-supported New Zealand coverage. [Indirect collection integration](INDIRECT-COLLECTION.md).
+Non-English indirect notices require the complete `localization.indirectCollection` dictionary. Direct form-notice messages do not translate this separate interface. A missing dictionary remains unfinished work; keep the site's actual language. This is an implementation preview with unreviewed legal coverage, not complete or production-supported New Zealand coverage. [Indirect collection integration](INDIRECT-COLLECTION.md).
 
 ## Privacy request page
 

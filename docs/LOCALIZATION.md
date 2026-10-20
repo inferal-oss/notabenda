@@ -122,13 +122,13 @@ Try the [Portuguese form permission](https://notabenda.org/localization/permissi
 
 The selected descriptor allows 16 KiB; the complete notice allows 64 KiB. General message limits still apply. Supply the title, introduction and declared processing facts in the selected language. Link/details labels belong in the versioned dictionary. A v2 notice uses `collection-v2`; `verifyCollectionNotice` compares it with the intact archive and rejects changed selected copy, facts or a downgrade. Legacy English v1 output is preserved. The dictionary is excluded from cookie runtime inventory and permission scopes.
 
-See the [collection guide](COLLECTION.md#language-and-release-verification) and [Portuguese example](/localization/collection/). This display-only component records no choice, presentation receipt or form submission. Indirect-collection notices remain a separate, currently English interface.
+See the [collection guide](COLLECTION.md#language-and-release-verification) and [Portuguese example](/localization/collection/). This display-only component records no choice, presentation receipt or form submission. Indirect-collection notices use their own separate dictionary; see below.
 
 ## Supported interfaces
 
-This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls, static direct-collection notices and the declared service directory. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
+This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls, static direct- and indirect-collection notices and the declared service directory. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Indirect-collection notice UI and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Backoffice chrome does not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.
 
@@ -187,3 +187,16 @@ Translate provider-purpose descriptions, locations, legal bases, retention, nece
 Revise `localization.revision` when directory copy changes and retain the legal release. Its exact public configuration contains the selected dictionary and declared inventory, so a historical directory can be rendered from `artifact.publicConfig`. The directory remains an additional view, not a fourth archived legal-document page. Its messages stay out of cookie runtime/notice copy and material scopes. Changing directory text does not clear grants or restrictions.
 
 Try the [Portuguese directory](/localization/services/). Native HTML, the local search enhancement, React and Astro use the same renderer and dictionary. [Verification](verification/service-localization.md) covers exact English compatibility, native rendering, local search, framework output, stored releases and permission independence. These messages are a host-authored demonstration, not a reviewed locale or jurisdiction pack.
+
+<!-- @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION -->
+## Indirect-collection notices
+
+Supply complete `localization.indirectCollection` messages for notices about information received from other sources. [The 16-field example](../examples/localization/indirect-messages.json) covers both collection phases, HTML/plain-text draft notes, information/source labels, statutory authority, recipients, the collecting/holding agency, access/correction and the effective date. It shares the site's canonical locale, direction, revision and review declaration. The only placeholder is `effectiveDate: {effectiveDate}`; other fields accept no placeholders. Label fields allow 120 UTF-8 bytes, other fields 2,000 bytes, and the selected descriptor allows 16 KiB. Unknown keys, partial dictionaries, markup and executable values are rejected.
+
+The builder uses v2 notices with `indirect-collection-v2` when this dictionary is supplied, including for custom English copy. Non-English output requires it. Existing English v1 notices keep their exact output. Direct-form `localization.collection` messages cannot translate the separate indirect notice. Setup and agent guidance show the precise missing dictionary without changing the site's actual language.
+
+Author the title, introduction, purpose/category/source facts, recipient statement, actual collector contact, access/correction route and any particular law in the selected language separately. HTML exposes the notice particulars directly, uses explicit `lang`/`dir` and isolates factual text. Plain text resolves links to the pinned site origin. Both formats retain the selected phase: changing messages cannot replace the explicit `advance` or `collected` decision.
+
+Copy is part of notice identity and the retained release configuration. Change `localization.revision` and compile a new release when wording changes. `verifyIndirectCollectionNotice` compares the selected copy and bound purpose/privacy facts with that release; structural normalization alone authenticates neither author nor facts. Cookie runtime, scope and permission state do not include this dictionary.
+
+Try [the Portuguese referral example](/localization/indirect/), including the advance version and both plain-text bodies. Its explicitly selected profile remains New Zealand IPP3A. Portuguese does not choose Brazilian law or establish legal review; all displayed wording is a draft. Applicability, timing, lawful collection, delivery, awareness and any notification evidence remain separate host work. See [verification](verification/indirect-localization.md).

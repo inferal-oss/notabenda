@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-PRODUCT-PRIVACY-PACKS REQ-PRODUCT-CARTRIDGES REQ-PRODUCT-PACK-CONNECTION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -20,7 +21,7 @@ test('new privacy jobs keep separate targets, language contracts and enforcement
  const direct=planPacks(selectPacks(['collection-notices'])),indirect=planPacks(selectPacks(['indirect-collection']));
  assert.deepEqual(direct.reference.requestedTargetIds,['collection-notice']);assert.deepEqual(indirect.reference.requestedTargetIds,['indirect-collection-notice']);
  assert.ok(direct.reference.targets.find(t=>t.id==='collection-notice').conditionalConfig.some(r=>r.requiredPaths.includes('localization.collection')));
- assert.equal(indirect.reference.targets.find(t=>t.id==='indirect-collection-notice').conditionalConfig,undefined);
+ assert.ok(indirect.reference.targets.find(t=>t.id==='indirect-collection-notice').conditionalConfig.some(r=>r.requiredPaths.includes('localization.indirectCollection')));
  for(const id of ['privacy-requests','processing-opt-outs']){const plan=planPacks(selectPacks([id]));assert.ok(!plan.reference.targets.some(t=>t.id==='cookie-consent'||t.id==='evidence'));}
  for(const id of ['privacy-pages','cookie-choices','terms-agreement','form-permissions','gated-media','evidence-workspace','ie-consent-duration','it-repeat-prompts'])assert.deepEqual(selectPacks([id]).selected,[{id,revision:'1'}]);
 });
@@ -73,8 +74,8 @@ test('scoped CLI exports the concrete input review and matching brief, then reco
  }finally{await rm(directory,{recursive:true,force:true});}
 });
 
-test('indirect setup exposes its English-only limit and a contradictory inventory without translating or rewriting it',async()=>{
+test('indirect setup exposes its missing selected dictionary and a contradictory inventory without translating or rewriting it',async()=>{
  const config=localizedExampleConfig(await fixture());delete config.localization.collection;config.purposes[0].collection.source='both';const before=structuredClone(config),selection=selectPacks(['indirect-collection']),answers=planPacks(selection).reference.targetAnswersTemplate;answers.answers['indirect-collection']={choice:'no',justification:'Contradicts the imported inventory for this test.'};
- const plan=createPackSetupPlan(selection,answers,{config});assert.deepEqual(config,before);assert.equal(plan.config.site.locale,'pt-BR');assert.equal(item(plan.report.packInputs,'indirect-collection','language').state,'needs-review');assert.match(formatPackBrief(selection,'connect',{config:plan.config}),/English-only/);assert.equal(plan.config.localization?.collection,undefined);
+ const plan=createPackSetupPlan(selection,answers,{config});assert.deepEqual(config,before);assert.equal(plan.config.site.locale,'pt-BR');assert.equal(item(plan.report.packInputs,'indirect-collection','language').state,'missing');assert.match(formatPackBrief(selection,'connect',{config:plan.config}),/localization.indirectCollection/);assert.equal(plan.config.localization?.collection,undefined);
  assert.equal(new Set(plan.report.recommendations.map(r=>r.id)).size,plan.report.recommendations.length);assert.equal(plan.report.recommendations.find(r=>r.id==='indirect-collection').status,'declared-no');assert.equal(plan.report.recommendations.find(r=>r.id==='indirect-collection-inventory').status,'review');assert.ok(plan.report.reviewItems.some(i=>i.startsWith('Conflict: indirect collection was denied')));
 });

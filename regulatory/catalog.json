@@ -433,7 +433,8 @@
         "Inline collection notice, optional permission field/group, notice link, and explicit terms action.",
         "Purpose/channel-specific choices and versioned form text; no forced privacy-policy acceptance checkbox.",
         "Trusted application API for consent and withdrawal records; no email-sending platform.",
-        "Separate reviewed indirect-collection particulars in static HTML and plain text, with explicit phase and no delivery claim."
+        "Separate reviewed indirect-collection particulars in static HTML and plain text, with explicit phase and no delivery claim.",
+        "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -456,7 +457,17 @@
         "packages/notabenda/src/form-permission-localization-policy.ts",
         "packages/notabenda-cf/src/form-permission-localization-policy.ts",
         "examples/localization/permission-build.mjs",
-        "examples/localization/permission.mjs"
+        "examples/localization/permission.mjs",
+        "packages/notabenda/src/indirect-collection-localization-policy.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/localization/indirect-build.mjs",
+        "examples/localization/indirect-messages.json",
+        "examples/localization/build.mjs",
+        "examples/static/choices-build.mjs",
+        "site/navigation.mjs"
       ]
     },
     {
@@ -939,7 +950,8 @@
         "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open.",
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
-        "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering."
+        "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering.",
+        "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
@@ -1003,7 +1015,11 @@
         "packages/notabenda/src/service-directory.ts",
         "examples/localization/services-build.mjs",
         "examples/localization/service-messages.json",
-        "examples/localization/services.css"
+        "examples/localization/services.css",
+        "packages/notabenda/src/indirect-collection-localization-policy.ts",
+        "packages/notabenda/src/indirect-collection.ts",
+        "examples/localization/indirect-build.mjs",
+        "examples/localization/indirect-messages.json"
       ]
     }
   ],
@@ -2339,7 +2355,8 @@
         "REQ-PRODUCT-AUTHORED-PREVIEW",
         "REQ-PRODUCT-PROCESSING-LOCALIZATION",
         "REQ-PRODUCT-SETUP-SESSION",
-        "REQ-PRODUCT-SERVICE-LOCALIZATION"
+        "REQ-PRODUCT-SERVICE-LOCALIZATION",
+        "REQ-PRODUCT-INDIRECT-LOCALIZATION"
       ]
     }
   ],
@@ -7828,6 +7845,52 @@
         "docs/verification/service-localization.md"
       ],
       "implementationNote": "Complete optional localization.serviceDirectory dictionary with normal release review metadata, 16 KiB selected descriptor, literal local filtering and isolated formatted counts. Exact legacy English output and cookie material scopes remain unchanged."
+    },
+    {
+      "id": "REQ-PRODUCT-INDIRECT-LOCALIZATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Host-supplied indirect-collection notice language and retained copy",
+      "kind": "product-standard",
+      "summary": "A complete selected message set covers static HTML and plain-text indirect collection notices, including collection phase, laws, recipients, contact and privacy metadata. Bind the copy to a retained release and expose matching setup guidance.",
+      "appliesWhen": "A site renders an indirect-collection notice outside English or supplies custom English interface copy.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-LOCALIZATION",
+        "FEAT-FORMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-INDIRECT-LOCALIZATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Language does not select or broaden the supported nz-ipp3a profile, establish lawful collection, notification, timing, actual awareness or legal review. Public facts and substantive wording need separate host authorship and review. No sending, tracking or delivery evidence is installed.",
+      "implementationRefs": [
+        "packages/notabenda/src/indirect-collection-localization-policy.ts",
+        "packages/notabenda/src/indirect-collection.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/index.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/localization/indirect-build.mjs",
+        "examples/localization/indirect-messages.json",
+        "examples/localization/build.mjs",
+        "examples/static/choices-build.mjs",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/indirect-localization.test.mjs",
+        "packages/notabenda/test/indirect-collection.test.mjs",
+        "packages/notabenda/test/privacy-packs.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/indirect-localization.test.mjs",
+        "docs/verification/indirect-localization.md"
+      ],
+      "implementationNote": "Complete optional localization.indirectCollection dictionary, 16 KiB selected descriptor, explicit locale/direction/review and v2 notice identity. V1 English output remains exact. Archived copy is excluded from cookie runtime and material scopes."
     }
   ],
   "verification": [
@@ -9432,6 +9495,22 @@
         "packages/notabenda/test/astro-package.test.mjs",
         "site/test/service-localization.test.mjs",
         "docs/verification/service-localization.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-INDIRECT-LOCALIZATION",
+      "requirementIds": [
+        "REQ-PRODUCT-INDIRECT-LOCALIZATION"
+      ],
+      "status": "automated",
+      "expected": "Selected HTML and plain-text copy cover both phases and law branches; static/native/React/packed Astro output remains accessible. Incomplete, malformed or substituted copy and downgrade fail; archived releases reproduce notices, setup keeps missing dictionaries unresolved, and no choice or notification is created.",
+      "testRefs": [
+        "packages/notabenda/test/indirect-localization.test.mjs",
+        "packages/notabenda/test/indirect-collection.test.mjs",
+        "packages/notabenda/test/privacy-packs.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "site/test/indirect-localization.test.mjs",
+        "docs/verification/indirect-localization.md"
       ]
     }
   ],

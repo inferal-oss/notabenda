@@ -90,3 +90,12 @@ Both wrappers use the same server-safe renderer. No hydration is required. Curre
 ## Traceability
 
 `REQ-NZ-INDIRECT` links the two OPC sources to implementation and [verification](verification/indirect-collection.md). `REQ-PRODUCT-INDIRECT-NOTICE` covers the reusable mechanism. NZ remains partial: this module does not perform individual notification, manage deadlines, determine exceptions or implement sector-specific notices.
+
+<!-- @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION -->
+## Language and retained copy
+
+Add the complete optional `localization.indirectCollection` dictionary for the site's selected language. [The example message file](../examples/localization/indirect-messages.json) has all 16 fields for HTML and plain-text output; `effectiveDate` requires `{effectiveDate}`. The [localization contract](LOCALIZATION.md#indirect-collection-notices) documents validation and byte limits. Direct collection messages are separate.
+
+Localized notices use schema v2, pin their language, direction, copy revision and review status, and verify against the exact retained release. Supply the substantive facts, title and introduction separately in that language. No translation or jurisdiction is inferred. A copy update needs a new localization revision and release; cookie scopes stay unchanged. Existing English v1 notices retain their previous identity and exact rendered bytes.
+
+Try [the Portuguese example](/localization/indirect/). It shows both collection phases with the existing explicitly assessed NZ profile, not another jurisdiction's coverage. Rendering or formatting remains display-only; the host arranges actual notification and reviews the meaning of every translated message.

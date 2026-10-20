@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
+import {selectIndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 import {selectProcessingLocalization} from './processing-localization-policy.js';
 import {selectCollectionLocalization} from './collection-localization-policy.js';
@@ -229,12 +231,14 @@ export function createIndirectCollectionNotice(artifact:LegalArtifact,input:Indi
   if(sha256(canonicalJson(descriptor))!==artifactId)return bad();
   const config=toPublicConfig(artifact.publicConfig,{mode:manifest.mode});
   if(config.site.id!==manifest.siteId||config.site.locale!==manifest.locale||sha256(canonicalJson(config))!==manifest.configSha256||canonicalJson(config)!==canonicalJson(artifact.publicConfig))return bad();
+  if(!config.localization?.indirectCollection)requireEnglishSurface(config,'Indirect-collection notice without localization.indirectCollection');
+  const localization=config.localization?.indirectCollection?selectIndirectCollectionLocalization(config.localization):undefined;
   const docs=manifest.documents.filter(d=>d?.kind==='privacy');if(docs.length!==1)return bad();
   const d=docs[0]!,model=artifact.documents?.privacy,page=artifact.pages?.[d.file],configured=config.documents.privacy;
   if(!model||model.kind!=='privacy'||typeof page!=='string'||sha256(page)!==d.sha256||sha256(canonicalJson({title:model.title,sections:model.sections}))!==d.contentSha256||d.file!==`${configured.route.slice(1)}/index.html`||d.route!==configured.route||d.title!==configured.title||d.version!==configured.version||d.effectiveDate!==configured.effectiveDate||d.reviewStatus!==configured.review.status||model.title!==d.title||model.version!==d.version||model.route!==d.route||model.effectiveDate!==d.effectiveDate||model.reviewStatus!==d.reviewStatus)return bad();
   const collections=s.collections.map(c=>{const purpose=config.purposes.find(p=>p.id===c.purposeId);if(!purpose||purpose.collection.source==='direct'||c.dataCategories.some(category=>!purpose.dataCategories.includes(category)))return bad();return {...c,purpose};});
   const {title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus}=d;
-  const notice=normalizeIndirectCollectionNotice({...s,schemaVersion:1,kind:'indirect-collection-notice',renderingPolicy:'indirect-collection-v1',noticeId:'0'.repeat(64),siteId:config.site.id,siteUrl:config.site.url,locale:config.site.locale,artifactId,mode:manifest.mode,collector:{name:config.controller.name,email:config.controller.email,address:config.controller.address},collections,document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
+  const notice=normalizeIndirectCollectionNotice({...s,schemaVersion:localization?2:1,kind:'indirect-collection-notice',renderingPolicy:localization?'indirect-collection-v2':'indirect-collection-v1',...(localization?{localization}:{}),noticeId:'0'.repeat(64),siteId:config.site.id,siteUrl:config.site.url,locale:config.site.locale,artifactId,mode:manifest.mode,collector:{name:config.controller.name,email:config.controller.email,address:config.controller.address},collections,document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}},{allowPreview:options.mode==='preview'});
   const {noticeId:_,...noticeDescriptor}=notice;
   return {...notice,noticeId:sha256(canonicalJson(noticeDescriptor))};
 }
