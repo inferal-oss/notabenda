@@ -24,11 +24,17 @@ export function checkRunIdentity(run){
 }
 async function save(directory,name,value){const target=join(directory,name),temporary=target+'.tmp-'+randomUUID();await writeFile(temporary,typeof value==='string'?value:JSON.stringify(value,null,2)+'\n',{mode:0o600,flag:'wx'});await rename(temporary,target);}
 export async function sourceBodyIdentity(response){
- const bodies=[];if((response.headers.get('Content-Type')??'').startsWith('multipart/form-data')){
-  const form=await response.formData();for(const [name,value] of form){if(name==='metadata')continue;bodies.push(typeof value==='string'?Buffer.from(value):Buffer.from(await value.arrayBuffer()));}
- }else bodies.push(Buffer.from(await response.arrayBuffer()));
- // This fixture is one fully bundled JS module; additional code/assets require a new reviewed boundary.
- if(bodies.length!==1||bodies[0].length>2*1024*1024)throw Error('Unexpected rehearsal source modules.');return {sha256:hash(bodies[0]),text:bodies[0].toString('utf8')};
+ const parts=[];if((response.headers.get('Content-Type')??'').startsWith('multipart/form-data')){
+  const form=await response.formData();for(const [name,value] of form){if(name==='metadata')continue;parts.push({name,bytes:typeof value==='string'?Buffer.from(value):Buffer.from(await value.arrayBuffer())});}
+ }else parts.push({name:'worker.js',bytes:Buffer.from(await response.arrayBuffer())});
+ // Attest every executable byte. Wrangler also uploads one non-executable adjacent source map;
+ // its paths differ between dry-run and deployment, so it is shape-checked, not code-hashed.
+ const modules=parts.filter(p=>/\.(?:m?js)$/u.test(p.name));
+ if(modules.length!==1||modules[0].bytes.length>2*1024*1024)throw Error('Unexpected rehearsal source modules.');
+ const code=modules[0],extras=parts.filter(p=>p!==code);
+ if(extras.length>1||extras.some(p=>p.name!==code.name+'.map'||p.bytes.length>2*1024*1024))throw Error('Unexpected rehearsal source modules.');
+ for(const part of extras){let map;try{map=JSON.parse(part.bytes.toString('utf8'));}catch{throw Error('Invalid rehearsal source map.');}if(map?.version!==3||!Array.isArray(map.sources)||!map.sources.every(v=>typeof v==='string')||typeof map.mappings!=='string')throw Error('Invalid rehearsal source map.');}
+ return {sha256:hash(code.bytes),text:code.bytes.toString('utf8')};
 }
 function client(accountId,token){
  const request=async(path,{method='GET'}={})=>fetch(apiRoot+'/accounts/'+accountId+path,{method,headers:{Authorization:'Bearer '+token},signal:AbortSignal.timeout(30000),redirect:'error'});

@@ -17,7 +17,7 @@ npm run cf:recovery:remote -- --run --account-id ACCOUNT_ID
 
 This command creates a randomly named Worker on the account's existing `workers.dev` subdomain and two new SQLite namespaces. It has no custom domain, route, production binding or connection to another application. The endpoint starts inaccessible without a fresh random bearer key. Synthetic records are compiled locally; no customer records are read or copied. Cloudflare may charge for these resources under your plan.
 
-The command permanently deletes only its own disposable namespaces and Worker on exit. It verifies the Worker tag, bundled source and recorded namespace identities before cleanup, deletes the namespaces through explicit class tombstones, and checks that both namespaces and Worker are absent. It refuses cleanup if those identities or the deployed source have changed.
+The command permanently deletes only its own disposable namespaces and Worker on exit. It verifies the Worker tag, bundled source and recorded namespace identities before cleanup, deletes the namespaces through explicit class tombstones, and checks that both namespaces and Worker are absent. It refuses cleanup if those identities or the deployed executable source have changed. The executable module must match the prepared local bundle byte for byte. Wrangler's adjacent non-executable source map is allowed only under its expected name and v3 shape; its paths can change during upload. Additional modules or assets are rejected.
 
 Adopters decide whether and where to run this check. It is outside the shipped npm packages and initializer, and is not a required CI workflow.
 

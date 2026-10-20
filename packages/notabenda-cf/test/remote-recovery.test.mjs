@@ -46,6 +46,12 @@ test('remote invocation requires explicit run/account or original cleanup identi
 test('source attestation hashes a single module independently of multipart boundaries and rejects extra modules',async()=>{
  const source='export default {};',make=extra=>{const form=new FormData();form.append('metadata','{}');form.append('worker.js',new Blob([source]),'worker.js');if(extra)form.append('extra.js',new Blob(['extra']),'extra.js');return new Response(form);};const one=await sourceBodyIdentity(make()),two=await sourceBodyIdentity(make());assert.deepEqual(one,two);assert.equal(one.sha256,createHash('sha256').update(source).digest('hex'));await assert.rejects(()=>sourceBodyIdentity(make(true)),/Unexpected rehearsal source/);
 });
+test('source attestation allows only the adjacent non-executable v3 source map',async()=>{
+ const make=(name,map)=>{const form=new FormData();form.append('worker.js','export default {};');form.append(name,map);return new Response(form);};
+ const map=JSON.stringify({version:3,sources:['fixture.mjs'],mappings:''});
+ assert.equal((await sourceBodyIdentity(make('worker.js.map',map))).sha256,createHash('sha256').update('export default {};').digest('hex'));
+ for(const [name,value]of [['extra.json',map],['extra.js.map',map],['worker.js.map','not json'],['worker.js.map','{"version":2,"sources":[],"mappings":""}']])await assert.rejects(()=>sourceBodyIdentity(make(name,value)),/source (?:modules|map)/);
+});
 test('uncertain deployments recover exact ownership, preserve namespace identities and refuse outside changes',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'notabenda-remote-ownership-'));try{
   const runId=randomUUID(),code='export const run='+JSON.stringify(runId)+';',run={schemaVersion:1,kind:'notabenda-remote-recovery-run',accountId:'a'.repeat(32),runId,workerName:'notabenda-recovery-'+runId.replaceAll('-','').slice(0,16),stage:'deploying',preflightAbsent:true,expectedSourceSha256:createHash('sha256').update(code).digest('hex')};let live={id:run.workerName,tag:'unique-script',modified_on:'one'},rows=[{id:'namespace-one',script:run.workerName,class:'RecoveryControl',use_sqlite:true}];
