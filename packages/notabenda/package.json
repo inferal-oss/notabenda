@@ -321,6 +321,11 @@
       "types": "./dist/terms-inspect.d.ts",
       "import": "./dist/terms-inspect.js",
       "default": "./dist/terms-inspect.js"
+    },
+    "./setup/consent-rehearsal": {
+      "types": "./dist/setup-consent-rehearsal.d.ts",
+      "import": "./dist/setup-consent-rehearsal.js",
+      "default": "./dist/setup-consent-rehearsal.js"
     }
   },
   "bin": {

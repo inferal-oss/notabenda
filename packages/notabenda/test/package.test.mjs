@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-CONNECTION
 // @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
@@ -286,6 +287,11 @@ rightsSettings.reviewStatus='reviewed';
     const inspectionImport=spawnSync(process.execPath,['--input-type=module','-e',"import {inspectConsentConnection} from '@notabenda/core/consent/inspect';import {inspectTermsConnection} from '@notabenda/core/terms/inspect';if(typeof inspectConsentConnection!=='function'||typeof inspectTermsConnection!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(inspectionImport.status,0,inspectionImport.stderr);
     const storageImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createStorageDraftPlan,normalizeStorageDraftInput} from '@notabenda/core/setup/storage';import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';if([createStorageDraftPlan,normalizeStorageDraftInput,mountStorageEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(storageImport.status,0,storageImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {mountConsentRehearsal,type MountedConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';
+const previewCookies:MountedConsentRehearsal=mountConsentRehearsal(container,{config,stylesheetUrls:['/assets/notabenda.css']});
+const previewOpened:Promise<void>=previewCookies.open();previewCookies.close();previewCookies.destroy();
+// @ts-expect-error rehearsal does not accept host provider callbacks or receipt transport
+mountConsentRehearsal(container,{config,submit:()=>Promise.resolve()});
 import {inspectTermsConnection,type TermsConnectionInspection} from '@notabenda/core/terms/inspect';
 import type {TermsAcceptanceController,TermsOffer} from '@notabenda/core/terms';
 declare const termsDiagnosticController:TermsAcceptanceController;

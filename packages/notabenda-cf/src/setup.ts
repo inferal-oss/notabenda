@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-MOBILE
 // @requirements REQ-PRODUCT-A11Y
@@ -22,7 +23,7 @@ export function createSetupWorker<Env=unknown>(options:SetupWorkerOptions<Env>):
   const {authorize,scriptUrl,stylesheetUrl,cartridgeStylesheetUrl}=options;
   const presentation=normalizeAdminPresentation(options);
   return {async fetch(request,env,context){
-    const headers=new Headers({'Content-Type':'text/plain; charset=utf-8','Cache-Control':'private, no-store','Pragma':'no-cache','Vary':'Cookie, Authorization','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','X-Robots-Tag':'noindex, nofollow','Content-Security-Policy':"default-src 'none'; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'"});
+    const headers=new Headers({'Content-Type':'text/plain; charset=utf-8','Cache-Control':'private, no-store','Pragma':'no-cache','Vary':'Cookie, Authorization','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','X-Robots-Tag':'noindex, nofollow','Content-Security-Policy':"default-src 'none'; style-src 'self'; script-src 'self'; frame-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'"});
     const response=(text:string,status:number)=>new Response(request.method==='HEAD'?null:text,{status,headers});
     try{if(await authorize(request,env,context)!==true)return response('Access denied.',403);}catch{return response('Access denied.',403);}
     if(!['GET','HEAD'].includes(request.method)){headers.set('Allow','GET, HEAD');return response('Method not allowed.',405);}

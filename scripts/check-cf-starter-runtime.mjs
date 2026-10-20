@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-CF-RECOVERY-REHEARSAL REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-CF-HISTORY
 // Optional maintainer check. Disposable loopback fixtures are never scaffolded or shipped.
@@ -41,7 +42,7 @@ try{
  await symlink(resolve(root,'node_modules'),target+'/node_modules','dir');command([target+'/scripts/build-assets.mjs']);
  command([resolve(root,'node_modules/wrangler/bin/wrangler.js'),'deploy','--dry-run','--config',target+'/wrangler.json','--outdir',target+'/dist']);
  await start();
- for(const path of ['/studio/history','/studio/setup','/assets/setup.mjs','/assets/notabenda.css']){const response=await request(path,'editor');assert.equal(response.status,403);assert.match(response.headers.get('Cache-Control'),/private, no-store/);}
+ for(const path of ['/studio/history','/studio/setup','/assets/setup.mjs','/assets/setup-consent-rehearsal.mjs','/assets/notabenda.css']){const response=await request(path,'editor');assert.equal(response.status,403);assert.match(response.headers.get('Cache-Control'),/private, no-store/);}
  await stop();
  console.log('Generated starter: unchanged host hook denies pages and assets.');
 
@@ -67,8 +68,8 @@ export default {async fetch(request,env){
  for(const section of ['history','choices','agreements','processing']){const response=await request('/studio/'+section,'reader');assert.equal(response.status,200);assert.match(await response.text(),/No matches/);}
  const seed=await request('/__fixture/archive','seed',{method:'POST'});assert.equal(seed.status,200);assert.ok((await seed.json()).every(record=>record.created));
  const history=await request('/studio/history','reader');assert.match(await history.text(),/Fictional starter integration archive/);
- for(const path of ['/studio/setup','/assets/setup.mjs','/assets/notabenda.css','/studio/history/export'])assert.equal((await request(path,'reader')).status,403);
- for(const path of ['/studio/setup','/assets/setup.mjs','/assets/notabenda.css','/studio/history/export'])assert.equal((await request(path,'editor')).status,200,path);
+ for(const path of ['/studio/setup','/assets/setup.mjs','/assets/setup-consent-rehearsal.mjs','/assets/notabenda.css','/studio/history/export'])assert.equal((await request(path,'reader')).status,403);
+ for(const path of ['/studio/setup','/assets/setup.mjs','/assets/setup-consent-rehearsal.mjs','/assets/notabenda.css','/studio/history/export'])assert.equal((await request(path,'editor')).status,200,path);
  assert.equal((await request('/studio/history/source?id='+authored.manifest.artifactId+'&kind=terms','reader',{headers:{'X-Notabenda-Source':'1'}})).status,404);
  const sourceResponse=await request('/studio/history/source?id='+authored.manifest.artifactId+'&kind=terms','editor');assert.equal(sourceResponse.status,200);const privateSource=retainedSource(await sourceResponse.text());assert.equal(privateSource,authored.archive.sourceAttachments.terms.source);
  assert.equal((await request('/studio/history/export.json','reader')).status,403);

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-CF-DOCTOR REQ-PRODUCT-CF-STARTER
 // This command reads files only. Never import project modules, run scripts or load credentials.
@@ -74,7 +75,7 @@ export async function inspectProject({directory='.',config:configOption,environm
  let assetRoot;
  try{assetRoot=await projectPath(root,dirname(configPath),assets?.directory);if(!(await lstat(assetRoot)).isDirectory())throw Error('assets');add('ASSET-DIRECTORY','pass','The configured asset directory exists inside the project.');}catch{add('ASSET-DIRECTORY','error','The asset directory is unavailable or outside this project.','Run the reviewed build command and inspect assets.directory.');}
  if(assetRoot){
-  for(const [id,file] of [['SETUP-ASSET','assets/setup.mjs'],['PREVIEW-ASSET','assets/setup-preview.mjs'],['STYLE-ASSET','assets/notabenda.css'],['CARTRIDGE-STYLE-ASSET','assets/cartridges.css']])try{const path=await projectPath(root,assetRoot,file);await nonemptyFile(path,4194304);add(id,'pass','A required nonempty setup asset exists.');}catch{add(id,'error','A required setup asset is missing, empty or outside this project.','Review scripts/build-assets.mjs, then run npm run build.');}
+  for(const [id,file] of [['SETUP-ASSET','assets/setup.mjs'],['PREVIEW-ASSET','assets/setup-preview.mjs'],['REHEARSAL-ASSET','assets/setup-consent-rehearsal.mjs'],['STYLE-ASSET','assets/notabenda.css'],['CARTRIDGE-STYLE-ASSET','assets/cartridges.css']])try{const path=await projectPath(root,assetRoot,file);await nonemptyFile(path,4194304);add(id,'pass','A required nonempty setup asset exists.');}catch{add(id,'error','A required setup asset is missing, empty or outside this project.','Review scripts/build-assets.mjs, then run npm run build.');}
   let visited=0,privateNames=0,links=0;
   async function walk(path,depth=0){
    if(depth>24)throw Error('limit');

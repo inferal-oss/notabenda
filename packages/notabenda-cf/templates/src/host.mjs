@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-RECORDING-INSPECTION
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
@@ -28,7 +29,7 @@ export function createHost(authorize){
    if(access.configure!==true)return reply('Configuration access denied.',403);
    return privateResponse(await createSetupWorker({...presentation(),basePath:settings.basePath+'/setup',authorize:()=>true,scriptUrl:'/assets/setup.mjs',stylesheetUrl:'/assets/notabenda.css',cartridgeStylesheetUrl:'/assets/cartridges.css'}).fetch(request,env));
   }
-  if(['/assets/setup.mjs','/assets/setup-preview.mjs','/assets/notabenda.css','/assets/cartridges.css'].includes(path)){
+  if(['/assets/setup.mjs','/assets/setup-preview.mjs','/assets/setup-consent-rehearsal.mjs','/assets/notabenda.css','/assets/cartridges.css'].includes(path)){
    if(access.configure!==true)return reply('Configuration access denied.',403);
    try{return privateResponse(await env.ASSETS.fetch(request));}catch{return reply('Assets unavailable.',503);}
   }

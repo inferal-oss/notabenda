@@ -108,6 +108,7 @@ export const orderedSiteSections=siteStages.flatMap(stage=>stage.areaIds.map(id=
 export const guideSections=[...orderedSiteSections,referenceSection];
 export const stageForSection=section=>siteStages.find(stage=>stage.areaIds.includes(section.id));
 const guideParents={
+ 'cookie-rehearsal':{slug:'cartridges',label:'Packs',kind:'Try your draft'},
  'terms-connection':{slug:'terms',label:'Terms agreement',kind:'Runtime inspection'},
  'cloudflare-remote-recovery':{slug:'cloudflare-recovery',label:'Recovery rehearsal',kind:'Remote maintainer check'},
  'guarantee-producer-example':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Example source',description:'This page explains the prepared example and its source files. Start with the integration guide to add a label to your own site.'},

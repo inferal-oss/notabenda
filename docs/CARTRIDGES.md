@@ -66,6 +66,10 @@ The browser provides **Give to my agent** again after preparing a draft. Its dra
 
 The pack approach is being carried through the rest of the product. Advanced configuration remains available in the guides; existing APIs continue to work.
 
+## Try your cookie controls
+
+Prepared Cookie choices drafts offer **Try cookie controls** beside the settings editor. Test rejection, granular choices, withdrawal and a return visit using your draft’s wording and simulated services. Choices stay in temporary memory. Required receipts, real providers and account processing remain separate application checks. See the [cookie rehearsal](COOKIE-REHEARSAL.md).
+
 ## Put the library in your own application
 
 The website and new Cloudflare starter use the same component exported by `@notabenda/core/packs/ui`. Include `@notabenda/core/styles.css` for the questionnaire and `@notabenda/core/packs.css` for the library. Both are separate from the smaller visitor consent stylesheet.

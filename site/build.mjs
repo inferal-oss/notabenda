@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 import {websiteFooter} from './footer.mjs';
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
@@ -127,7 +128,8 @@ for(const section of [...siteSections,sectionForGuide('/guide/requirements')])fi
 files['guide/index.html']=layout('Build with Notabenda',guideLanding(),{guide:true,guideRoute:'/guide'});
 files['guide/all/index.html']=layout('All guides and reports',allGuidePages(guideEntries),{guide:true,guideRoute:'/guide/all'});
 files['assets/cartridges.css']=await read('packages/notabenda/dist/cartridges.css');
-const cartridgeApp=await buildCartridgeApp({entryPoints:[resolve(root,'site/cartridges-app.mjs')],external:['/assets/catalog-seed.mjs'],plugins:[{name:'local-preview-module',setup(build){build.onResolve({filter:/^\.\/setup-preview\.js$/},()=>({path:'/assets/runtime/setup-preview.js',external:true}));}}],bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});
+files['assets/runtime/setup-consent-rehearsal.js']=(await buildCartridgeApp({stdin:{contents:"export {mountConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';",resolveDir:root},bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true})).outputFiles[0].text;
+const cartridgeApp=await buildCartridgeApp({entryPoints:[resolve(root,'site/cartridges-app.mjs')],external:['/assets/catalog-seed.mjs'],plugins:[{name:'local-preview-module',setup(build){build.onResolve({filter:/^\.\/setup-consent-rehearsal\.js$/},()=>({path:'/assets/runtime/setup-consent-rehearsal.js',external:true}));build.onResolve({filter:/^\.\/setup-preview\.js$/},()=>({path:'/assets/runtime/setup-preview.js',external:true}));}}],bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',minify:true});
 files['assets/cartridges.mjs']=cartridgeApp.outputFiles[0].text;
 files['start/index.html']=layout('Choose your packs',cartridgePage(),{description:'Choose a compliance job, prepare a local draft and connect it to your site.'}).replace('</head>','<link rel="stylesheet" href="/assets/notabenda.css"><link rel="stylesheet" href="/assets/cartridges.css"><script type="module" src="/assets/cartridges.mjs"></script></head>');
 const counts = {requirements:catalog.requirements.length,sources:catalog.sources.length,features:catalog.features.length};

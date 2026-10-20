@@ -37,6 +37,8 @@ A minimal answers file:
 
 Question/market IDs and public fact fields are exported from `@notabenda/core/setup`. Missing questions remain unresolved. Notes for necessary storage are keyed by inventory item ID; they do not rewrite public `necessityReason` text. A saved report can resume answers; its old recommendations are ignored and regenerated. Questionnaire revision 8 accepts private reports from revisions 1 through 8. Missing new questions remain unresolved.
 
+A prepared Cookie choices pack also offers [a local rehearsal](COOKIE-REHEARSAL.md) of the actual draft. It runs native controls with simulated services and temporary memory; it does not connect providers or save a real browser choice.
+
 ## Review regional consent timing
 
 The market list includes France, Germany, Ireland, Italy and Spain as separate coverage interests. Selecting Ireland, or importing an explicit Irish jurisdiction declaration, adds a duration recommendation linked to `REQ-IE-CONSENT-DURATION`. It points to the opt-in [six-calendar-month grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months), names the configuration fields and distinguishes grants from refusal memory, solicitation and evidence retention. Existing policies and lifetimes are preserved. A supporting note remains private and does not qualify a longer period or disable a cap.
