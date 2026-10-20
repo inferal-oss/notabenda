@@ -5,6 +5,13 @@ import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {siteSections,sectionForGuide} from '../navigation.mjs';
 const root=new URL('../dist/public/',import.meta.url);
+test('documented message-file links expose the actual maintained JSON, not the guide overview',async()=>{
+ const page=new JSDOM(await readFile(new URL('guide/localization/index.html',root),'utf8')).window.document;
+ for(const name of ['messages.json','form-messages.json','collection-messages.json']){
+  const path='source/examples/localization/'+name+'.txt';assert.ok(page.querySelector(`a[href="/${path}"]`),name);
+  assert.deepEqual(JSON.parse(await readFile(new URL(path,root),'utf8')),JSON.parse(await readFile(new URL('../../examples/localization/'+name,import.meta.url),'utf8')));
+ }
+});
 test('localized demo and documents keep their language and belong to the integration area',async()=>{
  const page=new JSDOM(await readFile(new URL('localization/index.html',root),'utf8')).window.document;
  assert.equal(page.documentElement.lang,'pt-BR');assert.equal(page.documentElement.dir,'ltr');assert.ok(page.querySelector('.demo-corner'));assert.ok(page.querySelector('#privacy-controls'));assert.equal(page.querySelectorAll('script:not([src])').length,0);assert.ok(page.querySelector('a[href="/guide/localization"]'));

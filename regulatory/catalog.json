@@ -6237,7 +6237,10 @@
         "examples/localization/permission.mjs",
         "packages/notabenda/src/collection-localization-policy.ts",
         "packages/notabenda/src/collection.ts",
-        "examples/localization/collection-build.mjs"
+        "examples/localization/collection-build.mjs",
+        "examples/localization/messages.json",
+        "examples/localization/form-messages.json",
+        "examples/localization/collection-messages.json"
       ],
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
