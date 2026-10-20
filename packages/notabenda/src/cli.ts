@@ -18,7 +18,7 @@ import {describeIntegration,selectIntegration} from './integration-reference.js'
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess|schema> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
@@ -30,6 +30,9 @@ and unknown-answer template. No project scan or config mutation. Omit targets to
 describe --selection FILE [--json]  Resolve explicit yes/no/unknown scope decisions
 from selectionTemplate; reads only the named ordinary JSON file and package metadata.
 Cannot combine --selection with target IDs. An empty selection selects nothing.
+schema [PATH] [--json]  Installed SiteConfig authoring JSON Schema; optional dot path
+selects a field. Arrays describe item fields, for example services.resourceOrigins.
+Reads no project files. This shape does not replace cross-field validation with check.
 assess --selection FILE --config FILE [--answers FILE] [--json]  Read-only reconciliation
 of selected targets, explicit configuration and optional wizard practice answers.
 Reports minimum missing config, relevant unknowns, validation and unverified host work.
@@ -69,6 +72,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='schema'){await (await import('./schema-cli.js')).runSchemaCli(args);return;}
   if(command==='assess'){
     const options:Record<string,string>=Object.create(null);let json=false;const seen=new Set<string>();
     while(args.length){

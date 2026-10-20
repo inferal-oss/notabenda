@@ -230,7 +230,8 @@
       "import": "./dist/technology-collection.js",
       "default": "./dist/technology-collection.js"
     },
-    "./technology.css": "./dist/technology.css"
+    "./technology.css": "./dist/technology.css",
+    "./config/schema.json": "./dist/site-config.schema.json"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

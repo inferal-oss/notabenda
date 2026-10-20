@@ -70,6 +70,9 @@ files['license.txt']=await read('LICENSE');
 files['llms.txt']=await read('llms.txt');
 const packageMetadata=JSON.parse(await read('packages/notabenda/package.json'));
 files['integration-reference.json']=JSON.stringify({package:{name:packageMetadata.name,version:packageMetadata.version},...describeIntegration()},null,2)+'\n';
+const configSchema=await read('packages/notabenda/dist/site-config.schema.json');
+files['site-config.schema.json']=configSchema;
+files[`schemas/${packageMetadata.version}/site-config.schema.json`]=configSchema;
 for(const path of skillFiles)files['skills/notabenda/'+path]=await read('skills/notabenda/'+path);
 
 function layout(title, body, {description='Self-hosted legal pages, privacy controls and document history.',guide=false,guideRoute='/guide'}={}) {

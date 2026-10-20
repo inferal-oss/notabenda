@@ -28,7 +28,19 @@ npx --no-install notabenda describe cookie-consent terms-agreement --json
 
 Choose targets for the requested behavior: static legal pages, authored documents, cookie controls, gated media, explicit terms agreement, privacy request links, processing opt-outs, form permissions, consumer contracts, evidence, localization, regional timing or optional discovery. Prerequisites describe supporting work; nothing is activated. The map names exact configuration paths, separate host tasks, facts needed and acceptance scenarios. It includes actual wizard question IDs and an unknown-answer template from the shared setup engine.
 
-Use [the machine-readable website reference](/integration-reference.json) if a local package is unavailable. The same reference is exposed as `describeIntegration(targetIds)` from `notabenda/integration`; the CLI additionally identifies its package version. This is a task map, not a complete JSON Schema or legal classifier. Read installed `SiteConfig` types for exact value shapes. `hostWork` is application work, rather than a config property.
+Use [the machine-readable website reference](/integration-reference.json) if a local package is unavailable. The same reference is exposed as `describeIntegration(targetIds)` from `notabenda/integration`; the CLI additionally identifies its package version. The task map links to the installed authoring schema for exact known fields and type values. It does not decide legal applicability. `hostWork` is application work, rather than a config property.
+
+Read the field shape before proposing values:
+
+```sh
+npx --no-install notabenda schema consent --json
+npx --no-install notabenda schema documents.terms --json
+npx --no-install notabenda schema services.googleBasic.signals --json
+```
+
+Omit the path for the full schema. It is generated from `SiteConfig` on each package build and exported as `notabenda/config/schema.json`; [the website copy](/site-config.schema.json) follows the current preview. Each field result includes only its referenced definitions, plus optional ancestor paths, array item paths and whether it exists only in some policy alternatives. `alternativeAncestors` points to parent alternatives whose sibling relationships the fragment cannot preserve; inspect those complete shapes before choosing values. For example, `consent.services.scope` describes each service's scope string; it does not create a literal dotted key or a service ID. The CLI reads no project configuration and supplies no default values.
+
+The schema rejects unknown fields to catch misspellings. It covers authoring shape, including required fields, literal choices and policy alternatives. Runtime validation additionally checks IDs, relationships, URL safety, policy bounds, complete review and other semantic rules. Use `check --preview --json` while drafting, then the ordinary production `check --json` after review. Passing the schema alone is insufficient. A schema reference can be associated through editor settings; `$schema` is not a `SiteConfig` field to add to the inventory.
 
 For an ambiguous request, use the reference's `selectionQuestions` to clarify the distinctions that matter. Its `selectionTemplate` accepts explicit `yes`, `no` and `unknown` task decisions. Save a private selection file and run:
 

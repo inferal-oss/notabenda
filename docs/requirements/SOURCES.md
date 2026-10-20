@@ -1123,3 +1123,13 @@ Read SC 1.4.3, ratio thresholds and exceptions, and the use of underlying comput
 **Type:** technical-documentation. **Checked:** 2026-10-19. **Access:** read.
 
 Read SC 2.5.3 and its explanation of visible label text in accessible names for speech interaction, including punctuation and symbolic characters.
+
+<a id="src-json-schema-2020-12"></a>
+
+## SRC-JSON-SCHEMA-2020-12
+
+[JSON Schema draft 2020-12: core](https://json-schema.org/draft/2020-12/json-schema-core)
+
+**Type:** technical-specification. **Checked:** 2026-10-19. **Access:** read.
+
+Core specification read for local definitions/references, schema dialect and compound schema behavior. Used for an authoring-shape aid, not regulatory applicability or complete runtime validation.

@@ -27,6 +27,8 @@ Ship a reusable integration skill with the package and website, plus a concise `
 
 Resolve ambiguous task scope with explicit yes/no/unknown decisions through `describe --selection FILE` or `selectIntegration(input)`. Keep scope separate from practice answers, regulatory applicability and review. No answer selects nothing; supporting work is checked against existing configuration rather than silently added as requested scope. The selector changes no files or runtime permissions.
 
+Generate an authoring JSON Schema from the actual `SiteConfig` type at package build time. Expose it through a read-only `schema [PATH] --json` command, a package export and public website assets. Field lookup preserves policy alternatives, optional ancestors and array item paths. Reject unsupported future type constructs during the build rather than silently widening the contract. The schema supplies no sample facts or defaults; runtime validation, actual host tests and review remain separate.
+
 ## Guided setup
 
 Optional `consent.information` supplies a public rights entry and collapsed browser-control guidance. Keep the selected text/destinations bound to config, runtime and immutable notice, reject archive mismatches, and expose the retained copy in authorized evidence inspection. ANPD-linked technical scenarios exercise the Portuguese two-purpose flow; actual rights handling, browser coverage, legal basis and content/translation review remain host decisions. No country or locale enables the fields. See [consent information](CONSENT.md#rights-links-and-browser-guidance).

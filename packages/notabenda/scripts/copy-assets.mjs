@@ -1,4 +1,5 @@
 import {createConsentStyles} from './consent-styles.mjs';
+import {createConfigSchema} from './config-schema.mjs';
 import { copyFile, chmod, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 await copyFile(new URL('../src/styles.css', import.meta.url), new URL('../dist/styles.css', import.meta.url));
 await copyFile(new URL('../src/services.css', import.meta.url), new URL('../dist/services.css', import.meta.url));
@@ -17,6 +18,7 @@ await mkdir(new URL('../dist/catalog/',import.meta.url),{recursive:true});
 for(const [source,target] of [['schema.json','schema.json'],['NOTICE','NOTICE.txt'],['sources/open-cookie-database/LICENSE','open-cookie-database-LICENSE.txt']])await copyFile(new URL('../../../catalog/'+source,import.meta.url),new URL('../dist/catalog/'+target,import.meta.url));
 
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
+await writeFile(new URL('../dist/site-config.schema.json',import.meta.url),JSON.stringify(await createConfigSchema(),null,2)+'\n');
 // One maintained skill, distributed with the installed package version.
 await mkdir(new URL('../dist/skill/agents/',import.meta.url),{recursive:true});
 await mkdir(new URL('../dist/skill/references/',import.meta.url),{recursive:true});

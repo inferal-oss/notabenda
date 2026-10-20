@@ -15,7 +15,8 @@
         "Local answer/report resume and imported inventory preservation; host-owned authorization and explicit private-note handling.",
         "Explicit public purpose authoring in CLI/admin setup, guarded edits/removals and unresolved production-blocking facts.",
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
-        "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios."
+        "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
+        "Type-derived installed authoring JSON Schema and focused field lookup, with exact known keys/type values and separate runtime validation and host checks."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -31,7 +32,9 @@
         "skills/notabenda/SKILL.md",
         "site/agent-docs.mjs",
         "llms.txt",
-        "packages/notabenda/src/integration-reference.ts"
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/scripts/config-schema.mjs",
+        "packages/notabenda/src/schema-cli.ts"
       ]
     },
     {
@@ -1767,6 +1770,15 @@
       "checkedOn": "2026-10-19",
       "access": "read",
       "note": "Read SC 2.5.3 and its explanation of visible label text in accessible names for speech interaction, including punctuation and symbolic characters."
+    },
+    {
+      "id": "SRC-JSON-SCHEMA-2020-12",
+      "title": "JSON Schema draft 2020-12: core",
+      "url": "https://json-schema.org/draft/2020-12/json-schema-core",
+      "kind": "technical-specification",
+      "checkedOn": "2026-10-19",
+      "access": "read",
+      "note": "Core specification read for local definitions/references, schema dialect and compound schema behavior. Used for an authoring-shape aid, not regulatory applicability or complete runtime validation."
     }
   ],
   "jurisdictions": [
@@ -6175,12 +6187,16 @@
       "jurisdiction": "PRODUCT",
       "title": "Agent integration skill and public Markdown documentation",
       "kind": "product-standard",
-      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features. Reconcile explicit configuration and practice answers with selected targets using a read-only assessment; distinguish minimum missing fields, conflicts, declarations, review and unverified host behavior.",
+      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features. Reconcile explicit configuration and practice answers with selected targets using a read-only assessment; distinguish minimum missing fields, conflicts, declarations, review and unverified host behavior. Expose a version-matched, type-derived authoring schema with field lookup so agents can inspect exact known keys, required fields and allowed type values before making targeted changes; preserve the separate runtime validator and unresolved factual decisions.",
       "appliesWhen": "An agent helps an adopter configure, update or validate a Notabenda integration.",
       "sourceRefs": [
         {
           "sourceId": "SRC-LLMS-TXT",
           "locator": "Proposal and Format: concise Markdown index, file-list links, Markdown alternates and describedby discovery."
+        },
+        {
+          "sourceId": "SRC-JSON-SCHEMA-2020-12",
+          "locator": "Sections 8.2.3\u20138.2.4 and 9: local references, definitions and schema processing."
         }
       ],
       "discoverySourceIds": [],
@@ -6212,7 +6228,9 @@
         "packages/notabenda/src/integration-reference.ts",
         "packages/notabenda/src/cli.ts",
         "skills/notabenda/references/configuration-target.md",
-        "packages/notabenda/src/integration-assessment.ts"
+        "packages/notabenda/src/integration-assessment.ts",
+        "packages/notabenda/scripts/config-schema.mjs",
+        "packages/notabenda/src/schema-cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
@@ -6220,9 +6238,10 @@
         "docs/verification/agent-integration.md",
         "site/test/host.test.mjs",
         "packages/notabenda/test/integration-reference.test.mjs",
-        "packages/notabenda/test/integration-assessment.test.mjs"
+        "packages/notabenda/test/integration-assessment.test.mjs",
+        "packages/notabenda/test/config-schema.test.mjs"
       ],
-      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness."
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness. The package build generates a draft 2020-12 authoring schema from SiteConfig using the pinned build-only TypeScript API. Unsupported constructs fail the build. Read-only schema field lookup returns referenced definitions, optional ancestors, array item paths and alternative-parent context without reading project inputs or suggesting default facts. Unknown keys reject in the authoring shape; runtime cross-field, policy, URL, bound and review rules remain separate. An offline packed-install test resolves the exact schema export and runs full/field CLI commands without a compiler runtime dependency."
     },
     {
       "id": "REQ-BR-COOKIE-RIGHTS-LINK",
@@ -7517,14 +7536,15 @@
         "REQ-PRODUCT-AGENT-INTEGRATION"
       ],
       "status": "automated",
-      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness. Assessment detects missing target config and contradictory facts, limits questions to selected/prerequisite work, preserves inputs and private values, rejects executable/non-file inputs, and never declares readiness from valid config or recorded answers.",
+      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness. Assessment detects missing target config and contradictory facts, limits questions to selected/prerequisite work, preserves inputs and private values, rejects executable/non-file inputs, and never declares readiness from valid config or recorded answers. Generated authoring schemas match actual types, pass draft 2020-12 schema validation, reject field/literal errors and preserve nested policy alternatives and mapped message keys. Every advertised target path resolves offline with no project reads or writes; a structurally valid unknown purpose reference still fails the runtime validator.",
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",
         "docs/verification/agent-integration.md",
         "site/test/host.test.mjs",
         "packages/notabenda/test/integration-reference.test.mjs",
-        "packages/notabenda/test/integration-assessment.test.mjs"
+        "packages/notabenda/test/integration-assessment.test.mjs",
+        "packages/notabenda/test/config-schema.test.mjs"
       ]
     },
     {

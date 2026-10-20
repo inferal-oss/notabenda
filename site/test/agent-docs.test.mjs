@@ -1,5 +1,6 @@
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
+import {fileURLToPath} from 'node:url';
 import assert from 'node:assert/strict';
 import {readFile,access} from 'node:fs/promises';
 import {fromMarkdown} from 'mdast-util-from-markdown';
@@ -16,7 +17,7 @@ function nodes(node,type){return [...(node.type===type?[node]:[]),...(node.child
 test('curated index targets existing public Markdown and distributes the exact skill',async()=>{
  const index=await read('llms.txt');assert.equal(index,await readFile(new URL('../../llms.txt',import.meta.url),'utf8'));
  const links=nodes(fromMarkdown(index),'link');assert.ok(links.length>=20);
- for(const link of links){const url=new URL(link.url);assert.equal(url.origin,'https://notabenda.org');assert.match(url.pathname,/(?:\.md|\/integration-reference\.json)$/u);await access(new URL(url.pathname.slice(1),root));}
+ for(const link of links){const url=new URL(link.url);assert.equal(url.origin,'https://notabenda.org');assert.match(url.pathname,/(?:\.md|\/integration-reference\.json|\/site-config\.schema\.json)$/u);await access(new URL(url.pathname.slice(1),root));}
  for(const path of skillFiles)assert.equal(await read('skills/notabenda/'+path),await readFile(new URL('../../skills/notabenda/'+path,import.meta.url),'utf8'));
  const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));
  assert.deepEqual(manifest.filter(p=>p.startsWith('skills/')),skillFiles.map(p=>'skills/notabenda/'+p).sort());
@@ -54,9 +55,9 @@ test('Markdown destination rewriting preserves code, titles, nested labels and r
 
 test('agent files are read-only public assets with explicit types and no demo session or storage',async()=>{
  const env={ASSETS:{fetch:async request=>new Response(await read(new URL(request.url).pathname.slice(1)),{headers:{'Content-Type':'application/octet-stream'}})},WORKSPACE:{get(){throw Error('No operator namespace');}},DEMO_WORKSPACES:{get(){throw Error('No demo namespace');}}};
- for(const path of ['/llms.txt','/guide/setup/index.md','/skills/notabenda/SKILL.md','/skills/notabenda/agents/openai.yaml','/skills/notabenda/references/configuration-target.md','/integration-reference.json']){
+ for(const path of ['/llms.txt','/guide/setup/index.md','/skills/notabenda/SKILL.md','/skills/notabenda/agents/openai.yaml','/skills/notabenda/references/configuration-target.md','/integration-reference.json','/site-config.schema.json']){
   const request=new Request('https://example.test'+path),response=await serveHost(request,env);assert.equal(response.status,200);
-  assert.match(response.headers.get('Content-Type'),path.endsWith('.md')?/^text\/markdown/u:path.endsWith('.json')?/^application\/json/u:/^text\/plain/u);
+  assert.match(response.headers.get('Content-Type'),path.endsWith('.md')?/^text\/markdown/u:path.endsWith('.schema.json')?/^application\/schema\+json/u:path.endsWith('.json')?/^application\/json/u:/^text\/plain/u);
   assert.equal(response.headers.get('Set-Cookie'),null);assert.match(response.headers.get('Cache-Control'),/no-transform/u);
   assert.equal((await serveHost(new Request(request,{method:'POST'}),env)).status,405);
  }
@@ -68,4 +69,12 @@ test('website integration reference uses the installed engine and every target g
  assert.deepEqual(body,describeIntegration());
  for(const guide of new Set([...body.targets.flatMap(t=>t.guides),...body.questions.map(q=>q.guide)]))await access(new URL(new URL(guide).pathname.slice(1),root));
  const document=new JSDOM(await read('guide/agent-setup/index.html')).window.document;assert.ok(document.querySelector('a[href="/integration-reference.json"]'));
+});
+
+// Package and current website schema bytes stay together, including its canonical ID.
+test('public schema matches the package and its canonical version URL',async()=>{
+ const packaged=await readFile(fileURLToPath(import.meta.resolve('notabenda/config/schema.json')),'utf8');
+ assert.equal(await read('site-config.schema.json'),packaged);
+ const schema=JSON.parse(packaged);assert.equal(await read(new URL(schema.$id).pathname.slice(1)),packaged);
+ const reference=JSON.parse(await read('integration-reference.json'));assert.equal(reference.configContract.schema.packageExport,'notabenda/config/schema.json');
 });

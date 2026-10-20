@@ -13,7 +13,21 @@ npx --no-install notabenda describe cookie-consent terms-agreement --json
 
 `describe` reads the installed package's metadata. It does not inspect the project, read configuration, write files, select a jurisdiction or enable anything. The JSON reports the actual package version, requested targets, prerequisites, config paths, separate host work, facts needed, verification scenarios and guide URLs. Its setup questions and unknown-answer template come from the same engine used by the wizard. [The website reference](https://notabenda.org/integration-reference.json) describes the current preview when a local package is unavailable.
 
-Config paths describe fields in `SiteConfig`, exported from `notabenda`. A path through an array describes its item field. `hostWork` and `hostWorkRefs` are application tasks, **not fields to insert into the config**. The CLI does not accept arbitrary `host` settings. Markdown/MDX uses the separate authoring API. Confirm exact field types and supported values against the installed declarations; the map is an integration reference, not a complete JSON Schema or legal applicability engine.
+Config paths describe fields in `SiteConfig`, exported from `notabenda`. A path through an array describes its item field. `hostWork` and `hostWorkRefs` are application tasks, **not fields to insert into the config**. The CLI does not accept arbitrary `host` settings. Markdown/MDX uses the separate authoring API. Use the installed schema for exact known fields and allowed type values; the map and schema do not decide legal applicability.
+
+## Read exact field shapes
+
+```sh
+npx --no-install notabenda schema consent --json
+npx --no-install notabenda schema documents.terms --json
+npx --no-install notabenda schema services.googleBasic.signals --json
+```
+
+The full schema is available with `schema --json` and through the package export `notabenda/config/schema.json`. It is generated from the installed `SiteConfig` type. Prefer that version over [the website preview schema](https://notabenda.org/site-config.schema.json). The command reads only installed metadata, never the host config, and emits no suggested facts or defaults.
+
+Field results include required properties, allowed literals, nested definitions and discriminated alternatives. `optionalAncestors` identifies sections that may be omitted, `arrayItemPaths` identifies paths traversed through array items, and `conditional` means the requested field is available only in some alternatives; it does not describe every dependency. `alternativeAncestors` identifies parent alternatives whose sibling relationships a selected fragment omits. Inspect the nearest such parent before choosing values: for example, `storageExceptions.entries` binds each `profile` to its own `conditions`. A valid conditions fragment alone cannot prove that pairing. Optional means the type permits omission; the user's selected behavior or an applicable rule may still require it. Do not add every optional field, flatten alternatives, replace `unknown` scope facts with `absent`, or invent a policy choice from a locale.
+
+The authoring shape rejects unknown fields, including misspellings. It is stricter about extra keys than some runtime projections. Do not insert `$schema` into the inventory; associate the schema using editor settings if useful. Shape validation does not verify referenced IDs, URL safety, bounds, truth of disclosures, policy applicability or review. Always run the installed `check` command as well. For values that cannot be established, record the specific path, missing fact and consequence; continue only independent draft work. For host behavior, use the target acceptance scenarios instead of treating config presence as a test.
 
 ## Resolve ambiguous outcomes explicitly
 

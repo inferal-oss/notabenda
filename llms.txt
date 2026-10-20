@@ -12,6 +12,8 @@ Use the installed package documentation and types for its version. Discovery fin
 - [Configuration target selection](https://notabenda.org/skills/notabenda/references/configuration-target.md): Match the user's requested behavior to facts, config changes, host work and acceptance scenarios.
 - [Machine-readable integration reference](https://notabenda.org/integration-reference.json): Current preview targets, relevant practice-answer templates and config prerequisites. Prefer installed `notabenda describe --json` and read-only `assess` for version-matched project assessment.
 
+- [Configuration authoring schema](https://notabenda.org/site-config.schema.json): Current preview field shapes, required properties and allowed type values generated from SiteConfig. Prefer installed `notabenda schema [PATH] --json`; always run `check` for semantic rules.
+
 ## Start here
 
 - [Agent setup](https://notabenda.org/guide/agent-setup/index.md): Skill installation, version matching and review boundaries.

@@ -78,7 +78,7 @@ export function assessIntegration(input:unknown){
   schemaVersion:1,kind:'private-integration-assessment',requestedTargetIds:selection.requestedTargetIds,prerequisiteTargetIds:selection.prerequisiteTargetIds,
   unresolvedScopeQuestionIds:selection.unresolvedQuestionIds,prerequisiteReview:selection.prerequisiteReview,
   status:!preview.valid?'invalid-config':!targets.length?'no-targets':missingRequiredConfig.length||factConflicts.length||practiceConflicts.length||questions.some(q=>q.status!=='recorded-unverified')?'needs-input':!production.valid?'needs-review':'needs-verification',
-  productionReady:false,
+  productionReady:false,configContract:reference.configContract,
   boundaries:{readsOnlyExplicitInputs:true,writesFiles:false,executesProjectCode:false,changesConfig:false,activatesFeatures:false,declaredIsNotVerified:true,legalReview:false},
   validation:{preview,production},missingRequiredConfig,factConflicts,practiceConflicts,questions,targets,
   recommendations:sharedReview?.recommendations.filter(r=>reference.relevantQuestionIds.includes(r.id as typeof reference.relevantQuestionIds[number])||r.status==='review')??[],
