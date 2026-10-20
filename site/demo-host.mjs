@@ -17,7 +17,8 @@ const permissionPage=/^\/(?:(?:dark\/)?form-permissions(?:\/react)?|form-permiss
 const contractPage=/^\/(?:dark\/)?contract-actions\/(withdrawal|cancellation)(?:\/(?:index\.html)?)?$/u;
 const orderPage=/^\/(?:dark\/)?orders\/(mixed|deferred|conditional)(?:\/(?:index\.html)?)?$/u;
 const localizedPermissionPage=/^\/localization\/permission(?:\/(?:index\.html)?)?$/u;
-const isPage=path=>localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/agreement|recorded-choices|processing-choices)(?:\/|$)/u.test(path);
+// Only interactive entry documents receive a session; nested legal pages and offer assets stay static.
+const isPage=path=>localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/agreement|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
 const admin=/^\/demo\/admin(?:\/|$)/u;
 const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing)\/(?:head|record)|permissions\/(?:pt\/)?(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
 export const isDemoRoute=path=>isPage(path)||admin.test(path)||api.test(path);

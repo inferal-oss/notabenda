@@ -15,7 +15,7 @@ export function canonicalRequest(request) {
   url.pathname = path.replace(/\/{2,}/gu,'/');
   return new Request(url,request);
 }
-export const isProtected = path => /^\/(?:backoffice|agreement|dark\/agreement|recorded-choices|processing-choices|demo\/processing|demo\/agreements|demo\/choices)(?:\/|$)/u.test(path);
+export const isProtected = path => /^\/(?:backoffice|demo\/processing|demo\/agreements|demo\/choices)(?:\/|$)/u.test(path);
 export function protectedResponse(response) {
   const headers = new Headers(response.headers);
   headers.set('Cache-Control','private, no-store, no-transform'); headers.set('Vary','Authorization');

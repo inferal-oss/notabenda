@@ -79,10 +79,33 @@ test('public demo validates origin, capability, generation and provisioning budg
 
 test('demo example pages bind their generation without exposing the capability or operational admin',async()=>{
  const {env}=environment(),s=await session(env);
- for(const path of ['/agreement/index.html','/%61greement/index.html','/dark/agreement/index.html','/recorded-choices/','/processing-choices/']){
+ for(const path of ['/%61greement/index.html',...['/agreement','/dark/agreement','/localization/agreement','/recorded-choices','/processing-choices'].flatMap(base=>[base,base+'/',base+'/index.html'])]){
   const response=await serveHost(req(path,{headers:headers(s)}),env);assert.equal(response.status,200);assert.equal(response.headers.get('Cache-Control'),'private, no-store, no-transform');assert.equal(response.headers.get('Vary'),'Cookie');assert.match(response.headers.get('Content-Security-Policy'),/frame-ancestors 'none'/);const html=await response.text();assert.match(html,new RegExp('content="'+s.generation+'"'));assert.ok(!html.includes(s.cookie.split('=')[1]));
  }
  env.ASSETS.fetch=async()=>new Response(null,{status:308,headers:{Location:'/agreement/'}});const redirect=await serveHost(req('/agreement',{headers:headers(s)}),env);assert.equal(redirect.status,308);assert.equal(redirect.headers.get('Cache-Control'),'private, no-store, no-transform');
+});
+
+test('nested demo legal pages retain exact static bytes without session storage or cookies',async()=>{
+ const forbidden=()=>{throw Error('Static legal pages must not reach session or operational storage');};
+ for(const base of ['/agreement','/dark/agreement','/localization/agreement','/processing-choices']){
+  for(const document of ['privacy','cookies','terms']){
+   const html=await readFile(new URL('../dist/public'+base+'/'+document+'/index.html',import.meta.url),'utf8');
+   const env={ASSETS:{fetch:async()=>new Response(html,{headers:{'Content-Type':'text/html'}})},DEMO_PROVISION_LIMITER:{limit:forbidden},DEMO_WORKSPACES:{idFromName:forbidden,get:forbidden},WORKSPACE:{idFromName:forbidden,get:forbidden}};
+   // Static documents also remain readable with a stale/malformed demo cookie and without a signing secret.
+   for(const suffix of ['', '/', '/index.html'])for(const cookie of [undefined,'__Host-notabenda_demo=invalid']){
+    const response=await serveHost(req(base+'/'+document+suffix,{headers:cookie?{Cookie:cookie}:{}}),env);
+    assert.equal(response.status,200);assert.equal(await response.text(),html);
+    assert.equal(response.headers.get('Set-Cookie'),null);assert.notEqual(response.headers.get('Vary'),'Cookie');
+    assert.doesNotMatch(response.headers.get('Content-Security-Policy'),/script-src|connect-src/u);
+    assert.match(response.headers.get('Cache-Control'),/no-transform/u);
+   }
+  }
+ }
+ for(const path of ['/agreement/offer.json','/dark/agreement/offer.json','/localization/agreement/offer.json','/recorded-choices/notice.json','/recorded-choices/site.json','/processing-choices/notice.json','/processing-choices/sample.json','/processing-choices/site.json']){
+  const json=await readFile(new URL('../dist/public'+path,import.meta.url),'utf8');
+  const env={ASSETS:{fetch:async()=>new Response(json,{headers:{'Content-Type':'application/json'}})},DEMO_WORKSPACES:{idFromName:forbidden,get:forbidden}};
+  const response=await serveHost(req(path),env);assert.equal(response.status,200);assert.equal(await response.text(),json);assert.equal(response.headers.get('Set-Cookie'),null);
+ }
 });
 
 test('forged capability signatures cannot allocate objects and interrupted seeding resumes without duplication',async()=>{
