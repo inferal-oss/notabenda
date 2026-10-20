@@ -6318,7 +6318,8 @@
         "site/test/demo.test.mjs",
         "packages/notabenda/test/form-permission-localization.test.mjs",
         "packages/notabenda/test/collection-localization.test.mjs",
-        "site/test/collection-localization.test.mjs"
+        "site/test/collection-localization.test.mjs",
+        "packages/notabenda/test/localization-boundaries.test.mjs"
       ]
     },
     {

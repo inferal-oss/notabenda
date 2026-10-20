@@ -33,6 +33,27 @@ export function normalizeMessages<T extends Record<string,readonly string[]>>(in
  }
  return value as {[K in keyof T]:string};
 }
+/** Shared metadata and body checks for selected interfaces; no default messages. */
+export interface InterfaceLocalizationMetadata {schemaVersion:1;locale:string;direction:'ltr'|'rtl';revision:string;reviewStatus:'draft'|'reviewed'}
+interface InterfaceMessagePolicy<K extends string,T extends Record<string,readonly string[]>> {key:K;fields:T;maxBytes:number;error:string;shortFields?:readonly (keyof T&string)[]}
+type InterfaceLocalization<K extends string,T extends Record<string,readonly string[]>>=InterfaceLocalizationMetadata&Record<K,{[P in keyof T]:string}>;
+/** Internal body path: metadata must already have passed its complete interface/site validator. */
+export function normalizeInterfaceMessages<K extends string,T extends Record<string,readonly string[]>>(metadata:InterfaceLocalizationMetadata,input:unknown,policy:InterfaceMessagePolicy<K,T>):InterfaceLocalization<K,T>{
+ const messages=normalizeMessages(input,policy.fields);
+ const result={schemaVersion:1,locale:metadata.locale,direction:metadata.direction,revision:metadata.revision,reviewStatus:metadata.reviewStatus,[policy.key]:messages} as InterfaceLocalization<K,T>;
+ if(policy.shortFields?.some(key=>new TextEncoder().encode(messages[key]!).length>120)||new TextEncoder().encode(JSON.stringify(result)).length>policy.maxBytes)throw Error(policy.error);
+ return result;
+}
+export function normalizeInterfaceLocalization<K extends string,T extends Record<string,readonly string[]>>(input:unknown,policy:InterfaceMessagePolicy<K,T>,options:{locale?:string;allowPreview?:boolean}={}):InterfaceLocalization<K,T>{
+ const invalid=():never=>{throw Error(policy.error);};
+ if(!input||typeof input!=='object'||Array.isArray(input))return invalid();
+ const keys=['schemaVersion','locale','direction','revision','reviewStatus',policy.key],fields=Object.getOwnPropertyDescriptors(input);
+ if(Reflect.ownKeys(input).length!==keys.length||keys.some(k=>!fields[k]||!Object.hasOwn(fields[k]!,'value')))return invalid();
+ const v=Object.fromEntries(keys.map(k=>[k,fields[k]!.value]));
+ try{if(typeof v.locale!=='string'||Intl.getCanonicalLocales(v.locale)[0]!==v.locale||options.locale!==undefined&&v.locale!==options.locale)return invalid();}catch{return invalid();}
+ if(v.schemaVersion!==1||(v.direction!=='ltr'&&v.direction!=='rtl')||typeof v.revision!=='string'||!/^[a-zA-Z0-9][a-zA-Z0-9._-]{0,119}$/u.test(v.revision)||(v.reviewStatus!=='draft'&&v.reviewStatus!=='reviewed')||!options.allowPreview&&v.reviewStatus!=='reviewed')return invalid();
+ return normalizeInterfaceMessages({schemaVersion:1,locale:v.locale as string,direction:v.direction,revision:v.revision,reviewStatus:v.reviewStatus},v[policy.key],policy);
+}
 /** Fixed named placeholders only. Replacement values remain text and are never recursively parsed. */
 export function formatMessage(template:string,values:Record<string,string|number>):string{
  return template.replace(/\{([a-zA-Z]+)\}/gu,(_,key:string)=>String(values[key]));
