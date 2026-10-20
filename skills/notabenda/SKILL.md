@@ -32,6 +32,14 @@ npx --no-install notabenda wizard --config ./notabenda.config.json --out-dir ./s
 
 The wizard is interactive. For unattended use, supply an explicit answers file with `--answers`; the [setup guide](https://notabenda.org/guide/setup/index.md) documents its schema. For a new integration without a config, omit `--config`, or use `init` to create a draft JSON starter. Output directories must be new. Choose unused paths and retain the original inputs.
 
+For an existing config, reconcile selected work with the actual inventory before editing it:
+
+```sh
+npx --no-install notabenda assess --selection ./integration-selection.json --config ./notabenda.config.json --answers ./answers.json --json
+```
+
+Use `targetAnswersTemplate` from the selected reference to focus practice questions on this task. Omit `--answers` while facts are unknown; it also accepts a saved private setup report. Assessment is read-only. Inspect `missingRequiredConfig`, `factConflicts`, `practiceConflicts`, both validation results and target host work. `declared` means a field exists, not that its content is true or the feature works. Optional absent fields do not automatically need filling. A successful command only means it produced a report; run the host acceptance scenarios before claiming completion. Keep this report private.
+
 Discovery findings are candidates. Confirm actual use, provider entity, processing location, purposes, data, storage, retention and supporting facts before adding services. Backend-only providers can be missed. A match never grants consent, proves necessity or supplies a legal basis. Keep discovery captures, setup reports and justifications outside public assets; inspect them before sharing. Discovery and CI remain the adopter's decision.
 
 ## 2. Draft the inventory and documents

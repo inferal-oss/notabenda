@@ -15,6 +15,8 @@ After installing the local tarball, use `npx --no-install notabenda describe --j
 
 For an ambiguous task, fill the reference's `selectionTemplate` with supported `yes`, `no` or `unknown` decisions, then run `describe --selection FILE --json`. The selected map lists requested work, prerequisites and unanswered scope questions. It reads only the named ordinary JSON file; it does not scan the project or activate anything. Keep this scope file separate from wizard practice answers.
 
+Use `assess --selection FILE --config FILE [--answers FILE] --json` to reconcile that scope with an existing inventory. The selected reference's `targetAnswersTemplate` limits practice questions to relevant ones. Assessment reports missing target config, conflicts, both validation modes and host work to verify without writing files or returning the config body. Answers may be a private setup report. Exit zero means a report was produced; declared fields and recorded answers do not establish readiness. Keep the assessment private.
+
 To create a new draft:
 
 ```sh
@@ -130,6 +132,7 @@ The optional build-time `notabenda/technology` entry supplies versioned identifi
 
 - `notabenda`: configuration validation/projection, document rendering, local or required-receipt consent state, terms agreement, and vanilla controls.
 - `notabenda/integration`: read-only `describeIntegration(targetIds)` integration map and `selectIntegration(input)` for explicit scope decisions. Host tasks are separate from config fields.
+- `notabenda/integration/assessment`: read-only `assessIntegration({selection, config, answers?})` for an explicit inventory and optional practice answers. Reports observations and remaining work; never drafts or enables configuration.
 - `notabenda/content`: Node build-time compilation and portable artifacts.
 - `notabenda/styles.css`: optional responsive, namespaced styles.
 - `notabenda` CLI: JSON-only `init`, `check`, and `build` commands; `check --json` exposes diagnostics and requirement IDs.

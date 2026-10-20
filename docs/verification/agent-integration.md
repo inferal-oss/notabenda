@@ -8,13 +8,15 @@ The integration-reference tests typecheck every advertised config path through t
 
 Explicit scope selection tests cover document-only, agreement, cookie-control, media, translated-copy and discovery requests, with a backend selected independently. Unknown or declined answers select no work; translation selects no regional policy. Supporting work remains distinct when its own scope answer is declined. The selector rejects unknown IDs, malformed inputs and accessors without executing getters. The CLI reads only its explicitly named bounded JSON input, rejects oversized/non-file inputs, preserves existing project files and avoids reflecting private input in errors. Recorded scope never becomes a production-readiness declaration.
 
-The website test follows every curated `llms.txt` target and local link in generated Markdown guides, checks their HTML alternate links, and verifies the public skill matches the same source. A mixed Markdown fixture covers nested image links, reference definitions, escaped labels, titles and unchanged inline/fenced code. Public asset requests require no operator/demo namespace, set no session cookie and reject writes. Only the two selected skill files are included in the generated asset manifest.
+Read-only assessment tests reconcile a selected target with actual configuration and explicit practice answers. They exercise missing and empty control scopes, mandatory technology scope declarations, partial array coverage, task-specific answer templates, supported-but-unverified answers, conflicting public facts and shared wizard conflicts. Valid reviewed config still requires host verification; draft content remains separate. Saved report answers are regenerated through the shared engine. API tests reject accessors, custom serialization, cycles, sparse arrays and oversized data without calling user code. CLI tests reject symlinks, directories and malformed options, preserve all files and exclude the config body and private notes from the report. A report-producing exit code is not a readiness assertion.
+
+The website test follows every curated `llms.txt` target and local link in generated Markdown guides, checks their HTML alternate links, and verifies the public skill matches the same source. A mixed Markdown fixture covers nested image links, reference definitions, escaped labels, titles and unchanged inline/fenced code. Public asset requests require no operator/demo namespace, set no session cookie and reject writes. Only the explicitly selected skill files are included in the generated asset manifest.
 
 These checks exercise documentation delivery and a real local CLI workflow. They do not evaluate an agent's reasoning, establish legal suitability, publish to npm, install a personal skill, provision resources or prove browser-crawler adoption. Existing controller, authoring, history and backend tests remain responsible for those implementations. Adopters decide their own CI and review workflow.
 
 ```sh
 npm run build
-node --test packages/notabenda/test/agent-integration.test.mjs packages/notabenda/test/integration-reference.test.mjs
+node --test packages/notabenda/test/agent-integration.test.mjs packages/notabenda/test/integration-reference.test.mjs packages/notabenda/test/integration-assessment.test.mjs
 node site/build.mjs
 node --test site/test/agent-docs.test.mjs
 python3 scripts/regulatory.py --check

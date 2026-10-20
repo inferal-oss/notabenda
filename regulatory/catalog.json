@@ -6101,7 +6101,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Agent integration skill and public Markdown documentation",
       "kind": "product-standard",
-      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features.",
+      "summary": "Distribute a versioned integration skill with the package and website; provide a curated llms.txt and Markdown versions of maintained guides with working links and explicit review boundaries. Connect requested outcomes to version-matched configuration paths, separate host work, facts, current setup questions and observable acceptance scenarios. Resolve ambiguous task scope from explicit yes/no/unknown decisions without treating missing answers as negative or enabling adjacent features. Reconcile explicit configuration and practice answers with selected targets using a read-only assessment; distinguish minimum missing fields, conflicts, declarations, review and unverified host behavior.",
       "appliesWhen": "An agent helps an adopter configure, update or validate a Notabenda integration.",
       "sourceRefs": [
         {
@@ -6137,16 +6137,18 @@
         "docs/AGENT-SETUP.md",
         "packages/notabenda/src/integration-reference.ts",
         "packages/notabenda/src/cli.ts",
-        "skills/notabenda/references/configuration-target.md"
+        "skills/notabenda/references/configuration-target.md",
+        "packages/notabenda/src/integration-assessment.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",
         "docs/verification/agent-integration.md",
         "site/test/host.test.mjs",
-        "packages/notabenda/test/integration-reference.test.mjs"
+        "packages/notabenda/test/integration-reference.test.mjs",
+        "packages/notabenda/test/integration-assessment.test.mjs"
       ],
-      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness."
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness."
     },
     {
       "id": "REQ-BR-COOKIE-RIGHTS-LINK",
@@ -7437,13 +7439,14 @@
         "REQ-PRODUCT-AGENT-INTEGRATION"
       ],
       "status": "automated",
-      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness.",
+      "expected": "A locally packed/installed package exposes the exact versioned skill; its documented discovery, setup and preview commands run in a fresh fixture while production rejects drafts. Every generated Markdown guide and curated index target resolves, code examples retain their bytes, and public agent assets use read-only routes without evidence access or private report exposure. Advertised config paths typecheck against the actual SiteConfig declaration, current wizard IDs remain connected, unknowns stay unknown and describe reads no project facts or writes files. Explicit selection scenarios distinguish documents, controls, agreement, evidence and localization; unknown/declined answers select no work, malformed or executable decisions reject, and selected scope never implies production readiness. Assessment detects missing target config and contradictory facts, limits questions to selected/prerequisite work, preserves inputs and private values, rejects executable/non-file inputs, and never declares readiness from valid config or recorded answers.",
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
         "site/test/agent-docs.test.mjs",
         "docs/verification/agent-integration.md",
         "site/test/host.test.mjs",
-        "packages/notabenda/test/integration-reference.test.mjs"
+        "packages/notabenda/test/integration-reference.test.mjs",
+        "packages/notabenda/test/integration-assessment.test.mjs"
       ]
     },
     {

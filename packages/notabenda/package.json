@@ -219,6 +219,11 @@
       "import": "./dist/integration-reference.js",
       "default": "./dist/integration-reference.js"
     },
+    "./integration/assessment": {
+      "types": "./dist/integration-assessment.d.ts",
+      "import": "./dist/integration-assessment.js",
+      "default": "./dist/integration-assessment.js"
+    },
     "./skill/references/configuration-target.md": "./dist/skill/references/configuration-target.md",
     "./technology": {
       "types": "./dist/technology-collection.d.ts",

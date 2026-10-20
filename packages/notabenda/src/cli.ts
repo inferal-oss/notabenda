@@ -18,7 +18,7 @@ import {describeIntegration,selectIntegration} from './integration-reference.js'
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
@@ -30,11 +30,15 @@ and unknown-answer template. No project scan or config mutation. Omit targets to
 describe --selection FILE [--json]  Resolve explicit yes/no/unknown scope decisions
 from selectionTemplate; reads only the named ordinary JSON file and package metadata.
 Cannot combine --selection with target IDs. An empty selection selects nothing.
+assess --selection FILE --config FILE [--answers FILE] [--json]  Read-only reconciliation
+of selected targets, explicit configuration and optional wizard practice answers.
+Reports minimum missing config, relevant unknowns, validation and unverified host work.
+Never writes a draft or enables features. Exit zero means a report was produced, not readiness.
 
 All configuration is JSON; no module execution or network access is required.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
 Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config FILE
-imports an existing config. Output requires a new directory and never overwrites. --json applies to check and describe.
+imports an existing config. Output requires a new directory and never overwrites. --json applies to check, describe and assess.
 Wizard --project DIRECTORY explicitly scans supported source/dependency identifiers and
 offers actual-use review in interactive setup; --catalog FILE selects its reference catalog.
 With --answers, findings are saved privately without adding services automatically.
@@ -65,6 +69,23 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='assess'){
+    const options:Record<string,string>=Object.create(null);let json=false;const seen=new Set<string>();
+    while(args.length){
+      const flag=args.shift()!;if(seen.has(flag))throw Error('Duplicate assess option.');seen.add(flag);
+      if(flag==='--json'){json=true;continue;}
+      if(!['--selection','--config','--answers'].includes(flag))throw Error('assess accepts --selection FILE, --config FILE, optional --answers FILE and --json.');
+      const value=args.shift();if(!value||value.startsWith('-'))throw Error('Assessment options require explicit JSON files.');options[flag]=value;
+    }
+    if(!options['--selection']||!options['--config'])throw Error('assess requires explicit --selection FILE and --config FILE.');
+    const selection=await readCliJson(options['--selection'],65536,'Selection could not be read as bounded ordinary JSON.');
+    const config=await readCliJson(options['--config'],1024*1024,'Config could not be read as bounded ordinary JSON.');
+    const answers=options['--answers']?await readCliJson(options['--answers'],512*1024,'Answers could not be read as bounded ordinary JSON.'):undefined;
+    const {assessIntegration}=await import('./integration-assessment.js');
+    const assessment=assessIntegration({selection,config,...(answers===undefined?{}:{answers})});
+    const {name,version}=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));
+    console.log(json?JSON.stringify({package:{name,version},...assessment},null,2):`${name} ${version} · private integration assessment\nStatus: ${assessment.status}; production readiness is not established.\nRequested: ${assessment.requestedTargetIds.join(', ')||'none'}\nMissing target configuration: ${assessment.missingRequiredConfig.map(f=>f.path).join(', ')||'none detected'}\nPractice answers needing attention: ${assessment.questions.filter(q=>q.status!=='recorded-unverified').map(q=>q.id).join(', ')||'none'}\nConflicts to reconcile: ${assessment.factConflicts.length} public facts, ${assessment.practiceConflicts.length} practice declarations.\nPreview valid: ${assessment.validation.preview.valid}; production config valid: ${assessment.validation.production.valid}.\nUse --json for diagnostics, config observations and host work to verify. No files changed.`);return;
+  }
   if(command==='describe'){
     let json=false,selectionPath:string|undefined;const targetIds:string[]=[],seen=new Set<string>();
     while(args.length){

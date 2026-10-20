@@ -40,6 +40,14 @@ The result identifies requested targets, supporting work and unanswered question
 
 The [configuration-target reference](/skills/notabenda/references/configuration-target.md) explains how to turn the user's request and project evidence into a brief, collect only material missing facts, prepare explicit answers and compare a wizard draft with the existing configuration. A policy page, runtime control and durable receipt remain separate choices. An agent should preserve unrelated settings and report the actual host work still needed.
 
+For an existing inventory, the agent can check those inputs together:
+
+```sh
+npx --no-install notabenda assess --selection ./integration-selection.json --config ./notabenda.config.json --answers ./answers.json --json
+```
+
+Start the practice answers from the selected reference's `targetAnswersTemplate`. The optional `--answers` accepts an answers file or a saved private setup report. The read-only assessment reports relevant unknowns, minimum missing config, contradictory facts, preview/production diagnostics and host tasks to verify. It never copies sample values into the config. Field presence is reported as a declaration, with coverage through inventory arrays; it does not prove content or behavior. Keep the report private. Exit zero means a report was produced, and `productionReady` remains false. The API equivalent is `assessIntegration({selection, config, answers})` from `notabenda/integration/assessment`.
+
 ## Documentation without the page layout
 
 [llms.txt](/llms.txt) is a short index of the integration guides and requirement catalog. Every source-backed guide has a Markdown version at its guide URL plus `/index.md`, for example [the setup guide in Markdown](/guide/setup/index.md). Guide pages advertise that version through an alternate link in their HTML head.

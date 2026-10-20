@@ -93,7 +93,7 @@ test('every advertised config path typechecks against the installed SiteConfig d
 test('setup questions stay connected to real IDs and unknown answers preserve imported runtime settings',async()=>{
  const reference=describeIntegration(),ids=new Set(setupQuestions.map(q=>q.id));
  assert.deepEqual(reference.questions.map(q=>q.id),setupQuestions.map(q=>q.id));
- for(const target of reference.targets){for(const id of target.questionIds)assert.ok(ids.has(id),id);for(const id of target.prerequisites)assert.ok(reference.targets.some(t=>t.id===id),id);assert.ok(target.factsNeeded.length&&target.verify.length);}
+ for(const target of reference.targets){for(const id of target.questionIds)assert.ok(ids.has(id),id);for(const id of target.prerequisites)assert.ok(reference.targets.some(t=>t.id===id),id);for(const path of target.requiredConfigPaths??[])assert.ok(target.configPaths.includes(path),path);assert.ok(target.factsNeeded.length&&target.verify.length);}
  assert.ok(Object.values(reference.answersTemplate.answers).every(a=>a.choice==='unknown'&&a.justification===''));
  const config=await fixture();config.consent={purposes:[...new Set(config.services.flatMap(s=>s.purposeIds))].map(id=>({id,scope:'host-scope-v9'})),services:config.services.map(s=>({id:s.id,scope:'host-service-v3'})),grantLifetimeDays:30,refusalLifetimeDays:90,dismissalMinutes:60};
  const plan=createSetupPlan(reference.answersTemplate,{config});

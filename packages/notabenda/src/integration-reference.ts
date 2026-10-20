@@ -6,7 +6,7 @@ import type {SetupQuestionId} from './setup.js';
 interface Target {
  title:string; outcome:string; configPaths:string[]; hostWork:string[];
  questionIds:SetupQuestionId[]; factsNeeded:string[]; guides:string[];
- prerequisites:string[]; verify:string[];
+ prerequisites:string[]; verify:string[]; requiredConfigPaths?:string[];
 }
 const targets:Record<string,Target>={
  'legal-pages':{
@@ -22,11 +22,13 @@ const targets:Record<string,Target>={
   questionIds:['authored-content'],factsNeeded:['Trusted source files and component imports','Stable section IDs, document version/effective date and actual review decision'],guides:['authoring','releases'],prerequisites:['legal-pages'],verify:['Compile the actual sources.','Verify public HTML and private source archive separation.','Pinned prior versions survive a clean build.']
  },
  'cookie-consent':{
+  requiredConfigPaths:['consent','consent.purposes','consent.services'],
   title:'Cookie and optional-service controls',outcome:'Optional loaders run only while their declared purpose/service permission is effective.',
-  configPaths:['purposes','services','storage','consent','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders.','Choose vanilla, React or Astro controls around the same controller.'],
+  configPaths:['purposes','services','storage','consent','consent.purposes','consent.services','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders.','Choose vanilla, React or Astro controls around the same controller.'],
   questionIds:['optional-storage','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Actual optional loaders, storage names/types and cleanup targets','Purpose/service IDs and deliberate material scope revisions','Grant/refusal lifetimes and dismissal interval','Scope assessments; present or unknown specialized processing remains gated'],guides:['consent','storage-cleanup','scope-guards','react','astro'],prerequisites:['legal-pages'],verify:['No optional request on initial load or after rejection.','Granular grants start only the selected work.','Withdrawal stops owned work and clears declared markers.','Reload, changed scopes and failure states retain restrictions.']
  },
  'technology-functions':{
+  requiredConfigPaths:['scopeGuards'],
   title:'Technology collection notices',outcome:'A static, versioned disclosure of identification, location or profiling functions and their activation method.',configPaths:['purposes','services','consent.services.scope','scopeGuards','documents.privacy'],hostWork:['Use the optional build-only notabenda/technology API; supply reviewed function/activation copy and assign technologyCollectionScope(settings) before compiling.','Place the notice before every activation opportunity, including global choices; use existing gated lifecycles and on-demand native controls when appropriate.','Retain the exact descriptor separately from its legal artifact. Ordinary consent receipts do not automatically archive this supplemental notice.'],questionIds:['technology-functions'],factsNeeded:['Actual covered technology, provider and all collection purposes','Necessity, applicable scope and specialized processing assessment','Public function declarations, activation instructions, complete host-language labels and review','Fresh service material scope and actual cleanup'],guides:['technology-collection','consent','scope-guards'],prerequisites:['cookie-consent'],verify:['The disclosure and activation instructions render without JavaScript.','Opening the controls does not activate the function.','Old generic grants cannot start the new function.','Actual service starts, withdrawal, receipt failure and processing restrictions retain the existing gates.']
  },
  'embeds':{
@@ -38,6 +40,7 @@ const targets:Record<string,Target>={
   hostWork:['Create/register the exact offer; bind a host context and transport to the agreement control.','A terms page alone is not an agreement flow. Keep cookie preferences separate.'],questionIds:['terms-agreement'],factsNeeded:['Action requiring agreement','Exact terms version and action wording','Host context identity, receipt admission and failure/retry behavior'],guides:['terms'],prerequisites:['legal-pages'],verify:['Initially unchecked.','Displayed document matches the offer revision.','Failure cannot appear acknowledged; successful receipt remains inspectable.']
  },
  'privacy-rights':{
+  requiredConfigPaths:['rightsCenter'],
   title:'Privacy request entry points',outcome:'A static page leading to the host’s real request workflows.',configPaths:['privacy','rightsCenter'],hostWork:['Supply real routes/contact fallback and implement request intake and fulfillment.'],questionIds:['personal-data'],factsNeeded:['Available rights and action scope','Actual destinations, contact and next steps'],guides:['rights'],prerequisites:['legal-pages'],verify:['The page works without JavaScript.','Every action reaches the intended host workflow.']
  },
  'processing-opt-outs':{
@@ -53,6 +56,7 @@ const targets:Record<string,Target>={
   title:'Durable evidence and backoffice',outcome:'Host-authorized archives and inspection of retained records.',configPaths:[],hostWork:['Optional notabenda-cf storage/admin, or the host’s compatible recording integration.','Implement authorization, fixed site/object scope, recording admission, identity, activation, retention, holds/erasure and private source/export grants.'],questionIds:['receipts'],factsNeeded:['Which records must be retained and why','Host authorization/identity and storage architecture','Retention, access and operational policy'],guides:['cloudflare-starter','cloudflare','consent-evidence','releases','evidence-lifecycle'],prerequisites:['legal-pages'],verify:['Unauthorized access is denied before storage access.','Records bind exact retained releases.','Private source/export needs separately granted authority.','Restart, retry and retention behavior match the host policy.']
  },
  'localization':{
+  requiredConfigPaths:['localization'],
   title:'Localized wording',outcome:'Explicit host-supplied document/control wording and formatting.',configPaths:['site.locale','localization'],hostWork:['Supply complete reviewed message dictionaries and revision bindings; test direction and layout.'],questionIds:[],factsNeeded:['Languages, complete wording and translation review','Message/disclosure revisions and any terms statement'],guides:['localization'],prerequisites:['legal-pages'],verify:['No unintended language fallback.','Keyboard, long text and writing direction remain usable.','Language selection does not activate regional policies.']
  },
  'regional-consent':{
@@ -95,6 +99,7 @@ function integrationReference(selected:string[]){
  return structuredClone({schemaVersion:1,kind:'notabenda-integration-reference',requestedTargetIds:selected,
   boundaries:{advisoryOnly:true,writesFiles:false,readsProject:false,activatesFeatures:false,legalReview:false},
   configContract:{schemaVersion:1,typeExport:'notabenda',typeName:'SiteConfig',validation:'notabenda check --config FILE --json',jsonCli:true,markdownMdx:'notabenda-authoring build API',hostWorkIsNotConfig:true,starterDefaultsAreNotFacts:true,pathNotation:'Dot paths through inventory arrays refer to each item field, not literal JSON keys.'},
+  assessment:{command:'notabenda assess --selection FILE --config FILE --json',optionalAnswers:'--answers FILE',api:'notabenda/integration/assessment',readOnly:true,meaning:'Checks explicit config and practice answers against selected work. Declared fields are not verified facts; host work and review remain separate.'},
   selectionQuestions,
   selectionTemplate:{schemaVersion:1,answers:Object.fromEntries(selectionQuestions.map(q=>[q.id,'unknown']))},
   publicFactFields:setupFactFields.map(([id,label])=>({id,label})),
@@ -103,6 +108,7 @@ function integrationReference(selected:string[]){
   questions:setupQuestions.map(q=>({id:q.id,title:q.title,detail:q.detail,choices:['yes','no','unknown'],configPaths:q.paths.filter(p=>!p.startsWith('host.')),hostWorkRefs:q.paths.filter(p=>p.startsWith('host.')),requirementIds:q.requirements,guide:'https://notabenda.org/guide/'+q.guide+'/index.md'})),
   markets:setupMarkets,
   answersTemplate:{schemaVersion:1,publicFacts:{},markets:[],answers:Object.fromEntries(setupQuestions.map(q=>[q.id,{choice:'unknown',justification:''}])),storageJustifications:{}},
+  targetAnswersTemplate:{schemaVersion:1,publicFacts:{},markets:[],answers:Object.fromEntries(relevantQuestionIds.map(id=>[id,{choice:'unknown',justification:''}])),storageJustifications:{}},
   workflow:['Record requested outcomes and existing integration points.','Separate confirmed facts, project evidence, unknowns and legal review decisions.','Read target guides and the installed SiteConfig type; host work is not a JSON config field.','Complete explicit answers and run wizard --answers FILE, adding --config FILE for an existing inventory.','Compare the exported draft against the original; apply only reviewed changes.','Run check/build in preview, integration scenarios, and production validation when review is complete.'],
   handoffFields:['requested outcomes','selected target IDs','existing integration','confirmed facts and provenance','unknown facts and consequences','exact config changes','host/build/runtime work','review and deployment status','verification results']
  });

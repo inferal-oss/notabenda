@@ -56,7 +56,28 @@ Do not ask the operator for facts already established in the project or earlier 
 
 ## Turn facts into a reviewable draft
 
-Use the reference's `answersTemplate` for the current question IDs. Fill only supported facts and retain unknown choices for unresolved items. Save it in a private local location, then run:
+Use the selected reference's `targetAnswersTemplate` for relevant practice questions; `answersTemplate` covers the broader inventory. Fill only supported facts and retain unknown choices for unresolved items. Unknown unrelated questions do not enlarge the task. A practice declared `no` does not cancel requested work or remove existing restrictions.
+
+Before editing an existing config, reconcile the explicit inputs:
+
+```sh
+npx --no-install notabenda assess --selection ./integration-selection.json --config ./notabenda.config.json --answers ./answers.json --json
+```
+
+The optional API is `assessIntegration({selection, config, answers})` from `notabenda/integration/assessment`. Omit `answers` if unavailable, or pass a saved private setup report; its recommendations are regenerated. CLI inputs are bounded ordinary JSON files; no project scripts execute and nothing is written. The report omits the config body and private notes, but diagnostics and review items can identify inventory entries. Keep it outside public assets.
+
+Read the result in this order:
+
+1. `requestedTargetIds` and `prerequisiteReview`: confirm the intended work and reuse existing support.
+2. `validation.preview`: fix structural errors before drafting. `validation.production` separately reports draft/review errors.
+3. `missingRequiredConfig`: minimum sections needed by selected targets. For example, optional-service control needs `consent`; an inventory alone does not configure it.
+4. `questions`, `factConflicts` and `practiceConflicts`: collect relevant missing facts, support declared answers, and reconcile disagreements without overwriting either input.
+5. `targets[].configuration`: observed paths and coverage through arrays. `absent`, `empty` or `partial` optional fields can be intentional. `declared` only reports presence, not correct values, legal suitability or runtime coverage.
+6. `factsToConfirm`, `hostWorkToVerify` and `acceptanceScenarios`: verify the actual host behavior. These remain open even with valid configuration and recorded answers.
+
+Exit zero means a report was produced. Status can be `invalid-config`, `no-targets`, `needs-input`, `needs-review` or `needs-verification`; none means production-ready. Scope decisions and practice declarations remain separate, and the assessment never enables a feature or invents config values. Read installed types and the linked target guides for the actual field shapes and host APIs.
+
+Save explicit practice answers privately, then generate the draft:
 
 ```sh
 npx --no-install notabenda wizard --answers ./answers.json \
