@@ -270,3 +270,5 @@ Declared service-directory localization: a complete host-authored dictionary, ex
 ## Indirect notice language
 
 Support a complete optional `localization.indirectCollection` dictionary shared by static HTML and plain-text notices. Keep the site language, collection phase and supported NZ profile as separate explicit facts. Retain selected copy with its release and v2 notice identity; preserve v1 English output and independent cookie scopes. Direct-form messages do not substitute for missing indirect messages. Language supplies no jurisdiction, legal review, transport or notification evidence.
+
+The optional terms connection inspector (REQ-PRODUCT-TERMS-CONNECTION) compares actual controller offer and local operation without submitting or retrying agreement. Recovery, uncertain and historical receipt states remain distinct. Private identifiers and wording are excluded; publication, backend selection and application behavior stay separate. Native light/midnight examples load its observation panel on request.

@@ -23,6 +23,8 @@ The offer ID hashes the site, workflow scope, document metadata/digests, stateme
 
 **The host must serve and retain pinned HTML for every retained offer.** A build output contains the current release only; replacing a deployment directory can remove older files. Merge releases into retained hosting or provide a host route serving verified archived bytes. The package's admin Worker deliberately does not serve archived HTML. Keep referenced styles/assets available as needed; CSS bytes are not included in document hashes or the release archive. Author-supplied external links may change independently.
 
+Before testing the flow, [inspect the actual terms connection](TERMS-CONNECTION.md) to compare its offer and local operation. Publication, active backend terms and real behavior need separate checks.
+
 ## Supply the interface language
 
 Legal pages and acceptance can share the selected site language. Add the complete optional `localization.terms` message dictionary to your site configuration, then build the offer normally. The statement and action label remain explicit offer fields. Version 2 retains all widget text, language, direction and copy revision, with independent backend checks against the retained release. Version 1 English offers remain supported. See the [localization guide](LOCALIZATION.md#terms-acceptance) for the complete contract and limits.

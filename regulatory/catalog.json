@@ -236,7 +236,8 @@
         "Static supplied terms first; narrowly scoped reviewed packs later.",
         "Optional explicit terms-acceptance control linked to an exact version; independent marketing permissions.",
         "Consumer/business and service-type configuration, with conditional rights and contract-action links.",
-        "React provider/hooks/native control and Astro named offer/operation-bound shell/bridge over the same host-owned acceptance controller; conservative SSR, view-only cleanup and uncertain-request preservation."
+        "React provider/hooks/native control and Astro named offer/operation-bound shell/bridge over the same host-owned acceptance controller; conservative SSR, view-only cleanup and uncertain-request preservation.",
+        "Optional local offer/operation inspection, with publication, backend activation and application behavior left to separate checks."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -260,7 +261,8 @@
         "packages/notabenda/src/astro/TermsAcceptance.astro",
         "packages/notabenda/src/terms.ts",
         "packages/notabenda/src/react.ts",
-        "packages/notabenda/src/astro-client.ts"
+        "packages/notabenda/src/astro-client.ts",
+        "packages/notabenda/src/terms-inspect.ts"
       ]
     },
     {
@@ -2541,7 +2543,8 @@
         "REQ-PRODUCT-SETUP-SESSION",
         "REQ-PRODUCT-SERVICE-LOCALIZATION",
         "REQ-PRODUCT-INDIRECT-LOCALIZATION",
-        "REQ-PRODUCT-CF-REMOTE-RECOVERY"
+        "REQ-PRODUCT-CF-REMOTE-RECOVERY",
+        "REQ-PRODUCT-TERMS-CONNECTION"
       ]
     }
   ],
@@ -8203,6 +8206,45 @@
         "docs/verification/cloudflare-remote-recovery.md"
       ],
       "implementationNote": "External default-closed control object, whole-operation serialization, hold-first replay, bounded purge restart, exact source hashes, private atomic ownership checkpoints and namespace-first cleanup with source/tag/ID checks. Real remote SQLite Time Travel run passed on 20 October 2026, including SQL and KV rollback, later hold-first replay, external gate persistence, purge restart, exact source bytes and verified removal of both namespaces and Worker."
+    },
+    {
+      "id": "REQ-PRODUCT-TERMS-CONNECTION",
+      "jurisdiction": "PRODUCT",
+      "title": "Read-only terms offer and local operation inspection",
+      "kind": "product-standard",
+      "summary": "Compare an actual terms controller with the complete normalized intended offer and optional local host operation without taking acceptance actions. Keep publication, backend selection and application behavior separate.",
+      "appliesWhen": "An operator or agent checks which offer and operation a mounted terms flow uses.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-TERMS-CONNECTION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Local methods are trusted host assertions, not authenticated reports or server bindings. Receipt confirmation may be historical; an error can follow a saved record. No current permission, fulfillment, installation or compliance verdict follows.",
+      "implementationRefs": [
+        "packages/notabenda/src/terms-inspect.ts",
+        "packages/notabenda/src/terms.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/static/terms-inspector.mjs",
+        "examples/static/terms-inspector.css",
+        "examples/static/agreement.mjs",
+        "examples/static/terms-build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/terms-inspect.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/terms-connection.test.mjs",
+        "docs/verification/terms-connection.md"
+      ],
+      "implementationNote": "Optional browser/SSR entry with fixed private projection, independent-bundle-compatible local comparator, full offer/localization comparison, uncertain and destroyed states, generic validation failures and a deliberately loaded example panel that invalidates stale snapshots."
     }
   ],
   "verification": [
@@ -9837,6 +9879,20 @@
         "packages/notabenda-cf/test/remote-recovery.test.mjs",
         "scripts/check-cf-remote-recovery.mjs",
         "docs/verification/cloudflare-remote-recovery.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TERMS-CONNECTION",
+      "requirementIds": [
+        "REQ-PRODUCT-TERMS-CONNECTION"
+      ],
+      "status": "automated",
+      "expected": "Actual and custom controllers compare normalized offers/localization and local operations without acceptance actions, retain uncertain/recovery/destroyed semantics, exclude private identifiers and wording, reject hostile inputs, work across separate bundles, expose installed types and support stale-result-invalidating accessible example UI.",
+      "testRefs": [
+        "packages/notabenda/test/terms-inspect.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/terms-connection.test.mjs",
+        "docs/verification/terms-connection.md"
       ]
     }
   ],

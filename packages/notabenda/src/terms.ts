@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-CONNECTION
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeTermsLocalization} from './terms-localization-policy.js';
 import type {TermsLocalization} from './terms-localization-policy.js';
@@ -47,6 +48,8 @@ export interface TermsAcceptanceOptions {
 export interface TermsAcceptanceController {
   getOffer(): TermsOffer;
   getSnapshot(): TermsAcceptanceSnapshot;
+  /** Local comparison only; never authenticates the server binding or exposes the stored operation. */
+  isForOperation?(expected: string): boolean;
   subscribe(listener: (state: TermsAcceptanceSnapshot) => void): () => void;
   setChecked(value: boolean): void;
   submit(): Promise<TermsAcceptanceReceipt>;
@@ -129,6 +132,7 @@ export function createTermsAcceptance(input: unknown, options: TermsAcceptanceOp
   }
   return {
     getOffer:()=>structuredClone(offer), getSnapshot:snapshot,
+    isForOperation(expected) { if(!plain(expected,200))throw Error('Provide a bounded host operation reference.');return expected===operationId; },
     subscribe(listener) { listeners.add(listener); try { listener(snapshot()); } catch {} return ()=>listeners.delete(listener); },
     setChecked(value) { if (typeof value !== 'boolean' || !['idle','error'].includes(state.status)) throw new Error('The current acceptance attempt cannot be edited.'); state = { checked:value, status:'idle', ...(state.requestId ? { requestId:state.requestId } : {}) }; emit(); },
     submit,

@@ -316,7 +316,12 @@
       "import": "./dist/agent-handoff.js",
       "default": "./dist/agent-handoff.js"
     },
-    "./agent-handoff.css": "./dist/agent-handoff.css"
+    "./agent-handoff.css": "./dist/agent-handoff.css",
+    "./terms/inspect": {
+      "types": "./dist/terms-inspect.d.ts",
+      "import": "./dist/terms-inspect.js",
+      "default": "./dist/terms-inspect.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

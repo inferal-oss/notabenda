@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-CONNECTION
 // @requirements REQ-PRODUCT-CONNECTION-INSPECTION
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
@@ -282,9 +283,19 @@ createRightsDraftPlan(config,{baseline:config,settings:rightsSettings});
 rightsSettings.reviewStatus='reviewed';
 `);
     for(const file of ['dist/setup-storage.js','dist/setup-storage-ui.js','dist/setup-storage-cli.js','dist/setup-storage.d.ts','dist/setup-storage-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
-    const inspectionImport=spawnSync(process.execPath,['--input-type=module','-e',"import {inspectConsentConnection} from '@notabenda/core/consent/inspect';if(typeof inspectConsentConnection!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(inspectionImport.status,0,inspectionImport.stderr);
+    const inspectionImport=spawnSync(process.execPath,['--input-type=module','-e',"import {inspectConsentConnection} from '@notabenda/core/consent/inspect';import {inspectTermsConnection} from '@notabenda/core/terms/inspect';if(typeof inspectConsentConnection!=='function'||typeof inspectTermsConnection!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(inspectionImport.status,0,inspectionImport.stderr);
     const storageImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createStorageDraftPlan,normalizeStorageDraftInput} from '@notabenda/core/setup/storage';import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';if([createStorageDraftPlan,normalizeStorageDraftInput,mountStorageEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(storageImport.status,0,storageImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {inspectTermsConnection,type TermsConnectionInspection} from '@notabenda/core/terms/inspect';
+import type {TermsAcceptanceController,TermsOffer} from '@notabenda/core/terms';
+declare const termsDiagnosticController:TermsAcceptanceController;
+declare const expectedTermsOffer:TermsOffer;
+const termsConnectionReport:TermsConnectionInspection=inspectTermsConnection(termsDiagnosticController,{expectedOffer:expectedTermsOffer,expectedOperationId:'host-operation'});
+const localOperationMatch:boolean|undefined=termsDiagnosticController.isForOperation?.('host-operation');
+// @ts-expect-error inspection has no submit option
+inspectTermsConnection(termsDiagnosticController,{submit:true});
+// @ts-expect-error local inspection never verifies backend activation
+const backendVerified:'verified'=termsConnectionReport.backendSelection.status;
 import {inspectConsentConnection,type ConsentConnectionInspection} from '@notabenda/core/consent/inspect';
 import {type ServiceRegistration} from '@notabenda/core/consent';
 import type {ConsentRuntimeConfig} from '@notabenda/core/consent';

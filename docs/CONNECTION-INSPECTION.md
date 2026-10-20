@@ -44,3 +44,5 @@ Open the [cookie-choice example](https://notabenda.org/choices/) and expand **In
 For agent-assisted setup, include this runtime report alongside configuration assessment, publication results and the actual application test output. Record what each check observed and what remains unverified. Do not promote a registration count to an installed or tested pack.
 
 See [verification](verification/connection-inspection.md).
+
+For agreement flows, use the separate [terms connection inspector](TERMS-CONNECTION.md).
