@@ -10,6 +10,8 @@ Notabenda generates privacy, cookie and terms pages from your site configuration
 
 Explore the [website and documentation](https://notabenda.org) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
 
+Start with the [compliance component map](https://notabenda.org/guide/compliance-map/) to see what notices, permissions, contract actions and evidence serve. The separate [software and storage diagram](https://notabenda.org/guide/architecture/) shows how those parts fit into a site and optional backend.
+
 ## Set up with an agent
 
 Give your coding agent the [Notabenda integration skill](skills/notabenda/SKILL.md). It covers discovery, configuration, documents, controls and the optional backend. After local installation, `npx --no-install notabenda describe --json` gives agents a version-matched map of requested outcomes, config fields, facts still needed and host work. The [agent setup guide](docs/AGENT-SETUP.md) explains installation; [llms.txt](https://notabenda.org/llms.txt) links to Markdown documentation.

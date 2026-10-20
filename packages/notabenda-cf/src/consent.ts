@@ -108,7 +108,7 @@ async function verifyArchive(tx:HistoryTransaction,n:ObjectValue,context:Consent
   const artifact=await validateStoredLegalRelease(release); const m=object(artifact.manifest); const config=object(artifact.publicConfig);
   if (m.siteId!==context.siteId || m.artifactId!==n.artifactId || m.mode!==n.mode || object(config.site).id!==context.siteId) return fail('scope-mismatch');
   let localization:ConsentLocalization|undefined;
-  if(config.localization!==undefined){try{const {documents:_,generatedDocuments:__,terms:___,formPermission:____,...selected}=object(config.localization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
+  if(config.localization!==undefined){try{const {documents:_,generatedDocuments:__,terms:___,formPermission:____,collection:_____,...selected}=object(config.localization);localization=normalizeConsentLocalization(selected,{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{return fail('invalid-notice');}}
   if(canonicalJson((localization??null) as unknown as JsonValue)!==canonicalJson(n.localization??null))return fail('invalid-notice');
   const policy=object(config.consent); const declared=object(n.policy);
   let information;try{information=policy.information===undefined?undefined:normalizeConsentInformation(policy.information);}catch{return fail('invalid-notice');}

@@ -11,6 +11,12 @@ npx notabenda-cf init --out-dir ./privacy-backend \
 
 The output directory must not exist; its parent must already exist. Existing files and symlinks are never replaced. Initialization reads the bundled templates and writes a new local project. It performs no network call, package installation, login, resource creation or deployment. A write failure leaves its partial new directory for inspection rather than deleting files automatically.
 
+## Where the backend fits
+
+<!-- notabenda:diagram storage -->
+
+For the purpose of each legal document or control, start with the [compliance map](COMPLIANCE-MAP.md).
+
 ## What you edit
 
 - `src/settings.mjs`: public site ID, admin path and workspace label.

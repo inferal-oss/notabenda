@@ -21,6 +21,12 @@ The importer receives the finished SVG as bytes and emits those bytes at a conte
 
 For a normal integration, supply your producer's finished file as described in the [label guide](GUARANTEE-LABELS.md). Do not use the example's qualifications as defaults or infer that a product lacks a qualifying guarantee when facts are missing. The fixture preparation script is not part of the npm package's runtime API.
 
+## Where this component fits
+
+<!-- notabenda:diagram purchase -->
+
+This map connects the label to the surrounding [compliance responsibilities](COMPLIANCE-MAP.md). For applicable consumer distance contracts, information before purchase, the payment-obligation action and contract confirmation are distinct duties; see [Consumer Rights Directive Articles 6 and 8](https://eur-lex.europa.eu/eli/dir/2011/83/oj/eng) and the catalog's individual requirements. A product label, a terms agreement and a customer confirmation serve different purposes.
+
 ## Maintainer checks
 
 Normal project tests need Python's standard library, with no font tools or downloads:

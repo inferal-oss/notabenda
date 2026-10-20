@@ -1,3 +1,4 @@
+import {selectCollectionLocalization} from './collection-localization-policy.js';
 import {selectFormPermissionLocalization} from './form-permission-localization-policy.js';
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 // @requirements REQ-IE-CONSENT-DURATION
@@ -191,9 +192,23 @@ function directCollectionFacts(artifact:LegalArtifact,settings:CollectionNoticeS
   return {schemaVersion:1 as const,renderingPolicy:'collection-v1' as const,locale:config.site.locale,noticeId:'0'.repeat(64),siteId:config.site.id,scopeId:settings.scopeId,artifactId,mode:manifest.mode,reviewStatus:settings.reviewStatus,controller:config.controller,purposes,recipients,privacy:{rights:config.privacy.rights,transfers:config.privacy.transfers,automatedDecisions:config.privacy.automatedDecisions,complaints:config.privacy.complaints,...(config.privacy.rightsUrl?{rightsUrl:config.privacy.rightsUrl}:{})},document:{title,version,effectiveDate,sha256:htmlHash,contentSha256,reviewStatus,url:`/artifacts/${artifactId}/privacy.html`}};
 }
 export function createCollectionNotice(artifact:LegalArtifact,settings:CollectionNoticeSettings,options:ValidationOptions={}):CollectionNotice {
-  requireEnglishSurface(artifact.publicConfig,'This notice/acceptance interface');
-  const n=normalizeCollectionNotice({...directCollectionFacts(artifact,settings,options),wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:settings.wording.privacyLinkLabel??'Read the privacy policy'}},{allowPreview:options.mode==='preview'});
+  if(!artifact.publicConfig.localization?.collection)requireEnglishSurface(artifact.publicConfig,'Collection notice without localization.collection');
+  const localization=artifact.publicConfig.localization?.collection?selectCollectionLocalization(artifact.publicConfig.localization):undefined;
+  if(localization&&(settings.wording.detailsLabel!==undefined||settings.wording.privacyLinkLabel!==undefined))throw Error('Set collection link/detail labels in the versioned localization.collection dictionary.');
+  const n=normalizeCollectionNotice({...directCollectionFacts(artifact,settings,options),...(localization?{schemaVersion:2,renderingPolicy:'collection-v2',localization}:{}),wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:localization?.collection.detailsLabel??settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:localization?.collection.privacyLinkLabel??settings.wording.privacyLinkLabel??'Read the privacy policy'}},{allowPreview:options.mode==='preview'});
   const {noticeId:_,...noticeDescriptor}=n;return {...n,noticeId:sha256(canonicalJson(noticeDescriptor))};
+}
+
+/** @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-PRODUCT-LOCALIZATION
+ * Compare a trusted notice with its intact release and selected interface text.
+ * Content identity does not authenticate either author or prove presentation.
+ */
+export function verifyCollectionNotice(input:unknown,artifact:LegalArtifact,options:ValidationOptions={}):CollectionNotice {
+  const n=normalizeCollectionNotice(input,{allowPreview:options.mode==='preview'});
+  const wording={title:n.wording.title,intro:n.wording.intro,...(n.schemaVersion===1?{detailsLabel:n.wording.detailsLabel,privacyLinkLabel:n.wording.privacyLinkLabel}:{})};
+  const expected=createCollectionNotice(artifact,{scopeId:n.scopeId,purposeIds:n.purposes.map(p=>p.id),reviewStatus:n.reviewStatus,wording},options);
+  if(canonicalJson(n)!==canonicalJson(expected))throw Error('The collection notice does not match its identity and pinned release facts.');
+  return expected;
 }
 
 /** @requirements REQ-NZ-INDIRECT REQ-PRODUCT-INDIRECT-NOTICE

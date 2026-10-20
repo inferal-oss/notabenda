@@ -55,6 +55,15 @@ const targets:Record<string,Target>={
   requiredConfigPaths:['rightsCenter'],
   title:'Privacy request entry points',outcome:'A static page leading to the host’s real request workflows.',configPaths:['privacy','rightsCenter'],hostWork:['Supply real routes/contact fallback and implement request intake and fulfillment.'],questionIds:['personal-data'],factsNeeded:['Available rights and action scope','Actual destinations, contact and next steps'],guides:['rights'],prerequisites:['legal-pages'],verify:['The page works without JavaScript.','Every action reaches the intended host workflow.']
  },
+ 'collection-notice':{
+  requiredConfigPaths:['purposes'],
+  conditionalConfig:[{when:'site-locale-not-english',requiredPaths:['localization.collection'],reason:'The static non-English collection interface needs the complete selected collection dictionary.'}],
+  title:'Information beside a collection form',outcome:'Static purpose disclosures beside host fields, linked to an exact privacy revision.',
+  configPaths:['purposes','purposes.collection','documents.privacy','localization.collection'],
+  hostWork:['Create and verify a collection notice for one to eight declared direct/mixed-source purposes; supply context-specific title and introduction.','Place the notice at the actual collection surface with unique instance IDs; retain field-specific instructions and implement submission separately. Notice display records no consent or acceptance.'],
+  questionIds:['personal-data'],factsNeeded:['Actual collection context, selected purposes and data categories','Whether providing data is optional, what a response needs and consequences of omission','Reviewed wording, recipients and retained privacy revision'],guides:['collection','localization','releases'],prerequisites:['legal-pages'],
+  verify:['Notice and details remain readable without JavaScript.','Selected facts and language match the retained release.','Field instructions distinguish purpose-level optionality from individual field requirements.','No permission, acceptance, storage or submission handler is created by the notice.']
+ },
  'processing-opt-outs':{
   title:'Processing opt-outs and browser signals',outcome:'Separate restrictions on declared processing activities.',configPaths:['services.processingActivities','privacySignals'],hostWork:['Connect GPC and any recorded opt-out workflow to downstream/account restrictions; cookie acceptance cannot lift them.'],questionIds:['processing-opt-outs'],factsNeeded:['Actual sale/sharing/targeted-advertising flows','Explicit applicability assessment and public explanation','Host identity, durable restriction handling and downstream effects'],guides:['privacy-signals','processing-choices'],prerequisites:['legal-pages'],verify:['Applicable signals restrict the declared processing.','Cookie acceptance does not remove a separate opt-out.','Confirm downstream effects, beyond the browser indicator.']
  },
@@ -91,6 +100,7 @@ const selectionQuestions=[
  {id:'remote-media',targetId:'embeds',question:'Do you want remote media to stay unloaded until its service is permitted?'},
  {id:'explicit-agreement',targetId:'terms-agreement',question:'Do you want an explicit acceptance action bound to an exact terms revision?'},
  {id:'rights-entry',targetId:'privacy-rights',question:'Do you want a page linking visitors to your privacy request workflows?'},
+ {id:'collection-surface',targetId:'collection-notice',question:'Do you want static privacy information beside a form where people provide data?'},
  {id:'processing-restrictions',targetId:'processing-opt-outs',question:'Do you want separate processing opt-outs or browser privacy signals connected to host restrictions?'},
  {id:'form-permission',targetId:'form-permissions',question:'Do you want optional purpose/channel permission separate from submitting a form?'},
  {id:'purchase-contract',targetId:'consumer-contracts',question:'Do you want consumer purchase or contract disclosures and action flows?'},

@@ -116,10 +116,18 @@ A change to these messages needs a new copy revision, release and material offer
 
 Try the [Portuguese form permission](https://notabenda.org/localization/permission/). It stores choices in that browser's demo workspace, separate from the English permission example, and sends no email. Operator inspection shows the retained language, revision and complete declared message templates. A template records offered wording, not which interface states a person saw. This remains one selected language per release; routing across equivalent multilingual permissions is host work.
 
+## Direct-collection notices
+
+`localization.collection` supplies the complete static collection-notice interface. The [33-field message file](../examples/localization/collection-messages.json) includes `purposeDetails: {purpose}`, `recipientPurposes: {purposes}`, `privacyVersion: {version}` and `effectiveDate: {effectiveDate}`; all other fields have no placeholders. There is no per-key fallback. Native details remain collapsed by default and work without JavaScript. Version/date substitutions use bidirectional isolation.
+
+The selected descriptor allows 16 KiB; the complete notice allows 64 KiB. General message limits still apply. Supply the title, introduction and declared processing facts in the selected language. Link/details labels belong in the versioned dictionary. A v2 notice uses `collection-v2`; `verifyCollectionNotice` compares it with the intact archive and rejects changed selected copy, facts or a downgrade. Legacy English v1 output is preserved. The dictionary is excluded from cookie runtime inventory and permission scopes.
+
+See the [collection guide](COLLECTION.md#language-and-release-verification) and [Portuguese example](/localization/collection/). This display-only component records no choice, presentation receipt or form submission. Indirect-collection notices remain a separate, currently English interface.
+
 ## Supported interfaces
 
-This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget and ordinary form-permission controls. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
+This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls and static direct-collection notices. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 
-Service-directory UI, direct-collection notice UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
+Service-directory UI, indirect-collection notice UI, processing-choice UI, rights-center UI, storage-exception switches and backoffice chrome do not yet share this localization contract. Builders/renderers tied to the new site locale reject those unsupported combinations. Headless service inventories and storage-exception controllers remain available for a host-owned interface. Consumer-contract profiles with their own explicit locale and wording contracts are separate APIs.
 
 See [verification](verification/localization.md) and `REQ-PRODUCT-LOCALIZATION` for the checked scope and remaining work. A broad reviewed locale catalog, plural rules beyond the storage count, language negotiation, routing between releases and localization of the remaining interfaces are still open.

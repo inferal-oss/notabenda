@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-COMPLIANCE-MAP
+import {expandComplianceDiagrams} from './compliance-diagrams.mjs';
 import {catalogReleaseExample} from '../examples/catalog-releases/build.mjs';
 import {websiteNoticeFacts,websiteNoticeBody} from './website-notice.mjs';
 // @requirements REQ-PRODUCT-SYNTAX-HIGHLIGHTING
@@ -41,7 +43,7 @@ const markdownRenderer=new Marked({renderer:{
  }
 }});
 function guideOutline(headings){return headings.length<3?'':`<details class="guide-outline"><summary>On this page <span>${headings.length} sections</span></summary><nav aria-label="On this page">${headings.map(h=>`<a href="#${escape(h.id)}">${escape(h.label)}</a>`).join('')}</nav></details>`;}
-const style = await read('site/style.css');
+const style = await read('site/style.css')+'\n'+await read('site/compliance-diagrams.css');
 const files = {'site.css':style,'assets/inferal-mark.svg':await read('site/assets/inferal-mark.svg')};
 files['assets/demo-admin.css']=await read('site/demo-admin.css');
 files['assets/order-admin.css']=await read('site/order-admin.css');
@@ -102,8 +104,8 @@ function rewrite(href, source) {
 }
 const guideEntries=[];
 for(const [path,route] of docs) {
-  const markdown = await read(path);
-  files[markdownRoute(route).slice(1)]=rewriteMarkdown(markdown,href=>{
+  const sourceMarkdown = await read(path),markdown=expandComplianceDiagrams(sourceMarkdown,{graphical:true});
+  files[markdownRoute(route).slice(1)]=rewriteMarkdown(expandComplianceDiagrams(sourceMarkdown),href=>{
     const rewritten=rewrite(href,path),hash=rewritten.indexOf('#'),target=hash<0?rewritten:rewritten.slice(0,hash),fragment=hash<0?'':rewritten.slice(hash);
     return [...docs.values()].includes(target)?markdownRoute(target)+fragment:rewritten;
   });

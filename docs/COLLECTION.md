@@ -40,6 +40,16 @@ Production requires both reviewed production privacy content and an explicit rev
 
 The notice ID covers the scope, locale, selected facts, wording, review declaration, rendering-policy revision (`collection-v1`) and pinned policy reference. Instance `idPrefix` and the surrounding host layout are outside that content identity. Digests identify content; they do not authenticate authors or prove display, reading or agreement. Browser/SSR normalization validates shape and safe links and makes a detached copy; supply trusted build descriptors, not visitor-submitted notices.
 
+## Language and release verification
+
+Add a complete optional `localization.collection` dictionary to the site before building a non-English notice. The [Portuguese messages](../examples/localization/collection-messages.json) cover all 33 fixed labels, headings, source/optionality descriptions, link labels, version/date templates and list separator. The host still supplies translated purpose/recipient facts and context-specific `wording.title` and `wording.intro`.
+
+The v2 notice uses `collection-v2` and retains the selected messages, locale, explicit direction and copy revision. Set details/privacy-link labels in the dictionary; per-notice overrides are rejected for this version. The selected descriptor is bounded to 16 KiB, and the complete notice keeps its 64 KiB limit. English configurations without the dictionary retain v1 output and their existing context-label options.
+
+`verifyCollectionNotice(notice, artifact, options)` from `notabenda/content` reconstructs the selected notice against its intact retained release and checks content identity, facts and copy. Use it when loading a trusted descriptor for deployment or review. Structural normalization alone validates shape and safe links; it does not authenticate an author or compare an archive. Neither check proves presentation or legal sufficiency. Advancing wording requires a new copy revision and notice/release; it does not change cookie permission scopes.
+
+Try the [static Portuguese example](/localization/collection/). Its details and pinned policy remain readable without scripts. The surrounding form illustration has no submission route or evidence store. The same core markup is used by React and Astro; review language, layout and applicability independently.
+
 ## Layout and accessibility
 
 The first layer shows the notice title, intro, responsible controller, selected purposes, declared categories, purpose-level optionality and consequences, plus the pinned policy link. Native `<details>` contains longer source/basis/retention, provider, contact, rights and transfer information. It remains usable through ordinary keyboard interaction without scripts. No acceptance checkbox, hidden permission, mandatory privacy acknowledgment, submit button or record delivery is created.

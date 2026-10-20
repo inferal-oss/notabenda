@@ -9,6 +9,8 @@ cookie and terms pages in preview mode. Reuse existing documents and settings.
 Report the facts still needed for review before publishing.
 ```
 
+Start with the [compliance map](COMPLIANCE-MAP.md) to distinguish information, choices, contract actions and evidence. The separate [software/storage diagram](ARCHITECTURE.md) shows which work belongs in the build, browser and host backend.
+
 ## Install the skill
 
 The repository contains `skills/notabenda/SKILL.md`, its configuration-target reference and optional `agents/openai.yaml` display metadata. Copy the complete directory into your agent's supported project or personal skill directory. For agents that use `.agents/skills/`, the project destination is `.agents/skills/notabenda/`; check your tool’s supported location. Review the skill before enabling it. Installing a skill does not install packages or grant account access.

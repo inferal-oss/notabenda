@@ -551,11 +551,14 @@
       "deliverables": [
         "Versioned primary-source records, requirement IDs, applicability conditions, dates, caveats, and discovery articles.",
         "Links from requirements to feature IDs, planned verification scenarios, and eventual code/test references.",
-        "Local validation and browseable indexes; legal review and implementation status tracked separately."
+        "Local validation and browseable indexes; legal review and implementation status tracked separately.",
+        "Linked graphical maps of compliance component purposes, a focused purchase journey and a separate software/storage architecture, with equivalent agent-readable text."
       ],
       "implementationRefs": [
         "scripts/regulatory.py",
-        "regulatory/catalog.json"
+        "regulatory/catalog.json",
+        "site/compliance-diagrams.mjs",
+        "site/compliance-diagrams.css"
       ]
     },
     {
@@ -704,7 +707,7 @@
       "title": "Versioned host-supplied localization",
       "status": "partial",
       "deliverables": [
-        "Complete versioned host-supplied messages for legal documents, consent controls ordinary terms acceptance and form permissions, including status/accessibility text, selected language and explicit direction.",
+        "Complete versioned host-supplied messages for legal documents, direct-collection notices, consent controls, ordinary terms acceptance and form permissions, including status/accessibility text, selected language and explicit direction.",
         "Archived selected consent copy, independent presentation/disclosure revisions, exact material scopes and frontend/backend validation parity.",
         "Supplied structured or Markdown/MDX documents and optional complete generated-document templates. No automatic translation, language negotiation or inferred jurisdiction.",
         "Remaining interface localization, broader plural rules, reviewed locale catalogs and multi-language routing are still open."
@@ -739,7 +742,10 @@
         "packages/notabenda-cf/src/form-permission-localization-policy.ts",
         "packages/notabenda-cf/src/permissions.ts",
         "examples/localization/permission-build.mjs",
-        "examples/localization/permission.mjs"
+        "examples/localization/permission.mjs",
+        "packages/notabenda/src/collection-localization-policy.ts",
+        "packages/notabenda/src/collection.ts",
+        "examples/localization/collection-build.mjs"
       ]
     }
   ],
@@ -2049,7 +2055,8 @@
         "REQ-PRODUCT-ORDER-CONFIRMATION",
         "REQ-PRODUCT-STORAGE-EXCEPTIONS",
         "REQ-PRODUCT-LOCALIZATION",
-        "REQ-PRODUCT-AGENT-INTEGRATION"
+        "REQ-PRODUCT-AGENT-INTEGRATION",
+        "REQ-PRODUCT-COMPLIANCE-MAP"
       ]
     }
   ],
@@ -4643,7 +4650,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Version-bound inline direct-collection notice",
       "kind": "product-standard",
-      "summary": "Render selected declared collection facts beside a host form, with a pinned privacy release, independent wording review, accessible static details and no implied acceptance or evidence write.",
+      "summary": "Render selected declared collection facts beside a host form, with a pinned privacy release, independent wording review, accessible static details and no implied acceptance or evidence write. Optional complete versioned static-interface messages support explicit language/direction; build-time notice verification checks retained facts and selected copy.",
       "appliesWhen": "The host supplies an appropriate direct/mixed-source inventory purpose and places a notice at a collection surface.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -4665,7 +4672,9 @@
         "packages/notabenda/src/content.ts",
         "packages/notabenda/src/react-documents.ts",
         "packages/notabenda/src/astro/CollectionNotice.astro",
-        "examples/collection/build.mjs"
+        "examples/collection/build.mjs",
+        "packages/notabenda/src/collection-localization-policy.ts",
+        "examples/localization/collection-build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/collection.test.mjs",
@@ -4673,7 +4682,9 @@
         "packages/notabenda/test/astro-package.test.mjs",
         "packages/notabenda/test/react-package.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/collection.md"
+        "docs/verification/collection.md",
+        "packages/notabenda/test/collection-localization.test.mjs",
+        "site/test/collection-localization.test.mjs"
       ],
       "implementationNote": "Trusted public release integrity checks precede a bounded selected-facts projection. Content identity covers locale, scope, render policy and reviewed wording; unique instance/summary IDs support static vanilla, React and Astro markup."
     },
@@ -6174,9 +6185,9 @@
     {
       "id": "REQ-PRODUCT-LOCALIZATION",
       "jurisdiction": "PRODUCT",
-      "title": "Complete versioned messages for legal pages, consent, terms and form permissions",
+      "title": "Complete versioned messages for legal pages, collection notices, consent, terms and form permissions",
       "kind": "product-standard",
-      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent, terms-interface and form-permission copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts.",
+      "summary": "Validate complete selected plain-text dictionaries and fixed placeholders; render language/direction consistently; pin consent, terms-interface and form-permission copy to its retained release; distinguish presentation revisions from material disclosure scopes while preserving legacy English artifacts. Static direct-collection notices use complete v2 copy and verify against an intact release, while English v1 remains supported.",
       "appliesWhen": "An operator supplies the optional localization declaration for legal pages, cookie-choice controls ordinary terms acceptance or form permissions.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -6192,7 +6203,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages, cookie-choice controls ordinary terms acceptance and form permissions; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent or an enforceable agreement.",
+      "caveats": "Host owns translation, review, declared facts and semantic disclosure revisions. This contract covers legal pages, direct-collection notices, cookie-choice controls, ordinary terms acceptance and form permissions; it is not a country compliance pack, automatic translation, comprehensive interface localization or proof of valid consent or an enforceable agreement.",
       "implementationRefs": [
         "packages/notabenda/src/localization-policy.ts",
         "packages/notabenda/src/document-localization.ts",
@@ -6223,7 +6234,10 @@
         "packages/notabenda-cf/src/form-permission-localization-policy.ts",
         "packages/notabenda-cf/src/permissions.ts",
         "examples/localization/permission-build.mjs",
-        "examples/localization/permission.mjs"
+        "examples/localization/permission.mjs",
+        "packages/notabenda/src/collection-localization-policy.ts",
+        "packages/notabenda/src/collection.ts",
+        "examples/localization/collection-build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
@@ -6231,7 +6245,9 @@
         "site/test/localization.test.mjs",
         "packages/notabenda/test/terms-localization.test.mjs",
         "site/test/demo.test.mjs",
-        "packages/notabenda/test/form-permission-localization.test.mjs"
+        "packages/notabenda/test/form-permission-localization.test.mjs",
+        "packages/notabenda/test/collection-localization.test.mjs",
+        "site/test/collection-localization.test.mjs"
       ]
     },
     {
@@ -6295,7 +6311,7 @@
         "packages/notabenda/test/integration-assessment.test.mjs",
         "packages/notabenda/test/config-schema.test.mjs"
       ],
-      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness. The package build generates a draft 2020-12 authoring schema from SiteConfig using the pinned build-only TypeScript API. Unsupported constructs fail the build. Read-only schema field lookup returns referenced definitions, optional ancestors, array item paths and alternative-parent context without reading project inputs or suggesting default facts. Unknown keys reject in the authoring shape; runtime cross-field, policy, URL, bound and review rules remain separate. An offline packed-install test resolves the exact schema export and runs full/field CLI commands without a compiler runtime dependency. A build-time Ajv standalone validator enforces that authoring shape during read-only assessment without runtime compiler/schema-library dependencies. Unknown fields ignored by runtime projection still produce invalid-config. The target map distinguishes assessed storage exceptions from consent enrollment, requires form scope assessment and exposes conditional non-English terms/form dictionaries."
+      "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness. The package build generates a draft 2020-12 authoring schema from SiteConfig using the pinned build-only TypeScript API. Unsupported constructs fail the build. Read-only schema field lookup returns referenced definitions, optional ancestors, array item paths and alternative-parent context without reading project inputs or suggesting default facts. Unknown keys reject in the authoring shape; runtime cross-field, policy, URL, bound and review rules remain separate. An offline packed-install test resolves the exact schema export and runs full/field CLI commands without a compiler runtime dependency. A build-time Ajv standalone validator enforces that authoring shape during read-only assessment without runtime compiler/schema-library dependencies. Unknown fields ignored by runtime projection still produce invalid-config. The target map distinguishes assessed storage exceptions from consent enrollment, requires form scope assessment and exposes conditional non-English terms/form dictionaries. An explicit static collection-notice target selects no permission controller and requires only its own non-English dictionary when applicable."
     },
     {
       "id": "REQ-BR-COOKIE-RIGHTS-LINK",
@@ -6402,6 +6418,44 @@
         "docs/verification/regional-consent.md"
       ],
       "implementationNote": "Bounded consent.information is projected to the browser and immutable notice, verified against the released config by the frontend and standalone CF backend, and shown with stored choice details. Setup advises these fields without activating them. Browser guidance uses a collapsed native disclosure; links never grant permission."
+    },
+    {
+      "id": "REQ-PRODUCT-COMPLIANCE-MAP",
+      "jurisdiction": "PRODUCT",
+      "title": "Compliance responsibility maps and separate software/storage architecture",
+      "kind": "product-standard",
+      "summary": "Graphically explain what notices, permissions, contract actions and records serve, with linked component guides and separate build/browser/host/storage boundaries. Keep applicability, independent choices and actual host fulfillment explicit.",
+      "appliesWhen": "A reader chooses components or needs to understand the role of a feature in a broader compliance workflow.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REQUIREMENTS",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-COMPLIANCE-MAP"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Illustrative responsibilities, not a mandatory sequence, legal applicability decision, checklist of universally required features or evidence that a host duty is fulfilled.",
+      "implementationRefs": [
+        "site/compliance-diagrams.mjs",
+        "site/compliance-diagrams.css",
+        "site/build.mjs",
+        "site/guide-pages.mjs",
+        "site/navigation.mjs",
+        "docs/COMPLIANCE-MAP.md",
+        "docs/ARCHITECTURE.md",
+        "docs/GUARANTEE-PRODUCER-EXAMPLE.md",
+        "docs/CLOUDFLARE-STARTER.md"
+      ],
+      "testRefs": [
+        "site/test/compliance-diagrams.test.mjs",
+        "docs/verification/compliance-map.md"
+      ]
     }
   ],
   "verification": [
@@ -7149,14 +7203,16 @@
         "REQ-PRODUCT-COLLECTION-NOTICE"
       ],
       "status": "automated",
-      "expected": "Selected direct/mixed purposes produce deterministic reviewed/draft notices with intact pinned privacy references, explicit purpose-level semantics, safe static markup, stable unique IDs and no consent/submission side effects; corruption and invalid selections fail.",
+      "expected": "Selected direct/mixed purposes produce deterministic reviewed/draft notices with intact pinned privacy references, explicit purpose-level semantics, safe static markup, stable unique IDs and no consent/submission side effects; corruption and invalid selections fail. Collection notices retain exact v2 copy, reject tampering/downgrade at release verification, preserve English v1 and cookie scopes, use static localized details and allocate no demo evidence store.",
       "testRefs": [
         "packages/notabenda/test/collection.test.mjs",
         "packages/notabenda/test/react.test.mjs",
         "packages/notabenda/test/astro-package.test.mjs",
         "packages/notabenda/test/react-package.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/collection.md"
+        "docs/verification/collection.md",
+        "packages/notabenda/test/collection-localization.test.mjs",
+        "site/test/collection-localization.test.mjs"
       ]
     },
     {
@@ -7578,14 +7634,16 @@
         "REQ-PRODUCT-LOCALIZATION"
       ],
       "status": "automated",
-      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently. Terms offers bind complete widget copy to the retained release, require a matching receipt, preserve v1 English behavior and support private language/copy inspection. Form offers pin complete fixed/recovery messages, reject archive mismatches or a v1 downgrade, preserve exact pending v1 withdrawals across localized activation and do not change cookie scopes; isolated demo routes retain exact language/copy.",
+      "expected": "Complete dictionaries reject omissions, extra keys, malformed placeholders, markup and oversized text; legal and consent roots expose language/direction; errors and ARIA use selected copy; cosmetic revisions preserve matching grants, material revisions preserve refusals; CF checks archived wording/scopes independently. Terms offers bind complete widget copy to the retained release, require a matching receipt, preserve v1 English behavior and support private language/copy inspection. Form offers pin complete fixed/recovery messages, reject archive mismatches or a v1 downgrade, preserve exact pending v1 withdrawals across localized activation and do not change cookie scopes; isolated demo routes retain exact language/copy. Collection notices retain exact v2 copy, reject tampering/downgrade at release verification, preserve English v1 and cookie scopes, use static localized details and allocate no demo evidence store.",
       "testRefs": [
         "packages/notabenda/test/localization.test.mjs",
         "docs/verification/localization.md",
         "site/test/localization.test.mjs",
         "packages/notabenda/test/terms-localization.test.mjs",
         "site/test/demo.test.mjs",
-        "packages/notabenda/test/form-permission-localization.test.mjs"
+        "packages/notabenda/test/form-permission-localization.test.mjs",
+        "packages/notabenda/test/collection-localization.test.mjs",
+        "site/test/collection-localization.test.mjs"
       ]
     },
     {
@@ -7629,6 +7687,18 @@
         "packages/notabenda/test/consent-information.test.mjs",
         "site/test/br-cookie-ui.test.mjs",
         "docs/verification/regional-consent.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-COMPLIANCE-MAP",
+      "requirementIds": [
+        "REQ-PRODUCT-COMPLIANCE-MAP"
+      ],
+      "status": "automated",
+      "expected": "Component roles, separate legal/software views, reachable guide links, labeled static figures, unique IDs, narrow-screen reading order, equivalent Markdown descriptions and safe directive expansion with untouched code examples. No implied universal applicability or automatic host fulfillment.",
+      "testRefs": [
+        "site/test/compliance-diagrams.test.mjs",
+        "docs/verification/compliance-map.md"
       ]
     }
   ],

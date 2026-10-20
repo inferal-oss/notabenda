@@ -76,6 +76,15 @@ test('exception settings select their own prerequisites without demanding consen
  assert.equal(Object.hasOwn(config,'consent'),false);assert.equal(Object.hasOwn(config,'storageExceptions'),false);
 });
 
+test('static collection work selects no permission controller and requests only its localized dictionary',async()=>{
+ const {localizedExampleConfig}=await import('../../../examples/localization/config.mjs'),config=localizedExampleConfig(await fixture()),report=assess(config,{'collection-surface':'yes'});
+ assert.deepEqual(report.requestedTargetIds,['collection-notice']);assert.deepEqual(report.prerequisiteTargetIds,['legal-pages']);assert.equal(report.targets.some(t=>['cookie-consent','form-permissions','evidence'].includes(t.id)),false);
+ assert.deepEqual(report.missingRequiredConfig.map(f=>f.path),['localization.collection']);
+ config.localization.collection=JSON.parse(await readFile(new URL('../../../examples/localization/collection-messages.json',import.meta.url),'utf8'));
+ assert.equal(assess(config,{'collection-surface':'yes'}).missingRequiredConfig.length,0);
+ config.purposes=[];config.services=[];config.storage=[];delete config.consent;assert.ok(assess(config,{'collection-surface':'yes'}).missingRequiredConfig.some(f=>f.path==='purposes'&&f.state==='empty'));
+});
+
 test('assessment identifies missing control config without inventing values or adding a backend',async()=>{
  const config=await fixture(),before=structuredClone(config);
  const result=assess(config,{'optional-service-control':'yes'});

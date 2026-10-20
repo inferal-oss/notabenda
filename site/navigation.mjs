@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COMPLIANCE-MAP
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-CF-HOST REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
@@ -5,7 +6,7 @@
 const guide=(slug,label)=>({href:'/guide/'+slug,label});
 const topic=(id,title,href,description,guideSlug,variants=[],section='')=>({id,title,href,description,guide:'/guide/'+guideSlug,variants:variants.map(([label,href])=>({label,href})),section});
 export const siteSections=[
- {id:'start',title:'Start here',description:'Configure your site, identify services and choose the components you need.',guides:[guide('package','Package & configuration'),guide('setup','Guided setup'),guide('discovery','Project discovery'),guide('service-catalog','Service catalog')],topics:[
+ {id:'start',title:'Start here',description:'Configure your site, identify services and choose the components you need.',guides:[guide('compliance-map','Compliance map'),guide('architecture','Software & storage'),guide('package','Package & configuration'),guide('setup','Guided setup'),guide('discovery','Project discovery'),guide('service-catalog','Service catalog')],topics:[
   topic('setup','Guided setup','/demo/admin/setup','Work through site practices and keep the reasons behind each configuration choice.','setup'),
   topic('discovery','Service discovery','/discovery','Inspect detected services and review what belongs in your site configuration.','discovery')
  ]},
@@ -13,7 +14,7 @@ export const siteSections=[
   topic('documents','Privacy, cookie & terms pages','/privacy','Static documents using the site’s typography, layout and declared processing.','package',[['Cookie policy','/cookies'],['Terms page','/terms'],['Dark','/dark/privacy']]),
   topic('services','Service directory','/services','Explain declared third parties and the purposes, data and storage associated with them.','services',[['Dark','/dark/services']]),
   topic('technology','Technology functions','/technology/','Disclose an optional interest profile and explain how visitors activate or stop it.','technology-collection'),
-  topic('collection','Collection notice','/collection','Show privacy information beside a form, linked to an exact policy revision.','collection'),
+  topic('collection','Collection notice','/collection','Show privacy information beside a form, linked to an exact policy revision.','collection',[['Portuguese','/localization/collection/']]),
   topic('indirect-collection','Indirect collection notice','/indirect-collection','Explain information received from another source, including advance-notice text.','indirect-collection'),
   topic('rights','Privacy request entry points','/rights','Give people clear contact and application routes for privacy requests.','rights')
  ]},
@@ -58,7 +59,7 @@ export const siteSections=[
 // belongs below its parent task rather than becoming another top-level destination.
 const group=(title,description,slugs,topicIds=[],options={})=>({title,description,slugs,topicIds,...options});
 const areaGroups={
- start:[group('Configure your site','Begin with an inventory, then review the setup recommendations.',['package','setup','agent-setup'],['setup']),group('Find the services you use','Discovery supplies findings for review; the catalog supplies reusable service descriptions.',['discovery','service-catalog'],['discovery'])],
+ start:[group('Configure your site','Begin with an inventory, then review the setup recommendations.',['compliance-map','architecture','package','setup','agent-setup'],['setup']),group('Find the services you use','Discovery supplies findings for review; the catalog supplies reusable service descriptions.',['discovery','service-catalog'],['discovery'])],
  'privacy-information':[group('Publish your documents','Supply reviewed wording and describe the services behind it.',['authoring','services'],['documents','services']),group('Explain collection and contact routes','Put the relevant information where people provide data or ask for help.',['collection','indirect-collection','technology-collection','rights'],['collection','indirect-collection','technology','rights'])],
  'privacy-choices':[group('Control optional services','Start with cookie preferences, then gate resources and clean up declared storage.',['consent','embeds','storage-cleanup'],['cookies','embeds','storage']),group('Offer separate permissions and opt-outs','Form permissions and processing restrictions have their own controls.',['form-permissions','privacy-signals','processing-choices'],['permissions','signals','opt-outs']),group('Specialist controls','Use these when your integration needs tag signals, grant expiry, repeat-prompt rules or explicit scope restrictions.',['storage-exceptions','google-basic','regional-prompts','scope-guards'],['exceptions','google','prompts','guards'],{specialist:true})],
  contracts:[group('Agree to terms','Bind the action and wording to the terms version people see.',['terms'],['agreement']),group('Before a purchase','Review the offer, applicable guarantee information and the final payment action.',['guarantees','guarantee-labels','paid-orders'],['guarantee-notice','producer-label','orders']),group('After a purchase','Retain the customer copy and handle withdrawal, cancellation and host delivery.',['order-confirmations','contract-actions','contract-dispatch'],['withdrawal','cancellation']),group('Example source and artwork','For readers who need to inspect or reproduce the prepared producer-label example.',['guarantee-producer-example'],[],{specialist:true})],

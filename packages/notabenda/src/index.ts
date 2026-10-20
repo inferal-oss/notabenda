@@ -44,3 +44,6 @@ export type {ConsentLocalization,ConsentMessages} from './localization-policy.js
 export type {TermsLocalization,TermsMessages} from './terms-localization-policy.js';
 
 export type {FormPermissionLocalization,FormPermissionMessages} from './form-permission-localization-policy.js';
+
+// @requirements REQ-PRODUCT-LOCALIZATION
+export type {CollectionLocalization,CollectionMessages} from './collection-localization-policy.js';

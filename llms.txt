@@ -16,6 +16,9 @@ Use the installed package documentation and types for its version. Discovery fin
 
 ## Start here
 
+- [Compliance component map](https://notabenda.org/guide/compliance-map/index.md): What notices, choices, contract actions and evidence serve.
+- [Software and storage](https://notabenda.org/guide/architecture/index.md): Build/browser/host boundaries, public assets, browser storage and optional Durable Objects.
+
 - [Agent setup](https://notabenda.org/guide/agent-setup/index.md): Skill installation, version matching and review boundaries.
 - [Package and configuration](https://notabenda.org/guide/package/index.md): Public inventory, rendering and JSON CLI.
 - [Guided setup](https://notabenda.org/guide/setup/index.md): Interactive wizard and explicit noninteractive answers.
