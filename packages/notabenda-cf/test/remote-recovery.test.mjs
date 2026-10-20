@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createRemoteRecoveryControl,createRemoteRecoveryEvidence,createRemoteRecoveryHandler} from '../../../scripts/fixtures/remote-recovery.mjs';
+import {createRemoteRecoveryControl,createRemoteRecoveryEvidence,createRemoteRecoveryHandler,fixtureReply} from '../../../scripts/fixtures/remote-recovery.mjs';
 import {parseRemoteRecoveryArgs,checkRunIdentity,sourceBodyIdentity,reconcileOwnership,cleanup} from '../../../scripts/check-cf-remote-recovery.mjs';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 import {randomUUID,createHash} from 'node:crypto';
@@ -32,6 +32,12 @@ test('closing the external gate then enqueuing maintenance drains an admitted re
  const storage={...raw,get:async key=>{if(key==='notabenda/releases/'+'a'.repeat(64)){entered();await barrier;}return raw.get(key);},sql:{exec(){sqlReads++;return [];}}};let tail=Promise.resolve();const ctx={storage,blockConcurrencyWhile(callback){const result=tail.then(callback);tail=result.catch(()=>{});return result;}};
  const evidence=createRemoteRecoveryEvidence(ctx,{command:async()=>({ok:true,value:{phase:gate}})},{...data,authoredId:'a'.repeat(64),streams:[]});const reading=evidence.command('inspect');await started;gate='closed';const maintenance=evidence.command('summary'),blocked=evidence.command('archive-write');await new Promise(done=>setImmediate(done));assert.equal(sqlReads,0);release();assert.equal((await reading).ok,true);assert.equal((await maintenance).value.control.phase,'closed');assert.equal(sqlReads,1);assert.deepEqual(await blocked,{ok:false,error:'recovery-closed'});
 });
+test('SQLite result rows become plain RPC response data',async()=>{
+ class SqlRow{constructor(){this.name='baseline';this.value=1;}}
+ const storage={...createSyntheticStorage([]),sql:{exec:()=>[new SqlRow()]}};
+ const evidence=createRemoteRecoveryEvidence({storage,blockConcurrencyWhile:callback=>callback()},{command:async()=>({ok:true,value:{phase:'closed'}})},{...data,authoredId:'a'.repeat(64),streams:[]});
+ const result=await evidence.command('summary');assert.equal(result.ok,true);assert.deepEqual(result.value.sql,[{name:'baseline',value:1}]);assert.equal(Object.getPrototypeOf(result.value.sql[0]),Object.prototype);
+});
 test('remote HTTP authentication and fixed routing precede object selection or body-driven operations',async()=>{
  const host=createRemoteRecoveryHandler(data),key='c'.repeat(64),lookups=[];const env={FIXTURE_KEY:key,CONTROL:{getByName(name){lookups.push(name);return {command:async action=>({ok:true,value:{action}})};}},EVIDENCE:{getByName(){throw Error('Unexpected evidence lookup');}}};
  const request=(body,auth='Bearer '+key)=>new Request('https://fixture.example.test/rehearse',{method:'POST',headers:{Authorization:auth,'Content-Type':'application/json'},body});
@@ -60,4 +66,8 @@ test('uncertain deployments recover exact ownership, preserve namespace identiti
   live=undefined;rows=[{id:'namespace-one',script:'transferred-outside',class:'RecoveryControl',use_sqlite:true}];await assert.rejects(()=>cleanup(directory,run,api),/changed ownership/);assert.equal(run.cleanup,undefined);
   rows=[];await cleanup(directory,run,api);assert.equal(run.cleanup.verified,true);
  }finally{await rm(directory,{recursive:true,force:true});}
+});
+
+test('fixture RPC replies normalize retained null-prototype records to plain JSON data',async()=>{
+ const record=Object.assign(Object.create(null),{hold:{active:true}}),result=await fixtureReply(async()=>({nested:[record]}));assert.deepEqual(result,{ok:true,value:{nested:[{hold:{active:true}}]}});assert.equal(Object.getPrototypeOf(result.value.nested[0]),Object.prototype);assert.deepEqual(await fixtureReply(async()=>({unsupported:1n})),{ok:false,error:'fixture-operation-failed'});
 });

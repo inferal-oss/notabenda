@@ -65,9 +65,9 @@ async function command(directory,label,argv,input){
  const result=spawnSync(process.execPath,[join(root,'node_modules/wrangler/bin/wrangler.js'),...argv],{cwd:directory,env:{...process.env,WRANGLER_SEND_METRICS:'false',WRANGLER_LOG_PATH:join(directory,'logs')},encoding:'utf8',input,timeout:120000,maxBuffer:4*1024*1024});
  await save(directory,label+'.private.log',(result.stdout??'')+(result.stderr??''));if(result.status!==0)throw Error(label+' failed; inspect the private log.');
 }
-async function callFactory(url,key){return async(action,payload,{status=200,uncertain=false,anonymous=false}={})=>{
+async function callFactory(url,key,directory){return async(action,payload,{status=200,uncertain=false,anonymous=false}={})=>{
  let response;try{response=await fetch(url+'/rehearse',{method:'POST',headers:{'Content-Type':'application/json',...(anonymous?{}:{Authorization:'Bearer '+key})},body:JSON.stringify({action,...(payload===undefined?{}:{payload})}),redirect:'error',signal:AbortSignal.timeout(30000)});}catch(error){if(uncertain)return {uncertain:true};throw error;}
- if(uncertain&&response.status>=500)return {uncertain:true};assert.equal(response.status,status,action+' response status');const result=await response.json();if(status===200){assert.equal(result.ok,true,action+' succeeded');return result.value;}return result;
+ if(uncertain&&response.status>=500)return {uncertain:true};const result=await response.json();if(response.status!==status)await save(directory,'last-response.private.json',{action,status:response.status,body:result});assert.equal(response.status,status,action+' response status');if(status===200){assert.equal(result.ok,true,action+' succeeded');return result.value;}return result;
 };}
 async function untilSummary(call,predicate){let last;for(let i=0;i<12;i++){try{last=await call('summary');if(predicate(last))return last;}catch{}await wait(750);}throw Error('The expected provider recovery state was not observed; do not retry restore blindly.');}
 export async function cleanup(directory,run,api){
@@ -106,7 +106,7 @@ async function execute(directory,run,key,data,api){
  try{await command(directory,'deploy',['deploy','--config','wrangler.json','--outdir','bundle']);}finally{await reconcileOwnership(directory,run,api);}
  run.stage='deployed';await save(directory,'run.private.json',run);assert.deepEqual(run.namespaces.map(n=>n.class).sort(),['RecoveryControl','RecoveryEvidence']);
  run.stage='secret-updating';await save(directory,'run.private.json',run);try{await command(directory,'secret',['secret','put','FIXTURE_KEY','--config','wrangler.json'],key+'\n');}finally{await reconcileOwnership(directory,run,api);}run.stage='deployed';await save(directory,'run.private.json',run);
- const call=await callFactory(run.url,key);let ready=false;for(let i=0;i<20;i++){try{await call('state',undefined,{status:403,anonymous:true});ready=true;break;}catch{}await wait(750);}assert.equal(ready,true,'new private Worker is reachable');
+ const call=await callFactory(run.url,key,directory);let ready=false;for(let i=0;i<20;i++){try{await call('state',undefined,{status:403,anonymous:true});ready=true;break;}catch{}await wait(750);}assert.equal(ready,true,'new private Worker is reachable');
  await call('inspect',undefined,{status:503});await call('archive-write',undefined,{status:503});await call('grant',undefined,{status:503});
  const seeded=await call('seed');assert.equal(seeded.events,4);assert.equal(seeded.sourceSha256,data.sourceSha256);const bookmark=await call('bookmark');await save(directory,'bookmark.private.json',bookmark);await call('open');assert.equal((await call('inspect')).events,4);assert.equal((await call('archive-write')).created,false);
  await call('close');await call('post-backup-decisions');let purged;for(let i=0;i<40;i++){purged=await call('purge');if(purged.phase==='complete')break;}assert.equal(purged.phase,'complete');assert.equal(purged.progress.deleted,1);const beforeRestore=await call('summary');assert.equal(beforeRestore.events,3);assert.deepEqual(await call('hold-probes'),{'old-held-context':true,'new-held-context':true});

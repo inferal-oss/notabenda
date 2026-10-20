@@ -8,7 +8,7 @@ const controlKey='__fixture/control',appliedKey='__fixture/applied-journal';
 const fail=code=>{throw Error(code);};
 const exact=(a,b)=>canonicalJson(a)===canonicalJson(b);
 const unwrap=result=>result?.ok===true?result.value:fail(result?.error??'control-unavailable');
-export async function fixtureReply(operation){try{return {ok:true,value:await operation()};}catch(error){return {ok:false,error:typeof error?.code==='string'?error.code:/^[a-z-]{1,80}$/u.test(error?.message??'')?error.message:'fixture-operation-failed'};}}
+export async function fixtureReply(operation){try{return JSON.parse(JSON.stringify({ok:true,value:await operation()}));}catch(error){return {ok:false,error:typeof error?.code==='string'?error.code:/^[a-z-]{1,80}$/u.test(error?.message??'')?error.message:'fixture-operation-failed'};}}
 export function createRemoteRecoveryControl(storage,data){
  const initial=()=>({runId:data.runId,phase:'closed',epoch:0,initialOpened:false,bookmark:null,journal:null,journalDigest:null,restoreIntent:null,restarts:0});
  const read=async tx=>await tx.get(controlKey)??initial();
@@ -44,7 +44,7 @@ export function createRemoteRecoveryEvidence(ctx,control,data){
  }
  async function summary(){
   const heads={},holds={};for(const id of data.streams){try{heads[id]=(await getConsentHead(storage,context(id))).revision;}catch(error){if(error.code!=='context-retired')throw error;heads[id]=null;}holds[id]=await (await life(id)).getState()??null;}
-  return {...await inspect(),heads,holds,sql:[...storage.sql.exec('SELECT name, value FROM recovery_sentinel ORDER BY name')],erasedPhysicalHeadGone:await storage.get('notabenda/consent/'+data.siteId+'/heads/'+data.erasedRef)===undefined,applied:await storage.get(appliedKey)??null,control:await state()};
+  return {...await inspect(),heads,holds,sql:[...storage.sql.exec('SELECT name, value FROM recovery_sentinel ORDER BY name')].map(row=>({name:row.name,value:row.value})),erasedPhysicalHeadGone:await storage.get('notabenda/consent/'+data.siteId+'/heads/'+data.erasedRef)===undefined,applied:await storage.get(appliedKey)??null,control:await state()};
  }
  async function run(action){
   const gate=await state();
@@ -123,5 +123,5 @@ export function createRemoteRecoveryHandler(data){return {async fetch(request,en
   else if(actions.has(body.action)&&body.payload===undefined)result=await env.EVIDENCE.getByName('evidence:'+data.runId).command(body.action);
   else return privateResponse({error:'unknown-operation'},400);
   return privateResponse(result,result.ok?200:result.error==='recovery-closed'?503:409);
- }catch{return privateResponse({ok:false,error:'operation-uncertain'},503);}
+ }catch(error){return privateResponse({ok:false,error:'operation-uncertain',diagnostic:String(error?.message??'RPC interrupted').slice(0,400)},503);}
 }};}
