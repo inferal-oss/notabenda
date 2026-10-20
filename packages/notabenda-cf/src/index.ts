@@ -30,3 +30,11 @@ export {registerContractActionDefinition,contractActionOperationRef,contractDecl
 export type {ContractActionStoreOptions,ContractActionContext,ContractDeclarationContext,ContractDeliveryChannel,ContractDeliveryLease,ContractActionDefinition,ContractActionRequest,ContractActionReceipt} from './contracts.js';
 export {dispatchContractDelivery,dispatchContractDeclaration} from './contract-dispatch.js';
 export type {ContractDeliveryAttempt,ContractDispatchOptions,ContractDispatchResult,ContractDeclarationDispatchOptions} from './contract-dispatch.js';
+
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
+export {getConsentRecordingSelection} from './consent.js';
+export {getTermsRecordingSelection} from './terms.js';
+export {getFormPermissionRecordingSelection} from './permissions.js';
+export type {RecordingFamily,RecordingDocument,RecordingTarget,RecordingSelection} from './recording-selection.js';
+export {createRecordingInspectionWorker} from './recording-inspection.js';
+export type {RecordingInspectionTarget,RecordingInspectionGrant,RecordingInspectionOptions} from './recording-inspection.js';

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -10,7 +11,7 @@ import {serveHost} from '../host.mjs';
 import {describeIntegration} from '@notabenda/core/integration';
 const root=new URL('../dist/public/',import.meta.url);
 // These session-backed routes are exercised by demo/host integration tests.
-const dynamic=new Set(['/demo/admin/agreements','/demo/admin/choices','/demo/admin/evidence','/demo/admin/history','/demo/admin/lifecycle','/demo/admin/processing','/demo/admin/setup']);
+const dynamic=new Set(['/demo/admin','/demo/admin/recording','/demo/admin/agreements','/demo/admin/choices','/demo/admin/evidence','/demo/admin/history','/demo/admin/lifecycle','/demo/admin/processing','/demo/admin/setup']);
 const read=path=>readFile(new URL(path,root),'utf8');
 function nodes(node,type){return [...(node.type===type?[node]:[]),...(node.children??[]).flatMap(child=>nodes(child,type))];}
 

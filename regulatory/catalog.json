@@ -26,7 +26,8 @@
         "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review.",
         "Optional read-only consent connection inspection of intended inventory and actual lifecycle registration, keeping publication and behavior tests separate.",
         "Shared short descriptions for every pack, concrete example use cases and walkthroughs, separate timing and payment-variant flows, and unchanged stable selection pins.",
-        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment."
+        "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
+        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -85,7 +86,15 @@
         "packages/notabenda/src/storage-exception-localization.ts",
         "packages/notabenda/src/storage-exception-controls.ts",
         "examples/localization/storage-build.mjs",
-        "examples/localization/storage-client.mjs"
+        "examples/localization/storage-client.mjs",
+        "packages/notabenda-cf/src/recording-selection.ts",
+        "packages/notabenda-cf/src/recording-inspection.ts",
+        "packages/notabenda-cf/src/terms.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/src/overview.ts",
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "site/worker.mjs"
       ]
     },
     {
@@ -607,7 +616,8 @@
         "Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open.",
         "Optional Node/browser controller timing tools with synthetic inventories, actual native controls, retained distributions and explicit limits; broader page/paint/platform performance remains open.",
         "Optional two-object local SQLite KV recovery rehearsal with later consent-retirement replay, persistent isolation, resumable purge, held-record preservation and exact private-source comparison. Remote recovery and broader evidence-family exercises remain open.",
-        "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates."
+        "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates.",
+        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -649,7 +659,14 @@
         "scripts/check-package-release.mjs",
         "SECURITY.md",
         "docs/RELEASE-CANDIDATE.md",
-        "docs/MIGRATION.md"
+        "docs/MIGRATION.md",
+        "packages/notabenda-cf/src/recording-selection.ts",
+        "packages/notabenda-cf/src/recording-inspection.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "packages/notabenda-cf/src/terms.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/src/overview.ts"
       ]
     },
     {
@@ -709,7 +726,8 @@
         "Pluggable read-only worker with mandatory host authorization and host-selected store scope.",
         "Bounded search, evidence cards, readable details, filters, and raw JSON disclosure.",
         "Durable Object adapter; no login, credentials, arbitrary DO selectors, or consent collection.",
-        "Job-focused overview and native cross-area record finder with bounded continuation and separate setup permission."
+        "Job-focused overview and native cross-area record finder with bounded continuation and separate setup permission.",
+        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks."
       ],
       "implementationRefs": [
         "packages/notabenda-cf/src/worker.ts",
@@ -728,7 +746,12 @@
         "packages/notabenda-cf/src/types.ts",
         "packages/notabenda-cf/src/lifecycle.ts",
         "examples/lifecycle.mjs",
-        "packages/notabenda-cf/src/overview.ts"
+        "packages/notabenda-cf/src/overview.ts",
+        "packages/notabenda-cf/src/recording-selection.ts",
+        "packages/notabenda-cf/src/recording-inspection.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/templates/src/workspace.mjs"
       ]
     },
     {
@@ -2193,7 +2216,8 @@
         "REQ-PRODUCT-TERMS-ADAPTERS",
         "REQ-PRODUCT-PACK-EDUCATION",
         "REQ-PRODUCT-STORAGE-LOCALIZATION",
-        "REQ-PRODUCT-RELEASE-CANDIDATE"
+        "REQ-PRODUCT-RELEASE-CANDIDATE",
+        "REQ-PRODUCT-RECORDING-INSPECTION"
       ]
     }
   ],
@@ -7404,6 +7428,51 @@
         "docs/verification/release-candidate.md"
       ],
       "implementationNote": "Offline pack-only command with fresh ignored/external output, bounded strict ustar parsing without extraction, exact source/build inventory and license checks, source-map and export/bin validation, file/archive digests, failed-report preservation and separate public security/migration docs."
+    },
+    {
+      "id": "REQ-PRODUCT-RECORDING-INSPECTION",
+      "jurisdiction": "PRODUCT",
+      "title": "Read-only inspection of current backend recording selections",
+      "kind": "product-standard",
+      "summary": "Distinguish registered/archived descriptors from current fixed-scope recording selections. Validate the selected cookie, terms or form offer against its retained release and expose a host-authorized operator view without visitor reads or changes.",
+      "appliesWhen": "An operator checks the current recording configuration of an explicitly granted host scope.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-BACKOFFICE",
+        "FEAT-DEPLOYMENT",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-RECORDING-INSPECTION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "An active recording selection does not prove publication, installation, legal eligibility or an individual grant. Host authorization, storage resolution and callback truth/freshness remain separate. Checks do not enumerate unknown scopes or inspect visitor heads.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/recording-selection.ts",
+        "packages/notabenda-cf/src/recording-inspection.ts",
+        "packages/notabenda-cf/src/consent.ts",
+        "packages/notabenda-cf/src/terms.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/src/overview.ts",
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "site/worker.mjs",
+        "site/navigation.mjs",
+        "packages/notabenda-cf/templates/src/host.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/recording-inspection.test.mjs",
+        "site/test/recording-inspection.test.mjs",
+        "docs/verification/recording-inspection.md",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "site/test/agent-docs.test.mjs"
+      ],
+      "implementationNote": "Atomic selection/archive readers, bounded fixed-reader HTML/JSON inspector with timeout/failure isolation, explicit overview grant, denying starter integration and session-isolated website example."
     }
   ],
   "verification": [
@@ -8919,6 +8988,21 @@
         "packages/notabenda/test/release-check.test.mjs",
         "packages/notabenda/test/migration.test.mjs",
         "docs/verification/release-candidate.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-RECORDING-INSPECTION",
+      "requirementIds": [
+        "REQ-PRODUCT-RECORDING-INSPECTION"
+      ],
+      "status": "automated",
+      "expected": "Absent, inactive and selected activations remain distinct; invalid/missing/cross-scope/preview data fails without reads of visitor state or writes. The operator view rejects selectors before callbacks, bounds reads, preserves late-result isolation and private nonce-based responses, and integrates through existing host authorization.",
+      "testRefs": [
+        "packages/notabenda-cf/test/recording-inspection.test.mjs",
+        "site/test/recording-inspection.test.mjs",
+        "docs/verification/recording-inspection.md",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "site/test/agent-docs.test.mjs"
       ]
     }
   ],

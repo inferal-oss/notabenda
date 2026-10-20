@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES
@@ -11,7 +12,8 @@ import {pathToFileURL,fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 import {fixture} from '../../notabenda/test/helpers.mjs';
-import {compileLegalDocuments} from '@notabenda/core/content';
+import {compileLegalDocuments,createTermsOffer} from '@notabenda/core/content';
+import {recordLegalRelease,registerTermsOffer,setActiveTermsOffer,getTermsRecordingSelection} from '@notabenda/cloudflare';
 import {compileAuthoredDocuments} from '@notabenda/authoring';
 const root=fileURLToPath(new URL('../../../',import.meta.url)),cli=fileURLToPath(new URL('../bin/notabenda-cf.mjs',import.meta.url));
 const run=(cwd,args)=>spawnSync(process.execPath,[cli,...args],{cwd,encoding:'utf8'});
@@ -52,13 +54,13 @@ test('generated host authorizes before assets or DO access and independently gat
    EVIDENCE:{getByName(name){lookups++;assert.equal(name,'notabenda:site-one');return {inspect:async(request,access)=>{received=access;return new Response('scoped');}};}},
   };
   const request=(path,options)=>new Request('https://example.test'+path,options);
-  for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/history','/workspace/setup','/assets/setup.mjs','/assets/setup-preview.mjs','/assets/cartridges.css','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
+  for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/recording','/workspace/history','/workspace/setup','/assets/setup.mjs','/assets/setup-preview.mjs','/assets/cartridges.css','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
   assert.equal(lookups,0);assert.equal(assets,0);
   const overviewRead=createHost(()=>({inspect:true}));assert.equal((await overviewRead(request('/workspace?q=reader'),env)).status,200);assert.deepEqual(received,{allowSetup:false});assert.equal((await createHost(()=>({inspect:true,configure:true}))(request('/workspace'),env)).status,200);assert.deepEqual(received,{allowSetup:true});lookups=0;
   const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
   for(const path of ['/workspace/setup','/assets/setup.mjs','/assets/setup-preview.mjs','/assets/cartridges.css'])assert.equal((await read(request(path),env)).status,403);
-  for(const path of ['/workspace/private','/workspace/other/history','/workspace/history/write'])assert.equal((await read(request(path),env)).status,404);
-  assert.equal((await read(request('/workspace/history',{method:'POST',body:'private'}),env)).status,405);assert.equal(assets,0);assert.equal(lookups,1);
+  for(const path of ['/workspace/private','/workspace/other/history','/workspace/history/write','/workspace/recording/export'])assert.equal((await read(request(path),env)).status,404);
+  assert.equal((await read(request('/workspace/history',{method:'POST',body:'private'}),env)).status,405);assert.equal(assets,0);assert.equal(lookups,1);assert.equal((await read(request('/workspace/recording?format=json'),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
   const configure=createHost(()=>({inspect:true,configure:true,export:true,source:true,catalogReview:true}));const setup=await configure(request('/workspace/setup'),env);assert.equal(setup.status,200);assert.match(await setup.text(),/data-notabenda-setup/);assert.equal(setup.headers.get('Cache-Control'),'private, no-store');
   assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);assert.equal((await configure(request('/assets/cartridges.css'),env)).status,200);assert.equal(assets,2);assert.equal((await configure(request('/assets/setup-preview.mjs'),env)).status,200);assert.equal(assets,3);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true,allowCatalogReview:true});
  }finally{await rm(cwd,{recursive:true,force:true});}
@@ -69,6 +71,7 @@ test('generated workspace starts empty, archives only matching sites and preserv
   const config=await fixture({reviewed:true}),target=await scaffold(cwd,config.site.id),{createWorkspace}=await import(pathToFileURL(join(target,'src/workspace.mjs'))),storage=createSyntheticStorage([]),workspace=createWorkspace(storage);
   const request=path=>new Request('https://example.test/workspace/'+path);
   for(const section of ['history','choices','agreements','processing','permissions','contracts']){const response=await workspace.inspect(request(section));assert.equal(response.status,200);assert.match(await response.text(),/No matches/);}
+  const empty=await workspace.inspect(request('recording'));assert.equal(empty.status,200);assert.match(await empty.text(),/No recording scopes are configured/);
   const build=compileLegalDocuments(config);await workspace.recordRelease(build.artifact,{changeNote:'Fictional starter test'});assert.match(await (await workspace.inspect(request('history'))).text(),/Fictional starter test/);
   const overview=await workspace.inspect(new Request('https://example.test/workspace?q='+build.artifact.manifest.artifactId));assert.match(await overview.text(),/history\/record\?id=/);
   const other=structuredClone(config);other.site.id='another-site';await assert.rejects(workspace.recordRelease(compileLegalDocuments(other).artifact),/configured site/);
@@ -87,5 +90,18 @@ test('generated workspace preserves catalog attachments and uses an independent 
   const request=new Request('https://example.test/workspace/history/catalog-review?id='+first.manifest.artifactId);
   for(const access of [{},{allowSource:true},{allowExport:true}])assert.equal((await workspace.inspect(request,access)).status,403);
   const response=await workspace.inspect(request,{allowCatalogReview:true});assert.equal(response.status,200);assert.match(await response.text(),/Cedar Mail/);
+ }finally{await rm(cwd,{recursive:true,force:true});}
+});
+
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
+test('generated workspace connects a fixed real reader with custom namespaces without letting queries choose another scope',async()=>{
+ const cwd=await directory();try{
+  const config=await fixture({reviewed:true}),target=await scaffold(cwd,config.site.id),{createWorkspace}=await import(pathToFileURL(join(target,'src/workspace.mjs'))),storage=createSyntheticStorage([]),build=compileLegalDocuments(config),offer=createTermsOffer(build.artifact,{scopeId:'signup',statement:'I agree to the sample terms.',actionLabel:'Agree'}),releasePrefix='custom/releases/',context={siteId:config.site.id,scopeId:'signup',prefix:'custom/terms/',releasePrefix};
+  await recordLegalRelease(storage,build.artifact,{}, {prefix:releasePrefix});
+  await registerTermsOffer(storage,offer,context);await setActiveTermsOffer(storage,offer.offerId,context);let reads=0;
+  const workspace=createWorkspace(storage,{recordingTargets:[{id:'signup',title:'Account terms',family:'terms',siteId:config.site.id,scopeId:'signup',read:async()=>{reads++;return getTermsRecordingSelection(storage,context);}}]}),request=path=>new Request('https://example.test/workspace/'+path),before=[...await storage.list({prefix:'custom/',limit:100})];
+  const overview=await workspace.inspect(request(''));assert.match(await overview.text(),/Inspect selections/);assert.equal(reads,0);
+  const result=await(await workspace.inspect(request('recording?format=json'))).json();assert.equal(result.observations[0].selection.selected.id,offer.offerId);assert.equal(reads,1);assert.equal((await workspace.inspect(request('recording?scope=another'))).status,400);assert.equal(reads,1);assert.deepEqual([...await storage.list({prefix:'custom/',limit:100})],before);
+  assert.equal((await getTermsRecordingSelection(storage,{siteId:config.site.id,scopeId:'signup'})).status,'unconfigured');
  }finally{await rm(cwd,{recursive:true,force:true});}
 });

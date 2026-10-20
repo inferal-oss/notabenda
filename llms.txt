@@ -77,3 +77,5 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Migration and removal](https://notabenda.org/guide/migration/index.md): Preserve old restrictions, exact historical documents and pending commands while replacing loaders; removing packages is separate from erasing records.
 - [Package candidate checks](https://notabenda.org/guide/release-candidate/index.md): Maintainer-only offline packing and byte-level inventory/digest report. It performs no npm publication, dependency vulnerability review or deployment acceptance.
 - [Security reporting](https://notabenda.org/guide/security/index.md): Private contact and minimal synthetic reproductions for suspected vulnerabilities.
+
+- [Recording setup inspection](https://notabenda.org/guide/recording-inspection/index.md): Read-only fixed-scope CF cookie/terms/form activations verified against retained releases. No visitor heads, namespace selectors, writes, publication or enforcement verdict; host authorization and bounded readers are explicit.

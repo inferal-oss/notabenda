@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
+import {recordingTarget} from './recording-selection.js';
+import type {RecordingSelection} from './recording-selection.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeFormPermissionLocalization,selectFormPermissionLocalization} from './form-permission-localization-policy.js';
 import type {FormPermissionLocalization} from './form-permission-localization-policy.js';
@@ -82,6 +85,16 @@ async function activeFor(tx:HistoryTransaction,prefix:string,permissionId:string
 export async function setActiveFormPermissionOffer(storage:HistoryStorage,offerId:string|null,context:FormPermissionContext):Promise<void>{
   context={...context};scoped(context);const {prefix,releasePrefix}=options(storage,context);if(offerId!==null&&!hash(offerId))return fail('invalid-offer');
   await storage.transaction(async tx=>{if(offerId!==null){const offer=await offerValue(await tx.get(prefix+'offers/'+offerId),context);if(offer.permissionId!==context.permissionId)return fail('scope-mismatch');await verifyArchive(tx,offer,context,releasePrefix);}const prior=await activeFor(tx,prefix,context.permissionId);if(prior.offerId===offerId)return;if(prior.revision>=Number.MAX_SAFE_INTEGER)return fail('invalid-record');await tx.put(prefix+'active/'+context.permissionId,{offerId,revision:prior.revision+1});});
+}
+/** Read activation without selecting a person/contact stream or testing an individual's grant. */
+export async function getFormPermissionRecordingSelection(storage:HistoryStorage,context:FormPermissionContext):Promise<RecordingSelection>{
+ context={...context};scoped(context);const {prefix,releasePrefix}=options(storage,context);
+ return storage.transaction(async tx=>{
+  const active=await activeFor(tx,prefix,context.permissionId),base={schemaVersion:1 as const,family:'form-permission' as const,siteId:context.siteId,scopeId:context.permissionId,selected:null,activationRevision:active.revision};
+  if(active.offerId===null)return {...base,status:active.revision===0?'unconfigured':'inactive'};
+  const offer=await offerValue(await tx.get(prefix+'offers/'+active.offerId),context);if(offer.permissionId!==context.permissionId||offer.offerId!==active.offerId)return fail('scope-mismatch');await verifyArchive(tx,offer,context,releasePrefix);
+  return {...base,status:'selected',selected:recordingTarget(offer,String(offer.offerId),object(offer.document))};
+ });
 }
 export async function formPermissionStreamRef(context:Pick<FormPermissionStreamContext,'siteId'|'permissionId'|'streamId'>):Promise<string>{if(!slug(context.siteId)||!slug(context.permissionId)||!text(context.streamId,200))return fail('scope-mismatch');return sha256(canonicalJson([context.siteId,context.permissionId,context.streamId]));}
 function receiptFor(event:Value,context:FormPermissionContext,ref:string):FormPermissionReceipt{

@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
+import {recordingTarget} from './recording-selection.js';
+import type {RecordingSelection} from './recording-selection.js';
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {normalizeTermsLocalization,selectTermsLocalization} from './terms-localization-policy.js';
 import type {TermsLocalization} from './terms-localization-policy.js';
@@ -106,6 +109,18 @@ export async function setActiveTermsOffer(storage:HistoryStorage, offerId:string
   });
 }
 
+/** Read the current backend terms target, independently of subjects and historical acceptances. */
+export async function getTermsRecordingSelection(storage:HistoryStorage,context:TermsActionContext):Promise<RecordingSelection>{
+ context={...context};const {prefix,releasePrefix}=options(storage,context);if(!slug(context.scopeId))throw new TermsRecordError('scope-mismatch');
+ return storage.transaction(async tx=>{
+  const base={schemaVersion:1 as const,family:'terms' as const,siteId:context.siteId,scopeId:context.scopeId,selected:null},raw=await tx.get(`${prefix}active/${context.scopeId}`);
+  if(raw===undefined)return {...base,status:'unconfigured'};
+  const pointer=object(normalizeRecord({id:'binding',data:raw},2048).data);if(!exact(pointer,['offerId','siteId','scopeId'])||pointer.siteId!==context.siteId||pointer.scopeId!==context.scopeId||pointer.offerId!==null&&!hash(pointer.offerId))throw new TermsRecordError('invalid-offer');
+  if(pointer.offerId===null)return {...base,status:'inactive'};
+  const offer=await offerValue(await tx.get(`${prefix}offers/${pointer.offerId}`),context);if(offer.scopeId!==context.scopeId||offer.offerId!==pointer.offerId)throw new TermsRecordError('scope-mismatch');await verifyArchive(tx,offer,context,releasePrefix);
+  return {...base,status:'selected',selected:recordingTarget(offer,String(offer.offerId),object(offer.document))};
+ });
+}
 function receiptFor(event:ObjectValue): TermsReceipt {
   const offer = object(event.offer); const document = object(offer.document);
   if (!hash(event.id) || !hash(offer.offerId) || !hash(offer.artifactId) || !hash(document.sha256) || !uuid(event.requestId) || !text(event.operationId,200) || !text(document.version,200) || typeof event.occurredAt !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(event.occurredAt) || !Number.isFinite(Date.parse(event.occurredAt)) || new Date(event.occurredAt).toISOString() !== event.occurredAt) throw new TermsRecordError('invalid-offer');

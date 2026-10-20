@@ -255,3 +255,5 @@ Opening the overview reads no records. A nonempty search reads one validated seg
 Search uses `?q=` and the same bounded word matching as the record stores. Reference IDs, recorded subject labels, versions and purposes are useful starting points. Original MDX, retained file contents and separately authorized source attachments are not traversed. The worker accepts only GET/HEAD, sets private/no-store and no-referrer headers, installs no scripts and performs no writes or source/file reads. Hosts remain responsible for bounded adapters and protecting external access logs.
 
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
+
+Inspect current backend notice/offer selections with the optional [recording setup readers and worker](https://notabenda.org/guide/recording-inspection/). It reads fixed authorized scopes and retained releases, without inspecting visitor heads or changing activation.

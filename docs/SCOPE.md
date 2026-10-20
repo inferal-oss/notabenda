@@ -245,3 +245,6 @@ Native storage settings use an optional complete `localization.storageExceptions
 
 <!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
 Maintainer release tooling may pack the three known workspaces offline with lifecycle hooks disabled into a fresh ignored or external directory. Inspect actual archive bytes without extraction, preserve hashes and failed reports, reject unsupported paths/metadata and avoid publishing or registry changes. Security reports use the public private-contact policy. Migration and removal preserve legacy restrictions, pending commands and retained evidence; no generic grant importer or blanket cleanup is supplied.
+
+<!-- @requirements REQ-PRODUCT-RECORDING-INSPECTION -->
+Recording setup is a read-only operator job over explicit trusted scopes. Distinguish immutable registration from activation and validate the selected descriptor/archive atomically. Show failures as unavailable, keep visitor heads out of the read path, cap and time-bound readers, and accept no browser-selected tenant, namespace or scope. HTML/JSON use existing host authorization; no login, mutation or universal readiness verdict is supplied.

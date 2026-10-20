@@ -60,3 +60,5 @@ See [the CF API](../packages/notabenda-cf/README.md), [scope decisions](SCOPE.md
 Setup starts with the reusable pack library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all generated setup and preview assets.
 
 The page reader is built as `assets/setup-preview.mjs` and loaded when an operator requests a preview. It requires the same configuration permission as setup; the local doctor checks its presence.
+
+The starter also exposes [Recording setup](RECORDING-INSPECTION.md) under its existing inspection authorization. It starts with no readers. In the generated Worker constructor, supply fixed host-owned `recordingTargets` to `createWorkspace`; no request can select a site or object. The overview link does not inspect selections until the operator opens that page.

@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
+import {createRecordingInspectionWorker,getConsentRecordingSelection,getTermsRecordingSelection,getFormPermissionRecordingSelection} from '@notabenda/cloudflare';
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CARTRIDGES
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS
@@ -109,6 +111,12 @@ export class EvidenceWorkspace {
         return protectedResponse(Response.json(receipt));
       }
       if(!['GET','HEAD'].includes(request.method)) return protectedResponse(new Response('Method not allowed.',{status:405,headers:{Allow:'GET, HEAD'}}));
+      if(path===this.adminBasePath+'/recording'||path===this.adminBasePath+'/recording/'){
+        await this.initialize();const storage=this.state.storage;
+        const consentTarget=(id,title,notice)=>({id,title,family:'consent',siteId:notice.siteId,scopeId:notice.scopeId,read:()=>getConsentRecordingSelection(storage,{siteId:notice.siteId,scopeId:notice.scopeId,allowPreview:true})});
+        const targets=[consentTarget('cookies','Cookie notice',data.consent.notice),consentTarget('recorded-cookies','Recorded-choice example',data.recordedConsent.notice),...data.agreements.map(({theme,offer})=>({id:'terms-'+theme,title:theme==='pt'?'Portuguese terms':theme==='dark'?'Midnight terms':'Terms agreement',family:'terms',siteId:offer.siteId,scopeId:offer.scopeId,read:()=>getTermsRecordingSelection(storage,{siteId:offer.siteId,scopeId:offer.scopeId,allowPreview:true})})),...[data.formPermissions.offer,data.localizedFormPermissions.offer].map((offer,index)=>({id:'permission-'+index,title:index?'Portuguese form permission':'Email permission',family:'form-permission',siteId:offer.siteId,scopeId:offer.permissionId,read:()=>getFormPermissionRecordingSelection(storage,{siteId:offer.siteId,permissionId:offer.permissionId,allowPreview:true})}))];
+        return protectedResponse(await createRecordingInspectionWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath+'/recording',historyPath:this.adminBasePath+'/history',authorize:()=>({targets,scopeLabel:this.adminBasePath==='/demo/admin'?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
+      }
       const sections = {
         history:()=>createDocumentHistory(this.state.storage),
         evidence:()=>createDurableObjectStore(this.state.storage,{prefix:'host/synthetic-evidence/'}),
@@ -129,7 +137,7 @@ export class EvidenceWorkspace {
         await this.initialize();const demo=this.adminBasePath==='/demo/admin';
         const jobs=[['history','Privacy pages','Compare retained privacy, cookie and terms versions.',true],['choices','Cookie choices','Inspect choices and the notices they refer to.',true],['agreements','Terms agreement','Review the person, exact terms version and recorded statement.',true],['permissions','Form permissions','Inspect optional permissions and later withdrawals.'],['processing','Processing opt-outs','Review requests and retained processing restrictions.'],['contracts','Contract declarations','Inspect declarations and independent handoff states.'],['lifecycle','Retention & holds','Review holds, retirement and purge progress.'],['recorded','Sandbox choices','Inspect actions made in the recorded-choice example.'],...(demo?[['orders','Orders & confirmations','Inspect order reviews, retained files and delivery jobs.']]:[['evidence','Sample evidence','Inspect the general evidence store.']])];
         const areas=jobs.map(([id,title,description,primary=false])=>({id,title,description,primary,href:this.adminBasePath+'/'+id,store:id==='orders'?createOrderDemoStore(this.state.storage):sections[id]()}));
-        return protectedResponse(await createWorkspaceOverviewWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath,setupPath:this.adminBasePath+'/setup',authorize:()=>({areas,allowSetup:true,scopeLabel:demo?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
+        return protectedResponse(await createWorkspaceOverviewWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath,setupPath:this.adminBasePath+'/setup',recordingPath:this.adminBasePath+'/recording',authorize:()=>({areas,allowSetup:true,allowRecordingInspection:true,scopeLabel:demo?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
       }
       return protectedResponse(new Response('Not found.',{status:404}));
     } catch(error) {

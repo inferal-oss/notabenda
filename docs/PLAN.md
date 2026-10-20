@@ -347,3 +347,6 @@ Native storage-exception controls now accept complete host-supplied message sets
 
 <!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
 Release preparation now has an optional offline [package candidate check](RELEASE-CANDIDATE.md), a public [security reporting policy](../SECURITY.md), and [migration/removal guidance](MIGRATION.md). The check inspects actual tarball bytes and records hashes without building, installing or publishing. Its contents verdict cannot establish source/build equivalence, secret absence, vulnerability review, legal review or operational readiness; those release gates remain separate.
+
+<!-- @requirements REQ-PRODUCT-RECORDING-INSPECTION -->
+The optional [recording setup inspector](RECORDING-INSPECTION.md) now checks fixed host-selected cookie, terms and form-permission activations against retained releases. The operator page separates absent, inactive, selected and unavailable reads without inspecting visitor heads or changing configuration. The overview grants its link explicitly; new starters keep an empty reader list and the denying authorization hook. Publication, runtime behavior and broader pack installation verification remain separate work.

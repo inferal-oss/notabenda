@@ -1,0 +1,10 @@
+<!-- @requirements REQ-PRODUCT-RECORDING-INSPECTION -->
+# Recording selection inspection
+
+Backend tests exercise all three real descriptor families: registration without activation, selection, explicit deactivation, form-permission activation revision, detached returned data, corrupt/cross-scope pointers, missing archives and explicit preview handling. Read-only storage instrumentation rejects enumeration, visitor-head/event reads, writes and deletes. Selection and archive verification happen inside the same family transaction.
+
+Worker checks cover fixed identity matching, bounded targets, authorization before callbacks, rejected selectors/methods/routes, escaped script-free HTML, private headers, nonce-only styles, JSON parity, unavailable reads without private error leakage, accessor rejection, bounded timeout/abort and late-result isolation. Overview links require an explicit grant and do not perform binding reads. The default starter has no readers and retains its denying host authorization hook.
+
+Website checks cover the session-isolated demo, operational access protection, known sample selections, no recording mutation, rendered semantic structure and links back to existing history. Browser checks cover desktop/mobile presentation and native reference disclosures. These observations verify the checked setup only: they do not establish public document publication, installed loaders, any person's permission, legal applicability or all-platform accessibility.
+
+Native-browser checks on 20 October 2026 used a separate local Worker and fresh session storage. The overview opened all seven configured sample selections, the first release-history link returned its exact archived release, and the 390 × 844 layout retained one-column cards and native collapsed references. Expanded hashes and paths caused no horizontal overflow. No operational records were used or changed. The generated starter test also connects a real terms reader with custom record/release prefixes and rejects a browser-supplied scope before running it.

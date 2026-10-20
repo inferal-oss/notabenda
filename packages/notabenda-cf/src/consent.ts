@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
+import {recordingTarget} from './recording-selection.js';
+import type {RecordingSelection} from './recording-selection.js';
 // @requirements REQ-PRODUCT-RIGHTS-LOCALIZATION
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 import {normalizeConsentInformation} from './consent-information.js';
@@ -161,6 +164,18 @@ export async function setActiveConsentNotice(storage:HistoryStorage,noticeId:str
     if (noticeId!==null) { const n=await noticeValue(await tx.get(`${prefix}notices/${noticeId}`),context); if (n.scopeId!==context.scopeId) return fail('scope-mismatch'); await verifyArchive(tx,n,context,releasePrefix); }
     await tx.put(`${prefix}active/${context.scopeId}`,{noticeId,siteId:context.siteId,scopeId:context.scopeId});
   });
+}
+/** Read a fixed host scope without reading a visitor head or changing activation. */
+export async function getConsentRecordingSelection(storage:HistoryStorage,context:ConsentNoticeContext):Promise<RecordingSelection>{
+ context={...context};const {prefix,releasePrefix}=options(storage,context);if(!slug(context.scopeId))return fail('scope-mismatch');
+ return storage.transaction(async tx=>{
+  const base={schemaVersion:1 as const,family:'consent' as const,siteId:context.siteId,scopeId:context.scopeId,selected:null},raw=await tx.get(`${prefix}active/${context.scopeId}`);
+  if(raw===undefined)return {...base,status:'unconfigured'};
+  const pointer=normalized(raw,2048,'invalid-record');if(!exact(pointer,['noticeId','siteId','scopeId'])||pointer.siteId!==context.siteId||pointer.scopeId!==context.scopeId||pointer.noticeId!==null&&!hash(pointer.noticeId))return fail('invalid-record');
+  if(pointer.noticeId===null)return {...base,status:'inactive'};
+  const notice=await noticeValue(await tx.get(`${prefix}notices/${pointer.noticeId}`),context);if(notice.scopeId!==context.scopeId||notice.noticeId!==pointer.noticeId)return fail('scope-mismatch');await verifyArchive(tx,notice,context,releasePrefix);
+  return {...base,status:'selected',selected:recordingTarget(notice,String(notice.noticeId),object(object(notice.documents).privacy))};
+ });
 }
 async function stream(context:ConsentStreamContext):Promise<string> {
   if (!slug(context.scopeId)||!text(context.streamId,200)) return fail('scope-mismatch');

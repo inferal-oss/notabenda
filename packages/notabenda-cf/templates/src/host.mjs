@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RECORDING-INSPECTION
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
 // @requirements REQ-PRODUCT-CF-STARTER REQ-PRODUCT-CF-ADMIN
@@ -32,7 +33,7 @@ export function createHost(authorize){
    try{return privateResponse(await env.ASSETS.fetch(request));}catch{return reply('Assets unavailable.',503);}
   }
   const relative=path.slice(settings.basePath.length);
-  if(!path.startsWith(settings.basePath+'/')||!/^\/(?:history|choices|agreements|processing|permissions|contracts)(?:\/(?:record|diff|source|source-diff|catalog-review|catalog-review-diff|export|export\.json))?\/?$/u.test(relative))return reply('Not found.',404);
+  if(!path.startsWith(settings.basePath+'/')||!['/recording','/recording/'].includes(relative)&&!/^\/(?:history|choices|agreements|processing|permissions|contracts)(?:\/(?:record|diff|source|source-diff|catalog-review|catalog-review-diff|export|export\.json))?\/?$/u.test(relative))return reply('Not found.',404);
   try{
    // The stable site comes from host configuration. URL/body/header values cannot select a DO.
    const workspace=env.EVIDENCE.getByName('notabenda:'+settings.siteId);
