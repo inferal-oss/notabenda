@@ -4955,7 +4955,8 @@
         "packages/notabenda-cf/src/order-admin-style.ts",
         "examples/recorded-cookies/host.mjs",
         "examples/recorded-cookies/workspace.mjs",
-        "examples/recorded-cookies/worker.mjs"
+        "examples/recorded-cookies/worker.mjs",
+        "examples/recorded-cookies/README.md"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
@@ -5244,7 +5245,8 @@
         "packages/notabenda/src/consent-runtime-evidence.ts",
         "examples/recorded-cookies/host.mjs",
         "examples/recorded-cookies/workspace.mjs",
-        "examples/recorded-cookies/worker.mjs"
+        "examples/recorded-cookies/worker.mjs",
+        "examples/recorded-cookies/README.md"
       ],
       "testRefs": [
         "packages/notabenda/test/consent-evidence.test.mjs",
@@ -9256,7 +9258,8 @@
         "site/navigation.mjs",
         "examples/recorded-cookies/host.mjs",
         "examples/recorded-cookies/workspace.mjs",
-        "examples/recorded-cookies/worker.mjs"
+        "examples/recorded-cookies/worker.mjs",
+        "examples/recorded-cookies/README.md"
       ],
       "testRefs": [
         "packages/notabenda/test/consent-release-files.test.mjs",
