@@ -30,9 +30,16 @@ Build the consent descriptor alongside your legal pages. The CLI accepts the sam
 notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist
 ```
 
-This writes `consent-runtime.json` and `assets/notabenda-consent.css` in addition to the legal pages and retained artifact. It validates the complete configuration and requires reviewed production content unless `--preview` is explicit. Choose `local` for browser-only choices, or `required` when a host receipt must precede optional processing. There is no evidence-mode default. Required mode still needs an archived consent notice and a host-bound receipt adapter; the command connects no service loaders, transport or backend. Without the switch, a new output directory has the same document-only output as before. If the output already contains a runtime descriptor, repeat the switch when rebuilding so an old descriptor cannot silently remain beside changed legal pages.
+The build adds `consent-runtime.json` and `assets/notabenda-consent.css` to the legal pages and retained artifact. Choose how choices are recorded:
 
-The files can be deployed with the site. Import the published `@notabenda/core/consent.css` from your own bundler, or link the generated `/assets/notabenda-consent.css` when serving static assets. Your browser code still registers each service lifecycle before optional requests can start.
+| Mode | When an optional service may start |
+| --- | --- |
+| `local` | After a valid browser-local grant. There is no server receipt. |
+| `required` | After the host confirms the matching receipt. Connect an archived consent notice and the receipt adapter shown below. |
+
+The mode has no default. Production builds validate the complete configuration and require reviewed content; use `--preview` for a draft. Without the switch, a new output directory receives the ordinary document build. Repeat the switch when rebuilding an existing runtime output, so the descriptor stays in step with the legal pages.
+
+Deploy the files with the site. Import `@notabenda/core/consent.css` from your bundler, or link the generated `/assets/notabenda-consent.css` for static hosting. Register each service lifecycle before optional requests can start; the build does not connect loaders or a backend.
 
 For a custom build pipeline, use the same compiler directly:
 
