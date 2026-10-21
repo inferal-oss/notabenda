@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONFIG-SOURCES
 import {readSetupEditorDrafts} from './setup-session-editors.js';
 // @requirements REQ-PRODUCT-SETUP-SESSION
 import {normalizeCartridgeSelection} from './cartridges.js';
@@ -22,7 +23,7 @@ export function readPackSessionDraft(input:unknown):PackSessionDraft {
  const exact=(o:object,keys:string[])=>Object.keys(o).length===keys.length&&keys.every(k=>Object.hasOwn(o,k));
  if(!v||typeof v!=='object'||Array.isArray(v)||!exact(v,['schemaVersion','kind','selection','view',...(Object.hasOwn(v,'setup')?['setup']:[])])||v.schemaVersion!==1||v.kind!=='private-pack-session'||!['packs','setup'].includes(v.view))throw Error('Invalid saved pack draft.');
  const selection=normalizeCartridgeSelection(v.selection);let setup:SetupUIDraft|undefined;
- if(v.setup!==undefined){const d=v.setup;if(!d||typeof d!=='object'||Array.isArray(d)||!exact(d,['report','stage','prepared',...(Object.hasOwn(d,'config')?['config']:[]),...(Object.hasOwn(d,'editors')?['editors']:[])])||!Number.isInteger(d.stage)||d.stage<0||d.stage>5||typeof d.prepared!=='boolean'||d.report?.kind!=='private-setup-report'||d.report.schemaVersion!==1||d.report.questionnaireVersion!=='8')throw Error('Incompatible saved setup draft.');
+ if(v.setup!==undefined){const d=v.setup;if(!d||typeof d!=='object'||Array.isArray(d)||!exact(d,['report','stage','prepared',...(Object.hasOwn(d,'config')?['config']:[]),...(Object.hasOwn(d,'editors')?['editors']:[]),...(Object.hasOwn(d,'configFormat')?['configFormat']:[])])||!Number.isInteger(d.stage)||d.stage<0||d.stage>5||typeof d.prepared!=='boolean'||d.configFormat!==undefined&&!['json','yaml','markdown'].includes(d.configFormat)||d.report?.kind!=='private-setup-report'||d.report.schemaVersion!==1||d.report.questionnaireVersion!=='8')throw Error('Incompatible saved setup draft.');
   if(Object.keys(d.report).some(k=>!['schemaVersion','questionnaireVersion','kind','answers','catalogSelections','catalogSelectionRevisions','cartridges'].includes(k)))throw Error('Unknown saved report fields.');
   readSetupAnswers(d.report);readSetupCatalogSelections(d.report);readSetupCatalogRevisions(d.report);
   const pins=normalizeCartridgeSelection(d.report.cartridges);if(!pins.selected.length||v.view==='setup'&&JSON.stringify(pins)!==JSON.stringify(selection))throw Error('Saved setup pins do not match.');

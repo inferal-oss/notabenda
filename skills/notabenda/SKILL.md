@@ -34,7 +34,7 @@ npx --no-install notabenda discover --project . --out-dir ./service-review
 npx --no-install notabenda wizard --config ./notabenda.config.json --out-dir ./setup-review
 ```
 
-The wizard is interactive. For unattended use, supply an explicit answers file with `--answers`; the [setup guide](https://notabenda.org/guide/setup/index.md) documents its schema. For a new integration without a config, omit `--config`, or use `init` to create a draft JSON starter. Output directories must be new. Choose unused paths and retain the original inputs.
+The wizard is interactive. For unattended use, supply an explicit answers file with `--answers`; the [setup guide](https://notabenda.org/guide/setup/index.md) documents its schema. For a new integration without a config, omit `--config`, or use `init` to create a draft JSON starter. Use `--config-format yaml` or `--config-format markdown` when that output format is wanted; JSON remains the default and private reports remain JSON. Keep the handoff commands aligned with the actual generated filename. Output directories must be new. Choose unused paths and retain the original inputs.
 
 For an existing config, reconcile selected work with the actual inventory before editing it:
 

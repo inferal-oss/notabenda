@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-CONFIG-SOURCES
-// Bundled at package-build time. Never imported by the browser entry points.
+// Universal ESM bundle loaded only by an explicit YAML/Markdown configuration action.
 import {isAlias,isPair,isScalar,LineCounter,parseDocument,stringify,visit} from 'yaml';
 
 export function parseConfigYaml(source:string):unknown {

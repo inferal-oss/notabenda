@@ -20,7 +20,8 @@ import {readSetupCatalogSelections} from './catalog-selection.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
 import {reviewSetupCatalog} from './setup-catalog-cli.js';
 import {readCliJson} from './cli-json.js';
-import {readSiteConfig} from './config-source.js';
+import {readSiteConfig,formatConfigSource} from './config-source.js';
+import type {ConfigSourceFormat} from './config-document.js';
 import {loadServiceCatalog} from './catalog-node.js';
 import {scanProjectServices} from './catalog-project.js';
 import type {ProjectServiceReport} from './catalog-project.js';
@@ -33,7 +34,8 @@ import {createSetupPlan,readSetupAnswers,setupQuestions,setupMarkets,setupFactFi
 import {toPublicConfig} from './config.js';
 import type {SetupAnswers,SetupChoice} from './setup.js';
 const readJson=(path:string)=>readCliJson(path,512*1024,'Setup input must be ordinary UTF-8 JSON no larger than 512 KiB.');
-export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string;cartridgeIds?:string[];rightsPath?:string;storagePath?:string;termsPath?:string}):Promise<void>{
+export async function runSetupWizard(options:{answersPath?:string;configPath?:string;outDir:string;projectDirectory?:string;catalogPath?:string;cartridgeIds?:string[];rightsPath?:string;storagePath?:string;termsPath?:string;configFormat?:ConfigSourceFormat}):Promise<void>{
+  const configFormat=options.configFormat??'json';if(!['json','yaml','markdown'].includes(configFormat))throw Error('Choose JSON, YAML or Markdown configuration output.');
   if(options.catalogPath&&!options.projectDirectory)throw Error('Wizard --catalog requires an explicit --project directory.');
   if(!options.answersPath&&(!process.stdin.isTTY||!process.stdout.isTTY))throw new Error('Interactive setup needs a terminal. Supply --answers FILE for noninteractive use.');
   const directory=resolve(options.outDir);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
@@ -69,14 +71,15 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
   if(options.storagePath){storagePlan=await applySetupStorageFile(base,options.storagePath);base=storagePlan.config;}
   const prepare=selection?(input:unknown,opts:Parameters<typeof createSetupPlan>[1])=>createCartridgeSetupPlan(selection,input,opts):createSetupPlan;
   const plan=prepare(readSetupAnswers(answers),{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});
-  const configText=JSON.stringify(plan.config,null,2)+'\n';
+  const configName='notabenda.config.'+(configFormat==='markdown'?'md':configFormat==='yaml'?'yaml':'json');
+  const configText=configFormat==='json'?JSON.stringify(plan.config,null,2)+'\n':await formatConfigSource(plan.config,configFormat,configFormat==='markdown'?'\n# Configuration notes\n\nAdd supporting notes here. This body is not published.\n':'');
   if(new TextEncoder().encode(configText).length>512*1024)throw Error('Keep the resulting setup config within the 512 KiB import limit.');
   const storageReview=storagePlan?JSON.stringify(storageDraftReview(storagePlan),null,2)+'\n':undefined;
   // A new directory is the write boundary: never overwrite an existing config or report, including symlinks.
   await mkdir(directory,{mode:0o700});
-  await writeFile(join(directory,'notabenda.config.json'),configText,{flag:'wx',mode:0o600});
+  await writeFile(join(directory,configName),configText,{flag:'wx',mode:0o600});
   await writeFile(join(directory,'setup.private.json'),JSON.stringify(plan.report,null,2)+'\n',{flag:'wx',mode:0o600});
-  if(selection)await writeFile(join(directory,'notabenda-setup-brief.txt'),formatCartridgeBrief(selection,'connect',{config:plan.config}),{flag:'wx',mode:0o600});
+  if(selection)await writeFile(join(directory,'notabenda-setup-brief.txt'),formatCartridgeBrief(selection,'connect',{config:plan.config,configFormat}),{flag:'wx',mode:0o600});
   if(project)await writeFile(join(directory,'discovery.private.json'),JSON.stringify(project.report,null,2)+'\n',{flag:'wx',mode:0o600});
   if(storageReview)await writeFile(join(directory,'storage-change-review.private.json'),storageReview,{flag:'wx',mode:0o600});
   await writeFile(join(directory,'.gitignore'),'setup.private.json\n'+(project?'discovery.private.json\n':'')+(storagePlan?'storage-change-review.private.json\n':''),{flag:'wx'});

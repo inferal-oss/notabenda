@@ -81,3 +81,5 @@ An agent can connect the components and test their behavior. You supply the actu
 Private discovery findings and justifications stay separate from public legal output. Markdown and MDX sources belong in the private history archive when retained there. MDX is trusted build code, so inspect its imports and components. The optional Cloudflare backend uses your authorization; the demonstration's access model is specific to that demo.
 
 Ask for a concrete handoff: changed files, checks run, unresolved facts and deployment status. Discovery and CI are tools you may choose, rather than required services.
+
+Configuration format is a tooling choice, not a `SiteConfig` field. The browser setup can import JSON, YAML or Markdown frontmatter and select a draft download format. The CLI uses `wizard --config-format json|yaml|markdown`; its report remains JSON. Preserve the original file and comments, keep Markdown body notes separate, and use the filename shown in the agent handoff. `@notabenda/core/config/document` exposes the browser-safe codec; the Node reader re-exports it.

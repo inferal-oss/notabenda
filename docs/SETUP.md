@@ -18,7 +18,7 @@ npx @notabenda/core wizard --answers ./setup-review/setup.private.json \
   --config ./setup-review/notabenda.config.json --out-dir ./setup-review-3
 ```
 
-The directory must not exist, including through a symlink. The wizard writes `notabenda.config.json`, `setup.private.json` and a local `.gitignore` excluding the report. On supported systems the directory and JSON files use private permissions. The site config may use [JSON, YAML or Markdown frontmatter](CONFIGURATION-SOURCES.md); answers and report inputs remain JSON. Inputs are limited to 512 KiB; normalized answers have a 128 KiB limit. Noninteractive use requires `--answers`; there is no silent answer default that activates collection. Imported configs are validated before interactive questions.
+The directory must not exist, including through a symlink. By default the wizard writes `notabenda.config.json`, `setup.private.json` and a local `.gitignore` excluding the report. Use `--config-format yaml` or `--config-format markdown` for `.yaml` or `.md` draft output; the private report stays JSON. On supported systems the directory and generated files use private permissions. The site config may use [JSON, YAML or Markdown frontmatter](CONFIGURATION-SOURCES.md); answers and report inputs remain JSON. Inputs are limited to 512 KiB; normalized answers have a 128 KiB limit. Noninteractive use requires `--answers`; there is no silent answer default that activates collection. Imported configs are validated before interactive questions.
 
 A minimal answers file:
 
@@ -277,11 +277,15 @@ The **Privacy requests** pack now opens a structured editor for actual public wo
 <!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
 Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).
 
+## Choose a configuration format
+
+Browser setup imports JSON, YAML, YML and Markdown with complete site-configuration frontmatter. It validates the file locally; nothing is uploaded. A successful import selects its source format for the new draft. At review, choose **Configuration format** and download the prepared file. The private report remains JSON. Markdown source body notes stay in the original file, and do not enter saved sessions or new draft exports. Agent instructions use the selected filename. See [configuration sources](CONFIGURATION-SOURCES.md) for the shared browser/Node API and CLI output flag.
+
 ## Recover a browser setup draft
 
 <!-- @requirements REQ-PRODUCT-SETUP-SESSION -->
 
-The project website’s **[Start](/start/)** screen keeps its draft in `sessionStorage`, under `notabenda:start:draft:v1`. Reloading the same tab restores selected packs, the current step, unfinished answers, imported public configuration, private service-review notes, pending editor fields and the cumulative storage-change review. Prepared recommendations and downloads are regenerated locally. Unconfirmed proposals remain unconfirmed; review acknowledgments must be checked again.
+The project website’s **[Start](/start/)** screen keeps its draft in `sessionStorage`, under `notabenda:start:draft:v1`. Reloading the same tab restores selected packs, the current step, the configuration download format, unfinished answers, imported public configuration, private service-review notes, pending editor fields and the cumulative storage-change review. Prepared recommendations and downloads are regenerated locally. Unconfirmed proposals remain unconfirmed; review acknowledgments must be checked again.
 
 The saved copy expires **24 hours after its last change**. Reading or reloading it does not extend that deadline. **Forget saved draft** removes this saved copy without erasing the open form; a later edit starts a new saved copy. It is not uploaded. Closing the tab normally ends its storage session, although browsers can restore sessions or copy them when duplicating a tab. Do not treat this as secure deletion or a durable backup. Download the public config, private setup report and any storage-change review you need to keep.
 

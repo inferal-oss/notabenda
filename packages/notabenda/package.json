@@ -352,6 +352,11 @@
       "types": "./dist/config-authoring.d.ts",
       "import": "./dist/config-authoring.js",
       "default": "./dist/config-authoring.js"
+    },
+    "./config/document": {
+      "types": "./dist/config-document.d.ts",
+      "import": "./dist/config-document.js",
+      "default": "./dist/config-document.js"
     }
   },
   "bin": {

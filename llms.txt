@@ -32,7 +32,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 
 - [Privacy-choice links](https://notabenda.org/guide/privacy-choice-links/index.md): Explicit return navigation, California title/icon presentation and separate host destination checks.
 
-- [Configuration sources](https://notabenda.org/guide/configuration-sources/index.md): JSON, YAML or a complete site configuration in Markdown frontmatter; body notes stay separate. Node-only reader, explicit --config paths, common validation.
+- [Configuration sources](https://notabenda.org/guide/configuration-sources/index.md): JSON, YAML or a complete site configuration in Markdown frontmatter; body notes stay separate. Shared browser/Node codec, explicit --config paths, common validation. Browser setup selects draft download format; CLI wizard uses --config-format json|yaml|markdown. Private reports stay JSON and Markdown source notes are excluded from browser exports/saved drafts.
 - [Markdown and MDX](https://notabenda.org/guide/authoring/index.md): YAML frontmatter, trusted components and private source archives.
 - [Cookie choices](https://notabenda.org/guide/consent/index.md): Connect optional service lifecycles to effective permission.
 - [Terms agreements](https://notabenda.org/guide/terms/index.md): Bind an unchecked action to the exact document revision.

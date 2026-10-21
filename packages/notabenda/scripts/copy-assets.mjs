@@ -37,7 +37,7 @@ await mkdir(new URL('../dist/skill/references/',import.meta.url),{recursive:true
 for(const path of ['SKILL.md','agents/openai.yaml','references/configuration-target.md'])await copyFile(new URL('../../../skills/notabenda/'+path,import.meta.url),new URL('../dist/skill/'+path,import.meta.url));
 
 // @requirements REQ-PRODUCT-CONFIG-SOURCES
-// Self-contained Node CLI parser; no runtime dependency or browser import.
-await build({entryPoints:[new URL('../src/config-yaml.ts',import.meta.url).pathname],outfile:new URL('../dist/config-yaml.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline',banner:{js:"import {createRequire as __yamlCreateRequire} from 'node:module';const require=__yamlCreateRequire(import.meta.url);"}});
+// Self-contained universal parser; no installed dependency or ordinary visitor import.
+await build({entryPoints:[new URL('../src/config-yaml.ts',import.meta.url).pathname],outfile:new URL('../dist/config-yaml.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',sourcemap:false,legalComments:'inline'});
 await rm(new URL('../dist/config-yaml.js.map',import.meta.url),{force:true});
 await copyFile(new URL('../../../node_modules/yaml/LICENSE',import.meta.url),new URL('../dist/licenses/yaml-LICENSE.txt',import.meta.url));

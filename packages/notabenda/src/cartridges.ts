@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-CONFIG-SOURCES
+import type {ConfigSourceFormat} from './config-document.js';
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-PRODUCT-AGENT-HANDOFF
@@ -104,8 +106,9 @@ export function cartridgeRecommendations(selection:unknown,recommendations:Setup
  return recommendations.filter(r=>!all.has(r.id)||relevant.has(r.id));
 }
 /** An agent handoff describes work. It contains no operator answers or private justifications. */
-export function formatCartridgeBrief(input:unknown,stage:'prepare'|'connect'='prepare',options:{config?:unknown}={}):string {
+export function formatCartridgeBrief(input:unknown,stage:'prepare'|'connect'='prepare',options:{config?:unknown;configFormat?:ConfigSourceFormat}={}):string {
  if(stage!=='prepare'&&stage!=='connect')throw Error('Use the prepare or connect brief stage.');
+ const format=options.configFormat??'json';if(!['json','yaml','markdown'].includes(format))throw Error('Choose JSON, YAML or Markdown configuration output.');const filename='notabenda.config.'+(format==='markdown'?'md':format==='yaml'?'yaml':'json');
  const plan=planCartridges(input);if(!plan.selection.selected.length)throw Error('Choose a pack before preparing a setup brief.');
  const ids=plan.selection.selected.map(c=>c.id),lines=[`Set up Notabenda for these packs: ${plan.cartridges.map(c=>c.title).join(', ')}.`,
   'Inspect the existing project and preserve unrelated behavior. Reuse existing supporting configuration and documents. Read the installed pack plan with:',
@@ -113,12 +116,12 @@ export function formatCartridgeBrief(input:unknown,stage:'prepare'|'connect'='pr
  if(stage==='prepare')lines.push('Read the version-matched integration guides, gather the selected facts and leave unknowns unresolved. Use the installed skill when available. Prepare a private answers file, then run:',
   `npx --no-install notabenda wizard --packs ${ids.join(',')} --answers ./answers.json --out-dir ./notabenda-setup`,
   'Add --config FILE when an inventory already exists. Compare the draft before applying changes.');
- else lines.push('This brief accompanies notabenda.config.json and setup.private.json. Keep both files in a private working directory, alongside these instructions. Read both JSON files as data; do not execute project modules to load them. The private report contains declared answers, justifications, unknowns and review items. Its declarations are not verified facts.',
+ else lines.push(`This brief accompanies ${filename} and setup.private.json. Keep both files in a private working directory, alongside these instructions. ${format==='json'?'Read both JSON files as data':'Read the configuration and JSON private report as data'}; do not execute project modules to load them. The private report contains declared answers, justifications, unknowns and review items. Its declarations are not verified facts.`,
   'Compare the draft with the current project. Confirm the actual facts, review wording and resolve applicable scope restrictions before enabling anything. Preserve existing services and inventory unless a reviewed change requires otherwise. Keep setup.private.json out of public assets and version control.',
   'From the directory containing those files, check the draft with the explicitly installed local package:',
-  'npx --no-install notabenda check --config ./notabenda.config.json --preview --json',
+  `npx --no-install notabenda check --config ./${filename} --preview --json`,
   'A preview check permits drafts; it does not establish production readiness. To revise answers, resume into a new directory:',
-  'npx --no-install notabenda wizard --answers ./setup.private.json --config ./notabenda.config.json --out-dir ./notabenda-setup-revised');
+  `npx --no-install notabenda wizard --answers ./setup.private.json --config ./${filename} --out-dir ./notabenda-setup-revised${format==='json'?'':' --config-format '+format}`);
  lines.push(...plan.cartridges.map(c=>`${c.title}: ${c.lesson}`));
  for(const target of plan.reference.targets){
   lines.push(`${target.selection==='prerequisite'?'Check and reuse the foundation':'Connect'}: ${target.title}`,target.hostWork.map(copy=>'- '+copy).join('\n'),

@@ -4698,7 +4698,7 @@
       "jurisdiction": "PRODUCT",
       "title": "YAML and Markdown-frontmatter site configuration",
       "kind": "product-standard",
-      "summary": "Accept JSON, YAML and complete SiteConfig frontmatter in Markdown through the CLI and Node build reader, preserving one semantic model and keeping body notes outside public releases.",
+      "summary": "Accept JSON, YAML and complete SiteConfig frontmatter in Markdown through the CLI, browser setup and Node reader, preserving one semantic model and keeping body notes outside public releases and saved setup drafts.",
       "appliesWhen": "An operator maintains site facts in a local configuration source.",
       "sourceRefs": [
         {
@@ -4719,7 +4719,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Bounded ordinary UTF-8 files only. No code evaluation, includes, environment expansion or automatic source archival. Browser setup imports/exports and non-config reports remain JSON; policy MD/MDX bodies still use the authoring package.",
+      "caveats": "Bounded UTF-8 input only. Node file readers refuse symlinks/special files. No code evaluation, includes, environment expansion or automatic source archival. Reports remain JSON; policy MD/MDX bodies use the separate authoring package. Browser/CLI JSON output remains the default; format choice changes no runtime permissions.",
       "implementationRefs": [
         "packages/notabenda/src/config-source.ts",
         "packages/notabenda/src/config-yaml.ts",
@@ -4735,15 +4735,24 @@
         "examples/configuration/notabenda.config.yaml",
         "examples/configuration/notabenda.config.md",
         "site/build.mjs",
-        "packages/notabenda/src/config-authoring.ts"
+        "packages/notabenda/src/config-authoring.ts",
+        "packages/notabenda/src/config-document.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/pack-session.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda/src/cartridges.ts",
+        "examples/setup/build.mjs",
+        "site/website-notice.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/config-sources.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/configuration-sources.md",
-        "packages/notabenda/test/config-authoring.test.mjs"
+        "packages/notabenda/test/config-authoring.test.mjs",
+        "packages/notabenda/test/config-browser.test.mjs",
+        "site/test/config-browser.test.mjs"
       ],
-      "implementationNote": "CLI and Node reader accept the same JSON-compatible SiteConfig across JSON, YAML and Markdown frontmatter. Equivalence, private-note isolation, malformed inputs, packed-parser installation and browser graph exclusion are covered by automated tests. Browser setup import/export and non-config reports remain JSON."
+      "implementationNote": "An optional universal ESM codec powers browser and Node parsing/formatting. Browser imports enforce the shared authoring checks and new draft downloads select JSON/YAML/Markdown, with stale-job invalidation, private-note exclusion and matching agent filenames. The CLI wizard has the same explicit output-format choice. Saved tab drafts retain only the format enum alongside their existing public configuration and questionnaire."
     },
     {
       "id": "REQ-PRODUCT-DOCUMENTS",
@@ -10936,12 +10945,14 @@
         "REQ-PRODUCT-CONFIG-SOURCES"
       ],
       "status": "automated",
-      "expected": "Equivalent inputs preserve public output and release identity; notes never render; invalid YAML and unsafe file inputs fail clearly; all config-consuming CLI paths use the loader, and packed/browser boundaries hold.",
+      "expected": "Equivalent inputs preserve public output and release identity; notes never render; invalid YAML and unsafe file inputs fail clearly; all config-consuming CLI paths use the loader, and packed/browser boundaries hold. Browser import/export and CLI output choices preserve data, exclude private source notes and keep agent filenames consistent; stale work cannot revive output.",
       "testRefs": [
         "packages/notabenda/test/config-sources.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/configuration-sources.md",
-        "packages/notabenda/test/config-authoring.test.mjs"
+        "packages/notabenda/test/config-authoring.test.mjs",
+        "packages/notabenda/test/config-browser.test.mjs",
+        "site/test/config-browser.test.mjs"
       ]
     }
   ],

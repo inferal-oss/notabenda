@@ -12,9 +12,26 @@ notabenda build --config notabenda.config.yaml --preview --out-dir legal-preview
 
 Packages are an unpublished developer preview. Use the CLI from a trusted workspace build or locally installed tarball; these commands do not publish or deploy anything.
 
-`init` creates a draft and refuses to overwrite a file. Choose `.json`, `.yaml`, `.yml` or `.md`. The default without `--config` remains `notabenda.config.json`; another format requires its explicit path. The wizard can import any of these formats, and writes its resulting draft as JSON in a new directory. It never rewrites your source, comments or notes.
+`init` creates a draft and refuses to overwrite a file. Choose `.json`, `.yaml`, `.yml` or `.md`. The default without `--config` remains `notabenda.config.json`; another format requires its explicit path. The wizard can import any of these formats, and writes JSON by default. Pass `--config-format yaml` or `--config-format markdown` to select another draft format in the new output directory. It never rewrites your source, comments or notes.
 
 The repository includes complete [YAML](../examples/configuration/notabenda.config.yaml) and [configuration-document](../examples/configuration/notabenda.config.md) examples of the same draft inventory.
+
+## Use guided setup
+
+In [Start](/start/), open the existing-inventory section to import a `.json`, `.yaml`, `.yml` or `.md` configuration. The browser reads it locally and checks the same installed fields and review rules as the CLI. Markdown body notes and private configuration fields are excluded from the generated draft.
+
+After preparing the draft, choose **Configuration format** beside **Save your configuration**, then download it. JSON remains the default; a successful import selects that source's format. YAML supports comments; Markdown puts the full configuration in frontmatter above a new notes section. Exports are new files, preserving the original file, comments and notes. The private setup report stays JSON. Choose the format before copying the agent instructions so their filename and commands match your download.
+
+Where tab draft saving is enabled, the format choice is saved with the draft and expires under the same 24-hour rule. Imported source body notes are not added to session storage. Format changes preserve the prepared configuration and its legal release inputs. If a format cannot be prepared, retry it or choose JSON; changing facts invalidates the previous downloads.
+
+The CLI supports the same output choice:
+
+```sh
+notabenda wizard --answers answers.json --config-format yaml --out-dir setup-yaml
+notabenda wizard --answers answers.json --config-format markdown --out-dir setup-markdown
+```
+
+For a custom browser tool, `@notabenda/core/config/document` exposes `configSourceFormat`, `parseConfigSource`, `formatConfigSource` and `validateAuthoredConfig`. It reads no filesystem. The Node `config/node` entry retains its file-reading helpers and re-exports the same codec. The website loads the codec only for a file import or non-JSON export; the YAML parser loads when the selected format needs it. Ordinary visitor consent entry points exclude both.
 
 ## YAML configuration
 
@@ -85,12 +102,11 @@ Shape diagnostics use JSON Pointer paths, such as `/services/0/resourceOrigin`. 
 For an object already loaded by your own build, use the optional validator:
 
 ```js
+import { SiteConfigError } from '@notabenda/core';
 import { validateAuthoredConfig } from '@notabenda/core/config/validate';
 
 const result = validateAuthoredConfig(config, { mode: 'preview' });
-if (!result.valid) {
-  // Show result.diagnostics to the operator and stop this build.
-}
+if (!result.valid) throw new SiteConfigError(result.diagnostics);
 ```
 
 The validator applies production review rules by default and does not mutate input, add defaults, coerce types or activate controls. `inspectConfigAuthoringShape` checks only the field schema. `parseConfigSource` and `readConfigSource` return parsed data for inspection; they do not validate it. The existing `validateSiteConfig` and public projection APIs retain their semantic checks for programmatic host objects; use the authoring validator when exact field names must be enforced.
@@ -99,4 +115,4 @@ The validator applies production review rules by default and does not mutate inp
 
 Configuration files must be ordinary UTF-8 files, at most 512 KiB. Symlinks and special files are refused. YAML accepts one root mapping with string keys and JSON-compatible finite values. Duplicate keys, merge keys, tags, anchors, aliases and directives are rejected. Errors identify syntax locations when available without printing source excerpts.
 
-The parser uses the documented [yaml package API](https://eemeli.org/yaml/), bundled into the Node-only configuration reader at package build time. It adds no installed runtime dependencies and stays out of the browser entry graphs. Configuration does not execute JavaScript or MDX and does not resolve imports, includes, environment variables or remote files. Existing review requirements, reference checks and preview/production rules still apply.
+The parser uses the documented [yaml package API](https://eemeli.org/yaml/), bundled as a universal ESM module at package build time. It adds no installed runtime dependencies and stays out of the browser entry graphs. Configuration does not execute JavaScript or MDX and does not resolve imports, includes, environment variables or remote files. Existing review requirements, reference checks and preview/production rules still apply.
