@@ -78,7 +78,7 @@ The same loader is used by `check`, `build`, `assess`, `wizard --config`, captur
 
 ## Check field names before building
 
-`check` and `build` validate the installed authoring schema before checking references and review declarations. A typo such as `conset` is rejected as an unknown field; it is never guessed to mean `consent`. A failed build writes no output. `readSiteConfig`, CLI wizard imports, capture discovery and catalog re-review use the same strict checks. Assessment continues to return its structured report for an invalid configuration.
+`check` and `build` validate the installed authoring schema before checking references and review declarations. A typo such as `conset` is rejected as an unknown field; it is never guessed to mean `consent`. An invalid configuration is rejected before build output is written. `readSiteConfig`, CLI wizard imports, capture discovery and catalog re-review use the same strict checks. Assessment continues to return its structured report for an invalid configuration.
 
 Shape diagnostics use JSON Pointer paths, such as `/services/0/resourceOrigin`. Fix the named field using `notabenda schema services --json`. Shape diagnostic messages omit rejected values. Paths can still identify inventory entries, so keep reports private. Only the first 100 shape errors are shown, with a notice if more remain.
 
