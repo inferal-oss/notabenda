@@ -30,6 +30,8 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 
 ## Documents and controls
 
+- [Privacy-choice links](https://notabenda.org/guide/privacy-choice-links/index.md): Explicit return navigation, California title/icon presentation and separate host destination checks.
+
 - [Markdown and MDX](https://notabenda.org/guide/authoring/index.md): YAML frontmatter, trusted components and private source archives.
 - [Cookie choices](https://notabenda.org/guide/consent/index.md): Connect optional service lifecycles to effective permission.
 - [Terms agreements](https://notabenda.org/guide/terms/index.md): Bind an unchecked action to the exact document revision.

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
@@ -55,6 +56,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     }
     assert.ok(manifest.files.some(f => f.path === 'LICENSE'));
     assert.ok(manifest.files.some(f => f.path === 'README.md'));
+    for(const file of ['dist/privacy-choices-link.js','dist/privacy-choices-link.d.ts','assets/privacy-choices/NOTICE.md','assets/privacy-choices/manifest.json','assets/privacy-choices/privacyoptions.svg'])assert.ok(manifest.files.some(f=>f.path===file),file);
     assert.ok(manifest.files.some(f => f.path === 'dist/styles.css'));
     assert.ok(manifest.files.some(f=>f.path==='dist/consent.css'));
     assert.ok(manifest.files.some(f=>f.path==='dist/headless.js'));
@@ -383,6 +385,12 @@ const termsSettingsKind:'terms-agreement-settings'=termsSettingsProjection.kind;
 createAdminWorker({authorize:()=>({store:createDocumentHistory(storage),allowTermsSettings:true})});
 // @ts-expect-error host permission is boolean, not a browser string
 createAdminWorker({authorize:()=>({store:createDocumentHistory(storage),allowTermsSettings:'true'})});
+`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {renderPrivacyChoicesLink,normalizePrivacyChoicesLink,type PrivacyChoicesLink} from '@notabenda/core/privacy-choices';
+const choiceLink:PrivacyChoicesLink=normalizePrivacyChoicesLink({schemaVersion:1,revision:'choices-1',href:'/choices/',label:'Privacy choices',presentation:'text',reviewStatus:'reviewed'});
+renderPrivacyChoicesLink(choiceLink);
+config.privacy.choicesLink=choiceLink;
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
+import {renderPrivacyChoicesLink} from './privacy-choices-link.js';
 import {localizedSections} from './localized-documents.js';
 // @requirements REQ-EU-INTERESTS-DISCLOSURE
 import {purposeLegalBasis} from './purpose-disclosures.js';
@@ -94,10 +96,10 @@ export function renderLegalDocument(input: unknown, kind: DocumentKind, options:
 }
 
 /** Optional footer fragment; never includes consent or acceptance checkboxes. */
-export function renderLegalLinks(input: unknown): string {
-  const config = toPublicConfig(input);
+export function renderLegalLinks(input: unknown, options: ValidationOptions = {}): string {
+  const config = toPublicConfig(input, options);
   const l=config.localization,m=l?.documents;
-  return `<nav class="nb-legal-links"${l?` lang="${escapeHtml(l.locale)}" dir="${l.direction}"`:''} aria-label="${escapeHtml(m?.legalLabel??'Legal')}">${documentKinds.map(kind => link(config.documents[kind].title, config.documents[kind].route)).join('')}${config.rightsCenter?link(m?.privacyRequests??'Privacy requests',config.rightsCenter.route):''}</nav>`;
+  return `<nav class="nb-legal-links"${l?` lang="${escapeHtml(l.locale)}" dir="${l.direction}"`:''} aria-label="${escapeHtml(m?.legalLabel??'Legal')}">${documentKinds.map(kind => link(config.documents[kind].title, config.documents[kind].route)).join('')}${config.rightsCenter?link(m?.privacyRequests??'Privacy requests',config.rightsCenter.route):''}${config.privacy.choicesLink?renderPrivacyChoicesLink(config.privacy.choicesLink,{allowPreview:options.mode==='preview'}):''}</nav>`;
 }
 
 /** A no-JS full page, or use renderLegalDocument inside a host framework layout. */
@@ -106,5 +108,5 @@ export function renderLegalPage(input: unknown, kind: DocumentKind, options: Val
   const stylesheet = options.stylesheetUrl;
   const l=config.localization,m=l?.documents;
   if (stylesheet !== undefined && !isSafeLink(stylesheet)) throw new Error('Unsafe stylesheet URL.');
-  return `<!doctype html><html lang="${escapeHtml(config.site.locale)}"${l?` dir="${l.direction}"`:''}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(config.documents[kind].title)} · ${escapeHtml(config.site.name)}</title>${stylesheet ? `<link rel="stylesheet" href="${escapeHtml(stylesheet)}">` : ''}</head><body class="nb-page"><a class="nb-skip-link" href="#main">${escapeHtml(m?.skipToContent??'Skip to content')}</a><header class="nb-site-header">${link(config.site.name, config.site.url)}<span>${escapeHtml(m?.legalInformation??'Legal information')}</span></header><main id="main">${renderLegalDocument(config, kind, options)}</main><footer class="nb-site-footer">${renderLegalLinks(config)}<p>© ${escapeHtml(config.site.name)}</p></footer></body></html>`;
+  return `<!doctype html><html lang="${escapeHtml(config.site.locale)}"${l?` dir="${l.direction}"`:''}><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${escapeHtml(config.documents[kind].title)} · ${escapeHtml(config.site.name)}</title>${stylesheet ? `<link rel="stylesheet" href="${escapeHtml(stylesheet)}">` : ''}</head><body class="nb-page"><a class="nb-skip-link" href="#main">${escapeHtml(m?.skipToContent??'Skip to content')}</a><header class="nb-site-header">${link(config.site.name, config.site.url)}<span>${escapeHtml(m?.legalInformation??'Legal information')}</span></header><main id="main">${renderLegalDocument(config, kind, options)}</main><footer class="nb-site-footer">${renderLegalLinks(config,options)}<p>© ${escapeHtml(config.site.name)}</p></footer></body></html>`;
 }

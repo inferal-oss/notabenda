@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK REQ-US-CA-ALTERNATIVE-LINK
+import {normalizePrivacyChoicesLink} from './privacy-choices-policy.js';
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 import {normalizeConsentInformation} from './consent-information.js';
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
@@ -192,6 +194,7 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
   strings(privacy.rights, 'privacy.rights', true);
   for (const key of ['transfers', 'automatedDecisions']) required(privacy, key, 'privacy', ['REQ-EU-NOTICE']);
   if (privacy.rightsUrl !== undefined) link(privacy.rightsUrl, 'privacy.rightsUrl');
+  if(privacy.choicesLink!==undefined){try{normalizePrivacyChoicesLink(privacy.choicesLink,{allowPreview:options.mode!=='production'});}catch{error('privacy.choicesLink','Supply explicit, bounded public privacy-choice navigation; review the destination and the selected presentation.','invalid-privacy-choices-link',['REQ-PRODUCT-PRIVACY-CHOICE-LINK','REQ-US-CA-ALTERNATIVE-LINK']);}}
   const complaints = objectAt(privacy.complaints, 'privacy.complaints');
   required(complaints, 'description', 'privacy.complaints', ['REQ-EU-NOTICE']);
   if (complaints.url !== undefined) link(complaints.url, 'privacy.complaints.url');
@@ -288,7 +291,7 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
     services: config.services.map(s => ({ ...(s.googleBasic===undefined?{}:{googleBasic:normalizeGoogleBasic(s.googleBasic,s.purposeIds)}),id: s.id, name: s.name, provider: s.provider, purposeIds: [...s.purposeIds], location: s.location, ...(s.privacyUrl === undefined ? {} : { privacyUrl: s.privacyUrl }), ...(s.resourceOrigins===undefined?{}:{resourceOrigins:[...s.resourceOrigins]}), ...(s.processingActivities===undefined?{}:{processingActivities:[...s.processingActivities]}) })),
     ...(config.storageExceptions===undefined?{}:{storageExceptions:normalizeStorageExceptionPolicy(config.storageExceptions,config,{allowPreview:options.mode!=='production'})}),
     storage: config.storage.map(s => ({ id: s.id, name: s.name, type: s.type, serviceId: s.serviceId, duration: s.duration, classification: s.classification, ...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}), ...(s.necessityReason === undefined ? {} : { necessityReason: s.necessityReason }) })),
-    privacy: { rights: [...config.privacy.rights], transfers: config.privacy.transfers, automatedDecisions: config.privacy.automatedDecisions,
+    privacy: { ...(config.privacy.choicesLink===undefined?{}:{choicesLink:normalizePrivacyChoicesLink(config.privacy.choicesLink,{allowPreview:options.mode!=='production'})}),rights: [...config.privacy.rights], transfers: config.privacy.transfers, automatedDecisions: config.privacy.automatedDecisions,
       complaints: { description: config.privacy.complaints.description, ...(config.privacy.complaints.url === undefined ? {} : { url: config.privacy.complaints.url }) },
       ...(config.privacy.rightsUrl===undefined&&config.rightsCenter===undefined?{}:{rightsUrl:config.rightsCenter?.route??config.privacy.rightsUrl!}),
       ...(config.privacy.requiredContacts === undefined ? {} : { requiredContacts: [...config.privacy.requiredContacts] }) },

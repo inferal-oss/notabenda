@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
+export {renderPrivacyChoicesLink,normalizePrivacyChoicesLink} from './privacy-choices-link.js';
+export type {PrivacyChoicesLink} from './privacy-choices-link.js';
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 export type {IndirectCollectionMessages,IndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION

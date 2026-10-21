@@ -294,3 +294,8 @@ The history workspace separately exposes retained `terms.agreements` and selecte
 
 <!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->
 Contract interface copy is optional and versioned independently of profile mechanics. A complete selected dictionary is archived and checked before new capture; old receipt bytes and uncertain request identities remain intact. The package supplies no automatic translation or legal-profile selection.
+
+### Public privacy-choice navigation
+
+<!-- @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK REQ-US-CA-ALTERNATIVE-LINK -->
+An optional versioned `privacy.choicesLink` declaration supplies a public destination, plain label, presentation and explicit review status. It is not inferred from regional facts or a rights-page route. Core, React and Astro legal navigation include it; standalone rendering needs no JavaScript or storage. California alternative presentation supplies the selected title/icon only. The host must provide and verify the actual destination for both sale/sharing opt-out and sensitive-information limits, inspect homepage placement and keep applicable signal handling. This does not establish a supported California pack or turn the processing-only example into a complete California request surface.

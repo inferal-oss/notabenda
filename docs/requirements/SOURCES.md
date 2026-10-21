@@ -460,11 +460,11 @@ Resource source and image alternative/error behavior. Visibility or lazy loading
 
 ## SRC-US-CA-REGS-2026
 
-[California CCPA regulations effective 1 January 2026](https://www.cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf)
+[California CCPA regulations effective 1 January 2026](https://cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf)
 
-**Type:** law. **Checked:** 2026-10-18. **Access:** read.
+**Type:** law. **Checked:** 2026-10-20. **Access:** read.
 
-Read section 7025(b)–(c), pp. 44–48: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows.
+Read section 7025(b)–(c), pp. 44–48: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows. Rechecked section 7015(a)–(c), p. 32: two title choices, adjacent icon, homepage header/footer prominence, peer sizing, permitted visibility color adjustment and destination for both rights. Section 7025(e), p. 48: posting links does not replace applicable signal handling. This agency-linked file contains regulations despite its statute filename.
 
 <a id="src-w3c-gpc"></a>
 
@@ -1375,3 +1375,23 @@ Import specifications, aliases, blank/dot imports and string literals. The scann
 **Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
 
 The Go module-file implementation distinguishes the indirect marker and its semicolon-plus-explanation form from other comments. Used to classify source declarations, not to resolve dependency graphs.
+
+<a id="src-us-ca-doj-icon"></a>
+
+## SRC-US-CA-DOJ-ICON
+
+[California DOJ CCPA opt-out icon download](https://www.oag.ca.gov/privacy/ccpa/icons-download)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-20. **Access:** read.
+
+Department identifies the icon as developed by the Attorney General. Official ZIP contains the retained original SVG. The page cites older regulations; current link requirements use the 2026 regulations.
+
+<a id="src-us-ca-doj-conditions"></a>
+
+## SRC-US-CA-DOJ-CONDITIONS
+
+[California DOJ Conditions of Use](https://www.oag.ca.gov/conditions)
+
+**Type:** official-terms. **Checked:** 2026-10-20. **Access:** read.
+
+Ownership section treats Department-created content as public domain, with separate caution for third-party materials. Read together with the icon page attribution; no agency endorsement.

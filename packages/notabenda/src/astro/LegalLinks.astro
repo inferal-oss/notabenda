@@ -1,8 +1,9 @@
 ---
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 // @requirements REQ-PRODUCT-ASTRO
 import {renderLegalLinks} from '../documents.js';
-export interface Props {config:unknown;class?:string}
-const {config,class:className}=Astro.props;
-const html=renderLegalLinks(config);
+export interface Props {config:unknown;class?:string;mode?:'production'|'preview'}
+const {config,class:className,mode}=Astro.props;
+const html=renderLegalLinks(config,mode===undefined?{}:{mode});
 ---
 <div class={className} set:html={html} />

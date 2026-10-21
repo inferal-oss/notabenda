@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
+import type {PrivacyChoicesLink} from './privacy-choices-policy.js';
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 import type {SiteLocalization} from './document-localization.js';
 import type {TermsAgreementSetting} from './terms-settings.js';
@@ -132,6 +134,8 @@ export interface SiteConfig {
   privacy: {
     rights: string[];
     rightsUrl?: string;
+    /** Explicit public navigation; a California presentation does not supply destination mechanisms. */
+    choicesLink?:PrivacyChoicesLink;
     complaints: { description: string; url?: string };
     transfers: string;
     automatedDecisions: string;

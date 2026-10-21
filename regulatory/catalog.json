@@ -624,7 +624,8 @@
         "Sale/sharing/targeted-advertising controls, applicable GPC handling, and signal-status messaging.",
         "Notice-at-collection entry points and relevant sensitive-data restrictions.",
         "Server-readable restrictions and adapters to stop corresponding downstream processing.",
-        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions."
+        "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
+        "Explicit script-free privacy-choice return link, optional California title/icon presentation, source provenance and separate host destination/placement checklist."
       ],
       "implementationRefs": [
         "packages/notabenda/src/privacy-signals.ts",
@@ -649,7 +650,20 @@
         "site/worker.mjs",
         "site/navigation.mjs",
         "examples/static/choices-build.mjs",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/privacy-choices-policy.ts",
+        "packages/notabenda/src/privacy-choices-link.ts",
+        "packages/notabenda/src/privacy-choices-icon.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/documents.ts",
+        "packages/notabenda/src/rights.ts",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/LegalLinks.astro",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda/scripts/consent-styles.mjs",
+        "examples/processing-choices/build.mjs",
+        "site/privacy-choice-preview.mjs"
       ]
     },
     {
@@ -1615,11 +1629,11 @@
     {
       "id": "SRC-US-CA-REGS-2026",
       "title": "California CCPA regulations effective 1 January 2026",
-      "url": "https://www.cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf",
+      "url": "https://cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf",
       "kind": "law",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-20",
       "access": "read",
-      "note": "Read section 7025(b)\u2013(c), pp. 44\u201348: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows."
+      "note": "Read section 7025(b)\u2013(c), pp. 44\u201348: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows. Rechecked section 7015(a)\u2013(c), p. 32: two title choices, adjacent icon, homepage header/footer prominence, peer sizing, permitted visibility color adjustment and destination for both rights. Section 7025(e), p. 48: posting links does not replace applicable signal handling. This agency-linked file contains regulations despite its statute filename."
     },
     {
       "id": "SRC-W3C-GPC",
@@ -2439,6 +2453,24 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "The Go module-file implementation distinguishes the indirect marker and its semicolon-plus-explanation form from other comments. Used to classify source declarations, not to resolve dependency graphs."
+    },
+    {
+      "id": "SRC-US-CA-DOJ-ICON",
+      "title": "California DOJ CCPA opt-out icon download",
+      "url": "https://www.oag.ca.gov/privacy/ccpa/icons-download",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Department identifies the icon as developed by the Attorney General. Official ZIP contains the retained original SVG. The page cites older regulations; current link requirements use the 2026 regulations."
+    },
+    {
+      "id": "SRC-US-CA-DOJ-CONDITIONS",
+      "title": "California DOJ Conditions of Use",
+      "url": "https://www.oag.ca.gov/conditions",
+      "kind": "official-terms",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Ownership section treats Department-created content as public domain, with separate caution for third-party materials. Read together with the icon page attribution; no agency endorsement."
     }
   ],
   "jurisdictions": [
@@ -2582,7 +2614,8 @@
       "requirementIds": [
         "REQ-US-CA-CHOICES",
         "REQ-US-CA-GPC",
-        "REQ-US-CA-UI"
+        "REQ-US-CA-UI",
+        "REQ-US-CA-ALTERNATIVE-LINK"
       ]
     },
     {
@@ -2718,7 +2751,8 @@
         "REQ-PRODUCT-EMBED-LOCALIZATION",
         "REQ-PRODUCT-TERMS-AUTHORING",
         "REQ-PRODUCT-TERMS-HISTORY",
-        "REQ-PRODUCT-CONTRACT-LOCALIZATION"
+        "REQ-PRODUCT-CONTRACT-LOCALIZATION",
+        "REQ-PRODUCT-PRIVACY-CHOICE-LINK"
       ]
     }
   ],
@@ -8727,6 +8761,106 @@
         "docs/verification/contract-localization.md"
       ],
       "implementationNote": "Complete bounded 29-field localization.contractActions selection, v2 definition/archive binding, exact explicit substantive wording, shared native/receipt labels and lang/dir, with legacy retries and immutable acknowledgements preserved."
+    },
+    {
+      "id": "REQ-US-CA-ALTERNATIVE-LINK",
+      "jurisdiction": "US-CA",
+      "title": "California alternative opt-out link and its destination",
+      "kind": "law",
+      "summary": "When choosing the alternative link, use the specified title and adjacent opt-out icon conspicuously in the homepage header/footer; its destination explains and enables both sale/sharing opt-out and sensitive-information limits.",
+      "appliesWhen": "An in-scope business chooses the alternative opt-out link under section 7015 after assessing applicable obligations and exceptions.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-US-CA-REGS-2026",
+          "locator": "Section 7015(a)\u2013(c), p. 32; section 7025(e), p. 48; referenced section 7004 method protections"
+        },
+        {
+          "sourceId": "SRC-US-CA-DOJ-ICON",
+          "locator": "Department-created recognizable opt-out icon; official download"
+        },
+        {
+          "sourceId": "SRC-US-CA-DOJ-CONDITIONS",
+          "locator": "Ownership: Department-created content versus third-party materials"
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-IUB-US"
+      ],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-DOCUMENTS",
+        "FEAT-RIGHTS"
+      ],
+      "verificationIds": [
+        "VERIFY-US-CA-ALTERNATIVE-LINK"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": "2026-01-01",
+      "timingNote": "Selected source is the consolidated regulations effective 1 January 2026; this is not a claim that the original link obligation commenced on that date.",
+      "caveats": "Renderer supplies selected title/icon only. Host placement, visibility/size, actual destination with both rights, method safeguards, applicability, sensitive-information workflow and downstream handling remain unverified. Posting a link does not replace applicable preference-signal handling.",
+      "implementationRefs": [
+        "packages/notabenda/src/privacy-choices-policy.ts",
+        "packages/notabenda/src/privacy-choices-link.ts",
+        "packages/notabenda/src/privacy-choices-icon.ts",
+        "site/privacy-choice-preview.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-choices-link.test.mjs",
+        "docs/verification/privacy-choice-links.md"
+      ],
+      "implementationNote": "Optional explicit versioned navigation and California presentation are supplied, with a retained original icon and script-free presentation preview. No automatic region selection or complete California workflow claim."
+    },
+    {
+      "id": "REQ-PRODUCT-PRIVACY-CHOICE-LINK",
+      "jurisdiction": "PRODUCT",
+      "title": "Explicit script-free privacy-choice return navigation",
+      "kind": "product-standard",
+      "summary": "Offer optional reviewed public choice links independently of cookie preferences and request-page navigation, with deterministic safe rendering and explicit preview.",
+      "appliesWhen": "The host configures privacy.choicesLink or renders the standalone component.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-DOCUMENTS",
+        "FEAT-RIGHTS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PRIVACY-CHOICE-LINK"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "No request intake, preference update, legal applicability decision or destination coverage is inferred. Public URLs must contain no secrets. Review of actual deployment remains host work.",
+      "implementationRefs": [
+        "packages/notabenda/src/privacy-choices-policy.ts",
+        "packages/notabenda/src/privacy-choices-link.ts",
+        "packages/notabenda/src/privacy-choices-icon.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/documents.ts",
+        "packages/notabenda/src/rights.ts",
+        "packages/notabenda/src/react-documents.ts",
+        "packages/notabenda/src/astro/LegalLinks.astro",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/scripts/consent-styles.mjs",
+        "examples/static/choices-build.mjs",
+        "examples/processing-choices/build.mjs",
+        "site/privacy-choice-preview.mjs",
+        "site/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-choices-link.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/privacy-choice-links.test.mjs",
+        "docs/verification/privacy-choice-links.md"
+      ],
+      "implementationNote": "Strict versioned declaration, safe URL/plain label, explicit draft boundary, optional official-icon presentation with English lang/dir, core/React/Astro navigation, release binding, independent request-page editing, source assets and installed-agent guidance."
     }
   ],
   "verification": [
@@ -10469,6 +10603,30 @@
         "site/test/contract-localization.test.mjs",
         "site/test/demo-upgrade.test.mjs",
         "docs/verification/contract-localization.md"
+      ]
+    },
+    {
+      "id": "VERIFY-US-CA-ALTERNATIVE-LINK",
+      "requirementIds": [
+        "REQ-US-CA-ALTERNATIVE-LINK"
+      ],
+      "status": "planned",
+      "expected": "On an actual in-scope homepage, inspect prominent header/footer placement, neighboring icon sizing, specified wording/icon, destination explanations and usable mechanisms for both rights, applicable request safeguards, continued signal handling and downstream effects.",
+      "testRefs": []
+    },
+    {
+      "id": "VERIFY-PRODUCT-PRIVACY-CHOICE-LINK",
+      "requirementIds": [
+        "REQ-PRODUCT-PRIVACY-CHOICE-LINK"
+      ],
+      "status": "automated",
+      "expected": "Reject unsafe/incomplete/unreviewed default navigation; explicit preview works across core/React/Astro. Retained icon paths and language semantics match the source, no scripts or state actions render, optional link updates change presentation without changing structured text/material cookie scope and separate request authoring preserves it.",
+      "testRefs": [
+        "packages/notabenda/test/privacy-choices-link.test.mjs",
+        "packages/notabenda/test/astro-package.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/privacy-choice-links.test.mjs",
+        "docs/verification/privacy-choice-links.md"
       ]
     }
   ],

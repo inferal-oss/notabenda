@@ -1,8 +1,9 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import postcss from 'postcss';
 // Derive the opt-in consent profile from the canonical stylesheet. Preserve its cascade,
 // declarations and media conditions; do not maintain a second copy of component styling.
-const related=/\.nb-(?:page|skip-link|legal-links|controls|consent-notice|choice-(?:actions|button|secondary)|text-button|preferences(?:-(?:trigger|header|body|footer))?|essential-note|purpose(?:-description)?|control-status)(?![\w-])/u;
+const related=/\.nb-(?:page|skip-link|legal-links|privacy-choices-link|controls|consent-notice|choice-(?:actions|button|secondary)|text-button|preferences(?:-(?:trigger|header|body|footer))?|essential-note|purpose(?:-description)?|control-status)(?![\w-])/u;
 const otherComponent=/\.nb-(?:terms|setup|discovery|collection|form-permission|rights|contract|processing-choices|embed|authored|release)(?![\w])/u;
 export function createConsentStyles(source){
  const root=postcss.parse(source);

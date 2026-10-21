@@ -381,3 +381,8 @@ The history workspace separately exposes retained `terms.agreements` and selecte
 
 <!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->
 Optional complete `localization.contractActions` now versions host-supplied form, retry and acknowledgement labels. V2 definitions pin the site language and dictionary; all four substantive wording fields stay explicit. Existing v1 profile bytes and historical retries remain unchanged. The German cancellation example uses its own retained release. Translation review, statutory wording/applicability and actual independent delivery remain host work.
+
+### Privacy-choice return navigation
+
+<!-- @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK REQ-US-CA-ALTERNATIVE-LINK -->
+Explicit `privacy.choicesLink` adds a script-free return route independently of cookie preferences and access/deletion request pages. The optional California alternative-link presentation uses the specified English title and retained official icon. Destination coverage, homepage prominence, peer sizing, applicability, downstream effects and browser signals remain separate host checks; the legal requirement stays partial. See [privacy-choice links](PRIVACY-CHOICE-LINKS.md).

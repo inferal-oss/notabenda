@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 import {renderRightsCenter} from './rights.js';
 import type {RightsCenterRenderOptions} from './rights.js';
 import {createElement} from 'react';
@@ -20,7 +21,7 @@ export function ServiceDirectory({config,className,...options}:ServiceDirectoryP
 }
 
 export interface LegalDocumentProps extends ValidationOptions {config:unknown;kind:DocumentKind;className?:string}
-export interface LegalLinksProps {config:unknown;className?:string}
+export interface LegalLinksProps extends ValidationOptions {config:unknown;className?:string}
 
 /** @requirements REQ-PRODUCT-REACT REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-SAFE-CONTENT
  * Server-safe structured document wrapper. Only the validated core renderer supplies markup.
@@ -29,8 +30,8 @@ export function LegalDocument({config,kind,mode='production',className}:LegalDoc
   return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderLegalDocument(config,kind,{mode})}});
 }
 /** Legal links are ordinary anchors; no consent or agreement action is implied. */
-export function LegalLinks({config,className}:LegalLinksProps):ReactElement {
-  return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderLegalLinks(config)}});
+export function LegalLinks({config,className,mode}:LegalLinksProps):ReactElement {
+  return createElement('div',{className,dangerouslySetInnerHTML:{__html:renderLegalLinks(config,mode===undefined?{}:{mode})}});
 }
 
 /** @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-PRODUCT-REACT */

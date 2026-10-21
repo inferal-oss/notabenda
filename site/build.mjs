@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
+import {expandPrivacyChoicePreview} from './privacy-choice-preview.mjs';
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 import {termsHistoryExample} from '../examples/agreements/history.mjs';
@@ -106,8 +108,8 @@ function routeFile(route) { return route.slice(1)+'/index.html'; }
 const rewrite=createDocumentationLinkResolver({docs,assets:[...Object.keys(files),...media],sources:[...catalogRefs].filter(path=>files[`source/${path}.txt`]!==undefined).map(path=>[path,`/source/${path}.txt`]).concat([['regulatory/catalog.json','/source/regulatory/catalog.json.txt']])});
 const guideEntries=[],searchPages=[];
 for(const [path,route] of docs) {
-  const sourceMarkdown = await read(path),markdown=expandPackDirectory(expandComplianceDiagrams(sourceMarkdown,{graphical:true}),{graphical:true});
-  files[markdownRoute(route).slice(1)]=rewriteMarkdown(expandPackDirectory(expandComplianceDiagrams(sourceMarkdown)),href=>{
+  const sourceMarkdown = await read(path),markdown=expandPackDirectory(expandComplianceDiagrams(expandPrivacyChoicePreview(sourceMarkdown,{graphical:true}),{graphical:true}),{graphical:true});
+  files[markdownRoute(route).slice(1)]=rewriteMarkdown(expandPackDirectory(expandComplianceDiagrams(expandPrivacyChoicePreview(sourceMarkdown))),href=>{
     const rewritten=rewrite(href,path),hash=rewritten.indexOf('#'),target=hash<0?rewritten:rewritten.slice(0,hash),fragment=hash<0?'':rewritten.slice(hash);
     return [...docs.values()].includes(target)?markdownRoute(target)+fragment:rewritten;
   });
@@ -128,6 +130,7 @@ for(const [path,route] of docs) {
   const end=html.indexOf('</h1>')+5;
   if(end>4)html=html.slice(0,end)+guideOrientation(route)+guideOutline(pageHeadings)+html.slice(end);
   files[routeFile(route)] = layout(title,html,{guide:true,guideRoute:route});
+  if(route==='/guide/privacy-choice-links')files[routeFile(route)]=files[routeFile(route)].replace('</head>','<link rel="stylesheet" href="/assets/notabenda.css"></head>');
   guideEntries.push({route,title});
 }
 for(const section of [...siteSections,sectionForGuide('/guide/requirements')])files[routeFile(guideSectionUrl(section).replace(/\/$/u,''))]=layout(section.title,guideArea(section,guideEntries),{guide:true,guideRoute:guideSectionUrl(section),description:section.description});

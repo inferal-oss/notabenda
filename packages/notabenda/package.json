@@ -22,7 +22,8 @@
     "dist",
     "README.md",
     "LICENSE",
-    "assets/guarantees"
+    "assets/guarantees",
+    "assets/privacy-choices"
   ],
   "exports": {
     ".": {
@@ -336,6 +337,11 @@
       "types": "./dist/setup-terms-ui.d.ts",
       "import": "./dist/setup-terms-ui.js",
       "default": "./dist/setup-terms-ui.js"
+    },
+    "./privacy-choices": {
+      "types": "./dist/privacy-choices-link.d.ts",
+      "import": "./dist/privacy-choices-link.js",
+      "default": "./dist/privacy-choices-link.js"
     }
   },
   "bin": {

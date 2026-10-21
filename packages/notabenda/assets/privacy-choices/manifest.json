@@ -1,0 +1,12 @@
+{
+  "source": "https://www.oag.ca.gov/sites/all/files/agweb/images/privacy/ccpa-icons.zip",
+  "sourcePage": "https://www.oag.ca.gov/privacy/ccpa/icons-download",
+  "conditions": "https://www.oag.ca.gov/conditions",
+  "retrievedOn": "2026-10-20",
+  "archiveSha256": "45d9bfbe93fda97fde2c3c5f07fdeab8ef0a6c615e478d181147d10d291d4124",
+  "file": "privacyoptions.svg",
+  "sha256": "86f2eb97cc1f3909c12e4512de9e267215d94ac5aaee9393d0f007f18c34e8ba",
+  "viewBox": "0 0 30 14",
+  "inlineTransformation": "Preserve all four path data/fill rules and fills; remove XML/style/IDs and identity-cancelling group translations. See source asset and tests.",
+  "notice": "Department-created opt-out icon; DOJ Conditions of Use treats department-created content as public domain. Not an endorsement."
+}

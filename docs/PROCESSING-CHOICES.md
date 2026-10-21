@@ -4,6 +4,8 @@ Cookie permission and permission to sell, share or use data for targeted adverti
 
 This mechanism implements `REQ-PRODUCT-PROCESSING-CHOICES`. It contributes to, and does not complete, `REQ-US-CA-CHOICES`. Reviewed applicability, alternative request methods, identity continuity, downstream handling, sensitive-information rights and retention remain operator work. A cookie banner alone does not supply the California sale/sharing opt-out method. See the [catalog entry](requirements/README.md#req-us-ca-choices) and its primary regulation source.
 
+For return navigation, use an explicit [privacy-choice link](PRIVACY-CHOICE-LINKS.md). A generic text link can lead to your processing page; the California alternative-link presentation has a broader destination requirement.
+
 ## Build a pinned notice
 
 Explicitly classify **every** configured service with `processingActivities`: any of `sale`, `sharing`, `targeted-advertising`, or `[]`. This records a technical classification supplied by the operator; the library does not determine the legal meaning of a vendor's activity.
