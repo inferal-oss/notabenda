@@ -44,6 +44,8 @@ Read-only assessment runs the installed authoring shape and both runtime validat
 
 ## Guided setup
 
+Prepared pack drafts expose configuration findings, unresolved selected practices and scope-review topics before preview/download actions. The counts overlap and establish no legal approval or installation state. Full review notes remain reachable, including conflicts and missing justifications. Navigation preserves the draft; edits invalidate the summary, handoff and exports.
+
 Optional `consent.information` supplies a public rights entry and collapsed browser-control guidance. Keep the selected text/destinations bound to config, runtime and immutable notice, reject archive mismatches, and expose the retained copy in authorized evidence inspection. ANPD-linked technical scenarios exercise the Portuguese two-purpose flow; actual rights handling, browser coverage, legal basis and content/translation review remain host decisions. No country or locale enables the fields. See [consent information](CONSENT.md#rights-links-and-browser-guidance).
 
 - Provide `npx @notabenda/core wizard` and a matching host-authorized admin setup UI. Ask about intended coverage, actual practices and justifications; distinguish confirmed facts, unknowns and review decisions.

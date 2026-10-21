@@ -2349,7 +2349,7 @@ Offer an optional reader for the prepared draft using the ordinary document rend
 
 ### REQ-PRODUCT-PACK-CONNECTION — Pack-specific connection guidance and a saved agent handoff
 
-Show the selected pack connection work and application checks from the installed integration reference, distinguish existing foundations and explicit regional policy proposals, and save the corresponding connection-stage brief beside scoped wizard output. Guidance must not mark work as installed or verified.
+Show the selected pack connection work and application checks from the installed integration reference, distinguish existing foundations and explicit regional policy proposals, and save the corresponding connection-stage brief beside scoped wizard output. Guidance must not mark work as installed or verified. Put current configuration findings, unanswered selected practices and explicit scope-review topics before draft preview/export, with direct review actions and access to all review notes. Counts establish no completion or approval.
 
 **Applies when:** A scoped pack setup draft is prepared in the browser or terminal wizard.
 
@@ -2359,13 +2359,13 @@ Show the selected pack connection work and application checks from the installed
 
 <a id="verify-product-pack-connection"></a>
 
-**VERIFY-PRODUCT-PACK-CONNECTION (automated):** Selected pack steps, dependency reuse, exact policy proposals, scoped handoff parity and invalidation without installation or verification claims.
+**VERIFY-PRODUCT-PACK-CONNECTION (automated):** Selected pack steps, dependency reuse, exact policy proposals, scoped handoff parity and invalidation without installation or verification claims. Prepared review precedes preview/export, counts current scoped findings independently, preserves full notes, focuses real destinations, preserves saved answers and refuses stale/detached actions. Zero counts and source reviews never imply approval or verified installation.
 
-**Implementation boundary:** Connection tasks and checks resolve the existing target registry. Regional proposals retain exact selected policy paths/required fields and stay disabled. UI and scoped CLI save the same connect-stage brief, referencing the actual config/report filenames; existing prepare-stage briefs remain available.
+**Implementation boundary:** Connection tasks and checks resolve the existing target registry. Regional proposals retain exact selected policy paths/required fields and stay disabled. UI and scoped CLI save the same connect-stage brief, referencing the actual config/report filenames; existing prepare-stage briefs remain available. The prepared browser summary uses the current report and selected target questions. Actions reveal actual findings/notes or focus an unresolved practice; edits remove stale actions without adding approval or verification state.
 
 **Limits/open review:** Advisory guidance only. Actual integration, reviewed wording, applicability and deployment verification remain host work. The brief contains no operator answers; those remain in the separate private report.
 
-**Code/test references:** [packages/notabenda/src/setup-connection-ui.ts](../../packages/notabenda/src/setup-connection-ui.ts), [packages/notabenda/src/setup-ui.ts](../../packages/notabenda/src/setup-ui.ts), [packages/notabenda/src/cartridges.ts](../../packages/notabenda/src/cartridges.ts), [packages/notabenda/src/setup-cli.ts](../../packages/notabenda/src/setup-cli.ts), [packages/notabenda/src/cartridges.css](../../packages/notabenda/src/cartridges.css), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/test/pack-connection.test.mjs](../../packages/notabenda/test/pack-connection.test.mjs), [site/test/accessibility.test.mjs](../../site/test/accessibility.test.mjs), [docs/verification/pack-connection.md](../../docs/verification/pack-connection.md)
+**Code/test references:** [packages/notabenda/src/setup-connection-ui.ts](../../packages/notabenda/src/setup-connection-ui.ts), [packages/notabenda/src/setup-ui.ts](../../packages/notabenda/src/setup-ui.ts), [packages/notabenda/src/cartridges.ts](../../packages/notabenda/src/cartridges.ts), [packages/notabenda/src/setup-cli.ts](../../packages/notabenda/src/setup-cli.ts), [packages/notabenda/src/cartridges.css](../../packages/notabenda/src/cartridges.css), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/src/setup-review-ui.ts](../../packages/notabenda/src/setup-review-ui.ts), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda/test/pack-connection.test.mjs](../../packages/notabenda/test/pack-connection.test.mjs), [site/test/accessibility.test.mjs](../../site/test/accessibility.test.mjs), [docs/verification/pack-connection.md](../../docs/verification/pack-connection.md), [packages/notabenda/test/setup-review.test.mjs](../../packages/notabenda/test/setup-review.test.mjs)
 
 <a id="req-product-consent-authoring"></a>
 

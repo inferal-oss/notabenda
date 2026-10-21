@@ -56,6 +56,10 @@ Review applicability and wording before applying a policy. These are preview mec
 
 ## Connect and check
 
+Prepared pack drafts begin with **Before connecting**. Configuration findings, selected practices still marked **Not sure**, and scope-review topics appear before preview and downloads. They are separate views of the draft, not a completion score. A zero count does not establish reviewed content, correct facts or a verified installation.
+
+**Review configuration** reveals the findings and moves focus to their heading. **Review selected facts** returns to the first unanswered practice without changing saved answers or the prepared plan. Each scope topic has a foldout with its explanation, requirement links and guide. **All review notes** reveals the full list, including conflicts and missing justifications that the summary counts may not capture. Editing invalidates the summary and exports; preparing again uses the updated draft. You can still save the files and work with an agent while findings remain.
+
 After preparing the draft, **Connect to your site** shows the selected pack's integration tasks and a direct guide link. Expand **Checks to run in your application** for its acceptance scenarios. **Existing foundations to check** keeps shared work separate: reuse an existing privacy-page or consent integration when it already does the job. Regional proposals show only the selected policy path, profile and required fields; they remain disabled until the host applies an appropriate reviewed change.
 
 **Review selected facts** returns to the questionnaire without losing the prepared draft. Editing an answer or changing packs invalidates the old guide and downloads, so the next draft reflects the new scope. Selection actions stay in reach while browsing the entire pack library.

@@ -35,7 +35,8 @@
         "Try a prepared cookie draft with real native controls and disposable simulated services before connecting providers.",
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
         "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
-        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation."
+        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
+        "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -148,7 +149,8 @@
         "packages/notabenda/src/types.ts",
         "packages/notabenda-cf/src/terms-settings.ts",
         "examples/agreements/example.mjs",
-        "packages/notabenda/src/privacy-signal-reviews.ts"
+        "packages/notabenda/src/privacy-signal-reviews.ts",
+        "packages/notabenda/src/setup-review-ui.ts"
       ]
     },
     {
@@ -7891,7 +7893,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Pack-specific connection guidance and a saved agent handoff",
       "kind": "product-standard",
-      "summary": "Show the selected pack connection work and application checks from the installed integration reference, distinguish existing foundations and explicit regional policy proposals, and save the corresponding connection-stage brief beside scoped wizard output. Guidance must not mark work as installed or verified.",
+      "summary": "Show the selected pack connection work and application checks from the installed integration reference, distinguish existing foundations and explicit regional policy proposals, and save the corresponding connection-stage brief beside scoped wizard output. Guidance must not mark work as installed or verified. Put current configuration findings, unanswered selected practices and explicit scope-review topics before draft preview/export, with direct review actions and access to all review notes. Counts establish no completion or approval.",
       "appliesWhen": "A scoped pack setup draft is prepared in the browser or terminal wizard.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -7913,14 +7915,17 @@
         "packages/notabenda/src/cartridges.ts",
         "packages/notabenda/src/setup-cli.ts",
         "packages/notabenda/src/cartridges.css",
-        "examples/setup/build.mjs"
+        "examples/setup/build.mjs",
+        "packages/notabenda/src/setup-review-ui.ts",
+        "packages/notabenda/src/styles.css"
       ],
       "testRefs": [
         "packages/notabenda/test/pack-connection.test.mjs",
         "site/test/accessibility.test.mjs",
-        "docs/verification/pack-connection.md"
+        "docs/verification/pack-connection.md",
+        "packages/notabenda/test/setup-review.test.mjs"
       ],
-      "implementationNote": "Connection tasks and checks resolve the existing target registry. Regional proposals retain exact selected policy paths/required fields and stay disabled. UI and scoped CLI save the same connect-stage brief, referencing the actual config/report filenames; existing prepare-stage briefs remain available."
+      "implementationNote": "Connection tasks and checks resolve the existing target registry. Regional proposals retain exact selected policy paths/required fields and stay disabled. UI and scoped CLI save the same connect-stage brief, referencing the actual config/report filenames; existing prepare-stage briefs remain available. The prepared browser summary uses the current report and selected target questions. Actions reveal actual findings/notes or focus an unresolved practice; edits remove stale actions without adding approval or verification state."
     },
     {
       "id": "REQ-PRODUCT-CONSENT-AUTHORING",
@@ -10757,11 +10762,12 @@
         "REQ-PRODUCT-PACK-CONNECTION"
       ],
       "status": "automated",
-      "expected": "Selected pack steps, dependency reuse, exact policy proposals, scoped handoff parity and invalidation without installation or verification claims.",
+      "expected": "Selected pack steps, dependency reuse, exact policy proposals, scoped handoff parity and invalidation without installation or verification claims. Prepared review precedes preview/export, counts current scoped findings independently, preserves full notes, focuses real destinations, preserves saved answers and refuses stale/detached actions. Zero counts and source reviews never imply approval or verified installation.",
       "testRefs": [
         "packages/notabenda/test/pack-connection.test.mjs",
         "site/test/accessibility.test.mjs",
-        "docs/verification/pack-connection.md"
+        "docs/verification/pack-connection.md",
+        "packages/notabenda/test/setup-review.test.mjs"
       ]
     },
     {

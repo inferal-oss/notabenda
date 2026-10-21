@@ -64,7 +64,7 @@ test('prepared handoff opens the connect instructions and edits invalidate the d
  try{
   const note=b.d.querySelector('[data-question="optional-storage"] textarea');note.value='PRIVATE justification never belongs in the brief';
   b.prepare();const report=b.ui.getPlan().report;assert.equal(report.answers.answers['optional-storage'].justification,note.value);
-  const revisit=[...b.d.querySelectorAll('button')].find(el=>el.textContent==='Review selected facts');revisit.click();assert.equal(b.d.querySelector('[data-question="optional-storage"]').closest('fieldset').hidden,false);assert.equal(b.d.activeElement.tagName,'LEGEND');assert.deepEqual(b.ui.getPlan().report,report);
+  const revisit=[...b.d.querySelectorAll('button')].find(el=>el.textContent==='Review selected facts');revisit.click();assert.equal(b.d.querySelector('[data-question="optional-storage"]').closest('fieldset').hidden,false);assert.equal(b.d.activeElement.type,'radio');assert.equal(b.d.activeElement.value,'unknown');assert.deepEqual(b.ui.getPlan().report,report);
   const handoff=b.d.querySelector('.nb-setup-agent-handoff button');handoff.click();const brief=b.d.querySelector('.nb-agent-text').value;assert.equal(b.d.querySelectorAll('a[download]').length,2);const download=b.d.querySelector('a[download]'),url=download.href;
   assert.equal(brief,formatPackBrief(selection,'connect',{config:b.ui.getPlan().config}));assert.match(brief,/notabenda\.config\.json and setup\.private\.json/);assert.match(brief,/check --config .* --preview --json/);assert.doesNotMatch(brief,/PRIVATE justification/);
   assert.ok(brief.includes(planPacks(selection).reference.targets.find(t=>t.id==='cookie-consent').verify[0]));
