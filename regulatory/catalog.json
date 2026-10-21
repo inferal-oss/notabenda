@@ -9381,7 +9381,8 @@
         "packages/notabenda/src/integration-reference.ts",
         "packages/notabenda/src/privacy-signals.ts",
         "packages/notabenda/src/privacy-signal-policy.ts",
-        "docs/PRIVACY-SIGNALS.md"
+        "docs/PRIVACY-SIGNALS.md",
+        "examples/setup/build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/privacy-signal-reviews.test.mjs"
@@ -9426,7 +9427,8 @@
         "packages/notabenda/src/integration-reference.ts",
         "packages/notabenda/src/privacy-signals.ts",
         "packages/notabenda/src/privacy-signal-policy.ts",
-        "docs/PRIVACY-SIGNALS.md"
+        "docs/PRIVACY-SIGNALS.md",
+        "examples/setup/build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/privacy-signal-reviews.test.mjs"
