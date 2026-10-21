@@ -58,12 +58,12 @@ test('generated host authorizes before assets or DO access and independently gat
   for(const authorize of [()=>null,()=>({inspect:'true'}),()=>{throw Error('PRIVATE');}])for(const path of ['/workspace/recording','/workspace/history','/workspace/setup','/assets/setup.mjs','/assets/setup-preview.mjs','/assets/setup-consent-rehearsal.mjs','/assets/cartridges.css','/other']){const response=await createHost(authorize)(request(path),env);assert.equal(response.status,403);assert.equal(await response.text(),'Access denied.');}
   assert.equal(lookups,0);assert.equal(assets,0);
   const overviewRead=createHost(()=>({inspect:true}));assert.equal((await overviewRead(request('/workspace?q=reader'),env)).status,200);assert.deepEqual(received,{allowSetup:false});assert.equal((await createHost(()=>({inspect:true,configure:true}))(request('/workspace'),env)).status,200);assert.deepEqual(received,{allowSetup:true});lookups=0;
-  const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
+  const read=createHost(()=>({inspect:true}));assert.equal((await read(request('/workspace/history',{headers:{'X-Notabenda-Export':'1','X-Site-Id':'other'}}),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false,allowTermsSettings:false});
   for(const path of ['/workspace/setup','/assets/setup.mjs','/assets/setup-preview.mjs','/assets/setup-consent-rehearsal.mjs','/assets/cartridges.css'])assert.equal((await read(request(path),env)).status,403);
   for(const path of ['/workspace/private','/workspace/other/history','/workspace/history/write','/workspace/recording/export'])assert.equal((await read(request(path),env)).status,404);
-  assert.equal((await read(request('/workspace/history',{method:'POST',body:'private'}),env)).status,405);assert.equal(assets,0);assert.equal(lookups,1);assert.equal((await read(request('/workspace/recording?format=json'),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false});
+  assert.equal((await read(request('/workspace/history',{method:'POST',body:'private'}),env)).status,405);assert.equal(assets,0);assert.equal(lookups,1);assert.equal((await read(request('/workspace/recording?format=json'),env)).status,200);assert.deepEqual(received,{allowExport:false,allowSource:false,allowCatalogReview:false,allowTermsSettings:false});
   const configure=createHost(()=>({inspect:true,configure:true,export:true,source:true,catalogReview:true}));const setup=await configure(request('/workspace/setup'),env);assert.equal(setup.status,200);assert.match(await setup.text(),/data-notabenda-setup/);assert.equal(setup.headers.get('Cache-Control'),'private, no-store');
-  assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);assert.equal((await configure(request('/assets/cartridges.css'),env)).status,200);assert.equal(assets,2);assert.equal((await configure(request('/assets/setup-preview.mjs'),env)).status,200);assert.equal(assets,3);assert.equal((await configure(request('/assets/setup-consent-rehearsal.mjs'),env)).status,200);assert.equal(assets,4);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true,allowCatalogReview:true});
+  assert.equal((await configure(request('/assets/setup.mjs'),env)).status,200);assert.equal(assets,1);assert.equal((await configure(request('/assets/cartridges.css'),env)).status,200);assert.equal(assets,2);assert.equal((await configure(request('/assets/setup-preview.mjs'),env)).status,200);assert.equal(assets,3);assert.equal((await configure(request('/assets/setup-consent-rehearsal.mjs'),env)).status,200);assert.equal(assets,4);await configure(request('/workspace/history'),env);assert.deepEqual(received,{allowExport:true,allowSource:true,allowCatalogReview:true,allowTermsSettings:false});
  }finally{await rm(cwd,{recursive:true,force:true});}
 });
 
@@ -104,5 +104,20 @@ test('generated workspace connects a fixed real reader with custom namespaces wi
   const overview=await workspace.inspect(request(''));assert.match(await overview.text(),/Inspect selections/);assert.equal(reads,0);
   const result=await(await workspace.inspect(request('recording?format=json'))).json();assert.equal(result.observations[0].selection.selected.id,offer.offerId);assert.equal(reads,1);assert.equal((await workspace.inspect(request('recording?scope=another'))).status,400);assert.equal(reads,1);assert.deepEqual([...await storage.list({prefix:'custom/',limit:100})],before);
   assert.equal((await getTermsRecordingSelection(storage,{siteId:config.site.id,scopeId:'signup'})).status,'unconfigured');
+ }finally{await rm(cwd,{recursive:true,force:true});}
+});
+
+
+// @requirements REQ-PRODUCT-TERMS-HISTORY
+test('generated host and workspace independently authorize retained terms settings',async()=>{
+ const cwd=await directory();try{
+  const config=await fixture(),target=await scaffold(cwd,config.site.id),{createWorkspace}=await import(pathToFileURL(join(target,'src/workspace.mjs'))),{createHost}=await import(pathToFileURL(join(target,'src/host.mjs'))),workspace=createWorkspace(createSyntheticStorage([]));
+  config.terms.agreements=[{scopeId:'account-terms',revision:'wording-1',statement:'I agree to the account terms.',actionLabel:'Create account',reviewStatus:'draft'}];const build=compileLegalDocuments(config,{mode:'preview'});await workspace.recordRelease(build.artifact);
+  const request=new Request('https://example.test/workspace/history/terms-settings?id='+build.manifest.artifactId);
+  for(const access of [{},{allowSource:true},{allowExport:true},{allowCatalogReview:true}])assert.equal((await workspace.inspect(request,access)).status,403);
+  const allowed=await workspace.inspect(request,{allowTermsSettings:true});assert.equal(allowed.status,200);assert.match(await allowed.text(),/wording-1/);
+  let received;const env={EVIDENCE:{getByName(){return {inspect:(r,grant)=>{received=grant;return workspace.inspect(r,grant);}};}}};
+  assert.equal((await createHost(()=>({inspect:true,source:true,export:true,catalogReview:true}))(request,env)).status,403);assert.equal(received.allowTermsSettings,false);
+  assert.equal((await createHost(()=>({inspect:true,termsSettings:true}))(request,env)).status,200);assert.equal(received.allowTermsSettings,true);assert.equal(received.allowSource,false);assert.equal(received.allowExport,false);
  }finally{await rm(cwd,{recursive:true,force:true});}
 });

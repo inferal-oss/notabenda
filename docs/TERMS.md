@@ -255,3 +255,34 @@ Framework ownership is shared: the same controller cannot own simultaneous React
 Try the [two-page Astro example](/agreement/astro/). Moving to its review page preserves the same draft; it makes no acceptance write.
 
 Linked requirement: [REQ-PRODUCT-TERMS-ADAPTERS](requirements/README.md#req-product-terms-adapters). See [adapter verification](verification/terms-adapters.md).
+
+## Review archived agreement wording
+
+In **Document revisions**, choose two releases and select **Agreement settings** under **Review area**. The comparison matches exact workflow scopes and shows additions, removals, statement changes, action labels, wording revisions and declared review status. Reordering the config array does not count as a declaration change. A renamed scope appears as a removal and an addition.
+
+The terms document and versioned interface dictionary are reviewed separately. An unchanged declaration can belong to a different offer when its document, language, interface or release changes. Historical built-in messages are not reconstructed for releases without a versioned dictionary. A release without `terms.agreements` says no configured declarations were retained; host-authored offers may still exist.
+
+Try the [seeded wording revisions](https://notabenda.org/demo/admin/history?q=Account+agreement+wording&kind=document-release): compare the two entries using **Agreement settings**. Their terms document stays unchanged while the account statement and action label change and a workspace workflow is added. This reads archived configuration; it neither accepts terms nor changes an active offer.
+
+The host must grant this view independently:
+
+```ts
+import {createAdminWorker, createDocumentHistory} from '@notabenda/cloudflare';
+
+const admin = createAdminWorker({
+  basePath: '/admin/history',
+  authorize: async request => {
+    const access = await authorizeInYourApplication(request);
+    return access ? {
+      store: createDocumentHistory(storage, {prefix: access.releasePrefix}),
+      allowTermsSettings: access.inspectAgreementSettings === true,
+    } : null;
+  },
+});
+```
+
+`authorizeInYourApplication`, `storage` and the scoped prefix are host-owned values. The generated Cloudflare starter accepts `termsSettings: true` from its host authorization hook and denies this view by default. Source, export and catalog-review permissions do not imply agreement-settings access.
+
+`createDocumentHistory().getTermsSettings(releaseId)` validates the retained archive and returns a bounded projection with declarations, selected interface messages and document references. It returns a `not-declared` projection for releases without settings; `undefined` means the release was not found. Ordinary history records and exports omit these fields. Custom stores can use `normalizeTermsSettingsRelease` and the exported `TermsSettingsRelease` type. Inspection is limited to 64 KiB and never executes archived HTML or MDX.
+
+Release detail uses `/terms-settings?id=RELEASE_ID`; comparison uses `/diff?before=RELEASE_ID&after=RELEASE_ID&kind=terms-settings`. Both are read-only, authorized on every request, and require the optional store hook. To inspect what is currently selected for recording, use [recording setup inspection](RECORDING-INSPECTION.md) separately. Neither view proves publication, presentation, a person's acceptance or legal validity.

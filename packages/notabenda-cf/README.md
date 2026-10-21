@@ -257,3 +257,11 @@ Search uses `?q=` and the same bounded word matching as the record stores. Refer
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
 
 Inspect current backend notice/offer selections with the optional [recording setup readers and worker](https://notabenda.org/guide/recording-inspection/). It reads fixed authorized scopes and retained releases, without inspecting visitor heads or changing activation.
+
+## Archived agreement settings
+
+History keeps agreement statements and button labels separate from document sections. Supply `allowTermsSettings: true` in the per-request admin grant to expose `/terms-settings?id=RELEASE_ID` and the existing comparison form's **Agreement settings** option. The generated host hook uses the separate `termsSettings: true` grant. Ordinary inspection, source, export and catalog permissions do not grant this view.
+
+`createDocumentHistory().getTermsSettings(id)` validates the archive before returning named declarations, selected versioned interface messages and terms-document references, within 64 KiB. Missing declarations return `declaration: 'not-declared'`; a missing release returns `undefined`. Generic records and exports remain unchanged. Custom adapters can use `TermsSettingsRelease` and `normalizeTermsSettingsRelease`.
+
+The comparison shows changed declarations, document facts and interface messages independently. It does not reconstruct unretained built-in copy, infer active offers or record acceptance. See [the terms guide](../../docs/TERMS.md#review-archived-agreement-wording).

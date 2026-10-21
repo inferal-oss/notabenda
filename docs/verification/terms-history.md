@@ -1,0 +1,10 @@
+<!-- @requirements REQ-PRODUCT-TERMS-HISTORY -->
+# Archived agreement settings verification
+
+The separate history reader validates full archive hashes, models and declared settings before projecting release/site/locale, the pinned terms document, named declarations and selected interface localization. Present declarations and versioned messages require a verified configuration hash; legacy releases without these fields remain inspectable. Offer verification applies the same binding check. The renderer normalizes that projection again for custom stores. Tests keep ordinary history reads and exports unchanged, reject corrupt archives, malformed data, wrong IDs, cross-site comparisons, duplicate scopes and unsafe references, and exercise the 16-entry size limit.
+
+Worker and generated-starter tests verify per-request authorization before archive reads, independent source/export/catalog grants, unavailable hooks, strict query keys and IDs, HEAD behavior, script-free private responses and sanitized errors. The existing comparison selector reaches the separately authorized view; detail and terms-document comparisons link to it only with permission.
+
+Comparison tests cover absent→configured→removed, additions, revision/review-only edits, unchanged declarations with changed documents, reordered arrays, localized messages and non-English releases without the required acceptance dictionary. Historical built-in copy is not manufactured. Escaping, a single main landmark, labels and responsive before/after columns support operator review. Native checks follow the seeded history search, choose Agreement settings and open the comparison through the actual local Worker. Desktop, 390 px and 320 px views show the changed statements first; mobile stacks the before/after values without horizontal overflow. Archive limitations and technical hashes stay in collapsed details.
+
+These checks do not decide materiality or legal review, reconstruct unretained interface messages, prove an active offer, verify publication/presentation, or establish that anyone accepted terms. The host owns authorization and storage selection; generic scope labels select no data.

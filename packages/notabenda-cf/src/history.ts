@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-TERMS-HISTORY
+import {termsSettingsFromArtifact,TERMS_SETTINGS_BYTES} from './terms-history.js';
 // @requirements REQ-PRODUCT-SERVICE-CATALOG
 import {normalizeCatalogReleaseReview,normalizeCatalogReviewDescriptor} from './catalog-release-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
@@ -145,7 +147,12 @@ export function createDocumentHistory(storage: DurableStorage, options: HistoryO
     },
   };
   const store=createDurableObjectStore(projectedStorage, { prefix, ...(options.scanLimit === undefined ? {} : { scanLimit: options.scanLimit }) });
-  return {...store,async getCatalogReview(releaseId){
+  return {...store,async getTermsSettings(releaseId){
+    if(!/^[a-f0-9]{64}$/u.test(releaseId))throw Error('Invalid agreement settings reference.');
+    const raw=await storage.get(prefix+releaseId);if(raw===undefined)return undefined;
+    const artifact=await validateStoredLegalRelease(raw);if(object(artifact.manifest).artifactId!==releaseId)throw Error('Invalid release identity.');
+    return normalizeRecord({id:releaseId,data:termsSettingsFromArtifact(artifact)},TERMS_SETTINGS_BYTES);
+  },async getCatalogReview(releaseId){
     if(!/^[a-f0-9]{64}$/u.test(releaseId))throw Error('Invalid catalog review reference.');
     const raw=await storage.get(prefix+releaseId);if(raw===undefined)return undefined;
     const release=object(normalizeRecord({id:releaseId,data:raw},MAX_ARCHIVE_BYTES).data),artifact=await validateStoredLegalRelease(release),manifest=object(artifact.manifest);

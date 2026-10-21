@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-TERMS-HISTORY
+import {renderTermsSettings} from './terms-history-render.js';
+import {TERMS_SETTINGS_BYTES} from './terms-history.js';
 // @requirements REQ-PRODUCT-ORDER-CONFIRMATION
 // @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
@@ -56,15 +59,15 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
       let grant: AuthorizationGrant | null;
       try {
         grant = await authorize(request, env, context);
-        if (!grant || !grant.store || typeof grant.store.list !== 'function' || typeof grant.store.get !== 'function' || (grant.scopeLabel !== undefined && !boundedText(grant.scopeLabel, 200)) || (grant.allowExport !== undefined && typeof grant.allowExport !== 'boolean') || (grant.allowCatalogReview!==undefined&&typeof grant.allowCatalogReview!=='boolean') || (grant.allowOrderArchive!==undefined&&typeof grant.allowOrderArchive!=='boolean') || (grant.allowOrderConfirmation!==undefined&&typeof grant.allowOrderConfirmation!=='boolean')) return response('Access denied.', 403);
+        if (!grant || !grant.store || typeof grant.store.list !== 'function' || typeof grant.store.get !== 'function' || (grant.scopeLabel !== undefined && !boundedText(grant.scopeLabel, 200)) || (grant.allowExport !== undefined && typeof grant.allowExport !== 'boolean') || (grant.allowTermsSettings!==undefined&&typeof grant.allowTermsSettings!=='boolean') || (grant.allowCatalogReview!==undefined&&typeof grant.allowCatalogReview!=='boolean') || (grant.allowOrderArchive!==undefined&&typeof grant.allowOrderArchive!=='boolean') || (grant.allowOrderConfirmation!==undefined&&typeof grant.allowOrderConfirmation!=='boolean')) return response('Access denied.', 403);
       } catch { return response('Access denied.', 403); }
       if (request.method !== 'GET' && request.method !== 'HEAD') { const h = headers(); h.set('allow', 'GET, HEAD'); return response('Method not allowed.', 405, h); }
       if (request.url.length > 4096) return response('Request is too long.', 414);
       let url: URL;
       try { url = new URL(request.url); } catch { return response('Invalid request.', 400); }
-      if (![basePath, `${basePath}/`, `${basePath}/record`, `${basePath}/diff`, `${basePath}/source`, `${basePath}/source-diff`, `${basePath}/catalog-review`, `${basePath}/catalog-review-diff`, `${basePath}/order-confirmation`, `${basePath}/order-confirmation-file`, `${basePath}/order-review`, `${basePath}/order-review.json`, `${basePath}/order-asset`, `${basePath}/order-image`, `${basePath}/export`, `${basePath}/export.json`].includes(url.pathname)) return response('Not found.', 404);
+      if (![basePath, `${basePath}/`, `${basePath}/record`, `${basePath}/diff`, `${basePath}/source`, `${basePath}/source-diff`, `${basePath}/terms-settings`, `${basePath}/catalog-review`, `${basePath}/catalog-review-diff`, `${basePath}/order-confirmation`, `${basePath}/order-confirmation-file`, `${basePath}/order-review`, `${basePath}/order-review.json`, `${basePath}/order-asset`, `${basePath}/order-image`, `${basePath}/export`, `${basePath}/export.json`].includes(url.pathname)) return response('Not found.', 404);
       const nonce = crypto.randomUUID().replaceAll('-', '');
-      const view = { ...presentation, basePath, title, scopeLabel: grant.scopeLabel ?? 'Host-authorized records', nonce, exportEnabled:grant.allowExport===true, sourceEnabled:typeof grant.store.getSource==='function',catalogReviewEnabled:grant.allowCatalogReview===true&&typeof grant.store.getCatalogReview==='function',orderConfirmationEnabled:grant.allowOrderConfirmation===true&&typeof grant.store.getOrderConfirmation==='function'&&typeof grant.store.getOrderConfirmationFile==='function',orderArchiveEnabled:grant.allowOrderArchive===true&&typeof grant.store.getOrderArchive==='function'&&typeof grant.store.getOrderAsset==='function' };
+      const view = { ...presentation, basePath, title, scopeLabel: grant.scopeLabel ?? 'Host-authorized records', nonce, exportEnabled:grant.allowExport===true, sourceEnabled:typeof grant.store.getSource==='function',termsSettingsEnabled:grant.allowTermsSettings===true&&typeof grant.store.getTermsSettings==='function',catalogReviewEnabled:grant.allowCatalogReview===true&&typeof grant.store.getCatalogReview==='function',orderConfirmationEnabled:grant.allowOrderConfirmation===true&&typeof grant.store.getOrderConfirmation==='function'&&typeof grant.store.getOrderConfirmationFile==='function',orderArchiveEnabled:grant.allowOrderArchive===true&&typeof grant.store.getOrderArchive==='function'&&typeof grant.store.getOrderAsset==='function' };
       if([`${basePath}/order-confirmation`,`${basePath}/order-confirmation-file`].includes(url.pathname)){
         if(grant.allowOrderConfirmation!==true)return response('Confirmation inspection is not authorized.',403);
         if(!grant.store.getOrderConfirmation||!grant.store.getOrderConfirmationFile)return response('Confirmation inspection is unavailable.',404);
@@ -96,6 +99,17 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
           if(url.pathname.endsWith('.json')){const h=headers();h.set('Content-Type','application/json; charset=utf-8');h.set('Content-Disposition','attachment; filename="notabenda-order-review.json"');return response(canonicalJson(archive.review as unknown as JsonValue),200,h);}
           const html=renderWorkspaceShell(orderArchiveBody(archive,record,basePath),view,`<style nonce="${nonce}">${orderReviewCss}</style>`);return response(html,200,headers(nonce,true));
         }catch{return response('The order archive could not be inspected.',500);}
+      }
+      if(url.pathname===`${basePath}/terms-settings`||url.pathname===`${basePath}/diff`&&url.searchParams.get('kind')==='terms-settings'){
+        if(grant.allowTermsSettings!==true)return response('Agreement settings inspection is not authorized.',403);
+        if(typeof grant.store.getTermsSettings!=='function')return response('Agreement settings inspection is unavailable.',404);
+        const compare=url.pathname.endsWith('/diff'),allowed=compare?['before','after','kind']:['id'],ids=(compare?['before','after']:['id']).map(k=>url.searchParams.get(k));
+        if(url.searchParams.size!==allowed.length||[...url.searchParams.keys()].some(k=>!allowed.includes(k))||ids.some(id=>!id||! /^[a-f0-9]{64}$/u.test(id)))return response('Invalid agreement settings reference.',400);
+        try{
+          const records=await Promise.all(ids.map(async id=>{const raw=await grant.store.getTermsSettings!(id!);if(raw===undefined)return undefined;const record=normalizeRecord(raw,TERMS_SETTINGS_BYTES);if(record.id!==id)throw Error('Invalid store response.');return record;}));
+          if(records.some(r=>r===undefined))return response('Retained release not found.',404);
+          return response(renderTermsSettings(records[0]!,compare?records[1]:undefined,view),200,headers(nonce));
+        }catch{return response('Agreement settings could not be inspected.',500);}
       }
       if(url.pathname===`${basePath}/catalog-review`||url.pathname===`${basePath}/catalog-review-diff`){
         if(grant.allowCatalogReview!==true)return response('Catalog review inspection is not authorized.',403);

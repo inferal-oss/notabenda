@@ -287,3 +287,7 @@ Project discovery includes Go requirements and imports through the existing loca
 ### Named terms agreement settings
 
 The Terms agreement pack includes optional `terms.agreements`, a local UI editor and wizard `--terms FILE` batches. Each named workflow carries its own wording revision, statement, action label and host review status. Authoring compares the public baseline, requires a new revision for edits and leaves content draft. Configured offers are generated from the final policy artifact and retained at immutable public paths; the backend checks their wording against that archive. Host-authored offers, explicit activation, operation/subject binding and historical retry handling remain separate. See [the terms guide](TERMS.md).
+
+### Review agreement settings with policy revisions
+
+The history workspace separately exposes retained `terms.agreements` and selected terms-interface copy under an explicit host grant. Operators compare named workflow changes independently of document sections and hashes. Missing declarations remain distinguishable from a missing release; absent historical dictionaries are not reconstructed. This reads no active selection or visitor state, and leaves ordinary record/export projections unchanged. See [agreement wording history](TERMS.md#review-archived-agreement-wording).

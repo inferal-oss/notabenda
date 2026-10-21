@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-HISTORY
 // @requirements REQ-PRODUCT-ORDER-CONFIRMATION
 // @requirements REQ-EU-ORDER-CONFIRMATION
 // @requirements REQ-PRODUCT-PAID-ORDER-ARCHIVES
@@ -31,6 +32,8 @@ export interface RecordStore {
   getSource?(releaseId:string,kind:'privacy'|'cookies'|'terms'):Promise<EvidenceRecord|undefined>;
   /** Separate private selected-reference view; never traversed by ordinary list/get/export. */
   getCatalogReview?(releaseId:string):Promise<EvidenceRecord|undefined>;
+  /** Separately authorized public agreement wording; ordinary list/get/export omit it. */
+  getTermsSettings?(releaseId:string):Promise<EvidenceRecord|undefined>;
   /** Private admission-bound archive. The same authorized record ID selects all original files. */
   getOrderArchive?(id:string):Promise<PaidOrderArchive|undefined>;
   /** Complete personally addressed confirmation; separate host permission, never included in generic exports. */
@@ -51,6 +54,8 @@ export interface AuthorizationGrant {
   allowExport?: boolean;
   /** Explicit per-request permission for retained selected-reference inspection/comparison. */
   allowCatalogReview?:boolean;
+  /** Per-request permission for retained terms statement/interface inspection and comparison. */
+  allowTermsSettings?:boolean;
   /** Explicit permission for complete paid-order review and original-file inspection. */
   allowOrderArchive?:boolean;
   /** Separate per-request access to customer confirmation files and recipient/destination metadata. */

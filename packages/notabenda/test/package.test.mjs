@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-HISTORY
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
@@ -95,7 +96,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     assert.equal(imported.status, 0, imported.stderr);
     const cli = spawnSync(process.execPath, [join(cwd, 'node_modules/@notabenda/core/dist/cli.js'), '--help'], { cwd, encoding: 'utf8' });
     assert.equal(cli.status, 0, cli.stderr);
-    await writeFile(join(cwd, 'consumer.ts'), "import {defineSite, type SiteConfig, renderLegalDocument, createTermsAcceptance, createEmbedService, type ConsentController} from '@notabenda/core';\nimport {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from '@notabenda/core/content';\nimport {createAdminWorker, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, createTermsAcceptanceStore, type HistoryStorage} from '@notabenda/cloudflare';\ndeclare const config: SiteConfig;\ndeclare const storage: HistoryStorage;\nconst release = compileLegalDocuments(defineSite(config));\nrenderLegalDocument(release.publicConfig, 'privacy');\nrecordLegalRelease(storage, release.artifact);\ncreateAdminWorker({authorize: () => null});\nconst offer = createTermsOffer(release.artifact, {scopeId:'signup',statement:'I agree to these sample terms.',actionLabel:'Record agreement'});\nconst scope = {siteId:config.site.id,scopeId:'signup'};\nregisterTermsOffer(storage,offer,scope);\nsetActiveTermsOffer(storage,offer.offerId,scope);\ncreateTermsAcceptance(offer,{operationId:'operation-one',submit:body=>recordTermsAcceptance(storage,body,{...scope,subjectId:'subject-one',operationId:'operation-one'})});\ncreateTermsAcceptanceStore(storage,scope);\ndeclare const consent: ConsentController;\nconst media = createEmbedService({consent,serviceId:'optional-media'});\ndeclare const container: HTMLElement;\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional',alt:'Alternative'});\n// @ts-expect-error image requires alternative text\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional'});\n// @ts-expect-error unknown document kind\nrenderLegalDocument(config, 'unknown');\n");
+    await writeFile(join(cwd, 'consumer.ts'), "import {defineSite, type SiteConfig, renderLegalDocument, createTermsAcceptance, createEmbedService, type ConsentController} from '@notabenda/core';\nimport {compileLegalDocuments, createTermsOffer, createRetainedReleaseFiles} from '@notabenda/core/content';\nimport {createAdminWorker, createDocumentHistory, recordLegalRelease, registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance, createTermsAcceptanceStore, type HistoryStorage} from '@notabenda/cloudflare';\ndeclare const config: SiteConfig;\ndeclare const storage: HistoryStorage;\nconst release = compileLegalDocuments(defineSite(config));\nrenderLegalDocument(release.publicConfig, 'privacy');\nrecordLegalRelease(storage, release.artifact);\ncreateAdminWorker({authorize: () => null});\nconst offer = createTermsOffer(release.artifact, {scopeId:'signup',statement:'I agree to these sample terms.',actionLabel:'Record agreement'});\nconst scope = {siteId:config.site.id,scopeId:'signup'};\nregisterTermsOffer(storage,offer,scope);\nsetActiveTermsOffer(storage,offer.offerId,scope);\ncreateTermsAcceptance(offer,{operationId:'operation-one',submit:body=>recordTermsAcceptance(storage,body,{...scope,subjectId:'subject-one',operationId:'operation-one'})});\ncreateTermsAcceptanceStore(storage,scope);\ndeclare const consent: ConsentController;\nconst media = createEmbedService({consent,serviceId:'optional-media'});\ndeclare const container: HTMLElement;\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional',alt:'Alternative'});\n// @ts-expect-error image requires alternative text\nmedia.mount(container,{kind:'image',src:'/image.svg',title:'Image',description:'Fictional'});\n// @ts-expect-error unknown document kind\nrenderLegalDocument(config, 'unknown');\n");
     await writeFile(join(cwd, 'consumer.ts'), await readFile(join(cwd, 'consumer.ts'),'utf8') + `
 import {normalizeServiceCatalog, searchServiceCatalog, createCatalogServiceDraft, type ServiceCatalog} from '@notabenda/core/catalog';
 import {serviceCatalogSeed} from '@notabenda/core/catalog/seed';
@@ -370,6 +371,15 @@ declare const published:LegalPublicationReport;
 const noInstallation:false=published.boundaries.establishesPackInstallation;
 // @ts-expect-error matching files never establish legal compliance
 const compliance:true=published.boundaries.establishesLegalCompliance;
+`);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {normalizeTermsSettingsRelease,type TermsSettingsRelease} from '@notabenda/cloudflare';
+declare const settingsProjection: unknown;
+const termsSettingsProjection:TermsSettingsRelease=normalizeTermsSettingsRelease(settingsProjection);
+const termsSettingsKind:'terms-agreement-settings'=termsSettingsProjection.kind;
+createAdminWorker({authorize:()=>({store:createDocumentHistory(storage),allowTermsSettings:true})});
+// @ts-expect-error host permission is boolean, not a browser string
+createAdminWorker({authorize:()=>({store:createDocumentHistory(storage),allowTermsSettings:'true'})});
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

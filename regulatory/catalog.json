@@ -253,7 +253,8 @@
         "Consumer/business and service-type configuration, with conditional rights and contract-action links.",
         "React provider/hooks/native control and Astro named offer/operation-bound shell/bridge over the same host-owned acceptance controller; conservative SSR, view-only cleanup and uncertain-request preservation.",
         "Optional local offer/operation inspection, with publication, backend activation and application behavior left to separate checks.",
-        "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks."
+        "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
+        "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -295,7 +296,19 @@
         "packages/notabenda/src/styles.css",
         "packages/notabenda-cf/src/terms-settings.ts",
         "packages/notabenda-cf/scripts/sync-order-policy.mjs",
-        "examples/agreements/example.mjs"
+        "examples/agreements/example.mjs",
+        "packages/notabenda-cf/src/terms-history.ts",
+        "packages/notabenda-cf/src/terms-history-render.ts",
+        "packages/notabenda-cf/src/history.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "packages/notabenda-cf/templates/src/authorize.mjs",
+        "examples/agreements/history.mjs",
+        "site/build.mjs",
+        "site/worker.mjs"
       ]
     },
     {
@@ -889,7 +902,8 @@
         "Bounded search, evidence cards, readable details, filters, and raw JSON disclosure.",
         "Durable Object adapter; no login, credentials, arbitrary DO selectors, or consent collection.",
         "Job-focused overview and native cross-area record finder with bounded continuation and separate setup permission.",
-        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks."
+        "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
+        "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references."
       ],
       "implementationRefs": [
         "packages/notabenda-cf/src/worker.ts",
@@ -913,7 +927,13 @@
         "packages/notabenda-cf/src/recording-inspection.ts",
         "packages/notabenda-cf/src/permissions.ts",
         "packages/notabenda-cf/src/index.ts",
-        "packages/notabenda-cf/templates/src/workspace.mjs"
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "packages/notabenda-cf/src/terms-history.ts",
+        "packages/notabenda-cf/src/terms-history-render.ts",
+        "packages/notabenda-cf/src/history.ts",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/templates/src/authorize.mjs",
+        "examples/agreements/history.mjs"
       ]
     },
     {
@@ -924,13 +944,25 @@
       "deliverables": [
         "Explicit transactional release archival with exact content, version metadata, operator change note, and idempotent retries.",
         "Backoffice release history and safe side-by-side structured comparisons.",
-        "Separate content and rendered-HTML digests; no automatic publication, notification, consent invalidation, or terms acceptance."
+        "Separate content and rendered-HTML digests; no automatic publication, notification, consent invalidation, or terms acceptance.",
+        "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references."
       ],
       "implementationRefs": [
         "packages/notabenda-cf/src/history.ts",
         "packages/notabenda-cf/src/render.ts",
         "packages/notabenda/src/content.ts",
-        "packages/notabenda/src/release-files.ts"
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda-cf/src/terms-history.ts",
+        "packages/notabenda-cf/src/terms-history-render.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "packages/notabenda-cf/templates/src/authorize.mjs",
+        "examples/agreements/history.mjs",
+        "site/build.mjs",
+        "site/worker.mjs"
       ]
     },
     {
@@ -2634,7 +2666,8 @@
         "REQ-PRODUCT-CONSENT-REHEARSAL",
         "REQ-PRODUCT-DOCS-SEARCH",
         "REQ-PRODUCT-EMBED-LOCALIZATION",
-        "REQ-PRODUCT-TERMS-AUTHORING"
+        "REQ-PRODUCT-TERMS-AUTHORING",
+        "REQ-PRODUCT-TERMS-HISTORY"
       ]
     }
   ],
@@ -8542,6 +8575,54 @@
         "site/test/terms-authoring.test.mjs"
       ],
       "implementationNote": "Validate the whole declaration before explicit scope selection; draft edits require fresh current revisions and unchanged public baselines. CLI emits scope files after final attachments; retained artifacts reconstruct exact copy. No automatic enrollment, cookie scope changes, acceptance, activation or retirement."
+    },
+    {
+      "id": "REQ-PRODUCT-TERMS-HISTORY",
+      "jurisdiction": "PRODUCT",
+      "title": "Readable archived agreement wording and revision comparison",
+      "kind": "product-standard",
+      "summary": "Separately authorize and validate retained workflow declarations, selected interface copy and terms document references. Compare exact scopes without confusing declaration, document, release identity or current activation.",
+      "appliesWhen": "An operator reviews retained agreement settings alongside policy revisions.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DOCUMENT-HISTORY",
+        "FEAT-BACKOFFICE",
+        "FEAT-TERMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-TERMS-HISTORY"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Missing declarations do not establish absence of a host-authored integration. Historical built-in messages are not reconstructed. Host authorization and storage scope remain separate; no activation, acceptance, legal materiality or publication is inferred.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/terms-history.ts",
+        "packages/notabenda-cf/src/terms-history-render.ts",
+        "packages/notabenda-cf/src/history.ts",
+        "packages/notabenda-cf/src/worker.ts",
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda-cf/src/types.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/templates/src/workspace.mjs",
+        "packages/notabenda-cf/templates/src/authorize.mjs",
+        "examples/agreements/history.mjs",
+        "site/build.mjs",
+        "site/worker.mjs",
+        "packages/notabenda-cf/src/terms.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/terms-history.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/terms-history.test.mjs",
+        "docs/verification/terms-history.md"
+      ],
+      "implementationNote": "Optional fixed-release getter and strict bounded projection; per-request independent grant, script-free readable workflow/interface/document comparison and unchanged generic history/export data. Existing release selector reaches the view; old absent declarations remain comparable."
     }
   ],
   "verification": [
@@ -10254,6 +10335,21 @@
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/terms-authoring.md",
         "site/test/terms-authoring.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TERMS-HISTORY",
+      "requirementIds": [
+        "REQ-PRODUCT-TERMS-HISTORY"
+      ],
+      "status": "automated",
+      "expected": "Full archive validation, independent authorization before reads, precise per-scope and interface/document comparisons, absence handling, unchanged generic projections, escaping and desktop/mobile presentation.",
+      "testRefs": [
+        "packages/notabenda-cf/test/terms-history.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/terms-history.test.mjs",
+        "docs/verification/terms-history.md"
       ]
     }
   ],

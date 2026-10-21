@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-TERMS-HISTORY
+import {termsHistoryExample} from '../examples/agreements/history.mjs';
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 import {websiteFooter} from './footer.mjs';
@@ -69,7 +71,7 @@ async function visit(directory,callback) {
   }
 }
 // Allowlisted source roots only. Never scan the workspace for uploadable assets.
-for(const [relative,content] of Object.entries(await exampleFiles())) {
+for(const [relative,content] of Object.entries({...await exampleFiles(),...termsHistoryExample(JSON.parse(await read('examples/static/notabenda.config.json'))).files})) {
   if(relative === 'index.html') files['examples/index.html']=content;
   // The website labels demo routes; retained releases keep their exact bytes.
   else files[relative]=relative.endsWith('.html')&&!relative.startsWith('artifacts/')&&typeof content==='string'?markDemoPage(content):content;
@@ -159,7 +161,7 @@ for(const doc of Object.values(next.documents)) doc.version='draft-2';
 const latest=compileLegalDocuments(next,{mode:'preview'});
 const catalogExample=catalogReleaseExample(config);
 const agreements=[]; const releases=[{artifact:initial.artifact,metadata:{recordedAt:'2026-10-17T10:00:00Z',changeNote:'Initial fictional example documents.'}},{artifact:latest.artifact,metadata:{recordedAt:'2026-10-18T10:00:00Z',changeNote:'Clarify sample retention and fictional terms content.'}}];
-releases.push(...catalogExample.releases,...(await authoringExample()).releases,...(await retainedReleaseExample()).releases);
+releases.push(...termsHistoryExample(config).releases,...catalogExample.releases,...(await authoringExample()).releases,...(await retainedReleaseExample()).releases);
 for(const [theme,prefix] of [['light',''],['dark','dark/']]) {
   const offer=JSON.parse(files[`${prefix}agreement/offer.json`]);
   agreements.push({theme,offer}); releases.push({artifact:JSON.parse(files[`artifacts/${offer.artifactId}.json`]),metadata:{recordedAt:'2026-10-18T10:00:00Z',changeNote:`Fictional ${theme} agreement demonstration.`}});

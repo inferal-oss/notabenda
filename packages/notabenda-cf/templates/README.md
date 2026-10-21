@@ -35,3 +35,7 @@ Code uses Apache-2.0. Supplied legal content retains its own authorship and lice
 Setup starts with the reusable cartridge library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all generated setup and preview assets.
 
 The page reader is built as `assets/setup-preview.mjs` and loaded when an operator requests a preview. It requires the same configuration permission as setup; the local doctor checks its presence.
+
+## Agreement wording history
+
+Grant `termsSettings: true` from your existing host authorization hook only for callers allowed to inspect archived agreement wording. It is independent of inspection, source, catalog-review and export permissions. In Document revisions, select two releases and choose Agreement settings. The view compares named workflow declarations, interface messages and document references separately; it does not read or activate current offers. The starter otherwise denies this view.
