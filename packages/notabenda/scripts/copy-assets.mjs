@@ -1,9 +1,10 @@
 // @requirements REQ-PRODUCT-AGENT-HANDOFF
 // @requirements REQ-PRODUCT-CARTRIDGES
+import {build} from 'esbuild';
 import {createConsentStyles} from './consent-styles.mjs';
 import {createConfigSchema} from './config-schema.mjs';
 import {createConfigShapeValidator} from './config-shape-validator.mjs';
-import { copyFile, chmod, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, chmod, mkdir, readdir, readFile, writeFile, rm } from 'node:fs/promises';
 const handoffStyles=await readFile(new URL('../src/agent-handoff.css',import.meta.url),'utf8');
 await copyFile(new URL('../src/agent-handoff.css',import.meta.url),new URL('../dist/agent-handoff.css',import.meta.url));
 await writeFile(new URL('../dist/styles.css',import.meta.url),await readFile(new URL('../src/styles.css',import.meta.url),'utf8')+'\n'+handoffStyles);
@@ -34,3 +35,9 @@ await copyFile(new URL('../../../node_modules/ajv/LICENSE',import.meta.url),new 
 await mkdir(new URL('../dist/skill/agents/',import.meta.url),{recursive:true});
 await mkdir(new URL('../dist/skill/references/',import.meta.url),{recursive:true});
 for(const path of ['SKILL.md','agents/openai.yaml','references/configuration-target.md'])await copyFile(new URL('../../../skills/notabenda/'+path,import.meta.url),new URL('../dist/skill/'+path,import.meta.url));
+
+// @requirements REQ-PRODUCT-CONFIG-SOURCES
+// Self-contained Node CLI parser; no runtime dependency or browser import.
+await build({entryPoints:[new URL('../src/config-yaml.ts',import.meta.url).pathname],outfile:new URL('../dist/config-yaml.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline',banner:{js:"import {createRequire as __yamlCreateRequire} from 'node:module';const require=__yamlCreateRequire(import.meta.url);"}});
+await rm(new URL('../dist/config-yaml.js.map',import.meta.url),{force:true});
+await copyFile(new URL('../../../node_modules/yaml/LICENSE',import.meta.url),new URL('../dist/licenses/yaml-LICENSE.txt',import.meta.url));

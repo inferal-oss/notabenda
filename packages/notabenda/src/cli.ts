@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @requirements REQ-PRODUCT-CONFIG-SOURCES
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
 // @requirements REQ-PRODUCT-PUBLICATION-CHECK
@@ -9,6 +10,7 @@ import {runDiscoveryCli} from './discovery-cli.js';
 import {runSetupWizard} from './setup-cli.js';
 import {createReadStream} from 'node:fs';
 import {readCliJson} from './cli-json.js';
+import {readConfigInput,configSourceFormat,formatConfigSource} from './config-source.js';
 import {readSetupCatalogSelections} from './catalog-selection.js';
 import {attachCatalogReview} from './catalog-release.js';
 import {canonicalJson} from './content.js';
@@ -27,7 +29,7 @@ const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|descri
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
-init   Write a draft notabenda.config.json without overwriting an existing file.
+init   Write a draft config; --config FILE selects JSON, YAML or Markdown. Never overwrites.
 check  Validate configuration (production checks by default; --preview permits drafts).
 build  Generate static legal pages, public configuration and a versioned artifact.
 describe [TARGET ...] [--json]  Read-only integration map, facts, actual setup question IDs
@@ -51,7 +53,9 @@ check-publication --artifact FILE --origin URL [--packs ID,ID] [--preview]
 Explicit network access only; no redirects, scripts, crawling or deployment writes.
 Matching files do not verify active controls, host behavior or legal compliance.
 
-All configuration is JSON. Commands require no project-module execution.
+--config accepts .json, .yaml, .yml or .md with YAML frontmatter (512 KiB).
+Markdown body notes stay private and are never rendered. No imports or environment expansion.
+Other reports, answers and batch inputs remain JSON. Commands execute no project modules.
 Only check-publication makes explicit network requests.
 --out-dir applies to build (default: legal-dist) or wizard (default: notabenda-setup).
 Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config FILE
@@ -107,7 +111,7 @@ async function main(): Promise<void> {
     }
     if(!options['--selection']||!options['--config'])throw Error('assess requires explicit --selection FILE and --config FILE.');
     const selection=await readCliJson(options['--selection'],65536,'Selection could not be read as bounded ordinary JSON.');
-    const config=await readCliJson(options['--config'],1024*1024,'Config could not be read as bounded ordinary JSON.');
+    const config=await readConfigInput(options['--config']);
     const answers=options['--answers']?await readCliJson(options['--answers'],512*1024,'Answers could not be read as bounded ordinary JSON.'):undefined;
     const {assessIntegration}=await import('./integration-assessment.js');
     const assessment=assessIntegration({selection,config,...(answers===undefined?{}:{answers})});
@@ -167,11 +171,12 @@ async function main(): Promise<void> {
   if(catalogPath&&!projectDirectory)throw new Error('Wizard --catalog requires --project DIRECTORY.');
   if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({...(cartridges?{cartridgeIds:cartridges.split(',')}:{}),outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{}),...(rightsPath?{rightsPath}:{}),...(termsPath?{termsPath}:{}),...(storagePath?{storagePath}:{}),...(projectDirectory?{projectDirectory}:{}),...(catalogPath?{catalogPath}:{})});return;}
   if (command === 'init') {
-    await writeFile(resolve(configPath), JSON.stringify(createStarterConfig(), null, 2) + '\n', { flag: 'wx' });
+    const format=configSourceFormat(configPath);
+    await writeFile(resolve(configPath), await formatConfigSource(createStarterConfig(),format,format==='markdown'?'\n# Configuration notes\n\nKeep supporting notes here. This body is not published.\n':''), { flag: 'wx' });
     console.log('Created draft site configuration. Replace sample facts and supply appropriate reviewed content before production use.');
     return;
   }
-  const input: unknown = JSON.parse(await readFile(resolve(configPath), 'utf8'));
+  const input: unknown = await readConfigInput(configPath);
   const mode = preview ? 'preview' : 'production';
   const result = validateSiteConfig(input, { mode });
   if (command === 'check') {

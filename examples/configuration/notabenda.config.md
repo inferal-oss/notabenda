@@ -1,0 +1,128 @@
+---
+schemaVersion: 1
+site:
+  id: juniper-notes
+  name: Juniper Notes
+  url: https://juniper.example.test
+  locale: en
+  description: A fictional independent writing studio used to demonstrate reusable legal pages.
+controller:
+  name: Juniper Notes Cooperative (fictional)
+  email: privacy@juniper.example.test
+  address: 12 Example Lane, Example City (fictional)
+jurisdictions: []
+purposes:
+  - id: enquiries
+    name: Responding to enquiries
+    description: A sample description of how an operator might respond to a message someone chooses to send.
+    legalBasis: An operator must supply the applicable basis after reviewing its actual processing.
+    dataCategories:
+      - Name
+      - Email address
+      - Message content
+    retention: "Sample: until an enquiry is resolved, subject to the operator's reviewed retention policy."
+    collection:
+      source: direct
+      description: Information a person chooses to include in a message.
+      required: false
+      consequences: Without contact details, an operator may be unable to reply.
+  - id: display-preferences
+    name: Remembering display preferences
+    description: A synthetic storage example demonstrating how a requested display setting can be described.
+    legalBasis: The applicable device-access exception and processing basis must be assessed separately.
+    dataCategories:
+      - Selected display mode
+    retention: "Sample: 30 days for the declared preference item."
+    collection:
+      source: direct
+      description: A display setting deliberately selected by the visitor.
+      required: false
+      consequences: If not stored, the preference may need to be selected again.
+services:
+  - id: site-preferences
+    name: Site preferences
+    provider: Juniper Notes (fictional)
+    purposeIds:
+      - display-preferences
+    location: Example hosting region; replace with actual processing locations.
+storage:
+  - id: display-mode
+    name: display_mode
+    type: cookie
+    serviceId: site-preferences
+    duration: 30 days (sample)
+    classification: necessary
+    necessityReason: Synthetic example of a setting explicitly requested by the visitor; review
+      necessity against actual use.
+privacy:
+  rights:
+    - Request information about how personal information is used.
+    - Ask to access, correct, or erase information where applicable.
+    - Withdraw a permission or object to processing where the applicable rules provide that right.
+  rightsUrl: mailto:privacy@juniper.example.test
+  complaints:
+    description: Contact the operator with questions. An actual deployment must identify the applicable
+      complaint and supervisory-authority options.
+  transfers: This fictional example describes no live transfers. An actual deployment must state its
+    recipients, locations, and applicable safeguards.
+  automatedDecisions: No automated decisions are represented in this fictional example.
+terms:
+  audience: business
+  serviceType: informational
+documents:
+  privacy:
+    title: Privacy policy
+    route: /privacy
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: generated
+    review:
+      status: draft
+  cookies:
+    title: Cookie policy
+    route: /cookies
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: generated
+    review:
+      status: draft
+    sections:
+      - id: example-only
+        heading: About this example
+        paragraphs:
+          - These static example pages do not set the synthetic cookie listed above. The item
+            demonstrates the document inventory, not a live storage integration.
+  terms:
+    title: Terms of use
+    route: /terms
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: supplied
+    review:
+      status: draft
+    sections:
+      - id: about
+        heading: About these example pages
+        paragraphs:
+          - Juniper Notes is a fictional studio. These sample sections demonstrate how your own
+            reviewed terms can be rendered inside your site's design. They do not offer a service or
+            establish a real contract.
+      - id: your-content
+        heading: Your content, your structure
+        paragraphs:
+          - Supply the terms appropriate to your audience, service, and applicable consumer rights.
+            The renderer preserves your section structure and safely displays text and links.
+      - id: contact
+        heading: Contact
+        links:
+          - label: privacy@juniper.example.test
+            href: mailto:privacy@juniper.example.test
+private:
+  operatorNote: "Synthetic private note: excluded from every public output."
+---
+
+# Inventory review
+
+The frontmatter contains the complete site configuration. These notes do not appear in the public legal pages.
+
+Confirm service use, storage duration and policy wording before marking the corresponding documents reviewed.

@@ -18,7 +18,7 @@ npx @notabenda/core wizard --answers ./setup-review/setup.private.json \
   --config ./setup-review/notabenda.config.json --out-dir ./setup-review-3
 ```
 
-The directory must not exist, including through a symlink. The wizard writes `notabenda.config.json`, `setup.private.json` and a local `.gitignore` excluding the report. On supported systems the directory and JSON files use private permissions. Input files must be JSON no larger than 512 KiB; normalized answers have a 128 KiB limit. Noninteractive use requires `--answers`; there is no silent answer default that activates collection. Imported configs are validated before interactive questions.
+The directory must not exist, including through a symlink. The wizard writes `notabenda.config.json`, `setup.private.json` and a local `.gitignore` excluding the report. On supported systems the directory and JSON files use private permissions. The site config may use [JSON, YAML or Markdown frontmatter](CONFIGURATION-SOURCES.md); answers and report inputs remain JSON. Inputs are limited to 512 KiB; normalized answers have a 128 KiB limit. Noninteractive use requires `--answers`; there is no silent answer default that activates collection. Imported configs are validated before interactive questions.
 
 A minimal answers file:
 
@@ -67,7 +67,7 @@ npx @notabenda/core wizard --answers ./answers.json --project ./app \
   --out-dir ./setup-review
 ```
 
-Noninteractive use still requires `--answers` and, for existing selections, their matching `--config`. Existing answers and pins are checked before scanning; findings never change questionnaire answers or add providers automatically. Interactive setup requires a terminal. The output directory must be new, and setup checks that before asking questions or scanning. Explicit setup/catalog JSON inputs must be ordinary, bounded UTF-8 files; symlinks, devices and named pipes are rejected. Browser/admin setup cannot inspect a local filesystem: run project discovery locally and review the private output before entering confirmed site use in admin.
+Noninteractive use still requires `--answers` and, for existing selections, their matching `--config`. Existing answers and pins are checked before scanning; findings never change questionnaire answers or add providers automatically. Interactive setup requires a terminal. The output directory must be new, and setup checks that before asking questions or scanning. Explicit setup/catalog inputs must be ordinary, bounded UTF-8 files; symlinks, devices and named pipes are rejected. Browser/admin setup cannot inspect a local filesystem: run project discovery locally and review the private output before entering confirmed site use in admin.
 
 ## What gets exported
 

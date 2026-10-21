@@ -82,7 +82,7 @@ Before editing an existing config, reconcile the explicit inputs:
 npx --no-install notabenda assess --selection ./integration-selection.json --config ./notabenda.config.json --answers ./answers.json --json
 ```
 
-The optional API is `assessIntegration({selection, config, answers})` from `@notabenda/core/integration/assessment`. Omit `answers` if unavailable, or pass a saved private setup report; its recommendations are regenerated. CLI inputs are bounded ordinary JSON files; no project scripts execute and nothing is written. The report omits the config body and private notes, but diagnostics and review items can identify inventory entries. Keep it outside public assets.
+The optional API is `assessIntegration({selection, config, answers})` from `@notabenda/core/integration/assessment`. Omit `answers` if unavailable, or pass a saved private setup report; its recommendations are regenerated. The CLI accepts JSON, YAML or Markdown-frontmatter site configuration through `--config`; selection and answers files remain bounded ordinary JSON. Pass the actual existing path, preserve its format/comments, and keep configuration body notes separate from policy prose. No project scripts execute and nothing is written. The report omits the config body and private notes, but diagnostics and review items can identify inventory entries. Keep it outside public assets.
 
 Read the result in this order:
 

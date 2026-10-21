@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONFIG-SOURCES
 // @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 import {expandPrivacyChoicePreview} from './privacy-choice-preview.mjs';
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
@@ -83,7 +84,7 @@ await visit('docs/assets',async path=>{ if(['.svg','.jpg','.png'].includes(extna
 const docs = new Map([['README.md','/guide/project'],['SECURITY.md','/guide/security'],['packages/notabenda/README.md','/guide/package'],['packages/notabenda-cf/README.md','/guide/cloudflare'],['packages/notabenda-authoring/README.md','/guide/authoring-package'],['regulatory/README.md','/guide/research'],['site/README.md','/guide/website'],['catalog/README.md','/guide/catalog-data'],['packages/notabenda/assets/guarantees/NOTICE.md','/guide/guarantee-asset-notice']]);
 await visit('docs',async path=>{ if(path.endsWith('.md')) docs.set(path,'/guide/'+path.slice(5).replace(/\.md$/u,'').replace(/\/README$/u,'').toLowerCase()); });
 const catalogRefs = new Set(catalog.requirements.flatMap(r=>[...r.implementationRefs,...r.testRefs]).map(x=>x.split('#')[0]));
-for(const path of catalogRefs) if(/^(?:packages|scripts|examples|regulatory|catalog|site)\//u.test(path) && /\.(?:ts|mjs|json|py|css|astro|md|mdx)$/u.test(path)) files[`source/${path}.txt`]=await read(path);
+for(const path of catalogRefs) if(/^(?:packages|scripts|examples|regulatory|catalog|site)\//u.test(path) && /\.(?:ts|mjs|json|yaml|yml|py|css|astro|md|mdx)$/u.test(path)) files[`source/${path}.txt`]=await read(path);
 files['source/regulatory/catalog.json.txt']=JSON.stringify(catalog,null,2)+'\n';
 files['license.txt']=await read('LICENSE');
 files['llms.txt']=await read('llms.txt');

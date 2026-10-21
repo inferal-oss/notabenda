@@ -159,7 +159,8 @@
         "Separate public bundle facts from private operator metadata.",
         "Completeness checks with requirement IDs and actionable missing-field messages.",
         "Explicit storage inventory authoring with affected-owner material versions, public necessity assertions, protected exception ownership and a separate previous-marker migration review.",
-        "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering."
+        "Complete host-supplied declared service-directory copy, explicit locale/direction/review, local search/count states and retained public release wording; native, React and Astro share rendering.",
+        "JSON, YAML and Markdown-frontmatter configuration sources with a common Node reader, CLI validation and separate unpublished notes."
       ],
       "implementationRefs": [
         "packages/notabenda/src/types.ts",
@@ -190,7 +191,9 @@
         "examples/localization/build.mjs",
         "site/navigation.mjs",
         "site/host.mjs",
-        "examples/static/choices-build.mjs"
+        "examples/static/choices-build.mjs",
+        "packages/notabenda/src/config-source.ts",
+        "packages/notabenda/src/config-yaml.ts"
       ]
     },
     {
@@ -2626,6 +2629,15 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "Archived first-party documentation supplies script.exclusions.js and a chained-extension example. The authored single-star pattern generalizes the extension suffix; it does not determine active options. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "SRC-YAML-API",
+      "title": "yaml package parsing and document API",
+      "url": "https://eemeli.org/yaml/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Primary parser reference for YAML 1.2 core scalars, document errors, AST visitors, aliases and formatting. Software reference only; no legal rule."
     }
   ],
   "jurisdictions": [
@@ -2907,7 +2919,8 @@
         "REQ-PRODUCT-TERMS-AUTHORING",
         "REQ-PRODUCT-TERMS-HISTORY",
         "REQ-PRODUCT-CONTRACT-LOCALIZATION",
-        "REQ-PRODUCT-PRIVACY-CHOICE-LINK"
+        "REQ-PRODUCT-PRIVACY-CHOICE-LINK",
+        "REQ-PRODUCT-CONFIG-SOURCES"
       ]
     }
   ],
@@ -4678,6 +4691,56 @@
       ]
     },
     {
+      "id": "REQ-PRODUCT-CONFIG-SOURCES",
+      "jurisdiction": "PRODUCT",
+      "title": "YAML and Markdown-frontmatter site configuration",
+      "kind": "product-standard",
+      "summary": "Accept JSON, YAML and complete SiteConfig frontmatter in Markdown through the CLI and Node build reader, preserving one semantic model and keeping body notes outside public releases.",
+      "appliesWhen": "An operator maintains site facts in a local configuration source.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-YAML-API",
+          "locator": "YAML 1.2 core schema, document errors, visitors and aliases"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-INVENTORY",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CONFIG-SOURCES"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Bounded ordinary UTF-8 files only. No code evaluation, includes, environment expansion or automatic source archival. Browser setup imports/exports and non-config reports remain JSON; policy MD/MDX bodies still use the authoring package.",
+      "implementationRefs": [
+        "packages/notabenda/src/config-source.ts",
+        "packages/notabenda/src/config-yaml.ts",
+        "packages/notabenda/src/cli-json.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/discovery-cli.ts",
+        "packages/notabenda/src/catalog-review-cli.ts",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "scripts/check-package-release.mjs",
+        "docs/CONFIGURATION-SOURCES.md",
+        "skills/notabenda/SKILL.md",
+        "examples/configuration/notabenda.config.yaml",
+        "examples/configuration/notabenda.config.md",
+        "site/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/config-sources.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/configuration-sources.md"
+      ],
+      "implementationNote": "CLI and Node reader accept the same JSON-compatible SiteConfig across JSON, YAML and Markdown frontmatter. Equivalence, private-note isolation, malformed inputs, packed-parser installation and browser graph exclusion are covered by automated tests. Browser setup import/export and non-config reports remain JSON."
+    },
+    {
       "id": "REQ-PRODUCT-DOCUMENTS",
       "jurisdiction": "PRODUCT",
       "title": "Static privacy, cookie, and supplied terms pages",
@@ -5166,7 +5229,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "MDX is trusted executable build-time project code. Output is static, validated and sanitized; no browser hydration. The authoring API is optional and the CLI remains JSON-based. Private source archives have explicit size limits; host auth, retention and reproducible component builds remain adopter responsibilities.",
+      "caveats": "MDX is trusted executable build-time project code. Output is static, validated and sanitized; no browser hydration. The legal-document authoring API is optional; site configuration separately supports JSON, YAML and Markdown frontmatter. Private source archives have explicit size limits; host auth, retention and reproducible component builds remain adopter responsibilities.",
       "implementationRefs": [
         "packages/notabenda-authoring/src/index.ts",
         "packages/notabenda-authoring/src/frontmatter.ts",
@@ -10856,6 +10919,19 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/privacy-choice-links.test.mjs",
         "docs/verification/privacy-choice-links.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CONFIG-SOURCES",
+      "requirementIds": [
+        "REQ-PRODUCT-CONFIG-SOURCES"
+      ],
+      "status": "automated",
+      "expected": "Equivalent inputs preserve public output and release identity; notes never render; invalid YAML and unsafe file inputs fail clearly; all config-consuming CLI paths use the loader, and packed/browser boundaries hold.",
+      "testRefs": [
+        "packages/notabenda/test/config-sources.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/configuration-sources.md"
       ]
     }
   ],

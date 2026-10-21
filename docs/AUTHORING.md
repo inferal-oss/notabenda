@@ -1,6 +1,6 @@
 # Write policies in Markdown or MDX
 
-Keep shared operator, processing, service and storage facts in site configuration. Write document-specific metadata in **YAML frontmatter**, then use Markdown for prose or MDX for your own static components. Both formats feed the same immutable release and evidence workflow.
+Keep shared operator, processing, service and storage facts in [site configuration](CONFIGURATION-SOURCES.md), which can use JSON, YAML or configuration-document frontmatter. Write document-specific metadata in **YAML frontmatter**, then use Markdown for prose or MDX for your own static components. Both formats feed the same immutable release and evidence workflow.
 
 The optional `@notabenda/authoring` package runs in Node.js during your build. The browser core and Cloudflare backend retain zero runtime dependencies. Packages are currently an unpublished developer preview; use workspace builds or local tarballs.
 
@@ -55,7 +55,7 @@ const release = await compileAuthoredDocuments(config, { terms, cookies }, {
 // Keep release.archive outside your public output directory.
 ```
 
-Unspecified documents continue to come from site configuration. Document frontmatter overrides that document's configuration; shared inventory stays unchanged. The existing `notabenda` CLI remains JSON-based. Use this optional build API for Markdown and MDX.
+Unspecified documents continue to come from site configuration. Document frontmatter overrides that document's configuration; shared inventory stays unchanged. The `notabenda` CLI accepts JSON, YAML or configuration-document frontmatter for site facts. Legal Markdown and MDX bodies still use this optional build API.
 
 ## Your own MDX components
 

@@ -1,0 +1,9 @@
+# Configuration source verification
+
+Requirements: `REQ-PRODUCT-CONFIG-SOURCES`, `REQ-PRODUCT-CONFIG`.
+
+Package tests compare JSON, YAML and Markdown-frontmatter inputs against the same compiler output and release identity. Markdown-note changes leave public files unchanged. Fixtures exercise YAML 1.2 scalar types, multiline text, literal environment/include-looking values, invalid syntax, duplicate/complex keys, aliases, tags, directives, nonfinite values and input bounds. Reader tests reject symlinks, invalid UTF-8, directories and executable extensions.
+
+Actual CLI tests initialize files without overwriting, validate drafts and production failures, compile public files, assess requested work and import into wizard drafts across all four extensions. The packed core is installed offline without the `yaml` dependency, then its bundled CLI initializes and checks a YAML draft. Browser graph tests confirm that core, headless and consent entry points exclude both the parser and Node reader.
+
+Configuration comments and Markdown notes are authoring material. They are not automatically archived in legal history; policy source archives remain the separate authoring workflow. Browser setup file import/export remains JSON. Neither syntax support nor a successful config check verifies the operator's declared facts or legal applicability.

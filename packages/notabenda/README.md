@@ -9,6 +9,8 @@ Optional [repeat-prompt policy](../../docs/REGIONAL-PROMPTS.md) keeps solicitati
 
 Developer preview. The package has not been published to npm yet; build/pack it from the repository and install the resulting tarball locally. Requires Node.js 22 or newer for the CLI and build-time API. The root renderer is browser/SSR-safe.
 
+Site configuration can also use YAML or a Markdown document with YAML frontmatter. Use `--config notabenda.config.yaml` (or `.md`) with the same CLI commands, or `readSiteConfig` from `@notabenda/core/config/node` in a build. Configuration-document notes stay outside published output. See [configuration sources](../../docs/CONFIGURATION-SOURCES.md).
+
 ## Start with the CLI
 
 After installing the local tarball, use `npx --no-install notabenda describe --json` for a version-matched integration map, facts needed, actual wizard question IDs and verification scenarios. Target specific work with `describe cookie-consent terms-agreement --json`; this reads no project config and changes nothing.
@@ -165,7 +167,7 @@ An explicit `privacySignals.globalPrivacyControl` policy and exhaustive `service
 
 Use [recorded processing opt-outs](../../docs/PROCESSING-CHOICES.md) for a separate manual sale/sharing/targeted-advertising action, optional CF retention and pending-request recovery. Bind it through `createConsent(config, environment, {processingChoices})`; cookie grants cannot override its service restrictions. Host identity and downstream handling remain application responsibilities.
 
-Keep earlier pinned document URLs available in clean deployments with `createRetainedReleaseFiles` from `@notabenda/core/content`, or repeat `--retain-artifact FILE` with the JSON CLI build. Supply trusted public compiler artifacts explicitly; private MD/MDX archives stay in backend history. See [retained releases](../../docs/RELEASES.md).
+Keep earlier pinned document URLs available in clean deployments with `createRetainedReleaseFiles` from `@notabenda/core/content`, or repeat `--retain-artifact FILE` with the CLI build. Supply trusted public compiler artifacts explicitly; private MD/MDX archives stay in backend history. See [retained releases](../../docs/RELEASES.md).
 
 For an optional producer that owns exact declared browser keys, use [storage cleanup](../../docs/STORAGE-CLEANUP.md) to tie removal to withdrawal, failed startup and final teardown. Cookie expiration requests remain distinct from verified web-storage absence.
 

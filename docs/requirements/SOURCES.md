@@ -1565,3 +1565,13 @@ Archived first-party documentation supplies the older /js/script.js loader. Reta
 **Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
 
 Archived first-party documentation supplies script.exclusions.js and a chained-extension example. The authored single-star pattern generalizes the extension suffix; it does not determine active options. Technical reference only; no provider-practice or legal classification.
+
+<a id="src-yaml-api"></a>
+
+## SRC-YAML-API
+
+[yaml package parsing and document API](https://eemeli.org/yaml/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Primary parser reference for YAML 1.2 core scalars, document errors, AST visitors, aliases and formatting. Software reference only; no legal rule.

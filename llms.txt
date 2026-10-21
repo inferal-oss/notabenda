@@ -2,7 +2,7 @@
 
 > Self-hosted legal pages, privacy controls and optional evidence records. Apache 2.0.
 
-Developer preview: packages have not been published to npm. The package names are `@notabenda/core`, `@notabenda/cloudflare` and `@notabenda/authoring`. Use a trusted workspace build or locally packed tarballs. The installed CLI binaries remain `notabenda` and `notabenda-cf`. The JSON CLI and optional Markdown/MDX build API are separate.
+Developer preview: packages have not been published to npm. The package names are `@notabenda/core`, `@notabenda/cloudflare` and `@notabenda/authoring`. Use a trusted workspace build or locally packed tarballs. The installed CLI binaries remain `notabenda` and `notabenda-cf`. The CLI accepts JSON, YAML or Markdown-frontmatter site configuration. Legal Markdown/MDX bodies use the optional authoring build API.
 
 Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
 
@@ -22,7 +22,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Software and storage](https://notabenda.org/guide/architecture/index.md): Build/browser/host boundaries, public assets, browser storage and optional Durable Objects.
 
 - [Agent setup](https://notabenda.org/guide/agent-setup/index.md): Skill installation, version matching and review boundaries.
-- [Package and configuration](https://notabenda.org/guide/package/index.md): Public inventory, rendering and JSON CLI.
+- [Package and configuration](https://notabenda.org/guide/package/index.md): Public inventory, rendering and CLI.
 - [Guided setup](https://notabenda.org/guide/setup/index.md): Interactive wizard and explicit noninteractive answers.
 - [Services and project discovery](https://notabenda.org/guide/service-catalog/index.md): Review provider candidates and their actual use.
 
@@ -32,6 +32,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 
 - [Privacy-choice links](https://notabenda.org/guide/privacy-choice-links/index.md): Explicit return navigation, California title/icon presentation and separate host destination checks.
 
+- [Configuration sources](https://notabenda.org/guide/configuration-sources/index.md): JSON, YAML or a complete site configuration in Markdown frontmatter; body notes stay separate. Node-only reader, explicit --config paths, common validation.
 - [Markdown and MDX](https://notabenda.org/guide/authoring/index.md): YAML frontmatter, trusted components and private source archives.
 - [Cookie choices](https://notabenda.org/guide/consent/index.md): Connect optional service lifecycles to effective permission.
 - [Terms agreements](https://notabenda.org/guide/terms/index.md): Bind an unchecked action to the exact document revision.
