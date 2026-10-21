@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
@@ -207,7 +208,9 @@ google.config('AW-12345',{});
 const incompleteGoogle:GoogleBasicConfig={...googleConfig,signals:{analytics_storage:['measurement']}};
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
-import {createContractAction, mountContractAction, type ContractActionDefinition} from '@notabenda/core/contracts';
+import {createContractAction, mountContractAction, normalizeContractActionLocalization, type ContractActionDefinition, type ContractActionLocalization, type ContractActionMessages} from '@notabenda/core/contracts';
+declare const contractLanguage:ContractActionLocalization;
+const contractLabels:ContractActionMessages=normalizeContractActionLocalization(contractLanguage,{allowPreview:true}).contractActions;
 import {createContractActionDefinition} from '@notabenda/core/content';
 import {registerContractActionDefinition, recordContractDeclaration, claimContractDelivery, settleContractDelivery, createContractDeclarationStore, dispatchContractDelivery, dispatchContractDeclaration} from '@notabenda/cloudflare';
 const contractDefinition=createContractActionDefinition(release.artifact,{actionId:'contract-withdrawal',revision:'one',profile:'eu-withdrawal',reviewStatus:'reviewed'});

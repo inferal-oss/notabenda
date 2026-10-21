@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
+import {selectContractActionLocalization} from './contract-action-localization.js';
 import {normalizePublicLegalArtifact} from './release-files.js';
 import {normalizeTermsAgreementSettings,assertConfiguredTermsCopy} from './terms-settings.js';
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
@@ -83,9 +85,11 @@ export function createConsentNotice(artifact: LegalArtifact, settings:{scopeId:s
 
 /** Versioned collection/action wording; referenced terms do not establish the visitor's original contract terms. */
 export function createContractActionDefinition(artifact:LegalArtifact,settings:{actionId:string;revision:string;profile:ContractActionProfile;reviewStatus:'draft'|'reviewed';wording?:Partial<ContractActionDefinition['wording']>},options:ValidationOptions={}):ContractActionDefinition {
- const config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
+ let config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});
+ const localization=config.localization?.contractActions?selectContractActionLocalization(config.localization):undefined;
+ if(localization){artifact=normalizePublicLegalArtifact(artifact,options);config=toPublicConfig(artifact.publicConfig,{mode:artifact.manifest.mode});}
  const documents=Object.fromEntries(['terms','privacy'].map(kind=>{const d=artifact.manifest.documents.find(item=>item.kind===kind);if(!d)throw Error('Contract actions need terms and privacy references.');const {title,version,effectiveDate,sha256,contentSha256,reviewStatus}=d;return [kind,{title,version,effectiveDate,sha256,contentSha256,reviewStatus,url:`/artifacts/${artifact.manifest.artifactId}/${kind}.html`}];}));
- const definition=normalizeContractActionDefinition({schemaVersion:1,definitionId:'0'.repeat(64),siteId:config.site.id,actionId:settings.actionId,revision:settings.revision,profile:settings.profile,locale:settings.profile.startsWith('de-')?'de-DE':settings.profile==='br-withdrawal'?'pt-BR':'en',renderingPolicy:'contract-form-v1',mode:artifact.manifest.mode,reviewStatus:settings.reviewStatus,artifactId:artifact.manifest.artifactId,wording:{...contractActionDefaults[settings.profile],...settings.wording},documents},{allowPreview:options.mode==='preview'});
+ const definition=normalizeContractActionDefinition({schemaVersion:localization?2:1,...(localization?{localization}:{}),definitionId:'0'.repeat(64),siteId:config.site.id,actionId:settings.actionId,revision:settings.revision,profile:settings.profile,locale:localization?config.site.locale:settings.profile.startsWith('de-')?'de-DE':settings.profile==='br-withdrawal'?'pt-BR':'en',renderingPolicy:localization?'contract-form-v2':'contract-form-v1',mode:artifact.manifest.mode,reviewStatus:settings.reviewStatus,artifactId:artifact.manifest.artifactId,wording:localization?settings.wording:{...contractActionDefaults[settings.profile],...settings.wording},documents},{allowPreview:options.mode==='preview'});
  const {definitionId:_,...descriptor}=definition;return {...definition,definitionId:sha256(canonicalJson(descriptor))};
 }
 

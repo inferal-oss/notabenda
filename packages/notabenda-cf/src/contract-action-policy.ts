@@ -1,9 +1,12 @@
+// Generated from packages/notabenda/src/contract-action-policy.ts by scripts/sync-order-policy.mjs.
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
+import {normalizeContractActionLocalization} from './contract-action-localization.js';
+import type {ContractActionLocalization,ContractActionMessages} from './contract-action-localization.js';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-DE-CANCEL REQ-DE-WITHDRAWAL REQ-EU-WITHDRAWAL REQ-BR-CONTRACT
-// Structurally aligned with the frontend policy; integration tests exercise both.
 type BuildMode='production'|'preview';
 export type ContractActionProfile='de-cancellation'|'de-withdrawal'|'eu-withdrawal'|'br-withdrawal';
 export interface ContractActionDocument {title:string;url:string;version:string;effectiveDate:string;sha256:string;contentSha256:string;reviewStatus:'draft'|'reviewed'}
-export interface ContractActionDefinition {schemaVersion:1;definitionId:string;siteId:string;actionId:string;revision:string;profile:ContractActionProfile;locale:'de-DE'|'en'|'pt-BR';renderingPolicy:'contract-form-v1';mode:BuildMode;reviewStatus:'draft'|'reviewed';artifactId:string;wording:{title:string;entryLabel:string;confirmLabel:string;statement:string};documents:{terms:ContractActionDocument;privacy:ContractActionDocument}}
+export interface ContractActionDefinition {schemaVersion:1|2;localization?:ContractActionLocalization;definitionId:string;siteId:string;actionId:string;revision:string;profile:ContractActionProfile;locale:string;renderingPolicy:'contract-form-v1'|'contract-form-v2';mode:BuildMode;reviewStatus:'draft'|'reviewed';artifactId:string;wording:{title:string;entryLabel:string;confirmLabel:string;statement:string};documents:{terms:ContractActionDocument;privacy:ContractActionDocument}}
 export interface ContractActionFields {name:string;contract:string;email:string;cancellation?:{kind:'ordinary'|'extraordinary';reason:string;ending:string}}
 export interface ContractActionRequest {schemaVersion:1;definitionId:string;requestId:string;clientAt:string;fields:ContractActionFields}
 export interface ContractActionReceipt {schemaVersion:1;id:string;definitionId:string;requestId:string;operationRef:string;receivedAt:string;requestSha256:string;stage:'received';acknowledgement:{status:'pending';text:string;sha256:string}}
@@ -27,13 +30,15 @@ function record(v:unknown,keys:string[]):Record<string,unknown>{
  return Object.fromEntries(keys.map(key=>[key,descriptors[key]!.value]));
 }
 export function normalizeContractActionDefinition(input:unknown,options:{allowPreview?:boolean}={}):ContractActionDefinition {
- const d=record(input,['schemaVersion','definitionId','siteId','actionId','revision','profile','locale','renderingPolicy','mode','reviewStatus','artifactId','wording','documents']);
- if(d.schemaVersion!==1||!contractActionHash(d.definitionId)||!contractActionHash(d.artifactId)||!slug(d.siteId)||!slug(d.actionId)||!text(d.revision,200)||!contractActionProfiles.includes(d.profile as ContractActionProfile)||d.renderingPolicy!=='contract-form-v1'||d.locale!==(String(d.profile).startsWith('de-')?'de-DE':d.profile==='br-withdrawal'?'pt-BR':'en')||typeof d.mode!=='string'||!['production','preview'].includes(d.mode)||typeof d.reviewStatus!=='string'||!['draft','reviewed'].includes(d.reviewStatus))throw Error('Invalid contract action definition.');
+ const localized=!!input&&typeof input==='object'&&Object.getOwnPropertyDescriptor(input,'schemaVersion')?.value===2;
+ const d=record(input,['schemaVersion','definitionId','siteId','actionId','revision','profile','locale','renderingPolicy','mode','reviewStatus','artifactId','wording','documents',...(localized?['localization']:[])]);
+ if((d.schemaVersion!==1&&d.schemaVersion!==2)||!contractActionHash(d.definitionId)||!contractActionHash(d.artifactId)||!slug(d.siteId)||!slug(d.actionId)||!text(d.revision,200)||!contractActionProfiles.includes(d.profile as ContractActionProfile)||d.renderingPolicy!==(localized?'contract-form-v2':'contract-form-v1')||!localized&&d.locale!==(String(d.profile).startsWith('de-')?'de-DE':d.profile==='br-withdrawal'?'pt-BR':'en')||typeof d.mode!=='string'||!['production','preview'].includes(d.mode)||typeof d.reviewStatus!=='string'||!['draft','reviewed'].includes(d.reviewStatus))throw Error('Invalid contract action definition.');
+ const localization=localized?normalizeContractActionLocalization(d.localization,{locale:typeof d.locale==='string'?d.locale:'',allowPreview:options.allowPreview===true}):undefined;
  const w=record(d.wording,['title','entryLabel','confirmLabel','statement']);for(const [key,value] of Object.entries(w))if(!text(value,key==='statement'?2000:300))throw Error('Invalid contract action wording.');
  const documents=record(d.documents,['terms','privacy']),out:Record<string,ContractActionDocument>={};
  for(const kind of ['terms','privacy']){const item=record(documents[kind],['title','url','version','effectiveDate','sha256','contentSha256','reviewStatus']);if(!text(item.title,300)||!text(item.version,200)||item.url!==`/artifacts/${d.artifactId}/${kind}.html`||!contractActionHash(item.sha256)||!contractActionHash(item.contentSha256)||typeof item.effectiveDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/u.test(item.effectiveDate)||!Number.isFinite(Date.parse(item.effectiveDate))||new Date(item.effectiveDate).toISOString().slice(0,10)!==item.effectiveDate||typeof item.reviewStatus!=='string'||!['draft','reviewed'].includes(item.reviewStatus))throw Error('Invalid contract document reference.');out[kind]=item as unknown as ContractActionDocument;}
  if(!options.allowPreview&&(d.mode!=='production'||d.reviewStatus!=='reviewed'||Object.values(out).some(item=>item.reviewStatus!=='reviewed')))throw Error('Contract actions require reviewed production wording and documents.');
- return {...d,wording:w,documents:out} as unknown as ContractActionDefinition;
+ return {...d,...(localization?{localization}:{}),wording:w,documents:out} as unknown as ContractActionDefinition;
 }
 export function normalizeContractActionFields(input:unknown,profile:ContractActionProfile):ContractActionFields {
  const f=record(input,['name','contract','email',...(profile==='de-cancellation'?['cancellation']:[])]);
@@ -55,8 +60,12 @@ export function contractActionLabels(profile:ContractActionProfile){
   en:{retry:'Retry the same request',newTab:'opens in a new tab',preview:'Preview',name:'Name',contract:'Contract or part of the contract',email:'Confirmation email',type:'Cancellation type',choose:'Choose a type',ordinary:'Ordinary cancellation',extraordinary:'Extraordinary cancellation',reason:'Reason (optional)',ending:'Requested ending (optional)',earliest:'Earliest possible',review:'Review details',edit:'Edit details',received:'Declaration received',pending:'Your declaration is recorded. Electronic acknowledgement is pending dispatch. This screen does not confirm contract termination or a refund.',download:'Save declaration',copy:'Your declaration copy',saving:'Sending declaration…',uncertain:'Receipt could not be confirmed. Retry the same request; do not start a second declaration.',invalid:'Check your name, contract details and email.',unavailable:'This form could not be verified. Reload the page or use another listed contact route.',sentBy:'Submitted through',clientAt:'Browser-reported submission',receivedAt:'Received',request:'Request',definition:'Form version',scope:'Receipt of a declaration. Contract matching, legal effect, refunds and delivery are separate.'},
  })[language];
 }
+/** Select only retained v2 messages; legacy profile labels stay unchanged. */
+export function contractActionDefinitionLabels(definition:ContractActionDefinition):ContractActionMessages {
+ return definition.schemaVersion===2?normalizeContractActionLocalization(definition.localization,{locale:definition.locale,allowPreview:true}).contractActions:contractActionLabels(definition.profile);
+}
 /** Immutable receipt copy; date of host receipt differs from the unverified browser click clock. */
 export function contractActionAcknowledgement(definition:ContractActionDefinition,request:ContractActionRequest,receivedAt:string):string {
- const l=contractActionLabels(definition.profile);
+ const l=contractActionDefinitionLabels(definition);
  return [definition.wording.title,definition.wording.statement,`${l.name}: ${request.fields.name}`,`${l.contract}: ${request.fields.contract}`,`${l.email}: ${request.fields.email}`,...(request.fields.cancellation?[`${l.type}: ${request.fields.cancellation.kind==='ordinary'?l.ordinary:l.extraordinary}`,`${l.reason}: ${request.fields.cancellation.reason}`,`${l.ending}: ${request.fields.cancellation.ending||l.earliest}`]:[]),`${l.sentBy}: ${definition.wording.confirmLabel}`,`${l.clientAt}: ${request.clientAt}`,`${l.receivedAt}: ${receivedAt}`,`${l.request}: ${request.requestId}`,`${l.definition}: ${definition.definitionId}`,l.scope].join('\n');
 }

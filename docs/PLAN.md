@@ -376,3 +376,8 @@ The Terms agreement pack includes optional `terms.agreements`, a local UI editor
 ### Review agreement settings with policy revisions
 
 The history workspace separately exposes retained `terms.agreements` and selected terms-interface copy under an explicit host grant. Operators compare named workflow changes independently of document sections and hashes. Missing declarations remain distinguishable from a missing release; absent historical dictionaries are not reconstructed. This reads no active selection or visitor state, and leaves ordinary record/export projections unchanged. See [agreement wording history](TERMS.md#review-archived-agreement-wording).
+
+### Contract form interface wording
+
+<!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->
+Optional complete `localization.contractActions` now versions host-supplied form, retry and acknowledgement labels. V2 definitions pin the site language and dictionary; all four substantive wording fields stay explicit. Existing v1 profile bytes and historical retries remain unchanged. The German cancellation example uses its own retained release. Translation review, statutory wording/applicability and actual independent delivery remain host work.

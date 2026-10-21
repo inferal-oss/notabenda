@@ -23,7 +23,7 @@ Packages remain unpublished previews. Install the trusted local build first. Use
 
 ## Gather the facts for this job
 
-Withdrawal and cancellation ask about actual contract formation and the public declaration route. Withdrawal supports the explicitly assessed `de-withdrawal`, `eu-withdrawal` and `br-withdrawal` profiles; cancellation currently supports `de-cancellation`. Native profile languages are fixed: German, English or Brazilian Portuguese. Changing four definition strings does not translate the whole interface. Keep another language or unsupported regime unresolved rather than changing the site's locale or selecting a different profile to bypass the limit.
+Withdrawal and cancellation ask about actual contract formation and the public declaration route. Withdrawal supports the explicitly assessed `de-withdrawal`, `eu-withdrawal` and `br-withdrawal` profiles; cancellation currently supports `de-cancellation`. Built-in v1 labels retain their original German, English or Brazilian Portuguese. Custom native copy uses the complete `localization.contractActions` dictionary and four explicit definition wording fields, bound to the actual site language in v2. Language never selects a legal profile or establishes eligibility; keep unsupported regimes unresolved. See [contract interface copy](CONTRACT-ACTIONS.md#supply-your-own-interface-copy).
 
 Paid orders ask about goods, digital content and recurring, calculated, later or conditional charges. Author the definition and live quote separately from `SiteConfig`; setup cannot create truthful prices or choose a product's guarantee branch. The exact offer, payment action and host admission/recovery must agree. A recorded action does not mean payment, contract formation or fulfillment occurred.
 
@@ -46,3 +46,5 @@ Test withdrawal review and the deliberate final action, then exact-request recov
 At checkout, check the real price model, original label files and readable facts immediately before dispatch. Test stale quotes, concurrent nonces and lost-response recovery. For confirmations, test the exact files and fixed destination after restart, uncertain settlement and stale leases. Keep provider acceptance distinct from recipient delivery. For guarantee displays, review complete artwork, product association, readable alternatives, QR links and real narrow-screen placement.
 
 Underlying legal requirements retain their own implementation and review status in the [catalog](requirements/README.md). These setup packs do not expand jurisdiction coverage or establish legal approval. Product requirement: `REQ-PRODUCT-CONSUMER-PACKS`; see [verification](verification/consumer-packs.md).
+
+<!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->

@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
+import {normalizeContractActionLocalization,selectContractActionLocalization} from './contract-action-localization.js';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-EVIDENCE-LIFECYCLE REQ-DE-CANCEL REQ-DE-WITHDRAWAL REQ-EU-WITHDRAWAL REQ-BR-CONTRACT
 import {normalizeContractActionDefinition,normalizeContractActionRequest,contractActionAcknowledgement,contractActionHash,contractActionUuid,contractActionIso} from './contract-action-policy.js';
 import type {ContractActionDefinition,ContractActionRequest,ContractActionReceipt} from './contract-action-policy.js';
@@ -32,7 +34,19 @@ async function definitionValue(input:unknown,context:ContractActionStoreOptions)
 }
 async function verifyArchive(tx:Pick<HistoryTransaction,'get'>,d:ContractActionDefinition,releasePrefix:string){
  let a:Record<string,JsonValue>;try{a=await validateStoredLegalRelease(await tx.get(releasePrefix+d.artifactId));}catch{return fail('invalid-definition');}
- const m=a.manifest as Record<string,JsonValue>;if(m.siteId!==d.siteId||m.artifactId!==d.artifactId||m.mode!==d.mode||!Array.isArray(m.documents))return fail('scope-mismatch');
+ const m=a.manifest as Record<string,JsonValue>;
+ if(m.siteId!==d.siteId||m.artifactId!==d.artifactId||m.mode!==d.mode||!Array.isArray(m.documents))return fail('scope-mismatch');
+ const config=object(a.publicConfig)?a.publicConfig:{},localization=object(config.localization)?config.localization:undefined;
+ // A selected dictionary cannot be bypassed by registering a legacy definition.
+ if((localization?.contractActions!==undefined)!==(d.schemaVersion===2))return fail('invalid-definition');
+ if(d.schemaVersion===2){
+  const site=object(config.site)?config.site:{};
+  if(!contractActionHash(m.configSha256)||site.id!==d.siteId||site.locale!==d.locale||m.locale!==d.locale)return fail('invalid-definition');
+  try{
+   const archived=normalizeContractActionLocalization(selectContractActionLocalization(localization as unknown as Parameters<typeof selectContractActionLocalization>[0]),{locale:d.locale,allowPreview:d.mode==='preview'});
+   if(canonicalJson(json(archived))!==canonicalJson(json(d.localization)))return fail('invalid-definition');
+  }catch{return fail('invalid-definition');}
+ }
  for(const kind of ['terms','privacy'] as const){const reference=d.documents[kind],archived=m.documents.find(raw=>object(raw)&&raw.kind===kind);if(!object(archived))return fail('invalid-definition');for(const key of ['title','version','effectiveDate','sha256','contentSha256','reviewStatus'] as const)if(archived[key]!==reference[key])return fail('invalid-definition');}
 }
 /** Registration retains old definitions. It never decides the original contract's applicable terms or a withdrawal window. */

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 import {termsHistoryExample} from '../examples/agreements/history.mjs';
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
@@ -184,7 +185,7 @@ const localizedPermissionOffer=JSON.parse(files['localization/permission/offer.j
 const localizedFormPermissions={offer:localizedPermissionOffer,artifact:JSON.parse(files[`artifacts/${localizedPermissionOffer.artifactId}.json`])};
 const paidOrders=Object.fromEntries(['mixed','deferred','conditional'].map(route=>[route,JSON.parse(files['orders/'+route+'/template.json'])]));
 const contractDefinitions=Object.fromEntries(['withdrawal','cancellation'].map(route=>[route,JSON.parse(files['contract-actions/'+route+'/definition.json'])]));
-const contractActions={definitions:contractDefinitions,artifact:JSON.parse(files['artifacts/'+contractDefinitions.withdrawal.artifactId+'.json'])};
+const contractActions={definitions:contractDefinitions,artifacts:[...new Set(Object.values(contractDefinitions).map(d=>d.artifactId))].map(id=>JSON.parse(files['artifacts/'+id+'.json'])),artifact:JSON.parse(files['artifacts/'+contractDefinitions.withdrawal.artifactId+'.json'])};
 const server={releases,agreements,consent,recordedConsent,processing,localizedProcessing,formPermissions,localizedFormPermissions,contractActions,paidOrders,evidence:syntheticRecords}; server.version=createHash('sha256').update(JSON.stringify(server)).digest('hex');
 await writeBuildFiles(output,files);
 for(const path of media) { await mkdir(dirname(resolve(output,path)),{recursive:true}); await copyFile(resolve(root,path),resolve(output,path)); }

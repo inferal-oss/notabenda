@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-RECORDING-INSPECTION
@@ -51,7 +52,7 @@ export class EvidenceWorkspace {
       await registerFormPermissionOffer(this.state.storage,data.formPermissions.offer,{siteId:data.formPermissions.offer.siteId,allowPreview:true});
       await recordLegalRelease(this.state.storage,data.localizedFormPermissions.artifact);
       await registerFormPermissionOffer(this.state.storage,data.localizedFormPermissions.offer,{siteId:data.localizedFormPermissions.offer.siteId,allowPreview:true});
-      await recordLegalRelease(this.state.storage,data.contractActions.artifact);
+      for(const artifact of data.contractActions.artifacts??[data.contractActions.artifact])await recordLegalRelease(this.state.storage,artifact);
       for(const definition of Object.values(data.contractActions.definitions))await registerContractActionDefinition(this.state.storage,definition,{siteId:definition.siteId,allowPreview:true});
       const marker = 'host/demo-bootstrap/' + data.version;
       if(!await this.state.storage.get(marker)) {

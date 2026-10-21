@@ -20,7 +20,7 @@ const definition = createContractActionDefinition(release.artifact, {
 
 Definitions include an immutable ID, site/action/revision, profile, locale, rendering policy, declaration and button wording, and exact terms/privacy references. Production requires reviewed wording and production documents. A caller's review flag does not establish legal approval. Use the explicit preview options for draft demonstrations.
 
-Initial profiles are `de-cancellation`, `de-withdrawal`, `eu-withdrawal` and `br-withdrawal`. They provide limited German, English and Portuguese wording and an email acknowledgement destination. Broader languages/channels and regional eligibility are not supplied. Wording overrides create a different definition and need review.
+Initial profiles are `de-cancellation`, `de-withdrawal`, `eu-withdrawal` and `br-withdrawal`. Their built-in v1 wording uses German, English or Portuguese and an email acknowledgement destination. Custom interface language uses the optional complete [selected dictionary](#supply-your-own-interface-copy). Other channels and regional eligibility are not inferred. Wording overrides create a different definition and need review.
 
 All profiles collect a name, free-form contract/part description and confirmation email. German continuing-contract cancellation also offers ordinary/extraordinary type, an optional reason and optional requested ending. An empty ending is preserved as earliest possible; no effective date is computed. Do not require a privacy acceptance checkbox, account lookup, login or marketing choice before capturing a declaration.
 
@@ -103,3 +103,33 @@ German [BGB section 312k](https://www.gesetze-im-internet.de/bgb/BJNR001950896.h
 [EU Directive 2023/2673](https://eur-lex.europa.eu/eli/dir/2023/2673/oj/eng) introduces the withdrawal function through Article 11a; national implementation and the contract's actual right remain relevant. Brazilian [Consumer Code article 49](https://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm) and [Decree 7,962 article 5](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/decreto/d7962.htm) add their own eligibility, acknowledgement and financial/application obligations. This module performs no financial notifications or refunds.
 
 See [feature status](FEATURES.md#feat-contract-actions), [the requirements catalog](requirements/README.md#req-product-contract-actions), and [verification](verification/contract-actions.md).
+
+<!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->
+## Supply your own interface copy
+
+The built-in profiles retain their original German, English or Portuguese labels. To use your own wording, add the complete `localization.contractActions` dictionary to the site configuration before compiling. The [German example message file](../examples/localization/contracts-messages.json) includes all 29 fields, plus the site's document and consent messages. These are original draft examples, not reviewed translations or a jurisdiction approval.
+
+```js
+const definition = createContractActionDefinition(release.artifact, {
+  actionId: 'subscription-end',
+  revision: 'form-2',
+  profile: 'de-cancellation', // choose after reviewing the actual contract
+  reviewStatus: 'reviewed',
+  wording: {
+    title: 'Vertrag kündigen',
+    entryLabel: 'Verträge hier kündigen',
+    confirmLabel: 'jetzt kündigen',
+    statement: 'Hiermit kündige ich den bezeichneten Vertrag.',
+  },
+});
+```
+
+When the dictionary is selected, all four `wording` fields are required. They remain separate from interface labels. The definition uses schema v2, the site's exact canonical locale, explicit text direction and retained copy revision/review metadata. No profile wording or message is substituted. Profile mechanics remain independent of language: cancellation types still use `ordinary`/`extraordinary`, withdrawal still has a review step, and an empty requested ending still means earliest possible. Review the actual statutory wording and applicability separately.
+
+Use `normalizeContractActionLocalization` from `@notabenda/core/contracts` to inspect a complete selected dictionary. Text is plain, without markup or placeholders. Action/field/reference labels are limited to 120 UTF-8 bytes; other messages to 2,000; the selected dictionary including metadata is limited to 12 KiB. Missing/extra keys, accessors, unsupported metadata and oversize sets fail. Production requires reviewed selected messages, declaration wording and documents. Browser-native validation messages follow the browser's own language settings.
+
+The native form, review, status, retry and savable acknowledgement all use the same retained labels. The Cloudflare recorder verifies them against the exact archived configuration before registration or new capture. Custom copy changes require a new localization revision, artifact and definition revision. Cookie permission scopes are unchanged, and the contract dictionary stays outside narrow consent payloads; changing shared localization metadata can still change presentation metadata.
+
+Keep old definitions and requests available for uncertain retries. A later copy revision never rewrites an earlier receipt or substitutes the new labels into its acknowledgement. Existing v1 definitions keep their original identities and formatter. A missing old archive does not prevent recovery of an already stored exact receipt; it still prevents new capture that needs archive validation. Receipt recovery remains subject to retirement and host authorization.
+
+The [German cancellation example](/contract-actions/cancellation/) now uses a complete selected dictionary and separate German document release. Its surrounding example copy is separate from the package dictionary. The backend stores the declaration and both delivery jobs; the demo sends no email and changes no real contract.

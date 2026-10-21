@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-RETAINED-RELEASES
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -24,6 +25,7 @@ test('a deployed demo with earlier document pins upgrades without replacing its 
  old.processing.artifact=older(old.processing.artifact);
  old.processing.notice=createProcessingNotice(old.processing.artifact,{scopeId:old.processing.notice.scopeId,activities:old.processing.notice.activities,wording:old.processing.notice.wording},{mode:'preview'});
  old.contractActions.artifact=older(old.contractActions.artifact);
+ old.contractActions.artifacts=[old.contractActions.artifact];
  assert.notEqual(old.contractActions.artifact.manifest.artifactId,current.contractActions.artifact.manifest.artifactId);
  for(const [route,d] of Object.entries(old.contractActions.definitions))old.contractActions.definitions[route]=createContractActionDefinition(old.contractActions.artifact,{actionId:d.actionId,revision:'form-1',profile:d.profile,reviewStatus:d.reviewStatus},{mode:'preview'});
  old.version=createHash('sha256').update(JSON.stringify(old)).digest('hex');

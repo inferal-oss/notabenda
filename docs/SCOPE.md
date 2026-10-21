@@ -291,3 +291,6 @@ The Terms agreement pack includes optional `terms.agreements`, a local UI editor
 ### Review agreement settings with policy revisions
 
 The history workspace separately exposes retained `terms.agreements` and selected terms-interface copy under an explicit host grant. Operators compare named workflow changes independently of document sections and hashes. Missing declarations remain distinguishable from a missing release; absent historical dictionaries are not reconstructed. This reads no active selection or visitor state, and leaves ordinary record/export projections unchanged. See [agreement wording history](TERMS.md#review-archived-agreement-wording).
+
+<!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->
+Contract interface copy is optional and versioned independently of profile mechanics. A complete selected dictionary is archived and checked before new capture; old receipt bytes and uncertain request identities remain intact. The package supplies no automatic translation or legal-profile selection.

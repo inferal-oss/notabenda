@@ -202,3 +202,8 @@ Author the title, introduction, purpose/category/source facts, recipient stateme
 Copy is part of notice identity and the retained release configuration. Change `localization.revision` and compile a new release when wording changes. `verifyIndirectCollectionNotice` compares the selected copy and bound purpose/privacy facts with that release; structural normalization alone authenticates neither author nor facts. Cookie runtime, scope and permission state do not include this dictionary.
 
 Try [the Portuguese referral example](/localization/indirect/), including the advance version and both plain-text bodies. Its explicitly selected profile remains New Zealand IPP3A. Portuguese does not choose Brazilian law or establish legal review; all displayed wording is a draft. Applicability, timing, lawful collection, delivery, awareness and any notification evidence remain separate host work. See [verification](verification/indirect-localization.md).
+
+<!-- @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION -->
+## Contract declarations
+
+Optional `localization.contractActions` supplies all 29 native form and acknowledgement labels. It shares the site's canonical locale, direction, revision and review declaration. [Contract authoring](CONTRACT-ACTIONS.md#supply-your-own-interface-copy) explains the complete dictionary, explicit substantive wording and v2 definition/archive binding. Existing v1 German, English and Portuguese labels remain unchanged. Selecting a language does not determine cancellation/withdrawal applicability or alter delivery jobs.

@@ -1,8 +1,11 @@
+// @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-DE-CANCEL REQ-DE-WITHDRAWAL REQ-EU-WITHDRAWAL REQ-BR-CONTRACT REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
-import {normalizeContractActionDefinition,normalizeContractActionFields,normalizeContractActionRequest,contractActionAcknowledgement,contractActionHash,contractActionIso,contractActionLabels} from './contract-action-policy.js';
+import {normalizeContractActionDefinition,normalizeContractActionFields,normalizeContractActionRequest,contractActionAcknowledgement,contractActionHash,contractActionIso,contractActionDefinitionLabels} from './contract-action-policy.js';
 import type {ContractActionDefinition,ContractActionFields,ContractActionRequest,ContractActionReceipt} from './contract-action-policy.js';
-export {normalizeContractActionDefinition,contractActionLabels} from './contract-action-policy.js';
+export {normalizeContractActionDefinition,contractActionLabels,contractActionDefinitionLabels} from './contract-action-policy.js';
 export type {ContractActionDefinition,ContractActionProfile,ContractActionFields,ContractActionRequest,ContractActionReceipt} from './contract-action-policy.js';
+export {normalizeContractActionLocalization} from './contract-action-localization.js';
+export type {ContractActionLocalization,ContractActionMessages} from './contract-action-localization.js';
 export interface ContractActionDraft {name:string;contract:string;email:string;cancellation?:{kind:''|'ordinary'|'extraordinary';reason:string;ending:string}}
 export interface ContractActionSnapshot {status:'editing'|'reviewing'|'submitting'|'uncertain'|'received'|'retired'|'unavailable'|'destroyed';fields:ContractActionDraft;receipt?:ContractActionReceipt;error?:'recording-uncertain'|'invalid-receipt'|'context-retired'|'invalid-definition'|'unavailable'}
 export interface ContractActionOptions {operationRef:string;submit(request:ContractActionRequest,context:{signal:AbortSignal}):Promise<unknown>;allowPreview?:boolean;initial?:ContractActionDraft;recovery?:ContractActionRequest;timeoutMs?:number}
@@ -46,7 +49,7 @@ export function createContractAction(input:unknown,options:ContractActionOptions
 /** Native, optional styling; direct cancellation confirmation and separate withdrawal review. No login or privacy-acceptance checkbox. */
 export function mountContractAction(container:HTMLElement,options:{action:ContractActionController}):{destroy():void}{
  if(container.closest('form'))throw Error('Mount the contract action outside another form.');
- const {action}=options,d=action.getDefinition(),l=contractActionLabels(d.profile),doc=container.ownerDocument,cancellation=d.profile==='de-cancellation',root=doc.createElement('section');root.className='nb-contract-action';root.lang=d.locale;
+ const {action}=options,d=action.getDefinition(),l=contractActionDefinitionLabels(d),doc=container.ownerDocument,cancellation=d.profile==='de-cancellation',root=doc.createElement('section');root.className='nb-contract-action';root.lang=d.locale;if(d.localization)root.dir=d.localization.direction;
  const title=doc.createElement('h2');title.textContent=d.wording.title;
  const form=doc.createElement('form'),fieldset=doc.createElement('fieldset'),legend=doc.createElement('legend');legend.textContent=d.wording.title;legend.className='nb-contract-visually-hidden';fieldset.append(legend);
  const controls=new Map<string,HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>();
