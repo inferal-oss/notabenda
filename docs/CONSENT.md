@@ -35,11 +35,13 @@ The build adds `consent-runtime.json` and `assets/notabenda-consent.css` to the 
 | Mode | When an optional service may start |
 | --- | --- |
 | `local` | After a valid browser-local grant. There is no server receipt. |
-| `required` | After the host confirms the matching receipt. Connect an archived consent notice and the receipt adapter shown below. |
+| `required` | After the host confirms the matching receipt. Build an archived notice with `--consent-scope SLUG`, then connect the receipt adapter shown below. |
 
 The mode has no default. Production builds validate the complete configuration and require reviewed content; use `--preview` for a draft. Without the switch, a new output directory receives the ordinary document build. Repeat the switch when rebuilding an existing runtime output, so the descriptor stays in step with the legal pages.
 
 Deploy the files with the site. Import `@notabenda/core/consent.css` from your bundler, or link the generated `/assets/notabenda-consent.css` for static hosting. Register each service lifecycle before optional requests can start; the build does not connect loaders or a backend.
+
+For the native controls, add `--consent-scope cookie-choices` with required mode to produce `consent-notice.json` and its immutable notice-ID URL. [Register and activate that notice](CONSENT-EVIDENCE.md#register-then-activate) in the host backend before using its receipt adapter. Custom UI wording remains an explicit build-API input.
 
 For a custom build pipeline, use the same compiler directly:
 

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 import {selectContractActionLocalization} from './contract-action-localization.js';
 import {normalizePublicLegalArtifact} from './release-files.js';
@@ -44,6 +45,9 @@ import type {ProcessingNotice} from './processing.js';
 import type {ProcessingActivity} from './types.js';
 // @requirements REQ-PRODUCT-AUTHORED-PREVIEW
 export {createRetainedReleaseFiles,normalizePublicLegalArtifact} from './release-files.js';
+// @requirements REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-RETAINED-RELEASES
+export {createConsentNoticeFiles,createRetainedConsentNoticeFiles} from './consent-release-files.js';
+export type {ConsentNoticeBuild} from './consent-release-files.js';
 import type {CatalogReleaseReview,CatalogReviewDescriptor} from './catalog-release-policy.js';
 
 export function canonicalJson(value: unknown): string {

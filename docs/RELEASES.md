@@ -52,3 +52,7 @@ Removing a public artifact is also a host decision. Ensure notices, agreements a
 Try the [current and prior terms example](http://127.0.0.1:4178/releases) after `npm run dev`. Both builds are explicit inputs, so the old URL survives a clean build. Its comparison opens the host-authorized document history workspace. See the [verification record](verification/retained-releases.md) and `REQ-PRODUCT-RETAINED-RELEASES` in the [catalog](requirements/README.md#req-product-retained-releases).
 
 After deployment, explicitly [check pinned publication](PUBLICATION-CHECK.md) against the intended trusted artifact. This checks four retained files; current routes, active controls and future retention remain separate.
+
+## Retain cookie-choice notices
+
+A consent notice is a separate public descriptor. `build --consent-runtime required --consent-scope SLUG` writes its current alias and `artifacts/{artifactId}/consent/{noticeId}.json`. Include old notice JSON explicitly with `--retain-consent-notice FILE` and provide its intact release through `--retain-artifact FILE` when that release is not current. The build checks the complete notice against the archived facts and emits only the pinned old notice. It does not change the active backend notice. See [notice builds and retention](CONSENT-EVIDENCE.md#keep-earlier-notices-available).

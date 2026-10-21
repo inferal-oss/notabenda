@@ -544,7 +544,8 @@
         "Transactional Durable Object records, artifact registration, anonymous receipts, and authenticated subject events; alternative storage adapters later.",
         "Export, controlled erasure, retention cleanup, access controls, and evidence provenance.",
         "Separate browser-reported actions from trusted application events; configurable transport for existing backends.",
-        "Optional complete host-supplied contract form and acknowledgement messages, archive-bound v2 definitions and explicit direction, preserving v1 bytes, uncertain retries and independent delivery jobs."
+        "Optional complete host-supplied contract form and acknowledgement messages, archive-bound v2 definitions and explicit direction, preserving v1 bytes, uncertain retries and independent delivery jobs.",
+        "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries."
       ],
       "implementationRefs": [
         "packages/notabenda/src/content.ts",
@@ -577,7 +578,14 @@
         "examples/contract-actions/build.mjs",
         "examples/contract-actions/client.mjs",
         "site/build.mjs",
-        "site/worker.mjs"
+        "site/worker.mjs",
+        "packages/notabenda/src/consent-release-files.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/release-files.ts",
+        "examples/static/choices-build.mjs",
+        "docs/CONSENT-EVIDENCE.md",
+        "docs/RELEASES.md",
+        "site/navigation.mjs"
       ]
     },
     {
@@ -820,7 +828,8 @@
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
         "Optional disposable remote SQLite Time Travel rehearsal with an external recovery gate, later hold and retirement replay, and attested namespace-first cleanup. A real remote run verified SQL/KV rollback, later hold-first replay, closed access, purge restart, surviving records/source bytes and cleanup. Complete host and all-family recovery remain open.",
-        "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory."
+        "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
+        "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -885,7 +894,11 @@
         "site/guide-search.mjs",
         "site/guide-search-build.mjs",
         "site/guide-search-client.mjs",
-        "site/guide-search.css"
+        "site/guide-search.css",
+        "packages/notabenda/src/consent-release-files.ts",
+        "examples/static/choices-build.mjs",
+        "docs/CONSENT-EVIDENCE.md",
+        "docs/RELEASES.md"
       ]
     },
     {
@@ -2920,7 +2933,8 @@
         "REQ-PRODUCT-TERMS-HISTORY",
         "REQ-PRODUCT-CONTRACT-LOCALIZATION",
         "REQ-PRODUCT-PRIVACY-CHOICE-LINK",
-        "REQ-PRODUCT-CONFIG-SOURCES"
+        "REQ-PRODUCT-CONFIG-SOURCES",
+        "REQ-PRODUCT-CONSENT-NOTICE-FILES"
       ]
     }
   ],
@@ -9173,6 +9187,48 @@
         "docs/verification/privacy-choice-links.md"
       ],
       "implementationNote": "Strict versioned declaration, safe URL/plain label, explicit draft boundary, optional official-icon presentation with English lang/dir, core/React/Astro navigation, release binding, independent request-page editing, source assets and installed-agent guidance."
+    },
+    {
+      "id": "REQ-PRODUCT-CONSENT-NOTICE-FILES",
+      "jurisdiction": "PRODUCT",
+      "title": "Native consent notice builds and explicit pinned notice retention",
+      "kind": "product-standard",
+      "summary": "Generate an exact native consent notice from the final public legal release, emit separate current and notice-ID-pinned JSON, and retain selected historical notices only after checking their complete descriptors against intact same-site releases.",
+      "appliesWhen": "An operator builds native required-receipt consent delivery or explicitly publishes selected earlier notices.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-RECORDS",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CONSENT-NOTICE-FILES"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Public files do not register, activate, authenticate or grant anything. Scope, custom UI display, host receipt/identity wiring, publication, review and retention remain operator decisions. The API verifies supported trusted public releases, not arbitrary HTML safety or provenance. Preview and existing output aliases require explicit decisions.",
+      "implementationRefs": [
+        "packages/notabenda/src/consent-release-files.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/release-files.ts",
+        "examples/static/choices-build.mjs",
+        "docs/CONSENT-EVIDENCE.md",
+        "docs/RELEASES.md",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/consent-release-files.test.mjs",
+        "packages/notabenda/test/consent-notice-cli.test.mjs",
+        "packages/notabenda-cf/test/consent-cli-delivery.test.mjs",
+        "site/test/consent-notice-files.test.mjs",
+        "docs/verification/consent-notice-files.md"
+      ],
+      "implementationNote": "Build-time helpers reuse full release verification and the existing notice factory. CLI native scope builds support all configuration formats; retained notice files remain bounded ordinary JSON. Notice-ID paths avoid copy-revision collisions under an unchanged artifact. Tests cover exact bytes, validly rehashed tampering, stale-alias guards, no accessor execution and actual CLI-to-ledger-to-runtime receipt gating in a local synthetic store."
     }
   ],
   "verification": [
@@ -10959,6 +11015,21 @@
         "packages/notabenda/test/config-authoring.test.mjs",
         "packages/notabenda/test/config-browser.test.mjs",
         "site/test/config-browser.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CONSENT-NOTICE-FILES",
+      "requirementIds": [
+        "REQ-PRODUCT-CONSENT-NOTICE-FILES"
+      ],
+      "status": "automated",
+      "expected": "Exact current/pinned bytes and hash identity; independent copy revisions; same-site and mode-bound retained descriptor verification; malformed, accessor and unsafe-file rejection before writes; stale-alias guards; actual CLI output registration, explicit activation and receipt-gated service start/withdrawal; public session-free example routing.",
+      "testRefs": [
+        "packages/notabenda/test/consent-release-files.test.mjs",
+        "packages/notabenda/test/consent-notice-cli.test.mjs",
+        "packages/notabenda-cf/test/consent-cli-delivery.test.mjs",
+        "site/test/consent-notice-files.test.mjs",
+        "docs/verification/consent-notice-files.md"
       ]
     }
   ],

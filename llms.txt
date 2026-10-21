@@ -89,3 +89,5 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Compiled authored preview](https://notabenda.org/guide/authored-preview/index.md): Node-only reader and exact public ZIP for an existing MD/MDX compiler build. Private sources stay separate; configuration previews are distinct. Inspect actual component output, then use the exported artifact for publication checks.
 
 - Browser consent build: `notabenda build --config FILE --consent-runtime local|required` emits `consent-runtime.json` and `assets/notabenda-consent.css`. Evidence mode is explicit; loaders, archived notice and host transport remain separate connections.
+
+- Native recorded-consent build: add `--consent-scope SLUG` to `build --consent-runtime required` for `consent-notice.json` plus `artifacts/{artifactId}/consent/{noticeId}.json`. Retain selected old notices with `--retain-consent-notice FILE` and their explicit legal releases. Publication does not register or activate a notice.

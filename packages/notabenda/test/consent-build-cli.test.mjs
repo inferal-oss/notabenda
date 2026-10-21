@@ -22,7 +22,7 @@ test('CLI builds the same bounded runtime from every config format with explicit
   const source=await formatConfigSource(config,format,format==='markdown'?'\nPRIVATE_BODY_SENTINEL\n':'');await writeFile(join(cwd,'site.'+extension),source);
   for(const mode of ['local','required']){
    const out='build-'+extension+'-'+mode,result=run(cwd,'build','--config','site.'+extension,'--consent-runtime',mode,'--out-dir',out);assert.equal(result.status,0,result.stderr);
-   const text=await readFile(join(cwd,out,'consent-runtime.json'),'utf8'),descriptor=JSON.parse(text);assert.equal(text,canonicalJson(compileConsentRuntimeConfig(config,{evidence:mode}))+'\n');assert.equal(descriptor.mode,'production');assert.equal(descriptor.evidence,mode);assert.doesNotMatch(text,/PRIVATE_CONFIG_SENTINEL|PRIVATE_BODY_SENTINEL|LEGAL_TERMS_BODY_SENTINEL|controller|rightsCenter/);
+   const text=await readFile(join(cwd,out,'consent-runtime.json'),'utf8'),descriptor=JSON.parse(text);assert.equal(text,canonicalJson(compileConsentRuntimeConfig(config,{evidence:mode}))+'\n');assert.equal(descriptor.mode,'production');assert.equal(descriptor.evidence,mode);await assert.rejects(access(join(cwd,out,'consent-notice.json')));assert.doesNotMatch(text,/PRIVATE_CONFIG_SENTINEL|PRIVATE_BODY_SENTINEL|LEGAL_TERMS_BODY_SENTINEL|controller|rightsCenter/);
    assert.equal(await readFile(join(cwd,out,'assets/notabenda-consent.css'),'utf8'),await readFile(new URL('../dist/consent.css',import.meta.url),'utf8'));
    assert.equal(await readFile(join(cwd,out,'notabenda.manifest.json'),'utf8'),canonicalJson(legal.manifest)+'\n');
    assert.match(result.stdout,new RegExp('Consent runtime: '+mode+' evidence mode'));

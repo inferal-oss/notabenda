@@ -393,3 +393,5 @@ Explicit `privacy.choicesLink` adds a script-free return route independently of 
 
 <!-- @requirements REQ-PRODUCT-SERVICE-DETECTION -->
 The optional recognizer now covers sixteen products through nineteen source-backed rules, including common analytics, monitoring and support loaders. Three additional official npm identifiers feed the same private project scanner. Exact historical snapshots remain interpretable; missing or partial evidence, proxies, self-hosting and source freshness stay explicit. Discovery still requires deliberate invocation and review before configuration changes.
+
+Native recorded-consent builds now have a CLI scope option and build-time notice file helpers. Current aliases and notice-ID-pinned files remain distinct; explicit retained notices are checked against intact public releases before publication output. Receipt registration, activation, authorized stream binding and actual service enforcement remain separate host steps. See [cookie-choice evidence](CONSENT-EVIDENCE.md).

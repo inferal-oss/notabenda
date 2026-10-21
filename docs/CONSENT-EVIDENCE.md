@@ -6,7 +6,35 @@ The [EDPB consent guidelines, §§5.1–5.2](https://www.edpb.europa.eu/system/f
 
 ## An immutable notice
 
-Build a notice alongside the legal documents:
+For the native controls, build the runtime and notice from the same configuration file:
+
+```sh
+notabenda build --config notabenda.config.yaml --consent-runtime required \
+  --consent-scope cookie-choices --out-dir legal-dist
+```
+
+JSON and Markdown-frontmatter configurations work too. Choose a stable scope slug for the host's cookie-choice workflow. The command writes `consent-runtime.json`, `consent-notice.json`, consent-only CSS, and an immutable notice file at `artifacts/{artifactId}/consent/{noticeId}.json`. The current alias is for bootstrapping; the hash URL identifies an exact notice. Both contain the same canonical JSON. Production is the default; use `--preview` deliberately for a draft.
+
+The notice uses the native controls' wording, including the configured consent localization and public rights/browser information. The CLI uses the existing five-minute delivery window. For custom UI wording or a different window, use the build API below and display that exact copy. A scope name creates no backend registration, active selection, visitor identity or permission. Required mode without `--consent-scope` still supports hosts that build their own notice.
+
+To use the generated output, record `artifacts/{artifactId}.json` in the host archive, register the notice, then activate it for the trusted site and scope. Pass the same notice and runtime descriptor to the browser adapter. The host still supplies the authorized stream and receipt endpoints.
+
+For a custom build, create the notice and files together:
+
+```js
+import {compileLegalDocuments, createConsentNoticeFiles} from '@notabenda/core/content';
+
+const build = compileLegalDocuments(reviewedConfig);
+const {notice, files} = createConsentNoticeFiles(build.artifact, {
+  scopeId: 'cookie-choices',
+  deliveryWindowSeconds: 300,
+});
+// Write {...build.files, ...files} to the site's public output.
+```
+
+`createConsentNoticeFiles` verifies the full public release before deriving the notice. Its settings are bounded plain data with only `scopeId`, optional `wording` and optional `deliveryWindowSeconds`. The returned notice matches `createConsentNotice`; the files add a current alias and a hash-pinned copy. The release must fit the supported 128 KiB public archive and the notice must fit 32 KiB. The API does not sanitize untrusted rendered HTML or decide whether an old notice should be published.
+
+The original descriptor-only API remains available:
 
 ```js
 import { compileLegalDocuments, createConsentNotice } from '@notabenda/core/content';
@@ -21,6 +49,20 @@ const notice = createConsentNotice(artifact, {
 The notice pins the privacy/cookie HTML and structured-content hashes, version and effective date, material purpose/service scopes, grant/refusal lifetimes, delivery window, and default interface wording. Its ID hashes the entire descriptor. The material-scope digest is separate: changing CSS or a document's presentation produces a different notice/release without implying a different processing purpose.
 
 `defaultConsentWording(publicConfig)` is shared with the default controls. A custom interface can supply a `wording` override when building its notice, but must actually display that wording. Creating or registering a descriptor does not prove it was displayed. `normalizeConsentNotice` checks structure and bounds; server registration independently verifies hashes and archived facts. Notices are limited to 32 KiB, with UTF-8 limits on individual fields. Preview requires an explicit build flag and independent backend `allowPreview: true`; default backend reads reject preview heads too.
+
+## Keep earlier notices available
+
+A notice hash can change when wording changes even if the underlying legal release stays the same. Keep the notice JSON alongside the policy release it names. An old notice's pinned URL must continue to return its exact bytes when that notice is selected for public retention.
+
+```sh
+notabenda build --config notabenda.config.yaml --consent-runtime required \
+  --consent-scope cookie-choices --out-dir next-legal-dist \
+  --retain-artifact saved-release.json --retain-consent-notice saved-notice.json
+```
+
+`--retain-consent-notice` accepts an explicit ordinary JSON file up to 32 KiB and can repeat up to 256 times. Its intact public release must be current or supplied through `--retain-artifact`. Wrong sites, unsupported modes, changed hashes/scopes/policy references and missing releases fail before output. An existing `consent-notice.json` requires an explicit current scope on rebuild, so an old alias cannot silently remain beside a new runtime.
+
+In a custom build, `createRetainedConsentNoticeFiles(artifacts, notices, {siteId, mode})` verifies each complete descriptor against its release and returns only pinned notice files. Add `createRetainedReleaseFiles` for the corresponding artifact JSON and document HTML. It accepts up to 257 release inputs (current plus 256 retained), with the existing 128 KiB per-release and 16 MiB combined bounds. Retained notices never replace the current alias, activate old notices or re-authorize old grants. Retention and publication remain operator decisions.
 
 ## Register, then activate
 

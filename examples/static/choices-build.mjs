@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
@@ -9,7 +10,7 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
 import {build as bundle} from 'esbuild';
 import { readFile } from 'node:fs/promises';
-import { compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig } from '@notabenda/core/content';
+import { compileLegalDocuments,createConsentNoticeFiles,compileConsentRuntimeConfig } from '@notabenda/core/content';
 import {renderChoicesPage} from './choices-page.mjs';
 
 export function exampleConsentConfig(base) {
@@ -51,7 +52,8 @@ export async function choiceFiles(base) {
   const recorded=structuredClone(config);recorded.site.id='juniper-recorded-choices';
   for(const item of recorded.storage)if(item.serviceId==='privacy-choices')item.name=item.name.replace('juniper-choices',recorded.site.id);
   const memory=recorded.purposes.find(p=>p.id==='remember-choices');memory.description='Remember the fictional choice and its server recording reference in this demonstration.';memory.dataCategories.push('Opaque host stream digest','Choice request identifier');recorded.services.find(s=>s.id==='privacy-choices').location='This browser and host-owned demonstration storage; locality depends on deployment.';memory.collection.description='An explicit choice in the protected fictional demonstration.';memory.retention='Local preference lifetimes as declared above. Server demonstration records have no automated deletion; production requires a reviewed retention policy.';
-  const archive=compileLegalDocuments(recorded,{mode:'preview'});const notice=createConsentNotice(archive.artifact,{scopeId:'sample-recorded-choices'},{mode:'preview'});
+  const archive=compileLegalDocuments(recorded,{mode:'preview'}),noticeBuild=createConsentNoticeFiles(archive.artifact,{scopeId:'sample-recorded-choices'},{mode:'preview'}),notice=noticeBuild.notice;
+  Object.assign(result,Object.fromEntries(Object.entries(noticeBuild.files).filter(([path])=>path!=='consent-notice.json')));
   Object.assign(result,Object.fromEntries(Object.entries(archive.files).filter(([file])=>file.startsWith('artifacts/'))));
   result['recorded-choices/site.json']=JSON.stringify(archive.publicConfig);result['recorded-choices/notice.json']=JSON.stringify(notice);
   result['recorded-choices/index.html']=renderChoicesPage(archive.publicConfig,{notice});

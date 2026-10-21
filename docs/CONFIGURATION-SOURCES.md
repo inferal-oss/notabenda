@@ -88,6 +88,8 @@ notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir
 
 The additional files are `consent-runtime.json` and `assets/notabenda-consent.css`. Choose `required` instead of `local` if optional processing must wait for a host-confirmed receipt. This is an explicit delivery decision, not a legal-basis inference from the inventory. Both choices use the same whole-site validation and bounded runtime compiler. Connect the resulting descriptor through `@notabenda/core/consent`; service lifecycles and any notice/receipt transport remain host work. See [cookie choices](CONSENT.md#smaller-browser-entry).
 
+For native recorded choices, add `--consent-scope cookie-choices` with `--consent-runtime required`. This builds the exact native notice from the final legal release, including configured consent localization. It writes a current `consent-notice.json` alias and a notice-ID-pinned JSON file. Backend registration, activation and receipt transport remain explicit host work. See [cookie-choice evidence](CONSENT-EVIDENCE.md).
+
 ## Read a configuration in your build
 
 ```js

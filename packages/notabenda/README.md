@@ -138,7 +138,7 @@ The optional build-time `@notabenda/core/technology` entry supplies versioned id
 
 ## Build from a configuration file
 
-`notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist` builds legal pages plus the small browser consent descriptor and its separate stylesheet. JSON and Markdown with YAML frontmatter work too. Select `required` when optional processing needs a host receipt; the mode has no default and still needs the host's archived notice and transport. The [consent guide](../../docs/CONSENT.md#smaller-browser-entry) shows the browser connection and service lifecycles.
+`notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist` builds legal pages plus the small browser consent descriptor and its separate stylesheet. JSON and Markdown with YAML frontmatter work too. Select `required` when optional processing needs a host receipt; the mode has no default and needs an archived notice and host receipt transport. Add `--consent-scope cookie-choices` with required mode to build the native notice and a hash-pinned public copy. Retain selected old notices with `--retain-consent-notice FILE` plus their legal releases. The [consent guide](../../docs/CONSENT.md#smaller-browser-entry) shows the browser connection and service lifecycles.
 
 ## Exports
 

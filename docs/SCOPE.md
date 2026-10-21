@@ -305,3 +305,7 @@ An optional versioned `privacy.choicesLink` declaration supplies a public destin
 
 <!-- @requirements REQ-PRODUCT-SERVICE-DETECTION -->
 Expand passive discovery through bounded original data rules tied to actual first-party references. The current optional seed has nineteen rules for sixteen products and preserves older snapshots. Do not treat a CDN path, SDK queue, dependency, vendor privacy claim or absent match as legal classification, actual execution or absence-of-tracking proof. New provider identities remain reference labels requiring actual-use and contracting-party review.
+
+## Native consent notice files
+
+Support generating an exact native consent notice from the final legal release, alongside the compiled required-receipt runtime. Use an explicit host workflow scope, current bootstrap alias and notice-ID-pinned public file. Retain earlier notices only from explicit public JSON inputs whose legal releases are supplied and verified. Rebuilds must not silently keep a stale alias; publication must not register, activate or grant anything. Custom interface copy, host identity/receipt connections, legal review and retention decisions stay explicit.

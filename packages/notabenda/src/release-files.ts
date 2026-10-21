@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 import {normalizeCatalogReviewDescriptor} from './catalog-release-policy.js';
 import {documentKinds,isSafeLink,toPublicConfig} from './config.js';
@@ -18,13 +19,13 @@ const texts=(value:Json|undefined):value is string[]=>Array.isArray(value)&&valu
 const requirements=(value:Json|undefined)=>texts(value)&&new Set(value).size===value.length&&value.every(v=>/^REQ-[A-Z0-9-]+$/u.test(v));
 
 // Bounded data-only copy: no accessors, toJSON, class instances, cycles or silent field dropping.
-function copyJson(input:unknown):{value:Json;bytes:number}{
-  let nodes=0,budget=MAX_ARTIFACT_BYTES;const active=new Set<object>();
+export function copyPublicReleaseJson(input:unknown,maxBytes=MAX_ARTIFACT_BYTES):{value:Json;bytes:number}{
+  let nodes=0,budget=maxBytes;const active=new Set<object>();
   function copy(value:unknown,depth:number):Json {
     if(++nodes>10000||depth>20||budget<0)return invalid();
     if(value===null||typeof value==='boolean'){budget-=5;return value;}
     if(typeof value==='number'&&Number.isFinite(value)){budget-=32;return value;}
-    if(typeof value==='string'){if(value.length>MAX_ARTIFACT_BYTES)return invalid();budget-=Buffer.byteLength(JSON.stringify(value));return value;}
+    if(typeof value==='string'){if(value.length>maxBytes)return invalid();budget-=Buffer.byteLength(JSON.stringify(value));return value;}
     if(!value||typeof value!=='object'||active.has(value))return invalid();active.add(value);
     let result:Json;
     if(Array.isArray(value)){
@@ -34,12 +35,12 @@ function copyJson(input:unknown):{value:Json;bytes:number}{
     }else{
       if(Object.getPrototypeOf(value)!==Object.prototype&&Object.getPrototypeOf(value)!==null)return invalid();
       const target:ObjectValue=Object.create(null);const keys=Object.keys(value);if(keys.length>10000||Reflect.ownKeys(value).length!==keys.length)return invalid();
-      for(const key of keys){if(key.length>MAX_ARTIFACT_BYTES)return invalid();budget-=Buffer.byteLength(JSON.stringify(key))+2;const d=Object.getOwnPropertyDescriptor(value,key);if(!d||!('value' in d))return invalid();target[key]=copy(d.value,depth+1);}
+      for(const key of keys){if(key.length>maxBytes)return invalid();budget-=Buffer.byteLength(JSON.stringify(key))+2;const d=Object.getOwnPropertyDescriptor(value,key);if(!d||!('value' in d))return invalid();target[key]=copy(d.value,depth+1);}
       result=target;
     }
     active.delete(value);if(budget<0)return invalid();return result;
   }
-  const value=copy(input,0),bytes=Buffer.byteLength(JSON.stringify(value));if(bytes>MAX_ARTIFACT_BYTES)return invalid();return {value,bytes};
+  const value=copy(input,0),bytes=Buffer.byteLength(JSON.stringify(value));if(bytes>maxBytes)return invalid();return {value,bytes};
 }
 function sections(value:Json|undefined):void {
   if(!Array.isArray(value)||!value.length)return invalid();const ids=new Set<string>();
@@ -81,7 +82,7 @@ function validate(input:Json,siteId:string,mode:'preview'|'production'):ObjectVa
 
 // @requirements REQ-QC-PROFILING Reuse the full release verifier for optional build-time notices.
 export function normalizePublicLegalArtifact(input:unknown,options:ValidationOptions={}):LegalArtifact {
-  const copied=copyJson(input),manifest=object(object(copied.value).manifest);
+  const copied=copyPublicReleaseJson(input),manifest=object(object(copied.value).manifest);
   if(typeof manifest.siteId!=='string'||options.mode!==undefined&&options.mode!=='preview'&&options.mode!=='production')return invalid();
   return validate(copied.value,manifest.siteId,options.mode??'production') as unknown as LegalArtifact;
 }
@@ -95,7 +96,7 @@ export function createRetainedReleaseFiles(artifacts:readonly unknown[],options:
   if(!Array.isArray(artifacts)||artifacts.length>256||!options||typeof options.siteId!=='string'||options.siteId.length>200||!/^[a-z][a-z0-9-]*$/u.test(options.siteId)||options.mode!==undefined&&!['preview','production'].includes(options.mode))return invalid();
   const files:Record<string,string>={},seen=new Map<string,string>();let total=0;
   for(const input of artifacts){
-    const copied=copyJson(input);total+=copied.bytes;if(total>MAX_TOTAL_BYTES)return invalid();
+    const copied=copyPublicReleaseJson(input);total+=copied.bytes;if(total>MAX_TOTAL_BYTES)return invalid();
     const a=validate(copied.value,options.siteId,options.mode??'production'),m=object(a.manifest),id=String(m.artifactId),json=canonicalJson(a)+'\n';
     if(seen.has(id)){if(seen.get(id)!==json)return invalid();continue;}seen.set(id,json);files[`artifacts/${id}.json`]=json;
     for(const raw of m.documents as Json[]){const d=object(raw);files[`artifacts/${id}/${String(d.kind)}.html`]=String(object(a.pages)[String(d.file)]);}
