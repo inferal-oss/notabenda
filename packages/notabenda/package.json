@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Reusable site configuration and static privacy, cookie, and terms documents.",
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "(Apache-2.0 OR MIT)",
   "engines": {
     "node": ">=22"
   },
@@ -22,6 +22,8 @@
     "dist",
     "README.md",
     "LICENSE",
+    "LICENSE-APACHE",
+    "LICENSE-MIT",
     "assets/guarantees",
     "assets/privacy-choices"
   ],

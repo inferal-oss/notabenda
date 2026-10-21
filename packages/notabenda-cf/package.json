@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Optional Cloudflare evidence storage, contract handoff runners and host-authorized backoffice.",
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "(Apache-2.0 OR MIT)",
   "engines": {
     "node": ">=22"
   },
@@ -12,6 +12,8 @@
     "dist",
     "README.md",
     "LICENSE",
+    "LICENSE-APACHE",
+    "LICENSE-MIT",
     "examples",
     "bin",
     "templates"

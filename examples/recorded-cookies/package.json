@@ -2,7 +2,7 @@
   "name": "recorded-cookie-application-example",
   "private": true,
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "(Apache-2.0 OR MIT)",
   "engines": {"node": ">=22.22.0"},
   "scripts": {
     "build": "node build.mjs",

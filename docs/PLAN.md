@@ -319,7 +319,7 @@ Browser delivery now has an explicit `@notabenda/core/headless` export, a consen
 
 ## 11. Public release checklist and deferred work
 
-Before release: verify npm names; include the project's Apache-2.0 license; document separate content licenses; include a security reporting policy; pin/review dependencies; verify package contents exclude secrets and private examples; provide install/uninstall/migration instructions and evidence-format versioning. Use only fictional operators, domains, vendors, and subjects in project fixtures and examples.
+Before release: verify npm names; include the project's Apache-2.0 OR MIT license choice and both license texts; document separate content licenses; include a security reporting policy; pin/review dependencies; verify package contents exclude secrets and private examples; provide install/uninstall/migration instructions and evidence-format versioning. Use only fictional operators, domains, vendors, and subjects in project fixtures and examples.
 
 Migration guidance should inventory actual services, preserve available historical evidence, archive prior document versions where lawfully available, and explicitly establish new grants when old choices cannot be mapped reliably. Do not translate an old opaque cookie into assumed consent. Prevent parallel old/new loaders from starting the same tracker during rollout.
 

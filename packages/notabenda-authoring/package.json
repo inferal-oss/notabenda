@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Optional Markdown and MDX legal-document authoring with YAML frontmatter and private source history.",
   "type": "module",
-  "license": "Apache-2.0",
+  "license": "(Apache-2.0 OR MIT)",
   "engines": {
     "node": ">=22"
   },
@@ -11,7 +11,9 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "LICENSE-APACHE",
+    "LICENSE-MIT"
   ],
   "exports": {
     ".": {

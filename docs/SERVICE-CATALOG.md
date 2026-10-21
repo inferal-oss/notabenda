@@ -116,7 +116,7 @@ Start with a curated cross-category set, then expand through a reproducible impo
 Sources checked on 19 October 2026:
 
 - [Open Cookie Database](https://github.com/jkwakman/Open-Cookie-Database) distributes cookie metadata as CSV and is a useful seed candidate. Its [repository license](https://github.com/jkwakman/Open-Cookie-Database/blob/master/LICENSE) is Apache-2.0. Pin an exact revision, preserve notices/attribution and validate imported fields; do not inherit a category as a site's legal conclusion.
-- [DuckDuckGo Tracker Radar's data license](https://github.com/duckduckgo/tracker-radar/blob/main/LICENSE) is CC BY-NC-SA 4.0. Do not silently merge that data into a generally commercially reusable Apache-2.0 catalog. Separately licensed detector software does not change the data's license.
+- [DuckDuckGo Tracker Radar's data license](https://github.com/duckduckgo/tracker-radar/blob/main/LICENSE) is CC BY-NC-SA 4.0. Do not silently merge that data into a generally commercially reusable catalog. Separately licensed detector software does not change the data's license.
 - The existing IAB/TCF research remains advertising-specific. A general service inventory or detection entry does not provide TCF registration or CMP certification; those remain a deferred feature.
 
 The current optional seed imports pinned Open Cookie Database metadata and adds original backend/provider reference candidates. All seed entries remain unreviewed. Details, attribution and source hashes are in [the data record](../catalog/README.md).

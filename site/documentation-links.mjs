@@ -15,7 +15,7 @@ export function createDocumentationLinkResolver({docs,assets,sources}){
   const resolved=posix.normalize(posix.join(posix.dirname(source),path));
   if(documents.has(resolved))return documents.get(resolved)+fragment;
   if(sourceViews.has(resolved))return sourceViews.get(resolved)+fragment;
-  const asset=resolved==='LICENSE'?'license.txt':resolved;
+  const asset=({'LICENSE':'license.txt','LICENSE-APACHE':'license-apache.txt','LICENSE-MIT':'license-mit.txt'}[resolved]??resolved);
   if(published.has(asset))return '/'+asset+fragment;
   throw Error(`Unpublished documentation link in ${source}: ${href} (${resolved}). Correct the reference or add an explicit public target.`);
  }

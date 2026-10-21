@@ -39,7 +39,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-EMBEDS
-test('packed npm tarball installs offline and exposes API, CLI, types, CSS and Apache license', async () => {
+test('packed npm tarball installs offline and exposes API, CLI, types, CSS and both license choices', async () => {
   const cwd = await mkdtemp(join(tmpdir(), 'notabenda-package-'));
   const root = fileURLToPath(new URL('../../..', import.meta.url));
   const env = { ...process.env, npm_config_cache: join(cwd, 'cache'), npm_config_update_notifier: 'false' };
@@ -51,7 +51,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     const manifest = packages.find(p => p.name === '@notabenda/core');
     assert.equal(packages.length, 2);
     for (const item of packages) {
-      assert.ok(item.files.some(f => f.path === 'LICENSE'));
+      for(const file of ['LICENSE','LICENSE-APACHE','LICENSE-MIT'])assert.ok(item.files.some(f=>f.path===file),file);
       assert.ok(item.files.some(f => f.path === 'README.md'));
     }
     assert.ok(manifest.files.some(f => f.path === 'LICENSE'));
@@ -68,13 +68,13 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and A
     assert.equal(installed.status, 0, installed.stderr);
     const installedPackage = JSON.parse(await readFile(join(cwd, 'node_modules/@notabenda/core/package.json'), 'utf8'));
     assert.equal(installedPackage.name,'@notabenda/core');assert.equal(installedPackage.publishConfig.access,'public');assert.deepEqual(Object.keys(installedPackage.bin),['notabenda']);
-    assert.equal(installedPackage.license, 'Apache-2.0');
+    assert.equal(installedPackage.license, '(Apache-2.0 OR MIT)');
     assert.equal(Object.keys(installedPackage.dependencies ?? {}).length, 0);
     await assert.rejects(readFile(join(cwd,'node_modules/react/package.json'),'utf8'),error=>error.code==='ENOENT');
     await assert.rejects(readFile(join(cwd,'node_modules/astro/package.json'),'utf8'),error=>error.code==='ENOENT');
     const cfPackage = JSON.parse(await readFile(join(cwd, 'node_modules/@notabenda/cloudflare/package.json'), 'utf8'));
     assert.equal(cfPackage.name,'@notabenda/cloudflare');assert.equal(cfPackage.publishConfig.access,'public');
-    assert.equal(cfPackage.license, 'Apache-2.0');
+    assert.equal(cfPackage.license, '(Apache-2.0 OR MIT)');
     assert.equal(Object.keys(cfPackage.dependencies ?? {}).length, 0);
     assert.equal(cfPackage.bin['notabenda-cf'],'./bin/notabenda-cf.mjs');
     const cfManifest=packages.find(item=>item.name==='@notabenda/cloudflare');assert.ok(cfManifest.files.some(file=>file.path==='templates/src/worker.mjs'));assert.ok(cfManifest.files.some(file=>file.path==='bin/notabenda-cf.mjs'));

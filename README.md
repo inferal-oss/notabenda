@@ -148,4 +148,4 @@ Use the [CLI wizard or admin setup screen](docs/SETUP.md) to work through practi
 
 ## License
 
-[Apache License 2.0](LICENSE). Supplied or separately licensed legal content retains its own licensing and authorship.
+Licensed under [Apache 2.0](LICENSE-APACHE) or [MIT](LICENSE-MIT), at your option. See [LICENSE](LICENSE) for contribution terms and separately licensed materials.

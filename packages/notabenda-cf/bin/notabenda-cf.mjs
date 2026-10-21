@@ -44,6 +44,8 @@ try{
    'src/settings.mjs':'// Public host-owned configuration. Keep credentials in the host secret store.\nexport const settings = '+JSON.stringify(settings,null,2)+';\n',
    '.gitignore':'node_modules/\npublic/\ndist/\n.wrangler/\n.dev.vars\n.dev.vars.*\n.env\n.env.*\nsetup.private.json\n',
    'LICENSE':await readFile(new URL('../LICENSE',import.meta.url),'utf8'),
+   'LICENSE-APACHE':await readFile(new URL('../LICENSE-APACHE',import.meta.url),'utf8'),
+   'LICENSE-MIT':await readFile(new URL('../LICENSE-MIT',import.meta.url),'utf8'),
   };
   for(const path of ['README.md','src/worker.mjs','src/host.mjs','src/workspace.mjs','src/authorize.mjs','src/setup.mjs','scripts/build-assets.mjs'])files[path]=await readFile(new URL('../templates/'+path,import.meta.url),'utf8');
   // Exclusive directory creation owns the output boundary. Every file is exclusive too.

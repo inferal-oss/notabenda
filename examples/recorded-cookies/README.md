@@ -76,4 +76,4 @@ Review the actual authentication/origin boundary, rate limits, service network b
 
 The optional maintainer check is `node scripts/check-recorded-cookie-runtime.mjs` from the repository. It copies this application into an ignored private directory, tests the unchanged denying hooks first, then injects synthetic authorization and faults only into that disposable copy. The HTTP/SQLite check is separate from the client DOM tests and browser observations recorded in the guide. Adopters choose their own CI.
 
-Code is Apache-2.0. Replace the fictional sample legal content with your own reviewed wording.
+Code is Apache-2.0 OR MIT, at your option. Replace the fictional sample legal content with your own reviewed wording.

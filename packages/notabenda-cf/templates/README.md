@@ -30,7 +30,7 @@ Keep `.dev.vars`, environment files and private setup reports out of public asse
 
 To stop serving the integration, remove its routes or host mount and preserve any required records/exports. Uninstalling packages or deleting this local directory does not delete Cloudflare storage. Namespace/class deletion is a separate destructive operation; follow Cloudflare's current procedure after deciding what must be retained. This scaffold never performs deletion or cleanup of remote resources.
 
-Code uses Apache-2.0. Supplied legal content retains its own authorship and licensing. The setup recommendations, stored records and successful build do not establish legal compliance.
+Code uses Apache-2.0 OR MIT, at your option. Supplied legal content retains its own authorship and licensing. The setup recommendations, stored records and successful build do not establish legal compliance.
 
 Setup starts with the reusable cartridge library. Its module and both stylesheets require the host configuration permission; the questionnaire and imports stay in the operator tab. The local doctor checks all generated setup and preview assets.
 

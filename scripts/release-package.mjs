@@ -54,12 +54,12 @@ function exportFiles(value,files,targets=new Set()){
 /** expected paths derive from maintained source/build inputs, never the archive's own files declaration. */
 export function checkPackageArchive(compressed,{name,version,allowedFiles,sourceMaps=new Map(),license,metadata:expectedMetadata,requiredFiles=[],requiredContents=new Map()}){
  const {files,unpackedBytes}=readPackageArchive(compressed);for(const p of files.keys())if(!allowedFiles.has(p))return fail('unexpected-package-file',p);
- for(const p of ['package.json','LICENSE','README.md',...requiredFiles])if(!files.has(p))return fail('missing-package-file',p);
+ for(const p of ['package.json','LICENSE','LICENSE-APACHE','LICENSE-MIT','README.md',...requiredFiles])if(!files.has(p))return fail('missing-package-file',p);
  for(const [path,bytes] of requiredContents)if(!files.get(path)?.data.equals(bytes))return fail('required-content-mismatch',path);
  let metadata;try{metadata=JSON.parse(files.get('package.json').data.toString('utf8'));}catch{return fail('invalid-package-json');}
  if(expectedMetadata&&canonical(metadata)!==canonical(expectedMetadata))return fail('package-metadata-mismatch');
- if(metadata.name!==name||metadata.version!==version||metadata.license!=='Apache-2.0'||metadata.type!=='module'||metadata.private===true)return fail('package-identity');
- if(!files.get('LICENSE').data.equals(license)||!license.toString('utf8').includes('Apache License'))return fail('license-mismatch');
+ if(metadata.name!==name||metadata.version!==version||metadata.license!=='(Apache-2.0 OR MIT)'||metadata.type!=='module'||metadata.private===true)return fail('package-identity');
+ if(!files.get('LICENSE').data.equals(license)||!license.toString('utf8').includes('SPDX-License-Identifier: Apache-2.0 OR MIT'))return fail('license-mismatch');
  if(['preinstall','install','postinstall','prepare'].some(key=>metadata.scripts?.[key]!==undefined))return fail('consumer-lifecycle-script');
  if(Object.keys(metadata.optionalDependencies??{}).length||metadata.bundledDependencies?.length||metadata.bundleDependencies?.length)return fail('unsupported-dependency-class');
  const dependencies=metadata.dependencies??{};if(!dependencies||typeof dependencies!=='object'||Array.isArray(dependencies))return fail('invalid-dependencies');

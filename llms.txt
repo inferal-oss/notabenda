@@ -1,6 +1,6 @@
 # Notabenda
 
-> Self-hosted legal pages, privacy controls and optional evidence records. Apache 2.0.
+> Self-hosted legal pages, privacy controls and optional evidence records. Apache 2.0 or MIT, at your option.
 
 Developer preview: packages have not been published to npm. The package names are `@notabenda/core`, `@notabenda/cloudflare` and `@notabenda/authoring`. Use a trusted workspace build or locally packed tarballs. The installed CLI binaries remain `notabenda` and `notabenda-cf`. The CLI accepts JSON, YAML or Markdown-frontmatter site configuration. Legal Markdown/MDX bodies use the optional authoring build API.
 

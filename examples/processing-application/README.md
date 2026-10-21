@@ -85,4 +85,4 @@ The example's bounded queues (32 jobs, 256 pending fences and 256 sink payloads)
 
 The optional maintainer command `node scripts/check-processing-application.mjs` runs this application against disposable local SQLite. Synthetic context hooks and fault endpoints are injected only into that private copy. It deploys nothing and leaves adopter CI decisions to the adopter.
 
-Code is Apache-2.0. Replace the fictional legal content with reviewed wording for your actual service.
+Code is Apache-2.0 OR MIT, at your option. Replace the fictional legal content with reviewed wording for your actual service.

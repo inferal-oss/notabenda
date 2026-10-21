@@ -29,7 +29,7 @@ test('CLI creates a standalone project with declared SQLite storage, local build
   const target=await scaffold(cwd),config=JSON.parse(await readFile(join(target,'wrangler.json'),'utf8')),pkg=JSON.parse(await readFile(join(target,'package.json'),'utf8'));
   assert.deepEqual(config.exports,{EvidenceWorkspace:{type:'durable-object',storage:'sqlite'}});assert.equal(config.migrations,undefined);assert.equal(config.assets.run_worker_first,true);assert.equal(config.routes,undefined);assert.equal(config.account_id,undefined);assert.equal(config.observability.enabled,false);
   assert.match(pkg.scripts.check,/--dry-run/);assert.equal(pkg.dependencies['@notabenda/cloudflare'],'0.1.0');assert.equal(pkg.dependencies['@notabenda/core'],'0.1.0');assert.equal(pkg.private,true);
-  assert.match(await readFile(join(target,'LICENSE'),'utf8'),/Apache License/);assert.match(await readFile(join(target,'.gitignore'),'utf8'),/\.dev.vars/);
+  assert.match(await readFile(join(target,'LICENSE'),'utf8'),/Apache-2\.0 OR MIT/);for(const file of ['LICENSE','LICENSE-APACHE','LICENSE-MIT'])assert.equal(await readFile(join(target,file),'utf8'),await readFile(new URL('../'+file,import.meta.url),'utf8'));assert.match(await readFile(join(target,'.gitignore'),'utf8'),/\.dev.vars/);
   const {authorizeHostRequest}=await import(pathToFileURL(join(target,'src/authorize.mjs')));assert.equal(await authorizeHostRequest(new Request('https://example.test/'),{}),null);
   await assert.rejects(readFile(join(target,'.dev.vars')),e=>e.code==='ENOENT');await assert.rejects(readFile(join(target,'package-lock.json')),e=>e.code==='ENOENT');
   assert.equal(run(cwd,['--help']).status,0);assert.notEqual(run(cwd,['deploy']).status,0);

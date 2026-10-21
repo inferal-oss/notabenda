@@ -2,7 +2,7 @@
 
 Write legal documents in Markdown or MDX, with YAML frontmatter for titles, versions, routes and review status. Bring your own static MDX components and keep exact source alongside immutable rendered releases.
 
-This optional **build-time** package leaves the `@notabenda/core` browser core framework-independent. It needs Node.js 22 or later. Apache 2.0. Currently an unpublished developer preview.
+This optional **build-time** package leaves the `@notabenda/core` browser core framework-independent. It needs Node.js 22 or later. Apache 2.0 or MIT, at your option. Currently an unpublished developer preview.
 
 ```js
 import { compileAuthoredDocuments, readDocumentSource } from '@notabenda/authoring';

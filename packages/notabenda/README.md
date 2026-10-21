@@ -149,7 +149,7 @@ The optional build-time `@notabenda/core/technology` entry supplies versioned id
 - `@notabenda/core/styles.css`: optional responsive, namespaced styles.
 - `notabenda` CLI: JSON-only `init`, `check`, and `build` commands; `check --json` exposes diagnostics and requirement IDs.
 
-Code is licensed under Apache-2.0. The license does not replace review of the operator's processing facts, applicability, or legal content.
+Code is licensed under Apache-2.0 OR MIT, at your option. The license does not replace review of the operator's processing facts, applicability, or legal content.
 
 ## Optional React integration
 
@@ -228,7 +228,7 @@ For optional browser recognition, import `@notabenda/core/catalog/browser` and t
 
 For information obtained from another source, the optional [indirect collection notice](../../docs/INDIRECT-COLLECTION.md) renders reviewed New Zealand IPP3A particulars in static HTML or plain text. It keeps the collection phase and privacy revision explicit; your application handles notification and any delivery records.
 
-The optional [EU guarantee notice](../../docs/GUARANTEES.md) supplies the unchanged official shop-level artwork in 24 languages, with selected-file build output and text alternatives. Code is Apache-2.0; official graphics keep their own source/use conditions. Product labels and paid ordering remain separate work.
+The optional [EU guarantee notice](../../docs/GUARANTEES.md) supplies the unchanged official shop-level artwork in 24 languages, with selected-file build output and text alternatives. Code is Apache-2.0 OR MIT; official graphics keep their own source/use conditions. Product labels and paid ordering remain separate work.
 
 The optional `@notabenda/core/guarantees/label` entry supplies `normalizeDurabilityGuaranteeLabel` and `renderDurabilityGuaranteeLabel` for finished producer GARAN files. React and Astro provide static wrappers. Ingestion and image validation live in `@notabenda/authoring/guarantees`, keeping frontend installs dependency-free. See [product durability labels](../../docs/GUARANTEE-LABELS.md) for qualification, review and retention boundaries. **REQ-EU-GUARANTEE-LABEL**.
 
