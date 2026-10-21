@@ -23,7 +23,7 @@ npx @notabenda/core discover --project . --out-dir ./service-review
 
 From this repository after `npm run build`, use `node packages/notabenda/dist/cli.js` in place of `npx @notabenda/core`. `--catalog FILE` selects a custom version-1 JSON catalog for either command. Catalog search accepts `--delivery browser|backend|infrastructure` and `--limit 1–100`; project scan deliberately rejects browser capture/config flags. No site config is needed for reference search or static scanning.
 
-The seed has 363 provider identities and 402 product/reference entries, including 39 original backend/provider references, three additional browser-product references and 2,278 imported storage hints. The imported names are reference labels, not verified legal entities. Identity-only homepage references have `access: reference-only` and `checkedOn: null`. Retrieved SDK documentation and product-profile references carry their own checked dates and `access: read`; reading a technical reference does not verify provider practices. Upstream cookie categories and retention are reported hints, not site configuration defaults.
+The seed has 368 provider identities and 409 product/reference entries, including 39 original backend/provider references, ten additional browser-product references and 2,278 imported storage hints. The imported names are reference labels, not verified legal entities. Identity-only homepage references have `access: reference-only` and `checkedOn: null`. Retrieved SDK documentation and product-profile references carry their own checked dates and `access: read`; reading a technical reference does not verify provider practices. Upstream cookie categories and retention are reported hints, not site configuration defaults.
 
 ```ts
 import {

@@ -3,7 +3,7 @@
   "kind": "notabenda-browser-rules",
   "matcherVersion": 1,
   "id": "notabenda-browser-signatures",
-  "revision": "2026-10-19.1",
+  "revision": "2026-10-20.3",
   "rules": [
     {
       "id": "google-tag-script",
@@ -394,6 +394,797 @@
           "allOf": [
             "cookie",
             "api"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "segment-browser",
+      "revision": "2026-10-20.3",
+      "productId": "segment-analytics",
+      "sourceIds": [
+        "browser-segment-snippet"
+      ],
+      "explanation": "A Segment CDN loader reference and an own analytics queue/object are reported.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "Destination tools, write keys, queue contents and enabled integrations are not inspected."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "cdn.segment.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/analytics.js/v1/*/analytics.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "api",
+          "kind": "global",
+          "name": "analytics",
+          "valueType": "object"
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader",
+            "api"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentry-browser-loader",
+      "revision": "2026-10-20.3",
+      "productId": "sentry-monitoring",
+      "sourceIds": [
+        "browser-sentry-loader",
+        "browser-sentry-loader-host"
+      ],
+      "explanation": "A script reference matches the documented Sentry loader host and public-key-shaped path.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "The suffix is not validated as a key; errors, tracing, replay, DSNs and project settings are not inspected."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "js.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "datadog-browser-rum",
+      "revision": "2026-10-20.3",
+      "productId": "datadog-monitoring",
+      "sourceIds": [
+        "browser-datadog-rum"
+      ],
+      "explanation": "A script reference names the Datadog browser-agent host and a RUM loader filename.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "The directory pattern generalizes region/version strings and does not validate an SDK release or selected data location. Replay, logs, identifiers and SDK configuration are not inspected."
+      ],
+      "signals": [
+        {
+          "id": "region-loader",
+          "kind": "resource",
+          "hosts": [
+            "www.datadoghq-browser-agent.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/datadog-rum.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "root-loader",
+          "kind": "resource",
+          "hosts": [
+            "www.datadoghq-browser-agent.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/datadog-rum-v7.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "region-loader"
+          ]
+        },
+        {
+          "allOf": [
+            "root-loader"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zendesk-web-widget",
+      "revision": "2026-10-20.3",
+      "productId": "zendesk-web-widget",
+      "sourceIds": [
+        "browser-zendesk-widget"
+      ],
+      "explanation": "A script reference matches the documented Zendesk Web Widget loader.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "The snippet does not distinguish Classic from messaging or establish that a support conversation exists."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "static.zdassets.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/ekr/snippet.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cloudflare-web-analytics",
+      "revision": "2026-10-20.3",
+      "productId": "cloudflare-web-analytics",
+      "sourceIds": [
+        "browser-cloudflare-analytics"
+      ],
+      "explanation": "A script reference names the documented Cloudflare beacon base path or an appended-path variant.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "No account token, collection payload, deployment product or exemption is inferred.",
+        "The appended-path branch is a recognition heuristic; it does not validate a version suffix or establish that the URL is a working loader."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "static.cloudflareinsights.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/beacon.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "suffixed-loader",
+          "kind": "resource",
+          "hosts": [
+            "static.cloudflareinsights.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "prefix",
+            "value": "/beacon.min.js/"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader"
+          ]
+        },
+        {
+          "allOf": [
+            "suffixed-loader"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "plausible-site-script",
+      "revision": "2026-10-20.3",
+      "productId": "plausible-analytics",
+      "sourceIds": [
+        "browser-plausible-loader",
+        "browser-plausible-update",
+        "browser-plausible-legacy",
+        "browser-plausible-extensions"
+      ],
+      "explanation": "A Plausible script reference matches the current site-specific pattern or an archived legacy loader family.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "The opaque suffix and enabled measurements are not inspected. The legacy extension suffix is not parsed into enabled settings."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "plausible.io"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/js/pa-*.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "legacy",
+          "kind": "resource",
+          "hosts": [
+            "plausible.io"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/js/script.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "legacy-extensions",
+          "kind": "resource",
+          "hosts": [
+            "plausible.io"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/js/script.*.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader"
+          ]
+        },
+        {
+          "allOf": [
+            "legacy"
+          ]
+        },
+        {
+          "allOf": [
+            "legacy-extensions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fathom-browser",
+      "revision": "2026-10-20.3",
+      "productId": "fathom-analytics",
+      "sourceIds": [
+        "browser-fathom-loader"
+      ],
+      "explanation": "A script reference matches the documented Fathom embed loader.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "Script attributes, site identifiers and automatic collection settings are not inspected. No consent exemption is inferred."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "cdn.usefathom.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/script.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "umami-cloud-browser",
+      "revision": "2026-10-20.3",
+      "productId": "umami-cloud",
+      "sourceIds": [
+        "browser-umami-loader"
+      ],
+      "explanation": "A script reference matches the documented Umami Cloud loader.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "This does not recognize arbitrary self-hosted Umami paths or determine whether sessions, replay or identifiers are used."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "cloud.umami.is"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/script.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "clarity-browser",
+      "revision": "2026-10-20.3",
+      "productId": "microsoft-clarity",
+      "sourceIds": [
+        "browser-clarity-loader",
+        "browser-clarity-code-image"
+      ],
+      "explanation": "A documented Clarity tag prefix and an own clarity function are reported.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "The function can be a bootstrap queue; project IDs, cookie settings, masking and captured content are not inspected."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "www.clarity.ms"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "prefix",
+            "value": "/tag/"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "api",
+          "kind": "global",
+          "name": "clarity",
+          "valueType": "function"
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader",
+            "api"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "crisp-browser",
+      "revision": "2026-10-20.3",
+      "productId": "crisp-chat",
+      "sourceIds": [
+        "browser-crisp-loader"
+      ],
+      "explanation": "A Crisp chatbox loader reference and an own $crisp queue/object are reported.",
+      "caveats": [
+        "A script reference or buffered resource entry does not prove execution, delivery or actual processing.",
+        "Bundled SDKs, first-party proxies, self-hosting and changed loader paths may not match.",
+        "Website/session identifiers, queue values, chat contents and connection state are not inspected."
+      ],
+      "signals": [
+        {
+          "id": "loader",
+          "kind": "resource",
+          "hosts": [
+            "client.crisp.chat"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "exact",
+            "value": "/l.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "api",
+          "kind": "global",
+          "name": "$crisp",
+          "valueType": "object"
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "loader",
+            "api"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentry-browser-bundles-1",
+      "revision": "2026-10-20.3",
+      "productId": "sentry-monitoring",
+      "sourceIds": [
+        "browser-sentry-loader"
+      ],
+      "explanation": "A script reference matches a browser.sentry-cdn.com SDK bundle filename listed in the official loader guide.",
+      "caveats": [
+        "A script reference or buffered entry does not prove execution or enabled SDK features.",
+        "Version directories are generalized, not validated. Bundled npm SDKs, custom builds and proxies may not match."
+      ],
+      "signals": [
+        {
+          "id": "bundle-1",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.logs.metrics.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-2",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-3",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.replay.feedback.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-4",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.replay.logs.metrics.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-5",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.replay.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-6",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.tracing.logs.metrics.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-7",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.tracing.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "bundle-1"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-2"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-3"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-4"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-5"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-6"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-7"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sentry-browser-bundles-2",
+      "revision": "2026-10-20.3",
+      "productId": "sentry-monitoring",
+      "sourceIds": [
+        "browser-sentry-loader"
+      ],
+      "explanation": "A script reference matches a browser.sentry-cdn.com SDK bundle filename listed in the official loader guide.",
+      "caveats": [
+        "A script reference or buffered entry does not prove execution or enabled SDK features.",
+        "Version directories are generalized, not validated. Bundled npm SDKs, custom builds and proxies may not match."
+      ],
+      "signals": [
+        {
+          "id": "bundle-1",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.tracing.replay.feedback.logs.metrics.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-2",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.tracing.replay.feedback.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-3",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.tracing.replay.logs.metrics.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        },
+        {
+          "id": "bundle-4",
+          "kind": "resource",
+          "hosts": [
+            "browser.sentry-cdn.com"
+          ],
+          "subdomains": false,
+          "path": {
+            "match": "glob",
+            "value": "/*/bundle.tracing.replay.min.js"
+          },
+          "resourceType": "script",
+          "channels": [
+            "resource-entry",
+            "dom-reference"
+          ]
+        }
+      ],
+      "anyOf": [
+        {
+          "allOf": [
+            "bundle-1"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-2"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-3"
+          ]
+        },
+        {
+          "allOf": [
+            "bundle-4"
           ]
         }
       ]

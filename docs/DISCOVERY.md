@@ -19,7 +19,32 @@ const captured = captureBrowserCatalog(
 const candidates = analyzeBrowserCatalogCapture(captured);
 ```
 
-The optional seed contains seven original rules for six products: Google tag, Google Tag Manager, Stripe.js, Turnstile, Intercom and PostHog. Each rule records the official technical references used to author it. All catalog entries remain unreviewed; checking a documented technical signature does not verify provider practices or determine appropriate processing purposes.
+The optional seed contains nineteen original rules for sixteen products. It covers the documented browser references below. Each rule records the official technical references used to author it. All catalog entries remain unreviewed; checking a documented technical signature does not verify provider practices or determine appropriate processing purposes.
+
+### Which browser services can it recognize?
+
+| Service | Recognized reference |
+| --- | --- |
+| Google tag | The `gtag/js` loader plus the `gtag` function. Destinations remain unknown. |
+| Google Tag Manager | The container script or frame path. The container’s tags are not inspected. |
+| Stripe | Its documented script host and loader paths. No payment action is inferred. |
+| Cloudflare Turnstile | The widget loader, or a class marker together with its API object. |
+| Intercom | Its widget loader plus the `Intercom` queue/function. |
+| PostHog | A supported cloud loader, or a cookie-name pattern together with the API object. |
+| Segment | Its CDN loader path together with the `analytics` queue/object. |
+| Sentry | Its public-key-derived loader and listed CDN bundle paths. Enabled SDK features remain unknown. |
+| Datadog RUM | Its browser-agent host and RUM loader filename. The pattern does not validate region or version. |
+| Zendesk Web Widget | The widget snippet. Classic versus messaging features remain unknown. |
+| Cloudflare Web Analytics | Its performance-beacon loader. No hosting product or account configuration is inferred. |
+| Plausible | The current site-specific `pa-…js` loader and archived legacy script families. Enhanced settings remain unknown. |
+| Fathom | Its CDN script. Site identifiers and script settings are not read. |
+| Umami Cloud | The cloud script. Arbitrary self-hosted or renamed paths are outside this rule. |
+| Microsoft Clarity | Its tag prefix together with the `clarity` queue/function. |
+| Crisp | Its chatbox loader together with the `$crisp` queue/object. |
+
+The sources are pinned with each rule snapshot; the [source index](requirements/SOURCES.md) records the selected first-party references. Script URLs, code images and technical guides establish recognition patterns only. A “matched” result means the declared signature matched, not that an SDK ran, sent data or qualifies for an exemption. A global queue alone remains a partial hint.
+
+For source-project discovery, the shared catalog also recognizes the officially documented `@microsoft/clarity`, `@plausible-analytics/tracker` and `crisp-sdk-web` npm identifiers. Run `discover --project` for those declarations and imports; a browser capture cannot inspect the project filesystem.
 
 Resource rules match HTTPS/default-port URLs without credentials, exact lowercase hosts (or explicitly enabled label-bound subdomains), resource type and an optional path on **the same observation**. Paths are case-sensitive parsed URL pathnames without percent-decoding. Supported patterns are exact, prefix and anchored single-wildcard matching: `*` matches zero or more characters, including `/`. Path prefixes must end with `/`. Arbitrary regex, code, selectors and probes are unsupported. Storage rules inspect accessible names only. Global rules inspect named top-level own data descriptors for object/function presence, skipping getters and never invoking SDK methods. DOM markers use a fixed tag and class token.
 

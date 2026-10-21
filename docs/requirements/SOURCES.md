@@ -1395,3 +1395,173 @@ Department identifies the icon as developed by the Attorney General. Official ZI
 **Type:** official-terms. **Checked:** 2026-10-20. **Access:** read.
 
 Ownership section treats Department-created content as public domain, with separate caution for third-party materials. Read together with the icon page attribution; no agency endorsement.
+
+<a id="src-browser-segment-snippet"></a>
+
+## SRC-BROWSER-SEGMENT-SNIPPET
+
+[Segment Snippet technical recognition reference](https://github.com/segmentio/analytics-react/blob/master/README.md)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+First-party repository snippet names the cdn.segment.com analytics.js/v1/key/analytics.min.js loader and analytics queue. The older snippet is a recognition reference, not an SDK installation recommendation. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-sentry-loader"></a>
+
+## SRC-BROWSER-SENTRY-LOADER
+
+[Sentry Loader technical recognition reference](https://docs.sentry.io/platforms/javascript/install/loader/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Retrieved official loader documentation, including public-key-derived .min.js loader shape and configurable SDK features. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-sentry-loader-host"></a>
+
+## SRC-BROWSER-SENTRY-LOADER-HOST
+
+[Sentry Loader Host technical recognition reference](https://sentry.io/resources/debugging-ecommerce-session-replay/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official tutorial names js.sentry-cdn.com/[hash].min.js. Feature settings cannot be inferred from that URL. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-datadog-rum"></a>
+
+## SRC-BROWSER-DATADOG-RUM
+
+[Datadog Rum technical recognition reference](https://docs.datadoghq.com/real_user_monitoring/application_monitoring/browser/setup/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Retrieved current setup examples for eight v7 region/root CDN URLs. The authored directory-path rule deliberately generalizes region/version strings under the same exact host and filename; it does not validate SDK versions. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-zendesk-widget"></a>
+
+## SRC-BROWSER-ZENDESK-WIDGET
+
+[Zendesk Widget technical recognition reference](https://developer.zendesk.com/documentation/classic-web-widget-sdks/web-widget/quickstart-tutorials/web-widget-javascript-apis/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official Web Widget Classic snippet names static.zdassets.com/ekr/snippet.js with a query key. No widget feature, workspace key or settings are inspected. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-cloudflare-analytics"></a>
+
+## SRC-BROWSER-CLOUDFLARE-ANALYTICS
+
+[Cloudflare Analytics technical recognition reference](https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official Web Analytics reference names static.cloudflareinsights.com/beacon.min.js. This is not evidence of a Worker, Turnstile or a particular account setting. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied. The optional suffix-path rule is an authored recognition heuristic derived from the documented base path; appended path contents are not validated.
+
+<a id="src-browser-plausible-loader"></a>
+
+## SRC-BROWSER-PLAUSIBLE-LOADER
+
+[Plausible Loader technical recognition reference](https://plausible.io/docs/nextjs-integration)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official integration guide supplies a site-specific plausible.io/js/pa-XXXXX.js script reference. The single-star rule generalizes its opaque site suffix; it does not inspect that suffix. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-plausible-update"></a>
+
+## SRC-BROWSER-PLAUSIBLE-UPDATE
+
+[Plausible Update technical recognition reference](https://plausible.io/docs/script-update-guide)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official October 2025 script update explains site-specific snippets and optional enhanced measurements. Recognition cannot determine which settings are enabled. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-fathom-loader"></a>
+
+## SRC-BROWSER-FATHOM-LOADER
+
+[Fathom Loader technical recognition reference](https://usefathom.com/docs/script/script-advanced)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official examples use cdn.usefathom.com/script.js and describe optional script attributes. Only the script host/path is recognized; no settings are read. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-umami-loader"></a>
+
+## SRC-BROWSER-UMAMI-LOADER
+
+[Umami Loader technical recognition reference](https://docs.umami.is/docs/bypass-ad-blockers)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official reference names cloud.umami.is/script.js and separately describes proxies, renamed scripts and self-hosting, which this cloud-path rule may miss. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-clarity-loader"></a>
+
+## SRC-BROWSER-CLARITY-LOADER
+
+[Clarity Loader technical recognition reference](https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-setup)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official manual installation page supplies the tracking-code image; the separate image was inspected to read its host/path and clarity queue function. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-clarity-code-image"></a>
+
+## SRC-BROWSER-CLARITY-CODE-IMAGE
+
+[Clarity Code Image technical recognition reference](https://learn.microsoft.com/en-us/clarity/media/copy-tracking-code.png)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Inspected official code image: www.clarity.ms/tag/ plus a project suffix and a clarity function. No project ID is retained in witnesses and no SDK method is invoked. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-crisp-loader"></a>
+
+## SRC-BROWSER-CRISP-LOADER
+
+[Crisp Loader technical recognition reference](https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/language-customization/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official snippet names client.crisp.chat/l.js and the $crisp queue object. Recognition checks only own data-descriptor presence, never queue contents or website/session identifiers. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied.
+
+<a id="src-browser-plausible-npm"></a>
+
+## SRC-BROWSER-PLAUSIBLE-NPM
+
+[Plausible Npm technical recognition reference](https://plausible.io/docs/plausible-script)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official script guide identifies @plausible-analytics/tracker as its npm library; package declaration/import evidence is separate from browser execution. Technical reference only; no provider-practice or legal classification.
+
+<a id="src-browser-crisp-npm"></a>
+
+## SRC-BROWSER-CRISP-NPM
+
+[Crisp Npm technical recognition reference](https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/npm/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Official SDK documentation identifies crisp-sdk-web and its import; installing or importing the wrapper does not establish loading, actual settings or use. Technical reference only; no provider-practice or legal classification.
+
+<a id="src-browser-plausible-legacy"></a>
+
+## SRC-BROWSER-PLAUSIBLE-LEGACY
+
+[Plausible Legacy technical recognition reference](https://plausible.github.io/docs/plausible-script)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Archived first-party documentation supplies the older /js/script.js loader. Retained for recognition, not a current installation recommendation. Technical reference only; no provider-practice or legal classification.
+
+<a id="src-browser-plausible-extensions"></a>
+
+## SRC-BROWSER-PLAUSIBLE-EXTENSIONS
+
+[Plausible Extensions technical recognition reference](https://plausible.github.io/docs/excluding-pages)
+
+**Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Archived first-party documentation supplies script.exclusions.js and a chained-extension example. The authored single-star pattern generalizes the extension suffix; it does not determine active options. Technical reference only; no provider-practice or legal classification.

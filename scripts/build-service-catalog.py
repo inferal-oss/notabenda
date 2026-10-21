@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# @requirements REQ-PRODUCT-SERVICE-DETECTION
 # @requirements REQ-PRODUCT-SERVICE-PROFILES
 """Build an offline, reproducible seed from pinned public data and curated identities."""
 # @requirements REQ-PRODUCT-SERVICE-CATALOG
@@ -63,7 +64,22 @@ for product_id,identifiers in go['productIdentifierAdditions'].items():
  product=products[product_id];product['identifiers']+=identifiers;product['revision']=newer_revision(product['revision'],go['revision'])
  for source_id in [s for rule in identifiers for s in rule['sourceIds']]:
   if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(profiles['revision'],go['revision']),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+# Original browser discovery additions carry explicit per-product revisions.
+expanded=json.loads((root/'catalog/browser-expansion.json').read_text())
+if expanded['schemaVersion']!=1 or set(expanded['productRevisions'])!=set(expanded['productSourceAdditions']):raise ValueError('Every changed browser product needs an explicit revision')
+sources+=expanded['sources']
+for provider in expanded['providers']:
+ if provider['id'] in providers:raise ValueError('Browser provider identity collision')
+ providers[provider['id']]=provider
+for product in expanded['products']:
+ if product['id'] in products:raise ValueError('Browser product identity collision')
+ products[product['id']]=product
+for product_id,source_ids in expanded['productSourceAdditions'].items():
+ if product_id not in products:raise ValueError('Unknown expanded browser product')
+ product=products[product_id];product['revision']=newer_revision(product['revision'],expanded['productRevisions'][product_id])
+ for source_id in source_ids:
+  if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
 def emit(path,output):

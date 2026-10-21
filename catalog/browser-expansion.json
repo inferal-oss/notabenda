@@ -1,0 +1,416 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-20.3",
+  "sources": [
+    {
+      "id": "browser-segment-snippet",
+      "url": "https://github.com/segmentio/analytics-react/blob/master/README.md",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "First-party repository snippet names the cdn.segment.com analytics.js/v1/key/analytics.min.js loader and analytics queue. The older snippet is a recognition reference, not an SDK installation recommendation. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-sentry-loader",
+      "url": "https://docs.sentry.io/platforms/javascript/install/loader/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Retrieved official loader documentation, including public-key-derived .min.js loader shape and configurable SDK features. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-sentry-loader-host",
+      "url": "https://sentry.io/resources/debugging-ecommerce-session-replay/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official tutorial names js.sentry-cdn.com/[hash].min.js. Feature settings cannot be inferred from that URL. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-datadog-rum",
+      "url": "https://docs.datadoghq.com/real_user_monitoring/application_monitoring/browser/setup/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Retrieved current setup examples for eight v7 region/root CDN URLs. The authored directory-path rule deliberately generalizes region/version strings under the same exact host and filename; it does not validate SDK versions. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-zendesk-widget",
+      "url": "https://developer.zendesk.com/documentation/classic-web-widget-sdks/web-widget/quickstart-tutorials/web-widget-javascript-apis/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official Web Widget Classic snippet names static.zdassets.com/ekr/snippet.js with a query key. No widget feature, workspace key or settings are inspected. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-cloudflare-analytics",
+      "url": "https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official Web Analytics reference names static.cloudflareinsights.com/beacon.min.js. This is not evidence of a Worker, Turnstile or a particular account setting. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied. The optional suffix-path rule is an authored recognition heuristic derived from the documented base path; appended path contents are not validated."
+    },
+    {
+      "id": "browser-plausible-loader",
+      "url": "https://plausible.io/docs/nextjs-integration",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official integration guide supplies a site-specific plausible.io/js/pa-XXXXX.js script reference. The single-star rule generalizes its opaque site suffix; it does not inspect that suffix. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-plausible-update",
+      "url": "https://plausible.io/docs/script-update-guide",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official October 2025 script update explains site-specific snippets and optional enhanced measurements. Recognition cannot determine which settings are enabled. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-fathom-loader",
+      "url": "https://usefathom.com/docs/script/script-advanced",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official examples use cdn.usefathom.com/script.js and describe optional script attributes. Only the script host/path is recognized; no settings are read. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-umami-loader",
+      "url": "https://docs.umami.is/docs/bypass-ad-blockers",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official reference names cloud.umami.is/script.js and separately describes proxies, renamed scripts and self-hosting, which this cloud-path rule may miss. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-clarity-loader",
+      "url": "https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-setup",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official manual installation page supplies the tracking-code image; the separate image was inspected to read its host/path and clarity queue function. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-clarity-code-image",
+      "url": "https://learn.microsoft.com/en-us/clarity/media/copy-tracking-code.png",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Inspected official code image: www.clarity.ms/tag/ plus a project suffix and a clarity function. No project ID is retained in witnesses and no SDK method is invoked. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-crisp-loader",
+      "url": "https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/language-customization/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official snippet names client.crisp.chat/l.js and the $crisp queue object. Recognition checks only own data-descriptor presence, never queue contents or website/session identifiers. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "browser-plausible-npm",
+      "url": "https://plausible.io/docs/plausible-script",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official script guide identifies @plausible-analytics/tracker as its npm library; package declaration/import evidence is separate from browser execution. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "browser-crisp-npm",
+      "url": "https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/npm/",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Official SDK documentation identifies crisp-sdk-web and its import; installing or importing the wrapper does not establish loading, actual settings or use. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "browser-plausible-legacy",
+      "url": "https://plausible.github.io/docs/plausible-script",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Archived first-party documentation supplies the older /js/script.js loader. Retained for recognition, not a current installation recommendation. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "browser-plausible-extensions",
+      "url": "https://plausible.github.io/docs/excluding-pages",
+      "revision": "retrieved-2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "Original metadata; documentation referenced",
+      "note": "Archived first-party documentation supplies script.exclusions.js and a chained-extension example. The authored single-star pattern generalizes the extension suffix; it does not determine active options. Technical reference only; no provider-practice or legal classification."
+    }
+  ],
+  "providers": [
+    {
+      "id": "plausible",
+      "revision": "2026-10-20.3",
+      "name": "Plausible",
+      "aliases": [],
+      "website": "https://plausible.io/",
+      "sourceIds": [
+        "browser-plausible-loader",
+        "browser-plausible-update"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "fathom",
+      "revision": "2026-10-20.3",
+      "name": "Fathom",
+      "aliases": [],
+      "website": "https://usefathom.com/",
+      "sourceIds": [
+        "browser-fathom-loader"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "umami",
+      "revision": "2026-10-20.3",
+      "name": "Umami",
+      "aliases": [],
+      "website": "https://umami.is/",
+      "sourceIds": [
+        "browser-umami-loader"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "microsoft-clarity",
+      "revision": "2026-10-20.3",
+      "name": "Microsoft Clarity",
+      "aliases": [],
+      "website": "https://clarity.microsoft.com/",
+      "sourceIds": [
+        "browser-clarity-loader",
+        "browser-clarity-code-image"
+      ],
+      "review": "unreviewed"
+    },
+    {
+      "id": "crisp",
+      "revision": "2026-10-20.3",
+      "name": "Crisp",
+      "aliases": [],
+      "website": "https://crisp.chat/",
+      "sourceIds": [
+        "browser-crisp-loader"
+      ],
+      "review": "unreviewed"
+    }
+  ],
+  "products": [
+    {
+      "id": "cloudflare-web-analytics",
+      "revision": "2026-10-20.3",
+      "providerId": "cloudflare",
+      "name": "Cloudflare Web Analytics",
+      "aliases": [],
+      "description": "Browser performance-beacon reference. Confirm actual site use and settings.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-cloudflare-analytics"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "plausible-analytics",
+      "revision": "2026-10-20.3",
+      "providerId": "plausible",
+      "name": "Plausible analytics",
+      "aliases": [],
+      "description": "Hosted browser analytics script reference. Confirm actual site use and settings.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-plausible-loader",
+        "browser-plausible-update",
+        "browser-plausible-npm",
+        "browser-plausible-legacy",
+        "browser-plausible-extensions"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "ecosystem": "npm",
+          "value": "@plausible-analytics/tracker",
+          "match": "exact",
+          "sourceIds": [
+            "browser-plausible-npm"
+          ],
+          "id": "plausible-analytics-npm-1",
+          "explanation": "A declared npm dependency or source import suggests this product for review; it does not prove initialization, production use or a hosted provider relationship."
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "fathom-analytics",
+      "revision": "2026-10-20.3",
+      "providerId": "fathom",
+      "name": "Fathom analytics",
+      "aliases": [],
+      "description": "Hosted browser analytics script reference. Confirm actual site use and settings.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-fathom-loader"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "umami-cloud",
+      "revision": "2026-10-20.3",
+      "providerId": "umami",
+      "name": "Umami analytics",
+      "aliases": [],
+      "description": "Umami Cloud script reference; self-hosted installations are separate. Confirm actual site use and settings.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-umami-loader"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    },
+    {
+      "id": "microsoft-clarity",
+      "revision": "2026-10-20.3",
+      "providerId": "microsoft-clarity",
+      "name": "Microsoft Clarity",
+      "aliases": [],
+      "description": "Browser behavior-analytics loader reference. Confirm actual site use and settings.",
+      "categories": [
+        "analytics"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-clarity-loader",
+        "browser-clarity-code-image"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "ecosystem": "npm",
+          "value": "@microsoft/clarity",
+          "match": "exact",
+          "sourceIds": [
+            "browser-clarity-loader"
+          ],
+          "id": "microsoft-clarity-npm-1",
+          "explanation": "A declared npm dependency or source import suggests this product for review; it does not prove initialization, production use or a hosted provider relationship."
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "crisp-chat",
+      "revision": "2026-10-20.3",
+      "providerId": "crisp",
+      "name": "Crisp chat",
+      "aliases": [],
+      "description": "Web chatbox script and queue reference. Confirm actual site use and settings.",
+      "categories": [
+        "support"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-crisp-loader",
+        "browser-crisp-npm"
+      ],
+      "review": "unreviewed",
+      "identifiers": [
+        {
+          "ecosystem": "npm",
+          "value": "crisp-sdk-web",
+          "match": "exact",
+          "sourceIds": [
+            "browser-crisp-npm"
+          ],
+          "id": "crisp-chat-npm-1",
+          "explanation": "A declared npm dependency or source import suggests this product for review; it does not prove initialization, production use or a hosted provider relationship."
+        }
+      ],
+      "storageHints": []
+    },
+    {
+      "id": "zendesk-web-widget",
+      "revision": "2026-10-20.3",
+      "providerId": "zendesk",
+      "name": "Zendesk Web Widget",
+      "aliases": [],
+      "description": "Browser widget loader reference; the snippet alone does not establish Classic or messaging features. Confirm actual site use and settings.",
+      "categories": [
+        "support"
+      ],
+      "delivery": [
+        "browser"
+      ],
+      "sourceIds": [
+        "browser-zendesk-widget"
+      ],
+      "review": "unreviewed",
+      "identifiers": [],
+      "storageHints": []
+    }
+  ],
+  "productSourceAdditions": {
+    "segment-analytics": [
+      "browser-segment-snippet"
+    ],
+    "sentry-monitoring": [
+      "browser-sentry-loader",
+      "browser-sentry-loader-host"
+    ],
+    "datadog-monitoring": [
+      "browser-datadog-rum"
+    ]
+  },
+  "productRevisions": {
+    "segment-analytics": "2026-10-20.3",
+    "sentry-monitoring": "2026-10-20.3",
+    "datadog-monitoring": "2026-10-20.3"
+  }
+}

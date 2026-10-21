@@ -322,7 +322,8 @@
         "Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.",
         "Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.",
         "Initial optional reference seed: 363 provider identities, 402 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references plus three browser-product references; all entries unreviewed.",
-        "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits."
+        "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.",
+        "Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery."
       ],
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
@@ -357,7 +358,8 @@
         "catalog/product-profiles.json",
         "packages/notabenda/src/catalog-profile.ts",
         "packages/notabenda/src/catalog-go.ts",
-        "catalog/go-providers.json"
+        "catalog/go-providers.json",
+        "catalog/browser-expansion.json"
       ]
     },
     {
@@ -2471,6 +2473,159 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "Ownership section treats Department-created content as public domain, with separate caution for third-party materials. Read together with the icon page attribution; no agency endorsement."
+    },
+    {
+      "id": "SRC-BROWSER-SEGMENT-SNIPPET",
+      "title": "Segment Snippet technical recognition reference",
+      "url": "https://github.com/segmentio/analytics-react/blob/master/README.md",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "First-party repository snippet names the cdn.segment.com analytics.js/v1/key/analytics.min.js loader and analytics queue. The older snippet is a recognition reference, not an SDK installation recommendation. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-SENTRY-LOADER",
+      "title": "Sentry Loader technical recognition reference",
+      "url": "https://docs.sentry.io/platforms/javascript/install/loader/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Retrieved official loader documentation, including public-key-derived .min.js loader shape and configurable SDK features. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-SENTRY-LOADER-HOST",
+      "title": "Sentry Loader Host technical recognition reference",
+      "url": "https://sentry.io/resources/debugging-ecommerce-session-replay/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official tutorial names js.sentry-cdn.com/[hash].min.js. Feature settings cannot be inferred from that URL. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-DATADOG-RUM",
+      "title": "Datadog Rum technical recognition reference",
+      "url": "https://docs.datadoghq.com/real_user_monitoring/application_monitoring/browser/setup/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Retrieved current setup examples for eight v7 region/root CDN URLs. The authored directory-path rule deliberately generalizes region/version strings under the same exact host and filename; it does not validate SDK versions. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-ZENDESK-WIDGET",
+      "title": "Zendesk Widget technical recognition reference",
+      "url": "https://developer.zendesk.com/documentation/classic-web-widget-sdks/web-widget/quickstart-tutorials/web-widget-javascript-apis/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official Web Widget Classic snippet names static.zdassets.com/ekr/snippet.js with a query key. No widget feature, workspace key or settings are inspected. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-CLOUDFLARE-ANALYTICS",
+      "title": "Cloudflare Analytics technical recognition reference",
+      "url": "https://developers.cloudflare.com/web-analytics/data-metrics/data-origin-and-collection/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official Web Analytics reference names static.cloudflareinsights.com/beacon.min.js. This is not evidence of a Worker, Turnstile or a particular account setting. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied. The optional suffix-path rule is an authored recognition heuristic derived from the documented base path; appended path contents are not validated."
+    },
+    {
+      "id": "SRC-BROWSER-PLAUSIBLE-LOADER",
+      "title": "Plausible Loader technical recognition reference",
+      "url": "https://plausible.io/docs/nextjs-integration",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official integration guide supplies a site-specific plausible.io/js/pa-XXXXX.js script reference. The single-star rule generalizes its opaque site suffix; it does not inspect that suffix. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-PLAUSIBLE-UPDATE",
+      "title": "Plausible Update technical recognition reference",
+      "url": "https://plausible.io/docs/script-update-guide",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official October 2025 script update explains site-specific snippets and optional enhanced measurements. Recognition cannot determine which settings are enabled. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-FATHOM-LOADER",
+      "title": "Fathom Loader technical recognition reference",
+      "url": "https://usefathom.com/docs/script/script-advanced",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official examples use cdn.usefathom.com/script.js and describe optional script attributes. Only the script host/path is recognized; no settings are read. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-UMAMI-LOADER",
+      "title": "Umami Loader technical recognition reference",
+      "url": "https://docs.umami.is/docs/bypass-ad-blockers",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official reference names cloud.umami.is/script.js and separately describes proxies, renamed scripts and self-hosting, which this cloud-path rule may miss. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-CLARITY-LOADER",
+      "title": "Clarity Loader technical recognition reference",
+      "url": "https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-setup",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official manual installation page supplies the tracking-code image; the separate image was inspected to read its host/path and clarity queue function. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-CLARITY-CODE-IMAGE",
+      "title": "Clarity Code Image technical recognition reference",
+      "url": "https://learn.microsoft.com/en-us/clarity/media/copy-tracking-code.png",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Inspected official code image: www.clarity.ms/tag/ plus a project suffix and a clarity function. No project ID is retained in witnesses and no SDK method is invoked. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-CRISP-LOADER",
+      "title": "Crisp Loader technical recognition reference",
+      "url": "https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/language-customization/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official snippet names client.crisp.chat/l.js and the $crisp queue object. Recognition checks only own data-descriptor presence, never queue contents or website/session identifiers. Technical recognition reference only; no provider-practice, legal-basis, exemption or actual-use verification. No external documentation or SDK code is copied."
+    },
+    {
+      "id": "SRC-BROWSER-PLAUSIBLE-NPM",
+      "title": "Plausible Npm technical recognition reference",
+      "url": "https://plausible.io/docs/plausible-script",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official script guide identifies @plausible-analytics/tracker as its npm library; package declaration/import evidence is separate from browser execution. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "SRC-BROWSER-CRISP-NPM",
+      "title": "Crisp Npm technical recognition reference",
+      "url": "https://docs.crisp.chat/guides/chatbox-sdks/web-sdk/npm/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Official SDK documentation identifies crisp-sdk-web and its import; installing or importing the wrapper does not establish loading, actual settings or use. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "SRC-BROWSER-PLAUSIBLE-LEGACY",
+      "title": "Plausible Legacy technical recognition reference",
+      "url": "https://plausible.github.io/docs/plausible-script",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Archived first-party documentation supplies the older /js/script.js loader. Retained for recognition, not a current installation recommendation. Technical reference only; no provider-practice or legal classification."
+    },
+    {
+      "id": "SRC-BROWSER-PLAUSIBLE-EXTENSIONS",
+      "title": "Plausible Extensions technical recognition reference",
+      "url": "https://plausible.github.io/docs/excluding-pages",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Archived first-party documentation supplies script.exclusions.js and a chained-extension example. The authored single-star pattern generalizes the extension suffix; it does not determine active options. Technical reference only; no provider-practice or legal classification."
     }
   ],
   "jurisdictions": [
@@ -6402,6 +6557,74 @@
         {
           "sourceId": "SRC-GO-MODFILE",
           "locator": "isIndirect and setIndirect: exact marker and explanatory suffix handling."
+        },
+        {
+          "sourceId": "SRC-BROWSER-SEGMENT-SNIPPET",
+          "locator": "First-party repository snippet names the cdn.segment.com analytics.js/v1/key/analytics.min.js loader and analytics queue. The older snippet is a recognition reference, not an SDK installation recommendation."
+        },
+        {
+          "sourceId": "SRC-BROWSER-SENTRY-LOADER",
+          "locator": "Retrieved official loader documentation, including public-key-derived .min.js loader shape and configurable SDK features."
+        },
+        {
+          "sourceId": "SRC-BROWSER-SENTRY-LOADER-HOST",
+          "locator": "Official tutorial names js.sentry-cdn.com/[hash].min.js. Feature settings cannot be inferred from that URL."
+        },
+        {
+          "sourceId": "SRC-BROWSER-DATADOG-RUM",
+          "locator": "Retrieved current setup examples for eight v7 region/root CDN URLs. The authored directory-path rule deliberately generalizes region/version strings under the same exact host and filename; it does not validate SDK versions."
+        },
+        {
+          "sourceId": "SRC-BROWSER-ZENDESK-WIDGET",
+          "locator": "Official Web Widget Classic snippet names static.zdassets.com/ekr/snippet.js with a query key. No widget feature, workspace key or settings are inspected."
+        },
+        {
+          "sourceId": "SRC-BROWSER-CLOUDFLARE-ANALYTICS",
+          "locator": "Official Web Analytics reference names static.cloudflareinsights.com/beacon.min.js. This is not evidence of a Worker, Turnstile or a particular account setting."
+        },
+        {
+          "sourceId": "SRC-BROWSER-PLAUSIBLE-LOADER",
+          "locator": "Official integration guide supplies a site-specific plausible.io/js/pa-XXXXX.js script reference. The single-star rule generalizes its opaque site suffix; it does not inspect that suffix."
+        },
+        {
+          "sourceId": "SRC-BROWSER-PLAUSIBLE-UPDATE",
+          "locator": "Official October 2025 script update explains site-specific snippets and optional enhanced measurements. Recognition cannot determine which settings are enabled."
+        },
+        {
+          "sourceId": "SRC-BROWSER-FATHOM-LOADER",
+          "locator": "Official examples use cdn.usefathom.com/script.js and describe optional script attributes. Only the script host/path is recognized; no settings are read."
+        },
+        {
+          "sourceId": "SRC-BROWSER-UMAMI-LOADER",
+          "locator": "Official reference names cloud.umami.is/script.js and separately describes proxies, renamed scripts and self-hosting, which this cloud-path rule may miss."
+        },
+        {
+          "sourceId": "SRC-BROWSER-CLARITY-LOADER",
+          "locator": "Official manual installation page supplies the tracking-code image; the separate image was inspected to read its host/path and clarity queue function."
+        },
+        {
+          "sourceId": "SRC-BROWSER-CLARITY-CODE-IMAGE",
+          "locator": "Inspected official code image: www.clarity.ms/tag/ plus a project suffix and a clarity function. No project ID is retained in witnesses and no SDK method is invoked."
+        },
+        {
+          "sourceId": "SRC-BROWSER-CRISP-LOADER",
+          "locator": "Official snippet names client.crisp.chat/l.js and the $crisp queue object. Recognition checks only own data-descriptor presence, never queue contents or website/session identifiers."
+        },
+        {
+          "sourceId": "SRC-BROWSER-PLAUSIBLE-NPM",
+          "locator": "Official script guide identifies @plausible-analytics/tracker as its npm library; package declaration/import evidence is separate from browser execution."
+        },
+        {
+          "sourceId": "SRC-BROWSER-CRISP-NPM",
+          "locator": "Official SDK documentation identifies crisp-sdk-web and its import; installing or importing the wrapper does not establish loading, actual settings or use."
+        },
+        {
+          "sourceId": "SRC-BROWSER-PLAUSIBLE-LEGACY",
+          "locator": "Archived first-party documentation supplies the older /js/script.js loader. Retained for recognition, not a current installation recommendation. Technical reference only; no provider-practice or legal classification."
+        },
+        {
+          "sourceId": "SRC-BROWSER-PLAUSIBLE-EXTENSIONS",
+          "locator": "Archived first-party documentation supplies script.exclusions.js and a chained-extension example. The authored single-star pattern generalizes the extension suffix; it does not determine active options. Technical reference only; no provider-practice or legal classification."
         }
       ],
       "discoverySourceIds": [],
@@ -6442,7 +6665,9 @@
         "packages/notabenda/src/catalog-go-policy.ts",
         "packages/notabenda-cf/src/catalog-go-policy.ts",
         "packages/notabenda-cf/src/catalog-reference.ts",
-        "examples/static/choices-build.mjs"
+        "examples/static/choices-build.mjs",
+        "catalog/browser-expansion.json",
+        "scripts/build-service-catalog.py"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -6454,9 +6679,11 @@
         "packages/notabenda/test/setup.test.mjs",
         "packages/notabenda/test/catalog-go.test.mjs",
         "docs/verification/go-discovery.md",
-        "packages/notabenda/test/catalog-release.test.mjs"
+        "packages/notabenda/test/catalog-release.test.mjs",
+        "packages/notabenda/test/catalog-browser-expansion.test.mjs",
+        "site/test/browser-service-coverage.test.mjs"
       ],
-      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project."
+      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project. Ten additional browser-service signatures now cover common analytics, monitoring and support references, for nineteen rules across sixteen products. Seventeen new first-party references and three official npm identifiers connect to reviewed candidates; older capture snapshots and unaffected product pins remain unchanged. Rule patterns do not validate SDK versions or infer enabled features, execution, identity or legal exemptions."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-PROFILES",
@@ -9890,7 +10117,7 @@
         "REQ-PRODUCT-SERVICE-DETECTION"
       ],
       "status": "partial",
-      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins.",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities.",
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
@@ -9900,7 +10127,9 @@
         "packages/notabenda/test/setup-project.test.mjs",
         "packages/notabenda/test/setup.test.mjs",
         "packages/notabenda/test/catalog-go.test.mjs",
-        "docs/verification/go-discovery.md"
+        "docs/verification/go-discovery.md",
+        "packages/notabenda/test/catalog-browser-expansion.test.mjs",
+        "site/test/browser-service-coverage.test.mjs"
       ]
     },
     {

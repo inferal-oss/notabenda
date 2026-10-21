@@ -386,3 +386,8 @@ Optional complete `localization.contractActions` now versions host-supplied form
 
 <!-- @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK REQ-US-CA-ALTERNATIVE-LINK -->
 Explicit `privacy.choicesLink` adds a script-free return route independently of cookie preferences and access/deletion request pages. The optional California alternative-link presentation uses the specified English title and retained official icon. Destination coverage, homepage prominence, peer sizing, applicability, downstream effects and browser signals remain separate host checks; the legal requirement stays partial. See [privacy-choice links](PRIVACY-CHOICE-LINKS.md).
+
+### Broader passive browser discovery
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION -->
+The optional recognizer now covers sixteen products through nineteen source-backed rules, including common analytics, monitoring and support loaders. Three additional official npm identifiers feed the same private project scanner. Exact historical snapshots remain interpretable; missing or partial evidence, proxies, self-hosting and source freshness stay explicit. Discovery still requires deliberate invocation and review before configuration changes.

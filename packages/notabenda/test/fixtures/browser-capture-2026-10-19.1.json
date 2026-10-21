@@ -1,0 +1,1107 @@
+{
+  "schemaVersion": 1,
+  "kind": "catalog-browser-capture",
+  "matcherVersion": 1,
+  "mode": "transient-signatures",
+  "capture": {
+    "schemaVersion": 1,
+    "kind": "browser-discovery-capture",
+    "capturedAt": "2026-10-20T00:00:00.000Z",
+    "pageOrigin": "https://example.test",
+    "routeLabel": "Historical example",
+    "scenario": "Explicit capture",
+    "coverage": {
+      "resources": "available",
+      "dom": "available",
+      "cookies": "available",
+      "localStorage": "unavailable",
+      "sessionStorage": "unavailable"
+    },
+    "network": [],
+    "references": [
+      {
+        "origin": "https://js.stripe.com",
+        "kind": "script",
+        "count": 1
+      },
+      {
+        "origin": "https://www.clarity.ms",
+        "kind": "script",
+        "count": 1
+      }
+    ],
+    "storage": [],
+    "omitted": {
+      "nonHttpReferences": 0,
+      "oversizedNames": 0
+    }
+  },
+  "ruleSet": {
+    "schemaVersion": 1,
+    "kind": "notabenda-browser-rules",
+    "matcherVersion": 1,
+    "id": "notabenda-browser-signatures",
+    "revision": "2026-10-19.1",
+    "rules": [
+      {
+        "id": "google-tag-script",
+        "revision": "2026-10-19.1",
+        "productId": "google-tag",
+        "sourceIds": [
+          "browser-google-tag"
+        ],
+        "explanation": "Google tag loader path and an own gtag function are reported in this capture.",
+        "caveats": [
+          "The tag supports multiple destinations; this rule does not identify Analytics, Ads or a particular account.",
+          "The function may be a bootstrap stub and a DOM reference may never have executed."
+        ],
+        "signals": [
+          {
+            "id": "loader",
+            "kind": "resource",
+            "hosts": [
+              "www.googletagmanager.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/gtag/js"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "api",
+            "kind": "global",
+            "name": "gtag",
+            "valueType": "function"
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "loader",
+              "api"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "google-tag-manager-path",
+        "revision": "2026-10-19.1",
+        "productId": "google-tag-manager",
+        "sourceIds": [
+          "browser-google-gtm"
+        ],
+        "explanation": "The script or frame path matches a Tag Manager container reference.",
+        "caveats": [
+          "Configured tags and container identifiers are not inspected.",
+          "A frame reference or buffered entry does not establish which tags executed."
+        ],
+        "signals": [
+          {
+            "id": "script",
+            "kind": "resource",
+            "hosts": [
+              "www.googletagmanager.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/gtm.js"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "frame",
+            "kind": "resource",
+            "hosts": [
+              "www.googletagmanager.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/ns.html"
+            },
+            "resourceType": "frame",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "script"
+            ]
+          },
+          {
+            "allOf": [
+              "frame"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "stripe-loader-path",
+        "revision": "2026-10-19.1",
+        "productId": "stripe-payments",
+        "sourceIds": [
+          "browser-stripe-js",
+          "browser-stripe-version"
+        ],
+        "explanation": "The Stripe delivery host and a versioned or legacy loader path match a script observation.",
+        "caveats": [
+          "No payment operation, loaded feature or data transfer is established.",
+          "Future loader paths and first-party proxies can require rule updates."
+        ],
+        "signals": [
+          {
+            "id": "versioned",
+            "kind": "resource",
+            "hosts": [
+              "js.stripe.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "glob",
+              "value": "/*/stripe.js"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "legacy",
+            "kind": "resource",
+            "hosts": [
+              "js.stripe.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/v3/"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "legacy-no-slash",
+            "kind": "resource",
+            "hosts": [
+              "js.stripe.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/v3"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "versioned"
+            ]
+          },
+          {
+            "allOf": [
+              "legacy"
+            ]
+          },
+          {
+            "allOf": [
+              "legacy-no-slash"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "stripe-script-host",
+        "revision": "2026-10-19.1",
+        "productId": "stripe-payments",
+        "sourceIds": [
+          "browser-stripe-js"
+        ],
+        "explanation": "A script observation names the documented Stripe delivery host.",
+        "caveats": [
+          "This is an origin-only hint, deliberately weaker than a loader-path match.",
+          "An origin/name-only historical capture can satisfy this rule; it cannot identify a loader version."
+        ],
+        "signals": [
+          {
+            "id": "host",
+            "kind": "resource",
+            "hosts": [
+              "js.stripe.com"
+            ],
+            "subdomains": false,
+            "path": null,
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "host"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "turnstile-browser",
+        "revision": "2026-10-19.1",
+        "productId": "cloudflare-turnstile",
+        "sourceIds": [
+          "browser-turnstile"
+        ],
+        "explanation": "A documented loader path, or a div marker together with an own API object, is reported.",
+        "caveats": [
+          "A marker by itself is only a partial hint.",
+          "No widget call, challenge, token or server validation is performed or inspected."
+        ],
+        "signals": [
+          {
+            "id": "loader",
+            "kind": "resource",
+            "hosts": [
+              "challenges.cloudflare.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/turnstile/v0/api.js"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "container",
+            "kind": "marker",
+            "tag": "div",
+            "classToken": "cf-turnstile"
+          },
+          {
+            "id": "api",
+            "kind": "global",
+            "name": "turnstile",
+            "valueType": "object"
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "loader"
+            ]
+          },
+          {
+            "allOf": [
+              "container",
+              "api"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "intercom-widget",
+        "revision": "2026-10-19.1",
+        "productId": "intercom-support",
+        "sourceIds": [
+          "browser-intercom"
+        ],
+        "explanation": "The widget loader prefix and an own Intercom function are reported.",
+        "caveats": [
+          "The function can be a queue stub; this does not establish initialization or message processing.",
+          "Workspace IDs, user details and SDK settings are not inspected."
+        ],
+        "signals": [
+          {
+            "id": "loader",
+            "kind": "resource",
+            "hosts": [
+              "widget.intercom.io"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "prefix",
+              "value": "/widget/"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "api",
+            "kind": "global",
+            "name": "Intercom",
+            "valueType": "function"
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "loader",
+              "api"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "posthog-browser",
+        "revision": "2026-10-19.1",
+        "productId": "posthog-analytics",
+        "sourceIds": [
+          "browser-posthog-cookie",
+          "browser-posthog-loader",
+          "browser-posthog-regions"
+        ],
+        "explanation": "A cloud asset loader, or a cookie-name pattern together with an own posthog object, is reported.",
+        "caveats": [
+          "Custom persistence names, self-hosting and proxies may not match.",
+          "A storage name can be stale and an object can be a bootstrap stub; no values or events are read."
+        ],
+        "signals": [
+          {
+            "id": "loader",
+            "kind": "resource",
+            "hosts": [
+              "us-assets.i.posthog.com",
+              "eu-assets.i.posthog.com"
+            ],
+            "subdomains": false,
+            "path": {
+              "match": "exact",
+              "value": "/static/array.js"
+            },
+            "resourceType": "script",
+            "channels": [
+              "resource-entry",
+              "dom-reference"
+            ]
+          },
+          {
+            "id": "cookie",
+            "kind": "storage",
+            "storageType": "cookie",
+            "name": {
+              "match": "glob",
+              "value": "ph_*_posthog"
+            }
+          },
+          {
+            "id": "api",
+            "kind": "global",
+            "name": "posthog",
+            "valueType": "object"
+          }
+        ],
+        "anyOf": [
+          {
+            "allOf": [
+              "loader"
+            ]
+          },
+          {
+            "allOf": [
+              "cookie",
+              "api"
+            ]
+          }
+        ]
+      }
+    ],
+    "catalog": {
+      "schemaVersion": 1,
+      "kind": "notabenda-service-catalog",
+      "id": "notabenda-reference",
+      "revision": "2026-10-20.2",
+      "sources": [
+        {
+          "id": "open-cookie-database",
+          "url": "https://github.com/jkwakman/Open-Cookie-Database/tree/81813835edc9682113a4d95989358da5256d30c1",
+          "revision": "81813835edc9682113a4d95989358da5256d30c1",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Apache-2.0",
+          "note": "Imported metadata, not independently verified vendor facts or legal classifications. One upstream row without platform/controller is omitted from identities. See bundled catalog notices."
+        },
+        {
+          "id": "cloudflare-reference",
+          "url": "https://www.cloudflare.com/",
+          "revision": "identity-seed-1",
+          "checkedOn": null,
+          "license": "original-factual-reference",
+          "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+          "access": "reference-only"
+        },
+        {
+          "id": "stripe-reference",
+          "url": "https://stripe.com/",
+          "revision": "identity-seed-1",
+          "checkedOn": null,
+          "license": "original-factual-reference",
+          "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+          "access": "reference-only"
+        },
+        {
+          "id": "posthog-reference",
+          "url": "https://posthog.com/",
+          "revision": "identity-seed-1",
+          "checkedOn": null,
+          "license": "original-factual-reference",
+          "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+          "access": "reference-only"
+        },
+        {
+          "id": "intercom-reference",
+          "url": "https://www.intercom.com/",
+          "revision": "identity-seed-1",
+          "checkedOn": null,
+          "license": "original-factual-reference",
+          "note": "Source URL recorded, not independently retrieved or verified. Identity/detection candidate only. Provider practice, contractual entity, hosting mode and technical signatures need independent review. Client libraries may be unused, transitive or self-hosted.",
+          "access": "reference-only"
+        },
+        {
+          "id": "browser-google-tag",
+          "url": "https://developers.google.com/tag-platform/gtagjs",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Google tag loader path and gtag bootstrap; one tag can have multiple product destinations. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-google-gtm",
+          "url": "https://developers.google.com/tag-platform/tag-manager/protocol-relative-url?hl=en",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Tag Manager script/frame paths; only HTTPS is recognized by these rules. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-stripe-js",
+          "url": "https://docs.stripe.com/js",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Documented script delivery host; no payment feature or provider-practice classification. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-stripe-version",
+          "url": "https://docs.stripe.com/sdks/stripejs-versioning",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Versioned loader path and supported legacy v3 delivery. Rule is not a version recommendation. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-turnstile",
+          "url": "https://developers.cloudflare.com/turnstile/get-started/client-side-rendering/",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Widget loader path, div class marker and turnstile API object. No challenge is executed. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-intercom",
+          "url": "https://developers.intercom.com/installing-intercom/web/installation",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Widget loader prefix and Intercom function; app/workspace suffix is never exported as a witness. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-posthog-cookie",
+          "url": "https://posthog.com/tutorials/nextjs-analytics",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official tutorial excerpt describes a project-token-derived cookie name; only the name pattern is matched, never its value. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-posthog-loader",
+          "url": "https://posthog.com/tutorials/framer-analytics",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official tutorial excerpt describes asset-host rewriting and the array.js path. Custom hosts and proxies may not match. Technical reference reviewed, not legal/provider-practice verification; external documentation is not reproduced."
+        },
+        {
+          "id": "browser-posthog-regions",
+          "url": "https://posthog.com/docs/advanced/proxy/nextjs-middleware",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official proxy guide names US and EU asset hosts. Technical endpoint reference only; no inference about an operator deployment region or transfers. External documentation is not reproduced."
+        },
+        {
+          "id": "profile-stripe-roles",
+          "title": "Stripe privacy center",
+          "url": "https://stripe.com/legal/privacy-center",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+        },
+        {
+          "id": "profile-stripe-privacy",
+          "title": "Stripe privacy policy",
+          "url": "https://stripe.com/privacy",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Public technical/legal reference read for these original notes. No provider practice or legal approval is implied; external text is not reproduced."
+        },
+        {
+          "id": "profile-stripe-dpa",
+          "title": "Stripe DPA",
+          "url": "https://stripe.com/legal/dpa",
+          "revision": "retrieved-2026-10-19",
+          "checkedOn": "2026-10-19",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Generic public DPA URL resolved to a localized page during retrieval. Check the agreement and entity for the actual account; no provider verification is implied."
+        },
+        {
+          "id": "profile-posthog-collection",
+          "title": "PostHog collection controls",
+          "url": "https://posthog.com/docs/privacy/data-collection",
+          "revision": "retrieved-2026-10-20",
+          "checkedOn": "2026-10-20",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+        },
+        {
+          "id": "profile-posthog-replay",
+          "title": "PostHog replay privacy controls",
+          "url": "https://posthog.com/docs/session-replay/privacy",
+          "revision": "retrieved-2026-10-20",
+          "checkedOn": "2026-10-20",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+        },
+        {
+          "id": "profile-posthog-storage",
+          "title": "PostHog storage and deletion controls",
+          "url": "https://posthog.com/docs/privacy/data-storage",
+          "revision": "retrieved-2026-10-20",
+          "checkedOn": "2026-10-20",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+        },
+        {
+          "id": "profile-posthog-privacy",
+          "title": "PostHog privacy policy",
+          "url": "https://posthog.com/privacy",
+          "revision": "retrieved-2026-10-20",
+          "checkedOn": "2026-10-20",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Official reference retrieved for original product notes and review questions. Retrieval does not verify actual settings, provider practices, agreement acceptance or legal applicability."
+        },
+        {
+          "id": "profile-posthog-dpa",
+          "title": "PostHog DPA preview and account agreement",
+          "url": "https://posthog.com/dpa",
+          "revision": "retrieved-2026-10-20",
+          "checkedOn": "2026-10-20",
+          "access": "read",
+          "license": "Original metadata; documentation referenced",
+          "note": "Read the page introduction describing a non-binding public preview and an account-generated countersigned DPA. Do not treat this reference as an accepted customer agreement."
+        },
+        {
+          "id": "stripe-go-sdk",
+          "url": "https://github.com/stripe/stripe-go",
+          "revision": "2026-10-20",
+          "checkedOn": "2026-10-20",
+          "access": "read",
+          "license": "original-factual-reference",
+          "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+        }
+      ],
+      "providers": [
+        {
+          "id": "cloudflare",
+          "revision": "1",
+          "name": "Cloudflare",
+          "aliases": [],
+          "website": "https://www.cloudflare.com/",
+          "sourceIds": [
+            "cloudflare-reference"
+          ],
+          "review": "unreviewed"
+        },
+        {
+          "id": "intercom",
+          "revision": "1",
+          "name": "Intercom",
+          "aliases": [],
+          "website": "https://www.intercom.com/",
+          "sourceIds": [
+            "intercom-reference"
+          ],
+          "review": "unreviewed"
+        },
+        {
+          "id": "ocdb-provider-ce770667e5f9b0d8",
+          "revision": "81813835edc9682113a4d95989358da5256d30c1",
+          "name": "Google",
+          "aliases": [],
+          "sourceIds": [
+            "open-cookie-database"
+          ],
+          "review": "unreviewed"
+        },
+        {
+          "id": "posthog",
+          "revision": "1",
+          "name": "PostHog",
+          "aliases": [],
+          "website": "https://posthog.com/",
+          "sourceIds": [
+            "posthog-reference"
+          ],
+          "review": "unreviewed"
+        },
+        {
+          "id": "stripe",
+          "revision": "1",
+          "name": "Stripe",
+          "aliases": [],
+          "website": "https://stripe.com/",
+          "sourceIds": [
+            "stripe-reference"
+          ],
+          "review": "unreviewed"
+        }
+      ],
+      "products": [
+        {
+          "id": "cloudflare-turnstile",
+          "revision": "2026-10-19.1",
+          "providerId": "cloudflare",
+          "name": "Cloudflare Turnstile",
+          "aliases": [],
+          "description": "Browser challenge integration reference. Technical recognition does not establish necessity, consent treatment or a successful challenge.",
+          "categories": [
+            "challenge"
+          ],
+          "delivery": [
+            "browser"
+          ],
+          "sourceIds": [
+            "browser-turnstile"
+          ],
+          "review": "unreviewed",
+          "identifiers": [],
+          "storageHints": []
+        },
+        {
+          "id": "google-tag",
+          "revision": "2026-10-19.1",
+          "providerId": "ocdb-provider-ce770667e5f9b0d8",
+          "name": "Google tag (gtag.js)",
+          "aliases": [],
+          "description": "Browser tag reference; destinations and actual site use need separate review.",
+          "categories": [
+            "measurement"
+          ],
+          "delivery": [
+            "browser"
+          ],
+          "sourceIds": [
+            "browser-google-tag"
+          ],
+          "review": "unreviewed",
+          "identifiers": [],
+          "storageHints": []
+        },
+        {
+          "id": "google-tag-manager",
+          "revision": "2026-10-19.1",
+          "providerId": "ocdb-provider-ce770667e5f9b0d8",
+          "name": "Google Tag Manager",
+          "aliases": [],
+          "description": "Tag-container reference; finding a container does not identify its configured tags.",
+          "categories": [
+            "tag-management"
+          ],
+          "delivery": [
+            "browser"
+          ],
+          "sourceIds": [
+            "browser-google-gtm"
+          ],
+          "review": "unreviewed",
+          "identifiers": [],
+          "storageHints": []
+        },
+        {
+          "id": "intercom-support",
+          "revision": "2026-10-19.2",
+          "providerId": "intercom",
+          "name": "Intercom integration libraries",
+          "aliases": [
+            "Intercom"
+          ],
+          "description": "Integration reference for Intercom. Confirm actual use, deployment and provider relationship.",
+          "categories": [
+            "support"
+          ],
+          "delivery": [
+            "browser",
+            "backend"
+          ],
+          "sourceIds": [
+            "intercom-reference",
+            "browser-intercom"
+          ],
+          "review": "unreviewed",
+          "identifiers": [],
+          "storageHints": []
+        },
+        {
+          "id": "posthog-analytics",
+          "revision": "2026-10-20.1",
+          "providerId": "posthog",
+          "name": "PostHog libraries",
+          "aliases": [
+            "PostHog"
+          ],
+          "description": "Integration reference for PostHog. Confirm actual use, deployment and provider relationship.",
+          "categories": [
+            "analytics"
+          ],
+          "delivery": [
+            "browser",
+            "backend"
+          ],
+          "sourceIds": [
+            "posthog-reference",
+            "browser-posthog-cookie",
+            "browser-posthog-loader",
+            "browser-posthog-regions",
+            "profile-posthog-collection",
+            "profile-posthog-replay",
+            "profile-posthog-storage",
+            "profile-posthog-dpa",
+            "profile-posthog-privacy"
+          ],
+          "review": "unreviewed",
+          "identifiers": [],
+          "storageHints": [],
+          "profile": {
+            "schemaVersion": 1,
+            "facts": [
+              {
+                "id": "collection",
+                "title": "Check automatic and explicit collection",
+                "description": "PostHog documents separate controls for autocapture, identified events and capture opt-in or opt-out. Confirm the enabled products, SDK settings and consent integration before describing the data collected.",
+                "sourceIds": [
+                  "profile-posthog-collection"
+                ]
+              },
+              {
+                "id": "replay",
+                "title": "Replay needs its own review",
+                "description": "Replay has input masking, content controls and optional network capture. Test the actual pages and payloads, including headers and bodies; masking form fields does not describe every recording setting.",
+                "sourceIds": [
+                  "profile-posthog-replay"
+                ]
+              },
+              {
+                "id": "storage",
+                "title": "Filtering after receipt is a different boundary",
+                "description": "PostHog distinguishes collection controls from transformations and IP-discard settings on its servers. Data that must never reach the provider needs to be excluded before transmission.",
+                "sourceIds": [
+                  "profile-posthog-storage"
+                ]
+              },
+              {
+                "id": "agreement",
+                "title": "A public DPA page is not your signed copy",
+                "description": "PostHog identifies its public DPA as a preview and directs customers to generate and countersign the agreement in their organization. Retain the agreement actually used.",
+                "sourceIds": [
+                  "profile-posthog-dpa"
+                ]
+              }
+            ],
+            "links": [
+              {
+                "id": "privacy",
+                "label": "Privacy policy",
+                "kind": "privacy",
+                "url": "https://posthog.com/privacy",
+                "sourceIds": [
+                  "profile-posthog-privacy"
+                ]
+              },
+              {
+                "id": "dpa",
+                "label": "DPA preview and agreement instructions",
+                "kind": "dpa",
+                "url": "https://posthog.com/dpa",
+                "sourceIds": [
+                  "profile-posthog-dpa"
+                ]
+              },
+              {
+                "id": "collection",
+                "label": "Collection controls",
+                "kind": "documentation",
+                "url": "https://posthog.com/docs/privacy/data-collection",
+                "sourceIds": [
+                  "profile-posthog-collection"
+                ]
+              },
+              {
+                "id": "replay",
+                "label": "Replay privacy",
+                "kind": "documentation",
+                "url": "https://posthog.com/docs/session-replay/privacy",
+                "sourceIds": [
+                  "profile-posthog-replay"
+                ]
+              },
+              {
+                "id": "storage",
+                "label": "Storage and deletion",
+                "kind": "documentation",
+                "url": "https://posthog.com/docs/privacy/data-storage",
+                "sourceIds": [
+                  "profile-posthog-storage"
+                ]
+              }
+            ],
+            "reviewPrompts": [
+              {
+                "id": "features",
+                "prompt": "Which products, event properties, user identifiers, autocapture and replay settings are enabled?",
+                "sourceIds": [
+                  "profile-posthog-collection",
+                  "profile-posthog-replay"
+                ],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-NOTICE"
+                ]
+              },
+              {
+                "id": "consent",
+                "prompt": "How do actual loading, capture and withdrawal behave before and after a visitor changes their choice?",
+                "sourceIds": [
+                  "profile-posthog-collection"
+                ],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-CONSENT",
+                  "REQ-EU-WITHDRAWAL"
+                ]
+              },
+              {
+                "id": "data-path",
+                "prompt": "Where do events go, what is removed before transmission, and which retention and deletion settings apply?",
+                "sourceIds": [
+                  "profile-posthog-storage",
+                  "profile-posthog-replay"
+                ],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-NOTICE"
+                ]
+              },
+              {
+                "id": "agreement",
+                "prompt": "Which customer agreement and transfer arrangements have you actually accepted and retained?",
+                "sourceIds": [
+                  "profile-posthog-dpa"
+                ],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-NOTICE"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "stripe-payments",
+          "revision": "2026-10-20.2",
+          "providerId": "stripe",
+          "name": "Stripe payment libraries",
+          "aliases": [
+            "Stripe"
+          ],
+          "description": "Integration reference for Stripe. Confirm actual use, deployment and provider relationship.",
+          "categories": [
+            "payments"
+          ],
+          "delivery": [
+            "browser",
+            "backend"
+          ],
+          "sourceIds": [
+            "stripe-reference",
+            "browser-stripe-js",
+            "browser-stripe-version",
+            "profile-stripe-roles",
+            "profile-stripe-dpa",
+            "profile-stripe-privacy",
+            "stripe-go-sdk"
+          ],
+          "review": "unreviewed",
+          "identifiers": [],
+          "storageHints": [],
+          "profile": {
+            "schemaVersion": 1,
+            "facts": [
+              {
+                "id": "roles",
+                "title": "Processing role depends on the activity",
+                "description": "Stripe describes both controller and processor activities. Review the product and processing purpose before describing its role for your site.",
+                "sourceIds": [
+                  "profile-stripe-roles",
+                  "profile-stripe-dpa"
+                ]
+              },
+              {
+                "id": "entity",
+                "title": "Account and product context matter",
+                "description": "Stripe says the relevant entity can depend on account location, product and context. An SDK reference alone does not identify the entity or products used.",
+                "sourceIds": [
+                  "profile-stripe-roles"
+                ]
+              }
+            ],
+            "links": [
+              {
+                "id": "privacy",
+                "kind": "privacy",
+                "label": "Privacy policy",
+                "url": "https://stripe.com/privacy",
+                "sourceIds": [
+                  "profile-stripe-privacy"
+                ]
+              },
+              {
+                "id": "dpa",
+                "kind": "dpa",
+                "label": "Data processing agreement",
+                "url": "https://stripe.com/legal/dpa",
+                "sourceIds": [
+                  "profile-stripe-dpa"
+                ]
+              },
+              {
+                "id": "roles",
+                "kind": "documentation",
+                "label": "Privacy center",
+                "url": "https://stripe.com/legal/privacy-center",
+                "sourceIds": [
+                  "profile-stripe-roles"
+                ]
+              }
+            ],
+            "reviewPrompts": [
+              {
+                "id": "products",
+                "prompt": "Which payment, identity, fraud or connected-account products do you actually use, and which data reaches each?",
+                "sourceIds": [
+                  "profile-stripe-roles",
+                  "profile-stripe-dpa"
+                ],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-NOTICE"
+                ]
+              },
+              {
+                "id": "roles",
+                "prompt": "For each activity, which Stripe entity and processing role apply under your account agreement?",
+                "sourceIds": [
+                  "profile-stripe-roles",
+                  "profile-stripe-dpa"
+                ],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-NOTICE"
+                ]
+              },
+              {
+                "id": "locations",
+                "prompt": "Confirm actual processing locations, transfers and retention for the selected products. Do not infer these from an SDK import.",
+                "sourceIds": [],
+                "requirementIds": [
+                  "REQ-PRODUCT-SERVICE-CATALOG",
+                  "REQ-EU-NOTICE"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "evidence": [
+    {
+      "ruleId": "stripe-loader-path",
+      "signalId": "legacy",
+      "channel": "dom-reference",
+      "count": 1
+    },
+    {
+      "ruleId": "stripe-script-host",
+      "signalId": "host",
+      "channel": "dom-reference",
+      "count": 1
+    }
+  ],
+  "coverage": {
+    "matching": "available",
+    "globals": "available"
+  },
+  "omitted": {
+    "oversizedUrls": 0,
+    "accessorGlobals": 0
+  }
+}

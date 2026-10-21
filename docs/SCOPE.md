@@ -299,3 +299,8 @@ Contract interface copy is optional and versioned independently of profile mecha
 
 <!-- @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK REQ-US-CA-ALTERNATIVE-LINK -->
 An optional versioned `privacy.choicesLink` declaration supplies a public destination, plain label, presentation and explicit review status. It is not inferred from regional facts or a rights-page route. Core, React and Astro legal navigation include it; standalone rendering needs no JavaScript or storage. California alternative presentation supplies the selected title/icon only. The host must provide and verify the actual destination for both sale/sharing opt-out and sensitive-information limits, inspect homepage placement and keep applicable signal handling. This does not establish a supported California pack or turn the processing-only example into a complete California request surface.
+
+### Browser reference coverage
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION -->
+Expand passive discovery through bounded original data rules tied to actual first-party references. The current optional seed has nineteen rules for sixteen products and preserves older snapshots. Do not treat a CDN path, SDK queue, dependency, vendor privacy claim or absent match as legal classification, actual execution or absence-of-tracking proof. New provider identities remain reference labels requiring actual-use and contracting-party review.
