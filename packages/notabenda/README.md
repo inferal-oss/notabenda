@@ -136,6 +136,10 @@ The optional `@notabenda/cloudflare` helpers register archived offers, explicitl
 
 The optional build-time `@notabenda/core/technology` entry supplies versioned identification, location and profiling disclosures bound to an intact legal release and a fresh consent-managed service scope. Host-language text and activation instructions stay visible without JavaScript. The host uses the existing service lifecycle and controls; it retains the supplemental descriptor separately. See [technology collection](../../docs/TECHNOLOGY-COLLECTION.md). This initial Québec profile does not determine applicability or implement specialized workflows.
 
+## Build from a configuration file
+
+`notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist` builds legal pages plus the small browser consent descriptor and its separate stylesheet. JSON and Markdown with YAML frontmatter work too. Select `required` when optional processing needs a host receipt; the mode has no default and still needs the host's archived notice and transport. The [consent guide](../../docs/CONSENT.md#smaller-browser-entry) shows the browser connection and service lifecycles.
+
 ## Exports
 
 - `@notabenda/core`: configuration validation/projection, document rendering, local or required-receipt consent state, terms agreement, and vanilla controls.

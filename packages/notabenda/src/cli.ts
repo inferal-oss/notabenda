@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// @requirements REQ-PRODUCT-CONFIG-SOURCES
+// @requirements REQ-PRODUCT-CONFIG-SOURCES REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-BUNDLE-BUDGET
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
 // @requirements REQ-PRODUCT-PUBLICATION-CHECK
@@ -14,8 +14,8 @@ import {readConfigInput,configSourceFormat,formatConfigSource} from './config-so
 import type {ConfigSourceFormat} from './config-document.js';
 import {readSetupCatalogSelections} from './catalog-selection.js';
 import {attachCatalogReview} from './catalog-release.js';
-import {canonicalJson} from './content.js';
-import { readFile, writeFile, mkdir, realpath } from 'node:fs/promises';
+import {canonicalJson,compileConsentRuntimeConfig} from './content.js';
+import { readFile, writeFile, mkdir, realpath, lstat } from 'node:fs/promises';
 import { resolve, sep, dirname, basename } from 'node:path';
 import { SiteConfigError,formatDiagnosticPath } from './config.js';
 import {validateAuthoredConfig} from './config-authoring.js';
@@ -34,6 +34,10 @@ wizard Ask about practices, coverage and justifications; write a draft and priva
 init   Write a draft config; --config FILE selects JSON, YAML or Markdown. Never overwrites.
 check  Validate configuration (production checks by default; --preview permits drafts).
 build  Generate static legal pages, public configuration and a versioned artifact.
+Build --consent-runtime local|required also writes consent-runtime.json and
+assets/notabenda-consent.css for the smaller @notabenda/core/consent browser entry.
+Choose local for browser-only choices or required for host-confirmed receipts;
+this does not connect loaders, configure a backend or generate an evidence notice.
 describe [TARGET ...] [--json]  Read-only integration map, facts, actual setup question IDs
 and unknown-answer template. No project scan or config mutation. Omit targets to list all.
 describe --selection FILE [--json]  Resolve explicit yes/no/unknown scope decisions
@@ -142,7 +146,7 @@ async function main(): Promise<void> {
   if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
-  let wizardConfigFormat:ConfigSourceFormat|undefined;let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,termsPath:string|undefined,storagePath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
+  let consentRuntimeMode:'local'|'required'|undefined;let wizardConfigFormat:ConfigSourceFormat|undefined;let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,termsPath:string|undefined,storagePath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
   const retainedPaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
@@ -152,10 +156,10 @@ async function main(): Promise<void> {
     seen.add(flag);
     if (flag === '--preview') preview = true;
     else if (flag === '--json') json = true;
-    else if (flag === '--config-format' || flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights' || flag === '--terms' || flag === '--storage') {
+    else if (flag === '--consent-runtime' || flag === '--config-format' || flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights' || flag === '--terms' || flag === '--storage') {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw new Error('CLI option requires a value.');
-      if(flag==='--config-format'){if(!['json','yaml','markdown'].includes(value))throw Error('Choose json, yaml or markdown for --config-format.');wizardConfigFormat=value as ConfigSourceFormat;}else if(flag==='--terms')termsPath=value;else if(flag==='--storage')storagePath=value;else if(flag==='--rights')rightsPath=value;else if(flag==='--cartridges')cartridges=value;else if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
+      if(flag==='--consent-runtime'){if(!['local','required'].includes(value))throw Error('Choose local or required for --consent-runtime.');consentRuntimeMode=value as 'local'|'required';}else if(flag==='--config-format'){if(!['json','yaml','markdown'].includes(value))throw Error('Choose json, yaml or markdown for --config-format.');wizardConfigFormat=value as ConfigSourceFormat;}else if(flag==='--terms')termsPath=value;else if(flag==='--storage')storagePath=value;else if(flag==='--rights')rightsPath=value;else if(flag==='--cartridges')cartridges=value;else if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
     } else throw new Error('Unknown CLI option. Run notabenda --help.');
   }
   if((catalogReportPath||privateOutDir)&&(command!=='build'||!catalogReportPath||!privateOutDir))throw Error('Build requires --catalog-report and --private-out-dir together.');
@@ -165,6 +169,7 @@ async function main(): Promise<void> {
   if (seen.has('--retain-artifact') && command !== 'build') throw new Error('--retain-artifact is only valid for build.');
   if (json && command !== 'check') throw new Error('--json is only valid for check.');
   if (preview && command === 'init') throw new Error('init always creates a draft; --preview applies to check/build.');
+  if(consentRuntimeMode&&command!=='build')throw Error('--consent-runtime is only valid for build.');
   if(wizardConfigFormat&&command!=='wizard')throw Error('--config-format is only valid for wizard.');
   if(cartridges&&command!=='wizard')throw Error('--packs is only valid for wizard.');
   if(storagePath&&command!=='wizard')throw Error('--storage is only valid for wizard.');
@@ -191,6 +196,10 @@ async function main(): Promise<void> {
     return;
   }
   if (!result.valid) throw new SiteConfigError(result.diagnostics);
+  // An omitted switch must not leave a previous descriptor active beside a new legal release.
+  if(!consentRuntimeMode){try{await lstat(resolve(outDir,'consent-runtime.json'));throw Error('This output already contains consent-runtime.json. Choose --consent-runtime local|required explicitly, or use a new output directory.');}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}}
+  const runtime=consentRuntimeMode?compileConsentRuntimeConfig(input,{mode,evidence:consentRuntimeMode}):undefined;
+  const runtimeFiles:Record<string,string>=runtime?{'consent-runtime.json':canonicalJson(runtime)+'\n','assets/notabenda-consent.css':await readFile(new URL('./consent.css',import.meta.url),'utf8')}:{};
   let build = compileLegalDocuments(input, { mode });
   let archive:import('./content.js').LegalSourceArchive|undefined;
   if(catalogReportPath){
@@ -210,6 +219,7 @@ async function main(): Promise<void> {
   const css = await readFile(new URL('./styles.css', import.meta.url), 'utf8');
   const offers=createConfiguredTermsOfferFiles(build.artifact,{mode});
   for(const [path,body] of Object.entries(offers))for(const files of [build.files,pinned])if(Object.hasOwn(files,path)&&files[path]!==body)throw Error('A configured terms offer conflicts with an existing public output.');
+  for(const [path,body] of Object.entries(runtimeFiles))for(const files of [build.files,pinned,offers])if(Object.hasOwn(files,path)&&files[path]!==body)throw Error('The consent runtime conflicts with an existing public output.');
   if(archive&&privateOutDir){
     // Exclusive private output is never added to public build.files. No existing directory is reused.
     const root=resolve(privateOutDir);await mkdir(root,{mode:0o700});
@@ -219,7 +229,8 @@ async function main(): Promise<void> {
     await writeFile(resolve(root,'release.private.json'),canonicalJson(archive)+'\n',{flag:'wx',mode:0o600});
     await writeFile(resolve(root,'.gitignore'),'*\n',{flag:'wx',mode:0o600});
   }
-  await writeBuildFiles(resolve(outDir), { ...build.files,...pinned,...offers, 'assets/notabenda.css': css });
+  await writeBuildFiles(resolve(outDir), { ...build.files,...pinned,...offers,...runtimeFiles, 'assets/notabenda.css': css });
+  if(runtime)console.log(`Consent runtime: ${runtime.evidence} evidence mode. Connect service lifecycles before optional requests; required mode also needs an archived notice and host-bound receipt adapter.`);
   console.log(`Built ${build.manifest.documents.length} ${mode} documents in ${outDir}. Artifact: ${build.manifest.artifactId}`);
 }
 

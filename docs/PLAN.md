@@ -90,6 +90,8 @@ npx @notabenda/core build
 
 `init` creates a small inventory and explicit content placeholders. `check` validates exact installed field shapes before missing facts, undeclared services, unsupported profiles, and draft content. `build` and source-file imports use the same checks; structured assessment retains invalid-config diagnostics. `build` emits static legal documents, public runtime config, and a versioned evidence artifact. Production mode rejects unresolved placeholders and unreviewed generated content; bring-your-own reviewed documents remain supported.
 
+An explicit `build --consent-runtime local|required` option emits the small browser descriptor and consent-only CSS directly from JSON, YAML or Markdown-frontmatter configuration. Full site validation, preview declarations and runtime bounds still apply. Existing runtime output requires an explicit mode on every rebuild; service lifecycles, archived notice and any host receipt transport remain separate connections. The compatibility entry's 15 KiB transfer target remains open.
+
 The [guided setup wizard](SETUP.md) now shares a bounded questionnaire/recommendation engine across CLI and the host-authorized local admin UI, with private justifications, saved-answer resume, draft exports and catalog references. Imported settings remain explicit operator decisions.
 
 Go project discovery now reads static module requirements and package imports, including separate indirect/test contexts and explicit unresolved build-graph limits. Seven SDK families have source-linked namespace signatures; matches still need actual-use review. See [service discovery](SERVICE-CATALOG.md#go-projects).

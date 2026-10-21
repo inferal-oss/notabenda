@@ -4750,9 +4750,10 @@
         "docs/verification/configuration-sources.md",
         "packages/notabenda/test/config-authoring.test.mjs",
         "packages/notabenda/test/config-browser.test.mjs",
-        "site/test/config-browser.test.mjs"
+        "site/test/config-browser.test.mjs",
+        "packages/notabenda/test/consent-build-cli.test.mjs"
       ],
-      "implementationNote": "An optional universal ESM codec powers browser and Node parsing/formatting. Browser imports enforce the shared authoring checks and new draft downloads select JSON/YAML/Markdown, with stale-job invalidation, private-note exclusion and matching agent filenames. The CLI wizard has the same explicit output-format choice. Saved tab drafts retain only the format enum alongside their existing public configuration and questionnaire."
+      "implementationNote": "An optional universal ESM codec powers browser and Node parsing/formatting. Browser imports enforce the shared authoring checks and new draft downloads select JSON/YAML/Markdown, with stale-job invalidation, private-note exclusion and matching agent filenames. The CLI wizard has the same explicit output-format choice. Saved tab drafts retain only the format enum alongside their existing public configuration and questionnaire. CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate."
     },
     {
       "id": "REQ-PRODUCT-DOCUMENTS",
@@ -5002,13 +5003,16 @@
         "packages/notabenda/src/consent.ts",
         "packages/notabenda/src/consent-engine.ts",
         "packages/notabenda/src/consent-runtime-config.ts",
-        "packages/notabenda/src/consent-runtime.ts"
+        "packages/notabenda/src/consent-runtime.ts",
+        "packages/notabenda/src/cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs",
-        "packages/notabenda/test/setup-purpose.test.mjs"
-      ]
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/consent-build-cli.test.mjs"
+      ],
+      "implementationNote": "CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate."
     },
     {
       "id": "REQ-EU-ORDER-ACTION",
@@ -6463,7 +6467,8 @@
         "scripts/measure-consent-performance.mjs",
         "scripts/build-performance-fixture.mjs",
         "scripts/performance-browser-app.mjs",
-        "scripts/serve-performance.mjs"
+        "scripts/serve-performance.mjs",
+        "packages/notabenda/src/cli.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
@@ -6472,9 +6477,10 @@
         "packages/notabenda/test/consent-runtime.test.mjs",
         "packages/notabenda/test/react-consent.test.mjs",
         "packages/notabenda/test/consent-performance.test.mjs",
-        "docs/verification/consent-performance.md"
+        "docs/verification/consent-performance.md",
+        "packages/notabenda/test/consent-build-cli.test.mjs"
       ],
-      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results."
+      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results. CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-CATALOG",

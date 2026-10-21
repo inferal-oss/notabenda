@@ -78,6 +78,16 @@ The body is returned as `notes` by `readConfigSource`. It is never rendered, mer
 
 This differs from [legal-document authoring](AUTHORING.md): a policy's frontmatter describes **one document**, and its body supplies published legal wording. A configuration document describes **the entire site**, and its body is supporting material. Write your actual policies in separate `.md` or trusted `.mdx` sources.
 
+## Build a browser consent configuration
+
+A configured site can produce the small browser runtime without a JavaScript build script:
+
+```sh
+notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist
+```
+
+The additional files are `consent-runtime.json` and `assets/notabenda-consent.css`. Choose `required` instead of `local` if optional processing must wait for a host-confirmed receipt. This is an explicit delivery decision, not a legal-basis inference from the inventory. Both choices use the same whole-site validation and bounded runtime compiler. Connect the resulting descriptor through `@notabenda/core/consent`; service lifecycles and any notice/receipt transport remain host work. See [cookie choices](CONSENT.md#smaller-browser-entry).
+
 ## Read a configuration in your build
 
 ```js

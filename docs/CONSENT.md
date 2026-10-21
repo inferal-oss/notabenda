@@ -24,7 +24,17 @@ The [regional baseline checks](verification/regional-consent.md) connect added-p
 
 ## Smaller browser entry
 
-Build the consent descriptor alongside your legal pages:
+Build the consent descriptor alongside your legal pages. The CLI accepts the same JSON, YAML or Markdown-frontmatter configuration as the document build:
+
+```sh
+notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist
+```
+
+This writes `consent-runtime.json` and `assets/notabenda-consent.css` in addition to the legal pages and retained artifact. It validates the complete configuration and requires reviewed production content unless `--preview` is explicit. Choose `local` for browser-only choices, or `required` when a host receipt must precede optional processing. There is no evidence-mode default. Required mode still needs an archived consent notice and a host-bound receipt adapter; the command connects no service loaders, transport or backend. Without the switch, a new output directory has the same document-only output as before. If the output already contains a runtime descriptor, repeat the switch when rebuilding so an old descriptor cannot silently remain beside changed legal pages.
+
+The files can be deployed with the site. Import the published `@notabenda/core/consent.css` from your own bundler, or link the generated `/assets/notabenda-consent.css` when serving static assets. Your browser code still registers each service lifecycle before optional requests can start.
+
+For a custom build pipeline, use the same compiler directly:
 
 ```ts
 // Build/server code; defaults to reviewed production content.
