@@ -77,6 +77,8 @@ The HTTP boundary fixes site/scope/notice, checks mutation Origin/custom header/
 
 Builds emit current and hash-pinned processing notice JSON, the legal artifact and pinned privacy HTML. Retain old release artifacts explicitly with `--retain-artifact saved-release.json` when rebuilding in a clean environment. Preserve earlier pinned notice JSON separately as well: the build emits its current notice, not every historical notice. Keep the database's original notice/release records. Do not rename scopes or streams to reset restrictions.
 
+A trusted host restoring a known unresolved intent can call the workspace factory’s private `fence(streamId, activities)` before reopening processing. It records no receipt and exposes no public HTTP or Worker RPC operation. Authenticate the original intent and target in a journal outside the restored database; a backed-up pending fence can itself roll back. The [provider-native recovery exercise](../../docs/CLOUDFLARE-REMOTE-RECOVERY.md) demonstrates this boundary with synthetic data.
+
 If pending-fence capacity is exhausted, a persistent global overflow fence blocks admissions across contexts until the host explicitly reconciles it. Restart does not clear that fence. It is an operational stop, not a recorded opt-out for every visitor.
 
 The example's bounded queues (32 jobs, 256 pending fences and 256 sink payloads) are for demonstration. It includes no record expiry scheduler, production retention policy, cross-device identity, legal applicability decision or re-opt-in flow. Use the existing lifecycle APIs with a reviewed policy, and ensure pending fences and producer jobs cannot bypass retirement, erasure or holds in your integration.

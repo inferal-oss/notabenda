@@ -239,6 +239,8 @@ D1, R2, scheduled retention jobs, and delivery queues remain options for future 
 
 Terms acceptance is implemented as host-callable storage helpers, with trusted subject/workflow/operation binding and an acknowledged frontend transport. Registration and activation are separate, and activation checks share the acceptance transaction. There is no package-provided public write route. Cookie-choice notice registration and a transactional host-callable ledger are implemented; see [CONSENT-EVIDENCE.md](CONSENT-EVIDENCE.md). Browser required-receipt gating and bounded delivery are implemented behind opt-in host transport; [retention, holds and resumable erasure](EVIDENCE-LIFECYCLE.md) are available through explicit host policy and authorization. Broader generic subject-event ingestion remains open.
 
+The [provider-native recovery rehearsal](CLOUDFLARE-REMOTE-RECOVERY.md) now covers consent, terms, form permissions and processing restrictions with later negative-intent replay, preserved live heads, queued-producer checks and an independent sink. Contract/order recovery has a separate local exercise. Provider-native transaction recovery, key rotation, partial-deployment rehearsal and real host acceptance remain open.
+
 ### Future evidence-ingestion API surface (routes not implemented)
 
 | Route | Caller | Purpose |

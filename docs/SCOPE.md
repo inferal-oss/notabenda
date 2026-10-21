@@ -321,3 +321,7 @@ Support generating an exact native consent notice from the final legal release, 
 ## Complete processing application example
 
 Provide a separate [processing application](PROCESSING-APPLICATION.md) with anonymous first-navigation header gating, host-owned continuity, browser-reported/manual restrictions, durable pending fences, private ledger inspection, dispatch-time rechecks and independent synthetic sink observations. Preserve provenance and exact retry identities. Show uncertain delivery honestly; already admitted calls cannot be recalled. Keep context/operator hooks denying and fault injection in disposable test copies. This adds no identity issuer, scheduler, real provider integration, production retention policy or automatic legal applicability.
+
+## Extend provider-native recovery acceptance
+
+The optional remote rehearsal covers fixed consent, terms, form-permission and processing contexts, including later withdrawals and both recorded and unresolved opt-out intents. Keep the gate, required journal and independent synthetic sink outside rollback. Refuse incomplete journals, restore unresolved intent without a receipt, verify surviving live heads and event bytes read-only, and test replay/purge interruption and actual sink attempts. The three disposable namespaces and Worker require verified ownership and cleanup. This does not add a production journal service or complete provider-native contract/order recovery, key rotation, deployment rollback or legal review.

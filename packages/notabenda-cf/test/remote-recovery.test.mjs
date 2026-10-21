@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createRemoteRecoveryControl,createRemoteRecoveryEvidence,createRemoteRecoveryHandler,fixtureReply} from '../../../scripts/fixtures/remote-recovery.mjs';
-import {parseRemoteRecoveryArgs,checkRunIdentity,sourceBodyIdentity,reconcileOwnership,cleanup} from '../../../scripts/check-cf-remote-recovery.mjs';
+import {createRemoteRecoveryControl,createRemoteRecoveryEvidence,createRemoteRecoveryHandler,fixtureReply,fixtureJson} from '../../../scripts/fixtures/remote-recovery.mjs';
+import {parseRemoteRecoveryArgs,checkRunIdentity,sourceBodyIdentity,reconcileOwnership,cleanup,waitForRemoteRecoveryReady} from '../../../scripts/check-cf-remote-recovery.mjs';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 import {randomUUID,createHash} from 'node:crypto';
 import {mkdtemp,readFile,rm} from 'node:fs/promises';
@@ -25,7 +25,7 @@ test('restore intent is recorded externally once and binds bookmark, epoch and j
 });
 test('all ordinary target RPCs check the external closed gate before touching evidence storage',async()=>{
  let touched=0;const evidence=createRemoteRecoveryEvidence({storage:new Proxy({},{get(){touched++;throw Error('Evidence must remain inaccessible');}}),blockConcurrencyWhile:callback=>callback()},{command:async()=>({ok:true,value:{phase:'closed'}})},data);
- for(const action of ['inspect','archive-write','grant'])assert.deepEqual(await evidence.command(action),{ok:false,error:'recovery-closed'});assert.equal(touched,0);
+ for(const action of ['inspect','archive-write','grant','family-inspect','family-replay-erased','permission-old-grant','processing-produce','processing-positive','processing-enqueue','processing-dispatch','processing-record','processing-read'])assert.deepEqual(await evidence.command(action),{ok:false,error:'recovery-closed'});assert.equal(touched,0);
 });
 test('closing the external gate then enqueuing maintenance drains an admitted read and blocks queued ordinary work',async()=>{
  let gate='open',release,entered;const started=new Promise(done=>entered=done),barrier=new Promise(done=>release=done),raw=createSyntheticStorage([]);let sqlReads=0;
@@ -69,5 +69,11 @@ test('uncertain deployments recover exact ownership, preserve namespace identiti
 });
 
 test('fixture RPC replies normalize retained null-prototype records to plain JSON data',async()=>{
- const record=Object.assign(Object.create(null),{hold:{active:true}}),result=await fixtureReply(async()=>({nested:[record]}));assert.deepEqual(result,{ok:true,value:{nested:[{hold:{active:true}}]}});assert.equal(Object.getPrototypeOf(result.value.nested[0]),Object.prototype);assert.deepEqual(await fixtureReply(async()=>({unsupported:1n})),{ok:false,error:'fixture-operation-failed'});
+ const record=Object.assign(Object.create(null),{hold:{active:true}}),result=await fixtureReply(async()=>({nested:[record]}));assert.deepEqual(result,{ok:true,value:{nested:[{hold:{active:true}}]}});assert.equal(Object.getPrototypeOf(result.value.nested[0]),Object.prototype);const outgoing=fixtureJson({families:{retirements:record}});assert.equal(Object.getPrototypeOf(outgoing.families.retirements),Object.prototype);assert.deepEqual(outgoing,{families:{retirements:{hold:{active:true}}}});assert.deepEqual(await fixtureReply(async()=>({unsupported:1n})),{ok:false,error:'fixture-operation-failed'});
+});
+
+
+test('remote readiness requires authenticated closed state before testing anonymous refusal',async()=>{
+ let attempts=0,anonymous=0;await waitForRemoteRecoveryReady(async(action,payload,options)=>{assert.equal(action,'state');if(options?.anonymous){anonymous++;assert.equal(attempts,3);assert.equal(options.status,403);return;}attempts++;if(attempts===1)throw Error('Secret not propagated.');return {phase:attempts===2?'open':'closed'};},async()=>{});assert.equal(attempts,3);assert.equal(anonymous,1);
+ let denied=0;await assert.rejects(waitForRemoteRecoveryReady(async(action,payload,options)=>{assert.equal(options,undefined);denied++;throw Error('Not authenticated.');},async()=>{}),/did not accept/);assert.equal(denied,20);
 });

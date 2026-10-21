@@ -12,7 +12,7 @@ async function digest(value){return [...new Uint8Array(await crypto.subtle.diges
 /** One instance owns the admission boundary. Network calls never hold its serial queue. */
 export function createProcessingWorkspace(storage,release,{send,now=()=>new Date()}={}){
   const fixed={siteId:release.notice.siteId,scopeId:release.notice.scopeId,allowPreview:release.runtime.mode==='preview'};
-  const context=streamId=>({...fixed,streamId});let tail=Promise.resolve();const unconfirmedRestrictions=new Map(),inFlight=new Map();let uncertainAll=false;
+  const context=streamId=>({...fixed,streamId,now});let tail=Promise.resolve();const unconfirmedRestrictions=new Map(),inFlight=new Map();let uncertainAll=false;
   const serial=work=>{const result=tail.then(work);tail=result.catch(()=>{});return result;};
   const prefix='application:processing:jobs:',pendingPrefix='application:processing:pending:',overflowKey='application:processing:overflow';
   const activityNames=['sale','sharing','targeted-advertising'];
@@ -79,6 +79,9 @@ export function createProcessingWorkspace(storage,release,{send,now=()=>new Date
   return {
     register:()=>serial(async()=>{await recordLegalRelease(storage,release.artifact);return registerProcessingNotice(storage,release.notice,fixed);}),
     read:streamId=>serial(()=>head(streamId)),
+    // @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY REQ-PRODUCT-EVIDENCE-LIFECYCLE
+    // Private host recovery only: retain unresolved intent without fabricating a receipt.
+    fence:(streamId,requested)=>serial(async()=>{if(typeof streamId!=='string'||!streamId.trim()||streamId.length>200||!activities(requested))fail('invalid-request');await mark(streamId,requested);return {pending:true};}),
     pending:streamId=>serial(async()=>await overflowed()||(await pendingActivities(streamId)).length>0),
     record:(streamId,command)=>serial(async()=>{acceptedCommand(command);await mark(streamId,command.activities);await registered();const result=await recordProcessingRestriction(storage,command,{...context(streamId),provenance:'browser-report'});await confirmed(streamId,result.head);return result;}),
     observe:streamId=>serial(async()=>{await mark(streamId,release.notice.activities);const current=await head(streamId);const requested=release.notice.activities.filter(a=>!current.event?.restrictions.includes(a));if(!requested.length){await confirmed(streamId,current);return {changed:false,head:current};}const result=await recordProcessingRestriction(storage,{schemaVersion:1,noticeId:release.notice.noticeId,requestId:crypto.randomUUID(),activities:requested},{...context(streamId),provenance:'gpc-header'});await confirmed(streamId,result.head);return {changed:true,head:result.head};}),

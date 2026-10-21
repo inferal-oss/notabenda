@@ -611,7 +611,9 @@
         "examples/processing-application/authorize.mjs",
         "examples/processing-application/notabenda.config.yaml",
         "examples/processing-application/README.md",
-        "docs/PROCESSING-APPLICATION.md"
+        "docs/PROCESSING-APPLICATION.md",
+        "scripts/fixtures/family-recovery.mjs",
+        "scripts/fixtures/family-recovery-data.mjs"
       ]
     },
     {
@@ -945,7 +947,10 @@
         "docs/RELEASES.md",
         "docs/CLOUDFLARE-RECOVERY.md",
         "docs/verification/transaction-recovery.md",
-        "docs/RECORDED-COOKIE-APPLICATION.md"
+        "docs/RECORDED-COOKIE-APPLICATION.md",
+        "scripts/fixtures/family-recovery.mjs",
+        "scripts/fixtures/family-recovery-data.mjs",
+        "examples/processing-application/workspace.mjs"
       ]
     },
     {
@@ -8899,7 +8904,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Disposable provider-native SQLite recovery with an external gate",
       "kind": "product-standard",
-      "summary": "Provide optional remote maintainer tooling that restores a fresh synthetic SQLite object through its provider bookmark, preserves a non-restored gate and later hold/retirement journal, and removes only the attested disposable resources.",
+      "summary": "Provide optional remote maintainer tooling that restores fixed synthetic SQLite evidence through its provider bookmark, preserves a non-restored gate, later negative-intent/hold/retirement journal and independent destination, and removes only attested disposable resources.",
       "appliesWhen": "Maintainers explicitly run the remote Cloudflare recovery command against their selected account.",
       "sourceRefs": [
         {
@@ -8936,20 +8941,25 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Fixed synthetic consent streams, holds, document archives and one SQL table only; not generated-starter or all-family recovery, portable backup, host authentication/journal completeness, downstream deletion or legal readiness. No production bindings or routes. Adopters choose CI.",
+      "caveats": "Fixed consent, terms, form-permission and processing contexts, stable active selections, document archives and one SQL table. Provider-native contract/order recovery, production access/journal completeness/authentication, key rotation, real providers, backup/downstream deletion and legal readiness remain open. No production bindings/routes; adopters choose CI.",
       "implementationRefs": [
         "scripts/check-cf-remote-recovery.mjs",
         "scripts/fixtures/remote-recovery.mjs",
         "scripts/fixtures/remote-recovery-worker.mjs",
         "docs/CLOUDFLARE-REMOTE-RECOVERY.md",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "scripts/fixtures/family-recovery.mjs",
+        "scripts/fixtures/family-recovery-data.mjs",
+        "examples/processing-application/workspace.mjs"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/remote-recovery.test.mjs",
         "scripts/check-cf-remote-recovery.mjs",
-        "docs/verification/cloudflare-remote-recovery.md"
+        "docs/verification/cloudflare-remote-recovery.md",
+        "packages/notabenda-cf/test/family-recovery.test.mjs",
+        "packages/notabenda-cf/test/processing-application.test.mjs"
       ],
-      "implementationNote": "External default-closed control object, whole-operation serialization, hold-first replay, bounded purge restart, exact source hashes, private atomic ownership checkpoints and namespace-first cleanup with source/tag/ID checks. Real remote SQLite Time Travel run passed on 20 October 2026, including SQL and KV rollback, later hold-first replay, external gate persistence, purge restart, exact source bytes and verified removal of both namespaces and Worker."
+      "implementationNote": "External default-closed control, privately sealed complete fixed journal, hold/negative-intent-first replay, exact original receipts, private pending fence without invented action, read-only surviving event/head verification, replay/purge restart and independent destination attempt checks. Real four-family Cloudflare SQLite Time Travel run passed on 21 October 2026 with provider-confirmed cleanup of three namespaces and Worker. Ownership source/tag/ID checks and atomic private checkpoints remain required."
     },
     {
       "id": "REQ-PRODUCT-TERMS-CONNECTION",
@@ -11154,11 +11164,13 @@
         "REQ-PRODUCT-CF-REMOTE-RECOVERY"
       ],
       "status": "automated",
-      "expected": "Direct regressions cover gate ordering, journal identity, plain RPC data, HTTP authority, source attestation and cleanup ownership. The real remote command verified native SQL/KV rollback, hold-first replay, purge restart, closed ordinary operations, surviving heads/source bytes, old-grant refusal and provider-confirmed namespace/Worker removal on 20 October 2026.",
+      "expected": "Direct regressions cover external gate ordering, authenticated readiness, complete sealed family journals, null-prototype RPC normalization, source attestation and cleanup ownership. Native four-family SQL/KV restore verifies later holds/withdrawals/recorded and unconfirmed restriction replay, immutable receipts and surviving live heads, replay/purge restarts, retired two-scope terms, blocked new/queued processing and unchanged independent sink history/attempts. Provider-confirmed cleanup of three owned namespaces and Worker; fixed active selections, no production or real-provider certification.",
       "testRefs": [
         "packages/notabenda-cf/test/remote-recovery.test.mjs",
         "scripts/check-cf-remote-recovery.mjs",
-        "docs/verification/cloudflare-remote-recovery.md"
+        "docs/verification/cloudflare-remote-recovery.md",
+        "packages/notabenda-cf/test/family-recovery.test.mjs",
+        "packages/notabenda-cf/test/processing-application.test.mjs"
       ]
     },
     {

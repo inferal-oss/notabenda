@@ -137,3 +137,10 @@ test('pending-fence capacity exhaustion persists a global admission stop across 
   for(let n=0;n<256;n++)await f.raw.put('application:processing:pending:'+n.toString(16).padStart(64,'0'),{schemaVersion:1,activities:['sale']});
   await assert.rejects(f.workspace.record('visitor-a',command()));f.restart();assert.equal(await f.workspace.pending('visitor-b'),true);assert.equal((await f.workspace.produce('visitor-b')).state,'blocked');assert.equal((await f.workspace.read('visitor-b')).revision,0);assert.equal((await f.sink.observations()).length,0);
 });
+
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
+test('private recovery fence preserves unresolved intent without creating an event or public recovery route',async()=>{
+ const f=await setup();await f.workspace.register();for(const [id,activities] of [['', ['sale']],['visitor-a',[]],['visitor-a',['unknown']]])await assert.rejects(f.workspace.fence(id,activities));
+ await f.workspace.fence('visitor-a',['sale']);f.restart();assert.equal(await f.workspace.pending('visitor-a'),true);assert.equal((await f.workspace.read('visitor-a')).revision,0);assert.equal((await f.workspace.produce('visitor-a')).state,'blocked');assert.equal((await f.records()).records.length,0);
+ assert.equal((await f.call('/api/processing/fence',{activities:['sale']})).status,404);await f.workspace.record('visitor-a',command(['sale']));assert.equal(await f.workspace.pending('visitor-a'),false);
+});

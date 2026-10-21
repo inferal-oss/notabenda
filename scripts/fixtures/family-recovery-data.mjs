@@ -1,0 +1,22 @@
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY REQ-PRODUCT-EVIDENCE-LIFECYCLE
+// Node-only generation of fixed synthetic identities; not part of package or host configuration.
+import {randomUUID,createHash} from 'node:crypto';
+import {createTermsOffer,createFormPermissionOffer,createProcessingNotice,compileConsentRuntimeConfig} from '@notabenda/core/content';
+const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
+export function prepareFamilyRecovery(config,artifact,now,reviewAt){
+ const siteId=config.site.id,termsScopes=['signup','workspace'],permissionId='sample-email',processingScope='processing-choices';
+ const termsSubjects=['terms-erased','terms-held','terms-retained'],permissionStreams=['permission-erased','permission-held','permission-retained','permission-withdrawn'],processingStreams=['processing-erased','processing-held','processing-retained','processing-restricted','processing-pending'];
+ const termsOffers=Object.fromEntries(termsScopes.map(scopeId=>[scopeId,createTermsOffer(artifact,{scopeId,statement:'I agree to the supplied synthetic terms.',actionLabel:'Record sample agreement'})]));
+ const permissionOffer=createFormPermissionOffer(artifact,{permissionId,purposeId:'measurement',channel:{id:'email',label:'Email'},revision:'sample-1',reviewStatus:'reviewed',withdrawalUrl:'/preferences',wording:{title:'Sample email permission',statement:'Use the fictional email permission for this recovery exercise.',grantLabel:'Save sample permission',withdrawLabel:'Withdraw sample permission',optionality:'Optional. This fixture sends no email.',withdrawalExplanation:'Withdraw this purpose and channel separately.'}});
+ const processingNotice=createProcessingNotice(artifact,{scopeId:processingScope,activities:['sale','targeted-advertising'],wording:{title:'Synthetic processing choices',description:'Retain the sample sale and targeted-advertising restrictions.',actionLabel:'Record sample restriction'}});
+ const termsCommands=Object.fromEntries(termsSubjects.map(subject=>[subject,Object.fromEntries(termsScopes.map(scope=>[scope,{schemaVersion:1,offerId:termsOffers[scope].offerId,requestId:randomUUID(),accepted:true}]))]));
+ const permissionGrants=Object.fromEntries(permissionStreams.map(streamId=>[streamId,{schemaVersion:1,offerId:permissionOffer.offerId,expectedStreamRef:hash([siteId,permissionId,streamId]),requestId:randomUUID(),action:'grant',clientAt:now,expectedRevision:0,expectedActivation:1}]));
+ const withdrawal={schemaVersion:1,offerId:permissionOffer.offerId,expectedStreamRef:hash([siteId,permissionId,'permission-withdrawn']),requestId:randomUUID(),action:'withdraw',clientAt:now};
+ const processingCommands=Object.fromEntries(processingStreams.map(streamId=>[streamId,{schemaVersion:1,noticeId:processingNotice.noticeId,requestId:randomUUID(),activities:[...processingNotice.activities]}]));
+ const targets={terms:{family:'terms',siteId,subjectId:'terms-erased'},permissions:{family:'permissions',siteId,scopeId:permissionId,streamId:'permission-erased'},processing:{family:'processing',siteId,scopeId:processingScope,streamId:'processing-erased'}};
+ const heldTargets={terms:{...targets.terms,subjectId:'terms-held'},permissions:{...targets.permissions,streamId:'permission-held'},processing:{...targets.processing,streamId:'processing-held'}};
+ const contextRefs=Object.fromEntries(Object.entries(targets).map(([family,t])=>[family,hash(family==='terms'?[siteId,t.subjectId]:[siteId,t.scopeId,t.streamId])]));
+ const decisions=Object.fromEntries(Object.keys(targets).map(family=>[family,{requestId:randomUUID(),reason:'operator-erasure',eligibleAt:now,legalHold:false}]));
+ const intents=[{id:'permission-withdrawal',family:'permissions',target:'permission-withdrawn',command:withdrawal},{id:'processing-recorded',family:'processing',target:'processing-restricted',command:processingCommands['processing-restricted'],outcome:'recorded'},{id:'processing-pending',family:'processing',target:'processing-pending',command:processingCommands['processing-pending'],outcome:'unconfirmed'}];
+ return {siteId,now,reviewAt,artifact,runtime:compileConsentRuntimeConfig(config,{evidence:'local'}),termsScopes,termsSubjects,termsOffers,termsCommands,permissionId,permissionStreams,permissionOffer,permissionGrants,withdrawal,processingScope,processingStreams,processingNotice,processingCommands,targets,heldTargets,contextRefs,decisions,intents,holdProbeIds:Object.fromEntries(Object.keys(targets).map(f=>[f,randomUUID()]))};
+}
