@@ -1,5 +1,7 @@
 // @requirements REQ-BR-COOKIE-RIGHTS-LINK REQ-BR-COOKIE-BROWSER-HELP
 import {normalizeConsentInformation} from './consent-information.js';
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
+import {normalizeTermsAgreementSettings} from './terms-settings.js';
 // @requirements REQ-IE-CONSENT-DURATION
 import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 import {normalizeSiteLocalization} from './document-localization.js';
@@ -203,6 +205,7 @@ export function validateSiteConfig(input: unknown, options: ValidationOptions = 
   const terms = objectAt(config.terms, 'terms');
   choice(terms.audience, ['business', 'consumer', 'mixed'], 'terms.audience');
   choice(terms.serviceType, ['informational', 'service', 'subscription', 'commerce', 'other'], 'terms.serviceType');
+  if(terms.agreements!==undefined)try{normalizeTermsAgreementSettings(terms.agreements,{allowPreview:options.mode!=='production'});}catch{error('terms.agreements','Supply complete uniquely named agreements; production requires reviewed wording and resolved placeholders.','invalid-terms-agreements',['REQ-PRODUCT-TERMS-AUTHORING']);}
   const documents = objectAt(config.documents, 'documents');
   const routes = new Set<string>();
   for (const kind of documentKinds) {
@@ -289,7 +292,7 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
       complaints: { description: config.privacy.complaints.description, ...(config.privacy.complaints.url === undefined ? {} : { url: config.privacy.complaints.url }) },
       ...(config.privacy.rightsUrl===undefined&&config.rightsCenter===undefined?{}:{rightsUrl:config.rightsCenter?.route??config.privacy.rightsUrl!}),
       ...(config.privacy.requiredContacts === undefined ? {} : { requiredContacts: [...config.privacy.requiredContacts] }) },
-    terms: { audience: config.terms.audience, serviceType: config.terms.serviceType },
+    terms: { audience: config.terms.audience, serviceType: config.terms.serviceType,...(config.terms.agreements===undefined?{}:{agreements:normalizeTermsAgreementSettings(config.terms.agreements,{allowPreview:options.mode!=='production'})}) },
     ...(config.privacySignals===undefined?{}:{privacySignals:{globalPrivacyControl:{appliesTo:[...config.privacySignals.globalPrivacyControl.appliesTo],explanation:config.privacySignals.globalPrivacyControl.explanation}}}),
     ...(config.consent === undefined ? {} : { consent: {
       ...(config.consent.information===undefined?{}:{information:normalizeConsentInformation(config.consent.information)}),

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-STORAGE-AUTHORING
 // @requirements REQ-PRODUCT-PUBLICATION-CHECK
 import {runPublicationCli} from './publication-cli.js';
@@ -14,7 +15,7 @@ import {canonicalJson} from './content.js';
 import { readFile, writeFile, mkdir, realpath } from 'node:fs/promises';
 import { resolve, sep, dirname, basename } from 'node:path';
 import { validateSiteConfig, SiteConfigError } from './config.js';
-import { compileLegalDocuments,createRetainedReleaseFiles } from './content.js';
+import { compileLegalDocuments,createRetainedReleaseFiles,createConfiguredTermsOfferFiles } from './content.js';
 import { writeBuildFiles } from './files.js';
 import { createStarterConfig } from './starter.js';
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
@@ -57,6 +58,10 @@ Wizard: --answers FILE supplies versioned JSON for noninteractive use; --config 
 imports an existing config. Output requires a new directory and never overwrites. --json applies to check, describe, assess, packs and check-publication.
 Wizard --storage FILE applies an explicit versioned storage batch and affected service
 material versions atomically. Previous declarations stay in a separate private review.
+Wizard --terms FILE applies versioned add/update/remove agreement settings. Wording
+remains draft. Build emits terms-<scope>.json under the final artifact agreements/
+directory; publication never activates a backend offer.
+
 Wizard --rights FILE applies a complete versioned request-page proposal with explicit
 linkPrivacyToPage: true; it updates the local draft page and its privacy link.
 Wizard --project DIRECTORY explicitly scans supported source/dependency identifiers and
@@ -130,7 +135,7 @@ async function main(): Promise<void> {
   if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
-  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,storagePath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
+  let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,termsPath:string|undefined,storagePath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
   const retainedPaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
@@ -140,10 +145,10 @@ async function main(): Promise<void> {
     seen.add(flag);
     if (flag === '--preview') preview = true;
     else if (flag === '--json') json = true;
-    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights' || flag === '--storage') {
+    else if (flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights' || flag === '--terms' || flag === '--storage') {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw new Error('CLI option requires a value.');
-      if(flag==='--storage')storagePath=value;else if(flag==='--rights')rightsPath=value;else if(flag==='--cartridges')cartridges=value;else if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
+      if(flag==='--terms')termsPath=value;else if(flag==='--storage')storagePath=value;else if(flag==='--rights')rightsPath=value;else if(flag==='--cartridges')cartridges=value;else if(flag==='--catalog-report')catalogReportPath=value;else if(flag==='--private-out-dir')privateOutDir=value;else if(flag==='--project')projectDirectory=value;else if(flag==='--catalog')catalogPath=value;else if(flag==='--answers')answersPath=value;else if (flag === '--config') configPath = value; else if(flag==='--retain-artifact'){retainedPaths.push(value);if(retainedPaths.length>256)throw new Error('Too many retained artifacts.');}else outDir = value;
     } else throw new Error('Unknown CLI option. Run notabenda --help.');
   }
   if((catalogReportPath||privateOutDir)&&(command!=='build'||!catalogReportPath||!privateOutDir))throw Error('Build requires --catalog-report and --private-out-dir together.');
@@ -155,11 +160,12 @@ async function main(): Promise<void> {
   if (preview && command === 'init') throw new Error('init always creates a draft; --preview applies to check/build.');
   if(cartridges&&command!=='wizard')throw Error('--packs is only valid for wizard.');
   if(storagePath&&command!=='wizard')throw Error('--storage is only valid for wizard.');
+  if(termsPath&&command!=='wizard')throw Error('--terms is only valid for wizard.');
   if(rightsPath&&command!=='wizard')throw Error('--rights is only valid for wizard.');
   if(answersPath&&command!=='wizard')throw new Error('--answers is only valid for wizard.');
   if((projectDirectory||catalogPath)&&command!=='wizard')throw new Error('--project and --catalog apply only to wizard or the separate discover/catalog commands.');
   if(catalogPath&&!projectDirectory)throw new Error('Wizard --catalog requires --project DIRECTORY.');
-  if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({...(cartridges?{cartridgeIds:cartridges.split(',')}:{}),outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{}),...(rightsPath?{rightsPath}:{}),...(storagePath?{storagePath}:{}),...(projectDirectory?{projectDirectory}:{}),...(catalogPath?{catalogPath}:{})});return;}
+  if(command==='wizard'){if(preview||json||retainedPaths.length)throw new Error('wizard creates drafts; check/build options do not apply.');await runSetupWizard({...(cartridges?{cartridgeIds:cartridges.split(',')}:{}),outDir:seen.has('--out-dir')?outDir:'notabenda-setup',...(seen.has('--config')?{configPath}:{}),...(answersPath?{answersPath}:{}),...(rightsPath?{rightsPath}:{}),...(termsPath?{termsPath}:{}),...(storagePath?{storagePath}:{}),...(projectDirectory?{projectDirectory}:{}),...(catalogPath?{catalogPath}:{})});return;}
   if (command === 'init') {
     await writeFile(resolve(configPath), JSON.stringify(createStarterConfig(), null, 2) + '\n', { flag: 'wx' });
     console.log('Created draft site configuration. Replace sample facts and supply appropriate reviewed content before production use.');
@@ -193,6 +199,8 @@ async function main(): Promise<void> {
   const pinned=retained.length?createRetainedReleaseFiles(retained,{siteId:build.publicConfig.site.id,mode}):{};
   for(const [path,contents] of Object.entries(pinned))if(Object.hasOwn(build.files,path)&&build.files[path]!==contents)throw new Error('A retained artifact conflicts with the current release.');
   const css = await readFile(new URL('./styles.css', import.meta.url), 'utf8');
+  const offers=createConfiguredTermsOfferFiles(build.artifact,{mode});
+  for(const [path,body] of Object.entries(offers))for(const files of [build.files,pinned])if(Object.hasOwn(files,path)&&files[path]!==body)throw Error('A configured terms offer conflicts with an existing public output.');
   if(archive&&privateOutDir){
     // Exclusive private output is never added to public build.files. No existing directory is reused.
     const root=resolve(privateOutDir);await mkdir(root,{mode:0o700});
@@ -202,7 +210,7 @@ async function main(): Promise<void> {
     await writeFile(resolve(root,'release.private.json'),canonicalJson(archive)+'\n',{flag:'wx',mode:0o600});
     await writeFile(resolve(root,'.gitignore'),'*\n',{flag:'wx',mode:0o600});
   }
-  await writeBuildFiles(resolve(outDir), { ...build.files,...pinned, 'assets/notabenda.css': css });
+  await writeBuildFiles(resolve(outDir), { ...build.files,...pinned,...offers, 'assets/notabenda.css': css });
   console.log(`Built ${build.manifest.documents.length} ${mode} documents in ${outDir}. Artifact: ${build.manifest.artifactId}`);
 }
 

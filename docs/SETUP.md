@@ -303,3 +303,9 @@ console.destroy();
 Use a separate key for each operator/project context, and clear that key at logout if your host supports account switching. The option accepts a retention period from one minute to seven days. Without `session`, the component does not read browser storage. Explicit host configuration, answers or pack selections take precedence over restoration. The project’s admin setup does not enable this cache.
 
 The saved envelope is limited to 1 MiB; questionnaire answers retain their existing 128 KiB normalized limit. Incompatible versions, damaged records and expired copies are discarded on access. Quota, unavailable storage or an oversized latest draft leave the open form usable and retain the last recoverable copy with its original expiry; a visible message says the latest changes are unsaved. Cleanup runs while the page is active and on the next visit, not in a closed browser. Private notes remain accessible to scripts on the same origin; never enter credentials or sensitive personal data.
+
+## Configure terms agreement wording
+
+For the Terms agreement pack, open **Terms agreements** under the local inventory, or choose **Configure terms agreements** after preparing the plan. Enter a workflow scope, wording revision, checkbox statement and button label. Each workflow has its own explicit settings; no default wording or scope is selected. Saves remain draft and close prepared exports so they can be regenerated.
+
+The wizard accepts `--terms FILE`, a versioned add/update/remove batch. See the [complete format and release flow](TERMS.md#prepare-settings-with-the-wizard). Review the settings and document, generate offers from the final artifact, then register and activate them in your authorized application. Existing host-authored offers remain supported. Removing settings does not retire a backend offer.

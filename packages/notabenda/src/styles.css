@@ -530,3 +530,7 @@
 }
 
 @layer notabenda {.nb-rehearsal-services details{margin-top:12px;border-top:1px solid var(--nb-border,#dedbe5)}.nb-rehearsal-services summary{font-size:12px;min-height:44px;padding-block:12px;cursor:pointer}.nb-rehearsal-services summary:focus-visible{outline:3px solid var(--nb-accent,#665481);outline-offset:3px}}
+
+/* @requirements REQ-PRODUCT-TERMS-AUTHORING REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y */
+.nb-setup-terms-editor{container-type:inline-size}.nb-setup-terms-editor .nb-setup-purpose-fields{grid-template-columns:minmax(0,1fr)}.nb-setup-terms-editor .nb-setup-purpose-proposal>p{margin:16px 0;line-height:1.65;color:var(--nb-muted,#69616e);max-width:85ch}.nb-setup-terms-statement{grid-column:1/-1}.nb-setup-terms-editor .nb-setup-purpose-card{overflow-wrap:anywhere}.nb-setup-terms-editor textarea{resize:vertical;min-height:112px}
+@container(min-width:560px){.nb-setup-terms-editor .nb-setup-purpose-fields{grid-template-columns:repeat(3,minmax(0,1fr))}}

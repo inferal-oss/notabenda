@@ -1,3 +1,5 @@
+import {normalizePublicLegalArtifact} from './release-files.js';
+import {normalizeTermsAgreementSettings,assertConfiguredTermsCopy} from './terms-settings.js';
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 import {selectIndirectCollectionLocalization} from './indirect-collection-localization-policy.js';
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
@@ -157,7 +159,7 @@ export function compileLegalDocuments(input: unknown, options: ValidationOptions
   const descriptor = {
     schemaVersion: 1 as const, siteId: config.site.id, locale: config.site.locale, mode,
     configSha256: sha256(canonicalJson(config)), documents,
-    requirementIds: [...new Set<RequirementId>(['REQ-PRODUCT-CONFIG', 'REQ-PRODUCT-ARTIFACTS', ...(config.rightsCenter?['REQ-PRODUCT-RIGHTS-CENTER' as const]:[]),...documents.flatMap(d => d.requirementIds)])],
+    requirementIds: [...new Set<RequirementId>(['REQ-PRODUCT-CONFIG', 'REQ-PRODUCT-ARTIFACTS', ...(config.terms.agreements?['REQ-PRODUCT-TERMS-AUTHORING' as const]:[]), ...(config.rightsCenter?['REQ-PRODUCT-RIGHTS-CENTER' as const]:[]),...documents.flatMap(d => d.requirementIds)])],
   };
   const manifest = { ...descriptor, artifactId: sha256(canonicalJson(descriptor)) };
   const artifact = { manifest, publicConfig: config, pages, documents: models };
@@ -169,6 +171,7 @@ export function compileLegalDocuments(input: unknown, options: ValidationOptions
 
 /** @requirements REQ-PRODUCT-TERMS-ACCEPTANCE: pin the exact terms document AND interface wording. */
 export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:string; statement:string; actionLabel:string }, options: ValidationOptions = {}): TermsOffer {
+  assertConfiguredTermsCopy(artifact.publicConfig.terms.agreements,wording,{allowPreview:options.mode==='preview'});
   if(!artifact.publicConfig.localization?.terms)requireEnglishSurface(artifact.publicConfig,'Terms acceptance without localization.terms');
   const localization=artifact.publicConfig.localization?.terms?selectTermsLocalization(artifact.publicConfig.localization):undefined;
   const d = artifact.manifest.documents.find(item=>item.kind === 'terms');
@@ -176,6 +179,21 @@ export function createTermsOffer(artifact: LegalArtifact, wording: { scopeId:str
   const offer = normalizeTermsOffer({ schemaVersion:localization?2:1,...(localization?{localization}:{}), offerId:'0'.repeat(64), artifactId:artifact.manifest.artifactId, siteId:artifact.manifest.siteId, mode:artifact.manifest.mode, scopeId:wording.scopeId, statement:wording.statement, actionLabel:wording.actionLabel, document:{ title:d.title, url:`/artifacts/${artifact.manifest.artifactId}/terms.html`, version:d.version, effectiveDate:d.effectiveDate, sha256:d.sha256, contentSha256:d.contentSha256, reviewStatus:d.reviewStatus } }, { allowPreview:options.mode === 'preview' });
   const { offerId:_, ...descriptor } = offer;
   return { ...offer, offerId:sha256(canonicalJson(descriptor)) };
+}
+
+/** Explicitly select one configured workflow from the final retained release. No activation or identity. */
+export function createConfiguredTermsOffer(artifact:LegalArtifact,scopeId:string,options:ValidationOptions={}):TermsOffer {
+ artifact=normalizePublicLegalArtifact(artifact,options);
+ const settings=normalizeTermsAgreementSettings(artifact.publicConfig.terms.agreements,{allowPreview:options.mode==='preview'}),selected=settings.find(entry=>entry.scopeId===scopeId);
+ if(!selected)throw Error('Select an explicitly configured terms scope. No default workflow is chosen.');
+ return createTermsOffer(artifact,{scopeId:selected.scopeId,statement:selected.statement,actionLabel:selected.actionLabel},options);
+}
+/** Additional public outputs, generated only after any release finalization/attachments. */
+export function createConfiguredTermsOfferFiles(artifact:LegalArtifact,options:ValidationOptions={}):Record<string,string>{
+ if(artifact.publicConfig.terms.agreements===undefined)return {};
+ artifact=normalizePublicLegalArtifact(artifact,options);
+ const settings=normalizeTermsAgreementSettings(artifact.publicConfig.terms.agreements,{allowPreview:options.mode==='preview'});
+ return Object.fromEntries(settings.map(entry=>[`artifacts/${artifact.manifest.artifactId}/agreements/terms-${entry.scopeId}.json`,JSON.stringify(createConfiguredTermsOffer(artifact,entry.scopeId,options),null,2)+'\n']));
 }
 
 /** @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE
@@ -262,3 +280,4 @@ export function createFormPermissionOffer(artifact:LegalArtifact,settings:FormPe
   const value=normalizeFormPermissionOffer({schemaVersion:localization?2:1,...(localization?{localization}:{}),offerId:'0'.repeat(64),siteId:notice.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:notice.artifactId,mode:notice.mode,reviewStatus:settings.reviewStatus,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard},wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},{allowPreview:options.mode==='preview'});
   const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))};
 }
+// @requirements REQ-PRODUCT-TERMS-AUTHORING

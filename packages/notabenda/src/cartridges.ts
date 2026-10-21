@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION
 // @requirements REQ-PRODUCT-AGENT-HANDOFF
 // @requirements REQ-PRODUCT-STORAGE-LOCALIZATION
@@ -156,6 +157,11 @@ export function reviewPackInputs(selection:unknown,input:unknown):PackInputRevie
    add('profile','host-work','Assess the supported nz-ipp3a profile explicitly; supply advance/collected phase, reviewStatus and reviewed wording in the site language. The profile is a separate applicability decision.');
    add('descriptor','host-work','Author createIndirectCollectionNotice collections with exact category subsets, sourceDescription and authority; supply recipientStatement and accessCorrection.');
    add('notification','host-work','Bind the actual privacy release and arrange presentation or delivery, timing and any separate notification evidence. Rendering alone does not notify the person.');
+  }
+  if(pack.id==='terms-agreement'){
+   add('wording',config.terms.agreements?.length?'declared':'host-work','Configure named terms.agreements with the editor or wizard --terms FILE, or supply host-authored offers. Select an explicit scope and generate from the final retained release.',['terms.agreements']);
+   if(config.terms.agreements?.some(a=>a.reviewStatus!=='reviewed'))add('wording-review','needs-review','Review the statement, button label and revision for each configured workflow.',['terms.agreements']);
+   add('operation','host-work','Register and activate the exact offer separately. Bind the host identity and operation; retiring a declaration does not retire a backend offer.');
   }
   if(pack.id==='privacy-requests'){
    add('language',supportsRightsPage(config)?'declared':'needs-review','Non-English request pages need complete localization.rights messages in the matching site locale. Keep missing translations unresolved; a collection dictionary cannot translate this page.',['site.locale','localization.rights']);

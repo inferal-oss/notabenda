@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-CONNECTION
@@ -272,6 +273,21 @@ buildLegalGuaranteeNotice({language:'zz',reviewStatus:'reviewed'});
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {renderDurabilityGuaranteeLabel,normalizeDurabilityGuaranteeLabel,type DurabilityGuaranteeLabel} from '@notabenda/core/guarantees/label';\ndeclare const label:DurabilityGuaranteeLabel;normalizeDurabilityGuaranteeLabel(label);renderDurabilityGuaranteeLabel(label,{idPrefix:'label'});\n`);
     const guaranteeRuntime=spawnSync(process.execPath,['--input-type=module','-e',"import {buildLegalGuaranteeNotice} from '@notabenda/core/guarantees/content'; const result=await buildLegalGuaranteeNotice({language:'en',reviewStatus:'draft',allowPreview:true}); if(Object.keys(result.files).length!==1||!Object.values(result.files)[0].includes('<svg'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(guaranteeRuntime.status,0,guaranteeRuntime.stderr);
+    for(const file of ['dist/setup-terms.js','dist/setup-terms-ui.js','dist/setup-terms-cli.js','dist/setup-terms.d.ts','dist/setup-terms-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
+    const termsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createTermsDraftPlan,normalizeTermsDraftInput} from '@notabenda/core/setup/terms';import {mountTermsEditor} from '@notabenda/core/setup/terms/ui';import {createConfiguredTermsOffer,createConfiguredTermsOfferFiles} from '@notabenda/core/content';if([createTermsDraftPlan,normalizeTermsDraftInput,mountTermsEditor,createConfiguredTermsOffer,createConfiguredTermsOfferFiles].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(termsImport.status,0,termsImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createTermsDraftPlan,normalizeTermsDraftInput,type TermsDraftInput} from '@notabenda/core/setup/terms';
+import {mountTermsEditor} from '@notabenda/core/setup/terms/ui';
+import {createConfiguredTermsOffer,createConfiguredTermsOfferFiles} from '@notabenda/core/content';
+import type {TermsAgreementSetting} from '@notabenda/core';
+declare const agreementSettings:TermsAgreementSetting;
+const agreementBatch:TermsDraftInput={schemaVersion:1,changes:[{action:'add',settings:{scopeId:'account-terms',revision:'wording-1',statement:'I agree.',actionLabel:'Continue'}}]};
+createTermsDraftPlan(config,{baseline:config,input:normalizeTermsDraftInput(agreementBatch)});
+mountTermsEditor(container,{getConfig:()=>config,onChange:plan=>{plan.config.terms.agreements;}});
+createConfiguredTermsOfferFiles(compileLegalDocuments(config,{mode:'preview'}).artifact,{mode:'preview'});
+// @ts-expect-error authoring cannot grant review status
+agreementBatch.changes=[{action:'add',settings:{scopeId:'scope',revision:'one',statement:'I agree.',actionLabel:'Continue',reviewStatus:'reviewed'}}];
+`);
     for(const file of ['dist/setup-rights.js','dist/setup-rights-ui.js','dist/setup-rights-cli.js','dist/setup-rights.d.ts','dist/setup-rights-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
     const rightsImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createRightsDraftPlan,normalizeRightsDraftInput} from '@notabenda/core/setup/rights';import {mountRightsEditor} from '@notabenda/core/setup/rights/ui';if([createRightsDraftPlan,normalizeRightsDraftInput,mountRightsEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(rightsImport.status,0,rightsImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`

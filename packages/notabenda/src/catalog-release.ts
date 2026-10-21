@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-ARTIFACTS REQ-PRODUCT-CF-HISTORY */
 import {canonicalJson,sha256} from './content.js';
 import type {LegalBuild,LegalSourceArchive} from './content.js';
@@ -7,7 +8,7 @@ import {createRetainedReleaseFiles} from './release-files.js';
 export type {CatalogReleaseReview,CatalogReleaseSelection,CatalogReviewDescriptor} from './catalog-release-policy.js';
 /** Finalize after static/MDX compilation and before creating any notice or offer. No reference refresh or publication. */
 export function attachCatalogReview<T extends LegalBuild>(build:T,selections:unknown):T&{archive:LegalSourceArchive} {
- const publicArtifact=createRetainedReleaseFiles([build.artifact],{siteId:build.publicConfig.site.id,mode:build.manifest.mode});
+ const publicArtifact=createRetainedReleaseFiles([build.artifact],{siteId:build.publicConfig.site.id,mode:build.manifest.mode,includeTermsOffers:false});
  if(build.manifest.catalogReview!==undefined||canonicalJson(build.manifest)!==canonicalJson(build.artifact.manifest)||canonicalJson(build.publicConfig)!==canonicalJson(build.artifact.publicConfig))throw Error('Attach catalog review to a fresh, intact compiler build before creating notices or offers.');
  for(const [path,value] of Object.entries(publicArtifact))if(build.files[path]!==value)throw Error('Compiler files no longer match this artifact.');
  const selected=normalizeSetupCatalogSelections(selections,build.publicConfig);
@@ -25,6 +26,6 @@ export function attachCatalogReview<T extends LegalBuild>(build:T,selections:unk
  const archive:LegalSourceArchive={schemaVersion:1,artifact,sourceAttachments:structuredClone(existing?.sourceAttachments??{}),catalogReview};
  if(new TextEncoder().encode(canonicalJson(archive)).length>124*1024)throw Error('Combined source and catalog archive exceeds 124 KiB. Reduce the review or use a reviewed larger-archive adapter.');
  const files={...build.files};delete files[`artifacts/${previousId}.json`];for(const d of build.manifest.documents)delete files[`artifacts/${previousId}/${d.kind}.html`];
- Object.assign(files,createRetainedReleaseFiles([artifact],{siteId:manifest.siteId,mode:manifest.mode}),{'notabenda.manifest.json':canonicalJson(manifest)+'\n'});
+ Object.assign(files,createRetainedReleaseFiles([artifact],{siteId:manifest.siteId,mode:manifest.mode,includeTermsOffers:false}),{'notabenda.manifest.json':canonicalJson(manifest)+'\n'});
  return {...build,manifest,artifact,archive,files};
 }

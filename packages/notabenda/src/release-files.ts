@@ -1,6 +1,7 @@
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
 import {normalizeCatalogReviewDescriptor} from './catalog-release-policy.js';
 import {documentKinds,isSafeLink,toPublicConfig} from './config.js';
-import {canonicalJson,sha256} from './content.js';
+import {canonicalJson,sha256,createConfiguredTermsOfferFiles} from './content.js';
 import type {ValidationOptions} from './types.js';
 import type {LegalArtifact} from './content.js';
 
@@ -89,7 +90,8 @@ export function normalizePublicLegalArtifact(input:unknown,options:ValidationOpt
  * Explicit trusted build inputs, never a sanitizer or a publication/retention decision.
  * Re-emit exact historical HTML at pinned paths only; never overwrite current document routes.
  */
-export function createRetainedReleaseFiles(artifacts:readonly unknown[],options:ValidationOptions&{siteId:string}):Record<string,string>{
+export function createRetainedReleaseFiles(artifacts:readonly unknown[],options:ValidationOptions&{siteId:string;includeTermsOffers?:boolean}):Record<string,string>{
+  if(options?.includeTermsOffers!==undefined&&typeof options.includeTermsOffers!=='boolean')return invalid();
   if(!Array.isArray(artifacts)||artifacts.length>256||!options||typeof options.siteId!=='string'||options.siteId.length>200||!/^[a-z][a-z0-9-]*$/u.test(options.siteId)||options.mode!==undefined&&!['preview','production'].includes(options.mode))return invalid();
   const files:Record<string,string>={},seen=new Map<string,string>();let total=0;
   for(const input of artifacts){
@@ -97,6 +99,7 @@ export function createRetainedReleaseFiles(artifacts:readonly unknown[],options:
     const a=validate(copied.value,options.siteId,options.mode??'production'),m=object(a.manifest),id=String(m.artifactId),json=canonicalJson(a)+'\n';
     if(seen.has(id)){if(seen.get(id)!==json)return invalid();continue;}seen.set(id,json);files[`artifacts/${id}.json`]=json;
     for(const raw of m.documents as Json[]){const d=object(raw);files[`artifacts/${id}/${String(d.kind)}.html`]=String(object(a.pages)[String(d.file)]);}
+    if(options.includeTermsOffers!==false)Object.assign(files,createConfiguredTermsOfferFiles(a as unknown as LegalArtifact,{mode:options.mode??'production'}));
   }
   return files;
 }

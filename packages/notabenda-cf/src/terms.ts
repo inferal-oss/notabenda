@@ -1,3 +1,4 @@
+import {assertConfiguredTermsCopy} from './terms-settings.js';
 // @requirements REQ-PRODUCT-RECORDING-INSPECTION
 import {recordingTarget} from './recording-selection.js';
 import type {RecordingSelection} from './recording-selection.js';
@@ -66,6 +67,7 @@ async function verifyArchive(transaction:HistoryTransaction, offer:ObjectValue, 
   const manifest = object(artifact.manifest);
   if (manifest.siteId !== context.siteId || manifest.artifactId !== offer.artifactId || manifest.mode !== offer.mode) throw new TermsRecordError('scope-mismatch');
   const config=object(artifact.publicConfig);
+  try{assertConfiguredTermsCopy(config.terms===undefined?undefined:object(config.terms).agreements,{scopeId:String(offer.scopeId),statement:String(offer.statement),actionLabel:String(offer.actionLabel)},{allowPreview:context.allowPreview===true});}catch{throw new TermsRecordError('invalid-offer');}
   if(config.localization!==undefined&&object(config.localization).terms!==undefined){
     let selected:TermsLocalization;try{selected=normalizeTermsLocalization(selectTermsLocalization(object(config.localization) as unknown as TermsLocalization),{locale:String(object(config.site).locale),allowPreview:context.allowPreview===true});}catch{throw new TermsRecordError('invalid-offer');}
     if(valueMismatch(offer.localization,selected))throw new TermsRecordError('invalid-offer');
@@ -177,3 +179,4 @@ export function createTermsAcceptanceStore(storage:HistoryStorage, context:Terms
   };
   return createDurableObjectStore(scoped,{prefix:eventPrefix});
 }
+// @requirements REQ-PRODUCT-TERMS-AUTHORING

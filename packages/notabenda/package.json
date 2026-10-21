@@ -326,6 +326,16 @@
       "types": "./dist/setup-consent-rehearsal.d.ts",
       "import": "./dist/setup-consent-rehearsal.js",
       "default": "./dist/setup-consent-rehearsal.js"
+    },
+    "./setup/terms": {
+      "types": "./dist/setup-terms.d.ts",
+      "import": "./dist/setup-terms.js",
+      "default": "./dist/setup-terms.js"
+    },
+    "./setup/terms/ui": {
+      "types": "./dist/setup-terms-ui.d.ts",
+      "import": "./dist/setup-terms-ui.js",
+      "default": "./dist/setup-terms-ui.js"
     }
   },
   "bin": {

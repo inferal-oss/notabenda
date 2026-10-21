@@ -4,7 +4,84 @@ The optional terms controller presents an unchecked agreement statement and a li
 
 Try [the agreement example](https://notabenda.org/agreement/) and [its Portuguese version](https://notabenda.org/localization/agreement/). Each uses draft documents and the browser’s isolated demo workspace. Demo actions create no real contract or purchase. Local website development uses `npm run site:dev`; its Durable Object storage persists in the configured local directory.
 
-## Build and retain the offer
+## Configure the agreement wording
+
+The setup UI has a **Terms agreements** editor. Add one named workflow at a time: its statement, button label and wording revision. A name such as `account-terms` identifies the workflow, not the person or order. Saving produces a draft; it neither accepts terms nor changes a backend's active offer.
+
+The same settings can live in your site configuration:
+
+```json
+{
+  "terms": {
+    "audience": "consumer",
+    "serviceType": "service",
+    "agreements": [
+      {
+        "scopeId": "account-terms",
+        "revision": "account-wording-1",
+        "statement": "I agree to the account terms linked above.",
+        "actionLabel": "Create account",
+        "reviewStatus": "draft"
+      }
+    ]
+  }
+}
+```
+
+Supply wording suited to the actual action and language. Review it alongside the terms document; set `reviewStatus: "reviewed"` only after that review. Every configured entry must be complete. Production generation rejects draft or unresolved wording, including an unselected entry. The editor cannot declare its own work reviewed.
+
+Use a fresh, never-reused `revision` when editing. The editor compares only the current revision; keep historical uniqueness in your release process. Wording and revision changes produce a new public artifact and offer identity. They do not change cookie permission scopes or enroll a service.
+
+## Generate an offer from the final release
+
+```ts
+import {
+  compileLegalDocuments,
+  createConfiguredTermsOffer,
+  createConfiguredTermsOfferFiles,
+} from '@notabenda/core/content';
+
+const release = compileLegalDocuments(reviewedConfig);
+// If using MD/MDX, compile with @notabenda/authoring instead.
+// Attach any catalog review before selecting the offer.
+const offer = createConfiguredTermsOffer(release.artifact, 'account-terms');
+const publicOffers = createConfiguredTermsOfferFiles(release.artifact);
+```
+
+Select the exact scope; neither the helper nor setup picks the first entry. Retain the final public artifact and its pinned document files. The JSON CLI `build` writes an offer for every configured scope at `artifacts/<artifactId>/agreements/terms-<scopeId>.json`. `createRetainedReleaseFiles` re-emits historical configured offers alongside their pinned documents. Its `includeTermsOffers: false` option is for compilation/finalization steps that must precede offer generation.
+
+Publish the offer files with the final release, then register and activate the intended offer through your authorized application. Publication alone changes no backend selection. Removing or renaming an agreement setting also leaves the old backend offer active until your application explicitly retires it. Retain acknowledged retries and historical records.
+
+## Prepare settings with the wizard
+
+Save a complete batch as `agreements.json`:
+
+```json
+{
+  "schemaVersion": 1,
+  "changes": [
+    {
+      "action": "add",
+      "settings": {
+        "scopeId": "account-terms",
+        "revision": "account-wording-1",
+        "statement": "I agree to the account terms linked above.",
+        "actionLabel": "Create account"
+      }
+    }
+  ]
+}
+```
+
+```sh
+npx @notabenda/core wizard --packs terms-agreement --terms agreements.json
+```
+
+Use `update` with complete settings and a fresh revision for edits. Removal uses `{ "action": "remove", "scopeId": "account-terms", "confirmed": true }`. Each scope may appear once per batch. Agent workflows can also supply `--answers FILE --config FILE --out-dir NEW_DIRECTORY`; the wizard preserves the originals and writes a separate draft. The shared headless API is `createTermsDraftPlan` from `@notabenda/core/setup/terms`; the browser editor is `mountTermsEditor` from `@notabenda/core/setup/terms/ui`. Both compare the current public baseline before adopting a change. Unfinished UI fields can resume with the expiring tab draft; removal confirmation must be given again.
+
+## Build a host-authored offer
+
+If your application already supplies offer wording, keep using `createTermsOffer`. Settings are optional; omitting `terms.agreements` preserves the previous public configuration and offer format. A configured scope must use its exact archived statement and button label even through the host-authored factory. Other explicitly named host workflows remain supported.
 
 ```ts
 import { compileLegalDocuments, createTermsOffer } from '@notabenda/core/content';

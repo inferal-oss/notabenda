@@ -368,3 +368,7 @@ Recorded processing opt-outs now retain complete host-supplied status/recovery m
 
 <!-- @requirements REQ-PRODUCT-INDIRECT-LOCALIZATION -->
 Indirect-collection notices now support complete host-supplied copy in HTML and plain text, with explicit language/direction, archive-bound identity and both collection phases. Pack and agent setup point to the separate dictionary. English v1 output remains exact. Broader regional coverage, translation review and actual notification remain open.
+
+### Named terms agreement settings
+
+The Terms agreement pack includes optional `terms.agreements`, a local UI editor and wizard `--terms FILE` batches. Each named workflow carries its own wording revision, statement, action label and host review status. Authoring compares the public baseline, requires a new revision for edits and leaves content draft. Configured offers are generated from the final policy artifact and retained at immutable public paths; the backend checks their wording against that archive. Host-authored offers, explicit activation, operation/subject binding and historical retry handling remain separate. See [the terms guide](TERMS.md).

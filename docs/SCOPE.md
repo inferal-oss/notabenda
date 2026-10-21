@@ -283,3 +283,7 @@ Prepared Cookie choices packs include an optional local-choice rehearsal (REQ-PR
 ## Static Go discovery
 
 Project discovery includes Go requirements and imports through the existing local CLI/wizard scanner. It never invokes Go or follows module replacements/workspace paths. Direct, indirect and test evidence stay distinct; detected references require operator confirmation. Seven source-linked SDK families extend the existing catalog without changing provider identities or refreshing previous pins. Build tags, resolved dependencies, escaped import paths and actual deployment remain outside this lexical scan.
+
+### Named terms agreement settings
+
+The Terms agreement pack includes optional `terms.agreements`, a local UI editor and wizard `--terms FILE` batches. Each named workflow carries its own wording revision, statement, action label and host review status. Authoring compares the public baseline, requires a new revision for edits and leaves content draft. Configured offers are generated from the final policy artifact and retained at immutable public paths; the backend checks their wording against that archive. Host-authored offers, explicit activation, operation/subject binding and historical retry handling remain separate. See [the terms guide](TERMS.md).

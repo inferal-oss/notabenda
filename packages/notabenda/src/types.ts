@@ -1,4 +1,7 @@
+// @requirements REQ-PRODUCT-TERMS-AUTHORING
 import type {SiteLocalization} from './document-localization.js';
+import type {TermsAgreementSetting} from './terms-settings.js';
+export type {TermsAgreementSetting} from './terms-settings.js';
 import type {ConsentInformation} from './consent-information.js';
 export type {ConsentInformation,ConsentInformationLink} from './consent-information.js';
 import type {GrantExpiryPolicy} from './grant-expiry-policy.js';
@@ -134,7 +137,7 @@ export interface SiteConfig {
     automatedDecisions: string;
     requiredContacts?: ('representative' | 'dpo')[];
   };
-  terms: { audience: 'business' | 'consumer' | 'mixed'; serviceType: 'informational' | 'service' | 'subscription' | 'commerce' | 'other' };
+  terms: { audience: 'business' | 'consumer' | 'mixed'; serviceType: 'informational' | 'service' | 'subscription' | 'commerce' | 'other';agreements?:TermsAgreementSetting[] };
   documents: Record<DocumentKind, DocumentConfig>;
   consent?: ConsentConfig;
   rightsCenter?:RightsCenterConfig;

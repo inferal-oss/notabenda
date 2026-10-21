@@ -33,7 +33,8 @@
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
         "Optional expiring tab-local setup recovery, including unfinished proposals and storage-change review, with clear control and last recoverable copy after failed writes.",
         "Try a prepared cookie draft with real native controls and disposable simulated services before connecting providers.",
-        "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory."
+        "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
+        "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -80,13 +81,11 @@
         "packages/notabenda/src/consent-compile.ts",
         "packages/notabenda/src/consent-types.ts",
         "packages/notabenda/src/consent-engine.ts",
-        "packages/notabenda/src/integration-reference.ts",
         "examples/static/connection-inspector.mjs",
         "examples/static/consent.mjs",
         "examples/static/choices-page.mjs",
         "examples/static/choices-page.css",
         "examples/static/choices-build.mjs",
-        "packages/notabenda/src/cartridges.ts",
         "packages/notabenda/src/cartridges-ui.ts",
         "examples/static/pack-learning.mjs",
         "packages/notabenda/src/storage-exception-localization.ts",
@@ -125,7 +124,6 @@
         "examples/localization/processing-messages.json",
         "site/build.mjs",
         "site/demo-host.mjs",
-        "examples/static/choices-build.mjs",
         "packages/notabenda-cf/src/render.ts",
         "packages/notabenda/src/pack-session.ts",
         "packages/notabenda/src/setup-session-fields.ts",
@@ -138,7 +136,17 @@
         "site/guide-search.mjs",
         "site/guide-search-build.mjs",
         "site/guide-search-client.mjs",
-        "site/guide-search.css"
+        "site/guide-search.css",
+        "packages/notabenda/src/terms-settings.ts",
+        "packages/notabenda/src/setup-terms.ts",
+        "packages/notabenda/src/setup-terms-ui.ts",
+        "packages/notabenda/src/setup-terms-cli.ts",
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/catalog-release.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda-cf/src/terms-settings.ts",
+        "examples/agreements/example.mjs"
       ]
     },
     {
@@ -244,7 +252,8 @@
         "Optional explicit terms-acceptance control linked to an exact version; independent marketing permissions.",
         "Consumer/business and service-type configuration, with conditional rights and contract-action links.",
         "React provider/hooks/native control and Astro named offer/operation-bound shell/bridge over the same host-owned acceptance controller; conservative SSR, view-only cleanup and uncertain-request preservation.",
-        "Optional local offer/operation inspection, with publication, backend activation and application behavior left to separate checks."
+        "Optional local offer/operation inspection, with publication, backend activation and application behavior left to separate checks.",
+        "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -266,10 +275,27 @@
         "packages/notabenda/src/astro-terms.ts",
         "packages/notabenda/src/terms-view-owner.ts",
         "packages/notabenda/src/astro/TermsAcceptance.astro",
-        "packages/notabenda/src/terms.ts",
         "packages/notabenda/src/react.ts",
         "packages/notabenda/src/astro-client.ts",
-        "packages/notabenda/src/terms-inspect.ts"
+        "packages/notabenda/src/terms-inspect.ts",
+        "packages/notabenda/src/terms-settings.ts",
+        "packages/notabenda/src/setup-terms.ts",
+        "packages/notabenda/src/setup-terms-ui.ts",
+        "packages/notabenda/src/setup-terms-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/setup-session-editors.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/catalog-release.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/src/terms-settings.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "examples/agreements/example.mjs"
       ]
     },
     {
@@ -2607,7 +2633,8 @@
         "REQ-PRODUCT-TERMS-CONNECTION",
         "REQ-PRODUCT-CONSENT-REHEARSAL",
         "REQ-PRODUCT-DOCS-SEARCH",
-        "REQ-PRODUCT-EMBED-LOCALIZATION"
+        "REQ-PRODUCT-EMBED-LOCALIZATION",
+        "REQ-PRODUCT-TERMS-AUTHORING"
       ]
     }
   ],
@@ -8461,6 +8488,60 @@
         "packages/notabenda/test/integration-assessment.test.mjs"
       ],
       "implementationNote": "Versioned four-message dictionary in public configuration, strict standalone selection/validation, automatic full-controller or explicit compiled-controller copy, inert SSR and native lang/dir, with exact unconfigured English output."
+    },
+    {
+      "id": "REQ-PRODUCT-TERMS-AUTHORING",
+      "jurisdiction": "PRODUCT",
+      "title": "Named terms agreement settings and final-release offers",
+      "kind": "product-standard",
+      "summary": "Optional complete scope/revision/wording settings with baseline-bound local UI and CLI authoring; generate exact offers from the final retained artifact and validate configured copy in the standalone backend.",
+      "appliesWhen": "An operator chooses configured wording for an explicit terms agreement workflow.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-TERMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-TERMS-AUTHORING"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Review, historical revision uniqueness, host identity/operation, publication, registration and activation remain host work. Removing settings does not deactivate a backend offer. Non-English acceptance requires complete localization.terms. Host-authored offers remain supported.",
+      "implementationRefs": [
+        "packages/notabenda/src/terms-settings.ts",
+        "packages/notabenda/src/setup-terms.ts",
+        "packages/notabenda/src/setup-terms-ui.ts",
+        "packages/notabenda/src/setup-terms-cli.ts",
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/setup-cli.ts",
+        "packages/notabenda/src/setup-session-editors.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/catalog-release.ts",
+        "packages/notabenda/src/config.ts",
+        "packages/notabenda/src/types.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/src/terms-settings.ts",
+        "packages/notabenda-cf/src/terms.ts",
+        "packages/notabenda-cf/scripts/sync-order-policy.mjs",
+        "examples/agreements/example.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/setup-terms.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/terms-authoring.md",
+        "site/test/terms-authoring.test.mjs"
+      ],
+      "implementationNote": "Validate the whole declaration before explicit scope selection; draft edits require fresh current revisions and unchanged public baselines. CLI emits scope files after final attachments; retained artifacts reconstruct exact copy. No automatic enrollment, cookie scope changes, acceptance, activation or retirement."
     }
   ],
   "verification": [
@@ -10159,6 +10240,20 @@
         "site/test/embed-localization.test.mjs",
         "docs/verification/embed-localization.md",
         "packages/notabenda/test/integration-assessment.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TERMS-AUTHORING",
+      "requirementIds": [
+        "REQ-PRODUCT-TERMS-AUTHORING"
+      ],
+      "status": "automated",
+      "expected": "Strict whole declarations, baseline/revision authoring, UI/CLI/session parity, unchanged legacy/cookie behavior, final artifact scope files, standalone backend copy binding and historical retries.",
+      "testRefs": [
+        "packages/notabenda/test/setup-terms.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/terms-authoring.md",
+        "site/test/terms-authoring.test.mjs"
       ]
     }
   ],

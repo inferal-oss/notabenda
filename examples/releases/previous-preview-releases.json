@@ -24841,5 +24841,891 @@
         "serviceType": "informational"
       }
     }
+  },
+  {
+    "documents": {
+      "cookies": {
+        "effectiveDate": "2026-10-18",
+        "kind": "cookies",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT"
+        ],
+        "reviewStatus": "draft",
+        "route": "/agreement/cookies",
+        "sections": [
+          {
+            "heading": "Cookies and similar storage",
+            "id": "about",
+            "paragraphs": [
+              "This page describes the browser storage declared for Juniper Notes.",
+              "Cookies, local storage, and similar technologies may support different purposes. The inventory below describes each declared item; publishing this page does not itself control those technologies."
+            ]
+          },
+          {
+            "heading": "Declared storage",
+            "id": "storage",
+            "table": {
+              "caption": "Storage inventory",
+              "columns": [
+                "Name",
+                "Type",
+                "Provider / service",
+                "Purpose",
+                "Duration",
+                "Classification"
+              ],
+              "rows": [
+                [
+                  "display_mode",
+                  "cookie",
+                  "Juniper Notes (fictional) / Site preferences",
+                  "Remembering display preferences",
+                  "30 days (sample)",
+                  "necessary — Synthetic example of a setting explicitly requested by the visitor; review necessity against actual use."
+                ]
+              ]
+            }
+          },
+          {
+            "heading": "Purposes",
+            "id": "purposes",
+            "items": [
+              "Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send.",
+              "Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described."
+            ]
+          },
+          {
+            "heading": "Questions about storage",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "privacy@juniper.example.test"
+              },
+              {
+                "href": "/agreement/privacy",
+                "label": "Privacy policy"
+              }
+            ]
+          },
+          {
+            "heading": "About this example",
+            "id": "additional-example-only",
+            "paragraphs": [
+              "These static example pages do not set the synthetic cookie listed above. The item demonstrates the document inventory, not a live storage integration."
+            ]
+          }
+        ],
+        "title": "Cookie policy",
+        "version": "draft-1"
+      },
+      "privacy": {
+        "effectiveDate": "2026-10-18",
+        "kind": "privacy",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-NOTICE",
+          "REQ-NZ-NOTICE"
+        ],
+        "reviewStatus": "draft",
+        "route": "/agreement/privacy",
+        "sections": [
+          {
+            "heading": "Who is responsible",
+            "id": "controller",
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "privacy@juniper.example.test"
+              }
+            ],
+            "paragraphs": [
+              "Juniper Notes Cooperative (fictional)",
+              "12 Example Lane, Example City (fictional)"
+            ]
+          },
+          {
+            "heading": "What we collect and why",
+            "id": "purposes",
+            "items": [
+              "Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send. Data: Name, Email address, Message content. Legal basis: An operator must supply the applicable basis after reviewing its actual processing. Source (direct): Information a person chooses to include in a message. Providing this information is optional. Without contact details, an operator may be unable to reply.",
+              "Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described. Data: Selected display mode. Legal basis: The applicable device-access exception and processing basis must be assessed separately. Source (direct): A display setting deliberately selected by the visitor. Providing this information is optional. If not stored, the preference may need to be selected again."
+            ]
+          },
+          {
+            "heading": "How long information is kept",
+            "id": "retention",
+            "items": [
+              "Responding to enquiries: Sample: until an enquiry is resolved, subject to the operator's reviewed retention policy.",
+              "Remembering display preferences: Sample: 30 days for the declared preference item."
+            ]
+          },
+          {
+            "heading": "Service providers and recipients",
+            "id": "providers",
+            "items": [
+              "Site preferences — Juniper Notes (fictional). Location: Example hosting region; replace with actual processing locations. Purposes: Remembering display preferences."
+            ],
+            "links": []
+          },
+          {
+            "heading": "International transfers",
+            "id": "transfers",
+            "paragraphs": [
+              "This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards."
+            ]
+          },
+          {
+            "heading": "Automated decisions",
+            "id": "automated-decisions",
+            "paragraphs": [
+              "No automated decisions are represented in this fictional example."
+            ]
+          },
+          {
+            "heading": "Your rights and choices",
+            "id": "rights",
+            "items": [
+              "Request information about how personal information is used.",
+              "Ask to access, correct, or erase information where applicable.",
+              "Withdraw a permission or object to processing where the applicable rules provide that right."
+            ],
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "Contact us about your information"
+              },
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "How to exercise your rights"
+              }
+            ]
+          },
+          {
+            "heading": "Questions and complaints",
+            "id": "complaints",
+            "paragraphs": [
+              "Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options."
+            ]
+          }
+        ],
+        "title": "Privacy policy",
+        "version": "draft-1"
+      },
+      "terms": {
+        "effectiveDate": "2026-10-18",
+        "kind": "terms",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-TERMS"
+        ],
+        "reviewStatus": "draft",
+        "route": "/agreement/terms",
+        "sections": [
+          {
+            "heading": "About these example pages",
+            "id": "about",
+            "paragraphs": [
+              "Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site's design. They do not offer a service or establish a real contract."
+            ]
+          },
+          {
+            "heading": "Your content, your structure",
+            "id": "your-content",
+            "paragraphs": [
+              "Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links."
+            ]
+          },
+          {
+            "heading": "Contact",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "privacy@juniper.example.test"
+              }
+            ]
+          }
+        ],
+        "title": "Terms of use",
+        "version": "draft-1"
+      }
+    },
+    "manifest": {
+      "artifactId": "9e4ad6bc30683c79432fb169585c7e590d56cb1fdc94d2ecdf4c18e0bb3a9878",
+      "configSha256": "1343ba69651ecdec796a164ac0325815f132b9a5c901fd2980842a319c38e65c",
+      "documents": [
+        {
+          "contentSha256": "9b5971ab656e63c1ddafc021bada7fc21fe65754e6bef7588fc4669beaff33bf",
+          "effectiveDate": "2026-10-18",
+          "file": "agreement/privacy/index.html",
+          "kind": "privacy",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-NOTICE",
+            "REQ-NZ-NOTICE"
+          ],
+          "reviewStatus": "draft",
+          "route": "/agreement/privacy",
+          "sha256": "3eedc6b8bcd4e79dd47fb40f0883e248493606bd7c29b81583987a55d7276877",
+          "title": "Privacy policy",
+          "version": "draft-1"
+        },
+        {
+          "contentSha256": "86d410deb33a778b9f680d46ce96d6435cc259daee1af672afc2c16b6a4ca651",
+          "effectiveDate": "2026-10-18",
+          "file": "agreement/cookies/index.html",
+          "kind": "cookies",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT"
+          ],
+          "reviewStatus": "draft",
+          "route": "/agreement/cookies",
+          "sha256": "8fa1d243006a4e752aa5b39a27cb45c0b4c901b76710a2335eed785c957f3f83",
+          "title": "Cookie policy",
+          "version": "draft-1"
+        },
+        {
+          "contentSha256": "633bc4e88fac50cfc4a68131e357a094241e097d84515d040d31d09d5bf93e29",
+          "effectiveDate": "2026-10-18",
+          "file": "agreement/terms/index.html",
+          "kind": "terms",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-TERMS"
+          ],
+          "reviewStatus": "draft",
+          "route": "/agreement/terms",
+          "sha256": "de6d64e65a821a379a6c6056121b3fb5b5e330ac8dce02fcda774d0bfaa591c5",
+          "title": "Terms of use",
+          "version": "draft-1"
+        }
+      ],
+      "locale": "en",
+      "mode": "preview",
+      "requirementIds": [
+        "REQ-PRODUCT-CONFIG",
+        "REQ-PRODUCT-ARTIFACTS",
+        "REQ-PRODUCT-DOCUMENTS",
+        "REQ-PRODUCT-SAFE-CONTENT",
+        "REQ-EU-NOTICE",
+        "REQ-NZ-NOTICE",
+        "REQ-EU-TERMS"
+      ],
+      "schemaVersion": 1,
+      "siteId": "juniper-agreement"
+    },
+    "pages": {
+      "agreement/cookies/index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Cookie policy · Juniper Notes</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Skip to content</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper Notes</a><span>Legal information</span></header><main id=\"main\"><article class=\"nb-document\" aria-labelledby=\"nb-cookies-title\" data-document-kind=\"cookies\" data-document-version=\"draft-1\"><header><p class=\"nb-eyebrow\">Juniper Notes · Legal</p><h1 id=\"nb-cookies-title\">Cookie policy</h1><p class=\"nb-document-meta\">Version draft-1 <span aria-hidden=\"true\">·</span> Effective <time datetime=\"2026-10-18\">2026-10-18</time></p><p class=\"nb-draft\" role=\"note\">Draft — for review. This document is not approved for production use.</p></header><nav class=\"nb-contents\" aria-label=\"On this page\"><p>On this page</p><ol><li><a href=\"#nb-cookies-section-about\">Cookies and similar storage</a></li><li><a href=\"#nb-cookies-section-storage\">Declared storage</a></li><li><a href=\"#nb-cookies-section-purposes\">Purposes</a></li><li><a href=\"#nb-cookies-section-contact\">Questions about storage</a></li><li><a href=\"#nb-cookies-section-additional-example-only\">About this example</a></li></ol></nav><section id=\"nb-cookies-section-about\"><h2>Cookies and similar storage</h2><p>This page describes the browser storage declared for Juniper Notes.</p><p>Cookies, local storage, and similar technologies may support different purposes. The inventory below describes each declared item; publishing this page does not itself control those technologies.</p></section><section id=\"nb-cookies-section-storage\"><details class=\"nb-storage-foldout\"><summary><h2>Declared storage</h2><span class=\"nb-storage-count\">1 item</span></summary><div class=\"nb-table-scroll\" role=\"region\" aria-label=\"Storage inventory\" tabindex=\"0\"><table><caption>Storage inventory</caption><thead><tr><th scope=\"col\">Name</th><th scope=\"col\">Type</th><th scope=\"col\">Provider / service</th><th scope=\"col\">Purpose</th><th scope=\"col\">Duration</th><th scope=\"col\">Classification</th></tr></thead><tbody><tr><th scope=\"row\">display_mode</th><td>cookie</td><td>Juniper Notes (fictional) / Site preferences</td><td>Remembering display preferences</td><td>30 days (sample)</td><td>necessary — Synthetic example of a setting explicitly requested by the visitor; review necessity against actual use.</td></tr></tbody></table></div></details></section><section id=\"nb-cookies-section-purposes\"><h2>Purposes</h2><ul><li>Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send.</li><li>Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described.</li></ul></section><section id=\"nb-cookies-section-contact\"><h2>Questions about storage</h2><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">privacy@juniper.example.test</a></li><li><a href=\"/agreement/privacy\">Privacy policy</a></li></ul></section><section id=\"nb-cookies-section-additional-example-only\"><h2>About this example</h2><p>These static example pages do not set the synthetic cookie listed above. The item demonstrates the document inventory, not a live storage integration.</p></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" aria-label=\"Legal\"><a href=\"/agreement/privacy\">Privacy policy</a><a href=\"/agreement/cookies\">Cookie policy</a><a href=\"/agreement/terms\">Terms of use</a></nav><p>© Juniper Notes</p></footer></body></html>",
+      "agreement/privacy/index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Privacy policy · Juniper Notes</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Skip to content</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper Notes</a><span>Legal information</span></header><main id=\"main\"><article class=\"nb-document\" aria-labelledby=\"nb-privacy-title\" data-document-kind=\"privacy\" data-document-version=\"draft-1\"><header><p class=\"nb-eyebrow\">Juniper Notes · Legal</p><h1 id=\"nb-privacy-title\">Privacy policy</h1><p class=\"nb-document-meta\">Version draft-1 <span aria-hidden=\"true\">·</span> Effective <time datetime=\"2026-10-18\">2026-10-18</time></p><p class=\"nb-draft\" role=\"note\">Draft — for review. This document is not approved for production use.</p></header><nav class=\"nb-contents\" aria-label=\"On this page\"><p>On this page</p><ol><li><a href=\"#nb-privacy-section-controller\">Who is responsible</a></li><li><a href=\"#nb-privacy-section-purposes\">What we collect and why</a></li><li><a href=\"#nb-privacy-section-retention\">How long information is kept</a></li><li><a href=\"#nb-privacy-section-providers\">Service providers and recipients</a></li><li><a href=\"#nb-privacy-section-transfers\">International transfers</a></li><li><a href=\"#nb-privacy-section-automated-decisions\">Automated decisions</a></li><li><a href=\"#nb-privacy-section-rights\">Your rights and choices</a></li><li><a href=\"#nb-privacy-section-complaints\">Questions and complaints</a></li></ol></nav><section id=\"nb-privacy-section-controller\"><h2>Who is responsible</h2><p>Juniper Notes Cooperative (fictional)</p><p>12 Example Lane, Example City (fictional)</p><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">privacy@juniper.example.test</a></li></ul></section><section id=\"nb-privacy-section-purposes\"><h2>What we collect and why</h2><ul><li>Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send. Data: Name, Email address, Message content. Legal basis: An operator must supply the applicable basis after reviewing its actual processing. Source (direct): Information a person chooses to include in a message. Providing this information is optional. Without contact details, an operator may be unable to reply.</li><li>Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described. Data: Selected display mode. Legal basis: The applicable device-access exception and processing basis must be assessed separately. Source (direct): A display setting deliberately selected by the visitor. Providing this information is optional. If not stored, the preference may need to be selected again.</li></ul></section><section id=\"nb-privacy-section-retention\"><h2>How long information is kept</h2><ul><li>Responding to enquiries: Sample: until an enquiry is resolved, subject to the operator&#39;s reviewed retention policy.</li><li>Remembering display preferences: Sample: 30 days for the declared preference item.</li></ul></section><section id=\"nb-privacy-section-providers\"><h2>Service providers and recipients</h2><ul><li>Site preferences — Juniper Notes (fictional). Location: Example hosting region; replace with actual processing locations. Purposes: Remembering display preferences.</li></ul></section><section id=\"nb-privacy-section-transfers\"><h2>International transfers</h2><p>This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards.</p></section><section id=\"nb-privacy-section-automated-decisions\"><h2>Automated decisions</h2><p>No automated decisions are represented in this fictional example.</p></section><section id=\"nb-privacy-section-rights\"><h2>Your rights and choices</h2><ul><li>Request information about how personal information is used.</li><li>Ask to access, correct, or erase information where applicable.</li><li>Withdraw a permission or object to processing where the applicable rules provide that right.</li></ul><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">Contact us about your information</a></li><li><a href=\"mailto:privacy@juniper.example.test\">How to exercise your rights</a></li></ul></section><section id=\"nb-privacy-section-complaints\"><h2>Questions and complaints</h2><p>Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options.</p></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" aria-label=\"Legal\"><a href=\"/agreement/privacy\">Privacy policy</a><a href=\"/agreement/cookies\">Cookie policy</a><a href=\"/agreement/terms\">Terms of use</a></nav><p>© Juniper Notes</p></footer></body></html>",
+      "agreement/terms/index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Terms of use · Juniper Notes</title><link rel=\"stylesheet\" href=\"/assets/notabenda.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Skip to content</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper Notes</a><span>Legal information</span></header><main id=\"main\"><article class=\"nb-document\" aria-labelledby=\"nb-terms-title\" data-document-kind=\"terms\" data-document-version=\"draft-1\"><header><p class=\"nb-eyebrow\">Juniper Notes · Legal</p><h1 id=\"nb-terms-title\">Terms of use</h1><p class=\"nb-document-meta\">Version draft-1 <span aria-hidden=\"true\">·</span> Effective <time datetime=\"2026-10-18\">2026-10-18</time></p><p class=\"nb-draft\" role=\"note\">Draft — for review. This document is not approved for production use.</p></header><nav class=\"nb-contents\" aria-label=\"On this page\"><p>On this page</p><ol><li><a href=\"#nb-terms-section-about\">About these example pages</a></li><li><a href=\"#nb-terms-section-your-content\">Your content, your structure</a></li><li><a href=\"#nb-terms-section-contact\">Contact</a></li></ol></nav><section id=\"nb-terms-section-about\"><h2>About these example pages</h2><p>Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site&#39;s design. They do not offer a service or establish a real contract.</p></section><section id=\"nb-terms-section-your-content\"><h2>Your content, your structure</h2><p>Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links.</p></section><section id=\"nb-terms-section-contact\"><h2>Contact</h2><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">privacy@juniper.example.test</a></li></ul></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" aria-label=\"Legal\"><a href=\"/agreement/privacy\">Privacy policy</a><a href=\"/agreement/cookies\">Cookie policy</a><a href=\"/agreement/terms\">Terms of use</a></nav><p>© Juniper Notes</p></footer></body></html>"
+    },
+    "publicConfig": {
+      "controller": {
+        "address": "12 Example Lane, Example City (fictional)",
+        "email": "privacy@juniper.example.test",
+        "name": "Juniper Notes Cooperative (fictional)"
+      },
+      "documents": {
+        "cookies": {
+          "effectiveDate": "2026-10-18",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/agreement/cookies",
+          "sections": [
+            {
+              "heading": "About this example",
+              "id": "example-only",
+              "paragraphs": [
+                "These static example pages do not set the synthetic cookie listed above. The item demonstrates the document inventory, not a live storage integration."
+              ]
+            }
+          ],
+          "source": "generated",
+          "title": "Cookie policy",
+          "version": "draft-1"
+        },
+        "privacy": {
+          "effectiveDate": "2026-10-18",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/agreement/privacy",
+          "source": "generated",
+          "title": "Privacy policy",
+          "version": "draft-1"
+        },
+        "terms": {
+          "effectiveDate": "2026-10-18",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/agreement/terms",
+          "sections": [
+            {
+              "heading": "About these example pages",
+              "id": "about",
+              "paragraphs": [
+                "Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site's design. They do not offer a service or establish a real contract."
+              ]
+            },
+            {
+              "heading": "Your content, your structure",
+              "id": "your-content",
+              "paragraphs": [
+                "Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links."
+              ]
+            },
+            {
+              "heading": "Contact",
+              "id": "contact",
+              "links": [
+                {
+                  "href": "mailto:privacy@juniper.example.test",
+                  "label": "privacy@juniper.example.test"
+                }
+              ]
+            }
+          ],
+          "source": "supplied",
+          "title": "Terms of use",
+          "version": "draft-1"
+        }
+      },
+      "jurisdictions": [],
+      "privacy": {
+        "automatedDecisions": "No automated decisions are represented in this fictional example.",
+        "complaints": {
+          "description": "Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options."
+        },
+        "rights": [
+          "Request information about how personal information is used.",
+          "Ask to access, correct, or erase information where applicable.",
+          "Withdraw a permission or object to processing where the applicable rules provide that right."
+        ],
+        "rightsUrl": "mailto:privacy@juniper.example.test",
+        "transfers": "This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards."
+      },
+      "purposes": [
+        {
+          "collection": {
+            "consequences": "Without contact details, an operator may be unable to reply.",
+            "description": "Information a person chooses to include in a message.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Name",
+            "Email address",
+            "Message content"
+          ],
+          "description": "A sample description of how an operator might respond to a message someone chooses to send.",
+          "id": "enquiries",
+          "legalBasis": "An operator must supply the applicable basis after reviewing its actual processing.",
+          "name": "Responding to enquiries",
+          "retention": "Sample: until an enquiry is resolved, subject to the operator's reviewed retention policy."
+        },
+        {
+          "collection": {
+            "consequences": "If not stored, the preference may need to be selected again.",
+            "description": "A display setting deliberately selected by the visitor.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Selected display mode"
+          ],
+          "description": "A synthetic storage example demonstrating how a requested display setting can be described.",
+          "id": "display-preferences",
+          "legalBasis": "The applicable device-access exception and processing basis must be assessed separately.",
+          "name": "Remembering display preferences",
+          "retention": "Sample: 30 days for the declared preference item."
+        }
+      ],
+      "schemaVersion": 1,
+      "services": [
+        {
+          "id": "site-preferences",
+          "location": "Example hosting region; replace with actual processing locations.",
+          "name": "Site preferences",
+          "provider": "Juniper Notes (fictional)",
+          "purposeIds": [
+            "display-preferences"
+          ]
+        }
+      ],
+      "site": {
+        "description": "A fictional independent writing studio used to demonstrate reusable legal pages.",
+        "id": "juniper-agreement",
+        "locale": "en",
+        "name": "Juniper Notes",
+        "url": "https://juniper.example.test"
+      },
+      "storage": [
+        {
+          "classification": "necessary",
+          "duration": "30 days (sample)",
+          "id": "display-mode",
+          "name": "display_mode",
+          "necessityReason": "Synthetic example of a setting explicitly requested by the visitor; review necessity against actual use.",
+          "serviceId": "site-preferences",
+          "type": "cookie"
+        }
+      ],
+      "terms": {
+        "audience": "business",
+        "serviceType": "informational"
+      }
+    }
+  },
+  {
+    "documents": {
+      "cookies": {
+        "effectiveDate": "2026-10-18",
+        "kind": "cookies",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT"
+        ],
+        "reviewStatus": "draft",
+        "route": "/dark/agreement/cookies",
+        "sections": [
+          {
+            "heading": "Cookies and similar storage",
+            "id": "about",
+            "paragraphs": [
+              "This page describes the browser storage declared for Juniper Notes.",
+              "Cookies, local storage, and similar technologies may support different purposes. The inventory below describes each declared item; publishing this page does not itself control those technologies."
+            ]
+          },
+          {
+            "heading": "Declared storage",
+            "id": "storage",
+            "table": {
+              "caption": "Storage inventory",
+              "columns": [
+                "Name",
+                "Type",
+                "Provider / service",
+                "Purpose",
+                "Duration",
+                "Classification"
+              ],
+              "rows": [
+                [
+                  "display_mode",
+                  "cookie",
+                  "Juniper Notes (fictional) / Site preferences",
+                  "Remembering display preferences",
+                  "30 days (sample)",
+                  "necessary — Synthetic example of a setting explicitly requested by the visitor; review necessity against actual use."
+                ]
+              ]
+            }
+          },
+          {
+            "heading": "Purposes",
+            "id": "purposes",
+            "items": [
+              "Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send.",
+              "Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described."
+            ]
+          },
+          {
+            "heading": "Questions about storage",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "privacy@juniper.example.test"
+              },
+              {
+                "href": "/dark/agreement/privacy",
+                "label": "Privacy policy"
+              }
+            ]
+          },
+          {
+            "heading": "About this example",
+            "id": "additional-example-only",
+            "paragraphs": [
+              "These static example pages do not set the synthetic cookie listed above. The item demonstrates the document inventory, not a live storage integration."
+            ]
+          }
+        ],
+        "title": "Cookie policy",
+        "version": "draft-1"
+      },
+      "privacy": {
+        "effectiveDate": "2026-10-18",
+        "kind": "privacy",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-NOTICE",
+          "REQ-NZ-NOTICE"
+        ],
+        "reviewStatus": "draft",
+        "route": "/dark/agreement/privacy",
+        "sections": [
+          {
+            "heading": "Who is responsible",
+            "id": "controller",
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "privacy@juniper.example.test"
+              }
+            ],
+            "paragraphs": [
+              "Juniper Notes Cooperative (fictional)",
+              "12 Example Lane, Example City (fictional)"
+            ]
+          },
+          {
+            "heading": "What we collect and why",
+            "id": "purposes",
+            "items": [
+              "Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send. Data: Name, Email address, Message content. Legal basis: An operator must supply the applicable basis after reviewing its actual processing. Source (direct): Information a person chooses to include in a message. Providing this information is optional. Without contact details, an operator may be unable to reply.",
+              "Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described. Data: Selected display mode. Legal basis: The applicable device-access exception and processing basis must be assessed separately. Source (direct): A display setting deliberately selected by the visitor. Providing this information is optional. If not stored, the preference may need to be selected again."
+            ]
+          },
+          {
+            "heading": "How long information is kept",
+            "id": "retention",
+            "items": [
+              "Responding to enquiries: Sample: until an enquiry is resolved, subject to the operator's reviewed retention policy.",
+              "Remembering display preferences: Sample: 30 days for the declared preference item."
+            ]
+          },
+          {
+            "heading": "Service providers and recipients",
+            "id": "providers",
+            "items": [
+              "Site preferences — Juniper Notes (fictional). Location: Example hosting region; replace with actual processing locations. Purposes: Remembering display preferences."
+            ],
+            "links": []
+          },
+          {
+            "heading": "International transfers",
+            "id": "transfers",
+            "paragraphs": [
+              "This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards."
+            ]
+          },
+          {
+            "heading": "Automated decisions",
+            "id": "automated-decisions",
+            "paragraphs": [
+              "No automated decisions are represented in this fictional example."
+            ]
+          },
+          {
+            "heading": "Your rights and choices",
+            "id": "rights",
+            "items": [
+              "Request information about how personal information is used.",
+              "Ask to access, correct, or erase information where applicable.",
+              "Withdraw a permission or object to processing where the applicable rules provide that right."
+            ],
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "Contact us about your information"
+              },
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "How to exercise your rights"
+              }
+            ]
+          },
+          {
+            "heading": "Questions and complaints",
+            "id": "complaints",
+            "paragraphs": [
+              "Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options."
+            ]
+          }
+        ],
+        "title": "Privacy policy",
+        "version": "draft-1"
+      },
+      "terms": {
+        "effectiveDate": "2026-10-18",
+        "kind": "terms",
+        "requirementIds": [
+          "REQ-PRODUCT-DOCUMENTS",
+          "REQ-PRODUCT-SAFE-CONTENT",
+          "REQ-EU-TERMS"
+        ],
+        "reviewStatus": "draft",
+        "route": "/dark/agreement/terms",
+        "sections": [
+          {
+            "heading": "About these example pages",
+            "id": "about",
+            "paragraphs": [
+              "Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site's design. They do not offer a service or establish a real contract."
+            ]
+          },
+          {
+            "heading": "Your content, your structure",
+            "id": "your-content",
+            "paragraphs": [
+              "Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links."
+            ]
+          },
+          {
+            "heading": "Contact",
+            "id": "contact",
+            "links": [
+              {
+                "href": "mailto:privacy@juniper.example.test",
+                "label": "privacy@juniper.example.test"
+              }
+            ]
+          }
+        ],
+        "title": "Terms of use",
+        "version": "draft-1"
+      }
+    },
+    "manifest": {
+      "artifactId": "caed9a9c59fc5f01120d28613f579f0f3c4913526da4ef96c7b7655918641fef",
+      "configSha256": "e117aa3cffb7f9d57a4b8637d0b1de3d451a954acaf3b5a814fbd90b5469b6a4",
+      "documents": [
+        {
+          "contentSha256": "9b5971ab656e63c1ddafc021bada7fc21fe65754e6bef7588fc4669beaff33bf",
+          "effectiveDate": "2026-10-18",
+          "file": "dark/agreement/privacy/index.html",
+          "kind": "privacy",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-NOTICE",
+            "REQ-NZ-NOTICE"
+          ],
+          "reviewStatus": "draft",
+          "route": "/dark/agreement/privacy",
+          "sha256": "769b839447c25611e30be8433173d4256a1d03a14a5519f19d582803df8c97ab",
+          "title": "Privacy policy",
+          "version": "draft-1"
+        },
+        {
+          "contentSha256": "cd20cde3fbdc009855a5b2b450c3c2496e4acd9be066eb764d0d30bea8269096",
+          "effectiveDate": "2026-10-18",
+          "file": "dark/agreement/cookies/index.html",
+          "kind": "cookies",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT"
+          ],
+          "reviewStatus": "draft",
+          "route": "/dark/agreement/cookies",
+          "sha256": "aedbd1602ea4d223ccb54473fb322a5130ef587281550c86eb9529c2bb20f711",
+          "title": "Cookie policy",
+          "version": "draft-1"
+        },
+        {
+          "contentSha256": "633bc4e88fac50cfc4a68131e357a094241e097d84515d040d31d09d5bf93e29",
+          "effectiveDate": "2026-10-18",
+          "file": "dark/agreement/terms/index.html",
+          "kind": "terms",
+          "requirementIds": [
+            "REQ-PRODUCT-DOCUMENTS",
+            "REQ-PRODUCT-SAFE-CONTENT",
+            "REQ-EU-TERMS"
+          ],
+          "reviewStatus": "draft",
+          "route": "/dark/agreement/terms",
+          "sha256": "1e648535b184e76a026a29b34f5c9cce7e044fa6fb6533d1032edd8a15b414b4",
+          "title": "Terms of use",
+          "version": "draft-1"
+        }
+      ],
+      "locale": "en",
+      "mode": "preview",
+      "requirementIds": [
+        "REQ-PRODUCT-CONFIG",
+        "REQ-PRODUCT-ARTIFACTS",
+        "REQ-PRODUCT-DOCUMENTS",
+        "REQ-PRODUCT-SAFE-CONTENT",
+        "REQ-EU-NOTICE",
+        "REQ-NZ-NOTICE",
+        "REQ-EU-TERMS"
+      ],
+      "schemaVersion": 1,
+      "siteId": "juniper-agreement"
+    },
+    "pages": {
+      "dark/agreement/cookies/index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Cookie policy · Juniper Notes</title><link rel=\"stylesheet\" href=\"/assets/dark.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Skip to content</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper Notes</a><span>Legal information</span></header><main id=\"main\"><article class=\"nb-document\" aria-labelledby=\"nb-cookies-title\" data-document-kind=\"cookies\" data-document-version=\"draft-1\"><header><p class=\"nb-eyebrow\">Juniper Notes · Legal</p><h1 id=\"nb-cookies-title\">Cookie policy</h1><p class=\"nb-document-meta\">Version draft-1 <span aria-hidden=\"true\">·</span> Effective <time datetime=\"2026-10-18\">2026-10-18</time></p><p class=\"nb-draft\" role=\"note\">Draft — for review. This document is not approved for production use.</p></header><nav class=\"nb-contents\" aria-label=\"On this page\"><p>On this page</p><ol><li><a href=\"#nb-cookies-section-about\">Cookies and similar storage</a></li><li><a href=\"#nb-cookies-section-storage\">Declared storage</a></li><li><a href=\"#nb-cookies-section-purposes\">Purposes</a></li><li><a href=\"#nb-cookies-section-contact\">Questions about storage</a></li><li><a href=\"#nb-cookies-section-additional-example-only\">About this example</a></li></ol></nav><section id=\"nb-cookies-section-about\"><h2>Cookies and similar storage</h2><p>This page describes the browser storage declared for Juniper Notes.</p><p>Cookies, local storage, and similar technologies may support different purposes. The inventory below describes each declared item; publishing this page does not itself control those technologies.</p></section><section id=\"nb-cookies-section-storage\"><details class=\"nb-storage-foldout\"><summary><h2>Declared storage</h2><span class=\"nb-storage-count\">1 item</span></summary><div class=\"nb-table-scroll\" role=\"region\" aria-label=\"Storage inventory\" tabindex=\"0\"><table><caption>Storage inventory</caption><thead><tr><th scope=\"col\">Name</th><th scope=\"col\">Type</th><th scope=\"col\">Provider / service</th><th scope=\"col\">Purpose</th><th scope=\"col\">Duration</th><th scope=\"col\">Classification</th></tr></thead><tbody><tr><th scope=\"row\">display_mode</th><td>cookie</td><td>Juniper Notes (fictional) / Site preferences</td><td>Remembering display preferences</td><td>30 days (sample)</td><td>necessary — Synthetic example of a setting explicitly requested by the visitor; review necessity against actual use.</td></tr></tbody></table></div></details></section><section id=\"nb-cookies-section-purposes\"><h2>Purposes</h2><ul><li>Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send.</li><li>Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described.</li></ul></section><section id=\"nb-cookies-section-contact\"><h2>Questions about storage</h2><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">privacy@juniper.example.test</a></li><li><a href=\"/dark/agreement/privacy\">Privacy policy</a></li></ul></section><section id=\"nb-cookies-section-additional-example-only\"><h2>About this example</h2><p>These static example pages do not set the synthetic cookie listed above. The item demonstrates the document inventory, not a live storage integration.</p></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" aria-label=\"Legal\"><a href=\"/dark/agreement/privacy\">Privacy policy</a><a href=\"/dark/agreement/cookies\">Cookie policy</a><a href=\"/dark/agreement/terms\">Terms of use</a></nav><p>© Juniper Notes</p></footer></body></html>",
+      "dark/agreement/privacy/index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Privacy policy · Juniper Notes</title><link rel=\"stylesheet\" href=\"/assets/dark.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Skip to content</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper Notes</a><span>Legal information</span></header><main id=\"main\"><article class=\"nb-document\" aria-labelledby=\"nb-privacy-title\" data-document-kind=\"privacy\" data-document-version=\"draft-1\"><header><p class=\"nb-eyebrow\">Juniper Notes · Legal</p><h1 id=\"nb-privacy-title\">Privacy policy</h1><p class=\"nb-document-meta\">Version draft-1 <span aria-hidden=\"true\">·</span> Effective <time datetime=\"2026-10-18\">2026-10-18</time></p><p class=\"nb-draft\" role=\"note\">Draft — for review. This document is not approved for production use.</p></header><nav class=\"nb-contents\" aria-label=\"On this page\"><p>On this page</p><ol><li><a href=\"#nb-privacy-section-controller\">Who is responsible</a></li><li><a href=\"#nb-privacy-section-purposes\">What we collect and why</a></li><li><a href=\"#nb-privacy-section-retention\">How long information is kept</a></li><li><a href=\"#nb-privacy-section-providers\">Service providers and recipients</a></li><li><a href=\"#nb-privacy-section-transfers\">International transfers</a></li><li><a href=\"#nb-privacy-section-automated-decisions\">Automated decisions</a></li><li><a href=\"#nb-privacy-section-rights\">Your rights and choices</a></li><li><a href=\"#nb-privacy-section-complaints\">Questions and complaints</a></li></ol></nav><section id=\"nb-privacy-section-controller\"><h2>Who is responsible</h2><p>Juniper Notes Cooperative (fictional)</p><p>12 Example Lane, Example City (fictional)</p><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">privacy@juniper.example.test</a></li></ul></section><section id=\"nb-privacy-section-purposes\"><h2>What we collect and why</h2><ul><li>Responding to enquiries: A sample description of how an operator might respond to a message someone chooses to send. Data: Name, Email address, Message content. Legal basis: An operator must supply the applicable basis after reviewing its actual processing. Source (direct): Information a person chooses to include in a message. Providing this information is optional. Without contact details, an operator may be unable to reply.</li><li>Remembering display preferences: A synthetic storage example demonstrating how a requested display setting can be described. Data: Selected display mode. Legal basis: The applicable device-access exception and processing basis must be assessed separately. Source (direct): A display setting deliberately selected by the visitor. Providing this information is optional. If not stored, the preference may need to be selected again.</li></ul></section><section id=\"nb-privacy-section-retention\"><h2>How long information is kept</h2><ul><li>Responding to enquiries: Sample: until an enquiry is resolved, subject to the operator&#39;s reviewed retention policy.</li><li>Remembering display preferences: Sample: 30 days for the declared preference item.</li></ul></section><section id=\"nb-privacy-section-providers\"><h2>Service providers and recipients</h2><ul><li>Site preferences — Juniper Notes (fictional). Location: Example hosting region; replace with actual processing locations. Purposes: Remembering display preferences.</li></ul></section><section id=\"nb-privacy-section-transfers\"><h2>International transfers</h2><p>This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards.</p></section><section id=\"nb-privacy-section-automated-decisions\"><h2>Automated decisions</h2><p>No automated decisions are represented in this fictional example.</p></section><section id=\"nb-privacy-section-rights\"><h2>Your rights and choices</h2><ul><li>Request information about how personal information is used.</li><li>Ask to access, correct, or erase information where applicable.</li><li>Withdraw a permission or object to processing where the applicable rules provide that right.</li></ul><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">Contact us about your information</a></li><li><a href=\"mailto:privacy@juniper.example.test\">How to exercise your rights</a></li></ul></section><section id=\"nb-privacy-section-complaints\"><h2>Questions and complaints</h2><p>Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options.</p></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" aria-label=\"Legal\"><a href=\"/dark/agreement/privacy\">Privacy policy</a><a href=\"/dark/agreement/cookies\">Cookie policy</a><a href=\"/dark/agreement/terms\">Terms of use</a></nav><p>© Juniper Notes</p></footer></body></html>",
+      "dark/agreement/terms/index.html": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Terms of use · Juniper Notes</title><link rel=\"stylesheet\" href=\"/assets/dark.css\"></head><body class=\"nb-page\"><a class=\"nb-skip-link\" href=\"#main\">Skip to content</a><header class=\"nb-site-header\"><a href=\"https://juniper.example.test\">Juniper Notes</a><span>Legal information</span></header><main id=\"main\"><article class=\"nb-document\" aria-labelledby=\"nb-terms-title\" data-document-kind=\"terms\" data-document-version=\"draft-1\"><header><p class=\"nb-eyebrow\">Juniper Notes · Legal</p><h1 id=\"nb-terms-title\">Terms of use</h1><p class=\"nb-document-meta\">Version draft-1 <span aria-hidden=\"true\">·</span> Effective <time datetime=\"2026-10-18\">2026-10-18</time></p><p class=\"nb-draft\" role=\"note\">Draft — for review. This document is not approved for production use.</p></header><nav class=\"nb-contents\" aria-label=\"On this page\"><p>On this page</p><ol><li><a href=\"#nb-terms-section-about\">About these example pages</a></li><li><a href=\"#nb-terms-section-your-content\">Your content, your structure</a></li><li><a href=\"#nb-terms-section-contact\">Contact</a></li></ol></nav><section id=\"nb-terms-section-about\"><h2>About these example pages</h2><p>Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site&#39;s design. They do not offer a service or establish a real contract.</p></section><section id=\"nb-terms-section-your-content\"><h2>Your content, your structure</h2><p>Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links.</p></section><section id=\"nb-terms-section-contact\"><h2>Contact</h2><ul class=\"nb-document-links\"><li><a href=\"mailto:privacy@juniper.example.test\">privacy@juniper.example.test</a></li></ul></section></article></main><footer class=\"nb-site-footer\"><nav class=\"nb-legal-links\" aria-label=\"Legal\"><a href=\"/dark/agreement/privacy\">Privacy policy</a><a href=\"/dark/agreement/cookies\">Cookie policy</a><a href=\"/dark/agreement/terms\">Terms of use</a></nav><p>© Juniper Notes</p></footer></body></html>"
+    },
+    "publicConfig": {
+      "controller": {
+        "address": "12 Example Lane, Example City (fictional)",
+        "email": "privacy@juniper.example.test",
+        "name": "Juniper Notes Cooperative (fictional)"
+      },
+      "documents": {
+        "cookies": {
+          "effectiveDate": "2026-10-18",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/dark/agreement/cookies",
+          "sections": [
+            {
+              "heading": "About this example",
+              "id": "example-only",
+              "paragraphs": [
+                "These static example pages do not set the synthetic cookie listed above. The item demonstrates the document inventory, not a live storage integration."
+              ]
+            }
+          ],
+          "source": "generated",
+          "title": "Cookie policy",
+          "version": "draft-1"
+        },
+        "privacy": {
+          "effectiveDate": "2026-10-18",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/dark/agreement/privacy",
+          "source": "generated",
+          "title": "Privacy policy",
+          "version": "draft-1"
+        },
+        "terms": {
+          "effectiveDate": "2026-10-18",
+          "review": {
+            "status": "draft"
+          },
+          "route": "/dark/agreement/terms",
+          "sections": [
+            {
+              "heading": "About these example pages",
+              "id": "about",
+              "paragraphs": [
+                "Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site's design. They do not offer a service or establish a real contract."
+              ]
+            },
+            {
+              "heading": "Your content, your structure",
+              "id": "your-content",
+              "paragraphs": [
+                "Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links."
+              ]
+            },
+            {
+              "heading": "Contact",
+              "id": "contact",
+              "links": [
+                {
+                  "href": "mailto:privacy@juniper.example.test",
+                  "label": "privacy@juniper.example.test"
+                }
+              ]
+            }
+          ],
+          "source": "supplied",
+          "title": "Terms of use",
+          "version": "draft-1"
+        }
+      },
+      "jurisdictions": [],
+      "privacy": {
+        "automatedDecisions": "No automated decisions are represented in this fictional example.",
+        "complaints": {
+          "description": "Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options."
+        },
+        "rights": [
+          "Request information about how personal information is used.",
+          "Ask to access, correct, or erase information where applicable.",
+          "Withdraw a permission or object to processing where the applicable rules provide that right."
+        ],
+        "rightsUrl": "mailto:privacy@juniper.example.test",
+        "transfers": "This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards."
+      },
+      "purposes": [
+        {
+          "collection": {
+            "consequences": "Without contact details, an operator may be unable to reply.",
+            "description": "Information a person chooses to include in a message.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Name",
+            "Email address",
+            "Message content"
+          ],
+          "description": "A sample description of how an operator might respond to a message someone chooses to send.",
+          "id": "enquiries",
+          "legalBasis": "An operator must supply the applicable basis after reviewing its actual processing.",
+          "name": "Responding to enquiries",
+          "retention": "Sample: until an enquiry is resolved, subject to the operator's reviewed retention policy."
+        },
+        {
+          "collection": {
+            "consequences": "If not stored, the preference may need to be selected again.",
+            "description": "A display setting deliberately selected by the visitor.",
+            "required": false,
+            "source": "direct"
+          },
+          "dataCategories": [
+            "Selected display mode"
+          ],
+          "description": "A synthetic storage example demonstrating how a requested display setting can be described.",
+          "id": "display-preferences",
+          "legalBasis": "The applicable device-access exception and processing basis must be assessed separately.",
+          "name": "Remembering display preferences",
+          "retention": "Sample: 30 days for the declared preference item."
+        }
+      ],
+      "schemaVersion": 1,
+      "services": [
+        {
+          "id": "site-preferences",
+          "location": "Example hosting region; replace with actual processing locations.",
+          "name": "Site preferences",
+          "provider": "Juniper Notes (fictional)",
+          "purposeIds": [
+            "display-preferences"
+          ]
+        }
+      ],
+      "site": {
+        "description": "A fictional independent writing studio used to demonstrate reusable legal pages.",
+        "id": "juniper-agreement",
+        "locale": "en",
+        "name": "Juniper Notes",
+        "url": "https://juniper.example.test"
+      },
+      "storage": [
+        {
+          "classification": "necessary",
+          "duration": "30 days (sample)",
+          "id": "display-mode",
+          "name": "display_mode",
+          "necessityReason": "Synthetic example of a setting explicitly requested by the visitor; review necessity against actual use.",
+          "serviceId": "site-preferences",
+          "type": "cookie"
+        }
+      ],
+      "terms": {
+        "audience": "business",
+        "serviceType": "informational"
+      }
+    }
   }
 ]
