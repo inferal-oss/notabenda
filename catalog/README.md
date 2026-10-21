@@ -22,3 +22,9 @@ The generated `packages/notabenda/src/catalog-data.json` is committed data. Ordi
 Catalog normalization and search do not contact providers. No provider privacy text, legal role, transfer mechanism, hosting-region guarantee or legal classification is supplied by the backend seed. Upstream cookie categories and retention strings remain explicitly reported hints. They are never automatically copied into an adopter's purposes, legal basis, storage declaration or consent settings.
 
 See [the catalog guide](../docs/SERVICE-CATALOG.md) for actual APIs and remaining work.
+
+## Go SDK signatures
+
+`go-providers.json` adds retrieved official SDK namespace references to seven existing products. It records identifiers and original factual notes, without copying SDK code or documentation prose. Sources remain separate from provider-practice review; products remain unreviewed. The generator applies the catalog and affected-product revision explicitly, after existing profiles, while preserving unaffected product pins.
+
+Go matching is case-sensitive. Exact rules identify a module/package root; prefix rules end with a slash. Project scanning distinguishes ordinary and indirect `go.mod` requirements from production-file and test-file imports. It does not resolve versions, build tags, replacements, workspaces or runtime use. See [the service-catalog guide](../docs/SERVICE-CATALOG.md#go-projects).

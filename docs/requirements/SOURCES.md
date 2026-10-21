@@ -1345,3 +1345,33 @@ Retrieved directly from the official URL after the web reader rejected Markdown 
 **Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
 
 Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied.
+
+<a id="src-go-modules"></a>
+
+## SRC-GO-MODULES
+
+[Go modules reference](https://go.dev/ref/mod)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Line-oriented require declarations, quoted paths, indirect comments and replacement/exclusion semantics. Used for passive lexical discovery, not build graph resolution; external documentation is not reproduced.
+
+<a id="src-go-imports"></a>
+
+## SRC-GO-IMPORTS
+
+[Go specification: import declarations](https://go.dev/ref/spec#Import_declarations)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+Import specifications, aliases, blank/dot imports and string literals. The scanner uses a bounded lexical subset without compiling source or interpreting escaped import paths.
+
+<a id="src-go-modfile"></a>
+
+## SRC-GO-MODFILE
+
+[Go module-file indirect requirement recognition](https://github.com/golang/mod/blob/master/modfile/rule.go)
+
+**Type:** technical-documentation. **Checked:** 2026-10-20. **Access:** read.
+
+The Go module-file implementation distinguishes the indirect marker and its semicolon-plus-explanation form from other comments. Used to classify source declarations, not to resolve dependency graphs.

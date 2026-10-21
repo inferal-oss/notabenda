@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-20.2",
+  "sources": [
+    {
+      "id": "aws-go-sdk",
+      "url": "https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/getting-started.html",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    },
+    {
+      "id": "google-cloud-go-sdk",
+      "url": "https://github.com/googleapis/google-cloud-go/blob/main/storage/doc.go",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    },
+    {
+      "id": "azure-go-sdk",
+      "url": "https://learn.microsoft.com/en-us/azure/developer/go/management-libraries",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    },
+    {
+      "id": "stripe-go-sdk",
+      "url": "https://github.com/stripe/stripe-go",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    },
+    {
+      "id": "sentry-go-sdk",
+      "url": "https://github.com/getsentry/sentry-go",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    },
+    {
+      "id": "twilio-go-sdk",
+      "url": "https://github.com/twilio/twilio-go",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    },
+    {
+      "id": "digitalocean-go-sdk",
+      "url": "https://github.com/digitalocean/godo",
+      "revision": "2026-10-20",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official documentation identifies this Go SDK namespace. Only identifier facts are recorded; no source code or documentation text is reproduced. A match does not establish live use, deployment, contractual entity or data processing."
+    }
+  ],
+  "productIdentifierAdditions": {
+    "aws-sdk": [
+      {
+        "id": "aws-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "github.com/aws/aws-sdk-go-v2",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "aws-go-sdk"
+        ]
+      },
+      {
+        "id": "aws-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "github.com/aws/aws-sdk-go-v2/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "aws-go-sdk"
+        ]
+      }
+    ],
+    "google-cloud": [
+      {
+        "id": "google-cloud-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "cloud.google.com/go",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "google-cloud-go-sdk"
+        ]
+      },
+      {
+        "id": "google-cloud-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "cloud.google.com/go/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "google-cloud-go-sdk"
+        ]
+      }
+    ],
+    "azure-sdk": [
+      {
+        "id": "azure-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "github.com/Azure/azure-sdk-for-go",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "azure-go-sdk"
+        ]
+      },
+      {
+        "id": "azure-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "github.com/Azure/azure-sdk-for-go/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "azure-go-sdk"
+        ]
+      }
+    ],
+    "stripe-payments": [
+      {
+        "id": "stripe-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "github.com/stripe/stripe-go",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "stripe-go-sdk"
+        ]
+      },
+      {
+        "id": "stripe-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "github.com/stripe/stripe-go/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "stripe-go-sdk"
+        ]
+      }
+    ],
+    "sentry-monitoring": [
+      {
+        "id": "sentry-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "github.com/getsentry/sentry-go",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "sentry-go-sdk"
+        ]
+      },
+      {
+        "id": "sentry-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "github.com/getsentry/sentry-go/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "sentry-go-sdk"
+        ]
+      }
+    ],
+    "twilio-messaging": [
+      {
+        "id": "twilio-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "github.com/twilio/twilio-go",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "twilio-go-sdk"
+        ]
+      },
+      {
+        "id": "twilio-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "github.com/twilio/twilio-go/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "twilio-go-sdk"
+        ]
+      }
+    ],
+    "digitalocean-platform": [
+      {
+        "id": "digitalocean-go-sdk-exact",
+        "ecosystem": "go",
+        "match": "exact",
+        "value": "github.com/digitalocean/godo",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "digitalocean-go-sdk"
+        ]
+      },
+      {
+        "id": "digitalocean-go-sdk-prefix",
+        "ecosystem": "go",
+        "match": "prefix",
+        "value": "github.com/digitalocean/godo/",
+        "explanation": "A declared Go module or imported package in this documented SDK namespace is a candidate for operator review. Dependencies can be indirect, replaced, test-only, unused or pointed at an emulator.",
+        "sourceIds": [
+          "digitalocean-go-sdk"
+        ]
+      }
+    ]
+  }
+}

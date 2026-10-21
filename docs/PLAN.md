@@ -92,6 +92,8 @@ npx @notabenda/core build
 
 The [guided setup wizard](SETUP.md) now shares a bounded questionnaire/recommendation engine across CLI and the host-authorized local admin UI, with private justifications, saved-answer resume, draft exports and catalog references. Imported settings remain explicit operator decisions.
 
+Go project discovery now reads static module requirements and package imports, including separate indirect/test contexts and explicit unresolved build-graph limits. Seven SDK families have source-linked namespace signatures; matches still need actual-use review. See [service discovery](SERVICE-CATALOG.md#go-projects).
+
 The initial [standalone discovery tool](DISCOVERY.md) captures buffered resource observations, DOM resource/hint origins and accessible storage names in an explicitly invoked browser UI/API, then compares capture JSON with declared inventory through a local CLI. Deeper network interception, frame/worker/server coverage and automatic crawling remain separate work. Support human-readable and machine-readable output. Adopters decide when to run it and whether to integrate it into CI or use findings as deployment gates; the toolkit does not require a CI workflow. Observations suggest configuration changes for review rather than automatically classifying services as legally exempt.
 
 Current runtime API (configure explicit consent scope and lifetimes in the site inventory first):

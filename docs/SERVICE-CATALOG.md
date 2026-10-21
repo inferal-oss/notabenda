@@ -2,7 +2,7 @@
 
 ## Search a project with npx
 
-After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
+After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
 
 For a single interactive workflow, run `npx @notabenda/core wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
 
@@ -224,3 +224,27 @@ npx @notabenda/core catalog show vercel-platform
 ```
 
 These references were checked on 20 October 2026. Review the current installed version and account settings before using them. They do not supply working adapters, choose exemptions or authorize collection. Existing saved selections retain their earlier profile and source revisions until you explicitly compare and confirm a renewed selection.
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION -->
+## Go projects
+
+Use the same command from a Go project:
+
+```sh
+npx @notabenda/core discover --project . --out-dir ./service-review
+```
+
+The scanner reads `go.mod` requirements and `.go` import declarations, including aliases and grouped imports. It recognizes seven documented SDK namespaces: AWS, Google Cloud, Azure, Stripe, Sentry, Twilio and DigitalOcean. Custom catalogs can add `ecosystem: 'go'` rules. Exact rules name a module/package; prefix rules must end in `/` to keep a namespace boundary. Matching is case-sensitive.
+
+| Evidence context | What was found |
+| --- | --- |
+| `dependency` | A `go.mod` requirement without an `indirect` marker. |
+| `indirect-dependency` | A requirement explicitly marked `// indirect`. |
+| `source-import` | An import in an ordinary `.go` file. |
+| `test-source-import` | An import in an `_test.go` file. |
+
+These contexts describe source declarations, not the resolved build or a production transfer. Go comments and ordinary string/rune contents are skipped. Reports keep the matched catalog signature, not private subpackage suffixes, module versions, replacement destinations or source values. Secret paths, Git ignores, symlinks, vendor directories and the existing read limits still apply.
+
+A replacement, exclusion or selected `go.work` file makes coverage **limited**. The scanner does not follow those paths or run `go list`, `go mod` or a build. Build tags, vendoring and escaped import paths are not resolved. `go.sum` alone does not add a candidate. Review the active deployment and provider relationship yourself before selecting a service. The same findings are available to `wizard --project`; no extra wizard step or automatic service selection is introduced.
+
+SDK signatures and their retrieved references live in [the Go seed](../catalog/go-providers.json). See [verification](verification/go-discovery.md). Updating the seed revises affected products; existing setup pins still require explicit re-review rather than a background refresh.

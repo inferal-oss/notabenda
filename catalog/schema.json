@@ -55,7 +55,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://notabenda.org/schemas/service-catalog-v1.json",
   "title": "Notabenda service catalog version 1",
-  "$comment": "The package additionally validates plain JSON, byte/node limits, source/provider references, unique IDs and canonical dates. Reference-only URLs are not verified provider facts. Optional product profiles have a 16 KiB runtime limit. Profile source IDs must belong to that product; fact sources must be retrieved; profile URLs exclude query/hash/userinfo. Link URLs must match a cited source. At most one privacy link. Requirement references guide review rather than establish applicability.",
+  "$comment": "The package additionally validates plain JSON, byte/node limits, source/provider references, unique IDs and canonical dates. Reference-only URLs are not verified provider facts. Optional product profiles have a 16 KiB runtime limit. Profile source IDs must belong to that product; fact sources must be retrieved; profile URLs exclude query/hash/userinfo. Link URLs must match a cited source. At most one privacy link. Requirement references guide review rather than establish applicability. Go identifiers use ordinary case-sensitive import paths; Go prefix rules require a trailing slash. Runtime validation enforces these bounds.",
   "$defs": {
     "source": {
       "type": "object",
@@ -342,7 +342,8 @@
             "npm",
             "python",
             "terraform",
-            "docker"
+            "docker",
+            "go"
           ]
         },
         "match": {
@@ -353,7 +354,7 @@
         },
         "value": {
           "type": "string",
-          "pattern": "^[a-zA-Z0-9@_./:+-]+$",
+          "pattern": "^[a-zA-Z0-9@_./:+~-]+$",
           "minLength": 1,
           "maxLength": 200
         },
@@ -381,6 +382,47 @@
         "value",
         "explanation",
         "sourceIds"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "ecosystem": {
+                "const": "go"
+              }
+            }
+          },
+          "then": {
+            "if": {
+              "properties": {
+                "match": {
+                  "const": "prefix"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "value": {
+                  "pattern": "^[A-Za-z0-9_~+-](?:[A-Za-z0-9._~+-]*[A-Za-z0-9_~+-])?(?:/[A-Za-z0-9_~+-](?:[A-Za-z0-9._~+-]*[A-Za-z0-9_~+-])?)*/$"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "value": {
+                  "pattern": "^[A-Za-z0-9_~+-](?:[A-Za-z0-9._~+-]*[A-Za-z0-9_~+-])?(?:/[A-Za-z0-9_~+-](?:[A-Za-z0-9._~+-]*[A-Za-z0-9_~+-])?)*$"
+                }
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "value": {
+                "pattern": "^[a-zA-Z0-9@_./:+-]+$"
+              }
+            }
+          }
+        }
       ]
     },
     "storageHint": {

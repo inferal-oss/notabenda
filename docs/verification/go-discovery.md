@@ -1,0 +1,14 @@
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG -->
+# Go project discovery verification
+
+The existing `discover --project` and `wizard --project` paths now read Go SDK requirements and imports through the same bounded scanner. No Go installation is needed. The scanner does not resolve the build graph, call a compiler, download modules or follow a replacement/workspace path.
+
+`catalog-go.test.mjs` invokes the real CLI against temporary projects and tests the installed public scanner. Fixtures cover single/grouped and quoted requirements; direct and `// indirect` contexts (including the [Go toolchain’s semicolon/explanation form](https://github.com/golang/mod/blob/master/modfile/rule.go)); ordinary, aliased, blank and dot imports; raw import strings; and separate `_test.go` evidence. A fake `go` executable must remain uncalled. Reports exclude source values, module versions, private subpackage suffixes and replacement/workspace destinations. CLI output retains the exclusive 0700 directory and 0600 private-file contract.
+
+Positive cases cover the exact roots and slash-bound subpackages of seven source-linked SDK families. Negative cases include comments and string/rune contents, module identity without a requirement, `go.sum` alone, misleading hosts, suffixes and incorrect case. Separate fixtures check ignored Go files, secret paths, vendor directories and symlinks. Damaged/unsupported import declarations, replacements, exclusions and a selected `go.work` mark coverage limited. This is lexical discovery, not Go syntax or dependency-graph validation. Build constraints, generated dependencies, vendored code and escaped import paths are not resolved.
+
+The namespace facts come from the vendors' official references linked in [the seed additions](../../catalog/go-providers.json). The grammar boundaries follow the [Go module reference](https://go.dev/ref/mod) and [import declarations](https://go.dev/ref/spec#Import_declarations). Recorded SDK paths are original factual references; no SDK source or documentation text is copied into the catalog. Technical matching does not establish provider practices, production use, contractual identity or a legal basis.
+
+The catalog has a new revision, and only products receiving Go signatures get a new product revision. Existing pins remain readable and do not refresh themselves. New references require the usual explicit selection review. Provider identities, public service facts and cookie permission do not change from a scan.
+
+Core and standalone Cloudflare catalog validation share byte-identical small path policies. Website graph tests also verify delivery of that policy to the existing optional catalog UI; the Go source reader is not a browser runtime dependency. The lexer has a separate 65,536-token per-file limit in addition to the scanner’s existing byte/file/token limits, and a fixture checks that exhausting it yields limited coverage.

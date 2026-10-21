@@ -282,7 +282,8 @@
         "Shared public third-party rendering and pinned release provenance; large data stays outside normal consent bundles.",
         "Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.",
         "Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.",
-        "Initial optional reference seed: 363 provider identities, 402 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references plus three browser-product references; all entries unreviewed."
+        "Initial optional reference seed: 363 provider identities, 402 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references plus three browser-product references; all entries unreviewed.",
+        "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits."
       ],
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
@@ -315,7 +316,9 @@
         "packages/notabenda-cf/src/worker.ts",
         "examples/catalog-releases/build.mjs",
         "catalog/product-profiles.json",
-        "packages/notabenda/src/catalog-profile.ts"
+        "packages/notabenda/src/catalog-profile.ts",
+        "packages/notabenda/src/catalog-go.ts",
+        "catalog/go-providers.json"
       ]
     },
     {
@@ -670,14 +673,17 @@
       "deliverables": [
         "Browser-assisted inventory of observed requests, cookies/storage, embeds, and resource hints.",
         "Human-readable and JSON findings with route, scenario, evidence, and candidate purpose/service mappings.",
-        "Adopters choose when to run it, whether to use CI, and which findings should block their deployments."
+        "Adopters choose when to run it, whether to use CI, and which findings should block their deployments.",
+        "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits."
       ],
       "implementationRefs": [
         "packages/notabenda/src/discovery.ts",
         "packages/notabenda/src/discovery-ui.ts",
         "packages/notabenda/src/discovery-cli.ts",
         "examples/discovery/build.mjs",
-        "examples/discovery/client.mjs"
+        "examples/discovery/client.mjs",
+        "packages/notabenda/src/catalog-go.ts",
+        "catalog/go-providers.json"
       ]
     },
     {
@@ -2298,6 +2304,33 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "Retrieved directly from the official URL after the web reader rejected Markdown negotiation. Read collection/replay controls or the privacy/DPA scope, as applicable. No copied policy text or verified provider classification is supplied."
+    },
+    {
+      "id": "SRC-GO-MODULES",
+      "title": "Go modules reference",
+      "url": "https://go.dev/ref/mod",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Line-oriented require declarations, quoted paths, indirect comments and replacement/exclusion semantics. Used for passive lexical discovery, not build graph resolution; external documentation is not reproduced."
+    },
+    {
+      "id": "SRC-GO-IMPORTS",
+      "title": "Go specification: import declarations",
+      "url": "https://go.dev/ref/spec#Import_declarations",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Import specifications, aliases, blank/dot imports and string literals. The scanner uses a bounded lexical subset without compiling source or interpreting escaped import paths."
+    },
+    {
+      "id": "SRC-GO-MODFILE",
+      "title": "Go module-file indirect requirement recognition",
+      "url": "https://github.com/golang/mod/blob/master/modfile/rule.go",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "The Go module-file implementation distinguishes the indirect marker and its semicolon-plus-explanation form from other comments. Used to classify source declarations, not to resolve dependency graphs."
     }
   ],
   "jurisdictions": [
@@ -6174,7 +6207,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Explainable passive third-party recognition",
       "kind": "product-standard",
-      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes.",
+      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes. Go discovery distinguishes declared and indirect requirements and test-file imports; unresolved module/workspace choices remain limited coverage.",
       "appliesWhen": "An authorized operator explicitly invokes catalog-backed service discovery.",
       "sourceRefs": [
         {
@@ -6212,6 +6245,18 @@
         {
           "sourceId": "SRC-BROWSER-POSTHOG-REGIONS",
           "locator": "Official proxy guide names US and EU asset hosts"
+        },
+        {
+          "sourceId": "SRC-GO-MODULES",
+          "locator": "Line-oriented require declarations, quoted paths, indirect comments and replacement/exclusion semantics. Used for passive lexical discovery, not build graph resolution; external documentation is not reproduced."
+        },
+        {
+          "sourceId": "SRC-GO-IMPORTS",
+          "locator": "Import specifications, aliases, blank/dot imports and string literals. The scanner uses a bounded lexical subset without compiling source or interpreting escaped import paths."
+        },
+        {
+          "sourceId": "SRC-GO-MODFILE",
+          "locator": "isIndirect and setIndirect: exact marker and explanatory suffix handling."
         }
       ],
       "discoverySourceIds": [],
@@ -6246,7 +6291,13 @@
         "packages/notabenda/src/cli-json.ts",
         "packages/notabenda/src/catalog-node.ts",
         "packages/notabenda/src/setup-cli.ts",
-        "packages/notabenda/src/setup-ui.ts"
+        "packages/notabenda/src/setup-ui.ts",
+        "packages/notabenda/src/catalog-go.ts",
+        "catalog/go-providers.json",
+        "packages/notabenda/src/catalog-go-policy.ts",
+        "packages/notabenda-cf/src/catalog-go-policy.ts",
+        "packages/notabenda-cf/src/catalog-reference.ts",
+        "examples/static/choices-build.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -6255,7 +6306,10 @@
         "packages/notabenda/test/catalog-browser.test.mjs",
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
         "packages/notabenda/test/setup-project.test.mjs",
-        "packages/notabenda/test/setup.test.mjs"
+        "packages/notabenda/test/setup.test.mjs",
+        "packages/notabenda/test/catalog-go.test.mjs",
+        "docs/verification/go-discovery.md",
+        "packages/notabenda/test/catalog-release.test.mjs"
       ],
       "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project."
     },
@@ -9436,7 +9490,7 @@
         "REQ-PRODUCT-SERVICE-DETECTION"
       ],
       "status": "partial",
-      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply.",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins.",
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
@@ -9444,7 +9498,9 @@
         "packages/notabenda/test/catalog-browser.test.mjs",
         "packages/notabenda/test/catalog-browser-workflow.test.mjs",
         "packages/notabenda/test/setup-project.test.mjs",
-        "packages/notabenda/test/setup.test.mjs"
+        "packages/notabenda/test/setup.test.mjs",
+        "packages/notabenda/test/catalog-go.test.mjs",
+        "docs/verification/go-discovery.md"
       ]
     },
     {

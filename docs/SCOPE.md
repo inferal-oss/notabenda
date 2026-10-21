@@ -278,3 +278,8 @@ Support a complete optional `localization.indirectCollection` dictionary shared 
 The optional terms connection inspector (REQ-PRODUCT-TERMS-CONNECTION) compares actual controller offer and local operation without submitting or retrying agreement. Recovery, uncertain and historical receipt states remain distinct. Private identifiers and wording are excluded; publication, backend selection and application behavior stay separate. Native light/midnight examples load its observation panel on request.
 
 Prepared Cookie choices packs include an optional local-choice rehearsal (REQ-PRODUCT-CONSENT-REHEARSAL). It uses the actual draft and native controls with inert counters, script-disabled frame and temporary memory. Closing/editing disposes it. Required receipts, real providers, account processing, publication and actual integration acceptance remain separate.
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION -->
+## Static Go discovery
+
+Project discovery includes Go requirements and imports through the existing local CLI/wizard scanner. It never invokes Go or follows module replacements/workspace paths. Direct, indirect and test evidence stay distinct; detected references require operator confirmation. Seven source-linked SDK families extend the existing catalog without changing provider identities or refreshing previous pins. Build tags, resolved dependencies, escaped import paths and actual deployment remain outside this lexical scan.
