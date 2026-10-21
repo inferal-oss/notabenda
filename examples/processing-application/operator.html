@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Processing delivery · Operator workspace</title>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/assets/operator.mjs"></script>
+</head>
+<body>
+  <div class="demo-marker" aria-label="Demo">Demo</div>
+  <header class="site-header">
+    <a class="brand" href="/backoffice">Operator workspace<span>Processing example</span></a>
+    <nav aria-label="Workspace"><a href="/">Visitor page</a><a href="/backoffice/processing">Restriction records</a></nav>
+  </header>
+  <main class="operator-main">
+    <p class="eyebrow">PROCESSING AND DELIVERY</p>
+    <h1>Processing &amp; delivery</h1>
+    <p class="lead">Review opt-outs, dispatch decisions and the calls received by the sample destination. Match delivery IDs to investigate an uncertain acknowledgment.</p>
+    <details class="notice-setup">
+      <summary>Notice setup</summary>
+      <p>Register this build’s fixed notice and legal release before recording. Registration does not authorize processing.</p>
+      <button type="button" id="register">Register current notice</button>
+      <p id="register-result" role="status"></p>
+    </details>
+    <div class="workspace-heading"><h2>Delivery observations</h2><button type="button" id="refresh">Refresh observations</button></div>
+    <p id="workspace-state" class="workspace-status" role="status">Loading observations</p>
+    <div class="workspace-grid">
+      <section class="panel" aria-labelledby="queue-heading">
+        <p class="eyebrow">ADMISSION AND RECOVERY</p>
+        <h2 id="queue-heading">Delivery queue</h2>
+        <p>Each dispatch checks retained restrictions before admitting another send. An earlier admitted call may still finish.</p>
+        <div id="jobs" class="record-list"></div>
+      </section>
+      <section class="panel" aria-labelledby="sink-heading">
+        <p class="eyebrow">INDEPENDENT DESTINATION</p>
+        <h2 id="sink-heading">What the sink received</h2>
+        <p>Attempts with the same delivery ID share one committed payload. Received calls are separate from opt-out receipts.</p>
+        <div id="deliveries" class="record-list"></div>
+      </section>
+    </div>
+    <footer><a href="/backoffice/processing">Inspect restriction records and wording</a><a href="/">Visitor page</a></footer>
+  </main>
+</body>
+</html>

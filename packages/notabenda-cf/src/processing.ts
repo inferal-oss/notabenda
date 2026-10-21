@@ -90,6 +90,17 @@ async function headFor(tx:Pick<HistoryTransaction,'get'>,c:ProcessingStreamConte
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES Trusted scoped reads; no browser-selected account lookup. */
 export async function getProcessingHead(storage:HistoryStorage,c:ProcessingStreamContext):Promise<ProcessingHead>{c={...c};const {releasePrefix}=options(storage,c),ref=await stream(c);return storage.transaction(tx=>headFor(tx,c,ref,releasePrefix));}
 
+/** @requirements REQ-PRODUCT-PROCESSING-CHOICES
+ * Read one fixed registered notice and verify its retained release, without selecting or registering it.
+ */
+export async function getProcessingNotice(storage:HistoryStorage,noticeId:string,c:ProcessingStoreOptions&{scopeId:string}):Promise<JsonValue|undefined>{
+  c={...c};const {prefix,releasePrefix}=options(storage,c);if(!hash(noticeId)||!slug(c.scopeId))return fail('scope-mismatch');
+  return storage.transaction(async tx=>{const value=await tx.get(prefix+'notices/'+noticeId);if(value===undefined)return undefined;
+    const n=await noticeValue(value,c);if(n.noticeId!==noticeId||n.scopeId!==c.scopeId)return fail('scope-mismatch');
+    await verifyArchive(tx,n,c,releasePrefix);return n;
+  });
+}
+
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES REQ-US-CA-CHOICES
  * Monotonic transactional union. An older retry returns its original receipt and today's head.
  */

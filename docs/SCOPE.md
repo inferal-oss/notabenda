@@ -317,3 +317,7 @@ Expand passive discovery through bounded original data rules tied to actual firs
 ## Native consent notice files
 
 Support generating an exact native consent notice from the final legal release, alongside the compiled required-receipt runtime. Use an explicit host workflow scope, current bootstrap alias and notice-ID-pinned public file. Retain earlier notices only from explicit public JSON inputs whose legal releases are supplied and verified. Rebuilds must not silently keep a stale alias; publication must not register, activate or grant anything. Custom interface copy, host identity/receipt connections, legal review and retention decisions stay explicit.
+
+## Complete processing application example
+
+Provide a separate [processing application](PROCESSING-APPLICATION.md) with anonymous first-navigation header gating, host-owned continuity, browser-reported/manual restrictions, durable pending fences, private ledger inspection, dispatch-time rechecks and independent synthetic sink observations. Preserve provenance and exact retry identities. Show uncertain delivery honestly; already admitted calls cannot be recalled. Keep context/operator hooks denying and fault injection in disposable test copies. This adds no identity issuer, scheduler, real provider integration, production retention policy or automatic legal applicability.

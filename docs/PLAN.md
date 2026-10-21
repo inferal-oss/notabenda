@@ -164,6 +164,8 @@ The initial [GPC runtime restriction](PRIVACY-SIGNALS.md) now combines explicit 
 
 The initial [Google Basic adapter](GOOGLE-BASIC.md) now validates explicit public tag/signal declarations, establishes denied defaults before initialization, and uses effective service gating. Intercepted default-loader tests make no Google requests before grant or initial rejection. Post-load withdrawal closes owned calls and requires a full document reset; real vendor/browser acceptance remains pending. Advanced mode and TCF support are separate opt-in projects; see [regulatory boundaries](REGULATORY.md).
 
+The separate [processing application](PROCESSING-APPLICATION.md) now demonstrates first-navigation header gating, host-bound browser reports, durable failed-write fences and queued dispatch rechecks against an independent synthetic sink. DOM tests and a disposable local SQLite exercise cover recovery, provenance and no retransmission after opt-out. Real downstream providers, continuity, retention and regional/production acceptance remain separate.
+
 ## 5. Styling and interface quality
 
 Default to semantic light-DOM markup, low-specificity namespaced selectors, a named cascade layer, and CSS custom properties. Styles are optional. No bundled fonts, inline styling requirement, iframe, or mandatory Shadow DOM. Headless rendering permits complete composition inside existing design systems.

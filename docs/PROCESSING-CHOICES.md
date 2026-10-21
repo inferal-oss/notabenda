@@ -107,3 +107,9 @@ Localized notices use schema version 2 and retain the selected messages. Existin
 Revise `localization.revision` and retain the new release when copy changes. A new notice does not clear restrictions or abandon pending requests: recovery sends the original notice ID and request UUID, and that older notice/archive must remain available. Copy-only edits leave cookie-consent scope unchanged. The dictionary is excluded from consent-only runtime and notice projections. Never rename a stream or scope merely to reset an opt-out.
 
 Try [the Portuguese opt-out example](/localization/processing/). Record an opt-out, then allow cookies: the separately classified counter can run while the covered suggestion service stays blocked. Reload in the same session to recover the restriction. Inspect its exact wording through the demo backoffice. Real account mapping and downstream effects still need host integration. See [verification](verification/processing-localization.md).
+
+## Connect the server producer
+
+The separate [processing application](PROCESSING-APPLICATION.md) connects the existing controllers and ledger to a server admission queue and an independent synthetic destination. It covers first anonymous header requests, browser-only reports, failed-write fences, dispatch-time restrictions and uncertain delivery recovery. See its guide for the exact host integration and remaining production work.
+
+For a fixed registered notice, `getProcessingNotice(storage, noticeId, {siteId, scopeId, allowPreview?})` reads the retained notice and verifies its original release without registering or selecting anything. It returns `undefined` only when absent; a wrong scope, altered notice or broken archive fails. This read can establish the configured recording prerequisite even when a visitor has no restriction head yet.

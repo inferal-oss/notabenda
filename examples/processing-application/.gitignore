@@ -1,0 +1,6 @@
+public/
+.generated/
+.wrangler/
+node_modules/
+.dev.vars
+.dev.vars.*

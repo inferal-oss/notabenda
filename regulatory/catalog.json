@@ -455,13 +455,22 @@
         "packages/notabenda/src/consent-inventory.ts",
         "packages/notabenda/src/consent-compile.ts",
         "packages/notabenda/src/consent-types.ts",
-        "packages/notabenda/src/consent-engine.ts",
         "packages/notabenda/src/integration-reference.ts",
         "examples/static/connection-inspector.mjs",
         "examples/static/consent.mjs",
         "examples/static/choices-page.mjs",
         "examples/static/choices-page.css",
-        "examples/static/choices-build.mjs"
+        "examples/static/choices-build.mjs",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md",
+        "docs/PROCESSING-APPLICATION.md"
       ]
     },
     {
@@ -592,7 +601,17 @@
         "site/navigation.mjs",
         "docs/CLOUDFLARE-RECOVERY.md",
         "docs/verification/transaction-recovery.md",
-        "docs/RECORDED-COOKIE-APPLICATION.md"
+        "docs/RECORDED-COOKIE-APPLICATION.md",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md",
+        "docs/PROCESSING-APPLICATION.md"
       ]
     },
     {
@@ -650,7 +669,8 @@
         "Server-readable restrictions and adapters to stop corresponding downstream processing.",
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
         "Explicit script-free privacy-choice return link, optional California title/icon presentation, source provenance and separate host destination/placement checklist.",
-        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation."
+        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
+        "Complete processing application example with anonymous first-navigation signal gating, durable pending fences, dispatch-time restriction checks, independent synthetic destination observations and explicitly scoped retry/restart evidence."
       ],
       "implementationRefs": [
         "packages/notabenda/src/privacy-signals.ts",
@@ -690,7 +710,17 @@
         "examples/processing-choices/build.mjs",
         "site/privacy-choice-preview.mjs",
         "packages/notabenda/src/privacy-signal-reviews.ts",
-        "packages/notabenda/src/setup.ts"
+        "packages/notabenda/src/setup.ts",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md",
+        "docs/PROCESSING-APPLICATION.md"
       ]
     },
     {
@@ -1022,7 +1052,17 @@
         "examples/localization/contracts-messages.json",
         "examples/contract-actions/build.mjs",
         "examples/contract-actions/client.mjs",
-        "docs/RECORDED-COOKIE-APPLICATION.md"
+        "docs/RECORDED-COOKIE-APPLICATION.md",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md",
+        "docs/PROCESSING-APPLICATION.md"
       ]
     },
     {
@@ -5005,7 +5045,8 @@
       ],
       "verificationIds": [
         "VERIFY-PRODUCT-CF-ADMIN",
-        "VERIFY-PRODUCT-RECORDED-COOKIE-APPLICATION"
+        "VERIFY-PRODUCT-RECORDED-COOKIE-APPLICATION",
+        "VERIFY-PRODUCT-PROCESSING-APPLICATION"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -5028,7 +5069,16 @@
         "examples/recorded-cookies/host.mjs",
         "examples/recorded-cookies/workspace.mjs",
         "examples/recorded-cookies/worker.mjs",
-        "examples/recorded-cookies/README.md"
+        "examples/recorded-cookies/README.md",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
@@ -5036,7 +5086,10 @@
         "packages/notabenda-cf/test/orders.test.mjs",
         "packages/notabenda-cf/test/recorded-cookie-application.test.mjs",
         "scripts/check-recorded-cookie-runtime.mjs",
-        "docs/verification/recorded-cookie-application.md"
+        "docs/verification/recorded-cookie-application.md",
+        "packages/notabenda-cf/test/processing-application.test.mjs",
+        "scripts/check-processing-application.mjs",
+        "docs/verification/processing-application.md"
       ]
     },
     {
@@ -5550,7 +5603,8 @@
         "FEAT-CONTROLS"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-PRIVACY-SIGNALS"
+        "VERIFY-PRODUCT-PRIVACY-SIGNALS",
+        "VERIFY-PRODUCT-PROCESSING-APPLICATION"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -5566,13 +5620,25 @@
         "examples/privacy-signals/build.mjs",
         "examples/privacy-signals/client.mjs",
         "packages/notabenda/src/consent-engine.ts",
-        "packages/notabenda/src/react-consent-bindings.ts"
+        "packages/notabenda/src/react-consent-bindings.ts",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md"
       ],
       "testRefs": [
         "packages/notabenda/test/privacy-signals.test.mjs",
         "packages/notabenda/test/react.test.mjs",
         "site/test/host.test.mjs",
-        "docs/verification/privacy-signals-browser.md"
+        "docs/verification/privacy-signals-browser.md",
+        "packages/notabenda-cf/test/processing-application.test.mjs",
+        "scripts/check-processing-application.mjs",
+        "docs/verification/processing-application.md"
       ],
       "implementationNote": "Explicit GPC policy and exhaustive activity classification govern service eligibility independently of cookie/receipt permission. Navigator/header, lifecycle, actual-ledger, React and site checks plus an initial labeled Chromium fixture verify this runtime mechanism. Legal CA/CO/CT obligations, durable account/profile opt-outs and downstream propagation remain partial."
     },
@@ -5598,7 +5664,8 @@
         "FEAT-RECORDS"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-PROCESSING-CHOICES"
+        "VERIFY-PRODUCT-PROCESSING-CHOICES",
+        "VERIFY-PRODUCT-PROCESSING-APPLICATION"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -5618,7 +5685,16 @@
         "site/worker.mjs",
         "site/host.mjs",
         "packages/notabenda/src/consent-engine.ts",
-        "packages/notabenda/src/react-consent-bindings.ts"
+        "packages/notabenda/src/react-consent-bindings.ts",
+        "examples/processing-application/host.mjs",
+        "examples/processing-application/workspace.mjs",
+        "examples/processing-application/worker.mjs",
+        "examples/processing-application/client.mjs",
+        "examples/processing-application/operator.mjs",
+        "examples/processing-application/build.mjs",
+        "examples/processing-application/authorize.mjs",
+        "examples/processing-application/notabenda.config.yaml",
+        "examples/processing-application/README.md"
       ],
       "testRefs": [
         "packages/notabenda/test/processing.test.mjs",
@@ -5626,9 +5702,12 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "scripts/check-site-runtime.mjs",
-        "docs/verification/processing-choices-browser.md"
+        "docs/verification/processing-choices-browser.md",
+        "packages/notabenda-cf/test/processing-application.test.mjs",
+        "scripts/check-processing-application.mjs",
+        "docs/verification/processing-application.md"
       ],
-      "implementationNote": "Validated one-way requests union retained restrictions transactionally. Missing/failed state blocks covered work; cookie acceptance never removes restrictions. Original pending UUID and artifact bindings survive uncertain delivery. Search distinguishes event-time and current retained state."
+      "implementationNote": "Validated one-way requests union retained restrictions transactionally. Missing/failed state blocks covered work; cookie acceptance never removes restrictions. Original pending UUID and artifact bindings survive uncertain delivery. Search distinguishes event-time and current retained state. A separate application example now checks first-navigation signals before server work, uses durable pending fences and dispatch-time rechecks, preserves browser/header provenance and exposes independent synthetic sink observations. Local SQLite restart and bundled-client tests cover its failure/retry boundary; real providers, host continuity and production/regional acceptance remain separate."
     },
     {
       "id": "REQ-PRODUCT-RETAINED-RELEASES",
@@ -11285,6 +11364,21 @@
       "testRefs": [
         "packages/notabenda/test/privacy-signal-reviews.test.mjs",
         "docs/verification/privacy-signal-reviews.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PROCESSING-APPLICATION",
+      "requirementIds": [
+        "REQ-PRODUCT-PROCESSING-CHOICES",
+        "REQ-PRODUCT-PRIVACY-SIGNALS",
+        "REQ-PRODUCT-CF-ADMIN"
+      ],
+      "status": "automated",
+      "expected": "Actual application host/workspace and bundled client preserve default-denying context/operator hooks, first anonymous header gating without Origin/login, browser/header provenance, exact pending retries and cookie independence. Durable pending fences survive failed ledger writes and object recreation; queued dispatch rechecks restrictions, concurrent dispatch shares one send, and timeouts remain uncertain. Optional real local SQLite exercise checks private RPC, independent sink attempts, suppression and no retransmission after opt-out across restart. No real-provider, production identity, remote recovery or jurisdiction acceptance claim.",
+      "testRefs": [
+        "packages/notabenda-cf/test/processing-application.test.mjs",
+        "scripts/check-processing-application.mjs",
+        "docs/verification/processing-application.md"
       ]
     }
   ],

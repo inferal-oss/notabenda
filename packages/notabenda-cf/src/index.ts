@@ -11,7 +11,7 @@ export type { HistoryTransaction, HistoryStorage, ReleaseMetadata, HistoryOption
 export type { RenderOptions } from './render.js';
 export type { RecordFacts } from './records.js';
 export type * from './types.js';
-export {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,ProcessingRecordError} from './processing.js';
+export {registerProcessingNotice,recordProcessingRestriction,getProcessingHead,getProcessingNotice,createProcessingRestrictionStore,ProcessingRecordError} from './processing.js';
 export type {ProcessingActivity,ProcessingProvenance,ProcessingStoreOptions,ProcessingStreamContext,ProcessingRecordContext,ProcessingRequest,ProcessingReceipt,ProcessingHead,ProcessingResult} from './processing.js';
 export {createSetupWorker} from './setup.js';
 export type {SetupWorkerOptions} from './setup.js';

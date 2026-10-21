@@ -1,0 +1,184 @@
+# @requirements REQ-PRODUCT-PROCESSING-CHOICES REQ-PRODUCT-PRIVACY-SIGNALS REQ-PRODUCT-CF-ADMIN
+schemaVersion: 1
+site:
+  id: processing-example
+  name: Juniper Notes
+  url: https://processing.example.test
+  locale: en
+  description: A fictional independent writing studio used to demonstrate reusable legal pages.
+controller:
+  name: Juniper Notes Cooperative (fictional)
+  email: privacy@juniper.example.test
+  address: 12 Example Lane, Example City (fictional)
+jurisdictions: []
+purposes:
+  - id: advertising
+    name: Advertising sample
+    description: Demonstrate a classified sale and targeted-advertising producer without sending real
+      visitor data.
+    legalBasis: Synthetic example only. Assess the actual purpose, legal basis and restrictions before
+      deployment.
+    dataCategories:
+      - Synthetic sample event
+    retention: Local sample only. Host evidence and processing retention require separate review.
+    collection:
+      source: direct
+      description: A request or choice in this sample application.
+      required: false
+      consequences: Covered sample work stays off when restricted or unavailable.
+  - id: features
+    name: Optional local feature
+    description: Demonstrate an unrelated optional browser feature.
+    legalBasis: Synthetic example only. Assess the actual purpose, legal basis and restrictions before
+      deployment.
+    dataCategories:
+      - Synthetic sample event
+    retention: Local sample only. Host evidence and processing retention require separate review.
+    collection:
+      source: direct
+      description: A request or choice in this sample application.
+      required: false
+      consequences: Covered sample work stays off when restricted or unavailable.
+  - id: remember-choices
+    name: Privacy choice memory
+    description: Remember independent cookie choices and pending processing restrictions for an opaque
+      host context. The context is not an account.
+    legalBasis: Synthetic example only. Assess the actual purpose, legal basis and restrictions before
+      deployment.
+    dataCategories:
+      - Synthetic sample event
+    retention: Local sample only. Host evidence and processing retention require separate review.
+    collection:
+      source: direct
+      description: A request or choice in this sample application.
+      required: false
+      consequences: Covered sample work stays off when restricted or unavailable.
+services:
+  - id: ad-service
+    name: Advertising sample
+    provider: Juniper Notes sample destination
+    location: Separate synthetic delivery store in this example
+    purposeIds:
+      - advertising
+    processingActivities:
+      - sale
+      - targeted-advertising
+  - id: local-tool
+    name: Local feature
+    provider: Juniper Notes
+    location: This browser
+    purposeIds:
+      - features
+    processingActivities: []
+  - id: privacy-choices
+    name: Privacy choice memory
+    provider: Juniper Notes
+    location: This browser and the host backend
+    purposeIds:
+      - remember-choices
+    processingActivities: []
+storage:
+  - id: processing-memory
+    name: notabenda:processing:v1:processing-example:privacy-choices:<host-stream-ref>
+    serviceId: privacy-choices
+    type: localStorage
+    duration: Until cleared or replaced. Review host retention separately.
+    classification: necessary
+    necessityReason: Remember restrictions and exact pending requests without granting optional permission.
+  - id: cookie-memory
+    name: notabenda:choices:v1:processing-example
+    serviceId: privacy-choices
+    type: localStorage
+    duration: Configured choice lifetimes; pending processing memory is separate.
+    classification: necessary
+    necessityReason: Remember the optional cookie choices in this example.
+privacy:
+  rights:
+    - Request information about how personal information is used.
+    - Ask to access, correct, or erase information where applicable.
+    - Withdraw a permission or object to processing where the applicable rules provide that right.
+  rightsUrl: mailto:privacy@juniper.example.test
+  complaints:
+    description: Contact the operator with questions. An actual deployment must identify the applicable
+      complaint and supervisory-authority options.
+  transfers: This fictional example describes no live transfers. An actual deployment must state its
+    recipients, locations, and applicable safeguards.
+  automatedDecisions: No automated decisions are represented in this fictional example.
+terms:
+  audience: business
+  serviceType: informational
+documents:
+  privacy:
+    title: Privacy policy
+    route: /privacy
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: generated
+    review:
+      status: draft
+  cookies:
+    title: Cookie policy
+    route: /cookies
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: generated
+    review:
+      status: draft
+    sections:
+      - id: example-only
+        heading: About this example
+        paragraphs:
+          - The optional sample producer sends fixed synthetic events to a separate local sink. Preference
+            storage and choice recording work when the host context hooks are connected. Replace the declared
+            inventory and legal wording for an actual site.
+  terms:
+    title: Terms of use
+    route: /terms
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: supplied
+    review:
+      status: draft
+    sections:
+      - id: about
+        heading: About these example pages
+        paragraphs:
+          - Juniper Notes is a fictional studio. These sample sections demonstrate how your own
+            reviewed terms can be rendered inside your site's design. They do not offer a service or
+            establish a real contract.
+      - id: your-content
+        heading: Your content, your structure
+        paragraphs:
+          - Supply the terms appropriate to your audience, service, and applicable consumer rights.
+            The renderer preserves your section structure and safely displays text and links.
+      - id: contact
+        heading: Contact
+        links:
+          - label: privacy@juniper.example.test
+            href: mailto:privacy@juniper.example.test
+private:
+  operatorNote: "Synthetic private note: excluded from every public output."
+consent:
+  purposes:
+    - id: advertising
+      scope: advertising-1
+    - id: features
+      scope: features-1
+  services:
+    - id: ad-service
+      scope: advertising-1
+    - id: local-tool
+      scope: features-1
+  grantLifetimeDays: 30
+  refusalLifetimeDays: 180
+  dismissalMinutes: 30
+privacySignals:
+  globalPrivacyControl:
+    appliesTo:
+      - sale
+      - targeted-advertising
+    explanation: Global Privacy Control restricts the declared sale and targeted-advertising work. This
+      example applies request headers before server producers, and keeps any confirmed restriction
+      for the host-bound context. Browser reports are recorded as browser reports, not proof of an
+      observed HTTP header. Unconfirmed persistence is reported separately. Review actual account
+      and downstream handling.
