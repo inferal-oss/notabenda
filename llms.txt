@@ -14,7 +14,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Configuration target selection](https://notabenda.org/skills/notabenda/references/configuration-target.md): Match the user's requested behavior to facts, config changes, host work and acceptance scenarios.
 - [Machine-readable integration reference](https://notabenda.org/integration-reference.json): Current preview targets, relevant practice-answer templates and config prerequisites. Prefer installed `notabenda describe --json` and read-only `assess` for version-matched target, authoring-shape and runtime checks. Consent controls and assessed storage exceptions are separate targets.
 
-- [Configuration authoring schema](https://notabenda.org/site-config.schema.json): Current preview field shapes, required properties and allowed type values generated from SiteConfig. Prefer installed `notabenda schema [PATH] --json`; always run `check` for semantic rules.
+- [Configuration authoring schema](https://notabenda.org/site-config.schema.json): Current preview field shapes, required properties and allowed type values generated from SiteConfig. Prefer installed `notabenda schema [PATH] --json`; `check` and `build` enforce this shape before semantic/review rules. `@notabenda/core/config/validate` exposes the same strict authoring check without changing input.
 
 ## Start here
 

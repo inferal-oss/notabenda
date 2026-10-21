@@ -76,6 +76,25 @@ const release = compileLegalDocuments(config, { mode: 'preview' });
 
 The same loader is used by `check`, `build`, `assess`, `wizard --config`, capture-based `discover --config`, and `catalog review --config`. Answers, captures, retained artifacts, catalog files and private reports remain JSON. This is not a new manifest for JavaScript callbacks, authentication, secrets or runtime loaders; wire those in the host application.
 
+## Check field names before building
+
+`check` and `build` validate the installed authoring schema before checking references and review declarations. A typo such as `conset` is rejected as an unknown field; it is never guessed to mean `consent`. A failed build writes no output. `readSiteConfig`, CLI wizard imports, capture discovery and catalog re-review use the same strict checks. Assessment continues to return its structured report for an invalid configuration.
+
+Shape diagnostics use JSON Pointer paths, such as `/services/0/resourceOrigin`. Fix the named field using `notabenda schema services --json`. Shape diagnostic messages omit rejected values. Paths can still identify inventory entries, so keep reports private. Only the first 100 shape errors are shown, with a notice if more remain.
+
+For an object already loaded by your own build, use the optional validator:
+
+```js
+import { validateAuthoredConfig } from '@notabenda/core/config/validate';
+
+const result = validateAuthoredConfig(config, { mode: 'preview' });
+if (!result.valid) {
+  // Show result.diagnostics to the operator and stop this build.
+}
+```
+
+The validator applies production review rules by default and does not mutate input, add defaults, coerce types or activate controls. `inspectConfigAuthoringShape` checks only the field schema. `parseConfigSource` and `readConfigSource` return parsed data for inspection; they do not validate it. The existing `validateSiteConfig` and public projection APIs retain their semantic checks for programmatic host objects; use the authoring validator when exact field names must be enforced.
+
 ## Input boundaries
 
 Configuration files must be ordinary UTF-8 files, at most 512 KiB. Symlinks and special files are refused. YAML accepts one root mapping with string keys and JSON-compatible finite values. Duplicate keys, merge keys, tags, anchors, aliases and directives are rejected. Errors identify syntax locations when available without printing source excerpts.

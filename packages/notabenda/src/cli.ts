@@ -16,7 +16,8 @@ import {attachCatalogReview} from './catalog-release.js';
 import {canonicalJson} from './content.js';
 import { readFile, writeFile, mkdir, realpath } from 'node:fs/promises';
 import { resolve, sep, dirname, basename } from 'node:path';
-import { validateSiteConfig, SiteConfigError } from './config.js';
+import { SiteConfigError,formatDiagnosticPath } from './config.js';
+import {validateAuthoredConfig} from './config-authoring.js';
 import { compileLegalDocuments,createRetainedReleaseFiles,createConfiguredTermsOfferFiles } from './content.js';
 import { writeBuildFiles } from './files.js';
 import { createStarterConfig } from './starter.js';
@@ -178,11 +179,11 @@ async function main(): Promise<void> {
   }
   const input: unknown = await readConfigInput(configPath);
   const mode = preview ? 'preview' : 'production';
-  const result = validateSiteConfig(input, { mode });
+  const result = validateAuthoredConfig(input, { mode });
   if (command === 'check') {
     if (json) console.log(JSON.stringify(result, null, 2));
     else if (result.valid) console.log(`Configuration valid for ${mode}. This checks structure and review declarations, not legal compliance.`);
-    else for (const d of result.diagnostics) console.error(`${d.path}: ${d.message} [${d.requirementIds.join(', ')}]`);
+    else for (const d of result.diagnostics) console.error(`${formatDiagnosticPath(d.path)}: ${d.message} [${d.requirementIds.join(', ')}]`);
     if (!result.valid) process.exitCode = 1;
     return;
   }
@@ -220,7 +221,7 @@ async function main(): Promise<void> {
 }
 
 main().catch(error => {
-  if (error instanceof SiteConfigError) for (const d of error.diagnostics) console.error(`${d.path}: ${d.message} [${d.requirementIds.join(', ')}]`);
+  if (error instanceof SiteConfigError) for (const d of error.diagnostics) console.error(`${formatDiagnosticPath(d.path)}: ${d.message} [${d.requirementIds.join(', ')}]`);
   else console.error(error instanceof SyntaxError ? 'Configuration is not valid JSON.' : (error as NodeJS.ErrnoException).code === 'EEXIST' ? 'Output already exists; no existing file or directory will be overwritten.' : (error as Error).message);
   process.exitCode = 1;
 });

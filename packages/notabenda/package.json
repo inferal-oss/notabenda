@@ -347,6 +347,11 @@
       "types": "./dist/config-source.d.ts",
       "import": "./dist/config-source.js",
       "default": "./dist/config-source.js"
+    },
+    "./config/validate": {
+      "types": "./dist/config-authoring.d.ts",
+      "import": "./dist/config-authoring.js",
+      "default": "./dist/config-authoring.js"
     }
   },
   "bin": {

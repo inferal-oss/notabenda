@@ -4,7 +4,7 @@ import {createInterface} from 'node:readline/promises';
 import {lstat,mkdir,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {readCliJson} from './cli-json.js';
-import {readConfigInput} from './config-source.js';
+import {readSiteConfig} from './config-source.js';
 import {loadServiceCatalog} from './catalog-node.js';
 import {readSetupCatalogSelections} from './catalog-selection.js';
 import {prepareCatalogSelectionReview,confirmCatalogSelectionReview,readSetupCatalogRevisions} from './catalog-review.js';
@@ -32,7 +32,7 @@ export async function runCatalogReviewCli(args:string[]):Promise<void>{
  if(!configPath||!reportPath||!serviceId||!out||latest&&catalogPath)throw Error('Supply config, private report, local service ID and a new output directory. Choose either --latest or --catalog FILE.');
  if(!process.stdin.isTTY||!process.stdout.isTTY)throw Error('Catalog re-review needs a terminal for explicit confirmation. Use the catalog/review API for a host-owned review workflow.');
  const directory=resolve(out);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
- const config=await readConfigInput(configPath),report=await readCliJson(reportPath,512*1024,'Report must be ordinary bounded UTF-8 JSON.');
+ const config=await readSiteConfig(configPath,{mode:'preview'}),report=await readCliJson(reportPath,512*1024,'Report must be ordinary bounded UTF-8 JSON.');
  const answers=readSetupAnswers(report),selections=readSetupCatalogSelections(report),history=readSetupCatalogRevisions(report),previous=selections.filter(s=>s.service.id===serviceId);
  if(previous.length!==1)throw Error('Choose exactly one existing catalog selection from the private report.');
  const catalog=latest||catalogPath?await loadServiceCatalog(catalogPath):undefined,review=prepareCatalogSelectionReview(config,previous[0],catalog);

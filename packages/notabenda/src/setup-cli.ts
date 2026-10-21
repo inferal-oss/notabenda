@@ -20,7 +20,7 @@ import {readSetupCatalogSelections} from './catalog-selection.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
 import {reviewSetupCatalog} from './setup-catalog-cli.js';
 import {readCliJson} from './cli-json.js';
-import {readConfigInput} from './config-source.js';
+import {readSiteConfig} from './config-source.js';
 import {loadServiceCatalog} from './catalog-node.js';
 import {scanProjectServices} from './catalog-project.js';
 import type {ProjectServiceReport} from './catalog-project.js';
@@ -39,7 +39,7 @@ export async function runSetupWizard(options:{answersPath?:string;configPath?:st
   const directory=resolve(options.outDir);try{await lstat(directory);throw Object.assign(Error('Output already exists.'),{code:'EEXIST'});}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}
   let storagePlan:StorageDraftPlan|undefined;
   let selection=options.cartridgeIds?selectCartridges(options.cartridgeIds):undefined;
-  let base=options.configPath?toPublicConfig(await readConfigInput(options.configPath),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];let catalogSelectionRevisions:ReturnType<typeof readSetupCatalogRevisions>=[];
+  let base=options.configPath?toPublicConfig(await readSiteConfig(options.configPath,{mode:'preview'}),{mode:'preview'}):undefined;let answers:unknown;let catalogSelections:CatalogServiceSelection[]=[];let catalogSelectionRevisions:ReturnType<typeof readSetupCatalogRevisions>=[];
   if(options.answersPath){const input=await readJson(options.answersPath);answers=readSetupAnswers(input);const resumed=readCartridgeSelection(input);if(selection&&resumed&&JSON.stringify(selection)!==JSON.stringify(resumed))throw Error('Selected packs conflict with the saved report. Resume it without --packs or prepare a separate plan.');selection??=resumed;catalogSelections=readSetupCatalogSelections(input);catalogSelectionRevisions=readSetupCatalogRevisions(input);createSetupPlan(answers as SetupAnswers,{...(base===undefined?{}:{config:base}),catalogSelections,catalogSelectionRevisions});}
   if(options.termsPath)base=await applySetupTermsFile(base,options.termsPath);
   if(options.rightsPath)base=await applySetupRightsFile(base,options.rightsPath);

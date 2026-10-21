@@ -3,18 +3,7 @@
 import {selectIntegration} from './integration-reference.js';
 import {readSetupAnswers,createSetupPlan} from './setup.js';
 import {validateSiteConfig} from './config.js';
-import validateShape from './site-config-validator.js';
-
-/** Paths are private diagnostics; values and private notes are never copied. */
-function authoringShape(input:unknown){
- const valid=validateShape(input),errors=validateShape.errors??[];
- const escape=(part:string)=>part.replace(/~/gu,'~0').replace(/\//gu,'~1');
- const messages:Record<string,string>={required:'Required field is missing.',additionalProperties:'Unknown configuration field.',type:'Value has the wrong type.',const:'Value does not match this policy alternative.',enum:'Value is not an allowed choice.',anyOf:'Value does not match a complete allowed alternative.'};
- return {valid,diagnostics:errors.slice(0,100).map(error=>{
-  const child=error.keyword==='required'?error.params.missingProperty:error.keyword==='additionalProperties'?error.params.additionalProperty:undefined;
-  return {instancePath:error.instancePath+(typeof child==='string'?'/'+escape(child):''),schemaPath:error.schemaPath,code:error.keyword,message:messages[error.keyword]??'Value does not match the authoring shape.'};
- }),truncated:errors.length>100};
-}
+import {inspectConfigAuthoringShape} from './config-authoring.js';
 
 /** JSON data only, including through the API. Never invoke a caller's getters/toJSON. */
 function plainInput(input:unknown):Record<string,unknown>{
@@ -62,7 +51,7 @@ function observe(config:unknown,path:string){
 export function assessIntegration(input:unknown){
  const data=plainInput(input),selection=selectIntegration(data.selection),reference=selection.reference;
  const answers=data.answers===undefined?undefined:readSetupAnswers(data.answers);
- const shape=authoringShape(data.config),preview=validateSiteConfig(data.config,{mode:'preview'}),production=validateSiteConfig(data.config,{mode:'production'});
+ const shape=inspectConfigAuthoringShape(data.config),preview=validateSiteConfig(data.config,{mode:'preview'}),production=validateSiteConfig(data.config,{mode:'production'});
  const questions=reference.questions.filter(q=>reference.relevantQuestionIds.includes(q.id)).map(q=>{
   const answer=answers?.answers[q.id];return {...q,choice:answer?.choice??'unknown',justificationRecorded:!!answer?.justification,
    status:!answer||answer.choice==='unknown'?'needs-answer':!answer.justification?'needs-support':'recorded-unverified'};

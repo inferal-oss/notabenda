@@ -32,10 +32,13 @@ const text = (value: unknown): value is string => typeof value === 'string' && v
 export const documentKinds = ['privacy', 'cookies', 'terms'] as const;
 
 // @requirements REQ-PRODUCT-EMBEDS Link/origin validators are shared with the bounded browser parser.
+/** Keep untrusted field paths readable in terminal diagnostics. */
+export const formatDiagnosticPath=(path:string):string=>path.replace(/[\u0000-\u001f\u007f-\u009f]/gu,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));
+
 export class SiteConfigError extends Error {
   readonly diagnostics: Diagnostic[];
   constructor(diagnostics: Diagnostic[]) {
-    super(diagnostics.filter(d => d.severity === 'error').map(d => `${d.path}: ${d.message}`).join('\n'));
+    super(diagnostics.filter(d => d.severity === 'error').map(d => `${formatDiagnosticPath(d.path)}: ${d.message}`).join('\n'));
     this.name = 'SiteConfigError';
     this.diagnostics = diagnostics;
   }

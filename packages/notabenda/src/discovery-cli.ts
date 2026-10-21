@@ -3,7 +3,7 @@
 import {createReadStream} from 'node:fs';
 import {mkdir,lstat,writeFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
-import {readConfigInput} from './config-source.js';
+import {readSiteConfig} from './config-source.js';
 import {analyzeDiscovery} from './discovery.js';
 async function readJson(path:string,max:number):Promise<unknown>{
  const parts:Buffer[]=[];let size=0;
@@ -20,7 +20,7 @@ export async function runDiscoveryCli(args:string[]):Promise<void>{
   if(flag==='--capture-origin')captureOrigin=value;else if(flag==='--config')config=value;else if(flag==='--out-dir')out=value;else{captures.push(value);if(captures.length>20)throw new Error('Supply at most 20 explicit capture files.');}
  }
  if(!captures.length)throw new Error('Supply at least one explicit --capture FILE. Capture in your browser first; this command does not crawl or launch a browser.');
- const input=await readConfigInput(config),values=[];
+ const input=await readSiteConfig(config,{mode:'preview'}),values=[];
  for(const path of captures)values.push(await readJson(path,1024*1024));
  const report=analyzeDiscovery(input,values,captureOrigin===undefined?{}:{captureOrigin});
  const summary=[`Discovery review · ${report.siteId}`,`${report.captureCount} capture(s), ${report.findings.length} observation group(s), ${report.unmappedCount} unmapped group(s).`,...report.findings.map(f=>`[${f.scenario} · ${f.routeLabel}] ${f.kind}: ${f.origin??f.storageType??''} ${f.label} ×${f.count} → ${f.candidateServiceIds.length?f.candidateServiceIds.join(', '):'Review unmapped observation'} [${f.requirementIds.join(', ')}]`),'',...report.reviewNotes].join('\n')+'\n';

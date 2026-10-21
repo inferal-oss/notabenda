@@ -1,7 +1,8 @@
 // @requirements REQ-PRODUCT-CONFIG-SOURCES REQ-PRODUCT-CONFIG
 import {extname} from 'node:path';
 import {readCliText} from './cli-json.js';
-import {validateSiteConfig,SiteConfigError} from './config.js';
+import {SiteConfigError} from './config.js';
+import {validateAuthoredConfig} from './config-authoring.js';
 import type {SiteConfig,ValidationOptions} from './types.js';
 
 export type ConfigSourceFormat='json'|'yaml'|'markdown';
@@ -43,14 +44,14 @@ export async function readConfigInput(path:string):Promise<unknown>{return (awai
 
 /** Build API: validates the same SiteConfig as JSON, retaining explicitly private fields. */
 export async function readSiteConfig(path:string,options:ValidationOptions={}):Promise<SiteConfig>{
- const input=await readConfigInput(path),result=validateSiteConfig(input,{mode:options.mode??'production'});
+ const input=await readConfigInput(path),result=validateAuthoredConfig(input,{mode:options.mode??'production'});
  if(!result.valid)throw new SiteConfigError(result.diagnostics);
  return input as SiteConfig;
 }
 
 /** Serialize a generated draft. Does not modify an existing source or preserve its comments. */
 export async function formatConfigSource(config:SiteConfig,format:ConfigSourceFormat,notes=''):Promise<string>{
- const result=validateSiteConfig(config,{mode:'preview'});if(!result.valid)throw new SiteConfigError(result.diagnostics);
+ const result=validateAuthoredConfig(config,{mode:'preview'});if(!result.valid)throw new SiteConfigError(result.diagnostics);
  if(typeof notes!=='string'||notes.includes('\0'))return invalid();
  let output:string;
  if(format==='json')output=JSON.stringify(config,null,2)+'\n';

@@ -9,7 +9,7 @@ Optional [repeat-prompt policy](../../docs/REGIONAL-PROMPTS.md) keeps solicitati
 
 Developer preview. The package has not been published to npm yet; build/pack it from the repository and install the resulting tarball locally. Requires Node.js 22 or newer for the CLI and build-time API. The root renderer is browser/SSR-safe.
 
-Site configuration can also use YAML or a Markdown document with YAML frontmatter. Use `--config notabenda.config.yaml` (or `.md`) with the same CLI commands, or `readSiteConfig` from `@notabenda/core/config/node` in a build. Configuration-document notes stay outside published output. See [configuration sources](../../docs/CONFIGURATION-SOURCES.md).
+Site configuration can also use YAML or a Markdown document with YAML frontmatter. Use `--config notabenda.config.yaml` (or `.md`) with the same CLI commands, or `readSiteConfig` from `@notabenda/core/config/node` in a build. Configuration-document notes stay outside published output. CLI checks/builds and `readSiteConfig` reject unknown fields through the installed schema, then apply semantic and review rules. For a loaded object, use `validateAuthoredConfig` from the optional `@notabenda/core/config/validate` entry. See [configuration sources](../../docs/CONFIGURATION-SOURCES.md).
 
 ## Start with the CLI
 

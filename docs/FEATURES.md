@@ -156,7 +156,7 @@ Features link to individual obligations, implementation files and verification s
 - Shared public third-party rendering and pinned release provenance; large data stays outside normal consent bundles.
 - Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.
 - Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.
-- Initial optional reference seed: 363 provider identities, 402 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references plus three browser-product references; all entries unreviewed.
+- Initial optional reference seed: 368 provider identities, 409 product/reference entries and 2,278 imported storage hints; all entries unreviewed.
 - Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.
 - Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery.
 

@@ -88,7 +88,7 @@ npx @notabenda/core check
 npx @notabenda/core build
 ```
 
-`init` creates a small inventory and explicit content placeholders. `check` validates missing facts, undeclared services, unsupported profiles, and draft content. `build` emits static legal documents, public runtime config, and a versioned evidence artifact. Production mode rejects unresolved placeholders and unreviewed generated content; bring-your-own reviewed documents remain supported.
+`init` creates a small inventory and explicit content placeholders. `check` validates exact installed field shapes before missing facts, undeclared services, unsupported profiles, and draft content. `build` and source-file imports use the same checks; structured assessment retains invalid-config diagnostics. `build` emits static legal documents, public runtime config, and a versioned evidence artifact. Production mode rejects unresolved placeholders and unreviewed generated content; bring-your-own reviewed documents remain supported.
 
 The [guided setup wizard](SETUP.md) now shares a bounded questionnaire/recommendation engine across CLI and the host-authorized local admin UI, with private justifications, saved-answer resume, draft exports and catalog references. Imported settings remain explicit operator decisions.
 

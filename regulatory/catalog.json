@@ -324,7 +324,7 @@
         "Shared public third-party rendering and pinned release provenance; large data stays outside normal consent bundles.",
         "Explainable passive recognition using bounded exact/pattern/combined signals, compatible capture versions and reviewable configuration suggestions.",
         "Reproducible licensed imports, broad service seeds, source freshness and positive/negative detector fixtures.",
-        "Initial optional reference seed: 363 provider identities, 402 product/reference entries, 2,278 imported storage hints and 39 original backend/provider references plus three browser-product references; all entries unreviewed.",
+        "Initial optional reference seed: 368 provider identities, 409 product/reference entries and 2,278 imported storage hints; all entries unreviewed.",
         "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.",
         "Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery."
       ],
@@ -4682,13 +4682,16 @@
         "packages/notabenda/src/consent-compile.ts",
         "packages/notabenda/src/setup-purpose.ts",
         "packages/notabenda/src/setup-purpose-ui.ts",
-        "packages/notabenda/src/setup-purpose-cli.ts"
+        "packages/notabenda/src/setup-purpose-cli.ts",
+        "packages/notabenda/src/config-authoring.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs",
-        "packages/notabenda/test/setup-purpose.test.mjs"
-      ]
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/config-authoring.test.mjs"
+      ],
+      "implementationNote": "File-authoring commands and the Node reader enforce the installed field schema before semantic/review checks. The optional plain-data validator and assessment share shape diagnostics. Programmatic semantic validation/public projection retains its existing host-object contract."
     },
     {
       "id": "REQ-PRODUCT-CONFIG-SOURCES",
@@ -4731,12 +4734,14 @@
         "skills/notabenda/SKILL.md",
         "examples/configuration/notabenda.config.yaml",
         "examples/configuration/notabenda.config.md",
-        "site/build.mjs"
+        "site/build.mjs",
+        "packages/notabenda/src/config-authoring.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/config-sources.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/configuration-sources.md"
+        "docs/verification/configuration-sources.md",
+        "packages/notabenda/test/config-authoring.test.mjs"
       ],
       "implementationNote": "CLI and Node reader accept the same JSON-compatible SiteConfig across JSON, YAML and Markdown frontmatter. Equivalence, private-note isolation, malformed inputs, packed-parser installation and browser graph exclusion are covered by automated tests. Browser setup import/export and non-config reports remain JSON."
     },
@@ -7455,7 +7460,8 @@
         "packages/notabenda/scripts/config-shape-validator.mjs",
         "packages/notabenda/src/site-config-validator.d.ts",
         "site/documentation-links.mjs",
-        "scripts/regulatory.py"
+        "scripts/regulatory.py",
+        "packages/notabenda/src/config-authoring.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/agent-integration.test.mjs",
@@ -7466,7 +7472,8 @@
         "packages/notabenda/test/integration-assessment.test.mjs",
         "packages/notabenda/test/config-schema.test.mjs",
         "site/test/documentation-links.test.mjs",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/config-authoring.test.mjs"
       ],
       "implementationNote": "One maintained skill is copied into package distribution and explicit public website assets. Source-backed guides emit Markdown alternates; positional link edits retain authored examples. Tests pack and install the local package offline, execute documented commands, retain draft rejection and verify generated public links/types without opening evidence stores. Read-only describe CLI and optional integration API expose target/prerequisite maps, factual questions, separate host work and a shared-engine unknown-answer template. Actual compiler typechecks protect advertised config paths; project facts are never read by describe and no target is automatically enabled. A bounded explicit selection file or selectIntegration API resolves scope decisions to requested targets, prerequisite review and unresolved questions; empty selections stay empty and scope completion never asserts production readiness. Read-only assess accepts explicit bounded JSON and returns scoped question states, minimum target prerequisites, array coverage observations, factual/practice conflicts and both validation modes. No config body or private notes are returned, and no values are inferred; presence and recorded answers never establish host behavior or readiness. The package build generates a draft 2020-12 authoring schema from SiteConfig using the pinned build-only TypeScript API. Unsupported constructs fail the build. Read-only schema field lookup returns referenced definitions, optional ancestors, array item paths and alternative-parent context without reading project inputs or suggesting default facts. Unknown keys reject in the authoring shape; runtime cross-field, policy, URL, bound and review rules remain separate. An offline packed-install test resolves the exact schema export and runs full/field CLI commands without a compiler runtime dependency. A build-time Ajv standalone validator enforces that authoring shape during read-only assessment without runtime compiler/schema-library dependencies. Unknown fields ignored by runtime projection still produce invalid-config. The target map distinguishes assessed storage exceptions from consent enrollment, requires form scope assessment and exposes conditional non-English terms/form dictionaries. An explicit static collection-notice target selects no permission controller and requires only its own non-English dictionary when applicable. Repository-relative documentation links resolve only to explicit published documents, assets or catalog-backed source views. Unknown references stop the build with source/target details; they never silently become the guide index. Grouped guide navigation requires an explicit human label."
     },
@@ -9599,10 +9606,11 @@
         "REQ-PRODUCT-CONFIG"
       ],
       "status": "automated",
-      "expected": "Malformed input and broken references yield diagnostics; private/unknown nested fields never enter public output.",
+      "expected": "Malformed input and broken references yield diagnostics; private/unknown nested fields never enter public output. File-based check/build/imports reject misspelled keys with value-free paths before output; valid authored sources retain semantic and review checks.",
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
-        "packages/notabenda/test/setup-purpose.test.mjs"
+        "packages/notabenda/test/setup-purpose.test.mjs",
+        "packages/notabenda/test/config-authoring.test.mjs"
       ]
     },
     {
@@ -10362,7 +10370,8 @@
         "packages/notabenda/test/integration-assessment.test.mjs",
         "packages/notabenda/test/config-schema.test.mjs",
         "site/test/documentation-links.test.mjs",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/config-authoring.test.mjs"
       ]
     },
     {
@@ -10931,7 +10940,8 @@
       "testRefs": [
         "packages/notabenda/test/config-sources.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/configuration-sources.md"
+        "docs/verification/configuration-sources.md",
+        "packages/notabenda/test/config-authoring.test.mjs"
       ]
     }
   ],
