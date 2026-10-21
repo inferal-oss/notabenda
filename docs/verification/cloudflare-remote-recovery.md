@@ -11,7 +11,7 @@ The optional remote command asserts native SQL and KV rollback through a Cloudfl
 
 ## Direct checks
 
-Thirteen remote-tool regressions cover gate ordering, authenticated readiness before anonymous refusal, journal identity, outgoing/incoming plain-JSON RPC normalization, HTTP authority, executable source attestation and cleanup ownership. Every exposed ordinary family operation checks the closed gate before touching evidence storage.
+Fourteen remote-tool regressions cover gate ordering, authenticated readiness before anonymous refusal, journal identity, outgoing/incoming plain-JSON RPC normalization, HTTP authority, executable source attestation and cleanup ownership. Every exposed ordinary family operation checks the closed gate before touching evidence storage.
 
 Three family regressions use the actual terms/permission/processing APIs and processing application workspace with an independent destination. They cover replay interruption and purge restart; a historical grant alongside current withdrawal; both erased terms scopes; missing, duplicated or substituted journal entries; and an unresolved restriction restored without a fabricated receipt. Deleting each of the held/retained permission and processing head pointers prevents reopening. A before/after storage comparison verifies that readiness inspection writes nothing.
 
@@ -29,4 +29,18 @@ The destination stayed outside rollback. Its original one-attempt delivery remai
 
 The successful run verified removal of its three recorded SQLite namespaces before deleting the Worker, then confirmed their absence. Failed attempts were also cleaned and do not count as recovery evidence. Keys, bookmarks, resource identities, journals and logs remain private and ignored.
 
-This is a same-object provider recovery exercise using deployed package APIs and a fixed application producer, not a generated-starter or production-host recovery certification. Active selections stay fixed. Provider-native contract/order recovery, complete authenticated journals, access fencing for real jobs/callers, downstream and backup copies, key rotation and legal readiness remain open. Adopters choose CI and operational acceptance.
+## Contract and order observations
+
+The six-family run passed on 21 October 2026, including native rollback of four declarations and four paid-order/confirmation contexts. Compact file recipes expand into actual archived bytes; they do not reduce the 150 KB attachment or multi-chunk storage checks. The complete combined HTTP journal fits the existing 16 KiB limit, and executable/source-map bounds remain unchanged.
+
+An independent provider object in the existing destination namespace receives and hashes each complete immutable payload, including confirmation file bytes and destination version. Before rollback it holds nine accepted jobs, with response loss simulated only after acceptance. Rollback restores pending outboxes without rewinding that provider.
+
+The fixture restores transaction holds before retirements, interrupts after the holds, and resumes after restart. One-key purge also resumes after restart. Retired declarations cannot be captured or dispatched; retired order admission never invokes its host callback, and its confirmation files remain inaccessible. All surviving receipts, immutable content and exact file bytes are preserved. The first recovered opening requires complete original pending jobs. Later openings compare full outbox snapshots outside rollback, while held pending jobs must still match the original baseline.
+
+Accepted-job retries preserve stable IDs and content digests. Another accepted response is deliberately lost; explicit status, lease, provider reference, attempts and version assertions establish persisted uncertainty before restart. The next retry settles accepted. Final provider totals are nine stable jobs, eighteen received attempts and nine commits; this tests the synthetic provider’s behavior, not real exactly-once delivery.
+
+Seven direct transaction regressions cover the complete replay/retry path, malformed or substituted journals, gate-before-storage ordering, changed provider content, delayed sends, aborted work and rejected provider RPCs. A dispatch timeout does not end actual work: fulfilled sends drain before releasing the gate. A rejected send leaves an external in-flight marker and blocks decisions, purge, restore and reopening. Valid cancelled delivery metadata fails the initial pending-state check; corrupted stored file chunks fail readiness.
+
+Four attempts were made for this extension. The first three ended on non-JSON route responses before restore; the later two explicitly recorded HTML 404 pages. Every attempt was cleaned and none counts as recovery proof. The successful run waits for consecutive authenticated read-only readiness responses; it never blindly retries mutation. All three owned namespaces and the Worker were confirmed removed afterward.
+
+This is a same-object provider recovery exercise using deployed package APIs and a fixed application producer, not a generated-starter or production-host recovery certification. Active selections stay fixed. Complete authenticated journals, access fencing for real jobs/callers, downstream and backup copies, key rotation and legal readiness remain open. Adopters choose CI and operational acceptance.

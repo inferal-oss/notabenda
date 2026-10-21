@@ -77,3 +77,7 @@ test('remote readiness requires authenticated closed state before testing anonym
  let attempts=0,anonymous=0;await waitForRemoteRecoveryReady(async(action,payload,options)=>{assert.equal(action,'state');if(options?.anonymous){anonymous++;assert.equal(attempts,3);assert.equal(options.status,403);return;}attempts++;if(attempts===1)throw Error('Secret not propagated.');return {phase:attempts===2?'open':'closed'};},async()=>{});assert.equal(attempts,3);assert.equal(anonymous,1);
  let denied=0;await assert.rejects(waitForRemoteRecoveryReady(async(action,payload,options)=>{assert.equal(options,undefined);denied++;throw Error('Not authenticated.');},async()=>{}),/did not accept/);assert.equal(denied,20);
 });
+
+test('route propagation checks require consecutive authenticated successes and never retry a mutation',async()=>{
+ const sequence=['closed','closed','html','closed','open','closed','closed','closed'];let calls=0,anonymous=0;await waitForRemoteRecoveryReady(async(action,payload,options)=>{assert.equal(action,'state');if(options?.anonymous){anonymous++;assert.equal(calls,8);return;}const phase=sequence[calls++];if(phase==='html')throw Error('Temporary route 404');return {phase};},async()=>{},{consecutive:3,attempts:8});assert.equal(anonymous,1);assert.equal(calls,8);
+});

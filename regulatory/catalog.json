@@ -873,7 +873,7 @@
         "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
-        "Optional disposable remote SQLite Time Travel rehearsal with an external recovery gate, later hold and retirement replay, and attested namespace-first cleanup. A real remote run verified SQL/KV rollback, later hold-first replay, closed access, purge restart, surviving records/source bytes and cleanup. Complete host and all-family recovery remain open.",
+        "Optional disposable native SQLite recovery for six evidence families, with an external gate/journal, independent destinations and attested cleanup. Transaction recovery checks full pending jobs, later holds/deletions, exact receipts and multi-chunk files, stable-ID retries and persisted uncertainty. Sends drain before maintenance; unresolved RPCs keep it closed. Actual providers, full host acceptance, key rotation and partial-deployment recovery remain open.",
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
         "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries."
       ],
@@ -950,7 +950,9 @@
         "docs/RECORDED-COOKIE-APPLICATION.md",
         "scripts/fixtures/family-recovery.mjs",
         "scripts/fixtures/family-recovery-data.mjs",
-        "examples/processing-application/workspace.mjs"
+        "examples/processing-application/workspace.mjs",
+        "scripts/fixtures/transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-data.mjs"
       ]
     },
     {
@@ -8941,7 +8943,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Fixed consent, terms, form-permission and processing contexts, stable active selections, document archives and one SQL table. Provider-native contract/order recovery, production access/journal completeness/authentication, key rotation, real providers, backup/downstream deletion and legal readiness remain open. No production bindings/routes; adopters choose CI.",
+      "caveats": "Fixed six-family contexts, stable active selections, document archives, synthetic destinations and one SQL table. Production access/journal completeness/authentication, actual provider behavior and idempotency retention, key rotation, backup/downstream deletion and legal readiness remain open. No production bindings/routes; adopters choose CI.",
       "implementationRefs": [
         "scripts/check-cf-remote-recovery.mjs",
         "scripts/fixtures/remote-recovery.mjs",
@@ -8950,16 +8952,20 @@
         "site/navigation.mjs",
         "scripts/fixtures/family-recovery.mjs",
         "scripts/fixtures/family-recovery-data.mjs",
-        "examples/processing-application/workspace.mjs"
+        "examples/processing-application/workspace.mjs",
+        "scripts/fixtures/transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-data.mjs",
+        "scripts/check-transaction-recovery.mjs"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/remote-recovery.test.mjs",
         "scripts/check-cf-remote-recovery.mjs",
         "docs/verification/cloudflare-remote-recovery.md",
         "packages/notabenda-cf/test/family-recovery.test.mjs",
-        "packages/notabenda-cf/test/processing-application.test.mjs"
+        "packages/notabenda-cf/test/processing-application.test.mjs",
+        "packages/notabenda-cf/test/transaction-native-recovery.test.mjs"
       ],
-      "implementationNote": "External default-closed control, privately sealed complete fixed journal, hold/negative-intent-first replay, exact original receipts, private pending fence without invented action, read-only surviving event/head verification, replay/purge restart and independent destination attempt checks. Real four-family Cloudflare SQLite Time Travel run passed on 21 October 2026 with provider-confirmed cleanup of three namespaces and Worker. Ownership source/tag/ID checks and atomic private checkpoints remain required."
+      "implementationNote": "External default-closed control, sealed fixed journal, hold/negative-intent-first replay and exact surviving receipts/heads/files. Native six-family Cloudflare rollback passed on 21 October 2026 with verified cleanup of three namespaces and Worker. Contract/order outboxes retry stable IDs and complete provider-hashed payloads; nine jobs, eighteen attempts, nine commits. First opening checks full original pending jobs; later openings check external snapshots and unchanged held jobs. Actual sends drain before release; rejected RPCs retain an external unresolved-work marker. Ownership source/tag/ID checks and atomic private checkpoints remain required."
     },
     {
       "id": "REQ-PRODUCT-TERMS-CONNECTION",
@@ -11164,13 +11170,14 @@
         "REQ-PRODUCT-CF-REMOTE-RECOVERY"
       ],
       "status": "automated",
-      "expected": "Direct regressions cover external gate ordering, authenticated readiness, complete sealed family journals, null-prototype RPC normalization, source attestation and cleanup ownership. Native four-family SQL/KV restore verifies later holds/withdrawals/recorded and unconfirmed restriction replay, immutable receipts and surviving live heads, replay/purge restarts, retired two-scope terms, blocked new/queued processing and unchanged independent sink history/attempts. Provider-confirmed cleanup of three owned namespaces and Worker; fixed active selections, no production or real-provider certification.",
+      "expected": "Direct regressions cover authenticated stable readiness, closed-gate ordering, sealed six-family journals, plain RPC data, source attestation and cleanup ownership. Native SQL/KV rollback verifies later choices/holds/retirements, pending-job preservation, exact receipts and multi-chunk files, interruption/restart, retired admission before host work and stable-ID provider retries with explicit uncertain/accepted job state. Delayed sends drain; rejected sends retain the independent unresolved-work marker. Synthetic provider: nine jobs, eighteen attempts, nine commits. All three owned namespaces and Worker removed. Fixed selections; no production or real-provider certification.",
       "testRefs": [
         "packages/notabenda-cf/test/remote-recovery.test.mjs",
         "scripts/check-cf-remote-recovery.mjs",
         "docs/verification/cloudflare-remote-recovery.md",
         "packages/notabenda-cf/test/family-recovery.test.mjs",
-        "packages/notabenda-cf/test/processing-application.test.mjs"
+        "packages/notabenda-cf/test/processing-application.test.mjs",
+        "packages/notabenda-cf/test/transaction-native-recovery.test.mjs"
       ]
     },
     {

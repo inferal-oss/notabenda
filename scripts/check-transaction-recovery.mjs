@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE REQ-PRODUCT-CONTRACT-ACTIONS REQ-PRODUCT-ORDER-CONFIRMATION REQ-PRODUCT-PAID-ORDER-ARCHIVES
 // Optional local SQLite acceptance check. No deployment, credentials, sender or production bindings.
 import assert from 'node:assert/strict';
@@ -8,10 +9,9 @@ import {resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomUUID,randomBytes,createHash} from 'node:crypto';
 import {fixture} from '../packages/notabenda/test/helpers.mjs';
-import {compileLegalDocuments,createContractActionDefinition,canonicalJson,sha256} from '@notabenda/core/content';
-import {createPaidOrderDefinition,createPaidOrderReview} from '@notabenda/authoring/orders';
-import {contractDeclarationRef} from '@notabenda/cloudflare';
-import {paidOrderCheckoutRef} from '@notabenda/cloudflare/orders';
+import {compileLegalDocuments} from '@notabenda/core/content';
+import {prepareTransactionRecovery} from './fixtures/transaction-recovery-data.mjs';
+import {expandTransactionFile} from './fixtures/transaction-recovery.mjs';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),port=Number(process.env.NOTABENDA_TRANSACTION_RECOVERY_PORT??4187);
 if(!Number.isInteger(port)||port<4181||port>4190)throw Error('Use a loopback test port from 4181 to 4190.');
@@ -22,19 +22,8 @@ await mkdir(directory,{recursive:true,mode:0o700});
 const at='2026-10-20T12:00:00.000Z',roles=['retired','held','delivered','uncertain'],families=['contracts','orders'];
 const config=await fixture({reviewed:true});config.site.id='transaction-recovery';
 const artifact=compileLegalDocuments(config).artifact,siteId=config.site.id;
-const definition=createContractActionDefinition(artifact,{actionId:'end-subscription',revision:'one',profile:'eu-withdrawal',reviewStatus:'reviewed'});
-const data={at,siteId,artifact,definition,holdReviewAt:'2026-11-20T12:00:00.000Z',holdProbeId:randomUUID(),contracts:{},orders:{},decisions:Object.fromEntries(families.map(family=>[family,{requestId:randomUUID(),reason:'operator-erasure',eligibleAt:at,legalHold:false,...(family==='orders'?{externalWorkStopped:true}:{})}]))};
-const orderDefinition=createPaidOrderDefinition({profile:'eu-paid-distance-order-v1',siteId,locale:'en',direction:'ltr',reviewStatus:'reviewed',documents:[],items:[{id:'service',productId:'consultation',name:'Planning appointment',kind:'service',characteristics:['One remote appointment'],commitment:{duration:'One appointment',termination:'No renewal',minimum:'One appointment'},guarantee:null}]});
-const fixed=amountMinor=>({kind:'fixed',amountMinor});
-for(const role of roles){
- const requestId=randomUUID(),context={siteId,actionId:definition.actionId,operationId:'fixture-operation-'+role},ref=await contractDeclarationRef(context,requestId);
- data.contracts[role]={context,id:sha256(canonicalJson([ref,requestId])),request:{schemaVersion:1,definitionId:definition.definitionId,requestId,clientAt:at,fields:{name:'Avery Linden',contract:'Sample annual plan '+role,email:'avery@example.test'}}};
- const orderContext={siteId,scopeId:'checkout',checkoutId:'fixture-'+role},contextRef=await paidOrderCheckoutRef(orderContext);
- const quote={quoteId:'quote-'+role,revision:'one',contextRef,definitionId:orderDefinition.definitionId,issuedAt:at,expiresAt:'2026-10-20T12:15:00.000Z',lines:[{itemId:'service',quantity:1}],pricing:{currency:'EUR',fractionDigits:2,payments:[{id:'appointment',lineIds:['service'],label:'Appointment',amount:fixed('12000'),due:{kind:'now'},recurrence:{kind:'once'}}],totalPrice:fixed('12000'),dueNow:fixed('12000'),taxAndChargesNotice:'VAT included'}};
- const review=createPaidOrderReview(orderDefinition,quote),request={schemaVersion:1,requestId:randomUUID(),reviewId:review.reviewId,definitionId:orderDefinition.definitionId,quoteId:quote.quoteId,quoteRevision:quote.revision,contextRef};
- const body='Contract C-1042-'+role+'\nPrepared for Alex Morgan\nOne planning appointment. Total EUR 120 including VAT.\nComplete fictional host-supplied contract and withdrawal information.\n';
- data.orders[role]={context:orderContext,id:sha256(canonicalJson(['notabenda-paid-order-admission-v1',contextRef])),review,request,bundle:{request,contract:{reference:'C-1042-'+role,concludedAt:at},addressee:{name:'Alex Morgan',recipientRef:'customer-'+role,destinationRef:'contact-'+role,destinationVersion:'version-3'},issuedAt:at,locale:'en',reviewStatus:'reviewed',coverage:{selfContained:true,preContractInformation:'included-in-files',digitalContent:{status:'not-applicable',reason:'Service appointment.'}},files:[{id:'customer-copy',filename:'confirmation.txt',mediaType:'text/plain',role:'confirmation',bytes:[...new TextEncoder().encode(body)]},{id:'terms',filename:'terms.html',mediaType:'text/html',role:'attachment',bytes:[...new TextEncoder().encode('<!doctype html><h1>Sample terms</h1><!--'+role+' '+'.'.repeat(150000)+'-->')]}]}};
-}
+const data=await prepareTransactionRecovery(artifact,at,'2026-11-20T12:00:00.000Z');
+for(const role of roles)for(const file of data.orders[role].bundle.files){file.bytes=[...expandTransactionFile(file)];delete file.recipe;}
 await symlink(resolve(root,'node_modules'),directory+'/node_modules','dir');
 await writeFile(directory+'/data.mjs','export default '+JSON.stringify(data)+';\n',{mode:0o600});
 await writeFile(directory+'/worker.mjs',await readFile(resolve(root,'scripts/fixtures/transaction-recovery-worker.mjs'),'utf8'));
