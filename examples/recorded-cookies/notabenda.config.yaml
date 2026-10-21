@@ -1,0 +1,183 @@
+schemaVersion: 1
+site:
+  id: recorded-cookie-example
+  name: Juniper Notes
+  url: https://cookies.example.test
+  locale: en
+  description: A fictional independent writing studio used to demonstrate reusable legal pages.
+controller:
+  name: Juniper Notes Cooperative (fictional)
+  email: privacy@juniper.example.test
+  address: 12 Example Lane, Example City (fictional)
+jurisdictions: []
+purposes:
+  - id: measurement
+    name: Measurement
+    description: Understand which features are used, using a local measurement service.
+    legalBasis: Explicit choice for a fictional optional service.
+    dataCategories:
+      - Synthetic demo event
+    retention: Removed when you withdraw or clear this local demo.
+    collection:
+      source: direct
+      description: A choice made locally in this fictional demonstration.
+      required: false
+      consequences: The sample optional service stays off if you decline.
+  - id: suggestions
+    name: Suggestions
+    description: Remember your preferences to tailor suggestions in this browser.
+    legalBasis: Explicit choice for a fictional optional service.
+    dataCategories:
+      - Synthetic demo preference
+    retention: Removed when you withdraw or clear this local demo.
+    collection:
+      source: direct
+      description: A choice made locally in this fictional demonstration.
+      required: false
+      consequences: The sample optional service stays off if you decline.
+  - id: remember-choices
+    name: Remembering privacy choices
+    description: Remember privacy preferences and record deliberate choices against the notice shown by
+      this application.
+    legalBasis: Review the basis and applicable preference-storage exception for an actual deployment.
+    dataCategories:
+      - Purpose choices
+      - Notice reference
+      - Choice and receipt times
+      - Opaque host-bound stream digest
+      - Choice request identifier
+    retention: Local preferences follow the sample lifetimes above. Backend evidence requires a separate
+      host retention, hold and erasure policy; this example installs no automatic expiry.
+    collection:
+      source: direct
+      description: Your explicit local choice or notice dismissal.
+      required: false
+      consequences: Without storage, optional services stay off and preferences cannot be remembered.
+services:
+  - id: sample-measurements
+    name: Sample measurements
+    provider: Juniper Notes
+    location: This local example only
+    purposeIds:
+      - measurement
+  - id: sample-suggestions
+    name: Sample suggestions
+    provider: Juniper Notes
+    location: This local example only
+    purposeIds:
+      - suggestions
+  - id: privacy-choices
+    name: Privacy choices
+    provider: Juniper Notes
+    location: This browser and the host application backend. Review actual deployment locations.
+    purposeIds:
+      - remember-choices
+storage:
+  - id: sample-measurements
+    name: sample-measurements
+    serviceId: sample-measurements
+    type: localStorage
+    duration: Until withdrawal or browser clearing
+    classification: optional
+  - id: sample-suggestions
+    name: sample-suggestions
+    serviceId: sample-suggestions
+    type: localStorage
+    duration: Until withdrawal or browser clearing
+    classification: optional
+  - id: choice-memory
+    name: notabenda:choices:v1:recorded-cookie-example
+    serviceId: privacy-choices
+    type: localStorage
+    duration: 30 days for grants; 180 days for refusals
+    classification: necessary
+    necessityReason: Retains an explicit privacy preference or temporary dismissal in this synthetic
+      example; review applicability for actual use.
+  - id: prompt-memory
+    name: notabenda:choices:v1:recorded-cookie-example:prompt
+    serviceId: privacy-choices
+    type: localStorage
+    duration: 60 minutes
+    classification: necessary
+    necessityReason: Retains an explicit privacy preference or temporary dismissal in this synthetic
+      example; review applicability for actual use.
+privacy:
+  rights:
+    - Request information about how personal information is used.
+    - Ask to access, correct, or erase information where applicable.
+    - Withdraw a permission or object to processing where the applicable rules provide that right.
+  rightsUrl: mailto:privacy@juniper.example.test
+  complaints:
+    description: Contact the operator with questions. An actual deployment must identify the applicable
+      complaint and supervisory-authority options.
+  transfers: This fictional example describes no live transfers. An actual deployment must state its
+    recipients, locations, and applicable safeguards.
+  automatedDecisions: No automated decisions are represented in this fictional example.
+terms:
+  audience: business
+  serviceType: informational
+documents:
+  privacy:
+    title: Privacy policy
+    route: /privacy
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: generated
+    review:
+      status: draft
+  cookies:
+    title: Cookie policy
+    route: /cookies
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: generated
+    review:
+      status: draft
+    sections:
+      - id: example-only
+        heading: About this example
+        paragraphs:
+          - The optional service indicators make no tracking requests. Preference storage and choice
+            recording are real when the host authorization hooks are connected. Replace the declared
+            inventory and legal wording for an actual site.
+  terms:
+    title: Terms of use
+    route: /terms
+    version: draft-1
+    effectiveDate: 2026-10-18
+    source: supplied
+    review:
+      status: draft
+    sections:
+      - id: about
+        heading: About these example pages
+        paragraphs:
+          - Juniper Notes is a fictional studio. These sample sections demonstrate how your own
+            reviewed terms can be rendered inside your site's design. They do not offer a service or
+            establish a real contract.
+      - id: your-content
+        heading: Your content, your structure
+        paragraphs:
+          - Supply the terms appropriate to your audience, service, and applicable consumer rights.
+            The renderer preserves your section structure and safely displays text and links.
+      - id: contact
+        heading: Contact
+        links:
+          - label: privacy@juniper.example.test
+            href: mailto:privacy@juniper.example.test
+private:
+  operatorNote: "Synthetic private note: excluded from every public output."
+consent:
+  purposes:
+    - id: measurement
+      scope: sample-1
+    - id: suggestions
+      scope: sample-1
+  services:
+    - id: sample-measurements
+      scope: sample-1
+    - id: sample-suggestions
+      scope: sample-1
+  grantLifetimeDays: 30
+  refusalLifetimeDays: 180
+  dismissalMinutes: 60

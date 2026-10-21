@@ -1,0 +1,11 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "recorded-cookie-example",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-10-18",
+  "assets": {"directory": "./public", "binding": "ASSETS", "run_worker_first": true},
+  "durable_objects": {"bindings": [{"name": "EVIDENCE", "class_name": "CookieWorkspace"}]},
+  "exports": {"CookieWorkspace": {"type": "durable-object", "storage": "sqlite"}},
+  "observability": {"enabled": false},
+  "upload_source_maps": false
+}

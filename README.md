@@ -111,6 +111,8 @@ The optional [`@notabenda/cloudflare` component](packages/notabenda-cf/README.md
 
 Start your own backend with `npx @notabenda/cloudflare init`. It creates a local Worker project with SQLite storage, the admin and guided setup; you supply your existing authorization hook. Nothing is installed or deployed automatically. [Cloudflare starter guide](docs/CLOUDFLARE-STARTER.md).
 
+For complete cookie recording wiring, adapt the [recorded-cookie application](examples/recorded-cookies/README.md). It connects YAML-built notices, native controls, your host sessions, separate operator activation and the evidence admin. Its authorization hooks deny access until you connect them. [Application guide](docs/RECORDED-COOKIE-APPLICATION.md).
+
 For stored evidence, [lifecycle tools](docs/EVIDENCE-LIFECYCLE.md) let your backend apply holds, close a context and remove matching payloads in resumable steps. The read-only workspace explains the progress and what remains. Try it through `npm run site:dev` at [evidence lifecycle](http://127.0.0.1:4179/demo/admin/lifecycle).
 
 The local example also serves [evidence search](http://127.0.0.1:4178/demo/admin/evidence), [document history](http://127.0.0.1:4178/demo/admin/history), and [the logo](http://127.0.0.1:4178/brand). Those previews use a separate database for this browser session, seeded with fictional journeys. No password; cleanup follows one day without use.

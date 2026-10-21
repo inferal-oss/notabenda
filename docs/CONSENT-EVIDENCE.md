@@ -2,6 +2,8 @@
 
 The optional ledger in `@notabenda/cloudflare` stores host-received cookie-choice reports against an immutable notice and legal-document release. It provides transactional ordering and a read-only compliance view. `createConsent` remains local-only by default; configuring its third argument enables **required-receipt mode**, which blocks optional services until the exact local choice matches the server's current record. An ordinary local grant is not remotely recorded.
 
+For complete application wiring, start with the [recorded-cookie example](RECORDED-COOKIE-APPLICATION.md): generated YAML inputs, host session hooks, separate operator activation, native controls and ledger inspection. The API reference below explains each boundary.
+
 The [EDPB consent guidelines, §§5.1–5.2](https://www.edpb.europa.eu/system/files/documents/files/file1/edpb_guidelines_202005_consent_en.pdf) discuss evidence of the information provided and how/when a choice was made, minimization, context-dependent renewal, and easy withdrawal. The fields below are an engineering design, not a regulator-mandated schema or proof of valid consent. Legal applicability and review remain the operator's responsibility.
 
 ## An immutable notice

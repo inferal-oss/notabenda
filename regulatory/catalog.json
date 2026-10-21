@@ -587,7 +587,8 @@
         "docs/RELEASES.md",
         "site/navigation.mjs",
         "docs/CLOUDFLARE-RECOVERY.md",
-        "docs/verification/transaction-recovery.md"
+        "docs/verification/transaction-recovery.md",
+        "docs/RECORDED-COOKIE-APPLICATION.md"
       ]
     },
     {
@@ -902,7 +903,8 @@
         "docs/CONSENT-EVIDENCE.md",
         "docs/RELEASES.md",
         "docs/CLOUDFLARE-RECOVERY.md",
-        "docs/verification/transaction-recovery.md"
+        "docs/verification/transaction-recovery.md",
+        "docs/RECORDED-COOKIE-APPLICATION.md"
       ]
     },
     {
@@ -1008,7 +1010,8 @@
         "examples/localization/contracts-config.mjs",
         "examples/localization/contracts-messages.json",
         "examples/contract-actions/build.mjs",
-        "examples/contract-actions/client.mjs"
+        "examples/contract-actions/client.mjs",
+        "docs/RECORDED-COOKIE-APPLICATION.md"
       ]
     },
     {
@@ -4929,7 +4932,8 @@
         "FEAT-BACKOFFICE"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-CF-ADMIN"
+        "VERIFY-PRODUCT-CF-ADMIN",
+        "VERIFY-PRODUCT-RECORDED-COOKIE-APPLICATION"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -4948,12 +4952,18 @@
         "packages/notabenda-cf/src/setup.ts",
         "packages/notabenda/src/setup-ui.ts",
         "packages/notabenda-cf/src/order-render.ts",
-        "packages/notabenda-cf/src/order-admin-style.ts"
+        "packages/notabenda-cf/src/order-admin-style.ts",
+        "examples/recorded-cookies/host.mjs",
+        "examples/recorded-cookies/workspace.mjs",
+        "examples/recorded-cookies/worker.mjs"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
         "packages/notabenda-cf/test/export.test.mjs",
-        "packages/notabenda-cf/test/orders.test.mjs"
+        "packages/notabenda-cf/test/orders.test.mjs",
+        "packages/notabenda-cf/test/recorded-cookie-application.test.mjs",
+        "scripts/check-recorded-cookie-runtime.mjs",
+        "docs/verification/recorded-cookie-application.md"
       ]
     },
     {
@@ -5210,7 +5220,8 @@
         "FEAT-BACKOFFICE"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-CONSENT-EVIDENCE"
+        "VERIFY-PRODUCT-CONSENT-EVIDENCE",
+        "VERIFY-PRODUCT-RECORDED-COOKIE-APPLICATION"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -5230,7 +5241,10 @@
         "packages/notabenda/src/consent-engine.ts",
         "packages/notabenda/src/consent-runtime.ts",
         "packages/notabenda/src/consent-evidence-factory.ts",
-        "packages/notabenda/src/consent-runtime-evidence.ts"
+        "packages/notabenda/src/consent-runtime-evidence.ts",
+        "examples/recorded-cookies/host.mjs",
+        "examples/recorded-cookies/workspace.mjs",
+        "examples/recorded-cookies/worker.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/consent-evidence.test.mjs",
@@ -5238,7 +5252,10 @@
         "scripts/check-site-runtime.mjs",
         "packages/notabenda/test/consent-delivery.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs",
-        "docs/verification/consent-focus.md"
+        "docs/verification/consent-focus.md",
+        "packages/notabenda-cf/test/recorded-cookie-application.test.mjs",
+        "scripts/check-recorded-cookie-runtime.mjs",
+        "docs/verification/recorded-cookie-application.md"
       ],
       "implementationNote": "Immutable notices, transactional stream revisions, restrictive revoke-all and historical receipts/current heads are implemented. Optional construction-time browser gating, exact-response validation, bounded single-command retries, immediate local withdrawal, reload/resume confirmation, storage-failure barriers and stale-generation retirement are covered by tests. Default browser mode remains local-only."
     },
@@ -9218,7 +9235,8 @@
         "FEAT-DEPLOYMENT"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-CONSENT-NOTICE-FILES"
+        "VERIFY-PRODUCT-CONSENT-NOTICE-FILES",
+        "VERIFY-PRODUCT-RECORDED-COOKIE-APPLICATION"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -9235,14 +9253,20 @@
         "examples/static/choices-build.mjs",
         "docs/CONSENT-EVIDENCE.md",
         "docs/RELEASES.md",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "examples/recorded-cookies/host.mjs",
+        "examples/recorded-cookies/workspace.mjs",
+        "examples/recorded-cookies/worker.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/consent-release-files.test.mjs",
         "packages/notabenda/test/consent-notice-cli.test.mjs",
         "packages/notabenda-cf/test/consent-cli-delivery.test.mjs",
         "site/test/consent-notice-files.test.mjs",
-        "docs/verification/consent-notice-files.md"
+        "docs/verification/consent-notice-files.md",
+        "packages/notabenda-cf/test/recorded-cookie-application.test.mjs",
+        "scripts/check-recorded-cookie-runtime.mjs",
+        "docs/verification/recorded-cookie-application.md"
       ],
       "implementationNote": "Build-time helpers reuse full release verification and the existing notice factory. CLI native scope builds support all configuration formats; retained notice files remain bounded ordinary JSON. Notice-ID paths avoid copy-revision collisions under an unchanged artifact. Tests cover exact bytes, validly rehashed tampering, stale-alias guards, no accessor execution and actual CLI-to-ledger-to-runtime receipt gating in a local synthetic store."
     }
@@ -11062,6 +11086,21 @@
         "scripts/check-transaction-recovery.mjs",
         "scripts/fixtures/transaction-recovery-worker.mjs",
         "docs/verification/transaction-recovery.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-RECORDED-COOKIE-APPLICATION",
+      "requirementIds": [
+        "REQ-PRODUCT-CONSENT-EVIDENCE",
+        "REQ-PRODUCT-CF-ADMIN",
+        "REQ-PRODUCT-CONSENT-NOTICE-FILES"
+      ],
+      "status": "automated",
+      "expected": "Separate example application preserves denying auth defaults and fixed notice registration/activation; HTTP and bundled-client DOM tests cover request bounds, host-derived stream preconditions, RPC errors, outages, lost committed response, reload, withdrawal and identity changes. Optional real local SQLite runner verifies actual RPC/persistence, registration-only refusal, canonical operator aliases, exact current/pinned notice/legal bytes and restart. Manual real-browser observations remain separately scoped; no production identity or deployment acceptance claim.",
+      "testRefs": [
+        "packages/notabenda-cf/test/recorded-cookie-application.test.mjs",
+        "scripts/check-recorded-cookie-runtime.mjs",
+        "docs/verification/recorded-cookie-application.md"
       ]
     }
   ],
