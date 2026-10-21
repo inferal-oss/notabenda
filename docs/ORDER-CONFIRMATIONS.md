@@ -82,6 +82,8 @@ Preparation retries with the same content return the retained archive before a f
 
 The orders lifecycle checks the separate manifest and job. Pending, leased and uncertain jobs block retirement. A partial restore with an orphaned job fails closed. `cancelPaidOrderConfirmation(storage, {expectedVersion, externalWorkStopped: true}, context)` requires the host to actually stop/fence external work first. Accepted/cancelled jobs may then retire under the existing eligibility, legal-hold and `externalWorkStopped` decision. Batched purge removes confirmation files, manifest and job with the rest of that intent. Restore barriers continue to prevent replay.
 
+For database rollback, reconcile later holds, retirements and provider acceptance before reopening dispatch. A restored pending job may have been delivered after the backup. The [local transaction recovery exercise](CLOUDFLARE-RECOVERY.md#recover-declarations-and-order-confirmations) checks this with a separate idempotent provider and exact original files; your host needs its own provider and recovery checks.
+
 ## Legal and operational review
 
 [Article 8(7)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02011L0083-20260927) requires applicable distance-contract confirmation, including broader information than the final order review, and ties timing to contract conclusion and goods delivery/service commencement. This profile requires the information in the supplied files; it does not implement the prior-durable-provision exception. The host supplies actual formation and performance facts and coordinates timely provision.

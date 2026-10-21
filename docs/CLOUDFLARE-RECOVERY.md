@@ -4,7 +4,7 @@ A restored backup can bring back records you have already deleted. Keep it isola
 
 The repository includes an optional maintainer rehearsal for the [Cloudflare starter](CLOUDFLARE-STARTER.md). It uses two local SQLite-backed Durable Objects and synthetic records. It does not connect to a Cloudflare account or change a deployed database. Packages remain unpublished.
 
-For a separate, explicitly deployed provider-native exercise, see [remote SQLite recovery](CLOUDFLARE-REMOTE-RECOVERY.md). Its gate lives outside the restored object; it also tests a hold added after the bookmark. Neither rehearsal establishes your production host's complete recovery process.
+For a separate, explicitly deployed provider-native exercise, see [remote SQLite recovery](CLOUDFLARE-REMOTE-RECOVERY.md). Its gate lives outside the restored object; it also tests a hold added after the bookmark. The [transaction recovery exercise](#recover-declarations-and-order-confirmations) below covers local contract declarations and order confirmations with an independent delivery provider. These are different checks; none establishes your production host's complete recovery process.
 
 ## Run the local rehearsal
 
@@ -58,3 +58,39 @@ The held context here was already held when the backup was taken. This exercise 
 Shared archives, retained lifecycle metadata, application records, downstream recipients, external logs, downloaded exports and other backup copies need their own policy and checks. Keep the [deployment feature](FEATURES.md#feat-deployment) partial until the actual host rollout and recovery process have been exercised.
 
 Linked requirement: [REQ-PRODUCT-CF-RECOVERY-REHEARSAL](requirements/README.md#req-product-cf-recovery-rehearsal). See [verification](verification/cloudflare-recovery.md) for the tested scope.
+
+## Recover declarations and order confirmations
+
+An old backup can restore a pending delivery job even though the receiving provider has already accepted it. Before resuming dispatch, reconcile the provider's stable job IDs as well as later holds and deletions. A pending entry in a restored database does not prove that nothing was sent.
+
+The optional transaction rehearsal runs three separate local SQLite objects: the source, a fresh recovery target and an independent simulated provider. It uses the existing contract declaration, paid-order, confirmation, dispatch and lifecycle APIs. No production routes, provider credentials or scheduler are installed.
+
+```sh
+npm run build
+npm run cf:recovery:transactions
+# Or choose another free test port:
+NOTABENDA_TRANSACTION_RECOVERY_PORT=4188 npm run cf:recovery:transactions
+```
+
+The default port is 4187; only free loopback ports 4181–4190 are accepted. The command stops its own Worker on success or failure and leaves an ignored `.local/transaction-recovery-<random-id>` directory. Its backup, later-decision journal and report are owner-only files. The generated directory also contains the synthetic fixture and temporary local capability; do not publish it. Adopters decide whether to run this check in CI.
+
+### What happens in the exercise
+
+1. Capture four declarations and four admitted orders with complete fictional confirmation files. Save a bounded KV snapshot while all delivery jobs are pending.
+2. Deliver two contexts in each family. For a third, simulate a lost response after provider acceptance. Put the fourth on hold after the snapshot. Retire and purge one of the delivered contexts, retaining its completed decision separately.
+3. Hydrate a different, empty object. Keep reads, replay/admission, file access and dispatch closed. Reject another hydration, source seeding and an early attempt to reopen.
+4. Replay the later hold-only decisions first through `setHold()`. Restart and verify the holds still prevent retirement. Apply the later retirement manifests through `restore()`, purge in one-key batches and restart during purge. Open only after the fixture's known decisions have been reconciled and purges completed.
+5. Verify physical removal of the retired event and order payload subtree. The old declaration cannot be recreated, and the retired order is refused before its host admission callback. Neither can invoke the provider or expose retired confirmation files.
+6. Retry the other restored jobs against the provider that was never rolled back. The stable IDs and exact payloads let that provider return its existing acceptance. Lost responses remain uncertain across restart until the explicit retry succeeds. Original receipts and every surviving confirmation/attachment byte match, including files split into multiple storage chunks.
+
+The expected provider result is **nine distinct jobs, eighteen attempts and nine commits**. This proves deduplication against this simulated provider. It does not establish exactly-once email delivery, recipient receipt, refunds, cancellation or fulfillment.
+
+### Apply the recovery pattern to your host
+
+Keep readers, admission/capture routes, file downloads, dispatchers, scheduled jobs and binding callers fenced for the entire restore and reconciliation window. Drain or fence already admitted work before taking that boundary as closed. Keep the gate and the authenticated decision journal outside the storage being rolled back.
+
+Reapply later holds before destructive work. `restore()` takes retirement manifests; use the revision-checked hold API for hold-only decisions. Finish the scoped purges and inspect unrelated records before opening. A legal hold preserves evidence; it is not itself a delivery cancellation.
+
+Keep the provider's durable idempotency history long enough to cover your recovery horizon. Use the original `deliveryId`, exact sealed payload and fixed destination version when reconciling or retrying. Attempt tokens and ledger versions are local fencing values, not downstream idempotency keys. If the provider cannot establish the old job's outcome or has expired its deduplication history, keep it unresolved and investigate before retrying; this exercise's provider deliberately retains that history.
+
+This is a synthetic KV restore into a fresh object, not a provider-native SQLite restore or an in-place rollback. Its journal is trusted test input with fixed target identities, not an authenticated journal service or proof that all real decisions were found. It covers contract declarations and order/confirmation evidence; consent has separate rehearsals, while terms, form permissions and processing restrictions still need their own restore acceptance. Payment, stock, fulfillment, external-copy deletion and actual provider behavior remain host work. See [transaction recovery verification](verification/transaction-recovery.md).

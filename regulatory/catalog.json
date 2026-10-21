@@ -585,7 +585,9 @@
         "examples/static/choices-build.mjs",
         "docs/CONSENT-EVIDENCE.md",
         "docs/RELEASES.md",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "docs/CLOUDFLARE-RECOVERY.md",
+        "docs/verification/transaction-recovery.md"
       ]
     },
     {
@@ -898,7 +900,9 @@
         "packages/notabenda/src/consent-release-files.ts",
         "examples/static/choices-build.mjs",
         "docs/CONSENT-EVIDENCE.md",
-        "docs/RELEASES.md"
+        "docs/RELEASES.md",
+        "docs/CLOUDFLARE-RECOVERY.md",
+        "docs/verification/transaction-recovery.md"
       ]
     },
     {
@@ -5840,7 +5844,8 @@
         "FEAT-BACKOFFICE"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-EVIDENCE-LIFECYCLE"
+        "VERIFY-PRODUCT-EVIDENCE-LIFECYCLE",
+        "VERIFY-PRODUCT-TRANSACTION-RECOVERY"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -5876,7 +5881,9 @@
         "docs/verification/evidence-lifecycle.md",
         "packages/notabenda-cf/test/contract-dispatch.test.mjs",
         "docs/verification/contract-dispatch.md",
-        "packages/notabenda-cf/test/orders.test.mjs"
+        "packages/notabenda-cf/test/orders.test.mjs",
+        "scripts/check-transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-worker.mjs"
       ],
       "implementationNote": "Atomic retirement precedes retries and empty-head reads. Exact family/site/context event matching, transactional bounded scans, CAS holds and restartable manifests preserve restrictions. Browser controllers close terminal contexts. Read-only admin cards show holds, scan counters, timestamps and retained-data limitations."
     },
@@ -6353,7 +6360,8 @@
         "FEAT-BACKOFFICE"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-CONTRACT-ACTIONS"
+        "VERIFY-PRODUCT-CONTRACT-ACTIONS",
+        "VERIFY-PRODUCT-TRANSACTION-RECOVERY"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -6394,7 +6402,9 @@
         "docs/verification/contract-dispatch.md",
         "packages/notabenda/test/setup.test.mjs",
         "docs/verification/setup.md",
-        "site/test/demo-upgrade.test.mjs"
+        "site/test/demo-upgrade.test.mjs",
+        "scripts/check-transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-worker.mjs"
       ],
       "implementationNote": "Versioned archive-bound definitions, visible-field validation, native forms/headless state, bounded exact retry/recovery, transactional capture and independent leased jobs, immutable at-capture copy, provider CAS, private semantic inspection/search and per-declaration lifecycle. The isolated example deliberately retains its recovery command within a session-scoped tab, with no mount-time transport. Local SQLite capture/restart verified; real runners, provider delivery, regional and platform acceptance remain open. Optional single/paired dispatch runners validate before claim, bound asynchronous provider attempts, preserve independent acknowledgement, fence late results and report provider/settlement outcomes separately. Real SQLite restart/deduplication is verified with test-only provider simulation; production scheduling/provider delivery remains open."
     },
@@ -7189,7 +7199,8 @@
         "FEAT-RECORDS"
       ],
       "verificationIds": [
-        "VERIFY-PRODUCT-PAID-ORDER-ARCHIVES"
+        "VERIFY-PRODUCT-PAID-ORDER-ARCHIVES",
+        "VERIFY-PRODUCT-TRANSACTION-RECOVERY"
       ],
       "researchStatus": "product-decision",
       "legalReviewStatus": "not-applicable",
@@ -7216,7 +7227,9 @@
         "scripts/check-order-archive-runtime.mjs",
         "site/test/order-demo.test.mjs",
         "site/test/demo.test.mjs",
-        "docs/verification/paid-orders.md"
+        "docs/verification/paid-orders.md",
+        "scripts/check-transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-worker.mjs"
       ],
       "implementationNote": "64 KiB sealed chunks, bounded review/files, CAS activation, intent-level consumption, fresh post-decision clock, local mutation plans, scoped private archives, safe admin rendering/downloads and resumable retirement. Existing demo receipts retain their compatibility path."
     },
@@ -7317,12 +7330,15 @@
         "packages/notabenda-cf/test/orders-package.test.mjs",
         "site/test/order-demo.test.mjs",
         "scripts/check-order-confirmation-runtime.mjs",
-        "docs/verification/order-confirmations.md"
+        "docs/verification/order-confirmations.md",
+        "scripts/check-transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-worker.mjs"
       ],
       "implementationNote": "Bounded original files and manifest plus pending job seal atomically. Stable delivery identity, host callback dispatch, separate private inspection and lifecycle fencing preserve the admission capture. Production/regional and real delivery acceptance remain open. Actual local SQLite confirmation/provider stores survived restart with the exact large attachment, manifest/destination and original admission. Lost-response recovery made two provider attempts with one simulated downstream commit; stale settlement was refused.",
       "id": "REQ-PRODUCT-ORDER-CONFIRMATION",
       "verificationIds": [
-        "VERIFY-PRODUCT-ORDER-CONFIRMATION"
+        "VERIFY-PRODUCT-ORDER-CONFIRMATION",
+        "VERIFY-PRODUCT-TRANSACTION-RECOVERY"
       ]
     },
     {
@@ -11030,6 +11046,22 @@
         "packages/notabenda-cf/test/consent-cli-delivery.test.mjs",
         "site/test/consent-notice-files.test.mjs",
         "docs/verification/consent-notice-files.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TRANSACTION-RECOVERY",
+      "requirementIds": [
+        "REQ-PRODUCT-EVIDENCE-LIFECYCLE",
+        "REQ-PRODUCT-CONTRACT-ACTIONS",
+        "REQ-PRODUCT-ORDER-CONFIRMATION",
+        "REQ-PRODUCT-PAID-ORDER-ARCHIVES"
+      ],
+      "status": "automated",
+      "expected": "Optional local Wrangler SQLite exercise restores eight declaration/order contexts from a pre-delivery KV snapshot while an independent provider retains its history. Verify default-closed access, later hold-first replay, restart-persistent purge, physical event/blob deletion, actual retired admission refusal before host decisions, exact surviving receipts/chunked files, persisted uncertainty and stable-ID retries: nine provider jobs, eighteen attempts, nine commits. Trusted fixture journal and simulated provider only; no all-family or production acceptance claim.",
+      "testRefs": [
+        "scripts/check-transaction-recovery.mjs",
+        "scripts/fixtures/transaction-recovery-worker.mjs",
+        "docs/verification/transaction-recovery.md"
       ]
     }
   ],
