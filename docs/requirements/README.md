@@ -32,6 +32,8 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | TR | [REQ-TR-BASIS](#req-tr-basis) | Selected items: planned |
 | PLATFORM | [REQ-GOOGLE-MODE](#req-google-mode), [REQ-GOOGLE-CMP](#req-google-cmp) | Selected items: partial, planned |
 | PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice), [REQ-PRODUCT-GUARANTEE-NOTICE](#req-product-guarantee-notice), [REQ-PRODUCT-PAID-ORDER-ARCHIVES](#req-product-paid-order-archives), [REQ-PRODUCT-ORDER-CONFIRMATION](#req-product-order-confirmation), [REQ-PRODUCT-STORAGE-EXCEPTIONS](#req-product-storage-exceptions), [REQ-PRODUCT-LOCALIZATION](#req-product-localization), [REQ-PRODUCT-AGENT-INTEGRATION](#req-product-agent-integration), [REQ-PRODUCT-COMPLIANCE-MAP](#req-product-compliance-map), [REQ-PRODUCT-CARTRIDGES](#req-product-cartridges), [REQ-PRODUCT-WORKSPACE-OVERVIEW](#req-product-workspace-overview), [REQ-PRODUCT-DRAFT-PREVIEW](#req-product-draft-preview), [REQ-PRODUCT-PACK-CONNECTION](#req-product-pack-connection), [REQ-PRODUCT-CONSENT-AUTHORING](#req-product-consent-authoring), [REQ-PRODUCT-PRIVACY-PACKS](#req-product-privacy-packs), [REQ-PRODUCT-PUBLICATION-CHECK](#req-product-publication-check), [REQ-PRODUCT-CONSUMER-PACKS](#req-product-consumer-packs), [REQ-PRODUCT-SPECIALIST-PACKS](#req-product-specialist-packs), [REQ-PRODUCT-RIGHTS-AUTHORING](#req-product-rights-authoring), [REQ-PRODUCT-RIGHTS-LOCALIZATION](#req-product-rights-localization), [REQ-PRODUCT-STORAGE-AUTHORING](#req-product-storage-authoring), [REQ-PRODUCT-CONNECTION-INSPECTION](#req-product-connection-inspection), [REQ-PRODUCT-CF-RECOVERY-REHEARSAL](#req-product-cf-recovery-rehearsal), [REQ-PRODUCT-TERMS-ADAPTERS](#req-product-terms-adapters), [REQ-PRODUCT-PACK-EDUCATION](#req-product-pack-education), [REQ-PRODUCT-STORAGE-LOCALIZATION](#req-product-storage-localization), [REQ-PRODUCT-RELEASE-CANDIDATE](#req-product-release-candidate), [REQ-PRODUCT-RECORDING-INSPECTION](#req-product-recording-inspection), [REQ-PRODUCT-AGENT-HANDOFF](#req-product-agent-handoff), [REQ-PRODUCT-AUTHORED-PREVIEW](#req-product-authored-preview), [REQ-PRODUCT-PROCESSING-LOCALIZATION](#req-product-processing-localization), [REQ-PRODUCT-SETUP-SESSION](#req-product-setup-session), [REQ-PRODUCT-SERVICE-LOCALIZATION](#req-product-service-localization), [REQ-PRODUCT-INDIRECT-LOCALIZATION](#req-product-indirect-localization), [REQ-PRODUCT-CF-REMOTE-RECOVERY](#req-product-cf-remote-recovery), [REQ-PRODUCT-TERMS-CONNECTION](#req-product-terms-connection), [REQ-PRODUCT-CONSENT-REHEARSAL](#req-product-consent-rehearsal), [REQ-PRODUCT-DOCS-SEARCH](#req-product-docs-search), [REQ-PRODUCT-EMBED-LOCALIZATION](#req-product-embed-localization), [REQ-PRODUCT-TERMS-AUTHORING](#req-product-terms-authoring), [REQ-PRODUCT-TERMS-HISTORY](#req-product-terms-history), [REQ-PRODUCT-CONTRACT-LOCALIZATION](#req-product-contract-localization), [REQ-PRODUCT-PRIVACY-CHOICE-LINK](#req-product-privacy-choice-link), [REQ-PRODUCT-CONFIG-SOURCES](#req-product-config-sources), [REQ-PRODUCT-CONSENT-NOTICE-FILES](#req-product-consent-notice-files) | Selected items: implemented, partial |
+| US-OR | [REQ-US-OR-GPC](#req-us-or-gpc) | Selected items: partial |
+| US-MN | [REQ-US-MN-GPC](#req-us-mn-gpc) | Selected items: partial |
 
 ## Individual requirements
 
@@ -3073,6 +3075,58 @@ Generate an exact native consent notice from the final public legal release, emi
 
 **Code/test references:** [packages/notabenda/src/consent-release-files.ts](../../packages/notabenda/src/consent-release-files.ts), [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [packages/notabenda/src/release-files.ts](../../packages/notabenda/src/release-files.ts), [examples/static/choices-build.mjs](../../examples/static/choices-build.mjs), [docs/CONSENT-EVIDENCE.md](../../docs/CONSENT-EVIDENCE.md), [docs/RELEASES.md](../../docs/RELEASES.md), [site/navigation.mjs](../../site/navigation.mjs), [examples/recorded-cookies/host.mjs](../../examples/recorded-cookies/host.mjs), [examples/recorded-cookies/workspace.mjs](../../examples/recorded-cookies/workspace.mjs), [examples/recorded-cookies/worker.mjs](../../examples/recorded-cookies/worker.mjs), [examples/recorded-cookies/README.md](../../examples/recorded-cookies/README.md), [packages/notabenda/test/consent-release-files.test.mjs](../../packages/notabenda/test/consent-release-files.test.mjs), [packages/notabenda/test/consent-notice-cli.test.mjs](../../packages/notabenda/test/consent-notice-cli.test.mjs), [packages/notabenda-cf/test/consent-cli-delivery.test.mjs](../../packages/notabenda-cf/test/consent-cli-delivery.test.mjs), [site/test/consent-notice-files.test.mjs](../../site/test/consent-notice-files.test.mjs), [docs/verification/consent-notice-files.md](../../docs/verification/consent-notice-files.md), [packages/notabenda-cf/test/recorded-cookie-application.test.mjs](../../packages/notabenda-cf/test/recorded-cookie-application.test.mjs), [scripts/check-recorded-cookie-runtime.mjs](../../scripts/check-recorded-cookie-runtime.mjs), [docs/verification/recorded-cookie-application.md](../../docs/verification/recorded-cookie-application.md)
 
+<a id="req-us-or-gpc"></a>
+
+### REQ-US-OR-GPC — Oregon universal opt-out handling
+
+Honor applicable universal opt-out signals for sale and targeted advertising and provide a usable public opt-out route.
+
+**Applies when:** The current OCPA applies to the controller and processing, and a qualifying signal is received.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Oregon DOJ privacy law FAQs for businesses](https://www.doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses/) — Consumer Privacy Rights: universal opt-out commencement; Processing Consumer Personal Data: controller obligations and separate prohibitions (read; [SRC-US-OR-FAQ](SOURCES.md#src-us-or-faq)); [Oregon DOJ universal opt-out announcement, 28 January 2026](https://www.doj.state.or.us/media-home/news-media-releases/oregon-doj-highlights-new-universal-opt-out-tool-on-data-privacy-day/) — 28 January 2026 announcement: universal opt-outs from 1 January 2026; sale and targeted-advertising context (read; [SRC-US-OR-UOOM](SOURCES.md#src-us-or-uoom)).
+
+**Features:** [FEAT-US-CHOICES](../FEATURES.md#feat-us-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-SETUP](../FEATURES.md#feat-setup).
+
+<a id="verify-us-or-mn-signal-review"></a>
+
+**VERIFY-US-OR-MN-SIGNAL-REVIEW (automated):** Shared setup/API/CLI/browser DOM guidance resolves to read primary sources and partial/unreviewed legal items; market interest and imported jurisdictions preserve explicit config and historical answers. Existing GPC gates block synthetic browser/server producers without login or receipt storage, ordinary cookie acceptance cannot bypass them, and signal absence cannot clear an independently retained restriction. No real-provider, full statutory, accessibility or production acceptance claim.
+
+**Timing:** Selected commencement date; applicability and exceptions require independent review.
+
+**Implementation boundary:** Source-linked setup and agent reviews use existing explicit browser/header processing restrictions. Market selection grants nothing and changes no policy. Actual account/downstream effects, retention and legal/operational acceptance remain host work.
+
+**Limits/open review:** DOJ guidance was read; current consolidated statute access was blocked. Review amendments, territorial scope, thresholds/exemptions including motor-vehicle entities, signal criteria and separate under-16/geolocation bans. A cookie choice cannot authorize prohibited processing.
+
+**Code/test references:** [packages/notabenda/src/privacy-signal-reviews.ts](../../packages/notabenda/src/privacy-signal-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [packages/notabenda/src/privacy-signals.ts](../../packages/notabenda/src/privacy-signals.ts), [packages/notabenda/src/privacy-signal-policy.ts](../../packages/notabenda/src/privacy-signal-policy.ts), [docs/PRIVACY-SIGNALS.md](../../docs/PRIVACY-SIGNALS.md), [packages/notabenda/test/privacy-signal-reviews.test.mjs](../../packages/notabenda/test/privacy-signal-reviews.test.mjs)
+
+<a id="req-us-mn-gpc"></a>
+
+### REQ-US-MN-GPC — Minnesota universal signals and conflicting settings
+
+Honor qualifying sale and targeted-advertising signals over conflicting settings; distinguish universal signals from authorized-agent requests and ordinary cookie choices.
+
+**Applies when:** The Minnesota Act applies to the controller and processing, subject to statutory scope, exemptions and the specified postsecondary-institution compliance date.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Minnesota Statutes section 325M.14, consumer rights](https://www.revisor.mn.gov/statutes/cite/325M.14) — Section 325M.14 subdivisions 2(d), 3(a)-(d), 4(b)-(c), 4(h), and effective-date note (read; [SRC-US-MN-RIGHTS](SOURCES.md#src-us-mn-rights)); [Minnesota AG controller structural obligations](https://www.ag.state.mn.us/Data-Privacy/Business/Controller/Structural-Obligations.asp) — Consumer Rights Request Portal; Controllers Must Honor Manual and Automatic Opt-Out Requests (read; [SRC-US-MN-STRUCTURAL](SOURCES.md#src-us-mn-structural)).
+
+**Features:** [FEAT-US-CHOICES](../FEATURES.md#feat-us-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-SETUP](../FEATURES.md#feat-setup).
+
+<a id="verify-us-or-mn-signal-review"></a>
+
+**VERIFY-US-OR-MN-SIGNAL-REVIEW (automated):** Shared setup/API/CLI/browser DOM guidance resolves to read primary sources and partial/unreviewed legal items; market interest and imported jurisdictions preserve explicit config and historical answers. Existing GPC gates block synthetic browser/server producers without login or receipt storage, ordinary cookie acceptance cannot bypass them, and signal absence cannot clear an independently retained restriction. No real-provider, full statutory, accessibility or production acceptance claim.
+
+**Timing:** Selected commencement date; applicability and exceptions require independent review.
+
+**Implementation boundary:** Source-linked setup and agent reviews use existing explicit browser/header processing restrictions. Market selection grants nothing and changes no policy. Actual account/downstream effects, retention and legal/operational acceptance remain host work.
+
+**Limits/open review:** Review signal criteria, other-state recognition, residency and the documented-fraud exception. No opt-out authentication prerequisite is implemented. Specified postsecondary institutions have a July 2029 compliance date. Broader profiling, response/appeal duties and a separate confirmation/re-opt-in workflow remain outside this mechanism.
+
+**Code/test references:** [packages/notabenda/src/privacy-signal-reviews.ts](../../packages/notabenda/src/privacy-signal-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [packages/notabenda/src/privacy-signals.ts](../../packages/notabenda/src/privacy-signals.ts), [packages/notabenda/src/privacy-signal-policy.ts](../../packages/notabenda/src/privacy-signal-policy.ts), [docs/PRIVACY-SIGNALS.md](../../docs/PRIVACY-SIGNALS.md), [packages/notabenda/test/privacy-signal-reviews.test.mjs](../../packages/notabenda/test/privacy-signal-reviews.test.mjs)
+
 ## Research gaps
 
 ### GAP-SG — SG
@@ -3093,7 +3147,7 @@ Generate an exact native consent notice from the final public legal release, emi
 
 ### GAP-US-STATES — US-OTHER
 
-**not-researched:** Individually research remaining state laws, thresholds/exemptions, effective amendments, sensitive/health/child rules and universal signals; no blanket state-law support claim.
+**not-researched:** Continue individual research beyond selected CA/CO/CT/VA and Oregon/Minnesota signal items. Verify remaining state thresholds/exemptions, current amendments, sensitive/health/child rules and signal criteria; no blanket state-law support claim.
 
 **Planned features:** [FEAT-US-CHOICES](../FEATURES.md#feat-us-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions).
 
@@ -3120,3 +3174,11 @@ Generate an exact native consent notice from the final public legal release, emi
 **Planned features:** [FEAT-TERMS](../FEATURES.md#feat-terms), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents).
 
 **Starting sources:** [SRC-EU-GUARANTEE-REG](SOURCES.md#src-eu-guarantee-reg), [SRC-EU-GUARANTEE-ASSETS](SOURCES.md#src-eu-guarantee-assets), [SRC-EU-GUARANTEE-GUIDE](SOURCES.md#src-eu-guarantee-guide).
+
+### GAP-US-OR-STATUTE — US-OR
+
+**needs-source-verification:** Retrieve current consolidated Oregon provisions and amendments, assess applicability and universal-signal criteria, and review separate child/geolocation prohibitions. DOJ guidance supports only the selected initial findings.
+
+**Planned features:** [FEAT-US-CHOICES](../FEATURES.md#feat-us-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions).
+
+**Starting sources:** [SRC-US-OR-STATUTE](SOURCES.md#src-us-or-statute), [SRC-US-OR-FAQ](SOURCES.md#src-us-or-faq).

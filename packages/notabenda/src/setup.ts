@@ -19,6 +19,7 @@ import type {CatalogSelectionRevision} from './catalog-review.js';
 import {normalizeSetupCatalogSelections} from './catalog-selection.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
 import {scopeGuardFields} from './scope-guard-policy.js';
+import {getPrivacySignalReviews} from './privacy-signal-reviews.js';
 import type {ScopeGuardFacts,ScopeGuardFact} from './scope-guard-policy.js';
 import {createStarterConfig} from './starter.js';
 import {toPublicConfig,validateSiteConfig} from './config.js';
@@ -86,6 +87,8 @@ export const setupMarkets=[
   {id:'US-CA',label:'California',requirements:['REQ-US-CA-CHOICES','REQ-US-CA-GPC','REQ-US-CA-UI']},
   {id:'US-CO',label:'Colorado',requirements:['REQ-US-CO-GPC']},
   {id:'US-CT',label:'Connecticut',requirements:['REQ-US-CT-GPC']},
+  {id:'US-OR',label:'Oregon',requirements:['REQ-US-OR-GPC']},
+  {id:'US-MN',label:'Minnesota',requirements:['REQ-US-MN-GPC']},
   {id:'US-VA',label:'Virginia',requirements:['REQ-US-VA-RIGHTS']},
   {id:'TR',label:'Türkiye',requirements:['REQ-TR-BASIS']},
   {id:'other',label:'Other / not sure',requirements:[]},
@@ -127,6 +130,13 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
   if(!answers.markets.length||answers.markets.includes('other'))reviewItems.push('Determine applicable jurisdictions from establishment, audience, targeting and practices; this market list is incomplete and is not an applicability decision.');
   for(const market of setupMarkets)if(answers.markets.includes(market.id))recommendations.push({id:'market-'+market.id,status:'review',title:market.label+' applicability review',reason:'Selected coverage interest. Check thresholds, territorial scope, exceptions and effective dates in the catalog. Country-specific rules and unlisted jurisdictions may also apply.',configPaths:['jurisdictions'],requirementIds:market.requirements,guide:'requirements'});
   // Coverage interest advises a reviewed selection; it never changes consent settings.
+  // @requirements REQ-US-OR-GPC REQ-US-MN-GPC
+  const signalReviews=getPrivacySignalReviews();
+  for(const review of signalReviews.items){
+    if(!answers.markets.includes(review.marketId)&&!config.jurisdictions.includes(review.marketId))continue;
+    recommendations.push({id:'privacy-signal-'+review.marketId,status:'review',title:review.title,reason:review.summary+' Source check '+review.checkedOn+'; research revision '+signalReviews.revision+', legally unreviewed. Setup has not changed your policy.',configPaths:signalReviews.configPaths,requirementIds:review.requirementIds,guide:'privacy-signals'});
+    reviewItems.push(...[...review.applicabilityChecks,...review.limits,...signalReviews.hostChecks].map(item=>review.label+': '+item));
+  }
   if(answers.markets.includes('IE')||config.jurisdictions.includes('IE')){
     recommendations.push({id:'irish-grant-expiry',status:'review',title:'Review how long grants remain usable',reason:config.consent?.grantExpiryPolicy?'The explicit six-calendar-month grant cap is present. Verify the shorter configured lifetime, cookie disclosures and actual service shutdown. Refusal memory, prompt suppression and evidence retention use separate clocks.':'The DPC guidance describes a six-month default for reaffirming remembered consent. You can explicitly select consent.grantExpiryPolicy with profile ie-dpc-six-month-default and version 1 to cap grants at the earlier of their configured lifetime and six UTC calendar months. Longer storage needs an objective case-specific assessment; a saved note does not qualify or enable it. Setup has not selected the policy.',configPaths:['consent.grantExpiryPolicy','consent.grantLifetimeDays','consent.refusalLifetimeDays'],requirementIds:['REQ-IE-CONSENT-DURATION'],guide:'regional-prompts'});
     reviewItems.push('Review Irish remembered-consent duration and actual cookie/storage lifetimes. Any longer-period justification stays a private assessment; the supported cap has no automatic extension switch.');

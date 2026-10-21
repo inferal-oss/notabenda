@@ -143,6 +143,8 @@ When JavaScript or storage is unavailable, optional integrations remain blocked 
 
 ## 4. Consent and enforcement
 
+Selected Oregon/Minnesota universal-signal research now adds dated, source-linked reviews to setup and agent instructions. It reuses explicit GPC mechanisms without automatic applicability or runtime activation; historical questionnaire answers remain readable. Complete statutory review, recognized-mechanism assessment and actual downstream acceptance remain open. See [setup and agent handoff](PRIVACY-SIGNALS.md#setup-and-agent-handoff).
+
 The initial [regional solicitation guard](REGIONAL-PROMPTS.md) implements explicit Italian repeat-prompt policy mechanics, including separate suppression memory, exact declared material-change transitions and policy-bound notice copy. This starts regional behavior without inferring applicability or claiming a complete reviewed regional pack.
 
 Persist decisions independently from receipt delivery. UI drafts are not active consent. Track `unknown`, `granted`, `denied`, `withdrawn`, and `expired` where meaningful; do not turn absence or failed parsing into permission.

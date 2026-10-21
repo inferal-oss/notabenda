@@ -89,14 +89,36 @@ The controller's latch is **not** durable opt-out retention. A new controller wi
 
 ## Source-linked scope
 
-The initial research connects three separate items, all still **partial and legally unreviewed**:
+The catalog records separate jurisdiction items, all still **partial and legally unreviewed**:
 
 - [California §7025](https://www.cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf), pp. 44–48, covers qualifying signals, conflicts, associated profiles/known consumers, status display and prior opt-outs. The browser gate and status implement only part of that workflow. [REQ-US-CA-GPC](requirements/README.md#req-us-ca-gpc).
 - [Colorado's current recognized-mechanism guidance](https://coag.gov/opt-out/) identifies GPC for covered sale/targeted-advertising opt-outs and calls for a privacy-policy explanation. Thresholds, actual processing and downstream compliance remain separate. [REQ-US-CO-GPC](requirements/README.md#req-us-co-gpc).
 - [Connecticut's official FAQs](https://portal.ct.gov/en/ag/sections/privacy/the-connecticut-data-privacy-act) address qualifying signals and conflicts with previous choices. Residency and the rest of the controller's obligations are not inferred here. [REQ-US-CT-GPC](requirements/README.md#req-us-ct-gpc).
+- [Oregon DOJ's business FAQs](https://www.doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses/) and [January 2026 announcement](https://www.doj.state.or.us/media-home/news-media-releases/oregon-doj-highlights-new-universal-opt-out-tool-on-data-privacy-day/) identify mandatory universal opt-outs from 1 January 2026. Review sale/targeted-advertising flows and a clear public opt-out route. Cookie controls alone may be insufficient. Current consolidated statute access was blocked; separate child/geolocation prohibitions and applicability still need review. [REQ-US-OR-GPC](requirements/README.md#req-us-or-gpc).
+- [Minnesota §325M.14](https://www.revisor.mn.gov/statutes/cite/325M.14), subdivisions 3 and 4(h), addresses signal criteria, conflicts and opt-out authentication. Its general commencement is 31 July 2025, with a later date for specified postsecondary institutions. Assess scope and the recognition route separately. [REQ-US-MN-GPC](requirements/README.md#req-us-mn-gpc).
 
 Protocol parsing follows the current [W3C editor draft](https://w3c.github.io/gpc/), including boolean browser observation and header handling. That living draft is recorded separately from legal sources. Older implementation examples are not treated as current legal rules.
 
 Run `npm run dev` and open the [fictional demonstration](http://127.0.0.1:4178/privacy-signals). Its explicit simulation adds a fixture signal in the demo URL without changing browser settings. Both optional integrations make first-party sample requests only. The [verification record](verification/privacy-signals-browser.md) distinguishes simulated browser flows from automated navigator/header and ledger tests.
 
 For explicit manual actions or host-retained restrictions, see [recorded processing opt-outs](PROCESSING-CHOICES.md). Its controller composes with GPC in service eligibility, but the GPC reader does not automatically submit a persistent opt-out. The host must observe, bind and record the applicable source and propagate it to associated contexts.
+
+## Setup and agent handoff
+
+Selecting Oregon or Minnesota in setup, or reviewing an inventory that already lists `US-OR` or `US-MN`, adds a regional review. It leaves `jurisdictions`, `privacySignals` and service classifications unchanged. Even an answer of “no” to the signal question does not suppress a selected market's review. Resolve that assessment explicitly.
+
+```sh
+npx @notabenda/core describe processing-opt-outs --json
+```
+
+The installed reference's `privacySignalReviews` contains the research revision, check dates, selected effective dates, requirement/source IDs, activity mappings, applicability questions and host checks. These are advisory metadata, outside `SiteConfig`. They are not jurisdiction presets or a freshness guarantee. The questionnaire remains version 8; these additional market choices and independently versioned research do not change existing questions or answers. Resuming an old report preserves its answers and regenerates advice from the installed version. Keep the original report when its historical advice matters.
+
+For a site assessment:
+
+1. Establish actual applicability, processing and the public opt-out route. Use [project discovery](DISCOVERY.md) to find additional integrations; matches still require review.
+2. Explicitly choose policy activities and classify every service. Do not copy California's `sharing` category into another state's policy solely from a press release's wording.
+3. Apply the header helper before server producers run, and connect the browser controller before optional client producers. Honor a signal without waiting for login or a recorded-consent backend. The authenticated cookie-evidence example is a separate integration.
+4. Preserve independent account/downstream restrictions when no signal is present. Test actual provider calls, exports and associated accounts; a browser status or saved receipt is insufficient.
+5. Test cookie accept-all while GPC is active, reload with existing restrictions, and backend failure. Cookie acceptance cannot remove the restriction. Minnesota's separate conflicting-settings confirmation provision is not implemented as re-opt-in.
+
+The [verification record](verification/privacy-signal-reviews.md) describes automated synthetic checks and the remaining legal and deployment work.

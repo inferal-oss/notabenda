@@ -1,3 +1,4 @@
+// @requirements REQ-US-OR-GPC REQ-US-MN-GPC
 import type {ProcessingActivity} from './types.js';
 import type {ConsentRuntimeInventory} from './consent-runtime-config.js';
 

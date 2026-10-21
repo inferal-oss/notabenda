@@ -34,7 +34,8 @@
         "Optional expiring tab-local setup recovery, including unfinished proposals and storage-change review, with clear control and last recoverable copy after failed writes.",
         "Try a prepared cookie draft with real native controls and disposable simulated services before connecting providers.",
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
-        "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks."
+        "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
+        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -146,7 +147,8 @@
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/types.ts",
         "packages/notabenda-cf/src/terms-settings.ts",
-        "examples/agreements/example.mjs"
+        "examples/agreements/example.mjs",
+        "packages/notabenda/src/privacy-signal-reviews.ts"
       ]
     },
     {
@@ -603,7 +605,8 @@
         "Optional declared UK statistical/appearance objection profiles, separate from consent, with atomic browser preferences and revision-bound resume; qualification remains host review.",
         "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
-        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit."
+        "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
+        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -628,7 +631,10 @@
         "packages/notabenda/src/controls.ts",
         "packages/notabenda/src/technology-collection.ts",
         "packages/notabenda/src/technology.css",
-        "packages/notabenda/src/release-files.ts"
+        "packages/notabenda/src/release-files.ts",
+        "packages/notabenda/src/privacy-signal-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts"
       ]
     },
     {
@@ -641,7 +647,8 @@
         "Notice-at-collection entry points and relevant sensitive-data restrictions.",
         "Server-readable restrictions and adapters to stop corresponding downstream processing.",
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
-        "Explicit script-free privacy-choice return link, optional California title/icon presentation, source provenance and separate host destination/placement checklist."
+        "Explicit script-free privacy-choice return link, optional California title/icon presentation, source provenance and separate host destination/placement checklist.",
+        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation."
       ],
       "implementationRefs": [
         "packages/notabenda/src/privacy-signals.ts",
@@ -679,7 +686,9 @@
         "packages/notabenda/src/styles.css",
         "packages/notabenda/scripts/consent-styles.mjs",
         "examples/processing-choices/build.mjs",
-        "site/privacy-choice-preview.mjs"
+        "site/privacy-choice-preview.mjs",
+        "packages/notabenda/src/privacy-signal-reviews.ts",
+        "packages/notabenda/src/setup.ts"
       ]
     },
     {
@@ -2658,6 +2667,51 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "Primary parser reference for YAML 1.2 core scalars, document errors, AST visitors, aliases and formatting. Software reference only; no legal rule."
+    },
+    {
+      "id": "SRC-US-OR-FAQ",
+      "title": "Oregon DOJ privacy law FAQs for businesses",
+      "url": "https://www.doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses/",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Selected universal-opt-out commencement, controller obligations and separate child/geolocation restrictions read; applicability guidance includes a motor-vehicle manufacturer/affiliate exception. Not a full statutory review."
+    },
+    {
+      "id": "SRC-US-OR-UOOM",
+      "title": "Oregon DOJ universal opt-out announcement, 28 January 2026",
+      "url": "https://www.doj.state.or.us/media-home/news-media-releases/oregon-doj-highlights-new-universal-opt-out-tool-on-data-privacy-day/",
+      "kind": "official-explanation",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Confirms January 2026 commencement and sale/targeted-advertising context. The announcement is explanatory; its informal sharing wording does not create a new activity classification."
+    },
+    {
+      "id": "SRC-US-OR-STATUTE",
+      "title": "Oregon Revised Statutes, chapter 646A",
+      "url": "https://www.oregonlegislature.gov/bills_laws/ors/ors646a.html",
+      "kind": "law",
+      "checkedOn": "2026-10-20",
+      "access": "blocked",
+      "note": "Current consolidated page returned HTTP 403 on the check date. No substantive requirement relies on unread text; retrieve and review the applicable current sections and amendments separately."
+    },
+    {
+      "id": "SRC-US-MN-RIGHTS",
+      "title": "Minnesota Statutes section 325M.14, consumer rights",
+      "url": "https://www.revisor.mn.gov/statutes/cite/325M.14",
+      "kind": "law",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Selected subdivisions 2(d), 3 and 4(h), and effective-date note read. Current codification is 325M.14. Signal criteria, conflicting settings, other-state recognition and authentication exceptions require host assessment; this is not a review of the entire Act."
+    },
+    {
+      "id": "SRC-US-MN-STRUCTURAL",
+      "title": "Minnesota AG controller structural obligations",
+      "url": "https://www.ag.state.mn.us/Data-Privacy/Business/Controller/Structural-Obligations.asp",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-20",
+      "access": "read",
+      "note": "Selected secure/reliable request means, no-new-account rule and manual/automatic opt-outs read. Official explanatory guidance does not replace the statute or establish controller applicability."
     }
   ],
   "jurisdictions": [
@@ -2942,6 +2996,22 @@
         "REQ-PRODUCT-PRIVACY-CHOICE-LINK",
         "REQ-PRODUCT-CONFIG-SOURCES",
         "REQ-PRODUCT-CONSENT-NOTICE-FILES"
+      ]
+    },
+    {
+      "id": "US-OR",
+      "status": "initial-research",
+      "coverage": "Selected universal-signal research and advisory setup only; no production-supported jurisdiction pack.",
+      "requirementIds": [
+        "REQ-US-OR-GPC"
+      ]
+    },
+    {
+      "id": "US-MN",
+      "status": "initial-research",
+      "coverage": "Selected universal-signal research and advisory setup only; no production-supported jurisdiction pack.",
+      "requirementIds": [
+        "REQ-US-MN-GPC"
       ]
     }
   ],
@@ -9272,6 +9342,96 @@
         "docs/verification/recorded-cookie-application.md"
       ],
       "implementationNote": "Build-time helpers reuse full release verification and the existing notice factory. CLI native scope builds support all configuration formats; retained notice files remain bounded ordinary JSON. Notice-ID paths avoid copy-revision collisions under an unchanged artifact. Tests cover exact bytes, validly rehashed tampering, stale-alias guards, no accessor execution and actual CLI-to-ledger-to-runtime receipt gating in a local synthetic store."
+    },
+    {
+      "id": "REQ-US-OR-GPC",
+      "jurisdiction": "US-OR",
+      "title": "Oregon universal opt-out handling",
+      "kind": "regulator-interpretation",
+      "summary": "Honor applicable universal opt-out signals for sale and targeted advertising and provide a usable public opt-out route.",
+      "appliesWhen": "The current OCPA applies to the controller and processing, and a qualifying signal is received.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-US-OR-FAQ",
+          "locator": "Consumer Privacy Rights: universal opt-out commencement; Processing Consumer Personal Data: controller obligations and separate prohibitions"
+        },
+        {
+          "sourceId": "SRC-US-OR-UOOM",
+          "locator": "28 January 2026 announcement: universal opt-outs from 1 January 2026; sale and targeted-advertising context"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-REGIONS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-US-OR-MN-SIGNAL-REVIEW"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": "2026-01-01",
+      "timingNote": "Selected commencement date; applicability and exceptions require independent review.",
+      "caveats": "DOJ guidance was read; current consolidated statute access was blocked. Review amendments, territorial scope, thresholds/exemptions including motor-vehicle entities, signal criteria and separate under-16/geolocation bans. A cookie choice cannot authorize prohibited processing.",
+      "implementationRefs": [
+        "packages/notabenda/src/privacy-signal-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/privacy-signals.ts",
+        "packages/notabenda/src/privacy-signal-policy.ts",
+        "docs/PRIVACY-SIGNALS.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-signal-reviews.test.mjs"
+      ],
+      "implementationNote": "Source-linked setup and agent reviews use existing explicit browser/header processing restrictions. Market selection grants nothing and changes no policy. Actual account/downstream effects, retention and legal/operational acceptance remain host work."
+    },
+    {
+      "id": "REQ-US-MN-GPC",
+      "jurisdiction": "US-MN",
+      "title": "Minnesota universal signals and conflicting settings",
+      "kind": "law",
+      "summary": "Honor qualifying sale and targeted-advertising signals over conflicting settings; distinguish universal signals from authorized-agent requests and ordinary cookie choices.",
+      "appliesWhen": "The Minnesota Act applies to the controller and processing, subject to statutory scope, exemptions and the specified postsecondary-institution compliance date.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-US-MN-RIGHTS",
+          "locator": "Section 325M.14 subdivisions 2(d), 3(a)-(d), 4(b)-(c), 4(h), and effective-date note"
+        },
+        {
+          "sourceId": "SRC-US-MN-STRUCTURAL",
+          "locator": "Consumer Rights Request Portal; Controllers Must Honor Manual and Automatic Opt-Out Requests"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-REGIONS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-US-OR-MN-SIGNAL-REVIEW"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": "2025-07-31",
+      "timingNote": "Selected commencement date; applicability and exceptions require independent review.",
+      "caveats": "Review signal criteria, other-state recognition, residency and the documented-fraud exception. No opt-out authentication prerequisite is implemented. Specified postsecondary institutions have a July 2029 compliance date. Broader profiling, response/appeal duties and a separate confirmation/re-opt-in workflow remain outside this mechanism.",
+      "implementationRefs": [
+        "packages/notabenda/src/privacy-signal-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/privacy-signals.ts",
+        "packages/notabenda/src/privacy-signal-policy.ts",
+        "docs/PRIVACY-SIGNALS.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-signal-reviews.test.mjs"
+      ],
+      "implementationNote": "Source-linked setup and agent reviews use existing explicit browser/header processing restrictions. Market selection grants nothing and changes no policy. Actual account/downstream effects, retention and legal/operational acceptance remain host work."
     }
   ],
   "verification": [
@@ -11105,6 +11265,19 @@
         "scripts/check-recorded-cookie-runtime.mjs",
         "docs/verification/recorded-cookie-application.md"
       ]
+    },
+    {
+      "id": "VERIFY-US-OR-MN-SIGNAL-REVIEW",
+      "requirementIds": [
+        "REQ-US-OR-GPC",
+        "REQ-US-MN-GPC"
+      ],
+      "status": "automated",
+      "expected": "Shared setup/API/CLI/browser DOM guidance resolves to read primary sources and partial/unreviewed legal items; market interest and imported jurisdictions preserve explicit config and historical answers. Existing GPC gates block synthetic browser/server producers without login or receipt storage, ordinary cookie acceptance cannot bypass them, and signal absence cannot clear an independently retained restriction. No real-provider, full statutory, accessibility or production acceptance claim.",
+      "testRefs": [
+        "packages/notabenda/test/privacy-signal-reviews.test.mjs",
+        "docs/verification/privacy-signal-reviews.md"
+      ]
     }
   ],
   "researchBacklog": [
@@ -11145,7 +11318,7 @@
         "FEAT-REGIONS"
       ],
       "status": "not-researched",
-      "question": "Individually research remaining state laws, thresholds/exemptions, effective amendments, sensitive/health/child rules and universal signals; no blanket state-law support claim."
+      "question": "Continue individual research beyond selected CA/CO/CT/VA and Oregon/Minnesota signal items. Verify remaining state thresholds/exemptions, current amendments, sensitive/health/child rules and signal criteria; no blanket state-law support claim."
     },
     {
       "id": "GAP-EU-NATIONAL",
@@ -11184,6 +11357,20 @@
       ],
       "status": "needs-source-verification",
       "question": "Resolve the official SVG/reference-colour discrepancy and independently review PDF text equivalents and actual digital legibility/QR usability. Do not silently recolour supplied files or claim statutory design conformity from source hashes."
+    },
+    {
+      "id": "GAP-US-OR-STATUTE",
+      "jurisdiction": "US-OR",
+      "sourceIds": [
+        "SRC-US-OR-STATUTE",
+        "SRC-US-OR-FAQ"
+      ],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-REGIONS"
+      ],
+      "status": "needs-source-verification",
+      "question": "Retrieve current consolidated Oregon provisions and amendments, assess applicability and universal-signal criteria, and review separate child/geolocation prohibitions. DOJ guidance supports only the selected initial findings."
     }
   ]
 }

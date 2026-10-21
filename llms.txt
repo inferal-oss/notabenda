@@ -6,6 +6,8 @@ Developer preview: packages have not been published to npm. The package names ar
 
 Use the installed package documentation and types for its version. Discovery finds candidates for review; it never adds services or grants permission. Keep private reports and source archives out of public output. The host supplies backend authorization. No complete jurisdiction pack is production-supported; passing validation is not legal review.
 
+For processing opt-outs, installed `notabenda describe processing-opt-outs --json` includes `privacySignalReviews`: selected Oregon/Minnesota sources, dates, scope questions and host checks. Market interest enables no policy. Honor assessed browser/header signals without waiting for login or receipt storage; preserve independent account/downstream restrictions when the signal is absent. See https://notabenda.org/guide/privacy-signals/index.md#setup-and-agent-handoff.
+
 Browse all twenty packs in five visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
 
 ## Skill

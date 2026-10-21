@@ -1575,3 +1575,53 @@ Archived first-party documentation supplies script.exclusions.js and a chained-e
 **Type:** platform-documentation. **Checked:** 2026-10-20. **Access:** read.
 
 Primary parser reference for YAML 1.2 core scalars, document errors, AST visitors, aliases and formatting. Software reference only; no legal rule.
+
+<a id="src-us-or-faq"></a>
+
+## SRC-US-OR-FAQ
+
+[Oregon DOJ privacy law FAQs for businesses](https://www.doj.state.or.us/consumer-protection/for-businesses/privacy-law-faqs-for-businesses/)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-20. **Access:** read.
+
+Selected universal-opt-out commencement, controller obligations and separate child/geolocation restrictions read; applicability guidance includes a motor-vehicle manufacturer/affiliate exception. Not a full statutory review.
+
+<a id="src-us-or-uoom"></a>
+
+## SRC-US-OR-UOOM
+
+[Oregon DOJ universal opt-out announcement, 28 January 2026](https://www.doj.state.or.us/media-home/news-media-releases/oregon-doj-highlights-new-universal-opt-out-tool-on-data-privacy-day/)
+
+**Type:** official-explanation. **Checked:** 2026-10-20. **Access:** read.
+
+Confirms January 2026 commencement and sale/targeted-advertising context. The announcement is explanatory; its informal sharing wording does not create a new activity classification.
+
+<a id="src-us-or-statute"></a>
+
+## SRC-US-OR-STATUTE
+
+[Oregon Revised Statutes, chapter 646A](https://www.oregonlegislature.gov/bills_laws/ors/ors646a.html)
+
+**Type:** law. **Checked:** 2026-10-20. **Access:** blocked.
+
+Current consolidated page returned HTTP 403 on the check date. No substantive requirement relies on unread text; retrieve and review the applicable current sections and amendments separately.
+
+<a id="src-us-mn-rights"></a>
+
+## SRC-US-MN-RIGHTS
+
+[Minnesota Statutes section 325M.14, consumer rights](https://www.revisor.mn.gov/statutes/cite/325M.14)
+
+**Type:** law. **Checked:** 2026-10-20. **Access:** read.
+
+Selected subdivisions 2(d), 3 and 4(h), and effective-date note read. Current codification is 325M.14. Signal criteria, conflicting settings, other-state recognition and authentication exceptions require host assessment; this is not a review of the entire Act.
+
+<a id="src-us-mn-structural"></a>
+
+## SRC-US-MN-STRUCTURAL
+
+[Minnesota AG controller structural obligations](https://www.ag.state.mn.us/Data-Privacy/Business/Controller/Structural-Obligations.asp)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-20. **Access:** read.
+
+Selected secure/reliable request means, no-new-account rule and manual/automatic opt-outs read. Official explanatory guidance does not replace the statute or establish controller applicability.
