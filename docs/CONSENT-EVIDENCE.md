@@ -19,7 +19,9 @@ The notice uses the native controls' wording, including the configured consent l
 
 To use the generated output, record `artifacts/{artifactId}.json` in the host archive, register the notice, then activate it for the trusted site and scope. Pass the same notice and runtime descriptor to the browser adapter. The host still supplies the authorized stream and receipt endpoints.
 
-For a custom build, create the notice and files together:
+### Custom build pipelines
+
+Create the notice and files together when using your own build script:
 
 ```js
 import {compileLegalDocuments, createConsentNoticeFiles} from '@notabenda/core/content';
@@ -34,17 +36,7 @@ const {notice, files} = createConsentNoticeFiles(build.artifact, {
 
 `createConsentNoticeFiles` verifies the full public release before deriving the notice. Its settings are bounded plain data with only `scopeId`, optional `wording` and optional `deliveryWindowSeconds`. The returned notice matches `createConsentNotice`; the files add a current alias and a hash-pinned copy. The release must fit the supported 128 KiB public archive and the notice must fit 32 KiB. The API does not sanitize untrusted rendered HTML or decide whether an old notice should be published.
 
-The original descriptor-only API remains available:
-
-```js
-import { compileLegalDocuments, createConsentNotice } from '@notabenda/core/content';
-
-const { artifact } = compileLegalDocuments(reviewedConfig);
-const notice = createConsentNotice(artifact, {
-  scopeId: 'cookie-choices',
-  deliveryWindowSeconds: 300,
-});
-```
+If your build owns its file layout, `createConsentNotice(artifact, settings)` returns just the descriptor.
 
 The notice pins the privacy/cookie HTML and structured-content hashes, version and effective date, material purpose/service scopes, grant/refusal lifetimes, delivery window, and default interface wording. Its ID hashes the entire descriptor. The material-scope digest is separate: changing CSS or a document's presentation produces a different notice/release without implying a different processing purpose.
 
@@ -130,20 +122,27 @@ The website’s `/demo/admin/choices` contains realistic fictional journeys. Pub
 
 ## Browser delivery and required permission
 
-```js
-import {createConsent, mountControls, ConsentEvidenceError} from '@notabenda/core';
+The generated `runtime` and `notice` below are parsed JSON from the same build. Load them before optional integrations and handle configuration-load failures by keeping those integrations blocked. The host provides the authorized bootstrap context and receipt transport.
 
-const consent = createConsent(config, undefined, {
-  evidence: {
+```js
+import {createConsentRuntime, mountControls} from '@notabenda/core/consent';
+import {requiredConsentEvidence, ConsentEvidenceError} from '@notabenda/core/consent/evidence';
+import '@notabenda/core/consent.css';
+
+const consent = createConsentRuntime(runtime, undefined, {
+  evidence: requiredConsentEvidence({
     notice,
     streamRef: authorizedBootstrap.streamRef,
     read: ({signal}) => hostTransport.readCurrentHead({signal}),
     write: (command, {signal}) => hostTransport.recordChoice(command, {signal}),
-  },
+  }),
 });
 mountControls(container, {consent});
-// Register cooperative optional service lifecycles as usual.
+// Register each optional service lifecycle before its requests can start.
 ```
+
+For an existing complete-config integration, `createConsent(publicSiteConfig, environment, {evidence})` retains its synchronous validation and accepts the receipt options directly. Its `evidence` value is the plain options object above, without the `requiredConsentEvidence` wrapper. Both paths use the same receipt protocol.
+
 
 `read` returns `ConsentHead`; `write` returns `{receipt, head}`. The transport must use the host's existing authorization/CSRF controls and map server `revision-conflict`, `stale-notice`, and `expired-command` responses to `ConsentEvidenceError` with that code. Other errors remain uncertain failures. A matching ID alone is insufficient: the controller checks the site, scope, stream digest, nonce, original action/time, notice/artifact/material-scope references, choices, revisions and expiry. These checks validate a response contract, not human identity.
 
@@ -157,7 +156,7 @@ Uncertain delivery retries the same nonce/body, with at most three automatic ret
 
 A revision conflict refreshes the head and asks for a fresh choice; it never rebases the grant. An explicit rejection can be sent while the head is unavailable and stops local services immediately, including when local persistence fails. Failed local grant persistence prevents grant delivery. Missing secure randomness prevents a remote command but cannot prevent local rejection. Permission expires at the earlier applicable local/server expiry, and the service timer observes server expiry too. UI messages distinguish checking, saving, failed delivery, stale notice and fresh-choice requirements; rejection stays available.
 
-Permission expiry and evidence retention are different. The host owns retention/erasure, access auditing, backup/restore and replay policy. No cleanup/export/erasure service is implemented yet. Do not delete individual events/heads/notices arbitrarily: they carry ordering and idempotence, and deletion can permit replay or break reads. Plan coordinated deletion and stream/capability retirement before production. Do not put raw requests, IP addresses, user agents, form bodies, or capability secrets into the ledger.
+Permission expiry and evidence retention are different. The host chooses schedules, authorization, backup/restore and replay policy. The optional [evidence export](EVIDENCE-EXPORT.md) and [lifecycle tools](EVIDENCE-LIFECYCLE.md) operate on explicitly authorized contexts; they do not fulfill privacy requests or retire host identities automatically. Use the coordinated lifecycle instead of deleting individual events, heads or notices: those records carry ordering and idempotence. Keep raw requests, IP addresses, user agents, form bodies and capability secrets out of the ledger.
 
 ## Verification and remaining work
 
@@ -165,4 +164,4 @@ Traceability: [REQ-PRODUCT-CONSENT-EVIDENCE](requirements/README.md#req-product-
 
 Tests cover exact notice/archive binding, canonical serialization, duplicate concurrent delivery, competing snapshots, old-tab revoke-all, retries after withdrawal and regrant, bounded time/UTF-8/schema checks, scope separation, preview guards, failed-transaction rollback, escaped context and filtered store reads. The synthetic adapter is a transactional test double; [browser and real local Worker checks](verification/consent-evidence-browser.md) are recorded separately.
 
-The [delivery tests](../packages/notabenda/test/consent-delivery.test.mjs) exercise required-mode outages, identical retries, late acknowledgments/reads, reload recovery, pre-start shared-storage races, failed persistence, stream changes, malformed responses, server expiry, unavailable storage and maximum-size revoke-all responses. Production capability lifecycle, retention/erasure, full cross-browser/assistive-technology review and cloud deployment validation remain work ahead.
+The [delivery tests](../packages/notabenda/test/consent-delivery.test.mjs) exercise required-mode outages, identical retries, late acknowledgments/reads, reload recovery, pre-start shared-storage races, failed persistence, stream changes, malformed responses, server expiry, unavailable storage and maximum-size revoke-all responses. Adopter acceptance under the actual host identity, quotas, retention policy and deployment remains separate. Full cross-browser and assistive-technology review is still open. [Notice file verification](verification/consent-notice-files.md) covers the CLI-to-ledger-to-runtime integration and explicit retained notice output.
