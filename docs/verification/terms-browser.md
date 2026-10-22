@@ -74,7 +74,7 @@ The process uses fresh in-memory storage and fictional terms. It binds only to l
 
 Automated cases exercise an actual truncated response, the real recorder and controller, a deliberate retry, one-record preservation, a changed-command negative control, request guards, pinned HTML bytes, isolated assets and the concurrent attempt bound. They do not substitute a mocked callback error for HTTP loss. The browser fixture uses the existing demo transport; automated controller tests supply their own fetch callback.
 
-This check covers same-controller explicit retry. Reload starts unchecked and does not recover a pending request; the host must retain and bind its own uncertain operation/request when cross-reload recovery is required. Server restarts discard this fixture's data. It is not a Durable Object persistence/restart test, arbitrary network-failure simulation, provider acknowledgment test, legal review or production host acceptance.
+The initial check covered same-controller explicit retry. The subsequent [reload recovery check](terms-recovery.md) uses the optional private journal to retain a key while still starting unchecked; the host continues to bind and authorize its operation and subject. Server restarts discard this fixture's data. It is not a Durable Object persistence/restart test, arbitrary network-failure simulation, provider acknowledgment test, legal review or production host acceptance.
 
 ### Native Safari observation, 22 October 2026
 

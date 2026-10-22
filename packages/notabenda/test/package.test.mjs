@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-COLLECTION-FLOW
 // @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
 // @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
@@ -422,6 +423,17 @@ mountCollectionFlow(container,{flow:composedFlow,idPrefix:'combined',headingLeve
 createCollectionFlow(release.artifact,{notice:flowSettings.notice,decisions:flowSettings.decisions});
 // @ts-expect-error no heading level 1
 mountCollectionFlow(container,{flow:composedFlow,idPrefix:'combined',headingLevel:1,permissions:{}});
+`);
+    const recoveryImport=spawnSync(process.execPath,['--input-type=module','-e',"for(const key of ['window','document','navigator','indexedDB'])Object.defineProperty(globalThis,key,{configurable:true,get(){throw Error(key);}});const api=await import('@notabenda/core/terms/recovery');if([api.createRecoverableTermsAcceptance,api.createIndexedDBTermsRecoveryJournal].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(recoveryImport.status,0,recoveryImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createRecoverableTermsAcceptance,createIndexedDBTermsRecoveryJournal,type TermsRecoveryJournal} from '@notabenda/core/terms/recovery';
+const agreementJournal=createIndexedDBTermsRecoveryJournal();
+const recoveredAgreement=await createRecoverableTermsAcceptance(offer,{operationId:'operation-one',contextId:'opaque-context-id-for-host',journal:agreementJournal,submit:async()=>null});
+recoveredAgreement.getSnapshot();agreementJournal.remove('opaque-context-id-for-host');agreementJournal.close();
+// @ts-expect-error a host context is required
+createRecoverableTermsAcceptance(offer,{operationId:'one',journal:agreementJournal,submit:async()=>null});
+// @ts-expect-error externally supplied requestId is incompatible with recovery ownership
+createRecoverableTermsAcceptance(offer,{operationId:'one',contextId:'opaque-context-id-for-host',journal:agreementJournal,submit:async()=>null,requestId:'external'});
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

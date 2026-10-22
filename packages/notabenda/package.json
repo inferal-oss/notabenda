@@ -364,6 +364,11 @@
       "types": "./dist/collection-flow.d.ts",
       "import": "./dist/collection-flow.js",
       "default": "./dist/collection-flow.js"
+    },
+    "./terms/recovery": {
+      "types": "./dist/terms-recovery.d.ts",
+      "import": "./dist/terms-recovery.js",
+      "default": "./dist/terms-recovery.js"
     }
   },
   "bin": {

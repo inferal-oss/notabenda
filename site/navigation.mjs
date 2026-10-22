@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 // @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
 // @requirements REQ-JP-RELATED-SCOPE REQ-JP-RECIPIENT-CONSENT REQ-JP-RELATED-FOREIGN
@@ -121,6 +122,7 @@ const guideParents={
  'cookie-rehearsal':{slug:'cartridges',label:'Packs',kind:'Try your draft'},
  'singapore-cookies':{slug:'consent',label:'Cookie choices',kind:'Jurisdiction review'},
  'japan-cookie-data':{slug:'consent',label:'Cookie choices',kind:'Jurisdiction review'},
+ 'terms-recovery':{slug:'terms',label:'Terms agreement',kind:'Retry after reload'},
  'terms-connection':{slug:'terms',label:'Terms agreement',kind:'Runtime inspection'},
  'cloudflare-remote-recovery':{slug:'cloudflare-recovery',label:'Recovery rehearsal',kind:'Remote maintainer check'},
  'cloudflare-rollout':{slug:'cloudflare-doctor',label:'Deployment checks',kind:'Remote maintainer check'},
@@ -149,7 +151,7 @@ export function areaContinuation(section,kind='guide'){
 export const normalizeGuideRoute=route=>route.replace(/\/$/u,'');
 export const guideSectionUrl=section=>'/guide/areas/'+section.id+'/';
 export const exampleSectionUrl=section=>'/examples/'+section.id+'/';
-const reportParents={'collection-flow':'collection-flow','turkey-processing':'collection-flow','cargo-discovery':'service-catalog','california-choice-design':'consent','composer-discovery':'service-catalog','document-inputs':'document-inputs','python-project-discovery':'service-catalog','japan-cookie-data':'consent','singapore-cookies':'consent','cloudflare-rollout':'cloudflare-doctor','processing-application':'processing-choices','privacy-signal-reviews':'privacy-signals','recorded-cookie-application':'consent-evidence','transaction-recovery':'cloudflare-recovery','consent-notice-files':'consent-evidence','embed-localization':'embeds','cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
+const reportParents={'terms-recovery':'terms','collection-flow':'collection-flow','turkey-processing':'collection-flow','cargo-discovery':'service-catalog','california-choice-design':'consent','composer-discovery':'service-catalog','document-inputs':'document-inputs','python-project-discovery':'service-catalog','japan-cookie-data':'consent','singapore-cookies':'consent','cloudflare-rollout':'cloudflare-doctor','processing-application':'processing-choices','privacy-signal-reviews':'privacy-signals','recorded-cookie-application':'consent-evidence','transaction-recovery':'cloudflare-recovery','consent-notice-files':'consent-evidence','embed-localization':'embeds','cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
 export function sectionForGuide(route){
  const current=normalizeGuideRoute(route),area=guideSections.find(s=>normalizeGuideRoute(guideSectionUrl(s))===current);
  if(area)return area;

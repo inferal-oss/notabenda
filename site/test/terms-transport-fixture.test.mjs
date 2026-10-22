@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-TERMS-ACCEPTANCE
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -6,6 +7,8 @@ import {request} from 'node:http';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {startTermsTransportFixture} from '../../scripts/terms-transport-fixture.mjs';
+import {IDBFactory} from 'fake-indexeddb';
+import {createRecoverableTermsAcceptance,createIndexedDBTermsRecoveryJournal} from '@notabenda/core/terms/recovery';
 import {createTermsAcceptance} from '@notabenda/core/terms';
 
 async function fixture(run){const f=await startTermsTransportFixture();try{const data=await(await fetch(f.origin+'/fixture.json')).json();await run({...f,data,headers:{Origin:f.origin,'Content-Type':'application/json','X-Notabenda-Demo':'1','X-Notabenda-Demo-Generation':data.generation}});}finally{await f.close();}}
@@ -46,4 +49,11 @@ test('only explicit fixture assets and exact pinned terms are served, without pu
 test('concurrent submissions cannot exceed the disposable four-attempt bound',async()=>fixture(async f=>{
  const body=command(f);const results=await Promise.all(Array.from({length:12},async()=>{try{const r=await post(f,body);await r.text().catch(()=>{});return r.status;}catch{return 'interrupted';}}));
  assert.ok(results.includes(429));const state=await readState(f);assert.equal(state.attempts,4);assert.equal(state.records,1);assert.equal(state.sameCommand,true);assert.equal(state.sameReceipt,true);
+}));
+
+
+test('a new controller and reopened journal recover the original receipt after a truncated HTTP response',async()=>fixture(async f=>{
+ const indexedDB=new IDBFactory();const opts=journal=>({operationId:'synthetic-light-operation-'+f.data.generation,contextId:'http-check-'+f.data.generation,journal,async submit(body,{signal}){const response=await fetch(f.origin+'/demo/agreements/light',{method:'POST',headers:f.headers,body:JSON.stringify(body),signal});if(!response.ok)throw Error();return response.json();}});
+ const firstJournal=createIndexedDBTermsRecoveryJournal({indexedDB}),first=await createRecoverableTermsAcceptance(f.data.offer,opts(firstJournal));first.setChecked(true);await assert.rejects(first.submit());first.destroy();firstJournal.close();assert.equal((await readState(f)).records,1);
+ const nextJournal=createIndexedDBTermsRecoveryJournal({indexedDB}),next=await createRecoverableTermsAcceptance(f.data.offer,opts(nextJournal));try{assert.equal(next.getSnapshot().checked,false);assert.equal(next.getSnapshot().receipt,undefined);await assert.rejects(next.submit(),e=>e.code==='not-checked');assert.equal((await readState(f)).attempts,1);next.setChecked(true);await next.submit();assert.deepEqual(await readState(f),{attempts:2,records:1,sameCommand:true,sameReceipt:true,droppedResponses:1});}finally{next.destroy();nextJournal.close();}
 }));

@@ -265,7 +265,8 @@
         "Optional local offer/operation inspection, with publication, backend activation and application behavior left to separate checks.",
         "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
         "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references.",
-        "Read-only document input review with actual section origin, configuration pointers and requirement context; strict authoring/production checks without changing release bytes or declaring legal approval."
+        "Read-only document input review with actual section origin, configuration pointers and requirement context; strict authoring/production checks without changing release bytes or declaring legal approval.",
+        "Optional atomic private retry-key journal for agreement recovery after reload, with fresh unchecked UI, explicit receipt retry and host-coordinated cleanup."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -3483,7 +3484,8 @@
         "REQ-PRODUCT-CONSENT-NOTICE-FILES",
         "REQ-PRODUCT-CF-ROLLOUT",
         "REQ-PRODUCT-DOCUMENT-EXPLANATION",
-        "REQ-PRODUCT-COLLECTION-FLOW"
+        "REQ-PRODUCT-COLLECTION-FLOW",
+        "REQ-PRODUCT-TERMS-RECOVERY"
       ]
     },
     {
@@ -10816,6 +10818,50 @@
         "docs/verification/collection-flow.md"
       ],
       "implementationNote": "Optional browser subpath and build-time content helpers reuse existing notices/offers without adding runtime dependencies to cookie consent or changing saved scope fields. Strict verification reconstructs against the intact trusted release. Exact SSR hydration preserves the notice, expanded details and focus; matching host controllers are staged before replacement, and view teardown leaves them host-owned. JSON/YAML/YML/Markdown frontmatter CLI inputs exclude body notes and require explicit input on rebuild. Generated descriptors do not register or activate backend offers."
+    },
+    {
+      "id": "REQ-PRODUCT-TERMS-RECOVERY",
+      "jurisdiction": "PRODUCT",
+      "title": "Optional terms retry-key recovery after reload",
+      "kind": "product-standard",
+      "summary": "Reserve one retry key atomically for the exact offer and host operation, recover it after reload without restoring a checkbox or receipt, and transmit only after a new explicit action. Keep storage loss, server identity and operation deduplication limits explicit.",
+      "appliesWhen": "A host explicitly selects the optional asynchronous terms-recovery factory and an atomic private journal.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-TERMS",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-TERMS-RECOVERY"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Browser storage can be lost; opening afterward reserves a new key. A pre-submit read is not a cross-tab revocation fence. The host owns authenticated subject/operation binding, exact offer provenance, server deduplication, retention and coordinated cleanup. No automatic acceptance or receipt restoration, expiry or legal effect.",
+      "implementationRefs": [
+        "packages/notabenda/src/terms-recovery.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/static/agreement.mjs",
+        "examples/static/terms-build.mjs",
+        "examples/agreements/transport.mjs",
+        "scripts/terms-transport-client.mjs",
+        "scripts/terms-transport-fixture.mjs",
+        "scripts/measure-bundles.mjs",
+        "site/navigation.mjs",
+        "examples/static/choices-build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/terms-recovery.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/delivery.test.mjs",
+        "site/test/terms-transport-fixture.test.mjs",
+        "docs/TERMS-RECOVERY.md",
+        "docs/verification/terms-recovery.md"
+      ],
+      "implementationNote": "Optional browser entry reuses the existing controller and receipt admission. IndexedDB reserves and commits before returning; participating tabs share a key. Mismatched/corrupt rows are not overwritten. Initialization/storage failure is explicit; pre-submit row loss/replacement and destruction stop transmission. The adapter supplies deliberate per-context removal without expiry or total-record eviction. Vanilla example and actual interrupted-HTTP rehearsal use the helper; other hosts/adapters may opt in."
     }
   ],
   "verification": [
@@ -12888,6 +12934,22 @@
         "packages/notabenda/test/package.test.mjs",
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/collection-flow.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TERMS-RECOVERY",
+      "requirementIds": [
+        "REQ-PRODUCT-TERMS-RECOVERY"
+      ],
+      "status": "automated",
+      "expected": "A new controller after a committed-but-lost receipt starts unchecked and sends nothing until explicitly checked/submitted, then recovers the original command/receipt and one server record. Atomic simultaneous tabs share a key; malformed/mismatched/replaced/missing rows, failures and destroyed controllers cannot transmit. Packed import/types and independent browser dependency graph are checked. Cleanup removes only the selected context; storage eviction and operational exactly-once guarantees remain outside this mechanism.",
+      "testRefs": [
+        "packages/notabenda/test/terms-recovery.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda/test/delivery.test.mjs",
+        "site/test/terms-transport-fixture.test.mjs",
+        "docs/TERMS-RECOVERY.md",
+        "docs/verification/terms-recovery.md"
       ]
     }
   ],

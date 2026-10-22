@@ -1,9 +1,12 @@
+// @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-TERMS-ACCEPTANCE
 // Maintainer fixture only. Use the actual example transport and native field.
 import {mountTermsAcceptance} from '@notabenda/core/terms';
-import {demoAgreementController} from '../examples/agreements/transport.mjs';
+import {createIndexedDBTermsRecoveryJournal} from '@notabenda/core/terms/recovery';
+import {demoRecoverableAgreementController} from '../examples/agreements/transport.mjs';
 const data=await fetch('/fixture.json').then(r=>{if(!r.ok)throw Error('Fixture unavailable.');return r.json();});
-const controller=demoAgreementController(data.offer,data.generation);
+const journal=createIndexedDBTermsRecoveryJournal({databaseName:'notabenda-terms-http-rehearsal-v1'});
+const controller=await demoRecoverableAgreementController(data.offer,data.generation,journal);
 const view=mountTermsAcceptance(document.querySelector('#agreement'),{acceptance:controller});
 let sequence=0,closed=false;
 async function observe(){
@@ -20,4 +23,4 @@ async function observe(){
 }
 const unsubscribe=controller.subscribe(state=>{if(state.status!=='submitting')void observe();});
 await observe();
-window.addEventListener('pagehide',event=>{if(event.persisted||closed)return;closed=true;sequence++;unsubscribe();view.destroy();controller.destroy();});
+window.addEventListener('pagehide',event=>{if(event.persisted||closed)return;closed=true;sequence++;unsubscribe();view.destroy();controller.destroy();journal.close();});
