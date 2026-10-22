@@ -258,3 +258,5 @@ Storage inventory can be authored explicitly in the operator UI or with `wizard 
 Use the optional [connection inspector](../../docs/CONNECTION-INSPECTION.md) to compare the intended consent descriptor with the actual controller and identify missing lifecycle registrations. It leaves publication and application testing explicitly unverified.
 
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
+
+Prepare direct-form notice settings from a final public release with `notabenda form-workbench`. The local browser editor previews selected public facts and exports JSON/YAML/Markdown settings for the existing collection-flow builder. See [the workbench guide](../../docs/COLLECTION-WORKBENCH.md).

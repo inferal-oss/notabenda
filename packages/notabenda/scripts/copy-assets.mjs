@@ -54,3 +54,8 @@ await build({entryPoints:[new URL('../src/catalog-nuget.ts',import.meta.url).pat
 await rm(new URL('../dist/catalog-nuget.js.map',import.meta.url),{force:true});
 await copyFile(new URL('../licenses/saxes-LICENSE.txt',import.meta.url),new URL('../dist/licenses/saxes-LICENSE.txt',import.meta.url));
 await copyFile(new URL('../../../node_modules/xmlchars/LICENSE',import.meta.url),new URL('../dist/licenses/xmlchars-LICENSE.txt',import.meta.url));
+
+// @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
+await copyFile(new URL('../src/collection-workbench.css',import.meta.url),new URL('../dist/collection-workbench.css',import.meta.url));
+await build({entryPoints:[new URL('../dist/collection-workbench-app.js',import.meta.url).pathname],allowOverwrite:true,outfile:new URL('../dist/collection-workbench-app.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,sourcemap:false});
+await rm(new URL('../dist/collection-workbench-app.js.map',import.meta.url),{force:true});

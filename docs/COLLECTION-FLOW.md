@@ -104,3 +104,5 @@ Mounting adds no transport read or form-submit handler. Checking the permission 
 For another language, supply complete matching `localization.collection` and, when a permission is selected, `localization.formPermission` messages in the release. Author the notice and offer text in that language too. A notice-only flow needs no form-permission dictionary. Keep the language and unresolved translation work explicit.
 
 The [Türkiye review](TURKEY-PROCESSING.md) explains the source context for keeping the two concepts separate. This composer does not supply a country certification, translated legal clauses or a finding that the user's processing condition is valid.
+
+Use the [form-notice workbench](COLLECTION-WORKBENCH.md) to choose direct purposes, write the notice and export separate build settings from an exact final release. New notice-only flows and preservation of supplied complete permission branches are supported.

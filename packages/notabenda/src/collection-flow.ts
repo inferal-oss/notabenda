@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS REQ-PRODUCT-A11Y REQ-PRODUCT-LOCALIZATION
 import {assertPlainCatalogData} from './catalog-plain.js';
 import {normalizeCollectionNotice,renderCollectionNotice,collectionNoticeIds} from './collection.js';
@@ -47,9 +48,15 @@ export function renderCollectionFlow(input:unknown,options:CollectionNoticeRende
  const flow=normalizeCollectionFlow(input,{allowPreview:options?.allowPreview===true});
  const disclosure=renderCollectionNotice(flow.notice,options),ids=collectionNoticeIds(options.idPrefix),heading='h'+(options.headingLevel??2),l=flow.notice.localization;
  return `<div class="nb-collection-flow" data-collection-flow-id="${flow.flowId}" lang="${escape(flow.notice.locale)}"${l?` dir="${l.direction}"`:''}>${disclosure}${flow.permissions.map(offer=>{
-  const id=ids.rootId+'-'+offer.permissionId;
-  return `<div class="nb-collection-flow-slot" data-collection-permission="${escape(offer.permissionId)}"><section class="nb-form-permission" aria-labelledby="${id}"><${heading} id="${id}">${escape(offer.wording.title)}</${heading}><p>${escape(offer.wording.optionality)}</p><p>${escape(offer.wording.statement)}</p><p>${escape(offer.wording.withdrawalExplanation)}</p><a href="${escape(offer.withdrawalUrl)}">${escape(offer.localization?.formPermission.withdrawalHelp??'Withdrawal help')}</a></section></div>`;
+  return renderCollectionFlowPermission(offer,ids.rootId,options.headingLevel??2);
  }).join('')}</div>`;
+}
+/** Shared static permission wording. No controls, reads or submissions are mounted. */
+export function renderCollectionFlowPermission(input:unknown,rootId:string,headingLevel:2|3|4|5|6=2):string {
+ const offer=normalizeFormPermissionOffer(input,{allowPreview:true}),heading='h'+headingLevel;
+ if(!/^[a-z][a-z0-9-]{0,126}$/u.test(rootId))throw Error('Use a derived collection notice ID.');if(![2,3,4,5,6].includes(headingLevel))throw Error('Use heading level 2–6.');
+  const id=rootId+'-'+offer.permissionId;
+  return `<div class="nb-collection-flow-slot" data-collection-permission="${escape(offer.permissionId)}"><section class="nb-form-permission" aria-labelledby="${id}"><${heading} id="${id}">${escape(offer.wording.title)}</${heading}><p>${escape(offer.wording.optionality)}</p><p>${escape(offer.wording.statement)}</p><p>${escape(offer.wording.withdrawalExplanation)}</p><a href="${escape(offer.withdrawalUrl)}">${escape(offer.localization?.formPermission.withdrawalHelp??'Withdrawal help')}</a></section></div>`;
 }
 /** Mount only supplied, exactly matching host controllers. No reads, grants or form-submit hooks. */
 export function mountCollectionFlow(container:HTMLElement,options:{flow:unknown;idPrefix:string;headingLevel?:2|3|4|5|6;allowPreview?:boolean;permissions:Readonly<Record<string,FormPermissionController>>}):{destroy():void}{

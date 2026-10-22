@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
+import {assembleCollectionNoticeContent} from './collection-workbench.js';
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 export {createCollectionFlow,verifyCollectionFlow} from './collection-flow-build.js';
 export type {CollectionFlow,CollectionFlowSettings,CollectionFlowDecision,CollectionFlowRoute} from './collection-flow.js';
@@ -234,7 +236,9 @@ export function createCollectionNotice(artifact:LegalArtifact,settings:Collectio
   if(!artifact.publicConfig.localization?.collection)requireEnglishSurface(artifact.publicConfig,'Collection notice without localization.collection');
   const localization=artifact.publicConfig.localization?.collection?selectCollectionLocalization(artifact.publicConfig.localization):undefined;
   if(localization&&(settings.wording.detailsLabel!==undefined||settings.wording.privacyLinkLabel!==undefined))throw Error('Set collection link/detail labels in the versioned localization.collection dictionary.');
-  const n=normalizeCollectionNotice({...directCollectionFacts(artifact,settings,options),...(localization?{schemaVersion:2,renderingPolicy:'collection-v2',localization}:{}),wording:{title:settings.wording.title,intro:settings.wording.intro,detailsLabel:localization?.collection.detailsLabel??settings.wording.detailsLabel??'Collection details and your rights',privacyLinkLabel:localization?.collection.privacyLinkLabel??settings.wording.privacyLinkLabel??'Read the privacy policy'}},{allowPreview:options.mode==='preview'});
+  const {noticeId:unused,scopeId:unusedScope,reviewStatus:unusedReview,...facts}=directCollectionFacts(artifact,settings,options);
+  const content=assembleCollectionNoticeContent({...facts,...(localization?{schemaVersion:2 as const,renderingPolicy:'collection-v2' as const,localization}:{})},settings);
+  const n=normalizeCollectionNotice({...content,noticeId:'0'.repeat(64)},{allowPreview:options.mode==='preview'});
   const {noticeId:_,...noticeDescriptor}=n;return {...n,noticeId:sha256(canonicalJson(noticeDescriptor))};
 }
 

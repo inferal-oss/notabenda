@@ -16,7 +16,8 @@
     "./dist/storage-exceptions.css",
     "./dist/technology.css",
     "./dist/cartridges.css",
-    "./dist/agent-handoff.css"
+    "./dist/agent-handoff.css",
+    "./dist/collection-workbench.css"
   ],
   "files": [
     "dist",
@@ -374,7 +375,23 @@
       "types": "./dist/setup-terms-rehearsal.d.ts",
       "import": "./dist/setup-terms-rehearsal.js",
       "default": "./dist/setup-terms-rehearsal.js"
-    }
+    },
+    "./authoring/collection": {
+      "types": "./dist/collection-workbench-build.d.ts",
+      "import": "./dist/collection-workbench-build.js",
+      "default": "./dist/collection-workbench-build.js"
+    },
+    "./authoring/collection/ui": {
+      "types": "./dist/collection-workbench-ui.d.ts",
+      "import": "./dist/collection-workbench-ui.js",
+      "default": "./dist/collection-workbench-ui.js"
+    },
+    "./authoring/collection/model": {
+      "types": "./dist/collection-workbench.d.ts",
+      "import": "./dist/collection-workbench.js",
+      "default": "./dist/collection-workbench.js"
+    },
+    "./collection-workbench.css": "./dist/collection-workbench.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

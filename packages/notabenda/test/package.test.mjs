@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
 // @requirements REQ-PRODUCT-TERMS-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-RECOVERY
@@ -340,6 +341,14 @@ rightsSettings.reviewStatus='reviewed';
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {mountConsentRehearsal,type MountedConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';
 import {mountTermsRehearsal,type MountedTermsRehearsal} from '@notabenda/core/setup/terms-rehearsal';
+import {prepareCollectionWorkbenchContext} from '@notabenda/core/authoring/collection';
+import {mountCollectionWorkbench,type MountedCollectionWorkbench} from '@notabenda/core/authoring/collection/ui';
+import {prepareCollectionFlowSettings} from '@notabenda/core/authoring/collection/model';
+declare const workbenchArtifact:unknown;
+const workbenchContext=prepareCollectionWorkbenchContext(workbenchArtifact,{purposeIds:['contact']},{mode:'preview'});
+const workbenchView:MountedCollectionWorkbench=mountCollectionWorkbench(document.body,{context:workbenchContext});
+const workbenchSettings=workbenchView.getSettings();
+const workbenchPlan=prepareCollectionFlowSettings(workbenchContext,workbenchSettings,{releaseConfirmed:true});
 import {checkDocumentPublication,type PublicationCheck,type PublishedDocumentSource} from '@notabenda/cloudflare';
 const publicationSource:PublishedDocumentSource={origin:'https://site.example.test',label:'Public website',fetch:request=>fetch(request)};
 const publicationResult:Promise<PublicationCheck>=checkDocumentPublication({path:'/artifacts/'+'a'.repeat(64)+'/terms.html',sha256:'b'.repeat(64)},publicationSource);

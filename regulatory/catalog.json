@@ -38,7 +38,8 @@
         "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
         "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state.",
         "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state.",
-        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification."
+        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
+        "Exact-release direct form notice workbench with explicit purpose routes, shared-renderer provisional preview and separate build-settings exports; existing complete permission branches are preserved."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -159,7 +160,17 @@
         "packages/notabenda-cf/templates/src/host.mjs",
         "packages/notabenda-cf/bin/doctor.mjs",
         "packages/notabenda-cf/src/publication-check.ts",
-        "scripts/fixtures/publication-inspection.mjs"
+        "scripts/fixtures/publication-inspection.mjs",
+        "packages/notabenda/src/collection-workbench.ts",
+        "packages/notabenda/src/collection-workbench-build.ts",
+        "packages/notabenda/src/collection-workbench-ui.ts",
+        "packages/notabenda/src/collection-workbench-app.ts",
+        "packages/notabenda/src/collection-workbench-cli.ts",
+        "packages/notabenda/src/collection-workbench.css",
+        "packages/notabenda/src/collection.ts",
+        "packages/notabenda/src/collection-flow.ts",
+        "examples/collection-workbench/build.mjs",
+        "examples/static/build.mjs"
       ]
     },
     {
@@ -541,7 +552,8 @@
         "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work.",
         "Optional archived refusal copy and explicit negative events, native refusal/withdrawal presentation, exact-request recovery and operator search; regional solicitation and suppression remain separate host work.",
         "Optional South African web-request profile with explicit goods/services and method, visible archived responsible-party details, required refusal and complete host-language labels; declaration truth and legal sufficiency remain host review.",
-        "Optional release-bound direct-form composer with explicit notice-only/separate-permission routes, unconditional static notices, exact SSR hydration, separate host controllers and data-file CLI builds."
+        "Optional release-bound direct-form composer with explicit notice-only/separate-permission routes, unconditional static notices, exact SSR hydration, separate host controllers and data-file CLI builds.",
+        "Exact-release direct form notice workbench with explicit purpose routes, shared-renderer provisional preview and separate build-settings exports; existing complete permission branches are preserved."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -577,7 +589,17 @@
         "site/navigation.mjs",
         "packages/notabenda/src/collection-flow.ts",
         "packages/notabenda/src/collection-flow-build.ts",
-        "packages/notabenda/src/cli.ts"
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/collection-workbench.ts",
+        "packages/notabenda/src/collection-workbench-build.ts",
+        "packages/notabenda/src/collection-workbench-ui.ts",
+        "packages/notabenda/src/collection-workbench-app.ts",
+        "packages/notabenda/src/collection-workbench-cli.ts",
+        "packages/notabenda/src/collection-workbench.css",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "examples/collection-workbench/build.mjs",
+        "examples/static/build.mjs",
+        "site/host.mjs"
       ]
     },
     {
@@ -920,7 +942,8 @@
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
         "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries.",
         "Optional actual-starter remote rollout exercise with bounded asset rollback and class-lifecycle forward repair; production and fresh-account acceptance stay separate.",
-        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification."
+        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
+        "Exact-release direct form notice workbench with explicit purpose routes, shared-renderer provisional preview and separate build-settings exports; existing complete permission branches are preserved."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -1001,7 +1024,18 @@
         "scripts/check-cf-starter-rollout.mjs",
         "docs/CLOUDFLARE-ROLLOUT.md",
         "packages/notabenda-cf/src/publication-check.ts",
-        "scripts/fixtures/publication-inspection.mjs"
+        "scripts/fixtures/publication-inspection.mjs",
+        "packages/notabenda/src/collection-workbench.ts",
+        "packages/notabenda/src/collection-workbench-build.ts",
+        "packages/notabenda/src/collection-workbench-ui.ts",
+        "packages/notabenda/src/collection-workbench-app.ts",
+        "packages/notabenda/src/collection-workbench-cli.ts",
+        "packages/notabenda/src/collection-workbench.css",
+        "packages/notabenda/src/collection.ts",
+        "packages/notabenda/src/collection-flow.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "examples/collection-workbench/build.mjs",
+        "examples/static/build.mjs"
       ]
     },
     {
@@ -3563,7 +3597,8 @@
         "REQ-PRODUCT-COLLECTION-FLOW",
         "REQ-PRODUCT-TERMS-RECOVERY",
         "REQ-PRODUCT-TERMS-REHEARSAL",
-        "REQ-PRODUCT-PUBLICATION-INSPECTION"
+        "REQ-PRODUCT-PUBLICATION-INSPECTION",
+        "REQ-PRODUCT-COLLECTION-WORKBENCH"
       ]
     },
     {
@@ -11061,6 +11096,55 @@
         "docs/verification/publication-inspection.md"
       ],
       "implementationNote": "Bounded credential-free manual-redirect requests, fixed origin/source capture, cancelable body reads and hashes, optional operator HTML/JSON observations, declared website asset-binding example and actual local starter/SQLite exercise."
+    },
+    {
+      "id": "REQ-PRODUCT-COLLECTION-WORKBENCH",
+      "jurisdiction": "PRODUCT",
+      "title": "Exact-release form notice authoring and settings export",
+      "kind": "product-standard",
+      "summary": "Prepare a local browser editor from an intact final public release, explicitly choose direct purpose presentation, preview shared notice/permission text and export separate settings for the existing collection-flow builder.",
+      "appliesWhen": "An operator prepares a direct-only collection form from a selected final legal release.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-FORMS",
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-COLLECTION-WORKBENCH"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "New notice-only flows and preservation of supplied complete permission branches are supported. The provisional preview has no authoritative descriptor identity. A prepared context is not proof of authenticity or legal review. Final artifact validation, field placement, real routes, permission integration and downstream effects remain separate. New permission authoring is not included.",
+      "implementationRefs": [
+        "packages/notabenda/src/collection-workbench.ts",
+        "packages/notabenda/src/collection-workbench-build.ts",
+        "packages/notabenda/src/collection-workbench-ui.ts",
+        "packages/notabenda/src/collection-workbench-app.ts",
+        "packages/notabenda/src/collection-workbench-cli.ts",
+        "packages/notabenda/src/collection-workbench.css",
+        "packages/notabenda/src/collection.ts",
+        "packages/notabenda/src/collection-flow.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/collection-workbench/build.mjs",
+        "examples/static/build.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/collection-workbench.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/collection-workbench.test.mjs",
+        "docs/verification/collection-workbench.md"
+      ],
+      "implementationNote": "Shared public fact/wording projection and content-only preview rendering, explicit release confirmation, unresolved-route refusal, complete mixed-settings preservation, JSON/YAML/Markdown settings, new-only standalone local CLI tool with pinned inline CSP and optional directory delivery."
     }
   ],
   "verification": [
@@ -13185,6 +13269,20 @@
         "site/test/recording-inspection.test.mjs",
         "scripts/check-cf-starter-runtime.mjs",
         "docs/verification/publication-inspection.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-COLLECTION-WORKBENCH",
+      "requirementIds": [
+        "REQ-PRODUCT-COLLECTION-WORKBENCH"
+      ],
+      "status": "automated",
+      "expected": "Exact-release settings round-trip through the real final builder; stale releases and unresolved or conflicting routes fail. Preview has no descriptor identity, respects localization and has no navigation, recording or storage effects. Standalone output has matching CSP hashes and no external assets.",
+      "testRefs": [
+        "packages/notabenda/test/collection-workbench.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/collection-workbench.test.mjs",
+        "docs/verification/collection-workbench.md"
       ]
     }
   ],

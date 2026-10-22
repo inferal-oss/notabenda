@@ -70,3 +70,5 @@ Questionnaire revision 6 adds the focused questions. Reports from revisions 1–
 
 <!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
 The **Privacy request page** pack has a [page editor and explicit CLI proposal](RIGHTS-AUTHORING.md) for actual destinations, scope, public fallback and next steps. Saving also updates the privacy link after confirmation. Non-English native presentation requires complete `localization.rights` messages; requests still go to the host application.
+
+The Form notices pack now links to a [local workbench](COLLECTION-WORKBENCH.md) for exact-release direct forms. It exports the existing separate collection-flow settings, preserves supplied complete permission branches and blocks unresolved routes; it does not add settings to `SiteConfig`.
