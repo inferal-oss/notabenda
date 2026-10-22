@@ -183,3 +183,9 @@ Cloudflare validates the profile, method/channel consistency, refusal copy and c
 Deploy the updated backend before serving version 4 offers. Versions 1–3 keep their existing descriptors and behavior. This presentation does not establish prescribed-form equivalence, invitation eligibility, a customer exception, telephone-recording compliance, sending or suppression. See [South African electronic marketing](SOUTH-AFRICA-MARKETING.md).
 
 For a form that combines information with an optional permission, [compose the two parts explicitly](COLLECTION-FLOW.md). Every selected purpose remains in the notice; only explicitly selected permission routes create a separate offer.
+
+## Prepare wording in the local workbench
+
+For ordinary direct-collection forms, the [form workbench](COLLECTION-WORKBENCH.md) can author the separate choice, channel, revision, withdrawal route and optional refusal messages. It exports collection-flow settings for the existing final builder. The selected release supplies scope assessments and interface messages; the editor cannot replace them. Specialized marketing requests continue through their separate builder.
+
+Supply only the declared plain-data settings fields. Omit unused optional fields instead of passing `undefined`, `null`, private notes or specialized fields; malformed/extra inputs are rejected rather than silently discarded.

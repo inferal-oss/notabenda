@@ -1,7 +1,7 @@
 <!-- @requirements REQ-PRODUCT-COLLECTION-WORKBENCH REQ-PRODUCT-COLLECTION-FLOW -->
 # Prepare a form notice
 
-A form notice explains why a form asks for information. Some purposes may also need a separate permission. The workbench helps you write that notice and choose the presentation for each purpose from an exact legal release.
+A form notice explains why a form asks for information. Some purposes may also need a separate permission. The workbench helps you write the notice, choose the presentation for each purpose, and prepare ordinary permission wording from an exact legal release.
 
 [Try the editor with the combined form’s settings](/form-notice-workbench/). It runs the reusable package UI. Your edits stay in memory; reloading discards them. To work on your own site, prepare a local copy from your final public artifact.
 
@@ -24,12 +24,24 @@ The output directory must be new and its parent must exist. Open `index.html` di
 
 1. Check the document version, language, date and release reference. Explicitly choose that release for the settings; loading a file does not check this box.
 2. Enter a stable form scope, heading and introduction in the content language. Choose the purposes actually used here. No purpose is selected in a new workbench.
-3. Choose **Notice only** or **Separate permission** for every selected purpose. The editor does not interpret a legal basis, infer permission from optionality, or choose a route from a country.
-4. Open **Preview notice**. The shared renderer shows the selected facts and any preserved permission text. Links are inactive. No permission controls, recording, submission or presentation receipt are connected. The preview has no authoritative notice or flow identity.
-5. Review the notice wording separately. Changes to wording, scope or purpose selection return its declaration to draft and clear the release confirmation. Keep field instructions and required-field behavior in your actual form.
+3. Choose **Notice only** or **Separate permission** for every selected purpose. For a separate choice, enter its wording, action labels, withdrawal URL, channel, stable permission ID and wording revision. The editor does not interpret a legal basis, infer permission from optionality, or choose a route from a country.
+4. Open **Preview notice**. The shared renderer shows the selected facts and the separate permission text. Links are inactive. No permission controls, recording, submission or presentation receipt are connected. The preview has no authoritative notice or flow identity.
+5. Review notice and permission wording separately. Editing a permission resets that permission’s declaration and the notice declaration to draft; edits clear the release confirmation and stale preview/export. Keep field instructions and required-field behavior in your actual form.
 6. Choose **Copy build settings**. The dismissible drawer provides JSON, YAML or Markdown frontmatter and a copy button. If the clipboard is unavailable, copy the selected text manually. Save it as a separate settings file.
 
-The first authoring path supports new notice-only flows. A separate-permission route needs complete host-authored settings supplied when preparing the context. Existing channel, revision, wording, withdrawal URL, refusal and delivery-window settings are preserved. The workbench does not create or edit those offers; an incomplete branch blocks preview and export. Revise it with the [existing permission API](FORM-PERMISSIONS.md), then prepare a new context. No branch is silently converted to notice-only.
+## Write a separate choice
+
+Each selected purpose has its own permission editor. Start with the permission heading and statement, explain what happens if the person declines, and give the withdrawal route. The save/withdraw labels describe the actual actions your application will connect. The builder accepts one paragraph per permission field; line breaks are rejected.
+
+**Channel, identifiers and recording** holds the stable permission ID, channel ID and label, wording revision and optional pending-command window. Keep the permission ID stable for ordinary wording revisions. A changed purpose or channel may need a new stream; do not rename a stream to make prior records disappear. Supply a new revision when meaning changes. This local tool cannot check every historical release or decide whether your wording is legally sufficient.
+
+The optional delivery window is 30–3600 whole seconds. Blank preserves omission and uses the builder’s 600-second default. It limits delivery of a pending command, not the lifetime of permission. **Offer an explicit refusal action** exposes all four refusal labels/messages; leaving it off does not turn silence into a refusal record. Read the [permission API guide](FORM-PERMISSIONS.md) before connecting these actions.
+
+Imported settings populate the current fields, including refusal and delivery-window settings. Toggling to notice-only hides the permission fields while retaining their draft in memory; switching back restores it. Only selected routes are exported. Reloading still discards edits, so copy settings before closing the tool.
+
+Ordinary permissions require a nonmissing scope assessment with all four effective facts marked absent in the selected release. Missing, unknown or restrictive facts block that route. For a non-English release, `localization.formPermission` must also be complete; the collection dictionary alone is insufficient. The editor explains the missing prerequisite while keeping notice-only authoring available. It never changes the assessment, supplies a translated fallback, or silently converts a permission to notice-only.
+
+Specialized South African marketing requests use their separate builder. Their fields are rejected in ordinary collection-flow settings. Contexts prepared by an earlier package version preserve their supplied complete permission branches; prepare a new workbench to edit them.
 
 ## Build the authoritative output
 
@@ -84,6 +96,6 @@ const settings = editor.getSettings();
 editor.destroy();
 ```
 
-`createCollectionWorkbenchFiles` creates standalone HTML by default. `{delivery: 'directory'}` emits HTML, JavaScript and CSS separately for an existing host. The context is bounded public data from a trusted build, not a signature or a new evidence artifact. Browser structural checks cannot authenticate its sender. The final builder remains the authority for matching settings to your real release. No new `SiteConfig` field, backend, authentication mechanism or CI requirement is introduced.
+`createCollectionWorkbenchFiles` creates standalone HTML by default. `{delivery: 'directory'}` emits HTML, JavaScript and CSS separately for an existing host. The context is bounded public data from a trusted build, not a signature or a new evidence artifact. Browser structural checks cannot authenticate its sender. The final builder remains the authority for matching settings to your real release. The optional permission context contains only effective assessments for the selected purposes and the selected permission dictionary. No new `SiteConfig` field, backend, authentication mechanism or CI requirement is introduced.
 
 [Verification and remaining limits](verification/collection-workbench.md).

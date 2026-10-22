@@ -105,4 +105,4 @@ For another language, supply complete matching `localization.collection` and, wh
 
 The [Türkiye review](TURKEY-PROCESSING.md) explains the source context for keeping the two concepts separate. This composer does not supply a country certification, translated legal clauses or a finding that the user's processing condition is valid.
 
-Use the [form-notice workbench](COLLECTION-WORKBENCH.md) to choose direct purposes, write the notice and export separate build settings from an exact final release. New notice-only flows and preservation of supplied complete permission branches are supported.
+Use the [form-notice workbench](COLLECTION-WORKBENCH.md) to choose direct purposes, write the notice and export separate build settings from an exact final release. Notice-only flows and ordinary separate permissions can be authored. The selected release must supply a usable scope assessment and any required permission messages.

@@ -3,7 +3,7 @@
 import {assertPlainCatalogData} from './catalog-plain.js';
 import {normalizeCollectionNotice,renderCollectionNotice,collectionNoticeIds} from './collection.js';
 import type {CollectionNotice,CollectionNoticeSettings,CollectionNoticeRenderOptions} from './collection.js';
-import {normalizeFormPermissionOffer,formPermissionGrantSupported,mountFormPermission} from './form-permission.js';
+import {normalizeFormPermissionContent,normalizeFormPermissionOffer,formPermissionGrantSupported,mountFormPermission} from './form-permission.js';
 import type {FormPermissionOffer,FormPermissionSettings,FormPermissionController} from './form-permission.js';
 
 /** Presentation instructions, not a classification of a statutory processing condition. */
@@ -53,7 +53,11 @@ export function renderCollectionFlow(input:unknown,options:CollectionNoticeRende
 }
 /** Shared static permission wording. No controls, reads or submissions are mounted. */
 export function renderCollectionFlowPermission(input:unknown,rootId:string,headingLevel:2|3|4|5|6=2):string {
- const offer=normalizeFormPermissionOffer(input,{allowPreview:true}),heading='h'+headingLevel;
+ return renderCollectionFlowPermissionPreview((({offerId:_,...content})=>content)(normalizeFormPermissionOffer(input,{allowPreview:true})),rootId,headingLevel);
+}
+/** Provisional static wording uses the same rendering without an offer identity. */
+export function renderCollectionFlowPermissionPreview(input:unknown,rootId:string,headingLevel:2|3|4|5|6=2):string {
+ const offer=normalizeFormPermissionContent(input),heading='h'+headingLevel;
  if(!/^[a-z][a-z0-9-]{0,126}$/u.test(rootId))throw Error('Use a derived collection notice ID.');if(![2,3,4,5,6].includes(headingLevel))throw Error('Use heading level 2–6.');
   const id=rootId+'-'+offer.permissionId;
   return `<div class="nb-collection-flow-slot" data-collection-permission="${escape(offer.permissionId)}"><section class="nb-form-permission" aria-labelledby="${id}"><${heading} id="${id}">${escape(offer.wording.title)}</${heading}><p>${escape(offer.wording.optionality)}</p><p>${escape(offer.wording.statement)}</p><p>${escape(offer.wording.withdrawalExplanation)}</p><a href="${escape(offer.withdrawalUrl)}">${escape(offer.localization?.formPermission.withdrawalHelp??'Withdrawal help')}</a></section></div>`;

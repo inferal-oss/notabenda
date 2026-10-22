@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-ZA-MARKETING
 import {normalizeSouthAfricaMarketingRequest} from './south-africa-marketing-policy.js';
@@ -11,7 +12,7 @@ import {formatMessage} from './localization-policy.js';
 /** @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-SCOPE-GUARDS
  * Ordinary optional permission only. Hosts own identity, contact binding and downstream fulfillment.
  */
-import {normalizeCollectionNotice} from './collection.js';
+import {normalizeCollectionNoticeContent} from './collection.js';
 import type {CollectionNotice} from './collection.js';
 import {isSafeLink} from './config.js';
 import {scopeGuardFields} from './scope-guard-policy.js';
@@ -24,6 +25,8 @@ export interface FormPermissionOffer {
   wording:{title:string;statement:string;grantLabel:string;withdrawLabel:string;optionality:string;withdrawalExplanation:string};
   withdrawalUrl:string;deliveryWindowSeconds:number;
 }
+/** Static permission facts and copy without an authoritative offer identity. */
+export type FormPermissionContent=Omit<FormPermissionOffer,'offerId'>;
 export type FormPermissionSettings=Pick<FormPermissionOffer,'permissionId'|'purposeId'|'channel'|'revision'|'reviewStatus'|'wording'|'withdrawalUrl'> & {deliveryWindowSeconds?:number;refusal?:FormRefusalCopy};
 export type SouthAfricaMarketingOffer=FormPermissionOffer & {schemaVersion:4;marketingRequest:SouthAfricaMarketingRequest;refusal:FormRefusalCopy};
 export type SouthAfricaMarketingSettings=Omit<FormPermissionSettings,'channel'|'refusal'> & {marketingRequest:SouthAfricaMarketingRequest;methodLabel:string;refusal:FormRefusalCopy};
@@ -44,22 +47,25 @@ const integer=(v:unknown):v is number=>Number.isSafeInteger(v)&&Number(v)>=0;
 const uuid=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(v);
 const iso=(v:unknown):v is string=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/u.test(v)&&Number.isFinite(Date.parse(v))&&new Date(v).toISOString()===v;
 /** Shape checking is not authentication; CF independently verifies the offer against an archived release. */
-export function normalizeFormPermissionOffer(input:unknown,options:{allowPreview?:boolean}={}):FormPermissionOffer {
-  let value:unknown;try{const serialized=JSON.stringify(input);if(new TextEncoder().encode(serialized).length>32768)throw new Error();value=JSON.parse(serialized);}catch{throw new Error('Invalid form permission offer.');}
-  if(!obj(value)||!exact(value,['schemaVersion','offerId','siteId','permissionId','purposeId','channel','revision','artifactId','mode','reviewStatus','document','facts','wording','withdrawalUrl','deliveryWindowSeconds',...(value.schemaVersion===2||(value.schemaVersion===3||value.schemaVersion===4)&&Object.hasOwn(value,'localization')?['localization']:[]),...(value.schemaVersion===3||value.schemaVersion===4?['refusal']:[]),...(value.schemaVersion===4?['marketingRequest']:[])])||![1,2,3,4].some(version=>version===value.schemaVersion)||!hash(value.offerId)||!hash(value.artifactId)||!slug(value.siteId)||!slug(value.permissionId)||!slug(value.purposeId)||!text(value.revision,200)||!obj(value.channel)||!exact(value.channel,['id','label'])||!slug(value.channel.id)||!text(value.channel.label,120)||!['production','preview'].some(m=>m===value.mode)||!['draft','reviewed'].some(r=>r===value.reviewStatus)||!isSafeLink(value.withdrawalUrl)||!text(value.withdrawalUrl,2048)||!Number.isInteger(value.deliveryWindowSeconds)||Number(value.deliveryWindowSeconds)<30||Number(value.deliveryWindowSeconds)>3600||!obj(value.wording)||!exact(value.wording,['title','statement','grantLabel','withdrawLabel','optionality','withdrawalExplanation'])||Object.entries(value.wording).some(([key,v])=>!text(v,key.endsWith('Label')?120:key==='title'?300:2000))||!obj(value.facts)||!exact(value.facts,['controller','purpose','recipients','privacy','scopeGuard']))throw new Error('Invalid form permission offer.');
+function normalizePermission(input:unknown,options:{allowPreview?:boolean},identity:boolean):FormPermissionOffer|FormPermissionContent {
+  let value:unknown;try{const serialized=JSON.stringify(input);if(new TextEncoder().encode(serialized).length+(identity?0:77)>32768)throw new Error();value=JSON.parse(serialized);}catch{throw new Error('Invalid form permission offer.');}
+  if(!obj(value)||!exact(value,['schemaVersion',...(identity?['offerId']:[]),'siteId','permissionId','purposeId','channel','revision','artifactId','mode','reviewStatus','document','facts','wording','withdrawalUrl','deliveryWindowSeconds',...(value.schemaVersion===2||(value.schemaVersion===3||value.schemaVersion===4)&&Object.hasOwn(value,'localization')?['localization']:[]),...(value.schemaVersion===3||value.schemaVersion===4?['refusal']:[]),...(value.schemaVersion===4?['marketingRequest']:[])])||![1,2,3,4].some(version=>version===value.schemaVersion)||identity&&!hash(value.offerId)||!hash(value.artifactId)||!slug(value.siteId)||!slug(value.permissionId)||!slug(value.purposeId)||!text(value.revision,200)||!obj(value.channel)||!exact(value.channel,['id','label'])||!slug(value.channel.id)||!text(value.channel.label,120)||!['production','preview'].some(m=>m===value.mode)||!['draft','reviewed'].some(r=>r===value.reviewStatus)||!isSafeLink(value.withdrawalUrl)||!text(value.withdrawalUrl,2048)||!Number.isInteger(value.deliveryWindowSeconds)||Number(value.deliveryWindowSeconds)<30||Number(value.deliveryWindowSeconds)>3600||!obj(value.wording)||!exact(value.wording,['title','statement','grantLabel','withdrawLabel','optionality','withdrawalExplanation'])||Object.entries(value.wording).some(([key,v])=>!text(v,key.endsWith('Label')?120:key==='title'?300:2000))||!obj(value.facts)||!exact(value.facts,['controller','purpose','recipients','privacy','scopeGuard']))throw new Error('Invalid form permission offer.');
   if(value.schemaVersion===4){value.marketingRequest=normalizeSouthAfricaMarketingRequest(value.marketingRequest);if(value.channel.id!==(value.marketingRequest as SouthAfricaMarketingRequest).method)throw Error('Marketing method and permission channel must match.');}
   if(value.schemaVersion===3||value.schemaVersion===4)value.refusal=normalizeFormRefusalCopy(value.refusal);
   if(value.schemaVersion===2||(value.schemaVersion===3||value.schemaVersion===4)&&value.localization!==undefined)value.localization=normalizeFormPermissionLocalization(value.localization,{allowPreview:options.allowPreview===true});
   // Reuse the legacy direct-collection fact validator. This internal English
   // envelope is never rendered or exposed as the permission's selected locale.
   const facts=value.facts,w=value.wording;
-  const n=normalizeCollectionNotice({schemaVersion:1,renderingPolicy:'collection-v1',locale:'en',noticeId:value.offerId,siteId:value.siteId,scopeId:value.permissionId,artifactId:value.artifactId,mode:value.mode,reviewStatus:value.reviewStatus,wording:{title:w.title,intro:w.statement,detailsLabel:'Collection details',privacyLinkLabel:'Privacy policy'},controller:facts.controller,purposes:[facts.purpose],recipients:facts.recipients,privacy:facts.privacy,document:value.document},options);
+  const n=normalizeCollectionNoticeContent({schemaVersion:1,renderingPolicy:'collection-v1',locale:'en',siteId:value.siteId,scopeId:value.permissionId,artifactId:value.artifactId,mode:value.mode,reviewStatus:value.reviewStatus,wording:{title:w.title,intro:w.statement,detailsLabel:'Collection details',privacyLinkLabel:'Privacy policy'},controller:facts.controller,purposes:[facts.purpose],recipients:facts.recipients,privacy:facts.privacy,document:value.document},options);
   if(n.purposes[0]!.id!==value.purposeId)throw new Error('Permission purpose mismatch.');
   const guard=facts.scopeGuard;
   if(guard!==null&&(!obj(guard)||!exact(guard,['version','revision','facts'])||guard.version!==1||!text(guard.revision,200)||!obj(guard.facts)||!exact(guard.facts,[...scopeGuardFields])||Object.values(guard.facts).some(f=>!['absent','present','unknown'].some(v=>f===v))))throw new Error('Invalid form scope assessment.');
   return value as unknown as FormPermissionOffer;
 }
-export const formPermissionGrantSupported=(offer:FormPermissionOffer):boolean=>offer.facts.scopeGuard!==null&&scopeGuardFields.every(field=>offer.facts.scopeGuard!.facts[field]==='absent');
+/** Validate provisional content without inventing an offer ID. */
+export function normalizeFormPermissionContent(input:unknown,options:{allowPreview?:boolean}={allowPreview:true}):FormPermissionContent{return normalizePermission(input,options,false) as FormPermissionContent;}
+export function normalizeFormPermissionOffer(input:unknown,options:{allowPreview?:boolean}={}):FormPermissionOffer{return normalizePermission(input,options,true) as FormPermissionOffer;}
+export const formPermissionGrantSupported=(offer:Pick<FormPermissionContent,'facts'>):boolean=>offer.facts.scopeGuard!==null&&scopeGuardFields.every(field=>offer.facts.scopeGuard!.facts[field]==='absent');
 export class FormPermissionError extends Error {constructor(readonly code:'not-checked'|'read-required'|'scope-restricted'|'stale-offer'|'revision-conflict'|'expired-command'|'context-retired'|'unavailable'|'invalid-response'|'recording-failed'|'superseded'|'destroyed'){super(code);this.name='FormPermissionError';}}
 export interface FormPermissionSnapshot {checked:boolean;status:'idle'|'loading'|'submitting'|'recorded'|'error'|'retired'|'destroyed';allowed:boolean;current:FormPermissionState|null;receipt?:FormPermissionReceipt;error?:FormPermissionError['code'];recovery?:{status:'loading'|'ready'|'unavailable'|'invalid';pending:number;withdrawalPending:boolean;refusalPending?:boolean;blocked:boolean}}
 export interface FormPermissionOptions {

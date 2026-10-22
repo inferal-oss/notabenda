@@ -64,7 +64,7 @@ function normalizeNotice(input:unknown,options:{allowPreview?:boolean},identity:
   return raw as unknown as CollectionNotice;
 }
 /** Content-only validation for an explicitly provisional editor preview. */
-export function normalizeCollectionNoticeContent(input:unknown):CollectionNoticeContent{return normalizeNotice(input,{allowPreview:true},false);}
+export function normalizeCollectionNoticeContent(input:unknown,options:{allowPreview?:boolean}={allowPreview:true}):CollectionNoticeContent{return normalizeNotice(input,options,false);}
 export function normalizeCollectionNotice(input:unknown,options:{allowPreview?:boolean}={}):CollectionNotice{return normalizeNotice(input,options,true) as CollectionNotice;}
 const escape=(value:string)=>value.replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 /** Stable instance IDs. Use descriptionId for a concise aria-describedby target; hosts ensure prefix uniqueness. */

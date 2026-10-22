@@ -1,4 +1,5 @@
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
+import {assembleFormPermissionContent} from './form-permission-content.js';
 import {assembleCollectionNoticeContent} from './collection-workbench.js';
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 export {createCollectionFlow,verifyCollectionFlow} from './collection-flow-build.js';
@@ -297,8 +298,9 @@ export function createFormPermissionOffer(artifact:LegalArtifact,settings:FormPe
   const localization=artifact.publicConfig.localization?.formPermission?selectFormPermissionLocalization(artifact.publicConfig.localization):undefined;
   const notice=directCollectionFacts(artifact,{scopeId:settings.permissionId,purposeIds:[settings.purposeId],reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.statement}},options);
   const guard=scopeGuardContext(artifact.publicConfig.scopeGuards,settings.purposeId)??null;
-  const value=normalizeFormPermissionOffer({schemaVersion:settings.refusal?3:localization?2:1,...(localization?{localization}:{}),...(settings.refusal?{refusal:settings.refusal}:{}),offerId:'0'.repeat(64),siteId:notice.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:notice.artifactId,mode:notice.mode,reviewStatus:settings.reviewStatus,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard},wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},{allowPreview:options.mode==='preview'});
-  const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))};
+  const descriptor=assembleFormPermissionContent({...(localization?{localization}:{}),siteId:notice.siteId,artifactId:notice.artifactId,mode:notice.mode,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard}},settings,{allowPreview:options.mode==='preview'});
+  const {schemaVersion,localization:selectedLocalization,refusal,...body}=descriptor;
+  return {schemaVersion,...(selectedLocalization?{localization:selectedLocalization}:{}),...(refusal?{refusal}:{}),offerId:sha256(canonicalJson(descriptor)),...body};
 }
 /** @requirements REQ-ZA-MARKETING Web collection only; eligibility and downstream marketing remain host work. */
 export function createSouthAfricaMarketingOffer(artifact:LegalArtifact,settings:SouthAfricaMarketingSettings,options:ValidationOptions={}):SouthAfricaMarketingOffer {

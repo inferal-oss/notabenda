@@ -1,4 +1,6 @@
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH REQ-PRODUCT-COLLECTION-FLOW
+import {scopeGuardContext} from './scope-guard-policy.js';
+import {selectFormPermissionLocalization} from './form-permission-localization-policy.js';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {normalizePublicLegalArtifact,createCollectionNotice,createCollectionFlow,compileLegalDocuments} from './content.js';
@@ -14,7 +16,7 @@ export function prepareCollectionWorkbenchContext(input:unknown,selection:{purpo
  const initial=selection.settings===undefined?undefined:{settings:selection.settings,flow:createCollectionFlow(artifact,selection.settings,{mode:'preview'})};
  let buildMethod:CollectionWorkbenchContext['buildMethod']='final-artifact';
  try{if(compileLegalDocuments(artifact.publicConfig,{mode:artifact.manifest.mode}).manifest.artifactId===artifact.manifest.artifactId)buildMethod='configuration';}catch{}
- return normalizeCollectionWorkbenchContext({schemaVersion:1,kind:'notabenda-collection-workbench',buildMethod,facts,...(initial?{initial}:{})});
+ return normalizeCollectionWorkbenchContext({schemaVersion:1,kind:'notabenda-collection-workbench',buildMethod,facts,permissionContext:{scopeGuards:selection.purposeIds.map(purposeId=>({purposeId,assessment:scopeGuardContext(artifact.publicConfig.scopeGuards,purposeId)??null})),...(artifact.publicConfig.localization?.formPermission?{localization:selectFormPermissionLocalization(artifact.publicConfig.localization)}:{})},...(initial?{initial}:{})});
 }
 /** A self-contained local HTML tool. It exports settings, never authoritative fragments or descriptors. */
 export async function createCollectionWorkbenchFiles(input:unknown,selection:{purposeIds:readonly string[];settings?:CollectionFlowSettings},options:ValidationOptions&{delivery?:'standalone'|'directory'}={}):Promise<Record<string,string>> {

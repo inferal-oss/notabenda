@@ -39,7 +39,7 @@
         "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state.",
         "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state.",
         "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
-        "Exact-release direct form notice workbench with explicit purpose routes, shared-renderer provisional preview and separate build-settings exports; existing complete permission branches are preserved."
+        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -553,7 +553,7 @@
         "Optional archived refusal copy and explicit negative events, native refusal/withdrawal presentation, exact-request recovery and operator search; regional solicitation and suppression remain separate host work.",
         "Optional South African web-request profile with explicit goods/services and method, visible archived responsible-party details, required refusal and complete host-language labels; declaration truth and legal sufficiency remain host review.",
         "Optional release-bound direct-form composer with explicit notice-only/separate-permission routes, unconditional static notices, exact SSR hydration, separate host controllers and data-file CLI builds.",
-        "Exact-release direct form notice workbench with explicit purpose routes, shared-renderer provisional preview and separate build-settings exports; existing complete permission branches are preserved."
+        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -943,7 +943,7 @@
         "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries.",
         "Optional actual-starter remote rollout exercise with bounded asset rollback and class-lifecycle forward repair; production and fresh-account acceptance stay separate.",
         "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
-        "Exact-release direct form notice workbench with explicit purpose routes, shared-renderer provisional preview and separate build-settings exports; existing complete permission branches are preserved."
+        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -11100,9 +11100,9 @@
     {
       "id": "REQ-PRODUCT-COLLECTION-WORKBENCH",
       "jurisdiction": "PRODUCT",
-      "title": "Exact-release form notice authoring and settings export",
+      "title": "Exact-release form notice and ordinary permission authoring",
       "kind": "product-standard",
-      "summary": "Prepare a local browser editor from an intact final public release, explicitly choose direct purpose presentation, preview shared notice/permission text and export separate settings for the existing collection-flow builder.",
+      "summary": "Prepare a local browser editor from an intact final public release, explicitly choose direct-purpose presentation, author notice and ordinary permission settings, preview shared identity-free content and export settings for the existing collection-flow builder.",
       "appliesWhen": "An operator prepares a direct-only collection form from a selected final legal release.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -11119,7 +11119,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "New notice-only flows and preservation of supplied complete permission branches are supported. The provisional preview has no authoritative descriptor identity. A prepared context is not proof of authenticity or legal review. Final artifact validation, field placement, real routes, permission integration and downstream effects remain separate. New permission authoring is not included.",
+      "caveats": "Prepared contexts project selected effective scope assessments and permission messages. Missing/restrictive assessments or required language messages block ordinary permission authoring without blocking notice-only routes. Specialized marketing remains separate. Provisional previews have no authoritative descriptor identity. Context shape is not authenticity or legal review. Final artifact validation, field placement, real routes, permission integration and downstream effects remain separate.",
       "implementationRefs": [
         "packages/notabenda/src/collection-workbench.ts",
         "packages/notabenda/src/collection-workbench-build.ts",
@@ -11136,15 +11136,19 @@
         "examples/collection-workbench/build.mjs",
         "examples/static/build.mjs",
         "site/host.mjs",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "packages/notabenda/src/form-permission-content.ts",
+        "packages/notabenda/src/form-permission.ts",
+        "packages/notabenda/src/collection-permission-editor.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/collection-workbench.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/collection-workbench.test.mjs",
-        "docs/verification/collection-workbench.md"
+        "docs/verification/collection-workbench.md",
+        "packages/notabenda/test/collection-permission-authoring.test.mjs"
       ],
-      "implementationNote": "Shared public fact/wording projection and content-only preview rendering, explicit release confirmation, unresolved-route refusal, complete mixed-settings preservation, JSON/YAML/Markdown settings, new-only standalone local CLI tool with pinned inline CSP and optional directory delivery."
+      "implementationNote": "Shared notice and identity-free permission content projection/validation/rendering; explicit release confirmation; editable per-purpose ordinary offers, independent review reset, optional refusal and delivery-window fields; current imported values and preserved optional omissions; JSON/YAML/Markdown export; old contexts retain supplied complete branches. No permission action or final identity is created in the editor."
     }
   ],
   "verification": [
@@ -13277,12 +13281,13 @@
         "REQ-PRODUCT-COLLECTION-WORKBENCH"
       ],
       "status": "automated",
-      "expected": "Exact-release settings round-trip through the real final builder; stale releases and unresolved or conflicting routes fail. Preview has no descriptor identity, respects localization and has no navigation, recording or storage effects. Standalone output has matching CSP hashes and no external assets.",
+      "expected": "Exact-release settings round-trip through the real final builder; stale releases and unresolved or conflicting routes fail. Preview has no descriptor identity, respects localization and has no navigation, recording or storage effects. Standalone output has matching CSP hashes and no external assets. Fresh permission authoring and imported edits compile through the final builder. Effective scope restrictions, language gaps, unknown/specialized fields, unsafe URLs and invalid copy fail; edits reset affected review and confirmation without restoring stale prepared values.",
       "testRefs": [
         "packages/notabenda/test/collection-workbench.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/collection-workbench.test.mjs",
-        "docs/verification/collection-workbench.md"
+        "docs/verification/collection-workbench.md",
+        "packages/notabenda/test/collection-permission-authoring.test.mjs"
       ]
     }
   ],
