@@ -19,6 +19,12 @@ Choose consent controls and assessed storage exceptions separately. `storage-exc
 
 For `form-permissions`, establish `scopeGuards` and test `formPermissionGrantSupported(offer)` for the actual selected purpose, including overrides. Unknown or present restricted facts keep ordinary grants off. They require resolution or a separately supported process, never a convenient `absent` declaration. The map's `conditionalConfig` also identifies the complete terms/form dictionary required for a selected non-English native interface. Unrelated dictionaries are not required.
 
+## Compose an ordinary collection form
+
+For a form with disclosure and separate permission, use the optional [collection-flow composer](https://notabenda.org/guide/collection-flow/index.md). It is build input/API, not a `SiteConfig.collectionFlow` field. Review the actual conditions in `purposes[].legalBasis`; select every ordinary direct-collection purpose and explicitly choose `notice-only` or `separate-permission` for each. Never infer this decision from prose, country, collection optionality or cookie enrollment. A notice-only purpose produces no permission offer. Missing decisions stop the composer.
+
+Bind `reviewedArtifactId` to the exact reviewed legal build. `build --collection-flow FILE` accepts JSON, YAML/YML or Markdown frontmatter; body notes stay private. Use the installed `CollectionFlowSettings` type or guide for exact settings. Verify the resulting flow against the trusted artifact before publishing. Mount with exactly matching host-owned permission controllers, independently of ordinary form submission, and verify that a checked draft or form submit writes no permission. Preserve scope-guard unknowns and the actual language. Selecting a country grants nothing and does not establish that a legal condition applies.
+
 ## Read exact field shapes
 
 ```sh

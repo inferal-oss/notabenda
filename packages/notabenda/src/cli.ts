@@ -1,4 +1,8 @@
 #!/usr/bin/env node
+// @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
+import {createCollectionFlow} from './collection-flow-build.js';
+import type {CollectionFlowSettings} from './collection-flow.js';
+import {renderCollectionFlow} from './collection-flow.js';
 // @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
 // @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-CONFIG-SOURCES REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-BUNDLE-BUDGET
@@ -38,6 +42,13 @@ check  Validate configuration (production checks by default; --preview permits d
 explain --config FILE --document privacy|cookies|terms [--preview] [--json]
        Show which declared fields produce each section. Read-only; no legal approval.
 build  Generate static legal pages, public configuration and a versioned artifact.
+Build --collection-flow FILE composes an unconditional direct-collection notice and
+separate permission offers from explicit release-bound presentation decisions. FILE
+may be JSON, YAML/YML or Markdown frontmatter; Markdown notes stay private. It writes
+collection-flow.json/html and content-addressed collection-flows/ files. Supply the
+reviewedArtifactId from the exact legal build; missing or stale decisions stop output.
+Publishing these files registers no offers and grants no permission.
+
 Build --consent-runtime local|required also writes consent-runtime.json and
 assets/notabenda-consent.css for the smaller @notabenda/core/consent browser entry.
 Choose local for browser-only choices or required for host-confirmed receipts;
@@ -157,7 +168,7 @@ async function main(): Promise<void> {
   if(command==='catalog'){if(args[0]==='show'){args.shift();await (await import('./catalog-cli.js')).showCatalogProduct(args);return;}if(args[0]==='review'){args.shift();await (await import('./catalog-review-cli.js')).runCatalogReviewCli(args);return;}if(args[0]==='detect'){await (await import('./catalog-browser-cli.js')).runBrowserCatalogCli(args);return;}await (await import('./catalog-cli.js')).runCatalogCli(args,'search');return;}
   if(command==='discover'){await runDiscoveryCli(args);return;}
   if (!['init', 'wizard', 'check', 'build'].includes(command!)) throw new Error('Unknown command. Run notabenda --help.');
-  let noticeScope:string|undefined;let consentRuntimeMode:'local'|'required'|undefined;let wizardConfigFormat:ConfigSourceFormat|undefined;let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,termsPath:string|undefined,storagePath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
+  let collectionFlowPath:string|undefined;let noticeScope:string|undefined;let consentRuntimeMode:'local'|'required'|undefined;let wizardConfigFormat:ConfigSourceFormat|undefined;let configPath = 'notabenda.config.json'; let outDir = 'legal-dist'; let preview = false; let json = false; let answersPath:string|undefined,rightsPath:string|undefined,termsPath:string|undefined,storagePath:string|undefined,projectDirectory:string|undefined,catalogPath:string|undefined,catalogReportPath:string|undefined,privateOutDir:string|undefined,cartridges:string|undefined;
   const retainedPaths:string[]=[],retainedNoticePaths:string[]=[];
   const seen = new Set<string>();
   while (args.length) {
@@ -167,10 +178,10 @@ async function main(): Promise<void> {
     seen.add(flag);
     if (flag === '--preview') preview = true;
     else if (flag === '--json') json = true;
-    else if (flag === '--consent-scope' || flag === '--retain-consent-notice' || flag === '--consent-runtime' || flag === '--config-format' || flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights' || flag === '--terms' || flag === '--storage') {
+    else if (flag === '--collection-flow' || flag === '--consent-scope' || flag === '--retain-consent-notice' || flag === '--consent-runtime' || flag === '--config-format' || flag === '--config' || flag === '--out-dir' || flag === '--retain-artifact' || flag === '--answers' || flag === '--project' || flag === '--catalog' || flag === '--catalog-report' || flag === '--private-out-dir' || flag === '--cartridges' || flag === '--rights' || flag === '--terms' || flag === '--storage') {
       const value = args.shift();
       if (!value || value.startsWith('--')) throw new Error('CLI option requires a value.');
-      if(flag==='--consent-scope'){
+      if(flag==='--collection-flow'){collectionFlowPath=value;}else if(flag==='--consent-scope'){
         if(!/^[a-z][a-z0-9-]{0,119}$/u.test(value))throw Error('Use a lowercase scope slug starting with a letter, up to 120 characters.');
         noticeScope=value;
       }else if(flag==='--retain-consent-notice'){
@@ -191,6 +202,7 @@ async function main(): Promise<void> {
   if (preview && command === 'init') throw new Error('init always creates a draft; --preview applies to check/build.');
   if(noticeScope&&(command!=='build'||consentRuntimeMode!=='required'))throw Error('--consent-scope requires build --consent-runtime required.');
   if(retainedNoticePaths.length&&command!=='build')throw Error('--retain-consent-notice is only valid for build.');
+  if(collectionFlowPath&&command!=='build')throw Error('--collection-flow is only valid for build.');
   if(consentRuntimeMode&&command!=='build')throw Error('--consent-runtime is only valid for build.');
   if(wizardConfigFormat&&command!=='wizard')throw Error('--config-format is only valid for wizard.');
   if(cartridges&&command!=='wizard')throw Error('--packs is only valid for wizard.');
@@ -218,6 +230,7 @@ async function main(): Promise<void> {
     return;
   }
   if (!result.valid) throw new SiteConfigError(result.diagnostics);
+  if(!collectionFlowPath){try{await lstat(resolve(outDir,'collection-flow.json'));throw Error('This output already contains collection-flow.json. Choose --collection-flow FILE explicitly, or use a new output directory.');}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}}
   // An omitted switch must not leave a previous descriptor active beside a new legal release.
   if(!consentRuntimeMode){try{await lstat(resolve(outDir,'consent-runtime.json'));throw Error('This output already contains consent-runtime.json. Choose --consent-runtime local|required explicitly, or use a new output directory.');}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}}
   if(!noticeScope){try{await lstat(resolve(outDir,'consent-notice.json'));throw Error('This output already contains consent-notice.json. Choose --consent-runtime required --consent-scope SLUG explicitly, or use a new output directory.');}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;}}
@@ -244,9 +257,17 @@ async function main(): Promise<void> {
   const noticeFiles={...oldNoticeFiles,...noticeBuild?.files};
   for(const [path,contents] of Object.entries(pinned))if(Object.hasOwn(build.files,path)&&build.files[path]!==contents)throw new Error('A retained artifact conflicts with the current release.');
   const css = await readFile(new URL('./styles.css', import.meta.url), 'utf8');
+  const collectionFlow=collectionFlowPath?createCollectionFlow(build.artifact,await readConfigInput(collectionFlowPath) as CollectionFlowSettings,{mode}):undefined;
+  const flowFiles:Record<string,string>={};
+  if(collectionFlow){
+    const body=canonicalJson(collectionFlow)+'\n',html=renderCollectionFlow(collectionFlow,{idPrefix:collectionFlow.notice.scopeId,allowPreview:preview});
+    const folder='collection-flows/'+collectionFlow.flowId+'/';
+    Object.assign(flowFiles,{'collection-flow.json':body,'collection-flow.html':html,[folder+'flow.json']:body,[folder+'index.html']:html});
+    for(const offer of collectionFlow.permissions)flowFiles[folder+'permissions/'+offer.permissionId+'.json']=canonicalJson(offer)+'\n';
+  }
   const offers=createConfiguredTermsOfferFiles(build.artifact,{mode});
   for(const [path,body] of Object.entries(offers))for(const files of [build.files,pinned])if(Object.hasOwn(files,path)&&files[path]!==body)throw Error('A configured terms offer conflicts with an existing public output.');
-  for(const [path,body] of Object.entries({...runtimeFiles,...noticeFiles}))for(const files of [build.files,pinned,offers])if(Object.hasOwn(files,path)&&files[path]!==body)throw Error('A consent delivery file conflicts with an existing public output.');
+  for(const [path,body] of Object.entries({...runtimeFiles,...noticeFiles,...flowFiles}))for(const files of [build.files,pinned,offers])if(Object.hasOwn(files,path)&&files[path]!==body)throw Error('A consent delivery file conflicts with an existing public output.');
   if(archive&&privateOutDir){
     // Exclusive private output is never added to public build.files. No existing directory is reused.
     const root=resolve(privateOutDir);await mkdir(root,{mode:0o700});
@@ -256,7 +277,8 @@ async function main(): Promise<void> {
     await writeFile(resolve(root,'release.private.json'),canonicalJson(archive)+'\n',{flag:'wx',mode:0o600});
     await writeFile(resolve(root,'.gitignore'),'*\n',{flag:'wx',mode:0o600});
   }
-  await writeBuildFiles(resolve(outDir), { ...build.files,...pinned,...offers,...runtimeFiles,...noticeFiles, 'assets/notabenda.css': css });
+  await writeBuildFiles(resolve(outDir), { ...build.files,...pinned,...offers,...runtimeFiles,...noticeFiles,...flowFiles, 'assets/notabenda.css': css });
+  if(collectionFlow)console.log(`Collection flow: ${collectionFlow.flowId}. Connect its host-owned permission controllers separately from form submission.`);
   if(noticeBuild)console.log(`Consent notice: ${noticeBuild.notice.noticeId}. Publishing does not register or activate it in the backend.`);
   if(runtime)console.log(`Consent runtime: ${runtime.evidence} evidence mode. Connect service lifecycles before optional requests; required mode needs its archived notice and host-bound receipt adapter.`);
   console.log(`Built ${build.manifest.documents.length} ${mode} documents in ${outDir}. Artifact: ${build.manifest.artifactId}`);

@@ -222,12 +222,14 @@ export function createFormPermission(input:unknown,options:FormPermissionOptions
   return {getOffer:()=>structuredClone(offer),getSnapshot:snapshot,subscribe(listener){listeners.add(listener);try{listener(snapshot());}catch{}return()=>listeners.delete(listener);},setChecked(checked){if(typeof checked!=='boolean'||terminal()||flight)throw new Error('This permission draft cannot be edited.');state={...state,checked};emit();},refresh,reconcile,retryPending,grant:()=>action('grant'),withdraw:()=>action('withdraw'),refuse:()=>action('refuse'),destroy(){if(state.status==='destroyed')return;epoch++;reading?.abort();flight?.abort.abort();recovery=undefined;try{stop?.();}catch{}state={checked:false,status:'destroyed',current:null,allowed:false};emit();listeners.clear();}};
 }
 /** @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE No submit listener, identity fields, automatic network read, or forced privacy acceptance. */
-export function mountFormPermission(container:HTMLElement,options:{permission:FormPermissionController}):{destroy():void}{
+// @requirements REQ-PRODUCT-COLLECTION-FLOW
+export function mountFormPermission(container:HTMLElement,options:{permission:FormPermissionController;headingLevel?:2|3|4|5|6}):{destroy():void}{
+  if(options.headingLevel!==undefined&&![2,3,4,5,6].includes(options.headingLevel))throw Error('Use a permission heading level from 2 to 6.');
   const c=options.permission,offer=c.getOffer(),doc=container.ownerDocument,l=offer.localization,m=l?.formPermission;
   const t=(key:keyof FormPermissionMessages,fallback:string,values:Record<string,string>={})=>m?formatMessage(m[key],values):formatMessage(fallback,values);
   const el=<K extends keyof HTMLElementTagNameMap>(tag:K,text?:string)=>{const element=doc.createElement(tag);if(text!==undefined)element.textContent=text;return element;};
   const root=el('section');root.className='nb-form-permission';root.setAttribute('aria-label',offer.wording.title);if(l){root.lang=l.locale;root.dir=l.direction;}
-  const heading=el('h2',offer.wording.title),identity=el('p',offer.facts.controller.name+' · '+offer.channel.label),label=el('label'),checkbox=el('input');
+  const heading=el(('h'+(options.headingLevel??2)) as 'h2'|'h3'|'h4'|'h5'|'h6',offer.wording.title),identity=el('p',offer.facts.controller.name+' · '+offer.channel.label),label=el('label'),checkbox=el('input');
   identity.className='nb-form-permission-identity';checkbox.type='checkbox';label.className='nb-form-permission-choice';label.append(checkbox,el('span',offer.wording.statement));
   const assertion=el('p',offer.wording.statement);assertion.className='nb-form-permission-saved-statement';assertion.hidden=true;
   const optionality=el('p',offer.wording.optionality),policy=el('a',t('policy','Read the privacy policy · {version}',{version:offer.document.version}));policy.href=offer.document.url;

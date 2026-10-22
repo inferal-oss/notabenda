@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW
+import {collectionFlowExample} from '../examples/collection-flow/example.mjs';
 // @requirements REQ-ZA-MARKETING
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-CF-ADMIN
 // Technical fixtures only. All records are in-memory; no operational account, auth or data is read.
@@ -20,6 +22,9 @@ export async function accessibilityFixtureData(){
  const context={siteId:config.site.id,permissionId:'newsletter-email',streamId:'accessibility-person',now:()=>new Date('2026-10-19T12:00:00Z')};
  await registerFormPermissionOffer(storage,permissionOffer,context);await setActiveFormPermissionOffer(storage,permissionOffer.offerId,context);
  const permissionState=await getFormPermissionState(storage,context),streamRef=await formPermissionStreamRef(context);
+ const flowExample=collectionFlowExample(config),collectionFlow=flowExample.flow,flowOffer=collectionFlow.permissions[0],flowContext={siteId:flowOffer.siteId,permissionId:flowOffer.permissionId,streamId:'flow-accessibility'};
+ await recordLegalRelease(storage,flowExample.build.artifact);await registerFormPermissionOffer(storage,flowOffer,{...flowContext,allowPreview:true});await setActiveFormPermissionOffer(storage,flowOffer.offerId,{...flowContext,allowPreview:true});
+ const flowPermissionState=await getFormPermissionState(storage,{...flowContext,allowPreview:true});
  const evidence=createAdminWorker({authorize:()=>({store:createDurableObjectStore(createSyntheticStorage(),{prefix:'evidence/demo-site/'}),scopeLabel:'Review workspace'})});
  const history=createAdminWorker({authorize:()=>({store:createDocumentHistory(storage),scopeLabel:'Document history'})});
  const setup=createSetupWorker({authorize:()=>true,scriptUrl:'/qa-a11y/widget.mjs',stylesheetUrl:'/assets/notabenda.css'});
@@ -36,6 +41,6 @@ export async function accessibilityFixtureData(){
  }
  // Keep exact pinned reader files private to the local fixture server. Do not add
  // test releases to the deployable site's artifact collection.
- const artifactFiles=Object.fromEntries([build,revision].flatMap(b=>Object.entries(b.files).filter(([path])=>/^artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(path))));
- return {config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
+ const artifactFiles=Object.fromEntries([build,revision,flowExample.build].flatMap(b=>Object.entries(b.files).filter(([path])=>/^artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(path))));
+ return {collectionFlow,flowPermissionState,config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
 }

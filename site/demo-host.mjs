@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 // @requirements REQ-PRODUCT-CF-HOST
 import {demoStorageNote,portugueseDemoStorageNote} from './website-notice.mjs';
@@ -16,6 +17,7 @@ import {formPermissionStreamRef} from '@notabenda/cloudflare';
 import {permissionContext} from './permission-context.mjs';
 import data from './dist/server-data.json' with {type:'json'};
 const cookieBase='notabenda_demo';
+const collectionFlowPage=/^\/(?:dark\/)?collection-flow(?:\/(?:index\.html)?)?$/u;
 const permissionPage=/^\/(?:(?:dark\/)?form-permissions(?:\/react)?|form-permissions\/astro(?:\/review)?)(?:\/(?:index\.html)?)?$/u;
 const contractPage=/^\/(?:dark\/)?contract-actions\/(withdrawal|cancellation)(?:\/(?:index\.html)?)?$/u;
 const orderPage=/^\/(?:dark\/)?orders\/(mixed|deferred|conditional)(?:\/(?:index\.html)?)?$/u;
@@ -23,9 +25,9 @@ const localizedPermissionPage=/^\/localization\/permission(?:\/(?:index\.html)?)
 // @requirements REQ-PRODUCT-TERMS-ADAPTERS
 const frameworkAgreementPage=/^\/(?:(?:dark\/)?agreement\/react|agreement\/astro(?:\/review)?)(?:\/(?:index\.html)?)?$/u;
 // Only interactive entry documents receive a session; nested legal pages and offer assets stay static.
-const isPage=path=>frameworkAgreementPage.test(path)||localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/(?:agreement|processing)|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
+const isPage=path=>collectionFlowPage.test(path)||frameworkAgreementPage.test(path)||localizedPermissionPage.test(path)||orderPage.test(path)||permissionPage.test(path)||contractPage.test(path)||/^\/(?:agreement|dark\/agreement|localization\/(?:agreement|processing)|recorded-choices|processing-choices)(?:\/(?:index\.html)?)?$/u.test(path);
 const admin=/^\/demo\/admin(?:\/|$)/u;
-const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing(?:\/pt)?)\/(?:head|record)|permissions\/(?:pt\/)?(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
+const api=/^\/demo\/(?:orders\/(?:mixed|deferred|conditional)\/(?:quote|submit)|agreements\/(?:light|dark|pt)|(?:choices|processing(?:\/pt)?)\/(?:head|record)|permissions\/(?:(?:pt|flow)\/)?(?:state|record)|contracts\/(?:withdrawal|cancellation))$/u;
 export const isDemoRoute=path=>isPage(path)||admin.test(path)||api.test(path);
 const token=()=>Array.from(crypto.getRandomValues(new Uint8Array(32)),b=>b.toString(16).padStart(2,'0')).join('');
 const digest=async value=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value))),b=>b.toString(16).padStart(2,'0')).join('');
@@ -73,8 +75,8 @@ export async function serveDemo(request,env,{protect,readBody}){
    response=await env.ASSETS.fetch(request);
    const assetHeaders=new Headers(response.headers);assetHeaders.set('Content-Security-Policy',"default-src 'none'; style-src 'self'; img-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");
    let content=response.body;if(response.headers.get('Content-Type')?.includes('text/html')&&request.method!=='HEAD'){
-    const permissionEntry=permissionPage.test(path)||localizedPermissionPage.test(path);
-    const stream=permissionEntry?`<meta name="notabenda-permission-stream" content="${await formPermissionStreamRef(permissionContext(localizedPermissionPage.test(path)?data.localizedFormPermissions.offer:data.formPermissions.offer,generation))}">`:'';
+    const permissionEntry=collectionFlowPage.test(path)||permissionPage.test(path)||localizedPermissionPage.test(path);
+    const stream=permissionEntry?`<meta name="notabenda-permission-stream" content="${await formPermissionStreamRef(permissionContext(collectionFlowPage.test(path)?data.collectionFlow.flow.permissions[0]:localizedPermissionPage.test(path)?data.localizedFormPermissions.offer:data.formPermissions.offer,generation))}">`:'';
     const contractRoute=contractPage.exec(path)?.[1],contract=contractRoute?`<meta name="notabenda-contract-operation" content="${await contractActionOperationRef(contractContext(data.contractActions.definitions[contractRoute],generation))}">`:'';
     content=(await response.text()).replace('data-notabenda-terms-context="sample-light"',`data-notabenda-terms-context="sample-light-${generation}"`);
     const note=path.startsWith('/localization/')?portugueseDemoStorageNote:demoStorageNote,reactRoot=/<div\b[^>]*\bid="react-(?:agreement|permission)-root"[^>]*>/u;

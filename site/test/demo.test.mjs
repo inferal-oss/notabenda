@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 // @requirements REQ-PRODUCT-PACK-EDUCATION
 // @requirements REQ-PRODUCT-TERMS-ADAPTERS
 // @requirements REQ-PRODUCT-WORKSPACE-OVERVIEW
@@ -239,3 +240,15 @@ test('localized agreements use session-bound storage, preserve language/copy and
  const response=await post(a,body);assert.equal(response.status,200,await response.clone().text());const result=await response.json();assert.equal(result.receipt.noticeId,n.noticeId);assert.equal((await(await get(a)).json()).revision,1);assert.equal((await(await get(b)).json()).revision,0);assert.equal((await(await get(a,'')).json()).revision,0);assert.equal((await post(a,{...body,requestId:crypto.randomUUID()},'')).status,400);
  const detail=await serveHost(req('/demo/admin/processing/record?id='+result.receipt.id,{headers:headers(a)}),env);assert.equal(detail.status,200);const html=await detail.text();assert.ok(html.includes(n.localization.processingChoices.recorded));assert.equal((await serveHost(req('/demo/admin/processing/record?id='+result.receipt.id,{headers:headers(b)}),env)).status,404);
  });
+
+test('composed-form permissions are independently host-bound and stored only in the visitor demo workspace',async()=>{
+ const {env}=environment(),a=await session(env),b=await session(env),offer=data.collectionFlow.flow.permissions[0];
+ const page=await serveHost(req('/collection-flow/',{headers:headers(a)}),env),html=await page.text();assert.equal(page.status,200);assert.match(html,/notabenda-permission-stream/);assert.match(html,/demo-corner/);
+ const get=s=>serveHost(req('/demo/permissions/flow/state',{headers:headers(s)}),env),one=await(await get(a)).json(),two=await(await get(b)).json();assert.notEqual(one.streamRef,two.streamRef);assert.equal(one.activeOfferId,offer.offerId);assert.equal(one.permitted,false);
+ const command={schemaVersion:1,offerId:offer.offerId,requestId:crypto.randomUUID(),clientAt:new Date().toISOString(),expectedStreamRef:one.streamRef,action:'grant',expectedRevision:one.revision,expectedActivation:one.activeRevision};
+ const post=(s,body)=>serveHost(req('/demo/permissions/flow/record',{method:'POST',headers:{...headers(s),Origin:'https://demo.example.test','Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(body)}),env);
+ const accepted=await post(a,command);assert.equal(accepted.status,200);assert.equal((await accepted.json()).state.permitted,true);assert.equal((await get(b)).status,200);assert.equal((await(await get(b)).json()).permitted,false);assert.equal((await post(b,command)).status,409);
+ const original=await(await serveHost(req('/demo/permissions/state',{headers:headers(a)}),env)).json();assert.equal(original.permitted,false);assert.notEqual(original.activeOfferId,offer.offerId);
+ const detail=await serveHost(req('/demo/admin/permissions',{headers:headers(a)}),env);assert.equal(detail.status,200);assert.match(await detail.text(),/flow-updates|reading updates/i);
+ for(const path of ['/collection-flow/flow.json','/collection-flow/privacy/','/assets/collection-flow-example.mjs']){const response=await serveHost(req(path),env);assert.equal(response.headers.get('Set-Cookie'),null,path);}
+});

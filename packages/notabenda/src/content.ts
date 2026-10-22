@@ -1,3 +1,6 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
+export {createCollectionFlow,verifyCollectionFlow} from './collection-flow-build.js';
+export type {CollectionFlow,CollectionFlowSettings,CollectionFlowDecision,CollectionFlowRoute} from './collection-flow.js';
 // @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 import {selectContractActionLocalization} from './contract-action-localization.js';

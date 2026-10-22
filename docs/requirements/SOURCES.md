@@ -258,7 +258,9 @@ Read dates and final §312.5(a)(1)–(2) text. No parental-verification implemen
 
 [KVKK: processing conditions](https://www.kvkk.gov.tr/Icerik/6607/Conditions-for-Processing-Personal-Data-)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** search-result.
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Read the ordinary processing-condition list. It is guidance, not a verified current controlling-law consolidation or a classification of an actual purpose.
 
 <a id="src-tr-cookies"></a>
 
@@ -266,9 +268,9 @@ Read dates and final §312.5(a)(1)–(2) text. No parental-verification implemen
 
 [KVKK: cookie-processing enforcement decision summary](https://www.kvkk.gov.tr/Icerik/7408/Summary-of-the-Board-Decision-on-the-processing-of-personal-data-by-the-data-controller-operating-in-e-commerce-sector-through-cookies-used-by-the-websites-mobile-applications-)
 
-**Type:** regulator-decision. **Checked:** 2026-10-18. **Access:** search-result.
+**Type:** regulator-decision. **Checked:** 2026-10-22. **Access:** read.
 
-Case-specific; do not generalize every finding to all cookies or transfer arrangements.
+Read the complete regulator summary for 10 March 2022 decision 2022/229, especially final findings on opt-in and disclosure. Case-specific and predating the 2024 transfer amendment; historical transfer analysis is not the current rule.
 
 <a id="src-eu-contracts"></a>
 
@@ -2039,3 +2041,43 @@ Both pages of 21 April 2026 statement read. CPA registry absence does not establ
 **Type:** regulator-form. **Checked:** 2026-10-22. **Access:** read.
 
 All three pages read; selected Part B goods/services, method and positive/negative responses inform the presentation. Heading refers to 2017 regulations; read with amended regulation 6, not as a reviewed current consolidation or prescribed-form equivalence finding.
+
+<a id="src-tr-law-en"></a>
+
+## SRC-TR-LAW-EN
+
+[KVKK English law text: selected processing and information provisions](https://www.kvkk.gov.tr/Icerik/6649/Personal-Data-Protection-Law)
+
+**Type:** law. **Checked:** 2026-10-22. **Access:** read.
+
+Read selected Articles 3, 5 and 10; page also labels Article 9 amended by Law 7499 in 2024. This English page is not treated as an independently verified current Turkish consolidation; wider amendments, exceptions and current-law verification remain open.
+
+<a id="src-tr-inform"></a>
+
+## SRC-TR-INFORM
+
+[KVKK: independent obligation to inform](https://www.kvkk.gov.tr/Icerik/6641/Obligation-to-inform)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Read Article 10 particulars and independence from the processing condition, requests and new purposes. This selected guidance does not verify actual delivery or information sufficiency.
+
+<a id="src-tr-separation-2026"></a>
+
+## SRC-TR-SEPARATION-2026
+
+[KVKK announcement of decision 2026/347 on separate notices and consent](https://www.kvkk.gov.tr/Icerik/8710/veri-sorumlulari-tarafindan-acik-riza-ve-aydinlatma-metinlerinin-ayri-ayri-duzenlenmesi-gerektigi-hakkinda-kisisel-verileri-koruma-kurulunun-18-02-2026-tarihli-ve-2026-347-sayili-ilke-kararina-iliskin-kamuoyu-duyurusu)
+
+**Type:** regulator-decision. **Checked:** 2026-10-22. **Access:** read.
+
+Read the complete Turkish announcement of the 18 February 2026 principle decision, including same-page separate headings/texts/declarations, no approval of disclosure and no extra consent text for another applicable processing condition. Its linked original Gazette page could not be retrieved; publication/commencement and full controlling text remain unverified.
+
+<a id="src-tr-cookie-guide-2025"></a>
+
+## SRC-TR-COOKIE-GUIDE-2025
+
+[KVKK cookie guide, publication 69, July 2025](https://www.kvkk.gov.tr/Icerik/7353/Cerez-Uygulamalari-Hakkinda-Rehber)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Downloaded the current regulator-linked 61-page PDF. Imprint on printed page 2 says July 2025, publication 69; visually checked. Read selected sections 6, 7 and 9 (printed pp.27–32 and35–36), transfer-version context pp.33–35 and Annex5 pp.54–55. No complete cookie eligibility, transfer qualification or current controlling-law review is claimed.

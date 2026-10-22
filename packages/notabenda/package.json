@@ -359,6 +359,11 @@
       "types": "./dist/config-document.d.ts",
       "import": "./dist/config-document.js",
       "default": "./dist/config-document.js"
+    },
+    "./collection/flow": {
+      "types": "./dist/collection-flow.d.ts",
+      "import": "./dist/collection-flow.js",
+      "default": "./dist/collection-flow.js"
     }
   },
   "bin": {

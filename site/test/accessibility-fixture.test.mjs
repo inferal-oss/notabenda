@@ -14,7 +14,7 @@ test('fixture terms readers serve exact compiler bytes at their pinned URLs with
  const directory=await mkdtemp(join(tmpdir(),'nb-a11y-pinned-'));
  try{
   const publicRoot=join(directory,'public'),fixtureRoot=join(directory,'fixtures');await mkdir(publicRoot);await mkdir(fixtureRoot);
-  const data=await accessibilityFixtureData(),paths=Object.keys(data.artifactFiles);assert.equal(paths.length,6);
+  const data=await accessibilityFixtureData(),paths=Object.keys(data.artifactFiles);assert.equal(paths.length,9);assert.equal(new Set(paths.map(path=>path.split('/')[1])).size,3);
   for(const [path,body] of Object.entries(data.artifactFiles)){assert.match(path,/^artifacts\/[a-f0-9]{64}\/(privacy|cookies|terms)\.html$/u);const file=join(fixtureRoot,'public',path);await mkdir(join(file,'..'),{recursive:true});await writeFile(file,body);}
   await writeFile(join(fixtureRoot,'public-files.json'),JSON.stringify(paths));
   const serve=await accessibilityAssetHandler({publicRoot,fixtureRoot}),response=await serve(new Request('http://127.0.0.1'+data.offer.document.url));assert.equal(response.status,200);const html=await response.text();assert.equal(html,data.artifactFiles[data.offer.document.url.slice(1)]);assert.equal(createHash('sha256').update(html).digest('hex'),data.offer.document.sha256);assert.match(html,/Terms of use/);

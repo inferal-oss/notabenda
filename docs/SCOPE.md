@@ -358,3 +358,7 @@ Read standard pyproject project, optional, group and build dependencies as separ
 
 <!-- @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION -->
 Provide a read-only CLI/build-time report of actual structured section origins and declared input paths. Validate authoring shape and semantic relationships; production is the default and drafts require explicit preview. Preserve document/release bytes and keep private metadata and Markdown notes outside reports. Requirement context is not a determination of applicability, fact accuracy, legal approval or publication. MDX source attribution remains separate from compiled release preview.
+
+## Direct-form composition
+
+An optional collection-flow builder composes existing collection notices and ordinary purpose/channel offers from explicit per-purpose notice-only/separate-permission decisions. Decisions pin the reviewed artifact. The notice remains unconditional, static and separate from permission controls; ordinary submission and notice acknowledgement create no permission. The host retains legal-condition assessment, identity/contact binding, transport, journals and downstream behavior. No statutory condition is inferred or added to purpose scope encoding. The initial composer supports one to eight direct purposes and at most one ordinary permission per purpose; mixed/indirect and specialized profiles retain their separate APIs. The installed CLI accepts JSON/YAML/Markdown flow inputs, excludes body notes and requires explicit flow input on rebuild.

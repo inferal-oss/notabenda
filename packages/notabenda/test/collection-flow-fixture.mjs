@@ -1,0 +1,9 @@
+import {compileLegalDocuments,createCollectionFlow} from '@notabenda/core/content';
+import {fixture} from './helpers.mjs';
+export async function setup(){
+ const config=await fixture({reviewed:true});config.jurisdictions=['TR'];config.services=[];config.storage=[];
+ const a=structuredClone(config.purposes[0]),b=structuredClone(a);a.id='message';a.name='Answer your message';a.legalBasis='Contract steps requested by the person, for this synthetic test only.';a.collection.source='direct';b.id='updates';b.name='Email updates';b.legalBasis='Explicit consent in this synthetic test.';b.collection.source='direct';b.collection.required=false;config.purposes=[a,b];
+ config.scopeGuards={version:1,revision:'ordinary-form-1',site:{children:'absent',sensitiveData:'absent',highRiskProfiling:'absent',regulatedSector:'absent'}};
+ const build=compileLegalDocuments(config),settings={reviewedArtifactId:build.manifest.artifactId,notice:{scopeId:'contact',purposeIds:['message','updates'],reviewStatus:'reviewed',wording:{title:'About this form',intro:'We use your reply address and message for the purposes below.'}},decisions:[{purposeId:'message',presentation:'notice-only'},{purposeId:'updates',presentation:'separate-permission',permission:{permissionId:'updates-email',channel:{id:'email',label:'Email'},revision:'one',reviewStatus:'reviewed',withdrawalUrl:'/preferences',refusal:{label:'No updates',recorded:'Your refusal is recorded.',pending:'Waiting for refusal confirmation.',retry:'Retry refusal'},wording:{title:'Email updates',statement:'Send me email updates.',grantLabel:'Save permission',withdrawLabel:'Withdraw permission',optionality:'Optional. Your message can be sent without updates.',withdrawalExplanation:'Withdraw updates here at any time.'}}}]};
+ return {config,build,settings,flow:createCollectionFlow(build.artifact,settings)};
+}

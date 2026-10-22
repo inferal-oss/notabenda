@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
@@ -48,6 +49,8 @@ export class EvidenceWorkspace {
         await recordLegalRelease(this.state.storage,example.artifact);
         await registerProcessingNotice(this.state.storage,example.notice,{siteId:example.notice.siteId,allowPreview:true});
       }
+      await recordLegalRelease(this.state.storage,data.collectionFlow.artifact);
+      for(const offer of data.collectionFlow.flow.permissions)await registerFormPermissionOffer(this.state.storage,offer,{siteId:offer.siteId,allowPreview:true});
       await recordLegalRelease(this.state.storage,data.formPermissions.artifact);
       await registerFormPermissionOffer(this.state.storage,data.formPermissions.offer,{siteId:data.formPermissions.offer.siteId,allowPreview:true});
       await recordLegalRelease(this.state.storage,data.localizedFormPermissions.artifact);
@@ -57,6 +60,7 @@ export class EvidenceWorkspace {
       const marker = 'host/demo-bootstrap/' + data.version;
       if(!await this.state.storage.get(marker)) {
         for(const {offer} of data.agreements) await setActiveTermsOffer(this.state.storage,offer.offerId,{siteId:offer.siteId,scopeId:offer.scopeId,allowPreview:true});
+        for(const offer of data.collectionFlow.flow.permissions)await setActiveFormPermissionOffer(this.state.storage,offer.offerId,{siteId:offer.siteId,permissionId:offer.permissionId,allowPreview:true});
         await setActiveFormPermissionOffer(this.state.storage,data.formPermissions.offer.offerId,{siteId:data.formPermissions.offer.siteId,permissionId:data.formPermissions.offer.permissionId,allowPreview:true});
         await setActiveFormPermissionOffer(this.state.storage,data.localizedFormPermissions.offer.offerId,{siteId:data.localizedFormPermissions.offer.siteId,permissionId:data.localizedFormPermissions.offer.permissionId,allowPreview:true});
         // These are explicitly synthetic examples, never visitor reports.
@@ -84,10 +88,10 @@ export class EvidenceWorkspace {
         await this.initialize();const definition=data.contractActions.definitions[contractRoute];
         return protectedResponse(Response.json(await recordContractDeclaration(this.state.storage,body,contractContext(definition,this.generation))));
       }
-      if(/^\/demo\/permissions\/(?:pt\/)?(?:state|record)$/u.test(path)) {
+      if(/^\/demo\/permissions\/(?:(?:pt|flow)\/)?(?:state|record)$/u.test(path)) {
         const body=path.endsWith('/record')?await readDemoRequest(request):undefined;
         if(path.endsWith('/state')&&!['GET','HEAD'].includes(request.method))return protectedResponse(new Response('Method not allowed.',{status:405}));
-        await this.initialize();const offer=path.startsWith('/demo/permissions/pt/')?data.localizedFormPermissions.offer:data.formPermissions.offer;
+        await this.initialize();const offer=path.startsWith('/demo/permissions/flow/')?data.collectionFlow.flow.permissions[0]:path.startsWith('/demo/permissions/pt/')?data.localizedFormPermissions.offer:data.formPermissions.offer;
         const context=permissionContext(offer,this.generation);
         const result=path.endsWith('/state')?await getFormPermissionState(this.state.storage,context):await recordFormPermission(this.state.storage,body,context);
         return protectedResponse(Response.json(result));
@@ -119,7 +123,7 @@ export class EvidenceWorkspace {
       if(path===this.adminBasePath+'/recording'||path===this.adminBasePath+'/recording/'){
         await this.initialize();const storage=this.state.storage;
         const consentTarget=(id,title,notice)=>({id,title,family:'consent',siteId:notice.siteId,scopeId:notice.scopeId,read:()=>getConsentRecordingSelection(storage,{siteId:notice.siteId,scopeId:notice.scopeId,allowPreview:true})});
-        const targets=[consentTarget('cookies','Cookie notice',data.consent.notice),consentTarget('recorded-cookies','Recorded-choice example',data.recordedConsent.notice),...data.agreements.map(({theme,offer})=>({id:'terms-'+theme,title:theme==='pt'?'Portuguese terms':theme==='dark'?'Midnight terms':'Terms agreement',family:'terms',siteId:offer.siteId,scopeId:offer.scopeId,read:()=>getTermsRecordingSelection(storage,{siteId:offer.siteId,scopeId:offer.scopeId,allowPreview:true})})),...[data.formPermissions.offer,data.localizedFormPermissions.offer].map((offer,index)=>({id:'permission-'+index,title:index?'Portuguese form permission':'Email permission',family:'form-permission',siteId:offer.siteId,scopeId:offer.permissionId,read:()=>getFormPermissionRecordingSelection(storage,{siteId:offer.siteId,permissionId:offer.permissionId,allowPreview:true})}))];
+        const targets=[consentTarget('cookies','Cookie notice',data.consent.notice),consentTarget('recorded-cookies','Recorded-choice example',data.recordedConsent.notice),...data.agreements.map(({theme,offer})=>({id:'terms-'+theme,title:theme==='pt'?'Portuguese terms':theme==='dark'?'Midnight terms':'Terms agreement',family:'terms',siteId:offer.siteId,scopeId:offer.scopeId,read:()=>getTermsRecordingSelection(storage,{siteId:offer.siteId,scopeId:offer.scopeId,allowPreview:true})})),...[data.formPermissions.offer,data.localizedFormPermissions.offer,...data.collectionFlow.flow.permissions].map((offer,index)=>({id:'permission-'+index,title:index===2?'Collection form updates':index?'Portuguese form permission':'Email permission',family:'form-permission',siteId:offer.siteId,scopeId:offer.permissionId,read:()=>getFormPermissionRecordingSelection(storage,{siteId:offer.siteId,permissionId:offer.permissionId,allowPreview:true})}))];
         return protectedResponse(await createRecordingInspectionWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath+'/recording',historyPath:this.adminBasePath+'/history',authorize:()=>({targets,scopeLabel:this.adminBasePath==='/demo/admin'?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
       }
       const sections = {

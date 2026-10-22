@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW
 // @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
 // @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
@@ -405,6 +406,22 @@ import {renderPrivacyChoicesLink,normalizePrivacyChoicesLink,type PrivacyChoices
 const choiceLink:PrivacyChoicesLink=normalizePrivacyChoicesLink({schemaVersion:1,revision:'choices-1',href:'/choices/',label:'Privacy choices',presentation:'text',reviewStatus:'reviewed'});
 renderPrivacyChoicesLink(choiceLink);
 config.privacy.choicesLink=choiceLink;
+`);
+    const flowImport=spawnSync(process.execPath,['--input-type=module','-e',"for(const key of ['window','document','navigator'])Object.defineProperty(globalThis,key,{configurable:true,get(){throw Error(key);}});const flow=await import('@notabenda/core/collection/flow'),build=await import('@notabenda/core/content');if([flow.normalizeCollectionFlow,flow.renderCollectionFlow,flow.mountCollectionFlow,build.createCollectionFlow,build.verifyCollectionFlow].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(flowImport.status,0,flowImport.stderr);
+    await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
+import {createCollectionFlow,verifyCollectionFlow,type CollectionFlowSettings} from '@notabenda/core/content';
+import {normalizeCollectionFlow,renderCollectionFlow,mountCollectionFlow} from '@notabenda/core/collection/flow';
+declare const flowSettings:CollectionFlowSettings;
+declare const flowPermission:import('@notabenda/core').FormPermissionController;
+const composedFlow=createCollectionFlow(release.artifact,flowSettings);
+verifyCollectionFlow(composedFlow,release.artifact);
+normalizeCollectionFlow(composedFlow);
+renderCollectionFlow(composedFlow,{idPrefix:'combined',headingLevel:3});
+mountCollectionFlow(container,{flow:composedFlow,idPrefix:'combined',headingLevel:3,permissions:{updates:flowPermission}});
+// @ts-expect-error a reviewed release pin is required
+createCollectionFlow(release.artifact,{notice:flowSettings.notice,decisions:flowSettings.decisions});
+// @ts-expect-error no heading level 1
+mountCollectionFlow(container,{flow:composedFlow,idPrefix:'combined',headingLevel:1,permissions:{}});
 `);
     const types = spawnSync(process.execPath, [resolve(root, 'node_modules/typescript/bin/tsc'), '--strict', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext', '--target', 'es2022', join(cwd, 'consumer.ts')], { cwd, encoding: 'utf8' });
     assert.equal(types.status, 0, types.stdout + types.stderr);

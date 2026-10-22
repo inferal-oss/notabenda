@@ -1,11 +1,18 @@
+// @requirements REQ-TR-BASIS
 // @requirements REQ-SG-COOKIE-DATA REQ-SG-BROWSER-CHOICE REQ-SG-COOKIE-TARGETING
 // @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-CONSENT-ROUTES REQ-SG-WITHDRAWAL REQ-SG-ACCOUNTABILITY
 // @requirements REQ-JP-RELATED-SCOPE REQ-JP-RECIPIENT-CONSENT REQ-JP-RELATED-FOREIGN
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 /** Source-backed setup advice. This module neither detects consent nor selects a runtime policy. */
 const reviews={
- schemaVersion:1,revision:'2026-10-22.2',advisoryOnly:true,determinesApplicability:false,activatesPolicy:false,legalReviewStatus:'unreviewed',
+ schemaVersion:1,revision:'2026-10-22.3',advisoryOnly:true,determinesApplicability:false,activatesPolicy:false,legalReviewStatus:'unreviewed',
  sources:[
+  {"id": "SRC-TR-KVKK", "url": "https://www.kvkk.gov.tr/Icerik/6607/Conditions-for-Processing-Personal-Data-", "checkedOn": "2026-10-22", "access": "read"},
+  {"id": "SRC-TR-COOKIES", "url": "https://www.kvkk.gov.tr/Icerik/7408/Summary-of-the-Board-Decision-on-the-processing-of-personal-data-by-the-data-controller-operating-in-e-commerce-sector-through-cookies-used-by-the-websites-mobile-applications-", "checkedOn": "2026-10-22", "access": "read"},
+  {"id": "SRC-TR-LAW-EN", "url": "https://www.kvkk.gov.tr/Icerik/6649/Personal-Data-Protection-Law", "checkedOn": "2026-10-22", "access": "read"},
+  {"id": "SRC-TR-INFORM", "url": "https://www.kvkk.gov.tr/Icerik/6641/Obligation-to-inform", "checkedOn": "2026-10-22", "access": "read"},
+  {"id": "SRC-TR-SEPARATION-2026", "url": "https://www.kvkk.gov.tr/Icerik/8710/veri-sorumlulari-tarafindan-acik-riza-ve-aydinlatma-metinlerinin-ayri-ayri-duzenlenmesi-gerektigi-hakkinda-kisisel-verileri-koruma-kurulunun-18-02-2026-tarihli-ve-2026-347-sayili-ilke-kararina-iliskin-kamuoyu-duyurusu", "checkedOn": "2026-10-22", "access": "read"},
+  {"id": "SRC-TR-COOKIE-GUIDE-2025", "url": "https://www.kvkk.gov.tr/Icerik/7353/Cerez-Uygulamalari-Hakkinda-Rehber", "checkedOn": "2026-10-22", "access": "read"},
   {id:'SRC-SG-PDPC',url:'https://www.pdpc.gov.sg/organisations/regulations-decisions/regulatory-guidance/advisory-guidelines-on-the-personal-data-protection-act-for-selected-topics',checkedOn:'2026-10-21',access:'read'},
   {id:'SRC-SG-SELECTED-2024',url:'https://www.pdpc.gov.sg/assets/d1fbaa47-1471-4208-bfad-9f4bf33453ad',checkedOn:'2026-10-21',access:'read'},
   {id:'SRC-SG-PDPA-CURRENT',url:'https://sso.agc.gov.sg/Act/PDPA2012',checkedOn:'2026-10-22',access:'read'},
@@ -50,6 +57,56 @@ const reviews={
   ],
   sourceStatus:{bindingLawLanguage:'ja',currentConsolidatedLawVerified:false,englishIndexConsolidation:'2023-04-01',linkedTranslationRetrieved:false,amendmentPromulgatedOn:'2026-07-17',amendmentCommencementVerified:false,autoActivatesAmendments:false},
   limits:['Selected Japanese regulator guidance only. The current e-Gov law fetch was blocked and the linked English translation returned a maintenance page; neither is treated as a retrieved current consolidation.','Full applicability, exceptions, foreign-transfer guidance/rules, provision/receipt records, 2026 amendment commencement and legal review remain open. Selecting Japan does not classify data, confirm recipient consent or activate a policy.'],
- }],
+ },{
+  "marketId": "TR",
+  "label": "Türkiye",
+  "checkedOn": "2026-10-22",
+  "guidelineRevision": "2025-07",
+  "guide": "turkey-processing",
+  "requirementIds": [
+    "REQ-TR-BASIS"
+  ],
+  "sourceIds": [
+    "SRC-TR-KVKK",
+    "SRC-TR-COOKIES",
+    "SRC-TR-LAW-EN",
+    "SRC-TR-INFORM",
+    "SRC-TR-SEPARATION-2026",
+    "SRC-TR-COOKIE-GUIDE-2025"
+  ],
+  "title": "Review Türkiye notices and consent",
+  "summary": "Review the actual processing condition and explain each purpose. Keep notice text independent of any required explicit-consent choice; a privacy acknowledgement is not permission. This review changes no settings.",
+  "checks": [
+    {
+      "locator": "Law6698 selected Articles3,5,10; KVKK processing-condition and information guidance",
+      "text": "Identify the actual condition for each activity and provide the required information independently. A free-text legal basis, cookie category or required-field flag does not classify that condition."
+    },
+    {
+      "locator": "18February2026 decision2026/347 announcement",
+      "text": "Keep the notice and any consent text under separate headings. Do not ask approval of the notice or add an explicit-consent request for an activity relying on another applicable condition. Review the announcement's same-page declarations and actual host presentation."
+    },
+    {
+      "locator": "Collection-flow build and exact release verification",
+      "text": "For supported direct forms, explicitly choose notice-only or separate-permission for every selected purpose and pin the reviewedArtifactId. Missing/stale decisions stop composition; primary form submission and notice interaction create no permission."
+    },
+    {
+      "locator": "July2025 guide sections6,7,9 and Annex5; 2022/229 case",
+      "text": "Assess device access and actual cookie purposes separately. A notice-only form route establishes no cookie exemption. The old case is not the current transfer rule; no transfer route is qualified here."
+    }
+  ],
+  "sourceStatus": {
+    "bindingLawLanguage": "tr",
+    "currentConsolidatedLawVerified": false,
+    "originalGazetteDecisionRetrieved": false,
+    "guidePublication": "2025-07",
+    "decisionDate": "2026-02-18",
+    "classifiesProcessingCondition": false
+  },
+  "limits": [
+    "Selected regulator English-law provisions, guidance, a Turkish2026 announcement and current-linked July2025 guide passages only. Current controlling Turkish consolidation and the original Gazette publication remain unverified.",
+    "Full applicability, exceptions, specialized flows, statutory condition classification, actual notice proof, transfers and legal review remain open. Country interest changes no consent, scope, classification or public wording."
+  ]
+}
+ ],
 } as const;
 export function getCookieJurisdictionReviews(){return structuredClone(reviews);}

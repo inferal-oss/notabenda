@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-BUNDLE-BUDGET
 import {test} from 'node:test';
@@ -38,6 +39,7 @@ test('real browser entry measurements expose missed targets and exclude backend,
  assert.ok(compiled.withinBudget);assert.ok(compiled.inputs.some(path=>path.endsWith('/consent-engine.js')));assert.ok(compiled.inputs.every(path=>!/\/(?:config|consent-evidence|documents|rights-policy|content|consent-compile)\.js$/u.test(path)));assert.ok(required.inputs.some(path=>path.endsWith('/consent-evidence.js')));
  const react=report.profiles.find(p=>p.id==='react-compiled');assert.deepEqual(react.external,['react']);assert.ok(react.imports.some(i=>i.entry==='@notabenda/core/consent'));assert.ok(react.inputs.every(path=>!/(?:node_modules\/react|\/(?:config|consent-evidence|react-documents|react-form-permission))\.js$/u.test(path)));
  const exceptions=report.profiles.find(p=>p.id==='storage-exceptions');assert.ok(exceptions.gzipBytes>0);assert.ok(exceptions.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:content|setup|cli)\.js$)/u.test(path)));assert.ok(compiled.inputs.every(path=>!path.endsWith('/storage-exceptions.js')));
+ const flow=report.profiles.find(p=>p.id==='collection-flow');assert.ok(flow.gzipBytes>0);assert.ok(flow.inputs.some(path=>path.endsWith('/collection-flow.js')));assert.ok(flow.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:collection-flow-build|content|setup|cli)\.js$)/u.test(path)));assert.ok(compiled.inputs.every(path=>!path.endsWith('/collection-flow.js')));
  const technologyCss=report.profiles.find(p=>p.id==='technology-notice-css');assert.equal(technologyCss.entry,'@notabenda/core/technology.css');assert.equal(technologyCss.gzipBytes,gzipSync(await readFile(new URL('../dist/technology.css',import.meta.url)),{level:9}).length);
  for(const profile of report.profiles)assert.ok(profile.inputs.every(path=>!/\/catalog-(?:project|composer|python-project)\.js$/u.test(path)),'Node-only discovery in '+profile.id);
  const failed=report.profiles.filter(p=>p.budgetBytes!==null&&p.gzipBytes>p.budgetBytes);assert.equal(report.allBudgetsMet,failed.length===0);

@@ -103,3 +103,5 @@ This notice does not implement an indirect-collection notification workflow, mar
 Traceability: `REQ-PRODUCT-COLLECTION-NOTICE`, with partial support for `REQ-EU-NOTICE` and `REQ-NZ-NOTICE`. The [setup wizard](SETUP.md) recommends collection-surface integration when personal-data processing is declared or unresolved.
 
 For a separate ordinary opt-in, see [form permissions](FORM-PERMISSIONS.md). Its explicit permission controller does not change this static notice into a consent checkbox or submission listener.
+
+For a form that combines information with an optional permission, [compose the two parts explicitly](COLLECTION-FLOW.md). Every selected purpose remains in the notice; only explicitly selected permission routes create a separate offer.

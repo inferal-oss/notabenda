@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-FLOW
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-PRODUCT-PACKAGE REQ-PRODUCT-BUNDLE-BUDGET
@@ -17,6 +18,7 @@ export async function measureBundles(){
   ['service-directory','@notabenda/core/services','createServiceDirectory,renderServiceDirectory,mountServiceDirectory',null],
   ['paid-order-review','@notabenda/core/orders','renderPaidOrderReview',null],
   ['paid-order-action','@notabenda/core/orders','createPaidOrderAction,mountPaidOrderAction',null],
+  ['collection-flow','@notabenda/core/collection/flow','normalizeCollectionFlow,renderCollectionFlow,mountCollectionFlow',null],
   ['storage-exceptions','@notabenda/core/storage-exceptions','createStorageExceptions,createIndexedDBStorageExceptionJournal',null],
   ['storage-exception-controls','@notabenda/core/storage-exceptions/ui','mountStorageExceptionControls,rejectAllOptionalActivity',null],
   ['headless','@notabenda/core/headless','createConsent',null],
