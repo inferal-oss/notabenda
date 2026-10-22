@@ -2029,3 +2029,13 @@ Both pages read. Published 17 April 2025 for immediate implementation, linking t
 **Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
 
 Both pages of 21 April 2026 statement read. CPA registry absence does not establish POPIA permission; full CPA amendment/registry operation not reviewed.
+
+<a id="src-za-form4-reference"></a>
+
+## SRC-ZA-FORM4-REFERENCE
+
+[South Africa: regulator-linked Form 4 reference](https://inforegulator.org.za/wp-content/uploads/2020/07/FORM-4-APPLICATION-FOR-THE-CONSENT-OF-A-DATA-SUBJECT-FOR-THE-PROCESSING-OF.pdf)
+
+**Type:** regulator-form. **Checked:** 2026-10-22. **Access:** read.
+
+All three pages read; selected Part B goods/services, method and positive/negative responses inform the presentation. Heading refers to 2017 regulations; read with amended regulation 6, not as a reviewed current consolidation or prescribed-form equivalence finding.

@@ -6,7 +6,7 @@ Automated tests exercise intact release/wording binding, independent archive rec
 
 The focused suite now also covers transactional IndexedDB recovery, two-connection serialization/abort, reload, volatile withdrawal, changed offers/artifacts/contacts, stale tabs, persistent high-water fences and keyboard continuity. Site integration tests cover signed session routing, separate contact-generation streams, scoped inspection/export, retirement, seed resume and a real-controller bootstrap whose initial read fails or never settles. Withdrawal remains usable in both cases; ordinary form submission makes no permission write.
 
-The latest full project check passes 367 tests (324 package tests and 43 site tests), catalog validation, site generation and the Worker deployment dry run. Recovery and UX additions also have actual local Chromium verification.
+An earlier baseline project check passed 367 tests (324 package tests and 43 site tests), catalog validation, site generation and the Worker deployment dry run. Recovery and UX additions also have actual local Chromium verification.
 
 Run `npm run build`, then `node --test packages/notabenda/test/form-permission.test.mjs packages/notabenda-cf/test/lifecycle.test.mjs`.
 
@@ -39,3 +39,15 @@ Screenshots: [Astro desktop](../assets/screenshots/astro-form-permissions-deskto
 ## Explicit refusal
 
 `form-permission.test.mjs` and `form-permission-localization.test.mjs` exercise version 3 refusal copy, initial negative choice, exact replay, old-grant ordering, failed reads, inactive/changed offers, host-context isolation, retirement, lost acknowledgement/reload, local-journal failure and cross-tab grant fencing. Version 1/2 offers and existing localization dictionaries remain accepted. These mechanism tests do not establish lawful solicitation, prescribed-information sufficiency, company-wide suppression or provider fulfillment. `VERIFY-ZA-MARKETING` remains partial.
+
+## South African web-request presentation
+
+`REQ-ZA-MARKETING` remains partial. The regional profile tests cover version 4 identity and bounds, channel derivation, required refusal, independent backend rejection of forged profiles/controller facts, inert text, visible and accessible request particulars, complete host-language headings, inspected/exported declarations, activation changes, old-offer negative choices and exact recovery across profile revisions. React/ Astro tests use the shared native disclosure without mount-time transport. The accessibility fixture uses the regional offer for its initial and error permission cases.
+
+These tests establish presentation and archival mechanics, not solicitation eligibility, prescribed-form equivalence, truth of product declarations, actual sending or wider suppression.
+
+### 22 October: regional request browser checks
+
+The clean build passed 1,332 package tests and 205 site tests, catalog validation and the Worker dry run. The previous published version 3 offer reproduced exactly with the updated generic builder. Local Chromium observed an ordinary workspace action leave a checked permission draft unrecorded, then an explicit grant and an operator view containing the pinned goods/services, method, controller and exact labels.
+
+The regional native fixture was scanned in its initial and intentional recording-error states at actual frame widths of 320, 390 and 1,215 pixels. All six scans reported zero violations, errors and incomplete results. Measured document widths were 305, 375 and 1,200 pixels, with the request within each viewport and referenced by its checkbox. These are desktop Chromium frame layouts. Physical devices, Firefox/Safari, assistive technology and full application/marketing acceptance remain separate work.

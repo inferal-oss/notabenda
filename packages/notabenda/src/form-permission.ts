@@ -1,5 +1,7 @@
 // @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-ZA-MARKETING
+import {normalizeSouthAfricaMarketingRequest} from './south-africa-marketing-policy.js';
+import type {SouthAfricaMarketingRequest} from './south-africa-marketing-policy.js';
 import {normalizeFormRefusalCopy} from './form-refusal-policy.js';
 import type {FormRefusalCopy} from './form-refusal-policy.js';
 import {normalizeFormPermissionLocalization} from './form-permission-localization-policy.js';
@@ -16,13 +18,15 @@ import {scopeGuardFields} from './scope-guard-policy.js';
 import type {ScopeGuardFacts} from './scope-guard-policy.js';
 import type {FormPermissionJournal} from './form-permission-journal.js';
 export interface FormPermissionOffer {
-  schemaVersion:1|2|3;refusal?:FormRefusalCopy;localization?:FormPermissionLocalization;offerId:string;siteId:string;permissionId:string;purposeId:string;channel:{id:string;label:string};revision:string;
+  schemaVersion:1|2|3|4;marketingRequest?:SouthAfricaMarketingRequest;refusal?:FormRefusalCopy;localization?:FormPermissionLocalization;offerId:string;siteId:string;permissionId:string;purposeId:string;channel:{id:string;label:string};revision:string;
   artifactId:string;mode:'production'|'preview';reviewStatus:'draft'|'reviewed';document:CollectionNotice['document'];
   facts:{controller:CollectionNotice['controller'];purpose:CollectionNotice['purposes'][number];recipients:CollectionNotice['recipients'];privacy:CollectionNotice['privacy'];scopeGuard:null|{version:1;revision:string;facts:ScopeGuardFacts}};
   wording:{title:string;statement:string;grantLabel:string;withdrawLabel:string;optionality:string;withdrawalExplanation:string};
   withdrawalUrl:string;deliveryWindowSeconds:number;
 }
 export type FormPermissionSettings=Pick<FormPermissionOffer,'permissionId'|'purposeId'|'channel'|'revision'|'reviewStatus'|'wording'|'withdrawalUrl'> & {deliveryWindowSeconds?:number;refusal?:FormRefusalCopy};
+export type SouthAfricaMarketingOffer=FormPermissionOffer & {schemaVersion:4;marketingRequest:SouthAfricaMarketingRequest;refusal:FormRefusalCopy};
+export type SouthAfricaMarketingSettings=Omit<FormPermissionSettings,'channel'|'refusal'> & {marketingRequest:SouthAfricaMarketingRequest;methodLabel:string;refusal:FormRefusalCopy};
 export type FormPermissionCommand={schemaVersion:1;offerId:string;requestId:string;clientAt:string;expectedStreamRef:string} & ({action:'grant';expectedRevision:number;expectedActivation:number}|{action:'withdraw'|'refuse'});
 export interface FormPermissionReceipt {schemaVersion:1;id:string;siteId:string;permissionId:string;streamRef:string;offerId:string;artifactId:string;requestId:string;action:'grant'|'withdraw'|'refuse';revision:number;activationRevision:number;clientAt:string;recordedAt:string}
 export interface FormPermissionState {
@@ -42,9 +46,10 @@ const iso=(v:unknown):v is string=>typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T\d{2
 /** Shape checking is not authentication; CF independently verifies the offer against an archived release. */
 export function normalizeFormPermissionOffer(input:unknown,options:{allowPreview?:boolean}={}):FormPermissionOffer {
   let value:unknown;try{const serialized=JSON.stringify(input);if(new TextEncoder().encode(serialized).length>32768)throw new Error();value=JSON.parse(serialized);}catch{throw new Error('Invalid form permission offer.');}
-  if(!obj(value)||!exact(value,['schemaVersion','offerId','siteId','permissionId','purposeId','channel','revision','artifactId','mode','reviewStatus','document','facts','wording','withdrawalUrl','deliveryWindowSeconds',...(value.schemaVersion===2||value.schemaVersion===3&&Object.hasOwn(value,'localization')?['localization']:[]),...(value.schemaVersion===3?['refusal']:[])])||![1,2,3].some(version=>version===value.schemaVersion)||!hash(value.offerId)||!hash(value.artifactId)||!slug(value.siteId)||!slug(value.permissionId)||!slug(value.purposeId)||!text(value.revision,200)||!obj(value.channel)||!exact(value.channel,['id','label'])||!slug(value.channel.id)||!text(value.channel.label,120)||!['production','preview'].some(m=>m===value.mode)||!['draft','reviewed'].some(r=>r===value.reviewStatus)||!isSafeLink(value.withdrawalUrl)||!text(value.withdrawalUrl,2048)||!Number.isInteger(value.deliveryWindowSeconds)||Number(value.deliveryWindowSeconds)<30||Number(value.deliveryWindowSeconds)>3600||!obj(value.wording)||!exact(value.wording,['title','statement','grantLabel','withdrawLabel','optionality','withdrawalExplanation'])||Object.entries(value.wording).some(([key,v])=>!text(v,key.endsWith('Label')?120:key==='title'?300:2000))||!obj(value.facts)||!exact(value.facts,['controller','purpose','recipients','privacy','scopeGuard']))throw new Error('Invalid form permission offer.');
-  if(value.schemaVersion===3)value.refusal=normalizeFormRefusalCopy(value.refusal);
-  if(value.schemaVersion===2||value.schemaVersion===3&&value.localization!==undefined)value.localization=normalizeFormPermissionLocalization(value.localization,{allowPreview:options.allowPreview===true});
+  if(!obj(value)||!exact(value,['schemaVersion','offerId','siteId','permissionId','purposeId','channel','revision','artifactId','mode','reviewStatus','document','facts','wording','withdrawalUrl','deliveryWindowSeconds',...(value.schemaVersion===2||(value.schemaVersion===3||value.schemaVersion===4)&&Object.hasOwn(value,'localization')?['localization']:[]),...(value.schemaVersion===3||value.schemaVersion===4?['refusal']:[]),...(value.schemaVersion===4?['marketingRequest']:[])])||![1,2,3,4].some(version=>version===value.schemaVersion)||!hash(value.offerId)||!hash(value.artifactId)||!slug(value.siteId)||!slug(value.permissionId)||!slug(value.purposeId)||!text(value.revision,200)||!obj(value.channel)||!exact(value.channel,['id','label'])||!slug(value.channel.id)||!text(value.channel.label,120)||!['production','preview'].some(m=>m===value.mode)||!['draft','reviewed'].some(r=>r===value.reviewStatus)||!isSafeLink(value.withdrawalUrl)||!text(value.withdrawalUrl,2048)||!Number.isInteger(value.deliveryWindowSeconds)||Number(value.deliveryWindowSeconds)<30||Number(value.deliveryWindowSeconds)>3600||!obj(value.wording)||!exact(value.wording,['title','statement','grantLabel','withdrawLabel','optionality','withdrawalExplanation'])||Object.entries(value.wording).some(([key,v])=>!text(v,key.endsWith('Label')?120:key==='title'?300:2000))||!obj(value.facts)||!exact(value.facts,['controller','purpose','recipients','privacy','scopeGuard']))throw new Error('Invalid form permission offer.');
+  if(value.schemaVersion===4){value.marketingRequest=normalizeSouthAfricaMarketingRequest(value.marketingRequest);if(value.channel.id!==(value.marketingRequest as SouthAfricaMarketingRequest).method)throw Error('Marketing method and permission channel must match.');}
+  if(value.schemaVersion===3||value.schemaVersion===4)value.refusal=normalizeFormRefusalCopy(value.refusal);
+  if(value.schemaVersion===2||(value.schemaVersion===3||value.schemaVersion===4)&&value.localization!==undefined)value.localization=normalizeFormPermissionLocalization(value.localization,{allowPreview:options.allowPreview===true});
   // Reuse the legacy direct-collection fact validator. This internal English
   // envelope is never rendered or exposed as the permission's selected locale.
   const facts=value.facts,w=value.wording;
@@ -235,7 +240,16 @@ export function mountFormPermission(container:HTMLElement,options:{permission:Fo
   const message=el('p');message.setAttribute('role','status');message.setAttribute('aria-atomic','true');message.className='nb-control-status';
   const details=el('details');details.className='nb-form-permission-details';details.append(el('summary',t('detailsSummary','How we use this information')),el('p',offer.facts.purpose.description),el('p',t('information','Information: {information}',{information:offer.facts.purpose.dataCategories.join(', ')})),el('p',t('retention','Retention: {retention}',{retention:offer.facts.purpose.retention})));
   if(offer.facts.recipients.length)details.append(el('p',t('providers','Providers: {providers}',{providers:offer.facts.recipients.map(r=>r.name+' ('+r.provider+')').join(', ')})));
-  root.append(heading,identity,optionality,label,assertion,details,policy,withdrawal,fallback,message,actions,load);
+  root.append(heading,identity,optionality);
+  if(offer.marketingRequest){
+    const request=offer.marketingRequest,disclosure=el('dl');disclosure.className='nb-marketing-request';
+    const base='nb-marketing-request-'+offer.offerId;let id=base,suffix=1;while(doc.getElementById(id))id=base+'-'+suffix++;disclosure.id=id;
+    const pair=(title:string,value:HTMLElement)=>{const group=el('div');group.append(el('dt',title),value);return group;};
+    const goods=el('dd',request.goodsServices),method=el('dd',offer.channel.label),party=el('dd'),email=el('a',offer.facts.controller.email);email.href='mailto:'+offer.facts.controller.email;
+    party.append(el('strong',offer.facts.controller.name),el('span',offer.facts.controller.address),email);
+    disclosure.append(pair(request.labels.goodsServices,goods),pair(request.labels.method,method),pair(request.labels.responsibleParty,party));root.append(disclosure);checkbox.setAttribute('aria-describedby',id);
+  }
+  root.append(label,assertion,details,policy,withdrawal,fallback,message,actions,load);
   if(offer.mode==='preview'||offer.reviewStatus==='draft'||l?.reviewStatus==='draft'){const note=el('p',t('draft','Preview · Draft permission'));note.className='nb-draft';root.prepend(note);}container.append(root);
   refuse?.addEventListener('click',()=>{void c.refuse().catch(()=>{});});
   checkbox.addEventListener('change',()=>c.setChecked(checkbox.checked));load.addEventListener('click',()=>{void c.refresh().catch(()=>{});});grant.addEventListener('click',()=>{void c.grant().catch(()=>{});});withdraw.addEventListener('click',()=>{void c.withdraw().catch(()=>{});});retry.addEventListener('click',()=>{void c.retryPending().catch(()=>{});});

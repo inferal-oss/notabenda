@@ -1,7 +1,8 @@
+// @requirements REQ-ZA-MARKETING
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-CF-ADMIN
 // Technical fixtures only. All records are in-memory; no operational account, auth or data is read.
 import {readFile} from 'node:fs/promises';
-import {compileLegalDocuments,compileConsentRuntimeConfig,createTermsOffer,createFormPermissionOffer} from '@notabenda/core/content';
+import {compileLegalDocuments,compileConsentRuntimeConfig,createTermsOffer,createSouthAfricaMarketingOffer} from '@notabenda/core/content';
 import {createAdminWorker,createDurableObjectStore,createDocumentHistory,recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,getFormPermissionState,formPermissionStreamRef,createSetupWorker} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../packages/notabenda-cf/examples/synthetic.mjs';
 import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
@@ -15,7 +16,7 @@ export async function accessibilityFixtureData(){
  const second=structuredClone(config);second.documents.privacy.version='accessibility-2';second.purposes[0].description+=' Contact support to ask about this processing.';
  const revision=compileLegalDocuments(second);await recordLegalRelease(storage,revision.artifact);
  const offer=createTermsOffer(build.artifact,{scopeId:'signup',statement:'I agree to the terms for this sample service.',actionLabel:'Continue with these terms'});
- const permissionOffer=createFormPermissionOffer(build.artifact,{permissionId:'newsletter-email',purposeId:config.purposes[0].id,channel:{id:'email',label:'Email'},revision:'email-1',reviewStatus:'reviewed',withdrawalUrl:'/preferences',wording:{title:'Product updates',statement:'Send me occasional product updates by email.',grantLabel:'Save email permission',withdrawLabel:'Withdraw email permission',optionality:'Optional. You can continue without email updates.',withdrawalExplanation:'You can withdraw here at any time.'}});
+ const permissionOffer=createSouthAfricaMarketingOffer(build.artifact,{permissionId:'newsletter-email',purposeId:config.purposes[0].id,methodLabel:'Email',marketingRequest:{profile:'za-popia-web-request',version:1,goodsServices:'Reading tools and new product offers.',method:'email',labels:{goodsServices:'Products and services',method:'Communication method',responsibleParty:'Who is asking'}},refusal:{label:'I do not consent',recorded:'Refusal saved.',pending:'Awaiting host confirmation.',retry:'Retry refusal'},revision:'email-1',reviewStatus:'reviewed',withdrawalUrl:'/preferences',wording:{title:'Product updates',statement:'Send me occasional product updates by email.',grantLabel:'Save email permission',withdrawLabel:'Withdraw email permission',optionality:'Optional. You can continue without email updates.',withdrawalExplanation:'You can withdraw here at any time.'}});
  const context={siteId:config.site.id,permissionId:'newsletter-email',streamId:'accessibility-person',now:()=>new Date('2026-10-19T12:00:00Z')};
  await registerFormPermissionOffer(storage,permissionOffer,context);await setActiveFormPermissionOffer(storage,permissionOffer.offerId,context);
  const permissionState=await getFormPermissionState(storage,context),streamRef=await formPermissionStreamRef(context);

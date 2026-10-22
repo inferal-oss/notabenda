@@ -24,7 +24,8 @@ import {normalizeContractActionDefinition,contractActionDefaults} from './contra
 import type {ContractActionDefinition,ContractActionProfile} from './contract-action-policy.js';
 // @requirements REQ-EU-CONSENT REQ-CA-MEANINGFUL REQ-EU-MARKETING REQ-CA-CASL-OPTIN
 import {normalizeFormPermissionOffer} from './form-permission.js';
-import type {FormPermissionOffer,FormPermissionSettings} from './form-permission.js';
+import {normalizeSouthAfricaMarketingRequest} from './south-africa-marketing-policy.js';
+import type {SouthAfricaMarketingOffer,SouthAfricaMarketingSettings,FormPermissionOffer,FormPermissionSettings} from './form-permission.js';
 import {scopeGuardContext} from './scope-guard-policy.js';
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
 import {renderRightsPage} from './rights.js';
@@ -284,11 +285,19 @@ export function verifyIndirectCollectionNotice(input:unknown,artifact:LegalArtif
 
 /** @requirements REQ-PRODUCT-FORM-PERMISSIONS Pin one stable purpose/channel permission to a reviewed privacy release. */
 export function createFormPermissionOffer(artifact:LegalArtifact,settings:FormPermissionSettings,options:ValidationOptions={}):FormPermissionOffer {
+  if(Object.hasOwn(settings,'marketingRequest'))throw Error('Use createSouthAfricaMarketingOffer to retain marketingRequest particulars.');
   if(!artifact.publicConfig.localization?.formPermission)requireEnglishSurface(artifact.publicConfig,'Form permission without localization.formPermission');
   const localization=artifact.publicConfig.localization?.formPermission?selectFormPermissionLocalization(artifact.publicConfig.localization):undefined;
   const notice=directCollectionFacts(artifact,{scopeId:settings.permissionId,purposeIds:[settings.purposeId],reviewStatus:settings.reviewStatus,wording:{title:settings.wording.title,intro:settings.wording.statement}},options);
   const guard=scopeGuardContext(artifact.publicConfig.scopeGuards,settings.purposeId)??null;
   const value=normalizeFormPermissionOffer({schemaVersion:settings.refusal?3:localization?2:1,...(localization?{localization}:{}),...(settings.refusal?{refusal:settings.refusal}:{}),offerId:'0'.repeat(64),siteId:notice.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:notice.artifactId,mode:notice.mode,reviewStatus:settings.reviewStatus,document:notice.document,facts:{controller:notice.controller,purpose:notice.purposes[0]!,recipients:notice.recipients,privacy:notice.privacy,scopeGuard:guard},wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},{allowPreview:options.mode==='preview'});
   const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))};
+}
+/** @requirements REQ-ZA-MARKETING Web collection only; eligibility and downstream marketing remain host work. */
+export function createSouthAfricaMarketingOffer(artifact:LegalArtifact,settings:SouthAfricaMarketingSettings,options:ValidationOptions={}):SouthAfricaMarketingOffer {
+  const {marketingRequest,methodLabel,...ordinary}=settings,request=normalizeSouthAfricaMarketingRequest(marketingRequest);
+  const base=createFormPermissionOffer(artifact,{...ordinary,channel:{id:request.method,label:methodLabel}},options);
+  const value=normalizeFormPermissionOffer({...base,schemaVersion:4,marketingRequest:request},{allowPreview:options.mode==='preview'});
+  const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))} as SouthAfricaMarketingOffer;
 }
 // @requirements REQ-PRODUCT-TERMS-AUTHORING

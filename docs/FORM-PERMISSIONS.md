@@ -153,3 +153,31 @@ This creates a version 3 offer. All four strings are pinned to its identity and 
 `permission.refuse()` records `action: 'refuse'`, with current reason `refused` and `permitted: false`. It requires no previous grant or successful initial read. Refusal uses the same restrictive ordering, exact-request retry, older-offer delivery and retirement rules as withdrawal. The journal's existing negative-action slot retains the actual command; `recovery.refusalPending` distinguishes it from a pending withdrawal. Neither mounting nor reconciling delivers it automatically. A later deliberate, checked grant still needs a fresh current read. A historical retry returns current state and cannot restore an older choice.
 
 The native field shows refusal before a grant and withdrawal after a grant. React and Astro fields reuse it. The [working example](../examples/form-permissions/example.mjs) includes refusal; backoffice inspection shows the exact copy and `permission:refused` searches current evaluations. These records apply to one permission and contact generation. They do not establish a company-wide objection register or permission to solicit consent again. See [South African electronic marketing](SOUTH-AFRICA-MARKETING.md) for the separate legal and host work.
+
+## South African web marketing requests
+
+`createSouthAfricaMarketingOffer` from `@notabenda/core/content` adds visible request particulars to the same permission controller. It collects a choice on the web for a future email, SMS or WhatsApp channel. These three methods are the current product boundary, not an exhaustive legal classification.
+
+Pass the ordinary settings, explicit `refusal` copy, a `methodLabel` in the selected language and:
+
+```js
+marketingRequest: {
+  profile: 'za-popia-web-request',
+  version: 1,
+  goodsServices: 'Reading tools, new reading features and product offers.',
+  method: 'email',
+  labels: {
+    goodsServices: 'What the updates cover',
+    method: 'How we would contact you',
+    responsibleParty: 'Who is asking'
+  }
+}
+```
+
+The builder derives `channel.id` from `method`; do not supply another channel or controller. It creates a version 4 offer and includes every request field in its identity. The existing offer review status covers the complete request, including these labels. Production needs reviewed wording and release content; scope restrictions still apply. The host must review whether the request is accurate, appropriately presented and legally sufficient.
+
+The native field displays the particulars and the release's controller name, address and email before the choice. The checkbox references this disclosure for assistive technology. It stays visible while saved state loads and after a decision. React and Astro reuse the same field. A method change needs a different stable permission; a goods/services or copy change needs a fresh material revision and activation. Previous grants cannot carry over to a changed offer.
+
+Cloudflare validates the profile, method/channel consistency, refusal copy and complete offer digest. It independently checks controller/purpose/privacy facts against the release and retains the registered request declaration with each event. It cannot establish whether the declared goods/services match actual marketing. Backoffice inspection separates these operator-authored particulars from historical actions and current permission. No recipient name, address or contact value belongs in this public descriptor; the host owns the existing private contact-generation binding.
+
+Deploy the updated backend before serving version 4 offers. Versions 1–3 keep their existing descriptors and behavior. This presentation does not establish prescribed-form equivalence, invitation eligibility, a customer exception, telephone-recording compliance, sending or suppression. See [South African electronic marketing](SOUTH-AFRICA-MARKETING.md).

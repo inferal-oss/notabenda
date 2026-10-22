@@ -523,7 +523,8 @@
         "Trusted application API for consent and withdrawal records; no email-sending platform.",
         "Separate reviewed indirect-collection particulars in static HTML and plain text, with explicit phase and no delivery claim.",
         "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work.",
-        "Optional archived refusal copy and explicit negative events, native refusal/withdrawal presentation, exact-request recovery and operator search; regional solicitation and suppression remain separate host work."
+        "Optional archived refusal copy and explicit negative events, native refusal/withdrawal presentation, exact-request recovery and operator search; regional solicitation and suppression remain separate host work.",
+        "Optional South African web-request profile with explicit goods/services and method, visible archived responsible-party details, required refusal and complete host-language labels; declaration truth and legal sufficiency remain host review."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -3146,6 +3147,15 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Both pages of 21 April 2026 statement read. CPA registry absence does not establish POPIA permission; full CPA amendment/registry operation not reviewed."
+    },
+    {
+      "id": "SRC-ZA-FORM4-REFERENCE",
+      "title": "South Africa: regulator-linked Form 4 reference",
+      "url": "https://inforegulator.org.za/wp-content/uploads/2020/07/FORM-4-APPLICATION-FOR-THE-CONSENT-OF-A-DATA-SUBJECT-FOR-THE-PROCESSING-OF.pdf",
+      "kind": "regulator-form",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "All three pages read; selected Part B goods/services, method and positive/negative responses inform the presentation. Heading refers to 2017 regulations; read with amended regulation 6, not as a reviewed current consolidation or prescribed-form equivalence finding."
     }
   ],
   "jurisdictions": [
@@ -4413,6 +4423,10 @@
         {
           "sourceId": "SRC-ZA-CPA-STATEMENT-2026",
           "locator": "Pages 1\u20132: CPA registry does not replace POPIA permission"
+        },
+        {
+          "sourceId": "SRC-ZA-FORM4-REFERENCE",
+          "locator": "Part B: specified goods/services, method and affirmative/negative responses; legacy heading limitation"
         }
       ],
       "discoverySourceIds": [],
@@ -4429,16 +4443,24 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": "Selected amended regulation 6 was published for immediate implementation on 17 April 2025 (Gazette 52523, notice 6126). Original section 69 commencement and current consolidated Act not established by that notice.",
-      "caveats": "Explicit negative-choice mechanism only; no prescribed-form equivalence, regional offer builder, invitation-eligibility check, customer-exception engine, message-level unsubscribe or external suppression. Host-wide responsible-party/subject records are needed; permission or contact-generation changes do not establish a fresh invitation entitlement. Legal review remains unreviewed.",
+      "caveats": "Web request particulars and explicit negative-choice mechanics only; no prescribed-form equivalence, invitation-eligibility check, customer-exception engine, call recording, message-level unsubscribe or external suppression. Email/SMS/WhatsApp are current product methods, not an exhaustive legal classification. Request declarations are host-authored; archival integrity does not prove their truth. Host-wide responsible-party/subject records remain separate. Legal review remains unreviewed.",
       "implementationRefs": [
         "packages/notabenda/src/form-permission.ts",
         "packages/notabenda/src/form-refusal-policy.ts",
         "packages/notabenda-cf/src/permissions.ts",
-        "docs/SOUTH-AFRICA-MARKETING.md"
+        "docs/SOUTH-AFRICA-MARKETING.md",
+        "packages/notabenda/src/south-africa-marketing-policy.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/src/render.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
-        "packages/notabenda/test/form-permission-localization.test.mjs"
+        "packages/notabenda/test/form-permission-localization.test.mjs",
+        "packages/notabenda/test/south-africa-marketing.test.mjs",
+        "packages/notabenda/test/react-form-permission.test.mjs",
+        "packages/notabenda/test/astro-form-permission.test.mjs",
+        "docs/verification/form-permissions.md"
       ]
     },
     {
@@ -10888,10 +10910,14 @@
         "REQ-ZA-MARKETING"
       ],
       "status": "partial",
-      "expected": "Explicit refusal is distinct from silence/withdrawal; archived copy and evaluated negative state survive failures and replay. Invitation eligibility, prescribed information, customer exceptions and actual message suppression remain unverified.",
+      "expected": "Visible goods/services, method and archived responsible-party details are linked to the unchecked choice; exact request declarations/refusal copy survive profile revisions, inspection and retry. Invitation eligibility, prescribed information, customer exceptions and actual message suppression remain unverified.",
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
-        "packages/notabenda/test/form-permission-localization.test.mjs"
+        "packages/notabenda/test/form-permission-localization.test.mjs",
+        "packages/notabenda/test/south-africa-marketing.test.mjs",
+        "packages/notabenda/test/react-form-permission.test.mjs",
+        "packages/notabenda/test/astro-form-permission.test.mjs",
+        "docs/verification/form-permissions.md"
       ]
     },
     {

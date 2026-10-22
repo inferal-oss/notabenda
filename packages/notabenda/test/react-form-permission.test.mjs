@@ -7,14 +7,15 @@ import {renderToString} from 'react-dom/server';
 import {JSDOM} from 'jsdom';
 import {IDBFactory} from 'fake-indexeddb';
 import {createFormPermission,createIndexedDBFormPermissionJournal} from '@notabenda/core';
-import {createFormPermissionOffer,compileLegalDocuments} from '@notabenda/core/content';
+import {createFormPermissionOffer,createSouthAfricaMarketingOffer,compileLegalDocuments} from '@notabenda/core/content';
 import {FormPermissionProvider,FormPermissionField,useFormPermissionController,useFormPermissionSnapshot,useFormPermissionAllowed} from '@notabenda/core/react';
 import {recordLegalRelease,registerFormPermissionOffer,setActiveFormPermissionOffer,formPermissionStreamRef,getFormPermissionState,recordFormPermission} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';
 import {fixture} from './helpers.mjs';
 async function setup(extra={}){
  const config=await fixture({reviewed:true});config.scopeGuards={version:1,revision:'ordinary-1',site:{children:'absent',sensitiveData:'absent',highRiskProfiling:'absent',regulatedSector:'absent'}};
- const release=compileLegalDocuments(config),offer=createFormPermissionOffer(release.artifact,{permissionId:'product-updates',purposeId:'enquiries',channel:{id:'email',label:'Email'},revision:'updates-1',reviewStatus:'reviewed',withdrawalUrl:'/preferences',wording:{title:'Product updates',statement:'Send me product updates by email.',grantLabel:'Save email permission',withdrawLabel:'Withdraw email permission',optionality:'Optional. Continue without updates.',withdrawalExplanation:'Withdraw this purpose and channel at any time.'}}),storage=createSyntheticStorage([]),context={siteId:config.site.id,permissionId:offer.permissionId,streamId:'opaque-contact-generation'};
+ const makeOffer=extra.marketingRequest?(artifact,settings)=>createSouthAfricaMarketingOffer(artifact,{...settings,methodLabel:settings.channel.label,marketingRequest:extra.marketingRequest,refusal:{label:'I do not consent',recorded:'Refusal saved.',pending:'Awaiting confirmation.',retry:'Retry refusal'}}):createFormPermissionOffer;
+ const release=compileLegalDocuments(config),offer=makeOffer(release.artifact,{permissionId:'product-updates',purposeId:'enquiries',channel:{id:'email',label:'Email'},revision:'updates-1',reviewStatus:'reviewed',withdrawalUrl:'/preferences',wording:{title:'Product updates',statement:'Send me product updates by email.',grantLabel:'Save email permission',withdrawLabel:'Withdraw email permission',optionality:'Optional. Continue without updates.',withdrawalExplanation:'Withdraw this purpose and channel at any time.'}}),storage=createSyntheticStorage([]),context={siteId:config.site.id,permissionId:offer.permissionId,streamId:'opaque-contact-generation'};
  await recordLegalRelease(storage,release.artifact);await registerFormPermissionOffer(storage,offer,context);await setActiveFormPermissionOffer(storage,offer.offerId,context);
  let reads=0,writes=0;const commands=[];
  const controller=createFormPermission(offer,{streamRef:await formPermissionStreamRef(context),read:()=>{reads++;return getFormPermissionState(storage,context);},submit:async command=>{writes++;commands.push(command);const result=await recordFormPermission(storage,command,context);if(extra.loseAck?.())throw Error('Lost acknowledgment');return result;},...(extra.journal?{journal:extra.journal}:{})});
@@ -70,4 +71,10 @@ test('the complete React example hydrates after an early host read without recov
  await domTest(async(container,window)=>{let root;await act(async()=>{root=hydrateRoot(container,app,{onRecoverableError:error=>errors.push(error)});});assert.deepEqual(errors,[]);assert.equal(container.querySelectorAll('.nb-form-permission').length,1);assert.match(container.textContent,/Permission recorded/);assert.equal(container.querySelector('button[type=submit]').disabled,false);
   await act(async()=>container.querySelector('form').dispatchEvent(new window.Event('submit',{bubbles:true,cancelable:true})));assert.match(container.querySelector('[data-workspace-result]').textContent,/Email permission is unchanged/);assert.equal(f.writes(),writes);await act(async()=>root.unmount());
  },html);f.controller.destroy();
+});
+
+// @requirements REQ-ZA-MARKETING
+test('React uses the regional disclosure before the choice and keeps its server fallback inert',async()=>{
+ const marketingRequest={profile:'za-popia-web-request',version:1,goodsServices:'Reading tools and product offers.',method:'email',labels:{goodsServices:'Products and services',method:'Contact method',responsibleParty:'Who is asking'}},f=await setup({marketingRequest});assert.doesNotMatch(renderToString(tree(f.controller)),/Reading tools and product offers/);
+ await domTest(async container=>{let root;await act(async()=>{root=createRoot(container);root.render(tree(f.controller));});const disclosure=container.querySelector('.nb-marketing-request'),checkbox=container.querySelector('input');assert.equal(checkbox.getAttribute('aria-describedby'),disclosure.id);assert.ok(disclosure.textContent.includes(marketingRequest.goodsServices));assert.equal(f.reads(),0);assert.equal(f.writes(),0);await act(async()=>{await f.controller.refuse();});assert.equal(disclosure.hidden,false);assert.equal(f.controller.getSnapshot().current.reason,'refused');await act(async()=>root.unmount());});f.controller.destroy();
 });

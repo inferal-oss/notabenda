@@ -1,3 +1,4 @@
+// @requirements REQ-ZA-MARKETING
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
 // Local maintainer browser application. It is never included in the site manifest or package.
 import {mkdir,readFile,writeFile,copyFile} from 'node:fs/promises';
@@ -49,7 +50,7 @@ await writeFile(new URL('widget.mjs',output),bundle.outputFiles[0].contents);
 await writeFile(new URL('bridge.mjs',output),`import {mountFixture} from '/qa-a11y/widget.mjs';
 const address=new URL(location.href),runId=address.searchParams.get('auditRun');address.searchParams.delete('auditRun');const url=address.pathname+address.search;let setupError,fixture;try{fixture=await mountFixture();}catch(error){setupError=error.message;}
 window.addEventListener('message',async event=>{if(event.source!==parent||event.origin!==location.origin||event.data?.type!=='run-accessibility-audit'||event.data.runId!==runId||typeof event.data.requestId!=='string')return;const requestId=event.data.requestId;
-try{if(setupError)throw Error(setupError);const r=await axe.run(document,{runOnly:{type:'tag',values:${JSON.stringify(accessibilityTags)}}});parent.postMessage({type:'accessibility-result',runId,requestId,fixture,viewport:{width:innerWidth,height:innerHeight},version:axe.version,url,violations:r.violations,incomplete:r.incomplete},location.origin);}catch(error){parent.postMessage({type:'accessibility-result',runId,requestId,url,error:error.message},location.origin);}});
+try{if(setupError)throw Error(setupError);const r=await axe.run(document,{runOnly:{type:'tag',values:${JSON.stringify(accessibilityTags)}}});parent.postMessage({type:'accessibility-result',runId,requestId,fixture,viewport:{width:innerWidth,height:innerHeight},version:axe.version,url,layout:{documentWidth:document.documentElement.scrollWidth,viewportWidth:innerWidth,marketingRequests:[...document.querySelectorAll('.nb-marketing-request')].slice(0,8).map(node=>{const box=node.getBoundingClientRect();return {left:box.left,right:box.right,width:box.width,referencedByCheckbox:!!document.querySelector('input[type=checkbox][aria-describedby="'+node.id+'"]')};})},violations:r.violations,incomplete:r.incomplete},location.origin);}catch(error){parent.postMessage({type:'accessibility-result',runId,requestId,url,error:error.message},location.origin);}});
 parent.postMessage({type:'accessibility-ready',runId,url},location.origin);`);
 await writeFile(new URL('scenarios.json',output),JSON.stringify(scenarios,null,2));
 await copyFile(new URL('./accessibility-browser-app.mjs',import.meta.url),new URL('app.mjs',output));
