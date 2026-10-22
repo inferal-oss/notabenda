@@ -41,6 +41,8 @@ Initialization rejects malformed records, context mismatches and unavailable sto
 
 The reread is a point-in-time check, not a lock against another tab changing storage afterward. If storage is cleared or evicted before a new controller opens, the helper cannot distinguish that loss from first use and reserves a new key. A private browser journal cannot guarantee server deduplication across that loss. Where the operation must be deduplicated independently, keep its identity/retry policy on the host.
 
+Describe the selected browser storage, retry purpose and retention in the adopting site’s inventory and notices. Choosing this helper supplies no device-access or processing exemption.
+
 There is no automatic expiry: replacing an uncertain key after a timer could create a second record. `close()` releases this adapter's connection; it retains its rows. The host chooses retention and cleanup. After settling or retiring an operation on the server and destroying all of its live controllers, explicitly remove its row:
 
 ```ts

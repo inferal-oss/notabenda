@@ -10851,7 +10851,8 @@
         "scripts/terms-transport-fixture.mjs",
         "scripts/measure-bundles.mjs",
         "site/navigation.mjs",
-        "examples/static/choices-build.mjs"
+        "examples/static/choices-build.mjs",
+        "site/website-notice.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/terms-recovery.test.mjs",
@@ -10859,7 +10860,8 @@
         "packages/notabenda/test/delivery.test.mjs",
         "site/test/terms-transport-fixture.test.mjs",
         "docs/TERMS-RECOVERY.md",
-        "docs/verification/terms-recovery.md"
+        "docs/verification/terms-recovery.md",
+        "site/test/website-notice.test.mjs"
       ],
       "implementationNote": "Optional browser entry reuses the existing controller and receipt admission. IndexedDB reserves and commits before returning; participating tabs share a key. Mismatched/corrupt rows are not overwritten. Initialization/storage failure is explicit; pre-submit row loss/replacement and destruction stop transmission. The adapter supplies deliberate per-context removal without expiry or total-record eviction. Vanilla example and actual interrupted-HTTP rehearsal use the helper; other hosts/adapters may opt in."
     }
@@ -12949,7 +12951,8 @@
         "packages/notabenda/test/delivery.test.mjs",
         "site/test/terms-transport-fixture.test.mjs",
         "docs/TERMS-RECOVERY.md",
-        "docs/verification/terms-recovery.md"
+        "docs/verification/terms-recovery.md",
+        "site/test/website-notice.test.mjs"
       ]
     }
   ],

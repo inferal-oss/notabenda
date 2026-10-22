@@ -53,3 +53,7 @@ test('the actual public build stops before changing existing assets when operato
 test('website privacy describes the opt-in setup session and its expiry/clear limits',()=>{
  const html=websiteNoticeBody(websiteNoticeFacts()),dom=new JSDOM(html),text=dom.window.document.body.textContent;for(const phrase of ['notabenda:start:draft:v1','24 hours after its last change','Forget saved draft','not uploaded','unfinished editor fields','browsers can restore or duplicate sessions'])assert.ok(text.includes(phrase),phrase);assert.doesNotMatch(text,/not uploaded or saved by the setup interface/);dom.window.close();
 });
+
+
+// @requirements REQ-PRODUCT-TERMS-RECOVERY
+test('website privacy describes the actual private terms retry database without promising restored agreement or automatic expiry',()=>{const dom=new JSDOM(websiteNoticeBody(websiteNoticeFacts())),text=dom.window.document.body.textContent;for(const phrase of ['notabenda-terms-recovery-v1','when you open them','no checkbox state or receipt','Reload starts unchecked','no automatic expiry','does not delete or revoke a server agreement'])assert.ok(text.includes(phrase),phrase);dom.window.close();});
