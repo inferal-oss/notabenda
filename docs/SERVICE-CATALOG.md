@@ -2,7 +2,7 @@
 
 ## Search a project with npx
 
-After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports, Composer manifests/locks, Cargo manifests and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
+After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports, Composer manifests/locks, Cargo manifests, NuGet project/central/legacy declarations and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
 
 For a single interactive workflow, run `npx @notabenda/core wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
 
@@ -43,7 +43,7 @@ const draft = createCatalogServiceDraft(catalog, 'stripe-payments', {
 
 `@notabenda/core/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `@notabenda/core/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
 
-Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports, Composer requirements/lock observations, Cargo dependency declarations and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements, test-file imports and Composer lock observations. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
+Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports, Composer requirements/lock observations, Cargo dependency declarations, NuGet project/central/legacy declarations and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements, test-file imports and Composer lock observations. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
 
 Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files (including Composer’s `auth.json`), symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
@@ -319,3 +319,52 @@ Selected `.cargo/config` and `.cargo/config.toml` paths flag limited coverage wi
 Custom catalogs use `ecosystem: 'cargo'`, an exact bounded ASCII crate name, or a prefix ending in `-` or `_`. Matching preserves case and punctuation. These are identifier rules, not namespace-ownership claims. Historical selected references remain readable; new catalog facts require explicit review.
 
 Sources checked 22 October 2026 UTC: [Cargo declarations](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html), [workspaces](https://doc.rust-lang.org/cargo/reference/workspaces.html), [manifest format](https://doc.rust-lang.org/cargo/reference/manifest.html) and [configuration](https://doc.rust-lang.org/cargo/reference/config.html). SDK references live in [the Cargo seed](../catalog/cargo-providers.json). See [verification](verification/cargo-discovery.md).
+
+## .NET / NuGet projects
+
+Run `npx @notabenda/core discover --project . --out-dir ./service-review` from a .NET repository. No .NET SDK or NuGet installation is needed. The scanner reads selected C#, F# and Visual Basic project files (`.csproj`, `.fsproj`, `.vbproj`), `Directory.Packages.props`, `Directory.Build.props`, `Directory.Build.targets` and legacy `packages.config`. File extensions and these conventional names are matched without case sensitivity.
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="Stripe.net" Version="your-reviewed-version" />
+    <PackageReference Include="Sentry.AspNetCore"
+                      Condition="'$(Configuration)' == 'Release'" />
+  </ItemGroup>
+</Project>
+```
+
+This produces candidates for Stripe and Sentry. The Sentry reference remains conditional: the scanner does not decide which build configuration is active. Package versions and condition text stay out of the report. A candidate does not establish deployment, an active account or a data transfer.
+
+| Declaration | Evidence context | What it tells you |
+| --- | --- | --- |
+| `PackageReference Include` | `dependency` | A literal package reference is declared in the selected file. |
+| A conditional reference or one inside `Choose`/`Target` | `conditional-dependency` | The package is named, but the relevant branch or target was not evaluated. |
+| `PackageReference Update` | `package-update` | An existing item may be modified. This does not establish that a reference exists. |
+| `PackageVersion` | `central-package-version` | A central version entry is listed. It is not a project dependency by itself. |
+| `GlobalPackageReference` | `global-package-reference` | A global package item is declared; its applicability to projects was not resolved. |
+| A direct legacy `packages.config` entry | `legacy-package-entry` | The legacy file lists the package. Installation and freshness were not checked. |
+
+Literal semicolon-separated item lists are supported. Package IDs use lowercase canonical ASCII matching, with a 100-character limit; display casing does not change a match. The catalog also permits a custom namespace prefix ending in a dot, such as `company.`. Property expressions, wildcard identities, escaped MSBuild identities and unsupported IDs produce limited coverage rather than a guessed package name. `PrivateAssets` does not turn a package into a development dependency in this report.
+
+The seed has twelve exact signatures across nine SDK families:
+
+| Family | NuGet package IDs |
+| --- | --- |
+| AWS | `AWSSDK.Core`, `AWSSDK.S3` |
+| Azure | `Azure.Storage.Blobs` |
+| Auth0 | `Auth0.AuthenticationApi` |
+| Stripe | `Stripe.net` |
+| Twilio | `Twilio` |
+| SendGrid | `SendGrid`, `SendGrid.Extensions.DependencyInjection` |
+| Sentry | `Sentry`, `Sentry.AspNetCore` |
+| MongoDB | `MongoDB.Driver` |
+| Redis client | `StackExchange.Redis` |
+
+Each signature has a retrieved technical source in [the NuGet seed](../catalog/nuget-providers.json). A MongoDB or Redis driver can connect to a self-hosted database; it does not identify Atlas, Redis Cloud or another hosting provider. Select a service only after confirming the actual deployment.
+
+The scanner does not run `dotnet`, MSBuild, NuGet, project tasks or installers. It does not follow `Import` or `ProjectReference` paths, evaluate SDKs or inherited central settings, apply removals, resolve locks, inspect installed assemblies or inspect C# source. Those declarations and known source-selection settings flag unresolved coverage. Malformed XML, DTDs, unsupported encodings and parser bounds discard candidates from that file and mark coverage limited. Default, prefixed and legacy MSBuild namespaces are handled; foreign namespaces and unsupported nested declaration locations do not become package references.
+
+NuGet configuration files can contain credentials and change package sources. Selected `NuGet.Config` names are skipped without reading their values and mark coverage limited; `.nuget` and generated `obj` directories are excluded. The scanner preserves ordinary monorepo `packages` directories and executable-source `bin` directories. Ancestor/user configuration, implicit SDK dependencies, other imported files and environment overrides remain outside the scan. Source paths, feed URLs, versions, conditions, project names, metadata and credentials are not copied into findings. Matched file names and known identifiers remain private project information; review before sharing.
+
+The format references are Microsoft's [PackageReference guide](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files), [central package management guide](https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management), [legacy file reference](https://learn.microsoft.com/en-us/nuget/reference/packages-config), [MSBuild items guide](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-items) and [NuGet identifier validator](https://source.dot.net/NuGet.Packaging/PackageCreation/Utility/PackageIdValidator.cs.html), checked 22 October 2026 UTC. See [verification](verification/nuget-discovery.md) for the engineering boundary. You choose whether to run discovery manually or in CI.

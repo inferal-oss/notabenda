@@ -2081,3 +2081,63 @@ Read the complete Turkish announcement of the 18 February 2026 principle decisio
 **Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
 
 Downloaded the current regulator-linked 61-page PDF. Imprint on printed page 2 says July 2025, publication 69; visually checked. Read selected sections 6, 7 and 9 (printed pp.27–32 and35–36), transfer-version context pp.33–35 and Annex5 pp.54–55. No complete cookie eligibility, transfer qualification or current controlling-law review is claimed.
+
+<a id="src-nuget-references"></a>
+
+## SRC-NUGET-REFERENCES
+
+[NuGet PackageReference declarations](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Literal references, conditions and package asset metadata; static observations do not evaluate projects.
+
+<a id="src-nuget-central"></a>
+
+## SRC-NUGET-CENTRAL
+
+[NuGet central package management](https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+PackageVersion is separate from project PackageReference; global items, central inheritance and imports remain unresolved.
+
+<a id="src-nuget-legacy"></a>
+
+## SRC-NUGET-LEGACY
+
+[NuGet packages.config reference](https://learn.microsoft.com/en-us/nuget/reference/packages-config)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Direct legacy package entries, versions and developmentDependency metadata; not an installed-code assertion.
+
+<a id="src-nuget-identifiers"></a>
+
+## SRC-NUGET-IDENTIFIERS
+
+[NuGet package identifier validation](https://source.dot.net/NuGet.Packaging/PackageCreation/Utility/PackageIdValidator.cs.html)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Case-insensitive identifiers, ASCII restricted subset and 100-character bound; scanner canonicalizes supported IDs without copying source code.
+
+<a id="src-msbuild-items"></a>
+
+## SRC-MSBUILD-ITEMS
+
+[MSBuild items and metadata](https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-items)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+ItemGroup declarations, literal semicolon lists, conditions, metadata, execution-phase items, removals and updates; no evaluation is performed.
+
+<a id="src-saxes-xml"></a>
+
+## SRC-SAXES-XML
+
+[Saxes 6.0.0 parser documentation](https://raw.githubusercontent.com/lddubeau/saxes/v6.0.0/README.md)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Pinned parser documentation on XML well-formedness, namespaces, errors and DTD behavior. The upstream repository is archived; the optional Node wrapper rejects DTDs, bounds input/structure and discards malformed results. Original ISC and xmlchars notices are retained; release dependency/security review remains separate.

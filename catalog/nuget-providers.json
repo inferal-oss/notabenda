@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-22.3",
+  "sources": [
+    {
+      "id": "aws-dotnet-sdk",
+      "url": "https://docs.aws.amazon.com/sdk-for-net/v4/developer-guide/net-dg-install-assemblies.html",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "azure-dotnet-blobs",
+      "url": "https://learn.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-dotnet",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "stripe-dotnet-sdk",
+      "url": "https://github.com/stripe/stripe-dotnet",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "twilio-dotnet-sdk",
+      "url": "https://github.com/twilio/twilio-csharp",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "sendgrid-dotnet-sdk",
+      "url": "https://www.twilio.com/docs/sendgrid/for-developers/sending-email/email-api-quickstart-for-c",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "sentry-dotnet-sdk",
+      "url": "https://github.com/getsentry/sentry-dotnet",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "mongodb-dotnet-driver",
+      "url": "https://www.mongodb.com/docs/drivers/csharp/current/get-started/",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "redis-dotnet-client",
+      "url": "https://seredis.dev/",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    },
+    {
+      "id": "auth0-dotnet-sdk",
+      "url": "https://github.com/auth0/auth0.net",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies the listed NuGet packages. Only identifier facts and original notes are recorded. A declaration can be unused or overridden; a database client can be self-hosted and does not identify its host. No provider relationship, live execution or legal classification is inferred."
+    }
+  ],
+  "productIdentifierAdditions": {
+    "aws-sdk": [
+      {
+        "id": "nuget-awssdk-s3",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "awssdk.s3",
+        "explanation": "Static NuGet package declaration for AWSSDK.S3; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "aws-dotnet-sdk"
+        ]
+      },
+      {
+        "id": "nuget-awssdk-core",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "awssdk.core",
+        "explanation": "Static NuGet package declaration for AWSSDK.Core; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "aws-dotnet-sdk"
+        ]
+      }
+    ],
+    "azure-sdk": [
+      {
+        "id": "nuget-azure-storage-blobs",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "azure.storage.blobs",
+        "explanation": "Static NuGet package declaration for Azure.Storage.Blobs; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "azure-dotnet-blobs"
+        ]
+      }
+    ],
+    "stripe-payments": [
+      {
+        "id": "nuget-stripe-net",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "stripe.net",
+        "explanation": "Static NuGet package declaration for Stripe.net; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "stripe-dotnet-sdk"
+        ]
+      }
+    ],
+    "twilio-messaging": [
+      {
+        "id": "nuget-twilio",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "twilio",
+        "explanation": "Static NuGet package declaration for Twilio; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "twilio-dotnet-sdk"
+        ]
+      }
+    ],
+    "sendgrid-email": [
+      {
+        "id": "nuget-sendgrid",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "sendgrid",
+        "explanation": "Static NuGet package declaration for SendGrid; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "sendgrid-dotnet-sdk"
+        ]
+      },
+      {
+        "id": "nuget-sendgrid-extensions-dependencyinjection",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "sendgrid.extensions.dependencyinjection",
+        "explanation": "Static NuGet package declaration for SendGrid.Extensions.DependencyInjection; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "sendgrid-dotnet-sdk"
+        ]
+      }
+    ],
+    "sentry-monitoring": [
+      {
+        "id": "nuget-sentry",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "sentry",
+        "explanation": "Static NuGet package declaration for Sentry; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "sentry-dotnet-sdk"
+        ]
+      },
+      {
+        "id": "nuget-sentry-aspnetcore",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "sentry.aspnetcore",
+        "explanation": "Static NuGet package declaration for Sentry.AspNetCore; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "sentry-dotnet-sdk"
+        ]
+      }
+    ],
+    "mongodb-client": [
+      {
+        "id": "nuget-mongodb-driver",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "mongodb.driver",
+        "explanation": "Static NuGet package declaration for MongoDB.Driver; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "mongodb-dotnet-driver"
+        ]
+      }
+    ],
+    "redis-client": [
+      {
+        "id": "nuget-stackexchange-redis",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "stackexchange.redis",
+        "explanation": "Static NuGet package declaration for StackExchange.Redis; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "redis-dotnet-client"
+        ]
+      }
+    ],
+    "auth0-identity": [
+      {
+        "id": "nuget-auth0-authenticationapi",
+        "ecosystem": "nuget",
+        "match": "exact",
+        "value": "auth0.authenticationapi",
+        "explanation": "Static NuGet package declaration for Auth0.AuthenticationApi; confirm actual use, deployment and provider before selecting a service.",
+        "sourceIds": [
+          "auth0-dotnet-sdk"
+        ]
+      }
+    ]
+  }
+}

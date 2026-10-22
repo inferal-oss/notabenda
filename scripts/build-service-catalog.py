@@ -99,7 +99,17 @@ for product_id,identifiers in cargo['productIdentifierAdditions'].items():
  product=products[product_id];product['identifiers']+=identifiers;product['revision']=newer_revision(product['revision'],cargo['revision'])
  for source_id in [s for rule in identifiers for s in rule['sourceIds']]:
   if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),newer_revision(composer['revision'],cargo['revision'])),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+# Backend-only NuGet signatures do not change the passive browser reference snapshot.
+nuget=json.loads((root/'catalog/nuget-providers.json').read_text())
+if nuget['schemaVersion']!=1:raise ValueError('Unsupported NuGet signature source version')
+sources+=nuget['sources']
+for product_id,identifiers in nuget['productIdentifierAdditions'].items():
+ if product_id not in products:raise ValueError('Unknown NuGet signature product')
+ product=products[product_id];product['identifiers']+=identifiers;product['revision']=newer_revision(product['revision'],nuget['revision'])
+ for item in identifiers:
+  for source_id in item['sourceIds']:
+   if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),newer_revision(composer['revision'],cargo['revision'])),nuget['revision']),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
 def emit(path,output):

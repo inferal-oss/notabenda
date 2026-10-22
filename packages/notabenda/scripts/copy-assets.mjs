@@ -47,3 +47,10 @@ await copyFile(new URL('../../../node_modules/yaml/LICENSE',import.meta.url),new
 await build({entryPoints:[new URL('../src/catalog-toml.ts',import.meta.url).pathname],outfile:new URL('../dist/catalog-toml.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline'});
 await rm(new URL('../dist/catalog-toml.js.map',import.meta.url),{force:true});
 await copyFile(new URL('../../../node_modules/smol-toml/LICENSE',import.meta.url),new URL('../dist/licenses/smol-toml-LICENSE.txt',import.meta.url));
+
+// @requirements REQ-PRODUCT-SERVICE-DETECTION
+// Pinned XML parser is confined to the optional Node scanner; retain both upstream licenses.
+await build({entryPoints:[new URL('../src/catalog-nuget.ts',import.meta.url).pathname],outfile:new URL('../dist/catalog-nuget.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline'});
+await rm(new URL('../dist/catalog-nuget.js.map',import.meta.url),{force:true});
+await copyFile(new URL('../licenses/saxes-LICENSE.txt',import.meta.url),new URL('../dist/licenses/saxes-LICENSE.txt',import.meta.url));
+await copyFile(new URL('../../../node_modules/xmlchars/LICENSE',import.meta.url),new URL('../dist/licenses/xmlchars-LICENSE.txt',import.meta.url));

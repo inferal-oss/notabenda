@@ -345,7 +345,8 @@
             "docker",
             "go",
             "composer",
-            "cargo"
+            "cargo",
+            "nuget"
           ]
         },
         "match": {
@@ -482,6 +483,44 @@
               "properties": {
                 "value": {
                   "pattern": "^[A-Za-z0-9_-]{0,63}[-_]$"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "ecosystem": {
+                "const": "nuget"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "maxLength": 100
+              }
+            },
+            "if": {
+              "properties": {
+                "match": {
+                  "const": "prefix"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "value": {
+                  "maxLength": 99,
+                  "pattern": "^[a-z0-9_]+([.-][a-z0-9_]+)*\\.$"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "value": {
+                  "pattern": "^[a-z0-9_]+([.-][a-z0-9_]+)*$"
                 }
               }
             }

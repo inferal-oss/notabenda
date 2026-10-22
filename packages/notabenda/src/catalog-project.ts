@@ -11,6 +11,8 @@ import {isGoImportPath} from './catalog-go-policy.js';
 import {pythonProjectIdentifiers} from './catalog-python-project.js';
 import {cargoIdentifiers} from './catalog-cargo.js';
 import {isCargoPackageName} from './catalog-cargo-policy.js';
+import {nugetIdentifiers} from './catalog-nuget.js';
+import {isNugetPackageName} from './catalog-nuget-policy.js';
 import {composerIdentifiers} from './catalog-composer.js';
 import {isComposerPackageName} from './catalog-composer-policy.js';
 const exec=promisify(execFile);
@@ -19,10 +21,11 @@ async function systemGit(root:string):Promise<string>{
  for(const candidate of candidates)try{const path=await realpath(candidate),inside=relative(root,path);if(inside===''||!isAbsolute(inside)&&inside!=='..'&&!inside.startsWith('..'+sep))continue;if((await lstat(path)).isFile())return path;}catch{}
  throw Object.assign(new Error('System Git is unavailable.'),{code:'ENOENT'});
 }
-const skippedDirectories=new Set(['.git','node_modules','vendor','dist','build','coverage','.next','.nuxt','.output','.local','.wrangler','.aws','.ssh','.codex','.agents','.venv','venv','__pycache__','target']);
+const skippedDirectories=new Set(['.git','node_modules','vendor','dist','build','coverage','.next','.nuxt','.output','.local','.wrangler','.aws','.ssh','.codex','.agents','.venv','venv','__pycache__','target','obj','.nuget']);
 const extensions=new Set(['.js','.mjs','.cjs','.jsx','.ts','.tsx','.py','.tf','.json','.toml','.yaml','.yml','.go']);
+function nugetFileKind(file:string){const name=file.split('/').at(-1)!.toLowerCase();return name==='packages.config'?'legacy':name==='directory.packages.props'?'central':['directory.build.props','directory.build.targets'].includes(name)?'build':/\.(?:csproj|fsproj|vbproj)$/iu.test(name)?'project':undefined;}
 const safePath=(p:string)=>p.length<=500&&!/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(p)&&!p.split('/').some(x=>skippedDirectories.has(x))&&!p.split('/').some(x=>/^\.env(?:\.|$)|^\.dev\.vars(?:\.|$)|^auth\.json$|secret|credential|\.pem$|\.key$/iu.test(x));
-export interface ProjectServiceEvidence {file:string;ruleId:string;ecosystem:CatalogIdentifier['ecosystem'];identifier:string;match:'exact'|'prefix';context:'dependency'|'indirect-dependency'|'development-dependency'|'optional-dependency'|'dependency-group'|'build-dependency'|'workspace-dependency'|'target-dependency'|'target-optional-dependency'|'target-development-dependency'|'target-build-dependency'|'locked-dependency'|'locked-development-dependency'|'source-import'|'test-source-import'|'infrastructure';explanation:string}
+export interface ProjectServiceEvidence {file:string;ruleId:string;ecosystem:CatalogIdentifier['ecosystem'];identifier:string;match:'exact'|'prefix';context:'dependency'|'indirect-dependency'|'development-dependency'|'optional-dependency'|'dependency-group'|'build-dependency'|'workspace-dependency'|'target-dependency'|'target-optional-dependency'|'target-development-dependency'|'target-build-dependency'|'locked-dependency'|'locked-development-dependency'|'conditional-dependency'|'package-update'|'central-package-version'|'global-package-reference'|'legacy-package-entry'|'source-import'|'test-source-import'|'infrastructure';explanation:string}
 export interface ProjectServiceFinding {productId:string;productName:string;providerId:string;providerName:string;reviewRequired:true;evidence:ProjectServiceEvidence[]}
 export interface ProjectServiceReport {schemaVersion:1;kind:'project-service-discovery';catalog:{id:string;revision:string};coverage:{selection:'git-ignore-aware'|'built-in-skips';filesExamined:number;bytesExamined:number;identifierTokensExamined:number;omittedEvidence:number;skippedFiles:number;limited:boolean};findings:ProjectServiceFinding[];notes:string[]}
 /** Static, local scan. Never imports project modules, runs scripts/installers or reads secret-file values. */
@@ -52,7 +55,7 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
  const rules=catalog.products.flatMap(product=>product.identifiers.map(rule=>({product,rule})));
  const emit=(file:string,ecosystem:CatalogIdentifier['ecosystem'],identifier:string,context:ProjectServiceEvidence['context'])=>{
   // Only known identifier tokens are retained. No source line, value, URL, account key or package URL is output.
-  const valid=identifier.length<=200&&(ecosystem==='cargo'?isCargoPackageName(identifier):ecosystem==='composer'?isComposerPackageName(identifier):ecosystem==='go'?isGoImportPath(identifier):ecosystem==='npm'?/^(?:@[A-Za-z0-9][A-Za-z0-9._-]*\/)?[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(identifier):ecosystem==='python'?/^[a-z0-9][a-z0-9-]*$/u.test(identifier):ecosystem==='terraform'?/^[A-Za-z0-9_-]+$/u.test(identifier):/^[A-Za-z0-9][A-Za-z0-9_./:-]*$/u.test(identifier));
+  const valid=identifier.length<=200&&(ecosystem==='nuget'?isNugetPackageName(identifier):ecosystem==='cargo'?isCargoPackageName(identifier):ecosystem==='composer'?isComposerPackageName(identifier):ecosystem==='go'?isGoImportPath(identifier):ecosystem==='npm'?/^(?:@[A-Za-z0-9][A-Za-z0-9._-]*\/)?[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(identifier):ecosystem==='python'?/^[a-z0-9][a-z0-9-]*$/u.test(identifier):ecosystem==='terraform'?/^[A-Za-z0-9_-]+$/u.test(identifier):/^[A-Za-z0-9][A-Za-z0-9_./:-]*$/u.test(identifier));
   if(!valid){limited=true;return;}
   const token=JSON.stringify([file,ecosystem,identifier,context]);if(observed.has(token))return;if(observed.size>=20000){limited=true;return;}observed.add(token);
   for(const {product,rule} of rules){if(rule.ecosystem!==ecosystem||!(rule.match==='exact'?identifier===rule.value:identifier.startsWith(rule.value)))continue;
@@ -62,9 +65,10 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
   }
  };
  for(const file of paths){
+  if(/(?:^|\/)nuget\.config$/iu.test(file)){limited=true;skippedFiles++;continue;} // Package-source files can contain credentials; never read their values.
   if(safePath(file)&&/(?:^|\/)\.cargo\/config(?:\.toml)?$/u.test(file)){limited=true;skippedFiles++;continue;} // Config can contain tokens; do not read its values.
   if(observed.size>=20000){limited=true;break;}
-  if(!safePath(file)||file.startsWith('/')||file.split('/').includes('..')||!(extensions.has(extname(file))||['go.mod','go.work','composer.lock'].includes(file.split('/').at(-1)!)||file.endsWith('requirements.txt')||file.endsWith('Dockerfile'))){skippedFiles++;continue;}
+  if(!safePath(file)||file.startsWith('/')||file.split('/').includes('..')||!(extensions.has(extname(file))||['go.mod','go.work','composer.lock'].includes(file.split('/').at(-1)!)||nugetFileKind(file)!==undefined||file.endsWith('requirements.txt')||file.endsWith('Dockerfile'))){skippedFiles++;continue;}
   const path=resolve(root,file);if(relative(root,path).startsWith('..'+sep)){skippedFiles++;continue;}
   // Reject symlinks in every ancestor, including tracked directory links and the final file.
   let unsafe=false,cursor=root;for(const part of file.split('/')){cursor=join(cursor,part);try{if((await lstat(cursor)).isSymbolicLink()){unsafe=true;break;}}catch{unsafe=true;break;}}
@@ -74,7 +78,8 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
     const buffer=Buffer.alloc(Math.min(262145,stat.size+1));let size=0;while(size<buffer.length){const {bytesRead}=await h.read(buffer,size,buffer.length-size,size);if(!bytesRead)break;size+=bytesRead;}if(size>262144||bytesExamined+size>32*1024*1024){limited=true;skippedFiles++;continue;}if(size>stat.size)limited=true;source=new TextDecoder('utf-8',{fatal:true}).decode(buffer.subarray(0,size));bytesExamined+=size;
    }finally{await h.close();}
   }catch{limited=true;skippedFiles++;continue;}filesExamined++;
-  if(source.includes('\0')){skippedFiles++;continue;}
+  if(source.includes('\0')){limited=true;skippedFiles++;continue;}
+  const nugetKind=nugetFileKind(file);if(nugetKind!==undefined){const parsed=nugetIdentifiers(source,nugetKind);limited||=parsed.limited;for(const item of parsed.identifiers)emit(file,'nuget',item.identifier,item.context);}
   if(file.endsWith('.go')||file.split('/').at(-1)==='go.mod'){
    const parsed=file.endsWith('.go')?goSourceIdentifiers(source,file.endsWith('_test.go')):goModuleIdentifiers(source);limited||=parsed.limited;
    for(const item of parsed.identifiers)emit(file,'go',item.identifier,item.context);
@@ -110,6 +115,7 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
   'Python pyproject.toml separates project, optional, dependency-group and build requirements. Only named candidates are read; extras, versions, markers, URLs and group names are not retained or resolved. Dynamic dependencies, unsupported Poetry/PDM tables and uv source/workspace overrides report limited coverage. No Python, build backend, installer, lockfile resolution or network access is used.',
   'Cargo.toml separates package, optional, development, build, workspace and target-specific declarations. Renamed dependencies use their package identity; unresolved inherited aliases add no identity. Workspace membership, feature/target selection, locks and actual code are not resolved. Git/path/alternate-registry references, overrides and selected Cargo configuration report limited coverage; no paths or private values are followed or retained. No Cargo, compiler or build script runs.',
   'Composer require/require-dev declarations and packages/packages-dev lock observations have separate contexts. Lock entries can be transitive or stale; freshness, versions, installed code and runtime use are not verified. Repository/replace/provide declarations report limited coverage without following their values. PHP source, plugins, scripts, autoloaders and installers are never run; private values and package metadata are omitted.',
+  'NuGet project PackageReference declarations, conditional references, Update entries, central PackageVersion listings, GlobalPackageReference and legacy packages.config entries remain separate evidence. No MSBuild conditions, imports, SDK/central inheritance, removals, restore, locks or installed code are resolved. DTD and malformed XML yield limited coverage with no candidates from that file. Package sources can redirect identities; NuGet configuration is skipped without reading credentials. No dotnet, MSBuild, NuGet command or project task runs; private metadata and versions are omitted.',
   'Secret-named files, symlinks, dependency/generated directories and unsupported or oversized files are skipped. No project modules, package scripts, SDKs or network probes are executed.',
   'Git projects use Git’s ignore-aware file list with filesystem monitoring disabled. Other projects use built-in skips; custom ignore rules are not interpreted by that fallback.',
   'File names and known identifiers may still reveal private project structure. Review before sharing. Empty or limited results never prove no third parties.',

@@ -339,7 +339,8 @@
         "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.",
         "Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery.",
         "Standard Python pyproject dependencies with separate optional/group/build evidence, bounded include checks and private Node-only parsing; dynamic/tool-specific selection remains unresolved.",
-        "Seven source-linked Composer package signatures and static manifest/development/lock evidence, with private values, auth files, unresolved overrides and no-execution boundaries."
+        "Seven source-linked Composer package signatures and static manifest/development/lock evidence, with private values, auth files, unresolved overrides and no-execution boundaries.",
+        "Static NuGet project/central/legacy discovery with six evidence contexts, twelve source-linked SDK signatures and bounded non-executing XML extraction."
       ],
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
@@ -836,7 +837,8 @@
         "Human-readable and JSON findings with route, scenario, evidence, and candidate purpose/service mappings.",
         "Adopters choose when to run it, whether to use CI, and which findings should block their deployments.",
         "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.",
-        "Static Cargo dependency declarations with separate optional, development, build, target and workspace contexts; named source-linked SDK candidates and explicit unresolved inheritance/override limits."
+        "Static Cargo dependency declarations with separate optional, development, build, target and workspace contexts; named source-linked SDK candidates and explicit unresolved inheritance/override limits.",
+        "Static NuGet project/central/legacy discovery with six evidence contexts, twelve source-linked SDK signatures and bounded non-executing XML extraction."
       ],
       "implementationRefs": [
         "packages/notabenda/src/discovery.ts",
@@ -3198,6 +3200,60 @@
       "access": "read",
       "note": "Downloaded the current regulator-linked 61-page PDF. Imprint on printed page 2 says July 2025, publication 69; visually checked. Read selected sections 6, 7 and 9 (printed pp.27\u201332 and35\u201336), transfer-version context pp.33\u201335 and Annex5 pp.54\u201355. No complete cookie eligibility, transfer qualification or current controlling-law review is claimed.",
       "contentSha256": "3bebbd0f54bae5fd8e008c183bef70a67ab363caa6541989e4e4a2c1d3d6c6ca"
+    },
+    {
+      "id": "SRC-NUGET-REFERENCES",
+      "title": "NuGet PackageReference declarations",
+      "url": "https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Literal references, conditions and package asset metadata; static observations do not evaluate projects."
+    },
+    {
+      "id": "SRC-NUGET-CENTRAL",
+      "title": "NuGet central package management",
+      "url": "https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "PackageVersion is separate from project PackageReference; global items, central inheritance and imports remain unresolved."
+    },
+    {
+      "id": "SRC-NUGET-LEGACY",
+      "title": "NuGet packages.config reference",
+      "url": "https://learn.microsoft.com/en-us/nuget/reference/packages-config",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Direct legacy package entries, versions and developmentDependency metadata; not an installed-code assertion."
+    },
+    {
+      "id": "SRC-NUGET-IDENTIFIERS",
+      "title": "NuGet package identifier validation",
+      "url": "https://source.dot.net/NuGet.Packaging/PackageCreation/Utility/PackageIdValidator.cs.html",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Case-insensitive identifiers, ASCII restricted subset and 100-character bound; scanner canonicalizes supported IDs without copying source code."
+    },
+    {
+      "id": "SRC-MSBUILD-ITEMS",
+      "title": "MSBuild items and metadata",
+      "url": "https://learn.microsoft.com/en-us/visualstudio/msbuild/msbuild-items",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "ItemGroup declarations, literal semicolon lists, conditions, metadata, execution-phase items, removals and updates; no evaluation is performed."
+    },
+    {
+      "id": "SRC-SAXES-XML",
+      "title": "Saxes 6.0.0 parser documentation",
+      "url": "https://raw.githubusercontent.com/lddubeau/saxes/v6.0.0/README.md",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Pinned parser documentation on XML well-formedness, namespaces, errors and DTD behavior. The upstream repository is archived; the optional Node wrapper rejects DTDs, bounds input/structure and discards malformed results. Original ISC and xmlchars notices are retained; release dependency/security review remains separate."
     }
   ],
   "jurisdictions": [
@@ -7346,7 +7402,11 @@
         "packages/notabenda/src/catalog-composer-policy.ts",
         "catalog/composer-providers.json",
         "packages/notabenda-cf/src/catalog-reference.ts",
-        "packages/notabenda-cf/src/catalog-composer-policy.ts"
+        "packages/notabenda-cf/src/catalog-composer-policy.ts",
+        "packages/notabenda/src/catalog-nuget.ts",
+        "packages/notabenda/src/catalog-nuget-policy.ts",
+        "packages/notabenda-cf/src/catalog-nuget-policy.ts",
+        "catalog/nuget-providers.json"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -7370,9 +7430,11 @@
         "packages/notabenda/test/catalog-python-project.test.mjs",
         "docs/verification/python-project-discovery.md",
         "packages/notabenda/test/catalog-composer.test.mjs",
-        "docs/verification/composer-discovery.md"
+        "docs/verification/composer-discovery.md",
+        "packages/notabenda/test/catalog-nuget.test.mjs",
+        "docs/verification/nuget-discovery.md"
       ],
-      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Optional documentation profiles now cover eight products; independent provider-practice review and broader coverage remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
+      "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Optional documentation profiles now cover eight products; independent provider-practice review and broader coverage remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment. NuGet discovery reads bounded, namespace-aware static project/central/build/legacy declarations; six evidence contexts preserve unresolved build meaning. Twelve source-backed package signatures cover nine SDK families. Malformed XML/DTD/NUL, imported/conditional settings and skipped credential-bearing package sources remain explicit. No .NET command, task, restore or source-value export is performed."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-DETECTION",
@@ -7585,6 +7647,30 @@
         {
           "sourceId": "SRC-REDIS-RUST-CLIENT",
           "locator": "Selected Cargo package identity only; installation, runtime use and provider practices are not established."
+        },
+        {
+          "sourceId": "SRC-NUGET-REFERENCES",
+          "locator": "Literal references, conditions and package asset metadata; static observations do not evaluate projects."
+        },
+        {
+          "sourceId": "SRC-NUGET-CENTRAL",
+          "locator": "PackageVersion is separate from project PackageReference; global items, central inheritance and imports remain unresolved."
+        },
+        {
+          "sourceId": "SRC-NUGET-LEGACY",
+          "locator": "Direct legacy package entries, versions and developmentDependency metadata; not an installed-code assertion."
+        },
+        {
+          "sourceId": "SRC-NUGET-IDENTIFIERS",
+          "locator": "Case-insensitive identifiers, ASCII restricted subset and 100-character bound; scanner canonicalizes supported IDs without copying source code."
+        },
+        {
+          "sourceId": "SRC-MSBUILD-ITEMS",
+          "locator": "ItemGroup declarations, literal semicolon lists, conditions, metadata, execution-phase items, removals and updates; no evaluation is performed."
+        },
+        {
+          "sourceId": "SRC-SAXES-XML",
+          "locator": "Pinned parser documentation on XML well-formedness, namespaces, errors and DTD behavior. The upstream repository is archived; the optional Node wrapper rejects DTDs, bounds input/structure and discards malformed results. Original ISC and xmlchars notices are retained; release dependency/security review remains separate."
         }
       ],
       "discoverySourceIds": [],
@@ -7637,7 +7723,13 @@
         "packages/notabenda/src/catalog-cargo.ts",
         "packages/notabenda/src/catalog-cargo-policy.ts",
         "packages/notabenda/src/catalog-toml.ts",
-        "catalog/cargo-providers.json"
+        "catalog/cargo-providers.json",
+        "packages/notabenda/src/catalog-nuget.ts",
+        "packages/notabenda/src/catalog-nuget-policy.ts",
+        "packages/notabenda-cf/src/catalog-nuget-policy.ts",
+        "catalog/nuget-providers.json",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "scripts/check-package-release.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -7658,9 +7750,11 @@
         "docs/verification/composer-discovery.md",
         "site/test/guide-navigation.test.mjs",
         "packages/notabenda/test/catalog-cargo.test.mjs",
-        "docs/verification/cargo-discovery.md"
+        "docs/verification/cargo-discovery.md",
+        "packages/notabenda/test/catalog-nuget.test.mjs",
+        "docs/verification/nuget-discovery.md"
       ],
-      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project. Ten additional browser-service signatures now cover common analytics, monitoring and support references, for nineteen rules across sixteen products. Seventeen new first-party references and three official npm identifiers connect to reviewed candidates; older capture snapshots and unaffected product pins remain unchanged. Rule patterns do not validate SDK versions or infer enabled features, execution, identity or legal exemptions."
+      "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project. Ten additional browser-service signatures now cover common analytics, monitoring and support references, for nineteen rules across sixteen products. Seventeen new first-party references and three official npm identifiers connect to reviewed candidates; older capture snapshots and unaffected product pins remain unchanged. Rule patterns do not validate SDK versions or infer enabled features, execution, identity or legal exemptions. NuGet discovery reads bounded, namespace-aware static project/central/build/legacy declarations; six evidence contexts preserve unresolved build meaning. Twelve source-backed package signatures cover nine SDK families. Malformed XML/DTD/NUL, imported/conditional settings and skipped credential-bearing package sources remain explicit. No .NET command, task, restore or source-value export is performed."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-PROFILES",
@@ -11916,7 +12010,9 @@
         "docs/verification/catalog-review.md",
         "packages/notabenda/test/catalog-release.test.mjs",
         "docs/verification/catalog-release.md",
-        "site/test/host.test.mjs"
+        "site/test/host.test.mjs",
+        "packages/notabenda/test/catalog-nuget.test.mjs",
+        "docs/verification/nuget-discovery.md"
       ]
     },
     {
@@ -11925,7 +12021,7 @@
         "REQ-PRODUCT-SERVICE-DETECTION"
       ],
       "status": "partial",
-      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities. Python manifests distinguish project/optional/group/build candidates, skip TOML prose/comments, bound malformed/cyclic includes, retain limited dynamic/tool selection, minimize private values and work in an offline installed package. Composer cases separate manifest/dev and lock/dev observations, minimize private values, reject duplicate decoded keys, retain unresolved override limits, bound inputs, skip auth files and exercise an offline packed wizard without selecting services. Cargo cases exercise renamed/optional/dev/build/workspace/target declarations, six source-linked identities, bounded malformed TOML, unsupported resolution, config/secret exclusions, no execution, schema parity, old selection pins and an offline packed wizard.",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities. Python manifests distinguish project/optional/group/build candidates, skip TOML prose/comments, bound malformed/cyclic includes, retain limited dynamic/tool selection, minimize private values and work in an offline installed package. Composer cases separate manifest/dev and lock/dev observations, minimize private values, reject duplicate decoded keys, retain unresolved override limits, bound inputs, skip auth files and exercise an offline packed wizard without selecting services. Cargo cases exercise renamed/optional/dev/build/workspace/target declarations, six source-linked identities, bounded malformed TOML, unsupported resolution, config/secret exclusions, no execution, schema parity, old selection pins and an offline packed wizard. NuGet regressions cover six contexts, literal lists, namespaces, malformed/DTD/NUL input, scoped legacy entries, bounded parsing, private metadata omission, non-execution, credential/ignore/symlink handling, offline installed delivery and unchanged historical selection pins.",
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
@@ -11943,7 +12039,9 @@
         "packages/notabenda/test/catalog-composer.test.mjs",
         "docs/verification/composer-discovery.md",
         "packages/notabenda/test/catalog-cargo.test.mjs",
-        "docs/verification/cargo-discovery.md"
+        "docs/verification/cargo-discovery.md",
+        "packages/notabenda/test/catalog-nuget.test.mjs",
+        "docs/verification/nuget-discovery.md"
       ]
     },
     {

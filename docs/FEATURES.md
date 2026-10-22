@@ -168,6 +168,7 @@ Features link to individual obligations, implementation files and verification s
 - Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery.
 - Standard Python pyproject dependencies with separate optional/group/build evidence, bounded include checks and private Node-only parsing; dynamic/tool-specific selection remains unresolved.
 - Seven source-linked Composer package signatures and static manifest/development/lock evidence, with private values, auth files, unresolved overrides and no-execution boundaries.
+- Static NuGet project/central/legacy discovery with six evidence contexts, twelve source-linked SDK signatures and bounded non-executing XML extraction.
 
 **Requirement links:** [REQ-EU-INTERESTS-DISCLOSURE](requirements/README.md#req-eu-interests-disclosure), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](requirements/README.md#req-product-service-profiles).
 
@@ -473,6 +474,7 @@ Features link to individual obligations, implementation files and verification s
 - Adopters choose when to run it, whether to use CI, and which findings should block their deployments.
 - Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.
 - Static Cargo dependency declarations with separate optional, development, build, target and workspace contexts; named source-linked SDK candidates and explicit unresolved inheritance/override limits.
+- Static NuGet project/central/legacy discovery with six evidence contexts, twelve source-linked SDK signatures and bounded non-executing XML extraction.
 
 **Requirement links:** [REQ-AU-PIXELS](requirements/README.md#req-au-pixels), [REQ-PRODUCT-DISCOVERY](requirements/README.md#req-product-discovery), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
 

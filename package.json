@@ -45,6 +45,7 @@
     "marked": "18.1.1",
     "mdast-util-from-markdown": "2.1.0",
     "postcss": "8.5.31",
+    "saxes": "6.0.0",
     "shiki": "4.5.0",
     "typescript": "7.0.2",
     "wrangler": "4.151.1"
