@@ -213,3 +213,11 @@ The [cookie control settings editor](SETUP.md#configure-cookie-control-settings)
 Selecting Singapore in setup adds a [source-linked review](SINGAPORE-COOKIES.md) of personal data, requested activities, browser choices and advertising cookies. It preserves your existing configuration. The ordinary runtime continues to require explicit site choices for declared optional services; it does not interpret browser defaults or qualify Singapore exceptions.
 
 The optional [connection inspector](CONNECTION-INSPECTION.md) reads the actual controller’s registration map and lifecycle phases, and can compare the intended compiled consent inventory. It does not refresh, start services or replace network/storage tests.
+
+## California choice review
+
+Selecting California as coverage interest, or importing `US-CA`, now adds **Review California privacy-choice paths** to setup. `notabenda describe cookie-consent processing-opt-outs --json` includes the same dated sources, review questions and limits in `privacyInterfaceReviews`. Selection changes no processing policy, consent or current inventory; imported answers remain declarations.
+
+Section 7004 addresses the complete request/consent path, including language, relative effort/prominence, separate purposes and usable completion. The [current regulations](https://cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf) are linked from the agency’s current index as effective 1 January 2026. [Advisory 2024-02](https://cppa.ca.gov/pdf/enfadvisory202402.pdf) supplies illustrative review questions and no safe harbor. Sources checked 22 October 2026; legal review remains open.
+
+The native cookie notice provides direct rejection and acceptance with shared button treatment. Dismissal and an unsaved preferences draft grant nothing. Test the rendered result after custom CSS, translations, responsive changes and application integration. These mechanics do not supply California sale/sharing re-opt-in, sensitive-information limits or a complete rights workflow. Check those separate destinations and downstream outcomes. See [verification](verification/california-choice-design.md).

@@ -78,6 +78,7 @@
   :where(.nb-consent-notice:dir(rtl)) { inset-inline-end: max(1rem, env(safe-area-inset-left)); }
   :where(.nb-consent-notice h2) { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; margin: 0; }
   :where(.nb-consent-notice p) { margin: 0 0 .8rem; font-weight: 500; }
+  /* @requirements REQ-US-CA-UI Shared layout/treatment for native cookie actions; not a contextual legal assessment. */
   :where(.nb-choice-actions, .nb-preferences-footer) { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr)); gap: .6rem; }
   :where(.nb-choice-button) { font: inherit; padding: .75rem .75rem; min-height: 44px; border: 1px solid var(--nb-action-bg, #303137); border-radius: calc(var(--nb-radius, .625rem) * .5); background: var(--nb-action-bg, #303137); color: var(--nb-action-text, #fff); font-weight: 600; letter-spacing: -.015em; cursor: pointer; line-height: 1.35; overflow-wrap: anywhere; }
   :where(.nb-choice-button:disabled) { opacity: .6; cursor: default; }

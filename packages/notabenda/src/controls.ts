@@ -1,4 +1,5 @@
 // @requirements REQ-JP-RECIPIENT-CONSENT
+// @requirements REQ-US-CA-UI Paired native cookie choices; broader CCPA host paths require separate review.
 // @requirements REQ-SG-CONSENT-CONDITIONS
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {formatMessage} from './localization-policy.js';

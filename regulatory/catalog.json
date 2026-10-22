@@ -391,7 +391,8 @@
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
         "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
         "Complete host-supplied native storage-settings messages, explicit language/direction, exact missing-dictionary setup guidance and copy-only objection continuity; eligibility remains a separate assessment.",
-        "Complete host-supplied gated-media messages, matching-language validation and inert localized SSR; copy-only revisions retain existing cookie scope."
+        "Complete host-supplied gated-media messages, matching-language validation and inert localized SSR; copy-only revisions retain existing cookie scope.",
+        "Selected California choice-design review in setup/agent metadata, linked to current regulation/advisory sources and default native rejection/dismissal regressions; full host presentation and contextual legal review remain separate."
       ],
       "implementationRefs": [
         "packages/notabenda/src/consent.ts",
@@ -1472,9 +1473,9 @@
       "title": "California agency: avoiding dark patterns",
       "url": "https://www.cppa.ca.gov/announcements/2024/20240904.html",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-22",
       "access": "read",
-      "note": ""
+      "note": "Agency announcement links Enforcement Advisory 2024-02 and describes review of understandable language and symmetrical choices. It is not a separate regulation or safe harbor."
     },
     {
       "id": "SRC-US-CO",
@@ -1733,9 +1734,9 @@
       "title": "California CCPA regulations effective 1 January 2026",
       "url": "https://cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf",
       "kind": "law",
-      "checkedOn": "2026-10-20",
+      "checkedOn": "2026-10-22",
       "access": "read",
-      "note": "Read section 7025(b)\u2013(c), pp. 44\u201348: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows. Rechecked section 7015(a)\u2013(c), p. 32: two title choices, adjacent icon, homepage header/footer prominence, peer sizing, permitted visibility color adjustment and destination for both rights. Section 7025(e), p. 48: posting links does not replace applicable signal handling. This agency-linked file contains regulations despite its statute filename."
+      "note": "Read section 7025(b)\u2013(c), pp. 44\u201348: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows. Rechecked section 7015(a)\u2013(c), p. 32: two title choices, adjacent icon, homepage header/footer prominence, peer sizing, permitted visibility color adjustment and destination for both rights. Section 7025(e), p. 48: posting links does not replace applicable signal handling. This agency-linked file contains regulations despite its statute filename. Rechecked sections 7003(a)\u2013(b) and 7004(a)\u2013(c), printed pp. 16\u201320, on 22 October 2026: understandable presentation, relative burden/prominence, unambiguous separate choices, functional completion and contextual effects. The agency current-regulations index labels this PDF effective 1 January 2026 despite its statute filename."
     },
     {
       "id": "SRC-W3C-GPC",
@@ -3015,6 +3016,15 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-US-CA-UI-ADVISORY",
+      "title": "California Enforcement Advisory 2024-02: avoiding dark patterns",
+      "url": "https://cppa.ca.gov/pdf/enfadvisory202402.pdf",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Read all four pages, including the illustrative UI scenarios and page-4 review questions. Issued 4 September 2024. The advisory disclaims legal advice, substantive policy and safe harbor; statutes and regulations control."
     }
   ],
   "jurisdictions": [
@@ -4382,12 +4392,20 @@
       "jurisdiction": "US-CA",
       "title": "Symmetrical and understandable privacy choices",
       "kind": "regulator-interpretation",
-      "summary": "Avoid interfaces that subvert or impair privacy choices.",
+      "summary": "Review understandable language, relative choice effort and prominence, separate unambiguous purposes and usable completion in applicable CCPA request/consent flows.",
       "appliesWhen": "CCPA request/consent interface requirements apply.",
       "sourceRefs": [
         {
+          "sourceId": "SRC-US-CA-REGS-2026",
+          "locator": "Sections 7003(a)\u2013(b), 7004(a)(1)\u2013(5), (b)\u2013(c); printed pp. 16\u201320. Current regulation label effective 1 January 2026; no blanket qualification of a particular site."
+        },
+        {
+          "sourceId": "SRC-US-CA-UI-ADVISORY",
+          "locator": "All four pages: illustrative scenarios and whole-flow language/path review. Guidance, not a safe harbor."
+        },
+        {
           "sourceId": "SRC-US-CA-UI",
-          "locator": "Clear and balanced choices; symmetrical methods"
+          "locator": "Agency announcement linking the advisory and describing contextual review."
         }
       ],
       "discoverySourceIds": [
@@ -4402,12 +4420,21 @@
       ],
       "researchStatus": "initial-research",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Legal analysis is contextual; automated contrast checks alone are insufficient.",
-      "implementationRefs": [],
-      "testRefs": []
+      "caveats": "Selected native cookie mechanics and source-linked setup/agent review only. CCPA applicability, custom wording/styles/headless views, complete request/consent paths, financial incentives, separate opt-in/limits, translations/accessibility and actual host/downstream effects remain contextual review. A stylesheet or paired buttons does not establish compliance.",
+      "implementationRefs": [
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda/src/privacy-interface-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-interface-reviews.test.mjs",
+        "docs/verification/california-choice-design.md"
+      ]
     },
     {
       "id": "REQ-US-CO-GPC",
@@ -10696,9 +10723,12 @@
       "requirementIds": [
         "REQ-US-CA-UI"
       ],
-      "status": "planned",
-      "expected": "All bundled layouts present readable, usable choices; opt-out is not hidden behind misleading text or extra persuasion.",
-      "testRefs": []
+      "status": "partial",
+      "expected": "Source-linked setup/agent guidance preserves current configuration, declared-no answers and historical reports. Both built-in consent factories retain direct paired rejection/acceptance, initially unchecked drafts, no grants on dismissal/close and single-action rejection of edited drafts. Class/layout checks are not browser prominence or contextual dark-pattern proof; custom/complete host flows and broader platform/accessibility/translation review remain open.",
+      "testRefs": [
+        "packages/notabenda/test/privacy-interface-reviews.test.mjs",
+        "docs/verification/california-choice-design.md"
+      ]
     },
     {
       "id": "VERIFY-US-CO-GPC",

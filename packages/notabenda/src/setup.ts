@@ -22,6 +22,8 @@ import {normalizeSetupCatalogSelections} from './catalog-selection.js';
 import type {CatalogServiceSelection} from './catalog-selection.js';
 import {scopeGuardFields} from './scope-guard-policy.js';
 import {getPrivacySignalReviews} from './privacy-signal-reviews.js';
+// @requirements REQ-US-CA-UI
+import {getPrivacyInterfaceReviews} from './privacy-interface-reviews.js';
 // @requirements REQ-SG-COOKIE-DATA REQ-SG-BROWSER-CHOICE REQ-SG-COOKIE-TARGETING
 import {getCookieJurisdictionReviews} from './cookie-jurisdiction-reviews.js';
 import type {ScopeGuardFacts,ScopeGuardFact} from './scope-guard-policy.js';
@@ -136,6 +138,12 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
   if(!answers.markets.length||answers.markets.includes('other'))reviewItems.push('Determine applicable jurisdictions from establishment, audience, targeting and practices; this market list is incomplete and is not an applicability decision.');
   for(const market of setupMarkets)if(answers.markets.includes(market.id))recommendations.push({id:'market-'+market.id,status:'review',title:market.label+' applicability review',reason:'Selected coverage interest. Check thresholds, territorial scope, exceptions and effective dates in the catalog. Country-specific rules and unlisted jurisdictions may also apply.',configPaths:['jurisdictions'],requirementIds:market.requirements,guide:'requirements'});
   const cookieReviews=getCookieJurisdictionReviews();
+  const interfaceReviews=getPrivacyInterfaceReviews();
+  for(const review of interfaceReviews.items){
+    if(!answers.markets.includes(review.marketId)&&!config.jurisdictions.includes(review.marketId))continue;
+    recommendations.push({id:'privacy-interface-'+review.marketId,status:'review',title:review.title,reason:review.summary+' Source check '+review.checkedOn+'; research revision '+interfaceReviews.revision+', legally unreviewed. Setup has changed no choices.',configPaths:interfaceReviews.configPaths,requirementIds:review.requirementIds,guide:review.guide});
+    reviewItems.push(...[...review.checks.map(check=>check.text+' ('+check.locator+')'),...review.limits].map(text=>review.label+': '+text));
+  }
   for(const review of cookieReviews.items){
     if(!answers.markets.includes(review.marketId)&&!config.jurisdictions.includes(review.marketId))continue;
     recommendations.push({id:'cookie-review-'+review.marketId,status:'review',title:review.title,reason:review.summary+' Source check '+review.checkedOn+'; research revision '+cookieReviews.revision+', legally unreviewed.',configPaths:cookieReviews.configPaths,requirementIds:review.requirementIds,guide:review.guide});

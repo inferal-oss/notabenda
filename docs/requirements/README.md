@@ -24,7 +24,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | AU | [REQ-AU-PIXELS](#req-au-pixels) | Selected items: partial |
 | NZ | [REQ-NZ-NOTICE](#req-nz-notice), [REQ-NZ-INDIRECT](#req-nz-indirect) | Selected items: partial |
 | ZA | [REQ-ZA-MARKETING](#req-za-marketing) | Selected items: planned |
-| US-CA | [REQ-US-CA-CHOICES](#req-us-ca-choices), [REQ-US-CA-GPC](#req-us-ca-gpc), [REQ-US-CA-UI](#req-us-ca-ui), [REQ-US-CA-ALTERNATIVE-LINK](#req-us-ca-alternative-link) | Selected items: partial, planned |
+| US-CA | [REQ-US-CA-CHOICES](#req-us-ca-choices), [REQ-US-CA-GPC](#req-us-ca-gpc), [REQ-US-CA-UI](#req-us-ca-ui), [REQ-US-CA-ALTERNATIVE-LINK](#req-us-ca-alternative-link) | Selected items: partial |
 | US-CO | [REQ-US-CO-GPC](#req-us-co-gpc) | Selected items: partial |
 | US-CT | [REQ-US-CT-GPC](#req-us-ct-gpc) | Selected items: partial |
 | US-VA | [REQ-US-VA-RIGHTS](#req-us-va-rights) | Selected items: partial |
@@ -623,13 +623,13 @@ Process qualifying browser signals as applicable sale/sharing opt-outs.
 
 ### REQ-US-CA-UI — Symmetrical and understandable privacy choices
 
-Avoid interfaces that subvert or impair privacy choices.
+Review understandable language, relative choice effort and prominence, separate unambiguous purposes and usable completion in applicable CCPA request/consent flows.
 
 **Applies when:** CCPA request/consent interface requirements apply.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [California agency: avoiding dark patterns](https://www.cppa.ca.gov/announcements/2024/20240904.html) — Clear and balanced choices; symmetrical methods (read; [SRC-US-CA-UI](SOURCES.md#src-us-ca-ui)).
+**Sources:** [California CCPA regulations effective 1 January 2026](https://cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf) — Sections 7003(a)–(b), 7004(a)(1)–(5), (b)–(c); printed pp. 16–20. Current regulation label effective 1 January 2026; no blanket qualification of a particular site. (read; [SRC-US-CA-REGS-2026](SOURCES.md#src-us-ca-regs-2026)); [California Enforcement Advisory 2024-02: avoiding dark patterns](https://cppa.ca.gov/pdf/enfadvisory202402.pdf) — All four pages: illustrative scenarios and whole-flow language/path review. Guidance, not a safe harbor. (read; [SRC-US-CA-UI-ADVISORY](SOURCES.md#src-us-ca-ui-advisory)); [California agency: avoiding dark patterns](https://www.cppa.ca.gov/announcements/2024/20240904.html) — Agency announcement linking the advisory and describing contextual review. (read; [SRC-US-CA-UI](SOURCES.md#src-us-ca-ui)).
 
 **Discovery articles:** [SRC-IUB-US](SOURCES.md#src-iub-us).
 
@@ -637,11 +637,11 @@ Avoid interfaces that subvert or impair privacy choices.
 
 <a id="verify-us-ca-ui"></a>
 
-**VERIFY-US-CA-UI (planned):** All bundled layouts present readable, usable choices; opt-out is not hidden behind misleading text or extra persuasion.
+**VERIFY-US-CA-UI (partial):** Source-linked setup/agent guidance preserves current configuration, declared-no answers and historical reports. Both built-in consent factories retain direct paired rejection/acceptance, initially unchecked drafts, no grants on dismissal/close and single-action rejection of edited drafts. Class/layout checks are not browser prominence or contextual dark-pattern proof; custom/complete host flows and broader platform/accessibility/translation review remain open.
 
-**Limits/open review:** Legal analysis is contextual; automated contrast checks alone are insufficient.
+**Limits/open review:** Selected native cookie mechanics and source-linked setup/agent review only. CCPA applicability, custom wording/styles/headless views, complete request/consent paths, financial incentives, separate opt-in/limits, translations/accessibility and actual host/downstream effects remain contextual review. A stylesheet or paired buttons does not establish compliance.
 
-**Code/test references:** None yet; nothing implemented.
+**Code/test references:** [packages/notabenda/src/controls.ts](../../packages/notabenda/src/controls.ts), [packages/notabenda/src/styles.css](../../packages/notabenda/src/styles.css), [packages/notabenda/src/privacy-interface-reviews.ts](../../packages/notabenda/src/privacy-interface-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [packages/notabenda/test/privacy-interface-reviews.test.mjs](../../packages/notabenda/test/privacy-interface-reviews.test.mjs), [docs/verification/california-choice-design.md](../../docs/verification/california-choice-design.md)
 
 <a id="req-us-co-gpc"></a>
 

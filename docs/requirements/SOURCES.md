@@ -200,7 +200,9 @@ FAQ expressly disclaims legal/regulatory interpretation. Current regulation-leve
 
 [California agency: avoiding dark patterns](https://www.cppa.ca.gov/announcements/2024/20240904.html)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** read.
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Agency announcement links Enforcement Advisory 2024-02 and describes review of understandable language and symmetrical choices. It is not a separate regulation or safe harbor.
 
 <a id="src-us-co"></a>
 
@@ -462,9 +464,9 @@ Resource source and image alternative/error behavior. Visibility or lazy loading
 
 [California CCPA regulations effective 1 January 2026](https://cppa.ca.gov/regulations/pdf/ccpa_statute_eff_20260101.pdf)
 
-**Type:** law. **Checked:** 2026-10-20. **Access:** read.
+**Type:** law. **Checked:** 2026-10-22. **Access:** read.
 
-Read section 7025(b)–(c), pp. 44–48: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows. Rechecked section 7015(a)–(c), p. 32: two title choices, adjacent icon, homepage header/footer prominence, peer sizing, permitted visibility color adjustment and destination for both rights. Section 7025(e), p. 48: posting links does not replace applicable signal handling. This agency-linked file contains regulations despite its statute filename.
+Read section 7025(b)–(c), pp. 44–48: qualifying signals, conflicts, known profiles/accounts, status and absence after a prior signal. Financial-incentive exceptions and re-opt-in require separate reviewed workflows. Rechecked section 7015(a)–(c), p. 32: two title choices, adjacent icon, homepage header/footer prominence, peer sizing, permitted visibility color adjustment and destination for both rights. Section 7025(e), p. 48: posting links does not replace applicable signal handling. This agency-linked file contains regulations despite its statute filename. Rechecked sections 7003(a)–(b) and 7004(a)–(c), printed pp. 16–20, on 22 October 2026: understandable presentation, relative burden/prominence, unambiguous separate choices, functional completion and contextual effects. The agency current-regulations index labels this PDF effective 1 January 2026 despite its statute filename.
 
 <a id="src-w3c-gpc"></a>
 
@@ -1885,3 +1887,13 @@ Official Composer package identifier only; no provider-practice, installation, r
 **Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
 
 Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-us-ca-ui-advisory"></a>
+
+## SRC-US-CA-UI-ADVISORY
+
+[California Enforcement Advisory 2024-02: avoiding dark patterns](https://cppa.ca.gov/pdf/enfadvisory202402.pdf)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Read all four pages, including the illustrative UI scenarios and page-4 review questions. Issued 4 September 2024. The advisory disclaims legal advice, substantive policy and safe harbor; statutes and regulations control.

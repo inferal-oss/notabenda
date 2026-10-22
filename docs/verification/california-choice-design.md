@@ -1,0 +1,12 @@
+<!-- @requirements REQ-US-CA-UI REQ-PRODUCT-AGENT-INTEGRATION -->
+# California privacy-choice review
+
+Source check: 22 October 2026. The current agency regulations index links the regulation effective 1 January 2026. Selected review covers sections 7003(a)–(b), 7004(a)–(c), printed pages 16–20, and all four pages of Enforcement Advisory 2024-02. Reading these sources is not legal review or an applicability determination.
+
+Setup and agent-reference tests preserve market interest separately from configured jurisdiction/policy, retain declared-no answers, regenerate guidance without rewriting historical reports, resolve every source ID/date against the catalog and return detached metadata. CLI and browser setup expose the same review; private justifications stay outside public config and terminal output.
+
+Mechanical native-control cases run through both compatibility and compiled consent factories. They check direct reject/accept actions on the initial notice, shared classes, initially unchecked purposes, immediate rejection without a persuasion screen, and no optional starts after rejection. Closing edited preferences or dismissing the notice grants nothing; dialog rejection discards the draft in one action. These DOM checks do not measure actual prominence, reading comprehension or task effort.
+
+Default layouts, actual fonts/colors/size, focus, translation, accessibility, and the full request/consent flow still require contextual review. Cookie settings are not a substitute for sale/sharing opt-out, sensitive-information limits, re-opt-in, account handling or downstream fulfillment. The requirement and verification remain partial; no overall compliant or approved verdict is supplied.
+
+A local desktop Chromium check exercised market selection, recommendation preparation and the rendered California review. Three same-origin test frames used actual viewports of 960 × 844, 390 × 844 and 390 × 844 (midnight theme). The initial “Reject optional” and “Accept optional” buttons had equal width, height, vertical position, font, colors, border, shadow, opacity and visibility within each frame. Heights were 44.8984375 CSS pixels; paired widths were 208.609375 CSS pixels in the wide frame and 167.609375 in both narrow frames. Measurements came from the rendered buttons, not source declarations. This is a bounded desktop-browser observation of the initial cookie notice, not physical mobile testing or approval of an entire California request flow.
