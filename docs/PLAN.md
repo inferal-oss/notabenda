@@ -432,3 +432,7 @@ Native recorded-consent builds now have a CLI scope option and build-time notice
 
 <!-- @requirements REQ-PRODUCT-CF-ROLLOUT -->
 The optional [remote starter exercise](CLOUDFLARE-ROLLOUT.md) uses the initializer's actual host/workspace and built assets. It compares complete newer archive projections and private MDX source across code rollback, keeps uploaded-source ownership separate from active-version identity, and verifies a forward repair when a new class prevents rollback. Fixture authorization and maintenance controls stay outside packages and generated projects. Each adopter decides whether and how to use these checks in CI; production host policies, fresh accounts, arbitrary migrations and interactive browser acceptance remain separate work.
+
+### Explicit form refusal and South African marketing research
+
+Added opt-in, archive-bound refusal copy and a distinct negative event through the existing controller and Cloudflare ledger. Native, React and Astro controls share the action; current-state search and inspection distinguish refusal from withdrawal and silence. Refusal uses restrictive retry and lifecycle rules. `REQ-ZA-MARKETING` is partial: selected Act/guidance/regulation/Gazette/registry-statement sources are linked, with separate outstanding invitation eligibility, prescribed information, regional presentation, customer exceptions, message requirements and external suppression. No marketing delivery or invitation counter is introduced.

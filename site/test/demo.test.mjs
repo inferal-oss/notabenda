@@ -192,7 +192,8 @@ test('permission example routes bind only entry pages and retain script-free pub
  const entry=[...objects.values()][0],before=await entry.storage.list({prefix:`notabenda/permissions/${data.formPermissions.offer.siteId}/`,limit:1000});entry.workspace=new DemoWorkspace({storage:entry.storage,blockConcurrencyWhile:fn=>fn()},env);assert.equal((await serveHost(req('/demo/admin/permissions',{headers:headers(s)}),env)).status,200);assert.deepEqual(await entry.storage.list({prefix:`notabenda/permissions/${data.formPermissions.offer.siteId}/`,limit:1000}),before);
 });
 
-test('permission controls mount before the first read and keep withdrawal usable through failure and timeout',async()=>{
+// @requirements REQ-ZA-MARKETING
+test('permission controls mount before the first read and keep explicit refusal usable through failure and timeout',async()=>{
  const {JSDOM}=await import('jsdom'),{readFile}=await import('node:fs/promises');
  const {createFormPermission,mountFormPermission,FormPermissionError,createIndexedDBFormPermissionJournal}=await import('@notabenda/core');const {IDBFactory}=await import('fake-indexeddb');
  const {formPermissionFiles}=await import('../../examples/form-permissions/build.mjs');
@@ -210,12 +211,12 @@ test('permission controls mount before the first read and keep withdrawal usable
   const setup=Function('document','fetch','createFormPermission','mountFormPermission','FormPermissionError','demoSessionEnded','createIndexedDBFormPermissionJournal','return (async()=>{'+source.replace(/^import .*;\n/gmu,'')+'})()');
   try{
    const completion=setup(dom.window.document,fetch,(offer,options)=>(controller=createFormPermission(offer,{...options,timeoutMs:100})),mountFormPermission,FormPermissionError,()=>false,()=>(localJournal=createIndexedDBFormPermissionJournal({indexedDB:new IDBFactory(),broadcastChannel:null})));
-   const withdraw=[...dom.window.document.querySelectorAll('button')].find(button=>button.textContent==='Withdraw email permission');
-   assert.ok(withdraw);assert.equal(withdraw.disabled,false);assert.equal(controller.getSnapshot().allowed,false);
-   await completion;assert.equal(controller.getSnapshot().status,'error');assert.equal(withdraw.disabled,false);
+   const refuse=[...dom.window.document.querySelectorAll('button')].find(button=>button.textContent==='I do not consent');
+   assert.ok(refuse);assert.equal(refuse.hidden,false);assert.equal(refuse.disabled,false);assert.equal(controller.getSnapshot().allowed,false);
+   await completion;assert.equal(controller.getSnapshot().status,'error');assert.equal(refuse.disabled,false);
    dom.window.document.querySelector('button[type=submit]').click();assert.equal(writes,0);
-   await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Withdrawal did not complete')),2000);const off=controller.subscribe(state=>{if(state.receipt){clearTimeout(timer);queueMicrotask(()=>{off();resolve();});}});withdraw.click();});
-   assert.equal(writes,1);assert.equal(controller.getSnapshot().receipt.action,'withdraw');assert.equal(controller.getSnapshot().current.reason,'withdrawn');assert.equal(controller.getSnapshot().allowed,false);
+   await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Refusal did not complete')),2000);const off=controller.subscribe(state=>{if(state.receipt){clearTimeout(timer);queueMicrotask(()=>{off();resolve();});}});refuse.click();});
+   assert.equal(writes,1);assert.equal(controller.getSnapshot().receipt.action,'refuse');assert.equal(controller.getSnapshot().current.reason,'refused');assert.equal(controller.getSnapshot().allowed,false);
   }finally{controller?.destroy();localJournal?.close();dom.window.close();}
  }
 });

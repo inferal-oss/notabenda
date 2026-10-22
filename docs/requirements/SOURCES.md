@@ -182,7 +182,9 @@ Full regulator page read, including reproduced IPP3A(1)-(7). Particulars, timing
 
 [South Africa: POPIA direct-marketing guidance](https://inforegulator.org.za/wp-content/uploads/2020/07/GUIDANCE-NOTE-ON-DIRECT-MARKETING-IN-TERMS-OF-THE-PROTECTION-OF-PERSONAL-INFORMATION-ACT-4-OF-2013-POPIA.pdf)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** read.
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Selected sections 3.5 and 7.2–7.3 reviewed; regulator index dates guidance 3 December 2024. Read with the 2025 amendment. File path date is not its publication date.
 
 <a id="src-us-ca"></a>
 
@@ -1987,3 +1989,43 @@ Retrieved technical reference identifies these Cargo crate names. Only identifie
 **Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
 
 Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices. Redis documents this third-party client and states it is not developed or supported directly by Redis.
+
+<a id="src-za-popia-act"></a>
+
+## SRC-ZA-POPIA-ACT
+
+[South Africa: POPIA original Act publication](https://www.gov.za/sites/default/files/gcis_document/201409/3706726-11act4of2013protectionofpersonalinforcorrect.pdf)
+
+**Type:** law. **Checked:** 2026-10-22. **Access:** read.
+
+Selected sections 11(2) and 69 read. Original Act publication, not a reviewed current consolidation.
+
+<a id="src-za-reg6-2025"></a>
+
+## SRC-ZA-REG6-2025
+
+[South Africa: amended POPIA regulations, January 2025 text](https://inforegulator.org.za/wp-content/uploads/2025/04/POPIA-2021-Regulations-FINAL-21-Jan-2025.pdf)
+
+**Type:** regulation. **Checked:** 2026-10-22. **Access:** read.
+
+Selected regulations 6 and 11 read. January signature is not the implementation date; pair with Gazette 52523 notice 6126.
+
+<a id="src-za-regs-gazette-2025"></a>
+
+## SRC-ZA-REGS-GAZETTE-2025
+
+[South Africa: Gazette 52523 notice 6126](https://www.gov.za/sites/default/files/gcis_document/202504/52523gon6126.pdf)
+
+**Type:** official-notice. **Checked:** 2026-10-22. **Access:** read.
+
+Both pages read. Published 17 April 2025 for immediate implementation, linking the January amendment text. This does not establish original section 69 commencement.
+
+<a id="src-za-cpa-statement-2026"></a>
+
+## SRC-ZA-CPA-STATEMENT-2026
+
+[South Africa: regulator statement on CPA registry and POPIA](https://inforegulator.org.za/wp-content/uploads/2026/04/MEDIA-STATEMENT-REGULATOR-NOTES-PUBLISHED-GAZETTE-OF-THE-CONSUMER-PROTECT-ACT-AMENDMENT-REGULATIONS-2026.pdf)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Both pages of 21 April 2026 statement read. CPA registry absence does not establish POPIA permission; full CPA amendment/registry operation not reviewed.

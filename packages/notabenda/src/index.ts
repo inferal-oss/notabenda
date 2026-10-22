@@ -42,6 +42,7 @@ export {normalizeCollectionNotice,renderCollectionNotice,collectionNoticeIds} fr
 export type {CollectionNotice,CollectionNoticeSettings,CollectionNoticeRenderOptions} from './collection.js';
 
 export {normalizeFormPermissionOffer,formPermissionGrantSupported,createFormPermission,mountFormPermission,FormPermissionError} from './form-permission.js';
+export type {FormRefusalCopy} from './form-refusal-policy.js';
 export type {FormPermissionOffer,FormPermissionSettings,FormPermissionCommand,FormPermissionReceipt,FormPermissionState,FormPermissionResult,FormPermissionSnapshot,FormPermissionOptions,FormPermissionController} from './form-permission.js';
 
 // @requirements REQ-PRODUCT-FORM-PERMISSIONS

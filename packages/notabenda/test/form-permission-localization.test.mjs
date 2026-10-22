@@ -13,11 +13,11 @@ import {localizedExampleConfig} from '../../../examples/localization/config.mjs'
 const messages=JSON.parse(await readFile(new URL('../../../examples/localization/form-messages.json',import.meta.url),'utf8'));
 const at='2026-10-19T12:00:00.000Z';
 const settings={permissionId:'reading-email',purposeId:'suggestions',channel:{id:'email',label:'E-mail'},revision:'pt-1',reviewStatus:'draft',withdrawalUrl:'/help',wording:{title:'Uma leitura por e-mail',statement:'Quero receber sugestões de leitura por e-mail.',grantLabel:'Salvar permissão',withdrawLabel:'Retirar permissão',optionality:'Opcional. Você pode continuar sem esta escolha.',withdrawalExplanation:'Retire sua permissão aqui a qualquer momento.'}};
-async function setup({reviewed=false}={}){
+async function setup({reviewed=false,refusal}={}){
  const config=localizedExampleConfig(await fixture());config.localization.formPermission=structuredClone(messages);
  config.scopeGuards={version:1,revision:'test-1',site:{children:'absent',sensitiveData:'absent',highRiskProfiling:'absent',regulatedSector:'absent'}};
  if(reviewed){config.localization.reviewStatus='reviewed';for(const doc of Object.values(config.documents))doc.review.status='reviewed';}
- const options=reviewed?{}:{mode:'preview'},build=compileLegalDocuments(config,options),offer=createFormPermissionOffer(build.artifact,{...settings,reviewStatus:reviewed?'reviewed':'draft'},options),storage=createSyntheticStorage([]),context={siteId:config.site.id,permissionId:offer.permissionId,streamId:'synthetic-contact-generation',now:()=>new Date(at),allowPreview:!reviewed};
+ const options=reviewed?{}:{mode:'preview'},build=compileLegalDocuments(config,options),offer=createFormPermissionOffer(build.artifact,{...settings,reviewStatus:reviewed?'reviewed':'draft',...(refusal?{refusal}:{})},options),storage=createSyntheticStorage([]),context={siteId:config.site.id,permissionId:offer.permissionId,streamId:'synthetic-contact-generation',now:()=>new Date(at),allowPreview:!reviewed};
  await recordLegalRelease(storage,build.artifact);await registerFormPermissionOffer(storage,offer,context);await setActiveFormPermissionOffer(storage,offer.offerId,context);
  return {config,build,offer,storage,context,ref:await formPermissionStreamRef(context)};
 }
@@ -93,4 +93,10 @@ test('a pending v1 withdrawal retries unchanged after activating a localized v2 
   const stillPending=await journal.read(key);assert.equal(stillPending.withdraw.artifactId,offer.artifactId);assert.deepEqual(stillPending.withdraw.command,command);
   await c.retryPending();assert.deepEqual(sent.at(-1),command);assert.equal(c.getSnapshot().allowed,false);assert.equal(c.getSnapshot().current.activeOfferId,f.offer.offerId);assert.equal(c.getSnapshot().checked,false);
  }finally{c?.destroy();journal.close();}
+});
+
+// @requirements REQ-ZA-MARKETING
+test('version 3 preserves selected language and archived refusal copy without changing legacy dictionaries',async()=>{
+ const refusal={label:'Não autorizo',recorded:'Sua recusa foi salva.',pending:'Recusa salva neste dispositivo, aguardando confirmação.',retry:'Reenviar recusa'},f=await setup({reviewed:true,refusal});assert.equal(f.offer.schemaVersion,3);assert.equal(f.offer.localization.locale,'pt-BR');assert.deepEqual(f.offer.localization.formPermission,messages);
+ const c=controller(f),dom=new JSDOM('<div id="field"></div>'),d=dom.window.document,mount=mountFormPermission(d.getElementById('field'),{permission:c});assert.equal(d.querySelector('section').lang,'pt-BR');assert.ok([...d.querySelectorAll('button')].some(b=>b.textContent===refusal.label));await c.refuse();assert.equal(d.querySelector('[role=status]').textContent,refusal.recorded);const record=await createFormPermissionStore(f.storage,f.context).get(c.getSnapshot().receipt.id);assert.deepEqual({...record.data.offer.refusal},refusal);assert.equal(record.data.currentState.reason,'refused');mount.destroy();c.destroy();dom.window.close();
 });

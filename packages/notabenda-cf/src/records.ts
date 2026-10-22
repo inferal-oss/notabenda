@@ -122,7 +122,7 @@ export function matchesRecord(record: EvidenceRecord, query: RecordQuery): boole
     if(term.startsWith('permission:')) {
       const data=object(record.data),state=object(data.currentState);
       if(data.kind!=='form-permission')return false;
-      return ({'permission:allowed':state.permitted===true,'permission:withdrawn':state.permitted===false&&state.reason==='withdrawn','permission:needs-choice':state.permitted===false&&state.reason==='offer-changed'})[term]===true;
+      return ({'permission:allowed':state.permitted===true,'permission:refused':state.permitted===false&&state.reason==='refused','permission:withdrawn':state.permitted===false&&state.reason==='withdrawn','permission:needs-choice':state.permitted===false&&state.reason==='offer-changed'})[term]===true;
     }
     if(!term.startsWith('lifecycle:'))return haystack.includes(term);
     const data=object(record.data);if(data.kind!=='evidence-lifecycle')return false;

@@ -23,7 +23,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | CA-QC | [REQ-QC-PROFILING](#req-qc-profiling) | Selected items: partial |
 | AU | [REQ-AU-PIXELS](#req-au-pixels) | Selected items: partial |
 | NZ | [REQ-NZ-NOTICE](#req-nz-notice), [REQ-NZ-INDIRECT](#req-nz-indirect) | Selected items: partial |
-| ZA | [REQ-ZA-MARKETING](#req-za-marketing) | Selected items: planned |
+| ZA | [REQ-ZA-MARKETING](#req-za-marketing) | Selected items: partial |
 | US-CA | [REQ-US-CA-CHOICES](#req-us-ca-choices), [REQ-US-CA-GPC](#req-us-ca-gpc), [REQ-US-CA-UI](#req-us-ca-ui), [REQ-US-CA-ALTERNATIVE-LINK](#req-us-ca-alternative-link) | Selected items: partial |
 | US-CO | [REQ-US-CO-GPC](#req-us-co-gpc) | Selected items: partial |
 | US-CT | [REQ-US-CT-GPC](#req-us-ct-gpc) | Selected items: partial |
@@ -549,23 +549,25 @@ Assess and provide applicable notification when information is collected from an
 
 ### REQ-ZA-MARKETING — Electronic direct-marketing permissions and objections
 
-Assess consent or the qualifying customer exception for unsolicited electronic marketing and provide applicable refusal mechanisms.
+Separate electronic-marketing consent, prior withholding, qualifying customer conditions and message-level cessation duties. Record explicit refusal without treating silence as an event.
 
 **Applies when:** POPIA section 69 applies to electronic direct marketing.
 
-**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** planned.
+**Type:** law. **Research:** primary-source-review. **Legal review:** unreviewed. **Implementation:** partial.
 
-**Sources:** [South Africa: POPIA direct-marketing guidance](https://inforegulator.org.za/wp-content/uploads/2020/07/GUIDANCE-NOTE-ON-DIRECT-MARKETING-IN-TERMS-OF-THE-PROTECTION-OF-PERSONAL-INFORMATION-ACT-4-OF-2013-POPIA.pdf) — Section 3.5: section 69 electronic marketing (read; [SRC-ZA-DM](SOURCES.md#src-za-dm)).
+**Sources:** [South Africa: POPIA original Act publication](https://www.gov.za/sites/default/files/gcis_document/201409/3706726-11act4of2013protectionofpersonalinforcorrect.pdf) — Sections 11(2) and 69(1)–(4) (read; [SRC-ZA-POPIA-ACT](SOURCES.md#src-za-popia-act)); [South Africa: POPIA direct-marketing guidance](https://inforegulator.org.za/wp-content/uploads/2020/07/GUIDANCE-NOTE-ON-DIRECT-MARKETING-IN-TERMS-OF-THE-PROTECTION-OF-PERSONAL-INFORMATION-ACT-4-OF-2013-POPIA.pdf) — Sections 7.2–7.3: consent contents, negative responses and withholding/objection records (read; [SRC-ZA-DM](SOURCES.md#src-za-dm)); [South Africa: amended POPIA regulations, January 2025 text](https://inforegulator.org.za/wp-content/uploads/2025/04/POPIA-2021-Regulations-FINAL-21-Jan-2025.pdf) — Regulation 6: consent methods, call records and opt-out distinction; regulation 11 (read; [SRC-ZA-REG6-2025](SOURCES.md#src-za-reg6-2025)); [South Africa: Gazette 52523 notice 6126](https://www.gov.za/sites/default/files/gcis_document/202504/52523gon6126.pdf) — Paragraphs 1–2: immediate implementation and linked amendment (read; [SRC-ZA-REGS-GAZETTE-2025](SOURCES.md#src-za-regs-gazette-2025)); [South Africa: regulator statement on CPA registry and POPIA](https://inforegulator.org.za/wp-content/uploads/2026/04/MEDIA-STATEMENT-REGULATOR-NOTES-PUBLISHED-GAZETTE-OF-THE-CONSUMER-PROTECT-ACT-AMENDMENT-REGULATIONS-2026.pdf) — Pages 1–2: CPA registry does not replace POPIA permission (read; [SRC-ZA-CPA-STATEMENT-2026](SOURCES.md#src-za-cpa-statement-2026)).
 
 **Features:** [FEAT-FORMS](../FEATURES.md#feat-forms), [FEAT-RECORDS](../FEATURES.md#feat-records), [FEAT-RIGHTS](../FEATURES.md#feat-rights).
 
 <a id="verify-za-marketing"></a>
 
-**VERIFY-ZA-MARKETING (planned):** A permission field records purpose/channel and text version; withdrawal reaches the application suppression hook.
+**VERIFY-ZA-MARKETING (partial):** Explicit refusal is distinct from silence/withdrawal; archived copy and evaluated negative state survive failures and replay. Invitation eligibility, prescribed information, customer exceptions and actual message suppression remain unverified.
 
-**Limits/open review:** Do not authorize sending on a generic cookie choice; customer exceptions and prescribed consent requirements need review.
+**Timing:** Selected amended regulation 6 was published for immediate implementation on 17 April 2025 (Gazette 52523, notice 6126). Original section 69 commencement and current consolidated Act not established by that notice.
 
-**Code/test references:** None yet; nothing implemented.
+**Limits/open review:** Explicit negative-choice mechanism only; no prescribed-form equivalence, regional offer builder, invitation-eligibility check, customer-exception engine, message-level unsubscribe or external suppression. Host-wide responsible-party/subject records are needed; permission or contact-generation changes do not establish a fresh invitation entitlement. Legal review remains unreviewed.
+
+**Code/test references:** [packages/notabenda/src/form-permission.ts](../../packages/notabenda/src/form-permission.ts), [packages/notabenda/src/form-refusal-policy.ts](../../packages/notabenda/src/form-refusal-policy.ts), [packages/notabenda-cf/src/permissions.ts](../../packages/notabenda-cf/src/permissions.ts), [docs/SOUTH-AFRICA-MARKETING.md](../../docs/SOUTH-AFRICA-MARKETING.md), [packages/notabenda/test/form-permission.test.mjs](../../packages/notabenda/test/form-permission.test.mjs), [packages/notabenda/test/form-permission-localization.test.mjs](../../packages/notabenda/test/form-permission-localization.test.mjs)
 
 <a id="req-us-ca-choices"></a>
 

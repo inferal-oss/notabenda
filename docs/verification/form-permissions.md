@@ -35,3 +35,7 @@ Screenshots: [React desktop](../assets/screenshots/react-form-permissions-deskto
 Actual local Chromium observed a workspace title and checked draft persist from the first page to review while saved revision 11 stayed withdrawn. The browser caught Astro router interception of the local draft form; the form is now explicitly excluded, and a recheck kept its URL unchanged with no permission write. Explicit Save recorded revision 12, which survived navigation to review; mobile withdrawal recorded revision 13. At 320px there was no horizontal document overflow, the text input was 16px and permission buttons were 46px tall. These observations use the local SQLite-backed isolated session and do not establish the wider accessibility/platform matrix.
 
 Screenshots: [Astro desktop](../assets/screenshots/astro-form-permissions-desktop.jpg), [Astro mobile withdrawal](../assets/screenshots/astro-form-permissions-mobile.jpg).
+
+## Explicit refusal
+
+`form-permission.test.mjs` and `form-permission-localization.test.mjs` exercise version 3 refusal copy, initial negative choice, exact replay, old-grant ordering, failed reads, inactive/changed offers, host-context isolation, retirement, lost acknowledgement/reload, local-journal failure and cross-tab grant fencing. Version 1/2 offers and existing localization dictionaries remain accepted. These mechanism tests do not establish lawful solicitation, prescribed-information sufficiency, company-wide suppression or provider fulfillment. `VERIFY-ZA-MARKETING` remains partial.

@@ -134,3 +134,22 @@ The EDPB discusses purpose granularity, evidence and easy withdrawal; the CRTC d
 ## React integration
 
 `@notabenda/core/react` provides `FormPermissionProvider`, `FormPermissionField`, `useFormPermissionController`, `useFormPermissionSnapshot` and `useFormPermissionAllowed`. They reuse this controller without mount-time reads, writes or retries. The host creates and destroys the controller, deliberately reads saved state and owns its optional journal. Server snapshots remain unchecked and off; ordinary form submission stays independent. See [React form permissions](REACT.md#ordinary-form-permissions). `@notabenda/core/astro/FormPermissionField.astro` and `mountAstroFormPermission` in `@notabenda/core/astro/client` provide the matching named Astro field and page-lifecycle bridge. See [Astro form permissions](ASTRO.md#ordinary-form-permissions). Background delivery remains separate work.
+
+## Record an explicit refusal
+
+Leaving a box unchecked records nothing. When you need a recorded negative choice, include reviewed `refusal` copy in `createFormPermissionOffer` settings:
+
+```js
+refusal: {
+  label: 'I do not consent',
+  recorded: 'Your refusal has been saved. Email updates are off.',
+  pending: 'Refusal saved on this device. Waiting for host confirmation.',
+  retry: 'Retry refusal'
+}
+```
+
+This creates a version 3 offer. All four strings are pinned to its identity and archived with the event; supply them in the selected interface language. Existing version 1 and 2 offers keep their existing UI and cannot receive new refusal commands. Deploy the updated backend before serving version 3 offers. Earlier clients do not understand the new action and must be upgraded; do not replace the recording error with a success message.
+
+`permission.refuse()` records `action: 'refuse'`, with current reason `refused` and `permitted: false`. It requires no previous grant or successful initial read. Refusal uses the same restrictive ordering, exact-request retry, older-offer delivery and retirement rules as withdrawal. The journal's existing negative-action slot retains the actual command; `recovery.refusalPending` distinguishes it from a pending withdrawal. Neither mounting nor reconciling delivers it automatically. A later deliberate, checked grant still needs a fresh current read. A historical retry returns current state and cannot restore an older choice.
+
+The native field shows refusal before a grant and withdrawal after a grant. React and Astro fields reuse it. The [working example](../examples/form-permissions/example.mjs) includes refusal; backoffice inspection shows the exact copy and `permission:refused` searches current evaluations. These records apply to one permission and contact generation. They do not establish a company-wide objection register or permission to solicit consent again. See [South African electronic marketing](SOUTH-AFRICA-MARKETING.md) for the separate legal and host work.

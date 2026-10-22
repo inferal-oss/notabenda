@@ -522,7 +522,8 @@
         "Purpose/channel-specific choices and versioned form text; no forced privacy-policy acceptance checkbox.",
         "Trusted application API for consent and withdrawal records; no email-sending platform.",
         "Separate reviewed indirect-collection particulars in static HTML and plain text, with explicit phase and no delivery claim.",
-        "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work."
+        "Complete host-supplied indirect-collection messages in static HTML and plain text, archive-bound identity and explicit phase/language/review, with matching pack and agent setup guidance; actual notification remains host work.",
+        "Optional archived refusal copy and explicit negative events, native refusal/withdrawal presentation, exact-request recovery and operator search; regional solicitation and suppression remain separate host work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -1458,9 +1459,9 @@
       "title": "South Africa: POPIA direct-marketing guidance",
       "url": "https://inforegulator.org.za/wp-content/uploads/2020/07/GUIDANCE-NOTE-ON-DIRECT-MARKETING-IN-TERMS-OF-THE-PROTECTION-OF-PERSONAL-INFORMATION-ACT-4-OF-2013-POPIA.pdf",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-22",
       "access": "read",
-      "note": ""
+      "note": "Selected sections 3.5 and 7.2\u20137.3 reviewed; regulator index dates guidance 3 December 2024. Read with the 2025 amendment. File path date is not its publication date."
     },
     {
       "id": "SRC-US-CA",
@@ -3109,6 +3110,42 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices. Redis documents this third-party client and states it is not developed or supported directly by Redis."
+    },
+    {
+      "id": "SRC-ZA-POPIA-ACT",
+      "title": "South Africa: POPIA original Act publication",
+      "url": "https://www.gov.za/sites/default/files/gcis_document/201409/3706726-11act4of2013protectionofpersonalinforcorrect.pdf",
+      "kind": "law",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Selected sections 11(2) and 69 read. Original Act publication, not a reviewed current consolidation."
+    },
+    {
+      "id": "SRC-ZA-REG6-2025",
+      "title": "South Africa: amended POPIA regulations, January 2025 text",
+      "url": "https://inforegulator.org.za/wp-content/uploads/2025/04/POPIA-2021-Regulations-FINAL-21-Jan-2025.pdf",
+      "kind": "regulation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Selected regulations 6 and 11 read. January signature is not the implementation date; pair with Gazette 52523 notice 6126."
+    },
+    {
+      "id": "SRC-ZA-REGS-GAZETTE-2025",
+      "title": "South Africa: Gazette 52523 notice 6126",
+      "url": "https://www.gov.za/sites/default/files/gcis_document/202504/52523gon6126.pdf",
+      "kind": "official-notice",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Both pages read. Published 17 April 2025 for immediate implementation, linking the January amendment text. This does not establish original section 69 commencement."
+    },
+    {
+      "id": "SRC-ZA-CPA-STATEMENT-2026",
+      "title": "South Africa: regulator statement on CPA registry and POPIA",
+      "url": "https://inforegulator.org.za/wp-content/uploads/2026/04/MEDIA-STATEMENT-REGULATOR-NOTES-PUBLISHED-GAZETTE-OF-THE-CONSUMER-PROTECT-ACT-AMENDMENT-REGULATIONS-2026.pdf",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Both pages of 21 April 2026 statement read. CPA registry absence does not establish POPIA permission; full CPA amendment/registry operation not reviewed."
     }
   ],
   "jurisdictions": [
@@ -4353,13 +4390,29 @@
       "id": "REQ-ZA-MARKETING",
       "jurisdiction": "ZA",
       "title": "Electronic direct-marketing permissions and objections",
-      "kind": "regulator-interpretation",
-      "summary": "Assess consent or the qualifying customer exception for unsolicited electronic marketing and provide applicable refusal mechanisms.",
+      "kind": "law",
+      "summary": "Separate electronic-marketing consent, prior withholding, qualifying customer conditions and message-level cessation duties. Record explicit refusal without treating silence as an event.",
       "appliesWhen": "POPIA section 69 applies to electronic direct marketing.",
       "sourceRefs": [
         {
+          "sourceId": "SRC-ZA-POPIA-ACT",
+          "locator": "Sections 11(2) and 69(1)\u2013(4)"
+        },
+        {
           "sourceId": "SRC-ZA-DM",
-          "locator": "Section 3.5: section 69 electronic marketing"
+          "locator": "Sections 7.2\u20137.3: consent contents, negative responses and withholding/objection records"
+        },
+        {
+          "sourceId": "SRC-ZA-REG6-2025",
+          "locator": "Regulation 6: consent methods, call records and opt-out distinction; regulation 11"
+        },
+        {
+          "sourceId": "SRC-ZA-REGS-GAZETTE-2025",
+          "locator": "Paragraphs 1\u20132: immediate implementation and linked amendment"
+        },
+        {
+          "sourceId": "SRC-ZA-CPA-STATEMENT-2026",
+          "locator": "Pages 1\u20132: CPA registry does not replace POPIA permission"
         }
       ],
       "discoverySourceIds": [],
@@ -4371,14 +4424,22 @@
       "verificationIds": [
         "VERIFY-ZA-MARKETING"
       ],
-      "researchStatus": "initial-research",
+      "researchStatus": "primary-source-review",
       "legalReviewStatus": "unreviewed",
-      "implementationStatus": "planned",
+      "implementationStatus": "partial",
       "effectiveFrom": null,
-      "timingNote": null,
-      "caveats": "Do not authorize sending on a generic cookie choice; customer exceptions and prescribed consent requirements need review.",
-      "implementationRefs": [],
-      "testRefs": []
+      "timingNote": "Selected amended regulation 6 was published for immediate implementation on 17 April 2025 (Gazette 52523, notice 6126). Original section 69 commencement and current consolidated Act not established by that notice.",
+      "caveats": "Explicit negative-choice mechanism only; no prescribed-form equivalence, regional offer builder, invitation-eligibility check, customer-exception engine, message-level unsubscribe or external suppression. Host-wide responsible-party/subject records are needed; permission or contact-generation changes do not establish a fresh invitation entitlement. Legal review remains unreviewed.",
+      "implementationRefs": [
+        "packages/notabenda/src/form-permission.ts",
+        "packages/notabenda/src/form-refusal-policy.ts",
+        "packages/notabenda-cf/src/permissions.ts",
+        "docs/SOUTH-AFRICA-MARKETING.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/form-permission.test.mjs",
+        "packages/notabenda/test/form-permission-localization.test.mjs"
+      ]
     },
     {
       "id": "REQ-US-CA-CHOICES",
@@ -10826,9 +10887,12 @@
       "requirementIds": [
         "REQ-ZA-MARKETING"
       ],
-      "status": "planned",
-      "expected": "A permission field records purpose/channel and text version; withdrawal reaches the application suppression hook.",
-      "testRefs": []
+      "status": "partial",
+      "expected": "Explicit refusal is distinct from silence/withdrawal; archived copy and evaluated negative state survive failures and replay. Invitation eligibility, prescribed information, customer exceptions and actual message suppression remain unverified.",
+      "testRefs": [
+        "packages/notabenda/test/form-permission.test.mjs",
+        "packages/notabenda/test/form-permission-localization.test.mjs"
+      ]
     },
     {
       "id": "VERIFY-US-CA-CHOICES",
