@@ -30,7 +30,8 @@
     "cf:recovery:remote": "node scripts/check-cf-remote-recovery.mjs",
     "cf:recovery:transactions": "node scripts/check-transaction-recovery.mjs",
     "cf:starter:remote": "node scripts/check-cf-starter-rollout.mjs",
-    "terms:transport": "node scripts/terms-transport-fixture.mjs"
+    "terms:transport": "node scripts/terms-transport-fixture.mjs",
+    "release:source": "node scripts/source-candidate.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

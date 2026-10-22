@@ -143,6 +143,7 @@ Use the [CLI wizard or admin setup screen](docs/SETUP.md) to work through practi
 - [Requirements](docs/requirements/README.md), [sources](docs/requirements/SOURCES.md), and [research workflow](regulatory/README.md)
 - [Migration and removal](docs/MIGRATION.md)
 - [Review local release candidates](docs/RELEASE-CANDIDATE.md)
+- [Build and exercise an exact source revision](docs/SOURCE-CANDIDATE.md)
 - [Report a security issue](SECURITY.md)
 - [Brand assets](docs/assets/README.md)
 

@@ -33,6 +33,10 @@ A successful status is **`package-contents-checked`**. The report explicitly say
 
 If a check fails, the command exits nonzero and leaves a `failed` report and any tarballs already created for inspection. The error code and, where relevant, relative file path identify the failed check. Do not use a failed or partial candidate. Correct the input and choose a new directory. An existing directory is never overwritten. Inside this repository, output must be under ignored `.local/` or `dist/`, outside package/source/public input trees. A separate local directory outside the repository also works.
 
+## Build from an exact source revision
+
+For two fresh builds, archive comparison, isolated consumer installation and an independently installed starter, use the separate [source candidate workflow](SOURCE-CANDIDATE.md). This pack-only command retains its existing boundary: it inspects the current build output.
+
 ## Before a public release
 
 Run the applicable tests, inspect the actual tarballs and clean source state, review dependency and content licenses, and complete the release checklist in [the plan](PLAN.md#11-public-release-checklist-and-deferred-work). Confirm documentation and supported scope, security reporting, installation and migration behavior. Keep private fixtures, operator reports, keys and source archives outside package assets. Publishing requires a separate explicit decision; a successful candidate check grants no permission to publish.

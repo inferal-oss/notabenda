@@ -458,7 +458,7 @@ The form-notice workbench now includes an explicit [form-flow rehearsal](COLLECT
 <!-- @requirements REQ-PRODUCT-PROCESSING-WORKBENCH -->
 The [processing notice workbench](PROCESSING-WORKBENCH.md) now prepares explicit scope, activities and wording from a final release. Its inert shared preview and JSON/YAML/Markdown settings feed a direct artifact-to-notice command, including authored/catalog-bound artifacts. This keeps recording identity, signal policies and downstream enforcement as explicit host connections. Broader widget rehearsals and evidence-bound installation verification remain open.
 
-Pack discovery needs a further pass: expose implemented options and tools under each job, distinguish research guidance from installable behavior, and consider the supported South African marketing-request workflow as a focused pack. Refusal belongs with purpose/channel permissions rather than a context-free pack. Singapore review guidance needs a visible home without implying a complete jurisdiction implementation. This catalog/UI work remains pending.
+Pack discovery is implemented in the capability milestone below: options and tools have visible homes within each job, with a separate supported South African request workflow. Refusal remains part of purpose/channel permissions, and Singapore review guidance stays distinct from a complete jurisdiction implementation.
 
 
 ### Pack capabilities and South African web requests
@@ -469,3 +469,8 @@ The twenty-one-pack library now exposes supplied features, setup tools and revie
 
 <!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 The focused [marketing request workbench](MARKETING-WORKBENCH.md) and direct artifact compiler close the JavaScript-only authoring gap in the South African request pack. JSON/YAML/Markdown settings retain the exact public release, one selected purpose and future method, complete particulars and refusal. The local shared preview remains inactive; the host still supplies invitation history/eligibility, identity, recording, activation and actual sending/suppression. The ordinary form flow contract is unchanged.
+
+### Source-built package candidates
+
+<!-- @requirements REQ-PRODUCT-SOURCE-CANDIDATE -->
+The optional [source candidate workflow](SOURCE-CANDIDATE.md) builds one explicit committed revision twice in separate temporary trees, compares complete archives, verifies their installed bytes in an isolated adopter and independently installs/checks the generated Cloudflare starter. Production validation and exact authored-release references are exercised with synthetic inputs. Offline dependencies, failures and claim limits remain explicit; publication, native-browser and actual cloud/host acceptance stay separate.

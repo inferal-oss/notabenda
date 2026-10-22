@@ -1016,7 +1016,8 @@
         "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries.",
         "Optional actual-starter remote rollout exercise with bounded asset rollback and class-lifecycle forward repair; production and fresh-account acceptance stay separate.",
         "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
-        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports."
+        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
+        "Optional exact-revision source candidate workflow with two fresh offline builds, actual archive comparison, independent locked adopter and starter installations, production-path fixtures and portable stage/input evidence; publication and broader platform/cloud acceptance remain separate."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -1108,7 +1109,11 @@
         "packages/notabenda/src/collection-flow.ts",
         "packages/notabenda/src/setup-connection-ui.ts",
         "examples/collection-workbench/build.mjs",
-        "examples/static/build.mjs"
+        "examples/static/build.mjs",
+        "scripts/source-candidate.mjs",
+        "scripts/source-candidate-consumer.mjs",
+        "scripts/source-candidate-backend.mjs",
+        "docs/SOURCE-CANDIDATE.md"
       ]
     },
     {
@@ -3712,7 +3717,8 @@
         "REQ-PRODUCT-FORM-PERMISSION-CONNECTION",
         "REQ-PRODUCT-PROCESSING-WORKBENCH",
         "REQ-PRODUCT-PACK-CAPABILITIES",
-        "REQ-PRODUCT-MARKETING-AUTHORING"
+        "REQ-PRODUCT-MARKETING-AUTHORING",
+        "REQ-PRODUCT-SOURCE-CANDIDATE"
       ]
     },
     {
@@ -11554,6 +11560,42 @@
         "docs/verification/marketing-authoring.md"
       ],
       "implementationNote": "The compiler normalizes the intact final artifact and calls the existing schema-4 builder. Standalone/directory editors project only selected public facts and export settings. Shared content and presentation preserve legacy identities, mixed-source purposes, permission-only localization and restrictive scope behavior. Edits/imports invalidate review/selection/exports; delayed work is fenced and final publication remains separate."
+    },
+    {
+      "id": "REQ-PRODUCT-SOURCE-CANDIDATE",
+      "jurisdiction": "PRODUCT",
+      "title": "Build and exercise exact source package candidates",
+      "kind": "product-standard",
+      "summary": "Read a trusted selected Git revision into two clean source trees, build offline, compare exact package archives and verify the installed bytes through independent adopter and generated-starter workflows. Retain portable source/tool/stage evidence without publication.",
+      "appliesWhen": "A maintainer wants source-bound package build and isolated adopter evidence before a release decision.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-SOURCE-CANDIDATE"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Trusted build code executes locally; offline npm and reduced environment are not a network sandbox. Repeatability is limited to the recorded source/toolchain/platform. No signed provenance, secret-absence/vulnerability guarantee, native-browser acceptance, actual cloud deployment or publication authorization.",
+      "implementationRefs": [
+        "scripts/source-candidate.mjs",
+        "scripts/source-candidate-consumer.mjs",
+        "scripts/source-candidate-backend.mjs",
+        "docs/SOURCE-CANDIDATE.md",
+        "docs/RELEASE-CANDIDATE.md",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/source-candidate.test.mjs",
+        "docs/verification/source-candidate.md",
+        "site/test/guide-navigation.test.mjs"
+      ],
+      "implementationNote": "Bounded regular Git object projection disables replace refs and inherited Git overrides. Separate offline source installs/builds/checks compare actual archives; independent locked consumer/starter installs reject sibling substitution and verify every candidate file. Synthetic production validation, authored pins, DOM-shim controls, browser graph, selected declarations and generated npm check/default denial are exercised. Missing cache and failed stages remain explicit."
     }
   ],
   "verification": [
@@ -13775,6 +13817,19 @@
         "packages/notabenda/test/marketing-workbench.test.mjs",
         "site/test/marketing-workbench.test.mjs",
         "docs/verification/marketing-authoring.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-SOURCE-CANDIDATE",
+      "requirementIds": [
+        "REQ-PRODUCT-SOURCE-CANDIDATE"
+      ],
+      "status": "automated",
+      "expected": "Verified committed blobs exclude dirty/untracked output and replacement refs; independent source builds produce equal actual archives and installed copies match their manifests. Lock closure retains nested resolution and rejects substitutions. Production/draft gates, exact authored policy/notice/form identities, browser boundary and selected types pass in an independent consumer; separately installed starter local check/default denial pass. Missing offline dependencies block without fallback and existing output remains unchanged.",
+      "testRefs": [
+        "packages/notabenda/test/source-candidate.test.mjs",
+        "docs/verification/source-candidate.md",
+        "site/test/guide-navigation.test.mjs"
       ]
     }
   ],

@@ -52,3 +52,9 @@ test('Cargo discovery stays with project setup and links its declaration context
  const report=new JSDOM(await readFile(new URL('../dist/public'+route+'/index.html',import.meta.url),'utf8'));
  assert.equal(report.window.document.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/start/');report.window.close();
 });
+
+// @requirements REQ-PRODUCT-SOURCE-CANDIDATE
+test('source candidate is the maintainer path while the pack-only checker remains reachable reference',async()=>{
+ const area=new JSDOM(await readFile(new URL('../dist/public/guide/areas/integrations/index.html',import.meta.url),'utf8'));const d=area.window.document;assert.ok(d.querySelector('section.guide-area-group a[href="/guide/source-candidate"]'));assert.ok(d.querySelector('details.guide-supporting a[href="/guide/release-candidate"]'));area.window.close();
+ for(const route of ['source-candidate','release-candidate']){assert.equal(sectionForGuide('/guide/'+route).id,'integrations');const dom=new JSDOM(await readFile(new URL('../dist/public/guide/'+route+'/index.html',import.meta.url),'utf8'));assert.equal(dom.window.document.querySelector('.guide-nav-desktop [aria-current="page"]').getAttribute('href'),'/guide/'+route);dom.window.close();}
+});

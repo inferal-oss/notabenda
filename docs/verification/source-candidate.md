@@ -1,0 +1,10 @@
+<!-- @requirements REQ-PRODUCT-SOURCE-CANDIDATE -->
+# Source candidate verification
+
+The source runner verifies a bounded Git blob projection before materializing two independent builds. Regression tests cover binary bytes, object/length mismatches, unsafe paths, symlinks, submodules, dirty tracked files, untracked stale output, replacement refs and inherited Git overrides. A selected original commit must retain its own tree even when a replacement ref exists.
+
+Candidate comparisons require the complete three-package set and identical archive/file identities. Installed copies are checked against every candidate file digest. Tests reject changed files, workspace links, nested sibling copies and registry substitution. Dependency-closure fixtures preserve nested resolutions, remove unrelated dependencies and reject missing required entries or mismatched sibling versions. Existing output is refused before build execution, and child environments omit inherited secrets and Node overrides.
+
+The actual workflow supplies separate end-to-end evidence: offline source installs, two fresh builds and byte comparisons, an isolated archive consumer and an independently installed generated Cloudflare starter. Consumer fixtures exercise production validation, compiled runtime output, MDX terms, exact pinned public copies and notice files, collection flow/editor identity, controls with a DOM dialog shim, browser dependency graphs and selected TypeScript usage. The starter runs its own advertised build/Worker dry run and verifies default denial before storage or asset reads.
+
+Run reports preserve which stages actually passed. A blocked cache or failed consumer is not a successful candidate. Two matching builds on one recorded toolchain establish that bounded repeatability only. DOM checks, local Worker compilation and synthetic reviewed inputs do not establish native-browser accessibility, actual Durable Object behavior, host authorization, legal validity, provider enforcement or production acceptance.

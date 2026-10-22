@@ -1,0 +1,49 @@
+// @requirements REQ-PRODUCT-SOURCE-CANDIDATE
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,mkdir,writeFile,readFile,rm,symlink} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+import {parseSourceTree,readSourceBlobs,selectedSource,materializeSource,compareCandidates,consumerLockfile,verifyInstalledPackages,candidateEnvironment,digest,runSourceCandidate} from '../../../scripts/source-candidate.mjs';
+const names=['@notabenda/core','@notabenda/cloudflare','@notabenda/authoring'];
+const temp=()=>mkdtemp(join(tmpdir(),'notabenda-source-candidate-test-'));
+const hash=body=>createHash('sha1').update(Buffer.from('blob '+body.length+'\0')).update(body).digest('hex');
+test('source extraction retains exact binary bytes and rejects unsupported paths, modes, lengths and objects before writing',()=>{
+ const data=Buffer.from([0,255,10,0,65]),oid=hash(data),tree=Buffer.from(`100644 blob ${oid} ${data.length}\tinputs/sample.bin\0`),entries=parseSourceTree(tree),batch=Buffer.concat([Buffer.from(`${oid} blob ${data.length}\n`),data,Buffer.from('\n')]);assert.deepEqual(readSourceBlobs(entries,batch)[0].data,data);
+ for(const value of [tree.subarray(0,-1),Buffer.from(`120000 blob ${oid} 5\tlink\0`),Buffer.from(`160000 commit ${oid} 5\tsubmodule\0`),Buffer.from(`100644 blob ${oid} 5\t../outside\0`),Buffer.from(`100644 blob ${oid} 5\tC:/outside\0`),Buffer.from(`100644 blob ${oid} 5\ta\\b\0`),Buffer.from(`100644 blob ${oid} 5\t.git/config\0`),Buffer.concat([tree,tree])])assert.throws(()=>parseSourceTree(value));
+ for(const value of [batch.subarray(0,-1),Buffer.concat([batch,Buffer.from('extra')]),Buffer.from(batch.toString().replace('blob 5','blob 6'))])assert.throws(()=>readSourceBlobs(entries,value));const corrupt=Buffer.from(batch);corrupt[corrupt.length-2]^=1;assert.throws(()=>readSourceBlobs(entries,corrupt),/source-blob-mismatch/);
+});
+test('selected Git source excludes dirty tracked output and untracked dist without checkout or workspace mutation',async()=>{
+ const cwd=await temp(),git=(...args)=>{const r=spawnSync('git',args,{cwd,encoding:'utf8'});assert.equal(r.status,0,r.stderr);return r.stdout;};try{
+  git('init','--quiet');await mkdir(join(cwd,'scripts'));for(const [path,body] of [['package.json','{}'],['package-lock.json','{}'],['scripts/check-package-release.mjs','// checker'],['input.txt','committed\n']])await writeFile(join(cwd,path),body);git('add','.');git('-c','user.name=Candidate test','-c','user.email=candidate@example.test','commit','--quiet','-m','fixture');
+  await writeFile(join(cwd,'input.txt'),'dirty\n');await mkdir(join(cwd,'dist'));await writeFile(join(cwd,'dist/stale.js'),'STALE');const before=git('status','--porcelain'),source=await selectedSource(cwd,'HEAD'),snapshot=join(cwd,'snapshot');await materializeSource(snapshot,source.files);assert.equal(await readFile(join(snapshot,'input.txt'),'utf8'),'committed\n');assert.ok(source.files.every(f=>!f.path.startsWith('dist/')));assert.equal(await readFile(join(cwd,'input.txt'),'utf8'),'dirty\n');assert.ok(git('status','--porcelain').includes(' M input.txt'));assert.ok(before.includes('dist/'));
+  git('add','input.txt');git('-c','user.name=Candidate test','-c','user.email=candidate@example.test','commit','--quiet','-m','replacement');const second=git('rev-parse','HEAD').trim();git('replace',source.commit,second);const prior=process.env.GIT_DIR;process.env.GIT_DIR='/not/a/repository';try{const original=await selectedSource(cwd,source.commit);assert.equal(original.tree,source.tree);assert.equal(original.files.find(f=>f.path==='input.txt').data.toString(),'committed\n');}finally{if(prior===undefined)delete process.env.GIT_DIR;else process.env.GIT_DIR=prior;}git('replace','-d',source.commit);
+  await symlink('input.txt',join(cwd,'link'));git('add','link');git('-c','user.name=Candidate test','-c','user.email=candidate@example.test','commit','--quiet','-m','link');await assert.rejects(selectedSource(cwd,'HEAD'),/unsupported-source-entry/);await assert.rejects(selectedSource(cwd,'--help'),/invalid-revision/);
+ }finally{await rm(cwd,{recursive:true,force:true});}
+});
+const candidates=()=>({status:'package-contents-checked',packages:names.map((name,i)=>({name,version:'0.1.0',filename:name.replace('@','').replace('/','-')+'-0.1.0.tgz',sha256:String(i).repeat(64),integrity:'sha512-fixture'+i,files:[{path:'main.js',bytes:1,sha256:'a'.repeat(64)}]}))});
+test('reproduction requires matching complete package sets, archive identities and every file digest',()=>{
+ const a=candidates();assert.equal(compareCandidates(a,structuredClone(a)).length,3);
+ for(const edit of [b=>b.status='failed',b=>b.packages.pop(),b=>b.packages[1].name=b.packages[0].name,b=>b.packages[0].version='0.2.0',b=>b.packages[0].sha256='b'.repeat(64),b=>b.packages[0].integrity='sha512-other',b=>b.packages[0].files[0].sha256='c'.repeat(64)]){const b=structuredClone(a);edit(b);assert.throws(()=>compareCandidates(a,b));}
+});
+function lockFixture(){const candidate=candidates(),metadata={name:'consumer',private:true,dependencies:Object.fromEntries(candidate.packages.map(p=>[p.name,'file:packages/'+p.filename])),devDependencies:{tool:'1.0.0'}},source={lockfileVersion:3,packages:{'packages/notabenda':{version:'0.1.0'},'packages/notabenda-cf':{version:'0.1.0'},'packages/notabenda-authoring':{version:'0.1.0',dependencies:{'@notabenda/core':'0.1.0',shared:'1.0.0'}},'node_modules/@notabenda/core':{link:true,resolved:'packages/notabenda'},'node_modules/tool':{version:'1.0.0',dependencies:{shared:'2.0.0'},optionalDependencies:{missing:'1.0.0'}},'node_modules/shared':{version:'1.0.0'},'node_modules/tool/node_modules/shared':{version:'2.0.0'},'node_modules/unrelated':{version:'9.0.0'}}};return {candidate,metadata,source};}
+test('consumer lock preserves nested resolution, prunes unrelated tools and replaces workspace siblings with exact local archives',()=>{
+ const f=lockFixture(),before=structuredClone(f.source),lock=consumerLockfile(f.source,f.metadata,f.candidate.packages);assert.deepEqual(f.source,before);assert.equal(lock.packages['node_modules/tool/node_modules/shared'].version,'2.0.0');assert.equal(lock.packages['node_modules/shared'].version,'1.0.0');assert.equal(lock.packages['node_modules/unrelated'],undefined);assert.equal(lock.packages['node_modules/@notabenda/core'].resolved,'file:packages/'+f.candidate.packages[0].filename);assert.equal(lock.packages['node_modules/@notabenda/core'].link,undefined);
+ for(const edit of [s=>delete s.packages['node_modules/shared'],s=>s.packages['packages/notabenda'].version='0.2.0',s=>s.packages['node_modules/shared'].link=true,s=>s.lockfileVersion=2]){const s=structuredClone(f.source);edit(s);assert.throws(()=>consumerLockfile(s,f.metadata,f.candidate.packages));}
+});
+test('installed archives reject file changes, workspace links, registry replacement and nested sibling copies',async()=>{
+ const cwd=await temp(),candidate=candidates(),body=Buffer.from('package file');try{
+  const lock={packages:{}};for(const p of candidate.packages){await mkdir(join(cwd,'node_modules',p.name),{recursive:true});await writeFile(join(cwd,'node_modules',p.name,'main.js'),body);p.files=[{path:'main.js',bytes:body.length,sha256:digest(body)}];lock.packages['node_modules/'+p.name]={version:p.version,integrity:p.integrity,resolved:'file:packages/'+p.filename};}const write=()=>writeFile(join(cwd,'package-lock.json'),JSON.stringify(lock));await write();assert.equal((await verifyInstalledPackages(cwd,candidate)).length,3);
+  await writeFile(join(cwd,'node_modules/@notabenda/core/main.js'),'changed');await assert.rejects(verifyInstalledPackages(cwd,candidate),/installed-package-mismatch/);await writeFile(join(cwd,'node_modules/@notabenda/core/main.js'),body);
+  const entry=lock.packages['node_modules/@notabenda/core'];entry.resolved='https://registry.npmjs.org/other.tgz';await write();await assert.rejects(verifyInstalledPackages(cwd,candidate),/consumer-package-substitution/);entry.resolved='file:packages/'+candidate.packages[0].filename;lock.packages['node_modules/other/node_modules/@notabenda/core']={version:'0.1.0'};await write();await assert.rejects(verifyInstalledPackages(cwd,candidate),/nested-sibling-package/);delete lock.packages['node_modules/other/node_modules/@notabenda/core'];await write();
+  await rm(join(cwd,'node_modules/@notabenda/core'),{recursive:true});await symlink(join(cwd,'node_modules/@notabenda/cloudflare'),join(cwd,'node_modules/@notabenda/core'));await assert.rejects(verifyInstalledPackages(cwd,candidate),/linked-consumer-package/);
+ }finally{await rm(cwd,{recursive:true,force:true});}
+});
+test('child environment excludes inherited credentials and package/Node execution overrides',()=>{
+ process.env.NOTABENDA_CANDIDATE_TEST_SECRET='private';try{const env=candidateEnvironment('/cache','/empty.npmrc');assert.equal(env.NOTABENDA_CANDIDATE_TEST_SECRET,undefined);assert.equal(env.NODE_OPTIONS,undefined);assert.equal(env.NODE_PATH,undefined);assert.equal(env.npm_config_offline,'true');assert.equal(env.npm_config_userconfig,'/empty.npmrc');assert.equal(env.npm_config_cache,'/cache');}finally{delete process.env.NOTABENDA_CANDIDATE_TEST_SECRET;}
+});
+test('existing output is refused before selecting a source or executing any build',async()=>{
+ const cwd=await temp();try{const output=join(cwd,'.local/existing'),cache=join(cwd,'cache');await mkdir(join(cwd,'.local'));await mkdir(output);await mkdir(cache);await writeFile(join(output,'keep'),'unchanged');await assert.rejects(runSourceCandidate({repository:cwd,revision:'not-a-revision',cache,output}),e=>e.code==='EEXIST');assert.equal(await readFile(join(output,'keep'),'utf8'),'unchanged');}finally{await rm(cwd,{recursive:true,force:true});}
+});

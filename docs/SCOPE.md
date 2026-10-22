@@ -396,3 +396,8 @@ A distinct supported job can have its own pack; adding a source review or a butt
 
 <!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 Provide a focused single-purpose, single-method data compiler and optional local editor for the existing South African web-request profile. Pin the exact final artifact, require explicit particulars/refusal wording and derive the channel from the declared future method. Preserve mixed-source purposes, selected permission-only localization, restricted-scope negative actions and existing schema-4 identities. Share native presentation without a controller or invented saved state in preview. Separate builder inputs from SiteConfig, and keep the ordinary composer’s exclusion. No invitation eligibility, recipient identity, registration/activation, customer exception, sending or suppression is supplied.
+
+## Source-built release candidates
+
+<!-- @requirements REQ-PRODUCT-SOURCE-CANDIDATE -->
+Provide an optional maintainer command that reads a trusted explicit Git revision without workspace resets, verifies regular object bytes with replacement refs disabled, builds twice offline and compares actual archives. Install those exact archives into independent consumer/starter projects using the locked dependency closure. Exercise production validation, authored-release pins, browser boundaries, selected types and the generated starter’s local check/default denial. Preserve portable reports/logs and blocked cache states. No npm publication, mandatory adopter CI, credential loading, network sandbox, signed attestation or broad production/legal acceptance is supplied.
