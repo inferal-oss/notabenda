@@ -3,7 +3,7 @@ import {mountAstroConsent} from '@notabenda/core/astro/client';
 import {ConsentProvider,PreferencesButton} from '@notabenda/core/react/consent';
 import {compileAuthoredDocuments} from '@notabenda/authoring';
 import {renderServiceDirectory} from '@notabenda/core/services';
-// @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-A11Y
+// @requirements REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-DOCUMENTS REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-A11Y
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -61,6 +61,8 @@ test('all consent statuses and accessible names use the complete selected copy, 
  assert.equal(doc.querySelector('.nb-controls').lang,'pt-BR');assert.equal(doc.querySelector('.nb-controls').dir,'ltr');assert.equal(doc.querySelector('.nb-consent-notice').getAttribute('aria-label'),m.noticeLabel);assert.equal(doc.querySelector('.nb-preferences-trigger').textContent,m.triggerLabel);assert.equal(doc.querySelector('.nb-legal-links').getAttribute('aria-label'),m.privacyInformation);
  assert.equal(doc.querySelector('.nb-purpose-description+span').textContent,m.services.replace('{services}','Sugestões Juniper (Juniper)'));
  for(const status of ['checking','saving','recorded','error','review','stale','expired','unavailable','retired']){emit({evidence:{status,canGrant:false,canRetry:true,requiresChoice:false}});assert.ok(doc.querySelector('.nb-control-status').textContent.includes(m[status]),status);}
+ // Idle and ended receipt sessions add no receipt-status copy of their own.
+ for(const status of ['idle','destroyed']){emit({evidence:{status,canGrant:false,canRetry:false,requiresChoice:false}});assert.equal(doc.querySelector('.nb-control-status').textContent,'');}
  for(const [patch,key] of [[{evidence:undefined,persistence:'unavailable'},'storageUnavailable'],[{persistence:'available',services:{reading:'reload-required'}},'reloadRequired'],[{services:{},privacySignals:{globalPrivacyControl:'observed'}},'signalObserved'],[{privacySignals:{globalPrivacyControl:'unavailable'}},'signalUnavailable'],[{privacySignals:undefined,processingChoices:{status:'recorded',blockedActivities:[]}},'processingRecorded'],[{processingChoices:{status:'error',blockedActivities:['sale']}},'processingPending']]){emit(patch);assert.ok(doc.querySelector('.nb-control-status').textContent.includes(m[key]),key);}
  emit({preferencesOpen:true});emit({purposes:{suggestions:'denied'}});assert.ok(doc.querySelector('.nb-preferences [role=status]').textContent.includes(m.choicesChanged));emit({destroyed:true});assert.ok(doc.querySelector('.nb-control-status').textContent.includes(m.destroyed));
  ui.destroy();real.destroy();dom.window.close();

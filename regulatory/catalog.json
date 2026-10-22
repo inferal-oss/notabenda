@@ -7157,7 +7157,10 @@
         "scripts/performance-browser-app.mjs",
         "scripts/serve-performance.mjs",
         "packages/notabenda/src/cli.ts",
-        "packages/notabenda/src/consent-notice.ts"
+        "packages/notabenda/src/consent-notice.ts",
+        "packages/notabenda/src/public-inventory.ts",
+        "packages/notabenda/src/document-localization.ts",
+        "packages/notabenda/src/controls.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
@@ -7168,9 +7171,11 @@
         "packages/notabenda/test/consent-performance.test.mjs",
         "docs/verification/consent-performance.md",
         "packages/notabenda/test/consent-build-cli.test.mjs",
-        "packages/notabenda/test/consent-scope-contract.test.mjs"
+        "packages/notabenda/test/consent-scope-contract.test.mjs",
+        "packages/notabenda/test/localization-boundaries.test.mjs",
+        "packages/notabenda/test/localization.test.mjs"
       ],
-      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results. CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate. Scope construction resolves managed service associations and sorts their IDs once per construction; previously saved scope strings and choices remain byte-compatible. Returning-constructor measurements restore an exact saved local grant through both public factories and verify permission recovery without rewriting storage; normalization, record parsing and synchronous initial state are timed, while seeding and checks are excluded."
+      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results. CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate. Scope construction resolves managed service associations and sorts their IDs once per construction; previously saved scope strings and choices remain byte-compatible. Returning-constructor measurements restore an exact saved local grant through both public factories and verify permission recovery without rewriting storage; normalization, record parsing and synchronous initial state are timed, while seeding and checks are excluded. Ordered allowlist projection is shared by full and compiled inventories without changing scope field order, nested copying or complete compatibility getters. Full-site localization dispatch retains exact own-data fields, interface byte limits, selected-body diagnostics and output order. Native controls localize only the current receipt status; idle and destroyed receipt sessions add no status text. Compiled transfer headroom remains small and compatibility remains over target."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-CATALOG",
@@ -11691,7 +11696,9 @@
         "packages/notabenda/test/consent-runtime.test.mjs",
         "packages/notabenda/test/consent-performance.test.mjs",
         "docs/verification/consent-performance.md",
-        "packages/notabenda/test/consent-scope-contract.test.mjs"
+        "packages/notabenda/test/consent-scope-contract.test.mjs",
+        "packages/notabenda/test/localization-boundaries.test.mjs",
+        "packages/notabenda/test/localization.test.mjs"
       ]
     },
     {

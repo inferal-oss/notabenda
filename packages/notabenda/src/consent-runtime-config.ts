@@ -8,9 +8,9 @@ import {isGrantExpiryPolicy} from './grant-expiry-policy.js';
 import {normalizeConsentLocalization} from './localization-policy.js';
 import type {ConsentLocalization} from './localization-policy.js';
 // @requirements REQ-PRODUCT-CONFIG REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-CONSENT-RUNTIME
-import type {PublicSiteConfig,DocumentConfig,BuildMode} from './types.js';
+import type {PublicSiteConfig,DocumentConfig,BuildMode,Purpose,Service,StorageItem} from './types.js';
+import {publicPurpose,publicService,publicStorage} from './public-inventory.js';
 import {isResourceOrigin,isSafeLink} from './safe-links.js';
-import {normalizeGoogleBasic} from './google-basic-policy.js';
 import {normalizeScopeGuardPolicy} from './scope-guard-policy.js';
 import {isPromptPolicy} from './prompt-policy.js';
 /** Material inventory remains public; authoring bodies, operator contacts and other workflows are omitted. */
@@ -51,7 +51,7 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
   shape(p,['id','name','description','legalBasis','dataCategories','retention','collection'],['legitimateInterests']);need(p.legitimateInterests===undefined||isLegitimateInterests(p.legitimateInterests));need(['name','description','legalBasis','retention'].every(k=>text(p[k])));strings(p.dataCategories,1);
   shape(p.collection,['source','description','required','consequences']);const q=p.collection;need(member(q.source,['direct','indirect','both'])&&text(q.description)&&typeof q.required==='boolean'&&text(q.consequences));
   // Keep the compatibility scope encoding's exact field order, independently of incoming JSON key order.
-  return {id:p.id,name:p.name,description:p.description,legalBasis:p.legalBasis,...(p.legitimateInterests===undefined?{}:{legitimateInterests:p.legitimateInterests}),dataCategories:[...p.dataCategories],retention:p.retention,collection:{source:q.source,description:q.description,required:q.required,consequences:q.consequences}};
+  return publicPurpose(p as unknown as Purpose);
  });
  const purposeIds=purposes.map(p=>p.id);
  const services=c.services.map(s=>{
@@ -59,18 +59,18 @@ export function normalizeConsentRuntimeConfig(input:unknown):ConsentRuntimeConfi
   if(s.privacyUrl!==undefined)need(text(s.privacyUrl)&&isSafeLink(s.privacyUrl));
   if(s.resourceOrigins!==undefined){strings(s.resourceOrigins,1,16,true);need(s.resourceOrigins.every(isResourceOrigin));}
   if(s.processingActivities!==undefined){strings(s.processingActivities,0,3,true);need(s.processingActivities.every(a=>activities.includes(a)));}
-  return {...(s.googleBasic===undefined?{}:{googleBasic:normalizeGoogleBasic(s.googleBasic,s.purposeIds)}),id:s.id,name:s.name,provider:s.provider,purposeIds:[...s.purposeIds],location:s.location,...(s.privacyUrl===undefined?{}:{privacyUrl:s.privacyUrl}),...(s.resourceOrigins===undefined?{}:{resourceOrigins:[...s.resourceOrigins as string[]]}),...(s.processingActivities===undefined?{}:{processingActivities:[...s.processingActivities as string[]]})};
+  return publicService(s as unknown as Service);
  });
  const serviceIds=services.map(s=>s.id);
  const storage=c.storage.map(s=>{
-  shape(s,['id','name','type','serviceId','duration','classification'],['necessityReason','exceptionId']);need(text(s.name)&&text(s.duration)&&serviceIds.includes(s.serviceId)&&member(s.type,['cookie','localStorage','sessionStorage','indexedDB','other'])&&member(s.classification,['necessary','optional','exception']));
+  shape(s,['id','name','type','serviceId','duration','classification'],['necessityReason','exceptionId']);need(text(s.name)&&text(s.duration)&&serviceIds.includes(s.serviceId as string)&&member(s.type,['cookie','localStorage','sessionStorage','indexedDB','other'])&&member(s.classification,['necessary','optional','exception']));
   need(s.classification==='exception'?slug(s.exceptionId):s.exceptionId===undefined);
   if(s.classification==='necessary'||s.necessityReason!==undefined)need(text(s.necessityReason));
-  return {id:s.id,name:s.name,type:s.type,serviceId:s.serviceId,duration:s.duration,classification:s.classification,...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}),...(s.necessityReason===undefined?{}:{necessityReason:s.necessityReason})};
+  return publicStorage(s as unknown as StorageItem);
  });
  const policy=c.consent;shape(policy,['purposes','services','grantLifetimeDays','refusalLifetimeDays','dismissalMinutes'],['promptPolicy','grantExpiryPolicy','information']);
  entries(policy.purposes,40);entries(policy.services,80);
- for(const [list,ids] of [[policy.purposes,purposeIds],[policy.services,serviceIds]] as const)for(const entry of list){shape(entry,['id','scope']);need(ids.includes(entry.id)&&text(entry.scope,200));}
+ for(const [list,ids] of [[policy.purposes,purposeIds],[policy.services,serviceIds]] as const)for(const entry of list){shape(entry,['id','scope']);need(ids.includes(entry.id as string)&&text(entry.scope,200));}
  const optionalPurposes=policy.purposes.map(p=>p.id),optionalServices=policy.services.map(s=>s.id);
  for(const service of services){if(optionalServices.includes(service.id))need(service.purposeIds.every(id=>optionalPurposes.includes(id)));if(service.googleBasic)need(optionalServices.includes(service.id)&&service.resourceOrigins?.includes('https://www.googletagmanager.com')&&service.processingActivities!==undefined);}
  for(const id of optionalPurposes)need(services.some(s=>optionalServices.includes(s.id)&&s.purposeIds.includes(String(id))));

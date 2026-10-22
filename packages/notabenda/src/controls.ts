@@ -14,6 +14,20 @@ import { defaultConsentWording } from './consent-notice.js';
 export interface ControlsOptions { consent: ConsentStateController; preferencesLabel?: string; noticeMode?:'automatic'|'on-demand' }
 export interface MountedControls { destroy(options?: {preservePreferences?: boolean}): void }
 
+// @requirements REQ-PRODUCT-BUNDLE-BUDGET
+// Only the current evidence status is localized during an update.
+const evidenceMessages = {
+  checking: 'Checking your saved choice… Optional services stay off.',
+  saving: 'Saving your choice… Optional services stay off until confirmed.',
+  recorded: 'Your choices have been recorded.',
+  error: "We couldn't confirm your choice was recorded. Optional services stay off.",
+  review: 'Review your choices before allowing optional services.',
+  stale: 'This notice has changed. Reload to review the current version.',
+  expired: 'This choice was not confirmed in time or has expired. Choose again to allow optional services.',
+  unavailable: 'A choice record could not be created. Optional services stay off. You can still reject optional purposes.',
+  retired: 'This choice context has closed. Optional services stay off. Contact the site operator if you need a new privacy workflow.',
+} as const;
+
 /** @requirements REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y REQ-EU-FAIR-CHOICE REQ-ES-CHOICE REQ-EU-CONSENT REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-REACT
  * A nonmodal initial notice; only an explicit action opens the native modal dialog.
  */
@@ -137,7 +151,8 @@ export function mountControls(container: HTMLElement, options: ControlsOptions):
     const choices = JSON.stringify(state.purposes);
     const storageMessage = state.persistence === 'unavailable' ? c('storageUnavailable','Preferences cannot be saved in this browser. Optional services stay off. A previous saved choice may return on a later visit if browser storage cannot be cleared.') : '';
     const reloadMessage = Object.values(state.services).includes('reload-required') ? c('reloadRequired','An optional service could not be stopped or initialized safely. Reload this page to finish resetting it.') : '';
-    const receiptMessage=state.evidence?({checking:c('checking','Checking your saved choice… Optional services stay off.'),saving:c('saving','Saving your choice… Optional services stay off until confirmed.'),recorded:c('recorded','Your choices have been recorded.'),error:c('error',"We couldn't confirm your choice was recorded. Optional services stay off."),review:c('review','Review your choices before allowing optional services.'),stale:c('stale','This notice has changed. Reload to review the current version.'),expired:c('expired','This choice was not confirmed in time or has expired. Choose again to allow optional services.'),unavailable:c('unavailable','A choice record could not be created. Optional services stay off. You can still reject optional purposes.'),retired:c('retired','This choice context has closed. Optional services stay off. Contact the site operator if you need a new privacy workflow.'),idle:'',destroyed:''}[state.evidence.status]):'';
+    const evidenceStatus=state.evidence?.status;
+    const receiptMessage=evidenceStatus&&evidenceStatus!=='idle'&&evidenceStatus!=='destroyed'?c(evidenceStatus,evidenceMessages[evidenceStatus]):'';
     // @requirements REQ-PRODUCT-PRIVACY-SIGNALS Cookie grants do not override processing restrictions.
     const signalMessage=state.privacySignals?.globalPrivacyControl==='observed'?c('signalObserved','Global Privacy Control is active. Services covered by this site’s signal policy stay off in this browser. Cookie choices do not override this restriction.'):state.privacySignals?.globalPrivacyControl==='unavailable'?c('signalUnavailable','Global Privacy Control could not be checked. Services covered by this site’s signal policy stay off in this browser.'):'';
     const processingMessage=state.processingChoices?(state.processingChoices.status==='recorded'?c('processingRecorded','A processing restriction is recorded for this context. Cookie choices do not remove it.'):state.processingChoices.blockedActivities.length?c('processingPending','Processing restrictions are pending or could not be confirmed. Covered services stay off; cookie choices do not override them.'):''):'';

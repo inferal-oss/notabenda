@@ -16,6 +16,7 @@ import {isResourceOrigin,isSafeLink} from './safe-links.js';
 export {isResourceOrigin,isSafeLink} from './safe-links.js';
 // @requirements REQ-GOOGLE-MODE
 import {normalizeGoogleBasic} from './google-basic-policy.js';
+import {publicPurpose,publicService,publicStorage} from './public-inventory.js';
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
 import {normalizeRightsCenter} from './rights-policy.js';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
@@ -290,10 +291,10 @@ export function toPublicConfig(input: unknown, options: ValidationOptions = {}):
     ...(config.localization===undefined?{}:{localization:normalizeSiteLocalization(config.localization,{locale:config.site.locale,allowPreview:options.mode!=='production'})}),
     ...(config.rightsCenter===undefined?{}:{rightsCenter:normalizeRightsCenter(config.rightsCenter)}),
     ...(config.scopeGuards===undefined?{}:{scopeGuards:normalizeScopeGuardPolicy(config.scopeGuards,config.purposes.map(p=>p.id))}),
-    purposes: config.purposes.map(p => ({ id: p.id, name: p.name, description: p.description, legalBasis: p.legalBasis, ...(p.legitimateInterests===undefined?{}:{legitimateInterests:p.legitimateInterests}), dataCategories: [...p.dataCategories], retention: p.retention, collection: { source: p.collection.source, description: p.collection.description, required: p.collection.required, consequences: p.collection.consequences } })),
-    services: config.services.map(s => ({ ...(s.googleBasic===undefined?{}:{googleBasic:normalizeGoogleBasic(s.googleBasic,s.purposeIds)}),id: s.id, name: s.name, provider: s.provider, purposeIds: [...s.purposeIds], location: s.location, ...(s.privacyUrl === undefined ? {} : { privacyUrl: s.privacyUrl }), ...(s.resourceOrigins===undefined?{}:{resourceOrigins:[...s.resourceOrigins]}), ...(s.processingActivities===undefined?{}:{processingActivities:[...s.processingActivities]}) })),
+    purposes: config.purposes.map(publicPurpose),
+    services: config.services.map(publicService),
     ...(config.storageExceptions===undefined?{}:{storageExceptions:normalizeStorageExceptionPolicy(config.storageExceptions,config,{allowPreview:options.mode!=='production'})}),
-    storage: config.storage.map(s => ({ id: s.id, name: s.name, type: s.type, serviceId: s.serviceId, duration: s.duration, classification: s.classification, ...(s.exceptionId===undefined?{}:{exceptionId:s.exceptionId}), ...(s.necessityReason === undefined ? {} : { necessityReason: s.necessityReason }) })),
+    storage: config.storage.map(publicStorage),
     privacy: { ...(config.privacy.choicesLink===undefined?{}:{choicesLink:normalizePrivacyChoicesLink(config.privacy.choicesLink,{allowPreview:options.mode!=='production'})}),rights: [...config.privacy.rights], transfers: config.privacy.transfers, automatedDecisions: config.privacy.automatedDecisions,
       complaints: { description: config.privacy.complaints.description, ...(config.privacy.complaints.url === undefined ? {} : { url: config.privacy.complaints.url }) },
       ...(config.privacy.rightsUrl===undefined&&config.rightsCenter===undefined?{}:{rightsUrl:config.rightsCenter?.route??config.privacy.rightsUrl!}),

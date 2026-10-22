@@ -45,22 +45,37 @@ export const generatedDocumentFields={
 export type DocumentMessages={[K in keyof typeof documentMessageFields]:string};
 export type GeneratedDocumentMessages={[K in keyof typeof generatedDocumentFields]:string};
 export interface SiteLocalization extends ConsentLocalization {documents:DocumentMessages;generatedDocuments?:GeneratedDocumentMessages;terms?:TermsMessages;formPermission?:FormPermissionMessages;collection?:CollectionMessages;indirectCollection?:IndirectCollectionMessages;rights?:RightsMessages;storageExceptions?:StorageExceptionMessages;processingChoices?:ProcessingMessages;serviceDirectory?:ServiceDirectoryMessages;embeds?:EmbedMessages;contractActions?:ContractActionMessages}
+// @requirements REQ-PRODUCT-BUNDLE-BUDGET
+// Keep output order stable. Selectors retain the interface-specific missing-body diagnostics.
+const interfaces = [
+ {policy:contractActionLocalizationPolicy},
+ {policy:embedLocalizationPolicy},
+ {policy:indirectCollectionLocalizationPolicy,select:selectIndirectCollectionLocalization},
+ {policy:serviceDirectoryLocalizationPolicy,select:selectServiceDirectoryLocalization},
+ {policy:processingLocalizationPolicy,select:selectProcessingLocalization},
+ {policy:{key:'storageExceptions',fields:storageExceptionMessageFields}},
+ {policy:{key:'rights',fields:rightsMessageFields}},
+ {policy:collectionLocalizationPolicy,select:selectCollectionLocalization},
+ {policy:formPermissionLocalizationPolicy,select:selectFormPermissionLocalization},
+ {policy:termsLocalizationPolicy,select:selectTermsLocalization},
+] as const;
+const consentFields=['schemaVersion','locale','direction','revision','disclosureRevision','reviewStatus','consent'];
+const optionalFields=['generatedDocuments',...interfaces.map(({policy})=>policy.key)];
 /** Full authoring messages stay outside the compiled consent runtime. */
 export function normalizeSiteLocalization(input:unknown,options:{locale?:string;allowPreview?:boolean}={}):SiteLocalization{
  if(!input||typeof input!=='object'||Array.isArray(input))throw new Error('Invalid site localization.');
- const fields=Object.getOwnPropertyDescriptors(input),keys=['schemaVersion','locale','direction','revision','disclosureRevision','reviewStatus','consent','documents',...(Object.hasOwn(fields,'generatedDocuments')?['generatedDocuments']:[]),...(Object.hasOwn(fields,'terms')?['terms']:[]),...(Object.hasOwn(fields,'formPermission')?['formPermission']:[]),...(Object.hasOwn(fields,'collection')?['collection']:[]),...(Object.hasOwn(fields,'indirectCollection')?['indirectCollection']:[]),...(Object.hasOwn(fields,'rights')?['rights']:[]),...(Object.hasOwn(fields,'storageExceptions')?['storageExceptions']:[]),...(Object.hasOwn(fields,'processingChoices')?['processingChoices']:[]),...(Object.hasOwn(fields,'serviceDirectory')?['serviceDirectory']:[]),...(Object.hasOwn(fields,'embeds')?['embeds']:[]),...(Object.hasOwn(fields,'contractActions')?['contractActions']:[])];
+ const fields=Object.getOwnPropertyDescriptors(input),keys=[...consentFields,'documents',...optionalFields.filter(key=>Object.hasOwn(fields,key))];
  if(Reflect.ownKeys(input).length!==keys.length||keys.some(k=>!fields[k]||!Object.hasOwn(fields[k]!,'value')))throw new Error('Invalid site localization fields.');
- const v=Object.fromEntries(keys.map(k=>[k,fields[k]!.value])),{documents,generatedDocuments,terms,formPermission,collection,indirectCollection,rights,storageExceptions,processingChoices,serviceDirectory,embeds,contractActions,...consent}=v;
- const normalized=normalizeConsentLocalization(consent,options);
- const localizedContracts=contractActions===undefined?undefined:normalizeInterfaceMessages(normalized,contractActions,contractActionLocalizationPolicy).contractActions;
- const localizedEmbeds=embeds===undefined?undefined:normalizeInterfaceMessages(normalized,embeds,embedLocalizationPolicy).embeds;
- const indirect=indirectCollection===undefined?undefined:normalizeInterfaceMessages(normalized,selectIndirectCollectionLocalization({...normalized,indirectCollection:indirectCollection as IndirectCollectionMessages}).indirectCollection,indirectCollectionLocalizationPolicy).indirectCollection;
- const directory=serviceDirectory===undefined?undefined:normalizeInterfaceMessages(normalized,selectServiceDirectoryLocalization({...normalized,serviceDirectory:serviceDirectory as ServiceDirectoryMessages}).serviceDirectory,serviceDirectoryLocalizationPolicy).serviceDirectory;
- const localizedProcessing=processingChoices===undefined?undefined:normalizeInterfaceMessages(normalized,selectProcessingLocalization({...normalized,processingChoices:processingChoices as ProcessingMessages}).processingChoices,processingLocalizationPolicy).processingChoices;
- const localizedCollection=collection===undefined?undefined:normalizeInterfaceMessages(normalized,selectCollectionLocalization({...normalized,collection:collection as CollectionMessages}).collection,collectionLocalizationPolicy).collection;
- const permission=formPermission===undefined?undefined:normalizeInterfaceMessages(normalized,selectFormPermissionLocalization({...normalized,formPermission:formPermission as FormPermissionMessages}).formPermission,formPermissionLocalizationPolicy).formPermission;
- const localizedTerms=terms===undefined?undefined:normalizeInterfaceMessages(normalized,selectTermsLocalization({...normalized,terms:terms as TermsMessages}).terms,termsLocalizationPolicy).terms;
- return {...normalized,...(localizedContracts===undefined?{}:{contractActions:localizedContracts}),...(localizedEmbeds===undefined?{}:{embeds:localizedEmbeds}),...(indirect===undefined?{}:{indirectCollection:indirect}),...(directory===undefined?{}:{serviceDirectory:directory}),...(localizedProcessing===undefined?{}:{processingChoices:localizedProcessing}),...(storageExceptions===undefined?{}:{storageExceptions:normalizeMessages(storageExceptions,storageExceptionMessageFields)}),...(rights===undefined?{}:{rights:normalizeMessages(rights,rightsMessageFields)}),...(localizedCollection===undefined?{}:{collection:localizedCollection}),...(permission===undefined?{}:{formPermission:permission}),...(localizedTerms===undefined?{}:{terms:localizedTerms}),documents:normalizeMessages(documents,documentMessageFields),...(generatedDocuments===undefined?{}:{generatedDocuments:normalizeMessages(generatedDocuments,generatedDocumentFields)})};
+ const v=Object.fromEntries(keys.map(k=>[k,fields[k]!.value]));
+ const normalized=normalizeConsentLocalization(Object.fromEntries(consentFields.map(k=>[k,v[k]])),options);
+ const bodies:Record<string,unknown>={};
+ for(const entry of interfaces){
+  const policy=entry.policy,body=v[policy.key];
+  if(body===undefined)continue;
+  if('select' in entry)entry.select({...normalized,[policy.key]:body});
+  bodies[policy.key]='maxBytes' in policy?normalizeInterfaceMessages<string,Record<string,readonly string[]>>(normalized,body,policy)[policy.key]:normalizeMessages(body,policy.fields);
+ }
+ return {...normalized,...bodies,documents:normalizeMessages(v.documents,documentMessageFields),...(v.generatedDocuments===undefined?{}:{generatedDocuments:normalizeMessages(v.generatedDocuments,generatedDocumentFields)})};
 }
 export function consentLocalization(localization:SiteLocalization):ConsentLocalization{
  return selectConsentLocalization(localization);

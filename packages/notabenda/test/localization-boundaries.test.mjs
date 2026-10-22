@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-LOCALIZATION
+// @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-BUNDLE-BUDGET
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -80,4 +80,22 @@ test('form action copy has a 120-byte UTF-8 boundary, independently of the descr
 test('full-site missing-body diagnostics retain each selected interface context',()=>{
  const errors={terms:'Localized acceptance needs localization.terms messages.',formPermission:'Localized form permissions need localization.formPermission messages.',collection:'Localized collection notices need localization.collection messages.'};
  for(const [key,message] of Object.entries(errors))for(const value of [null,false,0,''])assert.throws(()=>normalizeSiteLocalization({...site,[key]:value}),{message});
+});
+
+// Optional dictionaries must remain own data fields even when dispatch is shared.
+test('full-site optional dictionary dispatch rejects accessors, inherited bodies and undeclared fields',()=>{
+ const keys=['generatedDocuments','contractActions','embeds','indirectCollection','serviceDirectory','processingChoices','storageExceptions','rights','collection','formPermission','terms'];
+ for(const key of keys){
+  let reads=0;const input=structuredClone(site);
+  Object.defineProperty(input,key,{enumerable:true,get(){reads++;throw Error('Do not read dictionary getters');}});
+  assert.throws(()=>normalizeSiteLocalization(input),/Invalid site localization fields/u);assert.equal(reads,0,key);
+ }
+ for(const key of [Symbol('unknown'),'unknown']){
+  const input=structuredClone(site);Object.defineProperty(input,key,{value:{},enumerable:false});
+  assert.throws(()=>normalizeSiteLocalization(input),/Invalid site localization fields/u);
+ }
+ const inherited=Object.create(site);assert.throws(()=>normalizeSiteLocalization(inherited),/Invalid site localization fields/u);
+ for(const key of keys){
+  const input=structuredClone(site);input[key]={};assert.throws(()=>normalizeSiteLocalization(input),undefined,key);
+ }
 });
