@@ -330,3 +330,8 @@ The optional remote rehearsal covers fixed consent, terms, form-permission and p
 ## Disposable host-key rotation acceptance
 
 The optional native recovery runner rotates only its own private HTTP capability, with live ownership attestation before and after the secret update, paired new/old-key endpoint probes, anonymous denial and complete preserved evidence/gate/provider state. A missing or changed Worker must not receive a secret update. Keep replacement key bytes owner-only and ignored. This acceptance exercise does not provide package authentication or establish production credential, account-token, signing-key or global edge revocation coverage. Host auth remains supplied by the adopter.
+
+## Disposable starter rollout acceptance
+
+<!-- @requirements REQ-PRODUCT-CF-ROLLOUT -->
+Maintainers may explicitly rehearse the actual generated starter in a fresh disposable environment within a selected existing account. Preserve its generated host/workspace/settings/asset builder, add fixture-only authorization and fixed maintenance controls, and pin the baseline after its control class and secret exist. Deliberately omit one lazy asset, archive a later MDX release, and verify native version rollback without reverting stored evidence. Test a class-lifecycle refusal and forward repair with unchanged namespaces and a sentinel read that cannot recreate missing data. Uploaded executable bytes, active version fingerprints and deployment identity are distinct ownership checks. Keep uncertain writes fenced, retain exact private checkpoints and verify removal of every owned namespace and Worker. No production resource selection, package auth system, automatic adopter CI, fresh-account provisioning or arbitrary schema migration is added.

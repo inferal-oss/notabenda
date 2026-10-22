@@ -28,7 +28,8 @@
     "perf:serve": "node scripts/serve-performance.mjs",
     "release:check": "node scripts/check-package-release.mjs",
     "cf:recovery:remote": "node scripts/check-cf-remote-recovery.mjs",
-    "cf:recovery:transactions": "node scripts/check-transaction-recovery.mjs"
+    "cf:recovery:transactions": "node scripts/check-transaction-recovery.mjs",
+    "cf:starter:remote": "node scripts/check-cf-starter-rollout.mjs"
   },
   "devDependencies": {
     "@resvg/resvg-js": "2.6.2",

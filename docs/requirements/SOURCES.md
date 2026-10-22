@@ -1645,3 +1645,33 @@ Read deployed secret updates: secret put creates and immediately deploys a Worke
 **Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
 
 Read version/deployment boundaries: versions capture code/configuration/bindings; state changes in associated storage resources are not versioned. The disposable rotation check compares actual evidence and independent destinations across a secret deployment.
+
+<a id="src-cf-worker-rollbacks"></a>
+
+## SRC-CF-WORKER-ROLLBACKS
+
+[Cloudflare: Worker version rollbacks](https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
+
+Code rollback creates a new deployment of a previous version; bound storage state is unchanged. Durable Object class lifecycle changes prevent rollback across that boundary.
+
+<a id="src-cf-worker-deployments-api"></a>
+
+## SRC-CF-WORKER-DEPLOYMENTS-API
+
+[Cloudflare API: list Worker deployments](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/deployments/methods/list/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
+
+Deployment records expose identity, creation time and version traffic percentages. The starter exercise checks the current single version at 100 percent independently from executable source and HTTP asset probes.
+
+<a id="src-cf-worker-version-api"></a>
+
+## SRC-CF-WORKER-VERSION-API
+
+[Cloudflare API: get Worker script version](https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/versions/methods/get/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
+
+A specific immutable version exposes its ID and hashed script-content etag. The rollout exercise pins that fingerprint separately from current deployment traffic and latest uploaded script bytes.

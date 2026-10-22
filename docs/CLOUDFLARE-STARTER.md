@@ -1,5 +1,7 @@
 # Start a Cloudflare backend
 
+Maintainers can separately [rehearse a disposable rollout](CLOUDFLARE-ROLLOUT.md), including missing setup assets, code rollback and class-lifecycle forward repair. This is optional tooling; adopters choose their own deployment checks.
+
 `npx @notabenda/cloudflare init` creates a Worker project with a SQLite-backed Durable Object, the evidence admin and setup assets. Authentication comes from your application. The generated hook denies all access until you implement it.
 
 The packages are currently unpublished developer previews. Build/pack them from this repository and install their local tarballs first. The installed CLI is then available as `npx --no-install notabenda-cf`.

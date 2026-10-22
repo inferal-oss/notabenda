@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CF-ROLLOUT
 // @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
@@ -115,6 +116,7 @@ const guideParents={
  'cookie-rehearsal':{slug:'cartridges',label:'Packs',kind:'Try your draft'},
  'terms-connection':{slug:'terms',label:'Terms agreement',kind:'Runtime inspection'},
  'cloudflare-remote-recovery':{slug:'cloudflare-recovery',label:'Recovery rehearsal',kind:'Remote maintainer check'},
+ 'cloudflare-rollout':{slug:'cloudflare-doctor',label:'Deployment checks',kind:'Remote maintainer check'},
  'guarantee-producer-example':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Example source',description:'This page explains the prepared example and its source files. Start with the integration guide to add a label to your own site.'},
  'guarantee-asset-notice':{slug:'guarantee-labels',label:'Product guarantee labels',kind:'Asset provenance'},
  'authoring-package':{slug:'authoring',label:'Markdown & MDX',kind:'Package reference'},
@@ -140,7 +142,7 @@ export function areaContinuation(section,kind='guide'){
 export const normalizeGuideRoute=route=>route.replace(/\/$/u,'');
 export const guideSectionUrl=section=>'/guide/areas/'+section.id+'/';
 export const exampleSectionUrl=section=>'/examples/'+section.id+'/';
-const reportParents={'processing-application':'processing-choices','privacy-signal-reviews':'privacy-signals','recorded-cookie-application':'consent-evidence','transaction-recovery':'cloudflare-recovery','consent-notice-files':'consent-evidence','embed-localization':'embeds','cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
+const reportParents={'cloudflare-rollout':'cloudflare-doctor','processing-application':'processing-choices','privacy-signal-reviews':'privacy-signals','recorded-cookie-application':'consent-evidence','transaction-recovery':'cloudflare-recovery','consent-notice-files':'consent-evidence','embed-localization':'embeds','cloudflare-remote-recovery':'cloudflare-recovery','cloudflare-recovery':'cloudflare-recovery',accessibility:'project','regional-consent':'consent','catalog-profiles':'service-catalog','catalog-release':'service-catalog','catalog-review':'service-catalog','consent-browser':'consent','consent-focus':'consent','consent-evidence-browser':'consent-evidence','controls-layout':'consent','demo-workspace':'cloudflare','design-pass':'project','embeds-browser':'embeds','privacy-signals-browser':'privacy-signals','processing-choices-browser':'processing-choices','react-browser':'react','retained-releases':'releases','rights-center':'rights','terms-browser':'terms','website-browser':'website','astro-browser':'astro'};
 export function sectionForGuide(route){
  const current=normalizeGuideRoute(route),area=guideSections.find(s=>normalizeGuideRoute(guideSectionUrl(s))===current);
  if(area)return area;

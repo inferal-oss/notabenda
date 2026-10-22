@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-CF-ROLLOUT
 // @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY
 // Explicit optional maintainer operation; never installed as part of the reusable packages.
 import assert from 'node:assert/strict';
@@ -22,9 +23,15 @@ export function parseRemoteRecoveryArgs(args){
  if(args.length===3&&args[0]==='--run'&&args[1]==='--account-id'&&/^[a-f0-9]{32}$/u.test(args[2]))return {accountId:args[2]};
  throw Error('Use --run --account-id ACCOUNT_ID, --cleanup PRIVATE_RUN_DIRECTORY, or --help.');
 }
+const runProfiles={
+ 'notabenda-remote-recovery-run':{prefix:'notabenda-recovery-',classes:['RecoveryControl','RecoveryEvidence','RecoverySink']},
+ 'notabenda-starter-rollout-run':{prefix:'notabenda-rollout-',classes:['EvidenceWorkspace','RolloutControl','RolloutCanary']},
+};
 export function checkRunIdentity(run){
- if(run?.schemaVersion!==1||run.kind!=='notabenda-remote-recovery-run'||!/^[a-f0-9]{32}$/u.test(run.accountId)||!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(run.runId)||run.workerName!=='notabenda-recovery-'+run.runId.replaceAll('-','').slice(0,16))throw Error('Invalid private fixture identity.');return run;
+ const profile=runProfiles[run?.kind];
+ if(run?.schemaVersion!==1||!profile||!/^[a-f0-9]{32}$/u.test(run.accountId)||!/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/u.test(run.runId)||run.workerName!==profile.prefix+run.runId.replaceAll('-','').slice(0,16))throw Error('Invalid private fixture identity.');return run;
 }
+
 async function save(directory,name,value){const target=join(directory,name),temporary=target+'.tmp-'+randomUUID();await writeFile(temporary,typeof value==='string'?value:JSON.stringify(value,null,2)+'\n',{mode:0o600,flag:'wx'});await rename(temporary,target);}
 export async function sourceBodyIdentity(response){
  const parts=[];if((response.headers.get('Content-Type')??'').startsWith('multipart/form-data')){
@@ -49,15 +56,35 @@ function client(accountId,token){
 }
 async function bundledHash(directory,folder){const files=(await readdir(join(directory,folder))).filter(name=>/\.(?:m?js)$/u.test(name));if(files.length!==1)throw Error('Expected a single bundled rehearsal module.');return hash(await readFile(join(directory,folder,files[0])));}
 export async function reconcileOwnership(directory,run,api){
- const live=await metadata(api,run.workerName),all=await namespaces(api),recorded=run.namespaces??[],owned=all.filter(n=>n.script===run.workerName);
+ checkRunIdentity(run);const live=await metadata(api,run.workerName),all=await namespaces(api),recorded=run.namespaces??[],owned=all.filter(n=>n.script===run.workerName);
  if(all.some(n=>recorded.some(v=>v.id===n.id)&&n.script!==run.workerName))throw Error('A recorded namespace changed ownership; refusing cleanup.');
  if(!live){if(owned.length)throw Error('Recorded namespaces remain without their expected Worker.');return {live:false,cleanupSource:false};}
- if(!run.preflightAbsent||run.workerTag&&live.tag!==run.workerTag||owned.some(n=>!['RecoveryControl','RecoveryEvidence','RecoverySink'].includes(n.class)||n.use_sqlite!==true)||recorded.some(n=>owned.some(v=>v.class===n.class&&v.id!==n.id)))throw Error('The disposable resource identity changed.');
+ if(!run.preflightAbsent||run.workerTag&&live.tag!==run.workerTag||owned.some(n=>!runProfiles[run.kind].classes.includes(n.class)||n.use_sqlite!==true)||recorded.some(n=>owned.some(v=>v.class===n.class&&v.id!==n.id)))throw Error('The disposable resource identity changed.');
  const source=await api.source(run.workerName),cleanupSource=run.stage==='cleanup-started'&&source.sha256===run.cleanupSourceSha256;
- if(!cleanupSource&&(source.sha256!==run.expectedSourceSha256||!source.text.includes(run.runId)))throw Error('Worker source no longer matches this rehearsal.');
- const pending=['deploying','secret-updating','cleanup-started'].includes(run.stage);
+ const pendingSource=run.stage==='deploying'&&typeof run.pendingSourceSha256==='string'&&/^[a-f0-9]{64}$/u.test(run.pendingSourceSha256)&&source.sha256===run.pendingSourceSha256;
+ if(!cleanupSource&&((source.sha256!==run.expectedSourceSha256&&!pendingSource)||!source.text.includes(run.runId)))throw Error('Worker source no longer matches this rehearsal.');
+ const pending=['deploying','secret-updating','rollback-started','cleanup-started'].includes(run.stage);
  if(!pending&&run.workerModifiedOn&&live.modified_on!==run.workerModifiedOn)throw Error('Worker changed after this rehearsal; refusing cleanup.');
- run.workerTag=live.tag;run.workerModifiedOn=live.modified_on;run.namespaces=[...recorded,...owned.filter(n=>!recorded.some(v=>v.id===n.id)).map(({id,class:className,use_sqlite})=>({id,class:className,use_sqlite}))];await save(directory,'run.private.json',run);return {live:true,cleanupSource};
+ let observedVersion,observedDeployment;
+ if((run.deploymentId||run.pendingActiveVersion)&&(!pending||['deploying','secret-updating','rollback-started','cleanup-started'].includes(run.stage))){
+  const rows=(await api('/workers/scripts/'+run.workerName+'/deployments')).result?.deployments;if(!Array.isArray(rows)||!rows.length)throw Error('Missing attested deployment identity.');const current=[...rows].sort((a,b)=>Date.parse(b.created_on)-Date.parse(a.created_on))[0];
+  if(current.versions?.length!==1||current.versions[0].percentage!==100)throw Error('Worker deployment changed after this rehearsal.');const versionId=current.versions[0].version_id;
+  const allowed=run.stage==='rollback-started'?[run.activeVersion,run.rollbackTarget]:run.stage==='cleanup-started'?[run.cleanupPriorVersion,run.cleanupVersion]:run.stage==='deploying'?[run.activeVersion,run.pendingActiveVersion]:[run.activeVersion];
+  let selected=allowed.find(v=>v?.versionId===versionId);
+  const version=(await api('/workers/scripts/'+run.workerName+'/versions/'+versionId)).result;
+  if(version?.id!==versionId||typeof version.resources?.script?.etag!=='string')throw Error('Worker version fingerprint unavailable.');
+  // Secret updates preserve executable content but create a new version. The gate
+  // stays uncertain until the caller pins that version and verifies its capability.
+  if(run.stage==='secret-updating'&&version.resources.script.etag===run.activeVersion?.etag)selected={versionId,etag:version.resources.script.etag};
+  if(!selected)throw Error('Worker deployment changed after this rehearsal.');
+  if(selected.etag&&version.resources.script.etag!==selected.etag)throw Error('Worker version fingerprint changed after this rehearsal.');
+  selected={versionId,etag:version.resources.script.etag};
+  const priorId=run.stage==='cleanup-started'?run.cleanupPriorDeploymentId:run.deploymentId;
+  const priorVersion=run.stage==='cleanup-started'?run.cleanupPriorVersion:run.activeVersion;
+  if((!pending||versionId===priorVersion?.versionId)&&current.id!==priorId)throw Error('Worker deployment changed after this rehearsal.');
+  observedVersion=selected;observedDeployment=current.id;
+ }
+ run.workerTag=live.tag;run.workerModifiedOn=live.modified_on;run.namespaces=[...recorded,...owned.filter(n=>!recorded.some(v=>v.id===n.id)).map(({id,class:className,use_sqlite})=>({id,class:className,use_sqlite}))];await save(directory,'run.private.json',run);return {live:true,cleanupSource,sourceSha256:source.sha256,...(observedVersion?{activeVersion:{versionId:observedVersion.versionId,etag:observedVersion.etag},deploymentId:observedDeployment}:{})};
 }
 
 async function namespaces(api){
@@ -67,6 +94,7 @@ async function metadata(api,name){return (await api('/workers/scripts')).result.
 async function command(directory,label,argv,input){
  const result=spawnSync(process.execPath,[join(root,'node_modules/wrangler/bin/wrangler.js'),...argv],{cwd:directory,env:{...process.env,WRANGLER_SEND_METRICS:'false',WRANGLER_LOG_PATH:join(directory,'logs')},encoding:'utf8',input,timeout:120000,maxBuffer:4*1024*1024});
  await save(directory,label+'.private.log',(result.stdout??'')+(result.stderr??''));if(result.status!==0)throw Error(label+' failed; inspect the private log.');
+ return result;
 }
 async function callFactory(url,key,directory){return async(action,payload,{status=200,uncertain=false,anonymous=false}={})=>{
  await save(directory,'last-call.private.json',{action,expectedStatus:status});
@@ -90,23 +118,29 @@ export async function waitForRotatedRecoveryAccess(current,prior,pause=wait,{con
  throw Error('Rotated fixture access did not stabilize; do not assume the old key was revoked.');
 }
 /** Attest before mutation while outside changes are still rejected, then reconcile uncertain outcomes. */
-export async function updateRecoveryFixtureSecret(directory,run,api,key,{execute=command,attest=reconcileOwnership,persist=save,label='rotate-secret'}={}){
+export async function updateRecoveryFixtureSecret(directory,run,api,key,{execute=command,attest=reconcileOwnership,persist=save,settle=async()=>{},label='rotate-secret'}={}){
  if(typeof key!=='string'||!/^[a-f0-9]{64}$/u.test(key)||!['secret','rotate-secret'].includes(label))throw Error('Invalid private fixture secret update.');
  if(run.stage!=='deployed')throw Error('Secret update requires the attested deployed stage.');
  const before=await attest(directory,run,api);if(before?.live!==true||before.cleanupSource)throw Error('Disposable Worker is absent or cleaning up; refusing secret update.');
  run.stage='secret-updating';await persist(directory,'run.private.json',run);
  try{await execute(directory,label,['secret','put','FIXTURE_KEY','--config','wrangler.json'],key+'\n');}finally{const after=await attest(directory,run,api);if(after?.live!==true||after.cleanupSource)throw Error('Disposable Worker identity was lost during secret update.');}
- run.stage='deployed';await persist(directory,'run.private.json',run);
+ await settle();run.stage='deployed';await persist(directory,'run.private.json',run);
 }
-export async function cleanup(directory,run,api){
+export async function cleanup(directory,run,api,{execute=command,hashBundle=bundledHash}={}){
  checkRunIdentity(run);const observed=await reconcileOwnership(directory,run,api);
  if(!observed.live){run.stage='cleaned';run.cleanup={workerRemoved:true,namespacesRemoved:true,verified:true};await save(directory,'run.private.json',run);return;}
  const recorded=[...run.namespaces];
  if(!observed.cleanupSource){
+  // A pending deployment/rollback may have committed before its response was lost.
+  // Retain that exact attested source before leaving the pending-mutation stage.
+  run.expectedSourceSha256=observed.sourceSha256;delete run.pendingSourceSha256;await save(directory,'run.private.json',run);
+  if(run.activeVersion){run.cleanupPriorVersion=observed.activeVersion??run.activeVersion;run.cleanupPriorDeploymentId=observed.deploymentId??run.deploymentId;await save(directory,'run.private.json',run);}
   await save(directory,'cleanup.mjs',`export default {fetch(){return new Response('Disposable rehearsal finished.',{status:410,headers:{'X-Notabenda-Recovery-Run':${JSON.stringify(run.runId)}}});}};\n`);
   await save(directory,'cleanup.json',{name:run.workerName,account_id:run.accountId,main:'cleanup.mjs',compatibility_date:'2026-10-18',workers_dev:true,preview_urls:false,observability:{enabled:false},exports:Object.fromEntries([...new Set(recorded.map(n=>n.class))].map(name=>[name,{type:'durable-object',state:'deleted'}]))});
-  await command(directory,'cleanup-dry-run',['deploy','--dry-run','--config','cleanup.json','--outdir','cleanup-bundle']);run.cleanupSourceSha256=await bundledHash(directory,'cleanup-bundle');run.stage='cleanup-started';await save(directory,'run.private.json',run);
-  await command(directory,'cleanup-namespaces',['deploy','--config','cleanup.json','--outdir','cleanup-bundle']);
+  await execute(directory,'cleanup-dry-run',['deploy','--dry-run','--config','cleanup.json','--outdir','cleanup-bundle']);run.cleanupSourceSha256=await hashBundle(directory,'cleanup-bundle');run.stage='cleanup-started';await save(directory,'run.private.json',run);
+  try{await execute(directory,'cleanup-namespaces',['deploy','--config','cleanup.json','--outdir','cleanup-bundle']);}finally{
+   if(run.activeVersion){const log=await readFile(join(directory,'cleanup-namespaces.private.log'),'utf8').catch(()=>''),versionId=/Current Version ID:\s*([a-f0-9-]{36})/u.exec(log)?.[1];if(versionId){const version=(await api('/workers/scripts/'+run.workerName+'/versions/'+versionId)).result;if(version?.id!==versionId||typeof version.resources?.script?.etag!=='string')throw Error('Cleanup version fingerprint unavailable.');run.cleanupVersion={versionId,etag:version.resources.script.etag};await save(directory,'run.private.json',run);}}
+  }
   const confirmed=await reconcileOwnership(directory,run,api);if(!confirmed.cleanupSource)throw Error('Cleanup source was not confirmed.');
  }
  for(let i=0;i<12;i++){const remaining=(await namespaces(api)).filter(n=>n.script===run.workerName||recorded.some(v=>v.id===n.id));if(!remaining.length)break;if(i===11)throw Error('Namespace deletion has not been verified.');await wait(750);}
@@ -178,4 +212,5 @@ async function main(){
  for(const name of ['run.private.json','fixture-key.private.txt'])assert.equal((await stat(join(directory,name))).mode&0o777,0o600);
  console.log(JSON.stringify({status:failure?'failed':'verified',runDirectory:relative(root,directory),proof:run.proof??null,cleanup:run.cleanup}));if(failure)throw Error('Remote rehearsal incomplete; inspect its private run report.');
 }
+export {client as createDisposableClient,save as savePrivateRun,command as runDisposableWrangler,bundledHash as hashDisposableBundle,namespaces as listDisposableNamespaces,metadata as getDisposableMetadata};
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(error=>{process.stderr.write(error.message+'\n');process.exitCode=1;});

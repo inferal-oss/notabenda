@@ -863,7 +863,7 @@
         "One frontend npm package with optional subpath exports and no runtime framework dependency.",
         "Vanilla, React, static HTML, and Astro examples with fictional operators and data.",
         "Optional Cloudflare deployment commands, same-origin configuration, and install/uninstall instructions.",
-        "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Remote provisioning and operational rollout verification remain separate.",
+        "Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Fresh-account provisioning and broader production rollout verification remain separate.",
         "Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open.",
         "Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.",
         "Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.",
@@ -873,9 +873,10 @@
         "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
-        "Optional disposable native SQLite recovery for six evidence families, with an external gate/journal, independent destinations and attested cleanup. Transaction recovery checks full pending jobs, later holds/deletions, exact receipts and multi-chunk files, stable-ID retries and persisted uncertainty. Sends drain before maintenance; unresolved RPCs keep it closed. Actual providers, full host acceptance, key rotation and partial-deployment recovery remain open. Disposable host-key rotation checks paired old/new endpoint behavior and unchanged complete state; production credentials and signing keys remain host acceptance.",
+        "Optional disposable native SQLite recovery for six evidence families, with an external gate/journal, independent destinations and attested cleanup. Transaction recovery checks full pending jobs, later holds/deletions, exact receipts and multi-chunk files, stable-ID retries and persisted uncertainty. Sends drain before maintenance; unresolved RPCs keep it closed. Actual providers, full host acceptance, production key rotation and broader deployment recovery remain open. Disposable host-key rotation checks paired old/new endpoint behavior and unchanged complete state; production credentials and signing keys remain host acceptance.",
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
-        "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries."
+        "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries.",
+        "Optional actual-starter remote rollout exercise with bounded asset rollback and class-lifecycle forward repair; production and fresh-account acceptance stay separate."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -952,7 +953,9 @@
         "scripts/fixtures/family-recovery-data.mjs",
         "examples/processing-application/workspace.mjs",
         "scripts/fixtures/transaction-recovery.mjs",
-        "scripts/fixtures/transaction-recovery-data.mjs"
+        "scripts/fixtures/transaction-recovery-data.mjs",
+        "scripts/check-cf-starter-rollout.mjs",
+        "docs/CLOUDFLARE-ROLLOUT.md"
       ]
     },
     {
@@ -2779,6 +2782,33 @@
       "checkedOn": "2026-10-21",
       "access": "read",
       "note": "Read version/deployment boundaries: versions capture code/configuration/bindings; state changes in associated storage resources are not versioned. The disposable rotation check compares actual evidence and independent destinations across a secret deployment."
+    },
+    {
+      "id": "SRC-CF-WORKER-ROLLBACKS",
+      "title": "Cloudflare: Worker version rollbacks",
+      "url": "https://developers.cloudflare.com/workers/versions-and-deployments/rollbacks/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "note": "Code rollback creates a new deployment of a previous version; bound storage state is unchanged. Durable Object class lifecycle changes prevent rollback across that boundary."
+    },
+    {
+      "id": "SRC-CF-WORKER-DEPLOYMENTS-API",
+      "title": "Cloudflare API: list Worker deployments",
+      "url": "https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/deployments/methods/list/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "note": "Deployment records expose identity, creation time and version traffic percentages. The starter exercise checks the current single version at 100 percent independently from executable source and HTTP asset probes."
+    },
+    {
+      "id": "SRC-CF-WORKER-VERSION-API",
+      "title": "Cloudflare API: get Worker script version",
+      "url": "https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/versions/methods/get/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "note": "A specific immutable version exposes its ID and hashed script-content etag. The rollout exercise pins that fingerprint separately from current deployment traffic and latest uploaded script bytes."
     }
   ],
   "jurisdictions": [
@@ -3062,7 +3092,8 @@
         "REQ-PRODUCT-CONTRACT-LOCALIZATION",
         "REQ-PRODUCT-PRIVACY-CHOICE-LINK",
         "REQ-PRODUCT-CONFIG-SOURCES",
-        "REQ-PRODUCT-CONSENT-NOTICE-FILES"
+        "REQ-PRODUCT-CONSENT-NOTICE-FILES",
+        "REQ-PRODUCT-CF-ROLLOUT"
       ]
     },
     {
@@ -9560,6 +9591,68 @@
         "packages/notabenda/test/privacy-signal-reviews.test.mjs"
       ],
       "implementationNote": "Source-linked setup and agent reviews use existing explicit browser/header processing restrictions. Market selection grants nothing and changes no policy. Actual account/downstream effects, retention and legal/operational acceptance remain host work."
+    },
+    {
+      "id": "REQ-PRODUCT-CF-ROLLOUT",
+      "jurisdiction": "PRODUCT",
+      "title": "Generated-starter rollout and bounded deployment recovery",
+      "kind": "product-standard",
+      "summary": "Provide an explicit disposable remote exercise of the actual generated starter: default denial, host permissions, missing setup assets, version rollback with later archives, and class-lifecycle rejection followed by forward repair.",
+      "appliesWhen": "Maintainers deliberately run the starter rollout exercise against their selected Cloudflare account.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-CF-WORKER-VERSIONS",
+          "locator": "Versions include code, configuration and bindings; storage state is separate."
+        },
+        {
+          "sourceId": "SRC-CF-WORKER-ROLLBACKS",
+          "locator": "Rollback deployment and Durable Object lifecycle restrictions."
+        },
+        {
+          "sourceId": "SRC-CF-DO-EXPORTS",
+          "locator": "Declarative class lifecycle and SQLite exports."
+        },
+        {
+          "sourceId": "SRC-CF-WORKER-SECRETS",
+          "locator": "Install fixture secret before pinning the rollback version."
+        },
+        {
+          "sourceId": "SRC-CF-WORKER-DEPLOYMENTS-API",
+          "locator": "Deployment identity, creation time and versions/percentage."
+        },
+        {
+          "sourceId": "SRC-CF-WORKER-VERSION-API",
+          "locator": "Version ID and resources.script.etag."
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DEPLOYMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-CF-ROLLOUT"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Fixed synthetic releases, fixture-only capabilities and HTTP asset checks in an existing selected account. Fresh-account provisioning, interactive browser preview, arbitrary schema migration and production authentication remain host acceptance. Adopters choose their CI.",
+      "implementationRefs": [
+        "scripts/check-cf-starter-rollout.mjs",
+        "scripts/fixtures/starter-rollout.mjs",
+        "scripts/fixtures/starter-rollout-entry.mjs",
+        "scripts/fixtures/starter-rollout-canary.mjs",
+        "scripts/check-cf-remote-recovery.mjs",
+        "docs/CLOUDFLARE-ROLLOUT.md",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/starter-rollout.test.mjs",
+        "scripts/check-cf-starter-rollout.mjs",
+        "docs/verification/cloudflare-rollout.md"
+      ],
+      "implementationNote": "Actual generated starter exercised remotely on 21 October 2026: unchanged default denial, host reader/editor permissions, doctor-detected missing preview asset, native pinned-version rollback, complete newer record projections and exact private MDX source preserved, specific class-exports rollback refusal, forward repair with unchanged namespace IDs and read-only sentinel, and verified removal of three namespaces and Worker. Uploaded source hashes, active version content fingerprints and deployment identities are checked separately. Fixed maintainer-only controls, unresolved-write fences and private checkpoints remain outside shipped packages."
     }
   ],
   "verification": [
@@ -11424,6 +11517,19 @@
         "packages/notabenda-cf/test/processing-application.test.mjs",
         "scripts/check-processing-application.mjs",
         "docs/verification/processing-application.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-CF-ROLLOUT",
+      "requirementIds": [
+        "REQ-PRODUCT-CF-ROLLOUT"
+      ],
+      "status": "automated",
+      "expected": "Default denial and reader/editor separation use unchanged generated host/workspace files. Detect one missing lazy asset; actual rollback restores the pinned version/content fingerprint and asset bytes while preserving complete newer record projections and exact private MDX source. A specific class-lifecycle rejection must leave deployment and data unchanged; forward repair retains namespace IDs and reads the sentinel without recreating it. Ownership checks, ambiguous-write fences and resumable attested cleanup remain explicit.",
+      "testRefs": [
+        "packages/notabenda-cf/test/starter-rollout.test.mjs",
+        "scripts/check-cf-starter-rollout.mjs",
+        "docs/verification/cloudflare-rollout.md"
       ]
     }
   ],
