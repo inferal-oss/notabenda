@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
 // @requirements REQ-PRODUCT-TERMS-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-COLLECTION-FLOW
@@ -339,6 +340,12 @@ rightsSettings.reviewStatus='reviewed';
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {mountConsentRehearsal,type MountedConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';
 import {mountTermsRehearsal,type MountedTermsRehearsal} from '@notabenda/core/setup/terms-rehearsal';
+import {checkDocumentPublication,type PublicationCheck,type PublishedDocumentSource} from '@notabenda/cloudflare';
+const publicationSource:PublishedDocumentSource={origin:'https://site.example.test',label:'Public website',fetch:request=>fetch(request)};
+const publicationResult:Promise<PublicationCheck>=checkDocumentPublication({path:'/artifacts/'+'a'.repeat(64)+'/terms.html',sha256:'b'.repeat(64)},publicationSource);
+// @ts-expect-error caller-provided arbitrary URLs are not a publication reference
+checkDocumentPublication({url:'https://other.example.test'},publicationSource);
+
 const termsRehearsal:MountedTermsRehearsal=mountTermsRehearsal(document.body,{config,scopeId:'signup'});const termsRehearsalOpened:Promise<void>=termsRehearsal.open();termsRehearsal.close();termsRehearsal.destroy();
 const previewCookies:MountedConsentRehearsal=mountConsentRehearsal(container,{config,stylesheetUrls:['/assets/notabenda.css']});
 const previewOpened:Promise<void>=previewCookies.open();previewCookies.close();previewCookies.destroy();

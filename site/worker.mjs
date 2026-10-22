@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
@@ -124,7 +125,8 @@ export class EvidenceWorkspace {
         await this.initialize();const storage=this.state.storage;
         const consentTarget=(id,title,notice)=>({id,title,family:'consent',siteId:notice.siteId,scopeId:notice.scopeId,read:()=>getConsentRecordingSelection(storage,{siteId:notice.siteId,scopeId:notice.scopeId,allowPreview:true})});
         const targets=[consentTarget('cookies','Cookie notice',data.consent.notice),consentTarget('recorded-cookies','Recorded-choice example',data.recordedConsent.notice),...data.agreements.map(({theme,offer})=>({id:'terms-'+theme,title:theme==='pt'?'Portuguese terms':theme==='dark'?'Midnight terms':'Terms agreement',family:'terms',siteId:offer.siteId,scopeId:offer.scopeId,read:()=>getTermsRecordingSelection(storage,{siteId:offer.siteId,scopeId:offer.scopeId,allowPreview:true})})),...[data.formPermissions.offer,data.localizedFormPermissions.offer,...data.collectionFlow.flow.permissions].map((offer,index)=>({id:'permission-'+index,title:index===2?'Collection form updates':index?'Portuguese form permission':'Email permission',family:'form-permission',siteId:offer.siteId,scopeId:offer.permissionId,read:()=>getFormPermissionRecordingSelection(storage,{siteId:offer.siteId,permissionId:offer.permissionId,allowPreview:true})}))];
-        return protectedResponse(await createRecordingInspectionWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath+'/recording',historyPath:this.adminBasePath+'/history',authorize:()=>({targets,scopeLabel:this.adminBasePath==='/demo/admin'?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
+        const publication={origin:'https://notabenda.org',label:'Website asset binding',fetch:documentRequest=>{const assetUrl=new URL(documentRequest.url);assetUrl.pathname=assetUrl.pathname.slice(0,-5);return this.env.ASSETS.fetch(new Request(assetUrl,documentRequest));}};
+        return protectedResponse(await createRecordingInspectionWorker({...adminPresentation(this.adminBasePath),basePath:this.adminBasePath+'/recording',historyPath:this.adminBasePath+'/history',authorize:()=>({targets:targets.map(target=>({...target,publication})),scopeLabel:this.adminBasePath==='/demo/admin'?'Your demo workspace':'Evidence workspace'})}).fetch(request,this.env));
       }
       const sections = {
         history:()=>createDocumentHistory(this.state.storage),

@@ -42,3 +42,7 @@ export type {RecordingInspectionTarget,RecordingInspectionGrant,RecordingInspect
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 export {normalizeTermsSettingsRelease} from './terms-history.js';
 export type {TermsSettingsRelease} from './terms-history.js';
+
+// @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
+export {checkDocumentPublication} from './publication-check.js';
+export type {PublishedDocumentSource,PublishedDocumentReference,PublicationCheckOptions,PublicationCheck,PublicationFailure} from './publication-check.js';

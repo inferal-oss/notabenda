@@ -60,7 +60,7 @@ Targets have a stable display ID, title, family, site, scope and a read callback
 
 At most twelve fixed targets are read concurrently. `readTimeoutMs` defaults to 5,000 and accepts 1,000–30,000. Remote callbacks should propagate the supplied `{signal}`; timed-out or invalid reads stay unavailable, and late completions cannot replace the rendered result. A callback that ignores cancellation may continue its read. Each scope is observed separately, not as a single cross-scope snapshot. No automatic polling is installed.
 
-The view supports GET/HEAD only and uses private, non-cacheable responses and nonce-bound inline styles without scripts. `?format=json` supplies the same authorized observations and explicit verification boundaries. Other selectors are rejected before the readers run.
+The view supports GET/HEAD only and uses private, non-cacheable responses and nonce-bound inline styles without scripts. `?format=json` supplies the same authorized observations and explicit verification boundaries. Other selectors are rejected before the readers run. The optional served-copy check below adds the explicit `publication=check` action.
 
 ## Connect the workspace overview and starter
 
@@ -79,3 +79,57 @@ The inspection route must authorize independently. Existing callers without the 
 New Cloudflare starters include the read-only route behind existing host inspection authorization. Its default target list is empty. In the generated `src/worker.mjs` constructor, build fixed readers from `ctx.storage` and trusted settings, then pass them through `createWorkspace(ctx.storage, {recordingTargets})`; keep their site/scope resolution in trusted code. An empty view is not proof that the backend contains no notices. The default starter still denies access until the host hook is implemented.
 
 Try the [isolated demo workspace](/demo/admin), then choose **Inspect selections**. Its view reads that session's configured sample scopes; it never reads the operational workspace. See [verification](verification/recording-inspection.md).
+
+## Compare served document copies
+
+Archiving and selecting a document do not put it on your website. Connect an optional fixed reader, then use **Check document copies** in Recording setup to compare each selected document with the HTML returned by that reader. Opening the ordinary view performs no publication fetch.
+
+```js
+const target = {
+  id: 'terms', title: 'Account terms', family: 'terms',
+  siteId: 'your-site', scopeId: 'account-terms',
+  read: () => getTermsRecordingSelection(hostStorage, {
+    siteId: 'your-site', scopeId: 'account-terms',
+  }),
+  publication: {
+    origin: 'https://your-site.example',
+    label: 'Public website',
+    fetch: request => fetch(request),
+  },
+};
+```
+
+Keep the origin and reader in trusted host code. No query parameter can choose a hostname, path, credential, object or scope. The check constructs a GET for the selected immutable `/artifacts/<id>/<kind>.html` path, with no cookies or authorization, omitted credentials and manual redirects. It never follows a redirect. The ordinary selection is verified against its retained archive first; an unavailable or inactive selection triggers no fetch.
+
+| Result | Meaning |
+| --- | --- |
+| HTML bytes match | A complete HTTP 200 HTML response has the retained SHA-256. |
+| Different HTML copy | The returned HTML has another digest. Inspect deployment output and response transformations. |
+| Document not found | The reader returned HTTP 404 or 410. |
+| Check unavailable | Transport, time, size, media type or another response check failed. This is not an empty or matching document. |
+| Not checked / No check connected | No request was made, or the host has not supplied a reader for this scope. |
+
+Each result names its reader, origin and check time. Expand **Copy check references** for the requested URL, digests, HTTP status and any bounded failure code. Response bodies, response headers and transport exception messages never enter the report. A result changes no recording selection or visitor record.
+
+The response limit is 256 KiB, applied to streamed bytes even if Content-Length says less. At most 16,384 body reads are permitted, including empty chunks; the loop yields every 64 reads so immediately available chunks cannot starve deadline and cancellation timers. Empty chunks are not retained. Exceeding the read bound returns `work-limit`, without a partial digest. Each copy check uses the view’s `readTimeoutMs` (5 seconds by default) separately from the selection read; cancellation reaches the supplied Request. A callback that ignores cancellation may finish later, but its body is discarded and cannot replace the result. The twelve-target view bound remains. These observations are not one cross-scope transaction; selection can change after it is read.
+
+Use `?publication=check&format=json` for the same explicit authorized check. The existing verification boundaries remain: a byte match does not establish public routing, browser use, actual permission, enforcement or legal approval. An asset binding can bypass middleware, authentication and the externally served route. Label that reader accurately and check the public HTTP route separately when needed. The project demo uses **Website asset binding** and makes no external HTTP call.
+
+The helper is also available independently:
+
+```js
+import {checkDocumentPublication} from '@notabenda/cloudflare';
+
+const result = await checkDocumentPublication({
+  path: selection.selected.document.url,
+  sha256: selection.selected.document.sha256,
+}, {
+  origin: 'https://your-site.example',
+  label: 'Public website',
+  fetch: request => fetch(request),
+  timeoutMs: 5000,
+  maxBytes: 256 * 1024,
+});
+```
+
+Use an already verified selected reference; the helper itself does not read a backend selection. It accepts only retained privacy, cookie or terms paths and SHA-256 references, never a free-form URL. Limits are at most 30 seconds and 1 MiB; an optional `signal` cancels the check. HTTPS is required, except for an explicit `allowHttpLoopback: true` local fixture on literal localhost, 127.0.0.1 or ::1 hosts. No network reader is installed by default in Cloudflare starters. The adopter chooses manual checks or CI. See [verification](verification/publication-inspection.md).

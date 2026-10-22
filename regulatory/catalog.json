@@ -37,7 +37,8 @@
         "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
         "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
         "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state.",
-        "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state."
+        "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state.",
+        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -156,7 +157,9 @@
         "packages/notabenda/package.json",
         "packages/notabenda-cf/templates/scripts/build-assets.mjs",
         "packages/notabenda-cf/templates/src/host.mjs",
-        "packages/notabenda-cf/bin/doctor.mjs"
+        "packages/notabenda-cf/bin/doctor.mjs",
+        "packages/notabenda-cf/src/publication-check.ts",
+        "scripts/fixtures/publication-inspection.mjs"
       ]
     },
     {
@@ -916,7 +919,8 @@
         "Optional disposable native SQLite recovery for six evidence families, with an external gate/journal, independent destinations and attested cleanup. Transaction recovery checks full pending jobs, later holds/deletions, exact receipts and multi-chunk files, stable-ID retries and persisted uncertainty. Sends drain before maintenance; unresolved RPCs keep it closed. Actual providers, full host acceptance, production key rotation and broader deployment recovery remain open. Disposable host-key rotation checks paired old/new endpoint behavior and unchanged complete state; production credentials and signing keys remain host acceptance.",
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
         "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries.",
-        "Optional actual-starter remote rollout exercise with bounded asset rollback and class-lifecycle forward repair; production and fresh-account acceptance stay separate."
+        "Optional actual-starter remote rollout exercise with bounded asset rollback and class-lifecycle forward repair; production and fresh-account acceptance stay separate.",
+        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification."
       ],
       "implementationRefs": [
         "packages/notabenda/package.json",
@@ -995,7 +999,9 @@
         "scripts/fixtures/transaction-recovery.mjs",
         "scripts/fixtures/transaction-recovery-data.mjs",
         "scripts/check-cf-starter-rollout.mjs",
-        "docs/CLOUDFLARE-ROLLOUT.md"
+        "docs/CLOUDFLARE-ROLLOUT.md",
+        "packages/notabenda-cf/src/publication-check.ts",
+        "scripts/fixtures/publication-inspection.mjs"
       ]
     },
     {
@@ -1058,7 +1064,8 @@
         "Job-focused overview and native cross-area record finder with bounded continuation and separate setup permission.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references.",
-        "Optional complete host-supplied contract form and acknowledgement messages, archive-bound v2 definitions and explicit direction, preserving v1 bytes, uncertain retries and independent delivery jobs."
+        "Optional complete host-supplied contract form and acknowledgement messages, archive-bound v2 definitions and explicit direction, preserving v1 bytes, uncertain retries and independent delivery jobs.",
+        "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification."
       ],
       "implementationRefs": [
         "packages/notabenda-cf/src/worker.ts",
@@ -1112,7 +1119,9 @@
         "examples/processing-application/authorize.mjs",
         "examples/processing-application/notabenda.config.yaml",
         "examples/processing-application/README.md",
-        "docs/PROCESSING-APPLICATION.md"
+        "docs/PROCESSING-APPLICATION.md",
+        "packages/notabenda-cf/src/publication-check.ts",
+        "scripts/fixtures/publication-inspection.mjs"
       ]
     },
     {
@@ -3553,7 +3562,8 @@
         "REQ-PRODUCT-DOCUMENT-EXPLANATION",
         "REQ-PRODUCT-COLLECTION-FLOW",
         "REQ-PRODUCT-TERMS-RECOVERY",
-        "REQ-PRODUCT-TERMS-REHEARSAL"
+        "REQ-PRODUCT-TERMS-REHEARSAL",
+        "REQ-PRODUCT-PUBLICATION-INSPECTION"
       ]
     },
     {
@@ -11011,6 +11021,46 @@
         "docs/verification/terms-rehearsal.md"
       ],
       "implementationNote": "Lazy native-controls rehearsal with detached public inventory, script-disabled frame, bounded same-origin CSS loading, private Map storage, inert start/stop counters, real cancellable timers, fresh/return visits, explicit GPC simulation and generation-fenced teardown on close/edit/import."
+    },
+    {
+      "id": "REQ-PRODUCT-PUBLICATION-INSPECTION",
+      "jurisdiction": "PRODUCT",
+      "title": "Explicit served-document byte checks for selected recording references",
+      "kind": "product-standard",
+      "summary": "Compare the pinned legal HTML selected by an authorized backend scope with bytes returned by a fixed host-owned reader, distinguishing exact matches, differences, missing documents and unavailable checks without reading visitor state or altering recording selections.",
+      "appliesWhen": "An authorized operator deliberately checks a connected document reader for an existing recording selection.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-BACKOFFICE",
+        "FEAT-DEPLOYMENT",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PUBLICATION-INSPECTION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "A match describes bounded bytes returned by the configured host reader at that time. Asset bindings can bypass public routing. It establishes no loader behavior, personal permission, legal review or lasting deployment state. Host authorization, callback implementation and source selection remain trusted responsibilities.",
+      "implementationRefs": [
+        "packages/notabenda-cf/src/publication-check.ts",
+        "packages/notabenda-cf/src/recording-inspection.ts",
+        "packages/notabenda-cf/src/index.ts",
+        "site/worker.mjs",
+        "scripts/fixtures/publication-inspection.mjs",
+        "packages/notabenda/src/integration-reference.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda-cf/test/publication-check.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/recording-inspection.test.mjs",
+        "scripts/check-cf-starter-runtime.mjs",
+        "docs/verification/publication-inspection.md"
+      ],
+      "implementationNote": "Bounded credential-free manual-redirect requests, fixed origin/source capture, cancelable body reads and hashes, optional operator HTML/JSON observations, declared website asset-binding example and actual local starter/SQLite exercise."
     }
   ],
   "verification": [
@@ -13120,6 +13170,21 @@
         "packages/notabenda-cf/test/doctor.test.mjs",
         "site/test/terms-rehearsal.test.mjs",
         "docs/verification/terms-rehearsal.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PUBLICATION-INSPECTION",
+      "requirementIds": [
+        "REQ-PRODUCT-PUBLICATION-INSPECTION"
+      ],
+      "status": "automated",
+      "expected": "Only deliberate authorized checks fetch fixed pinned paths. Exact/different/missing/unavailable states, omitted credentials, no redirect following, bounded cancelable reads, late response disposal, captured settings, selection binding, isolated demo readers and unchanged SQLite state across restart are verified. Public routing, installation and legal approval remain separate.",
+      "testRefs": [
+        "packages/notabenda-cf/test/publication-check.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/recording-inspection.test.mjs",
+        "scripts/check-cf-starter-runtime.mjs",
+        "docs/verification/publication-inspection.md"
       ]
     }
   ],

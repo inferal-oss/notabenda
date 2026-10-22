@@ -265,3 +265,5 @@ History keeps agreement statements and button labels separate from document sect
 `createDocumentHistory().getTermsSettings(id)` validates the archive before returning named declarations, selected versioned interface messages and terms-document references, within 64 KiB. Missing declarations return `declaration: 'not-declared'`; a missing release returns `undefined`. Generic records and exports remain unchanged. Custom adapters can use `TermsSettingsRelease` and `normalizeTermsSettingsRelease`.
 
 The comparison shows changed declarations, document facts and interface messages independently. It does not reconstruct unretained built-in copy, infer active offers or record acceptance. See [the terms guide](../../docs/TERMS.md#review-archived-agreement-wording).
+
+Connect a fixed document reader to Recording setup to enable **Check document copies**. It compares bounded HTML bytes with selected retained references and keeps differences, missing files and failed checks distinct. No credentials or redirects are used; asset-binding checks do not establish public routing. See [served-copy checks](../../docs/RECORDING-INSPECTION.md#compare-served-document-copies).

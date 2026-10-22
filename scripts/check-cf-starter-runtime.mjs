@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
 // @requirements REQ-PRODUCT-TERMS-REHEARSAL
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-CF-RECOVERY-REHEARSAL REQ-PRODUCT-EVIDENCE-LIFECYCLE
@@ -12,7 +13,7 @@ import {randomUUID,createHash} from 'node:crypto';
 import {JSDOM} from 'jsdom';
 import {exampleConsentConfig} from '../examples/static/choices-build.mjs';
 import {fixture} from '../packages/notabenda/test/helpers.mjs';
-import {compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
+import {compileLegalDocuments,createConsentNotice,createTermsOffer} from '@notabenda/core/content';
 import {compileAuthoredDocuments} from '@notabenda/authoring';
 
 const root=fileURLToPath(new URL('../',import.meta.url)),port=Number(process.env.NOTABENDA_STARTER_CHECK_PORT??4181);
@@ -51,9 +52,15 @@ try{
  await writeFile(target+'/src/authorize.mjs',`export async function authorizeHostRequest(request){const role=request.headers.get('X-Starter-Role');return role==='reader'?{inspect:true}:role==='editor'?{inspect:true,configure:true,export:true,source:true}:null;}\n`);
  const config=await fixture({reviewed:true});config.site.id='juniper-notes';
  const publicRelease=compileLegalDocuments(config).artifact;
+ const publicationOffer=createTermsOffer(publicRelease,{scopeId:'publication-check',statement:'I agree to these sample terms.',actionLabel:'Agree'});
+ await mkdir(target+'/public/artifacts/'+publicRelease.manifest.artifactId,{recursive:true});
+ await writeFile(target+'/public/artifacts/'+publicRelease.manifest.artifactId+'/terms.html',publicRelease.pages[publicRelease.manifest.documents.find(d=>d.kind==='terms').file]);
+ await writeFile(target+'/src/fixture-publication.mjs',await readFile(resolve(root,'scripts/fixtures/publication-inspection.mjs'),'utf8'));
+ await writeFile(target+'/src/fixture-publication-offer.mjs','export const publicationOffer='+JSON.stringify(publicationOffer)+';\n');
  const authored=await compileAuthoredDocuments(config,{terms:{format:'mdx',source:'---\nkind: terms\ntitle: Fictional starter terms\nroute: /terms\nversion: source-1\neffectiveDate: 2026-10-18\nreview:\n  status: reviewed\n---\n## A fictional note\n\nRetained private MDX starter fixture.'}});
  await writeFile(target+'/src/fixture-releases.mjs','export const releases = '+JSON.stringify([publicRelease,authored.archive])+';\n');
- const source=await readFile(target+'/src/worker.mjs','utf8');
+ let source=await readFile(target+'/src/worker.mjs','utf8');
+ source="import {createPublicationFixture} from './fixture-publication.mjs';\nimport {publicationOffer} from './fixture-publication-offer.mjs';\n"+source.replace('this.workspace=createWorkspace(ctx.storage);','this.publicationFixture=createPublicationFixture(ctx.storage,env.ASSETS,publicationOffer);this.workspace=createWorkspace(ctx.storage,{recordingTargets:this.publicationFixture.targets});').replace('async inspect(request,access){','async seedPublication(){return this.publicationFixture.seed();}\n async publicationState(){return this.publicationFixture.state();}\n async inspect(request,access){');
  await writeFile(target+'/src/worker.mjs',source.replace('export default {fetch:createHost(authorizeHostRequest)};',`import {settings} from './settings.mjs';
 import {releases} from './fixture-releases.mjs';
 const host=createHost(authorizeHostRequest);
@@ -61,13 +68,17 @@ export default {async fetch(request,env){
  if(new URL(request.url).pathname==='/__fixture/archive'&&request.method==='POST'&&request.headers.get('X-Starter-Role')==='seed'){
   const object=env.EVIDENCE.getByName('notabenda:'+settings.siteId),records=[];
   for(const release of releases)records.push(await object.recordRelease(release,{changeNote:'Fictional starter integration archive',recordedAt:'2026-10-18T12:00:00Z'}));
-  return Response.json(records);
+  await object.seedPublication();return Response.json(records);
  }
+ if(new URL(request.url).pathname==='/__fixture/publication-state'&&request.method==='GET'&&request.headers.get('X-Starter-Role')==='seed')return Response.json(await env.EVIDENCE.getByName('notabenda:'+settings.siteId).publicationState());
  return host(request,env);
 }};`));
  await start();
  for(const section of ['history','choices','agreements','processing']){const response=await request('/studio/'+section,'reader');assert.equal(response.status,200);assert.match(await response.text(),/No matches/);}
  const seed=await request('/__fixture/archive','seed',{method:'POST'});assert.equal(seed.status,200);assert.ok((await seed.json()).every(record=>record.created));
+ const publicationBefore=await(await request('/__fixture/publication-state','seed')).json();
+ const unchecked=await(await request('/studio/recording?format=json','reader')).json();assert.ok(unchecked.observations.every(o=>o.publication.status==='not-requested'));
+ const copies=await(await request('/studio/recording?format=json&publication=check','reader')).json();assert.deepEqual(copies.observations.map(o=>o.publication.status),['matched','different','missing']);assert.equal(copies.observations[0].publication.expectedSha256,publicationOffer.document.sha256);assert.equal(copies.boundaries.verifiesPublicRouting,false);assert.deepEqual(await(await request('/__fixture/publication-state','seed')).json(),publicationBefore);
  const history=await request('/studio/history','reader');assert.match(await history.text(),/Fictional starter integration archive/);
  for(const path of ['/studio/setup','/assets/setup.mjs','/assets/setup-consent-rehearsal.mjs','/assets/setup-terms-rehearsal.mjs','/assets/notabenda.css','/studio/history/export'])assert.equal((await request(path,'reader')).status,403);
  for(const path of ['/studio/setup','/assets/setup.mjs','/assets/setup-consent-rehearsal.mjs','/assets/setup-terms-rehearsal.mjs','/assets/notabenda.css','/studio/history/export'])assert.equal((await request(path,'editor')).status,200,path);
@@ -83,6 +94,8 @@ export default {async fetch(request,env){
  const head=await request('/studio/history','reader',{method:'HEAD'});assert.equal(head.status,200);assert.equal(await head.text(),'');
  await stop();await start();
  const recovered=await request('/__fixture/archive','seed',{method:'POST'});assert.equal(recovered.status,200);assert.ok((await recovered.json()).every(record=>record.created===false));
+ const restartedCopies=await(await request('/studio/recording?format=json&publication=check','reader')).json();assert.deepEqual(restartedCopies.observations.map(o=>o.publication.status),['matched','different','missing']);assert.deepEqual(await(await request('/__fixture/publication-state','seed')).json(),publicationBefore);
+ console.log('Generated starter publication: actual asset binding, missing/different fault responses, and unchanged selected SQLite state across restart passed.');
  const restored=await request('/studio/history/record?id='+publicRelease.manifest.artifactId,'reader');assert.equal(restored.status,200);assert.match(await restored.text(),/Fictional starter integration archive/);
  console.log('Generated starter: private DO RPC, SQLite restart recovery, immutable/public/MDX archives, setup assets, permission separation and read-only routes passed.');
  // A pre-erasure backup is restored into a DIFFERENT local SQLite object.
@@ -95,7 +108,8 @@ export default {async fetch(request,env){
  await writeFile(target+'/src/fixture-recovery.mjs',await readFile(resolve(root,'scripts/fixtures/starter-recovery.mjs'),'utf8'));
  let worker=await readFile(target+'/src/worker.mjs','utf8');
  worker="import {createRecoveryFixture} from './fixture-recovery.mjs';\nimport {recoveryData} from './fixture-recovery-data.mjs';\n"+worker;
- worker=worker.replace('this.workspace=createWorkspace(ctx.storage);','this.workspace=createWorkspace(ctx.storage);this.recovery=createRecoveryFixture(ctx.storage,recoveryData);');
+ const publicationConstructor='this.workspace=createWorkspace(ctx.storage,{recordingTargets:this.publicationFixture.targets});';assert.ok(worker.includes(publicationConstructor));
+ worker=worker.replace(publicationConstructor,publicationConstructor+'this.recovery=createRecoveryFixture(ctx.storage,recoveryData);');
  worker=worker.replace('return this.workspace.inspect(request,access);',"if(await this.recovery.isolated())return new Response('Recovery isolated.',{status:503});return this.workspace.inspect(request,access);");
  worker=worker.replace('return this.workspace.recordRelease(artifact,metadata);',"if(await this.recovery.isolated())throw Error('Recovery isolated.');return this.workspace.recordRelease(artifact,metadata);");
  worker=worker.replace('async recordRelease(artifact,metadata){','async fixtureRecovery(action,payload){return JSON.parse(JSON.stringify(await this.recovery.run(action,payload)));  }\n async recordRelease(artifact,metadata){');

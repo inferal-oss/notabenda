@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
 // @requirements REQ-PRODUCT-RECORDING-INSPECTION REQ-PRODUCT-CF-HOST REQ-PRODUCT-DEMO-WORKSPACE REQ-PRODUCT-A11Y
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -28,4 +29,14 @@ test('demo recording views read only their own database and preserve all recordi
 test('actual selected recording cards and their native references retain semantic structure',async()=>{
  const {env}=environment(),cookie=await session(env),html=await(await serveHost(req('/demo/admin/recording',cookie),env)).text(),audit=await createAccessibilityAudit(html,{label:'Recording setup'});
  try{let result=await audit.scan();assert.deepEqual(result.violations,[]);assert.deepEqual(result.structural,[]);assert.deepEqual(result.warnings,[]);const d=audit.dom.window.document;d.querySelector('.recording-item details').open=true;result=await audit.scan();assert.deepEqual(result.violations,[]);assert.deepEqual(result.structural,[]);assert.equal(result.incomplete.some(v=>v.id==='aria-prohibited-attr'),false);assert.equal(d.querySelectorAll('h1').length,1);assert.ok([...d.querySelectorAll('.recording-item summary')].every(s=>s.textContent.trim()));}finally{audit.close();}
+});
+
+
+test('explicit demo served-copy checks use only the asset binding and leave both session databases unchanged',async()=>{
+ const {env,objects}=environment();let fetched=[];
+ env.ASSETS.fetch=async request=>{const url=new URL(request.url);fetched.push({url:url.href,cookie:request.headers.get('Cookie'),authorization:request.headers.get('Authorization'),redirect:request.redirect});return new Response(await readFile(new URL('../dist/public'+url.pathname+'.html',import.meta.url)),{headers:{'Content-Type':'text/html; charset=utf-8'}});};
+ const cookie=await session(env),object=[...objects.values()][0],before=await state(object.storage);
+ const initial=await(await serveHost(req('/demo/admin/recording?format=json',cookie),env)).json();assert.ok(initial.observations.every(o=>o.publication.status==='not-requested'));assert.equal(fetched.length,0);
+ const json=await(await serveHost(req('/demo/admin/recording?format=json&publication=check',cookie),env)).json();assert.ok(json.observations.every(o=>o.publication.status==='matched'));assert.equal(fetched.length,8);assert.ok(fetched.every(r=>r.url.startsWith('https://notabenda.org/artifacts/')&&!r.url.endsWith('.html')&&r.cookie===null&&r.authorization===null&&r.redirect==='manual'));assert.equal(json.boundaries.verifiesPublicRouting,false);assert.deepEqual(await state(object.storage),before);
+ const html=await(await serveHost(req('/demo/admin/recording?publication=check',cookie),env)).text(),audit=await createAccessibilityAudit(html,{label:'served recording copies'});try{const result=await audit.scan();assert.deepEqual(result.violations,[]);assert.deepEqual(result.structural,[]);assert.ok(audit.dom.window.document.body.textContent.includes('Website asset binding'));assert.equal(audit.dom.window.document.querySelectorAll('[data-status=matched]').length,8);}finally{audit.close();}
 });
