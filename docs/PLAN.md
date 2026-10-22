@@ -325,6 +325,8 @@ Browser delivery now has an explicit `@notabenda/core/headless` export, a consen
 - **Operations:** deploy into a fresh account/environment, run migrations, rotate keys, export data, expire records, restore a backup, reapply deletions, and recover from partial deployment.
 - **Experience/performance:** manual keyboard/screen-reader verification, contrast, compact initial mobile layout, deliberate drawer expansion, tap alternatives to gestures, safe areas, short screens/keyboard/zoom/RTL themes, import-safe SSR, hydration, SPA navigation, bundle budgets, and startup/interaction timing. Verify that initial display does not trap focus/block the page, dismissal grants nothing, and route changes do not recreate an unsolicited takeover. The CLI should report observed issues, never a universal legal-compliance score.
 
+Selected [native Safari terms checks](verification/terms-browser.md#22-october-native-safari-reader-agreement-and-evidence) now exercise pinned reading, deliberate keyboard acknowledgment, status focus, scoped evidence search and callback-rejection retry. Exact fixture reader publication is checked separately from the hosted demo; full platform, network, assistive and production host acceptance remains open.
+
 ## 11. Public release checklist and deferred work
 
 Before release: verify npm names; include the project's Apache-2.0 OR MIT license choice and both license texts; document separate content licenses; include a security reporting policy; pin/review dependencies; verify package contents exclude secrets and private examples; provide install/uninstall/migration instructions and evidence-format versioning. Use only fictional operators, domains, vendors, and subjects in project fixtures and examples.

@@ -7,12 +7,19 @@ import {fileURLToPath} from 'node:url';
 const types={'.html':'text/html; charset=utf-8','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg','.webp':'image/webp','.md':'text/plain; charset=utf-8','.txt':'text/plain; charset=utf-8'};
 export async function accessibilityAssetHandler({publicRoot='site/dist/public',fixtureRoot='.local/accessibility-fixture'}={}){
  const roots={public:await realpath(publicRoot),fixture:await realpath(fixtureRoot)};
+ let fixturePublicFiles=new Set();
+ try{
+  const manifest=await realpath(resolve(roots.fixture,'public-files.json'));if(!manifest.startsWith(roots.fixture+'/'))throw Error();
+  const bytes=await readFile(manifest);if(bytes.length>8192)throw Error();const paths=JSON.parse(bytes.toString('utf8'));
+  if(!Array.isArray(paths)||paths.length>16||new Set(paths).size!==paths.length||paths.some(p=>typeof p!=='string'||!/^artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(p)))throw Error();
+  fixturePublicFiles=new Set(paths);
+ }catch(error){if(error.code!=='ENOENT')throw Error('Invalid fixture public-file manifest.');}
  return async request=>{
   const headers={'cache-control':'no-store','x-content-type-options':'nosniff'};
   if(!['GET','HEAD'].includes(request.method))return new Response('Method not allowed',{status:405,headers:{...headers,allow:'GET, HEAD'}});
   try{
-   const path=new URL(request.url).pathname,isFixture=path.startsWith('/qa-a11y/'),root=isFixture?roots.fixture:roots.public;
-   let file=resolve(root,'.'+decodeURIComponent(isFixture?path.slice('/qa-a11y'.length):path));
+   const path=new URL(request.url).pathname,isFixture=path.startsWith('/qa-a11y/'),isFixturePublic=fixturePublicFiles.has(path.slice(1)),root=isFixture||isFixturePublic?roots.fixture:roots.public;
+   let file=resolve(root,'.'+decodeURIComponent(isFixturePublic?'/public'+path:isFixture?path.slice('/qa-a11y'.length):path));
    if(file!==root&&!file.startsWith(root+'/'))throw Error();
    if((await stat(file)).isDirectory())file=resolve(file,'index.html');
    file=await realpath(file);if(file!==root&&!file.startsWith(root+'/'))throw Error();

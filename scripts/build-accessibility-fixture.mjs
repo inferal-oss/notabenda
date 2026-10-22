@@ -25,7 +25,11 @@ for(const page of data.pages){
 const shell='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Component accessibility fixture</title><link rel="stylesheet" href="/assets/notabenda.css"><link rel="stylesheet" href="/assets/consent.css"><link rel="stylesheet" href="/assets/example-theme.css"></head><body class="nb-page"><main id="main" class="nb-document"><h1>Privacy settings</h1><p>Check the default components with keyboard, browser layout and the audit engine.</p><div id="widget"></div></main>'+bridge+'</body></html>';
 await writeFile(new URL('widget.html',output),shell);
 for(const widget of ['consent','consent-preferences','consent-dark','consent-dark-preferences','terms','terms-error','permission','permission-error','setup','setup-practices','setup-review'])scenarios.push({label:widget+' · mounted',url:'widget.html?widget='+widget,kind:'mounted-component'});
-const {pages,...publicData}=data;await writeFile(new URL('data.json',output),JSON.stringify(publicData));
+const {pages,artifactFiles,...publicData}=data;await writeFile(new URL('data.json',output),JSON.stringify(publicData));
+for(const [path,body] of Object.entries(artifactFiles)){
+ const target=new URL('public/'+path,output);await mkdir(new URL('./',target),{recursive:true});await writeFile(target,body);
+}
+await writeFile(new URL('public-files.json',output),JSON.stringify(Object.keys(artifactFiles)));
 await copyFile(new URL('../node_modules/axe-core/axe.min.js',import.meta.url),new URL('axe.min.js',output));
 await copyFile(new URL('../node_modules/axe-core/LICENSE',import.meta.url),new URL('axe-core-LICENSE.txt',output));
 const widgetSource=`import {createConsentRuntime,mountControls} from '@notabenda/core/consent';

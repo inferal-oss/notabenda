@@ -10695,7 +10695,7 @@
         "REQ-PRODUCT-A11Y"
       ],
       "status": "partial",
-      "expected": "Keyboard, focus, screen-reader, contrast, zoom, mobile and RTL checks run against each built-in theme. Current-page semantic scans and actual mounted/synthetic-operator fixtures retain environment exclusions and incomplete results. Native Chromium runs check contrast and visible labels at desktop/mobile widths; stale audit results cannot credit another scenario, and comparison/raw blocks remain keyboard reachable. These checks extend partial evidence rather than establish full acceptance.",
+      "expected": "Keyboard, focus, screen-reader, contrast, zoom, mobile and RTL checks run against each built-in theme. Current-page semantic scans and actual mounted/synthetic-operator fixtures retain environment exclusions and incomplete results. Native Chromium runs check contrast and visible labels at desktop/mobile widths; stale audit results cannot credit another scenario, and comparison/raw blocks remain keyboard reachable. These checks extend partial evidence rather than establish full acceptance. Local fixture readers retain exact compiler bytes, use a bounded canonical path manifest and reject escaping symlinks. Selected native Safari terms reader, keyboard acknowledgment, callback-rejection retry and operator evidence observations remain explicitly bounded.",
       "testRefs": [
         "packages/notabenda/test/documents.test.mjs",
         "docs/verification/consent-browser.md",
@@ -10856,7 +10856,7 @@
         "REQ-PRODUCT-TERMS-ACCEPTANCE"
       ],
       "status": "automated",
-      "expected": "Exercise unchecked/coalesced submission, exact pinned document/action hashes, no optimistic success, lost-ack retry, active-offer transaction race, idempotency conflicts, server-bound subject/site/scope/operation, independent preview rejection, invalid clocks, store isolation and readable authorized evidence.",
+      "expected": "Exercise unchecked/coalesced submission, exact pinned document/action hashes, no optimistic success, lost-ack retry, active-offer transaction race, idempotency conflicts, server-bound subject/site/scope/operation, independent preview rejection, invalid clocks, store isolation and readable authorized evidence. Selected native Safari desktop review covers pinned reading, explicit keyboard submission/status focus, scoped evidence search and retryable callback failure; broader platform/network acceptance remains open.",
       "testRefs": [
         "packages/notabenda/test/terms.test.mjs",
         "docs/verification/terms-browser.md",

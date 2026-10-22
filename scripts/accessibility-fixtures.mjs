@@ -33,5 +33,8 @@ export async function accessibilityFixtureData(){
   if(response.status!==200||!response.headers.get('content-type')?.startsWith('text/html'))throw Error('Accessibility fixture did not render HTML: '+name);
   pages.push({name,html:await response.text()});
  }
- return {config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages};
+ // Keep exact pinned reader files private to the local fixture server. Do not add
+ // test releases to the deployable site's artifact collection.
+ const artifactFiles=Object.fromEntries([build,revision].flatMap(b=>Object.entries(b.files).filter(([path])=>/^artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(path))));
+ return {config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
 }
