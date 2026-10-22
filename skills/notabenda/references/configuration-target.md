@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
 # Determine the configuration target
 
 Start from the requested behavior, then establish the facts needed for it. A cookie policy, a consent controller and a stored choice receipt are three different outcomes. A terms page, an explicit agreement and a paid checkout are also different. Ask which outcome is intended when that distinction changes the implementation; do not add all of them by default.
@@ -113,3 +114,12 @@ For a new site, omit `--config`. Use a new output directory. The wizard exports 
 Keep a separate list of host tasks. Adding `consent` does not gate a script that the host still loads directly. A generated terms page does not register an agreement offer. Recording an archive does not publish or activate it. A stored contract declaration does not send an acknowledgement, perform payment or fulfill a contract.
 
 Run the exact target scenarios and validation. A successful preview is a draft milestone; production readiness also requires resolved facts, actual review and the host behavior needed for that target. Give a precise handoff for remaining decisions or unsupported capabilities.
+
+
+## Read pack capabilities before choosing another package
+
+`notabenda packs --json` and selected pack plans include `capabilities`. Each names a supplied feature, setup tool or review guide, its requirement IDs, guide and limitation. These describe components, not installation status or legal readiness. Plain CLI listings and both agent brief stages include the same distinctions.
+
+Use `za-marketing-requests` / target `south-africa-marketing-request` for the supported South African web request. It requires `createSouthAfricaMarketingOffer`, profile `za-popia-web-request` (schema 4), explicit goods/services, future method, methodLabel, complete labels, mandatory refusal copy, revision and withdrawal route. These are builder inputs, not SiteConfig fields. The ordinary form editor cannot author the specialized profile. Preserve unknown solicitation eligibility and wider withholding history; connect actual sending/suppression separately.
+
+Singapore consent-route research remains review guidance within Cookie choices, not an installable deemed-consent mode. Explicit refusal belongs to its purpose/channel permission; silence, an unchecked box and withdrawal are distinct. Selection must not manufacture any answers, grants or jurisdiction policies.

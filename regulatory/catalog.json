@@ -40,7 +40,8 @@
         "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state.",
         "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
         "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
-        "Release-bound local processing notice editor and JSON/YAML/Markdown settings compiler, with explicit scope/activities/wording and direct final-artifact handoff; no recording or policy activation."
+        "Release-bound local processing notice editor and JSON/YAML/Markdown settings compiler, with explicit scope/activities/wording and direct final-artifact handoff; no recording or policy activation.",
+        "Requirement-linked per-pack feature/tool/review discovery and a focused South African web marketing request path; no selection-based solicitation authorization or full-country coverage claim."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -186,7 +187,13 @@
         "packages/notabenda/src/processing-workbench-app.ts",
         "packages/notabenda/src/processing-workbench.css",
         "examples/processing-workbench/build.mjs",
-        "examples/static/choices-build.mjs"
+        "examples/static/choices-build.mjs",
+        "packages/notabenda/src/pack-capabilities.ts",
+        "packages/notabenda/src/pack-capabilities-ui.ts",
+        "packages/notabenda/src/cartridges-cli.ts",
+        "docs/CARTRIDGES.md",
+        "docs/SOUTH-AFRICA-MARKETING.md",
+        "skills/notabenda/references/configuration-target.md"
       ]
     },
     {
@@ -3673,7 +3680,8 @@
         "REQ-PRODUCT-COLLECTION-WORKBENCH",
         "REQ-PRODUCT-COLLECTION-REHEARSAL",
         "REQ-PRODUCT-FORM-PERMISSION-CONNECTION",
-        "REQ-PRODUCT-PROCESSING-WORKBENCH"
+        "REQ-PRODUCT-PROCESSING-WORKBENCH",
+        "REQ-PRODUCT-PACK-CAPABILITIES"
       ]
     },
     {
@@ -8820,7 +8828,7 @@
         "packages/notabenda-cf/test/starter.test.mjs",
         "site/test/site-organization.test.mjs"
       ],
-      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All twenty packs are shown in five shelves with a counted index. The homepage and architecture guide list all twenty packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
+      "implementationNote": "One registry references installed integration targets and requirement IDs. Focused setup preserves unanswered and unrelated facts; prerequisites require review/reuse. Private report metadata pins selected pack revisions; selection never fabricates a yes/no practice answer. Draft config, report and agent brief are separate outputs. No persistence is introduced in the visitor browser. The same packaged SSR/mountable console and separate stylesheet serve public/operator setup and new CF starters; link destinations are host supplied and starter assets require configuration access. Packs is the public name. Existing CLI/import aliases and pinned report data remain compatible. All twenty-one packs are shown in five shelves with a counted index. The homepage and architecture guide list all twenty-one packs from the installed registry, with direct links to stable setup card anchors. The main navigation shows the library count; the reusable setup index names every pack."
     },
     {
       "id": "REQ-PRODUCT-WORKSPACE-OVERVIEW",
@@ -11411,6 +11419,46 @@
         "docs/verification/processing-workbench.md"
       ],
       "implementationNote": "Optional new-only local CLI/workbench, bounded JSON/YAML/Markdown settings, shared inert native presentation, language/direction, direct final-artifact notice compilation with exact retained pages and stale asynchronous operation fencing."
+    },
+    {
+      "id": "REQ-PRODUCT-PACK-CAPABILITIES",
+      "jurisdiction": "PRODUCT",
+      "title": "Discover supplied capabilities and focused regional request work",
+      "kind": "product-standard",
+      "summary": "List each pack\u2019s supplied features, setup tools and source-linked review guidance with requirement references, guides and explicit limits. Expose the supported South African web marketing request as a focused pack without claiming complete jurisdiction coverage; keep refusal purpose/channel-bound and Singapore review guidance distinct from installed consent behavior.",
+      "appliesWhen": "Browsing packs, trying examples, preparing a scoped draft or handing integration work to an agent.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PACK-CAPABILITIES"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "The metadata describes supplied components, not verified installation, solicitation eligibility, prescribed-information sufficiency or legal approval. Selection activates no policy; host review, identity, sending and suppression remain separate.",
+      "implementationRefs": [
+        "packages/notabenda/src/pack-capabilities.ts",
+        "packages/notabenda/src/pack-capabilities-ui.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/cartridges-ui.ts",
+        "packages/notabenda/src/cartridges-cli.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/static/pack-learning.mjs",
+        "docs/CARTRIDGES.md",
+        "docs/SOUTH-AFRICA-MARKETING.md",
+        "skills/notabenda/references/configuration-target.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/pack-capabilities.test.mjs",
+        "site/test/pack-capabilities.test.mjs",
+        "docs/verification/pack-capabilities.md"
+      ],
+      "implementationNote": "Installed per-pack metadata distinguishes features, setup tools and review guides, each with requirement IDs and limits. The reusable console, examples, CLI and agent briefs expose these records. The twenty-first pack resolves a distinct South African web-request target and explicit host input review using the existing permission engine; selection changes no runtime or jurisdiction facts."
     }
   ],
   "verification": [
@@ -13606,6 +13654,19 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/processing-workbench.test.mjs",
         "docs/verification/processing-workbench.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PACK-CAPABILITIES",
+      "requirementIds": [
+        "REQ-PRODUCT-PACK-CAPABILITIES"
+      ],
+      "status": "automated",
+      "expected": "All installed packs expose requirement-linked features/tools/reviews consistently in UI, examples and CLI/agent handoffs. The focused ZA plan preserves specialized builder instructions and unresolved host work, reuses the existing foundation and changes no runtime/jurisdiction/scope facts. Singapore guidance never becomes a grant or runtime mode; old selection pins remain compatible.",
+      "testRefs": [
+        "packages/notabenda/test/pack-capabilities.test.mjs",
+        "site/test/pack-capabilities.test.mjs",
+        "docs/verification/pack-capabilities.md"
       ]
     }
   ],

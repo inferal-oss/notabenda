@@ -3,7 +3,7 @@
 
 Requirement: `REQ-PRODUCT-PACK-EDUCATION`.
 
-All twenty installed packs supply a brief outcome, a plain introduction and their own example use case, three-step flow and result explanation. The website library, homepage directory, example-topic descriptions and textual pack guide use the same installed records. Display names can become clearer without changing stable IDs, selection revisions, prerequisites or runtime configuration.
+All twenty-one installed packs supply a brief outcome, a plain introduction and their own example use case, three-step flow and result explanation. The website library, homepage directory, example-topic descriptions and textual pack guide use the same installed records. Display names can become clearer without changing stable IDs, selection revisions, prerequisites or runtime configuration.
 
 Static walkthroughs are native collapsed disclosures. The two timing packs have separate instructions; deposit and conditional-fee order routes have their own product/payment examples. Cookie, media and Google walkthroughs explain how to reset remembered choices before checking initial behaviour. Storage objections name their actual switches rather than the appearance preview buttons.
 

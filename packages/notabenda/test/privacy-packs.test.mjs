@@ -17,7 +17,7 @@ const additions=['collection-notices','indirect-collection','privacy-requests','
 const item=(review,id,key)=>review.packs.find(p=>p.id===id).items.find(i=>i.id===key);
 
 test('new privacy jobs keep separate targets, language contracts and enforcement paths without changing older pins',()=>{
- const library=packLibrary();assert.equal(library.length,20);assert.deepEqual(packGroups().map(g=>library.filter(p=>p.shelf===g.id).length),[3,4,6,5,2]);
+ const library=packLibrary();assert.equal(library.length,21);assert.deepEqual(packGroups().map(g=>library.filter(p=>p.shelf===g.id).length),[3,4,7,5,2]);
  const direct=planPacks(selectPacks(['collection-notices'])),indirect=planPacks(selectPacks(['indirect-collection']));
  assert.deepEqual(direct.reference.requestedTargetIds,['collection-notice']);assert.deepEqual(indirect.reference.requestedTargetIds,['indirect-collection-notice']);
  assert.ok(direct.reference.targets.find(t=>t.id==='collection-notice').conditionalConfig.some(r=>r.requiredPaths.includes('localization.collection')));
@@ -65,7 +65,7 @@ test('each privacy pack exposes its focused questions and the same regenerated i
 test('scoped CLI exports the concrete input review and matching brief, then recomputes them on resume',async()=>{
  const directory=await mkdtemp(join(tmpdir(),'notabenda-privacy-packs-')),cli=new URL('../dist/cli.js',import.meta.url).pathname,selection=selectPacks(additions),run=(...args)=>spawnSync(process.execPath,[cli,...args],{cwd:directory,encoding:'utf8'});
  try{
-  const listing=run('packs','--json');assert.equal(listing.status,0,listing.stderr);assert.deepEqual(JSON.parse(listing.stdout).groups,packGroups());assert.equal(JSON.parse(listing.stdout).cartridges.length,20);
+  const listing=run('packs','--json');assert.equal(listing.status,0,listing.stderr);assert.deepEqual(JSON.parse(listing.stdout).groups,packGroups());assert.equal(JSON.parse(listing.stdout).cartridges.length,21);
   const answers=planPacks(selection).reference.targetAnswersTemplate;answers.answers['direct-collection']={choice:'yes',justification:'PRIVATE_FORM_REVIEW'};await writeFile(join(directory,'answers.json'),JSON.stringify(answers));
   const result=run('wizard','--packs',additions.join(','),'--answers','answers.json','--out-dir','draft');assert.equal(result.status,0,result.stderr);
   const config=JSON.parse(await readFile(join(directory,'draft/notabenda.config.json'),'utf8')),report=JSON.parse(await readFile(join(directory,'draft/setup.private.json'),'utf8')),brief=await readFile(join(directory,'draft/notabenda-setup-brief.txt'),'utf8');

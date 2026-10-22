@@ -24,7 +24,7 @@ function googleConfig(base){
 }
 
 test('specialist packs retain distinct prerequisites and every original pin',()=>{
- const library=packLibrary();assert.equal(library.length,20);assert.deepEqual(packGroups().map(g=>library.filter(p=>p.shelf===g.id).length),[3,4,6,5,2]);
+ const library=packLibrary();assert.equal(library.length,21);assert.deepEqual(packGroups().map(g=>library.filter(p=>p.shelf===g.id).length),[3,4,7,5,2]);
  for(const pack of library.filter(p=>!additions.includes(p.id)))assert.deepEqual(selectPacks([pack.id]).selected,[{id:pack.id,revision:'1'}]);
  const technology=planPacks(selectPacks(['technology-notices'])),storage=planPacks(selectPacks(['assessed-storage-settings'])),google=planPacks(selectPacks(['google-basic']));
  assert.deepEqual(technology.reference.requestedTargetIds,['technology-functions']);assert.deepEqual(storage.reference.requestedTargetIds,['storage-exceptions']);assert.deepEqual(google.reference.requestedTargetIds,['google-basic']);

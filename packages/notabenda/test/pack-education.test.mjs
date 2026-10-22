@@ -6,8 +6,8 @@ import {packLibrary,planPacks,selectPacks} from '@notabenda/core/packs';
 import {applyPackLearning,renderPackLearning,withPackLearningResponse} from '../../../examples/static/pack-learning.mjs';
 
 test('all installed jobs have distinct use cases, short descriptions and a complete example flow without changing selection pins',()=>{
- const packs=packLibrary();assert.equal(packs.length,20);
- assert.equal(new Set(packs.map(p=>p.example.useCase)).size,20);
+ const packs=packLibrary();assert.equal(packs.length,21);
+ assert.equal(new Set(packs.map(p=>p.example.useCase)).size,21);
  for(const p of packs){assert.ok(p.outcome.length<=130,p.id);assert.ok(p.introduction.length<=200,p.id);assert.equal(p.example.steps.length,3,p.id);assert.ok(p.example.useCase.trim());assert.ok(p.example.observe.trim());const plan=planPacks(selectPacks([p.id]));assert.deepEqual(plan.selection.selected,[{id:p.id,revision:'1'}]);}
  const irish=packLibrary().find(p=>p.id==='ie-consent-duration'),italian=packLibrary().find(p=>p.id==='it-repeat-prompts');assert.notDeepEqual(irish.example.steps,italian.example.steps);assert.match(irish.example.steps[0],/six-month grant cap/);assert.match(italian.example.steps[0],/Reject/);
 });

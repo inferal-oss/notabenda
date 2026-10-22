@@ -1,0 +1,22 @@
+// @requirements REQ-PRODUCT-PACK-CAPABILITIES REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE
+import {isSafeLink} from './config.js';
+import type {PackCapability} from './pack-capabilities.js';
+const e=(value:string)=>value.replace(/[&<>"']/gu,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
+export const packCapabilityLabels={feature:'Feature',tool:'Setup tool',review:'Review guide'} as const;
+/** Plain disclosure; links use the host's documentation base and never activate a feature. */
+export function renderPackCapabilities(pack:{id:string;title:string;capabilities:PackCapability[]},options:{documentationBase?:string}={}):string{
+ const base=options.documentationBase;
+ if(base!==undefined&&(!isSafeLink(base)||base.startsWith('mailto:')||/[?#]/u.test(base)||base.endsWith('/')))throw Error('Use a safe documentation base without a trailing slash.');
+ for(const item of pack.capabilities)if(!['feature','tool','review'].includes(item.kind)||typeof item.guide!=='string'||! /^[a-z0-9-]+$/u.test(item.guide))throw Error('Use a known capability kind and a documentation guide slug.');
+ const extras=pack.capabilities.filter(item=>item.id!=='main');
+ return `${extras.length?`<p class="nb-pack-capability-peek">${extras.map(item=>(item.kind==='review'?'Review: ':'')+e(item.title)).join(' · ')}</p>`:''}<details class="nb-pack-capabilities" data-pack-capabilities="${e(pack.id)}"><summary>Included in this pack <span>${pack.capabilities.length}</span></summary><ul>${pack.capabilities.map(item=>`<li data-capability-kind="${item.kind}"><span class="nb-pack-capability-kind">${packCapabilityLabels[item.kind]}</span>${base===undefined?`<strong>${e(item.title)}</strong>`:`<a href="${e(base+'/'+item.guide+'/')}">${e(item.title)} <span aria-hidden="true">↗</span></a>`}<p>${e(item.summary)}</p><p class="nb-pack-capability-boundary">${e(item.boundary)}</p></li>`).join('')}</ul></details>`;
+}
+export const packCapabilityStyles=`
+.nb-pack-capability-peek{margin:.2rem 0 .65rem;color:var(--nb-muted,#656575);font:400 .75rem/1.65 ui-sans-serif,system-ui,sans-serif;overflow-wrap:anywhere}\n.nb-pack-capabilities{box-sizing:border-box;min-width:0;margin:0;border:0;border-top:1px solid var(--nb-border,#dedee5);border-radius:0;background:transparent;color:var(--nb-text,#25252d);box-shadow:none;text-align:left;font:400 .8125rem/1.6 ui-sans-serif,system-ui,sans-serif}
+.nb-pack-capabilities summary{display:flex;align-items:center;gap:.5rem;min-height:44px;padding:.65rem 0;cursor:pointer;font-weight:550;list-style:none}
+.nb-pack-capabilities summary::-webkit-details-marker{display:none}.nb-pack-capabilities summary:before{content:'+';font-size:1rem;font-weight:400;color:var(--nb-muted,#656575)}.nb-pack-capabilities[open]>summary:before{content:'−'}
+.nb-pack-capabilities summary>span{margin-left:auto;color:var(--nb-muted,#656575);font-variant-numeric:tabular-nums;font-weight:400}.nb-pack-capabilities>ul{list-style:none;margin:0;padding:0 0 .75rem}.nb-pack-capabilities>ul>li{min-width:0;padding:.9rem 0;border-top:1px solid var(--nb-border,#dedee5)}
+.nb-pack-capabilities .nb-pack-capability-kind{display:block;margin-bottom:.2rem;font-size:.6875rem;letter-spacing:.04em;color:var(--nb-muted,#656575)}.nb-pack-capabilities a{display:flex;align-items:center;justify-content:space-between;gap:.5rem;min-height:44px;color:inherit;font-weight:550;text-decoration:none;overflow-wrap:anywhere}.nb-pack-capabilities a:hover{text-decoration:underline;text-underline-offset:.2em}.nb-pack-capabilities p{margin:.25rem 0 0;line-height:1.6;overflow-wrap:anywhere}.nb-pack-capabilities .nb-pack-capability-boundary{color:var(--nb-muted,#656575);font-size:.75rem}.nb-pack-capabilities :is(summary,a):focus-visible{outline:2px solid var(--nb-accent,#6255b0);outline-offset:3px}
+.pack-example-guide .nb-pack-capability-peek{margin:.8rem 0 0}.pack-example-guide .nb-pack-capabilities{margin:.8rem 0 0}.pack-example-guide .nb-pack-capabilities>ul{max-width:78ch}.pack-example-guide .nb-pack-capabilities>ul>li{margin:0;padding:.9rem 0}.pack-example-guide .nb-pack-capabilities summary{padding:.65rem 0}.pack-example-guide .nb-pack-capabilities>ul>li:first-child{border-top:0}
+@media(forced-colors:active){.nb-pack-capabilities,.nb-pack-capabilities>ul>li{border-color:CanvasText}.nb-pack-capabilities,.nb-pack-capabilities p,.nb-pack-capabilities .nb-pack-capability-kind,.nb-pack-capabilities summary>span{color:CanvasText}.nb-pack-capabilities a{color:LinkText}}
+`;

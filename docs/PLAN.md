@@ -459,3 +459,9 @@ The form-notice workbench now includes an explicit [form-flow rehearsal](COLLECT
 The [processing notice workbench](PROCESSING-WORKBENCH.md) now prepares explicit scope, activities and wording from a final release. Its inert shared preview and JSON/YAML/Markdown settings feed a direct artifact-to-notice command, including authored/catalog-bound artifacts. This keeps recording identity, signal policies and downstream enforcement as explicit host connections. Broader widget rehearsals and evidence-bound installation verification remain open.
 
 Pack discovery needs a further pass: expose implemented options and tools under each job, distinguish research guidance from installable behavior, and consider the supported South African marketing-request workflow as a focused pack. Refusal belongs with purpose/channel permissions rather than a context-free pack. Singapore review guidance needs a visible home without implying a complete jurisdiction implementation. This catalog/UI work remains pending.
+
+
+### Pack capabilities and South African web requests
+
+<!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
+The twenty-one-pack library now exposes supplied features, setup tools and review guides in the reusable console, examples and CLI/agent reference. Singapore cookie/consent research is visible as guidance within Cookie choices. Explicit refusal is listed within Form permissions. The focused South African web-request pack resolves a separate integration target, supported builder, exact request particulars, refusal and host input review; invitation eligibility, customer exceptions, prescribed-information review and external suppression stay unresolved host work. The ordinary form editor does not author the specialized profile. Broader legal and operational completion remains tracked separately.

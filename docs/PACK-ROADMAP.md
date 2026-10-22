@@ -1,6 +1,6 @@
 # Growing the pack library
 
-The twenty installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
+The twenty-one installed packs are the first setup paths, rather than the full compliance overview. Several implemented components still require adopters to assemble their own integration. Those are good candidates for additional packs.
 
 This is a product roadmap. The privacy, consumer and named specialist paths below are available. Installed packs organize supported components; they do not make the wider compliance overview complete. The [installed library](CARTRIDGES.md) remains the source of availability; the [feature catalog](FEATURES.md) records implementation status separately.
 
@@ -35,6 +35,12 @@ These five packs now have independent targets, focused questions and shared draf
 These three paths now have focused practice questions, concrete input reviews and shared UI/CLI/agent handoffs. Read [specialist packs](SPECIALIST-PACKS.md) for exact supported inputs, separate consent/objection ownership and remaining host checks. All setup paths named in this roadmap are installed. Broader legal coverage, actual integrations and operational acceptance retain their status in the feature catalog.
 
 Do not manufacture one pack per jurisdiction or catalog requirement. Some requirements belong inside an existing pack's questions, wording or tests. Scope guards, localization, service discovery, Markdown/MDX authoring and framework selection support multiple packs; keep them available where needed without turning every supporting capability into a new installation decision.
+
+## Available: South African web marketing requests
+
+`za-marketing-requests` organizes the supported web request for future email, SMS or WhatsApp marketing. It adds a focused integration target, explicit request/refusal particulars, a private input review and a shared working example. It reuses Form permissions rather than adding another permission engine. Eligibility to approach, invitation history, customer exceptions, prescribed-information review and actual sending/suppression remain separate host work. See [South African marketing](SOUTH-AFRICA-MARKETING.md).
+
+Singapore source review is guidance within Cookie choices. Explicit refusal is part of Form permissions. Editors, inspectors and rehearsals are listed as tools under their owning packs. Adding a research source or control does not automatically create an installation decision.
 
 ## Admission rule
 

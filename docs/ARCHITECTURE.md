@@ -2,7 +2,7 @@
 
 The [compliance map](COMPLIANCE-MAP.md) explains what each component serves. This diagram shows where the supporting software runs and where its information is kept.
 
-## All twenty packs
+## All twenty-one packs
 
 Start with one job or combine several. Each pack below opens its place in the setup library. The software diagram that follows shows their shared infrastructure.
 

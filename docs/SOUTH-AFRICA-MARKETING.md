@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
 # South African electronic marketing
 
 `REQ-ZA-MARKETING` is partial and legally unreviewed. Notabenda records an explicit choice for a purpose and channel. A host still needs to establish whether it may ask for that choice and whether it may send a particular message.
@@ -11,6 +12,19 @@ The Regulator's [direct-marketing guidance, sections 7.2–7.3](https://inforegu
 Amended [regulation 6](https://inforegulator.org.za/wp-content/uploads/2025/04/POPIA-2021-Regulations-FINAL-21-Jan-2025.pdf) addresses accessible consent methods, recorded telephone/automatic-call requests and access to those recordings. It expressly rejects opt-out as consent. The [17 April 2025 Gazette notice](https://www.gov.za/sites/default/files/gcis_document/202504/52523gon6126.pdf) publishes the amendment for immediate implementation. This date concerns the amendment, not the original commencement of section 69.
 
 The Regulator's [21 April 2026 statement](https://inforegulator.org.za/wp-content/uploads/2026/04/MEDIA-STATEMENT-REGULATOR-NOTES-PUBLISHED-GAZETTE-OF-THE-CONSUMER-PROTECT-ACT-AMENDMENT-REGULATIONS-2026.pdf) distinguishes the Consumer Protection Act registry from POPIA permission. Absence from an opt-out register is not consent. The CPA amendment and registry operations have not been fully reviewed here.
+
+## Select the web-request pack
+
+Choose **Marketing requests · South Africa** (`za-marketing-requests`) in the [pack library](/start/#pack-za-marketing-requests). Its separate target, `south-africa-marketing-request`, includes the Form permissions foundation. Selection requests integration work; it does not set a market, change scope assessments or establish permission to approach a person.
+
+```sh
+npx --no-install notabenda packs za-marketing-requests --json
+npx --no-install notabenda packs za-marketing-requests --brief
+```
+
+Use the returned unknown-answer template for focused setup. The private input review keeps solicitation eligibility, request review, recording and sending-system work visible even when the inventory is structurally valid. The [shared working example](https://notabenda.org/form-permissions) uses this specialized builder and offers explicit refusal. It sends no marketing.
+
+The ordinary [form-notice workbench](COLLECTION-WORKBENCH.md) cannot author `za-popia-web-request`. Use `createSouthAfricaMarketingOffer` with explicit builder settings; do not invent `SiteConfig` fields. Its input reference is in [Form permissions](FORM-PERMISSIONS.md#south-african-web-marketing-requests).
 
 ## Connect the current mechanism
 

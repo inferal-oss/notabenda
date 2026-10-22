@@ -1,10 +1,11 @@
+<!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
 # Choose a job for your site
 
 A pack keeps one job together: what it adds, the facts it needs, and the steps to connect and check it. [Open your pack library](/start).
 
 Start with **Legal pages**, **Cookie choices** or **Terms agreement**. You can combine them or add another job later. Each works from the same site inventory.
 
-## All twenty packs
+## All twenty-one packs
 
 The library shows every pack, grouped by the job it does. Use the links at the top to jump between groups.
 
@@ -41,6 +42,17 @@ npx --no-install notabenda wizard --packs cookie-choices \
 ```
 
 Save `setup.private.json` outside public assets. To resume, pass it as `--answers` alongside its matching draft config. Its selected pack revisions are retained. An explicit conflicting selection fails rather than silently changing the saved plan.
+
+## Find features and tools
+
+Open **Included in this pack** on a library card or example. **Feature** describes a supplied mechanism, **Setup tool** helps prepare or inspect it, and **Review guide** explains source-backed questions that still need assessment. These labels do not rate readiness or imply complete jurisdiction coverage. The CLI's plain and JSON listings expose the same capability records, including their limits and guide links.
+
+For example, Cookie choices includes the Singapore review guide. Form permissions includes explicit refusal and its connection inspector. The **Marketing requests · South Africa** pack has a separate setup path for the supported web request, sharing the permission controller and ledger. It covers future email, SMS or WhatsApp marketing; it does not authorize an approach, send messages or enforce provider suppression. [Read its inputs and boundaries](SOUTH-AFRICA-MARKETING.md).
+
+```sh
+npx --no-install notabenda packs za-marketing-requests --json
+npx --no-install notabenda packs cookie-choices form-permissions --brief
+```
 
 ## What comes with a pack
 
