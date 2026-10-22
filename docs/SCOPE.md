@@ -353,3 +353,8 @@ Use selected Japanese PPC guidance to review personally referable information, e
 
 <!-- @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG -->
 Read standard pyproject project, optional, group and build dependencies as separate candidate evidence. Keep versions, URLs, markers and group names private, and never run project tools, build backends or installers. Use a pinned licensed parser only in the Node scanner; preserve visitor bundle boundaries. Group/entry limits and unresolved dynamic or tool-specific selection remain explicit limited coverage. Discovery does not select an environment, alter inventory, grant permission or decide CI.
+
+## Document input review
+
+<!-- @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION -->
+Provide a read-only CLI/build-time report of actual structured section origins and declared input paths. Validate authoring shape and semantic relationships; production is the default and drafts require explicit preview. Preserve document/release bytes and keep private metadata and Markdown notes outside reports. Requirement context is not a determination of applicability, fact accuracy, legal approval or publication. MDX source attribution remains separate from compiled release preview.

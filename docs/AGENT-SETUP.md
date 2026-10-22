@@ -70,6 +70,8 @@ Read `validation.authoringShape` first. Assessment runs the installed generated 
 
 ## Documentation without the page layout
 
+Before changing generated legal wording, use `npx --no-install notabenda explain --config FILE --document privacy --preview --json` to find the declared inputs for each actual section. Repeat for cookies or terms as needed. Fix the configuration or supplied content, rather than patching generated HTML. The [document input review](DOCUMENT-INPUTS.md) identifies current-input JSON Pointers and origin; it does not establish accuracy, legal approval, MDX source attribution or publication. Production validation is the default when `--preview` is omitted.
+
 [llms.txt](/llms.txt) is a short index of the integration guides and requirement catalog. Every source-backed guide has a Markdown version at its guide URL plus `/index.md`, for example [the setup guide in Markdown](/guide/setup/index.md). Guide pages advertise that version through an alternate link in their HTML head.
 
 Both formats come from the same maintained document. Markdown links point to the corresponding Markdown guide where available; code blocks remain unchanged. The generated index and skill use explicit public inputs, with no project scan, private reports or backend records included.

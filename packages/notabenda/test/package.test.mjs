@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
 // @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 // @requirements REQ-PRODUCT-CONTRACT-LOCALIZATION
 // @requirements REQ-PRODUCT-TERMS-HISTORY
@@ -87,6 +88,7 @@ test('packed npm tarball installs offline and exposes API, CLI, types, CSS and b
     await assert.rejects(readFile(join(cwd,'node_modules/yaml/package.json'),'utf8'),error=>error.code==='ENOENT');
     const yamlInit=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/core/dist/cli.js'),'init','--config',join(cwd,'notabenda.config.yaml')],{cwd,encoding:'utf8'});assert.equal(yamlInit.status,0,yamlInit.stderr);
     const yamlCheck=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/core/dist/cli.js'),'check','--config',join(cwd,'notabenda.config.yaml'),'--preview'],{cwd,encoding:'utf8'});assert.equal(yamlCheck.status,0,yamlCheck.stderr);
+    const inputReview=spawnSync(process.execPath,[join(cwd,'node_modules/@notabenda/core/dist/cli.js'),'explain','--config',join(cwd,'notabenda.config.yaml'),'--document','privacy','--preview','--json'],{cwd,encoding:'utf8'});assert.equal(inputReview.status,0,inputReview.stderr);const inputReport=JSON.parse(inputReview.stdout);assert.equal(inputReport.kind,'document-input-review');assert.ok(inputReport.sections.find(s=>s.id==='controller').inputPaths.includes('/controller/email'));
     const strictAuthoring=spawnSync(process.execPath,['--input-type=module','-e',"import {readSiteConfig} from '@notabenda/core/config/node';import {validateAuthoredConfig} from '@notabenda/core/config/validate';const config=await readSiteConfig('./notabenda.config.yaml',{mode:'preview'});config.conset={enabled:true};const checked=validateAuthoredConfig(config,{mode:'preview'});if(checked.valid||!checked.diagnostics.some(d=>d.path==='/conset'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(strictAuthoring.status,0,strictAuthoring.stderr);
     const headlessImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsent} from '@notabenda/core/headless';import {createConsent as legacy} from '@notabenda/core';if(createConsent!==legacy)process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(headlessImport.status,0,headlessImport.stderr);
     const runtimeImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createConsentRuntime,mountControls} from '@notabenda/core/consent';import {requiredConsentEvidence} from '@notabenda/core/consent/evidence';import {compileConsentRuntimeConfig} from '@notabenda/core/content';if([createConsentRuntime,mountControls,requiredConsentEvidence,compileConsentRuntimeConfig].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(runtimeImport.status,0,runtimeImport.stderr);
@@ -133,6 +135,8 @@ const browserCapture:BrowserCatalogCapture=captureBrowserCatalog({routeLabel:'La
 analyzeBrowserCatalogCapture(browserCapture,{expectedRules:rules});mountBrowserCatalogReview(container,browserCapture);
 // @ts-expect-error capture requires deliberate scenario context
 captureBrowserCatalog({routeLabel:'Landing'},rules);
+import {explainLegalDocument,type LegalDocumentExplanation} from '@notabenda/core/content';
+const inputReview:LegalDocumentExplanation=explainLegalDocument(config,'privacy',{mode:'preview'});void inputReview;
 import {scanProjectServices} from '@notabenda/core/catalog/project';
 const catalog:ServiceCatalog=normalizeServiceCatalog(serviceCatalogSeed);
 searchServiceCatalog(catalog,'stripe',{delivery:'backend'});

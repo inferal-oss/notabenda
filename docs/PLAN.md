@@ -219,6 +219,8 @@ Compile structured clauses or supplied reviewed documents into semantic HTML, a 
 
 Start with privacy and cookie notices plus supplied terms. Add a small original, reviewed terms pack for a narrowly declared service/audience scope rather than advertising universal generated terms. Keep template licenses explicit. A document assembler should explain which facts selected each clause and flag contradictory or missing answers.
 
+The read-only [document input review](DOCUMENT-INPUTS.md) now connects actual structured sections to declared field paths, supplied/added origin, selected localization and requirement context. CLI/API production validation remains explicit; the report changes no document/artifact bytes and provides no approval or publication claim. MDX source attribution remains separate from the compiled preview.
+
 [Retained-release tooling](RELEASES.md) preserves exact public policy pages; [document history](AUTHORING.md) exposes rendered and authored-source comparisons. The host reviews material changes and any future effective date, then controls publication and activation. These helpers do not silently replace live terms or decide whether an edit requires reacceptance. Where acceptance is needed, archive the accepted version and record an explicit action through the application backend. Publishing a notice, notifying users, and obtaining a new consent are different operations.
 
 ### Applicable contract actions

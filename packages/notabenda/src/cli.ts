@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
 // @requirements REQ-PRODUCT-CONSENT-NOTICE-FILES
 // @requirements REQ-PRODUCT-CONFIG-SOURCES REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-BUNDLE-BUDGET
 // @requirements REQ-PRODUCT-TERMS-AUTHORING
@@ -28,12 +29,14 @@ import {describeIntegration,selectIntegration} from './integration-reference.js'
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|discover|catalog|describe|assess|schema|packs|check-publication> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|explain|discover|catalog|describe|assess|schema|packs|check-publication> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
 init   Write a draft config; --config FILE selects JSON, YAML or Markdown. Never overwrites.
 check  Validate configuration (production checks by default; --preview permits drafts).
+explain --config FILE --document privacy|cookies|terms [--preview] [--json]
+       Show which declared fields produce each section. Read-only; no legal approval.
 build  Generate static legal pages, public configuration and a versioned artifact.
 Build --consent-runtime local|required also writes consent-runtime.json and
 assets/notabenda-consent.css for the smaller @notabenda/core/consent browser entry.
@@ -112,6 +115,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='explain'){await (await import('./document-explanation-cli.js')).runDocumentExplanationCli(args);return;}
   if(command==='check-publication'){await runPublicationCli(args);return;}
   if(command==='packs'||command==='cartridges'){await (await import('./cartridges-cli.js')).runCartridgesCli(args);return;}
   if(command==='schema'){await (await import('./schema-cli.js')).runSchemaCli(args);return;}

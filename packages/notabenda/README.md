@@ -53,6 +53,8 @@ Use optional CSS variables on your layout to set `--nb-font`, `--nb-surface`, `-
 
 ## Build a release artifact
 
+Review a page's declared inputs with `npx --no-install notabenda explain --config notabenda.config.yaml --document privacy --preview --json`. The build-time `explainLegalDocument` API provides the same section origins and configuration paths. It writes nothing and does not verify legal approval or publication. See [document input review](https://notabenda.org/guide/document-inputs/).
+
 ```ts
 import { compileLegalDocuments } from '@notabenda/core/content';
 

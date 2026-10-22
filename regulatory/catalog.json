@@ -210,7 +210,8 @@
         "Reviewed supplied content plus an original clause pipeline with explicit review and licensing status.",
         "Versioned artifacts and material-change diffs; readable pages without JavaScript.",
         "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
-        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives."
+        "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
+        "Read-only document input review with actual section origin, configuration pointers and requirement context; strict authoring/production checks without changing release bytes or declaring legal approval."
       ],
       "implementationRefs": [
         "packages/notabenda/src/documents.ts",
@@ -246,7 +247,9 @@
         "examples/authoring/build.mjs",
         "examples/static/pack-learning.mjs",
         "site/host.mjs",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "packages/notabenda/src/document-explanation.ts",
+        "packages/notabenda/src/document-explanation-cli.ts"
       ]
     },
     {
@@ -261,7 +264,8 @@
         "React provider/hooks/native control and Astro named offer/operation-bound shell/bridge over the same host-owned acceptance controller; conservative SSR, view-only cleanup and uncertain-request preservation.",
         "Optional local offer/operation inspection, with publication, backend activation and application behavior left to separate checks.",
         "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
-        "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references."
+        "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references.",
+        "Read-only document input review with actual section origin, configuration pointers and requirement context; strict authoring/production checks without changing release bytes or declaring legal approval."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -315,7 +319,9 @@
         "packages/notabenda-cf/templates/src/authorize.mjs",
         "examples/agreements/history.mjs",
         "site/build.mjs",
-        "site/worker.mjs"
+        "site/worker.mjs",
+        "packages/notabenda/src/document-explanation.ts",
+        "packages/notabenda/src/document-explanation-cli.ts"
       ]
     },
     {
@@ -3202,7 +3208,8 @@
         "REQ-PRODUCT-PRIVACY-CHOICE-LINK",
         "REQ-PRODUCT-CONFIG-SOURCES",
         "REQ-PRODUCT-CONSENT-NOTICE-FILES",
-        "REQ-PRODUCT-CF-ROLLOUT"
+        "REQ-PRODUCT-CF-ROLLOUT",
+        "REQ-PRODUCT-DOCUMENT-EXPLANATION"
       ]
     },
     {
@@ -10241,6 +10248,42 @@
         "docs/verification/japan-cookie-data.md"
       ],
       "implementationNote": "Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work."
+    },
+    {
+      "id": "REQ-PRODUCT-DOCUMENT-EXPLANATION",
+      "jurisdiction": "PRODUCT",
+      "title": "Explain structured legal document inputs",
+      "kind": "product-standard",
+      "summary": "Provide a read-only current-input review of actual section origins, declared configuration dependencies and requirement context, without modifying released documents or inferring legal approval.",
+      "appliesWhen": "An operator or agent reviews generated/supplied structured privacy, cookie or terms documents.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-DOCUMENTS",
+        "FEAT-TERMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-DOCUMENT-EXPLANATION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Current configuration review only. Paths are not historical source attribution or a proof of minimal byte dependencies, applicability, fact accuracy, legal approval or deployment. MDX source/component review remains separate.",
+      "implementationRefs": [
+        "packages/notabenda/src/document-explanation.ts",
+        "packages/notabenda/src/document-explanation-cli.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/document-explanation.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/document-inputs.md"
+      ]
     }
   ],
   "verification": [
@@ -12247,6 +12290,19 @@
       "testRefs": [
         "packages/notabenda/test/japan-cookie-data.test.mjs",
         "docs/verification/japan-cookie-data.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-DOCUMENT-EXPLANATION",
+      "requirementIds": [
+        "REQ-PRODUCT-DOCUMENT-EXPLANATION"
+      ],
+      "status": "automated",
+      "expected": "Actual generated/supplied/additional section parity; resolvable public-config pointers; empty/optional/linked/localized cases; detached report and unchanged complete release bytes; private notes excluded; strict no-write CLI/API parity across data-file formats; production and installed-package/type checks.",
+      "testRefs": [
+        "packages/notabenda/test/document-explanation.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "docs/verification/document-inputs.md"
       ]
     }
   ],

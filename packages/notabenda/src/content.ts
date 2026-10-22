@@ -16,6 +16,9 @@ import {selectTermsLocalization} from './terms-localization-policy.js';
 import {requireEnglishSurface,consentLocalization} from './document-localization.js';
 export {compileConsentRuntimeConfig} from './consent-compile.js';
 export type {ConsentRuntimeConfig,ConsentRuntimeInventory} from './consent-runtime-config.js';
+// @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
+export {explainLegalDocument} from './document-explanation.js';
+export type {LegalDocumentExplanation,DocumentSectionExplanation} from './document-explanation.js';
 // @requirements REQ-PRODUCT-CONTRACT-ACTIONS REQ-DE-CANCEL REQ-DE-WITHDRAWAL REQ-EU-WITHDRAWAL REQ-BR-CONTRACT
 import {normalizeContractActionDefinition,contractActionDefaults} from './contract-action-policy.js';
 import type {ContractActionDefinition,ContractActionProfile} from './contract-action-policy.js';
