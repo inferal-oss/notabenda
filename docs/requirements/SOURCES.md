@@ -400,11 +400,11 @@ Useful discovery index, not authority; regional cells and older summaries need p
 
 ## SRC-SG-PDPC
 
-[Singapore PDPC selected-topics guidelines](https://www.pdpc.gov.sg/guidelines-and-consultation/2020/02/advisory-guidelines-on-the-personal-data-protection-act-for-selected-topics)
+[Singapore PDPC selected-topics guidelines](https://www.pdpc.gov.sg/organisations/regulations-decisions/regulatory-guidance/advisory-guidelines-on-the-personal-data-protection-act-for-selected-topics)
 
-**Type:** regulator-guidance. **Checked:** 2026-10-18. **Access:** blocked.
+**Type:** regulator-guidance. **Checked:** 2026-10-21. **Access:** read.
 
-Current page/PDF blocked by bot verification. Older indexed 2018/2021 excerpts are insufficient to mark a current pack researched.
+Read the relocated official page in the browser. It links the guideline revised 23 May 2024 and lists Online Activities as chapter 7. The former 2020/02 path now returns 404. Page publication/footer and search migration timestamps are not the PDF revision date.
 
 <a id="src-jp-ppc"></a>
 
@@ -1675,3 +1675,13 @@ Deployment records expose identity, creation time and version traffic percentage
 **Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
 
 A specific immutable version exposes its ID and hashed script-content etag. The rollout exercise pins that fingerprint separately from current deployment traffic and latest uploaded script bytes.
+
+<a id="src-sg-selected-2024"></a>
+
+## SRC-SG-SELECTED-2024
+
+[Singapore PDPC: selected-topics guidelines, revision 23 May 2024](https://www.pdpc.gov.sg/assets/d1fbaa47-1471-4208-bfad-9f4bf33453ad)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-21. **Access:** read.
+
+Downloaded the exact PDF linked by the current landing page. Cover revision: 23 May 2024. Read chapter 7 on printed pages 53–55; visually verified cookie paragraphs on pages 54–55. Current PDPA text, chapter 12 exceptions and complete Singapore review remain separate.

@@ -629,7 +629,8 @@
         "Explicit Irish default grant cap with calendar-month expiry, independent solicitation/refusal clocks and pinned CF receipt parity; justified extensions remain open.",
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
         "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
-        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation."
+        "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
+        "Source-linked Singapore cookie review in existing UI/CLI/agent setup, preserving explicit choices, current inventory and separate exception assessment; no new jurisdiction pack or automatic policy."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -657,7 +658,11 @@
         "packages/notabenda/src/release-files.ts",
         "packages/notabenda/src/privacy-signal-reviews.ts",
         "packages/notabenda/src/setup.ts",
-        "packages/notabenda/src/integration-reference.ts"
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md"
       ]
     },
     {
@@ -1661,11 +1666,11 @@
     {
       "id": "SRC-SG-PDPC",
       "title": "Singapore PDPC selected-topics guidelines",
-      "url": "https://www.pdpc.gov.sg/guidelines-and-consultation/2020/02/advisory-guidelines-on-the-personal-data-protection-act-for-selected-topics",
+      "url": "https://www.pdpc.gov.sg/organisations/regulations-decisions/regulatory-guidance/advisory-guidelines-on-the-personal-data-protection-act-for-selected-topics",
       "kind": "regulator-guidance",
-      "checkedOn": "2026-10-18",
-      "access": "blocked",
-      "note": "Current page/PDF blocked by bot verification. Older indexed 2018/2021 excerpts are insufficient to mark a current pack researched."
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "note": "Read the relocated official page in the browser. It links the guideline revised 23 May 2024 and lists Online Activities as chapter 7. The former 2020/02 path now returns 404. Page publication/footer and search migration timestamps are not the PDF revision date."
     },
     {
       "id": "SRC-JP-PPC",
@@ -2809,6 +2814,16 @@
       "checkedOn": "2026-10-21",
       "access": "read",
       "note": "A specific immutable version exposes its ID and hashed script-content etag. The rollout exercise pins that fingerprint separately from current deployment traffic and latest uploaded script bytes."
+    },
+    {
+      "id": "SRC-SG-SELECTED-2024",
+      "title": "Singapore PDPC: selected-topics guidelines, revision 23 May 2024",
+      "url": "https://www.pdpc.gov.sg/assets/d1fbaa47-1471-4208-bfad-9f4bf33453ad",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "contentSha256": "f478abfa8c0cf2be1e0af16502ed0be95ffce7524f68e010cc861859e32df039",
+      "note": "Downloaded the exact PDF linked by the current landing page. Cover revision: 23 May 2024. Read chapter 7 on printed pages 53\u201355; visually verified cookie paragraphs on pages 54\u201355. Current PDPA text, chapter 12 exceptions and complete Singapore review remain separate."
     }
   ],
   "jurisdictions": [
@@ -3110,6 +3125,16 @@
       "coverage": "Selected universal-signal research and advisory setup only; no production-supported jurisdiction pack.",
       "requirementIds": [
         "REQ-US-MN-GPC"
+      ]
+    },
+    {
+      "id": "SG",
+      "status": "initial-research",
+      "coverage": "Selected chapter-7 cookie/online-activities guidance only; broader PDPA research and legal review remain open. No production-supported pack.",
+      "requirementIds": [
+        "REQ-SG-COOKIE-DATA",
+        "REQ-SG-BROWSER-CHOICE",
+        "REQ-SG-COOKIE-TARGETING"
       ]
     }
   ],
@@ -9653,6 +9678,131 @@
         "docs/verification/cloudflare-rollout.md"
       ],
       "implementationNote": "Actual generated starter exercised remotely on 21 October 2026: unchanged default denial, host reader/editor permissions, doctor-detected missing preview asset, native pinned-version rollback, complete newer record projections and exact private MDX source preserved, specific class-exports rollback refusal, forward repair with unchanged namespace IDs and read-only sentinel, and verified removal of three namespaces and Worker. Uploaded source hashes, active version content fingerprints and deployment identities are checked separately. Fixed maintainer-only controls, unresolved-write fences and private checkpoints remain outside shipped packages."
+    },
+    {
+      "id": "REQ-SG-COOKIE-DATA",
+      "jurisdiction": "SG",
+      "title": "Assess personal data in cookie use",
+      "kind": "regulator-interpretation",
+      "summary": "Assess cookie data together with available linked information and the particular requested activity; labels alone do not decide whether the selected PDPC consent guidance applies.",
+      "appliesWhen": "Assessing cookie-related personal-data collection, use or disclosure under the Singapore PDPA; legal applicability and exceptions require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-SELECTED-2024",
+          "locator": "Paragraphs 7.1\u20137.10; printed pages 53\u201355"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-INVENTORY"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-COOKIE-DATA"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "The cited guideline was revised 23 May 2024; this is not a statutory commencement date.",
+      "caveats": "Selected guidance only. No general Singapore pack, automatic exemption qualification, browser-preference importer or production compliance claim. Statutory applicability, consent exceptions, collector responsibilities and actual integration remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md",
+        "site/navigation.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective."
+    },
+    {
+      "id": "REQ-SG-BROWSER-CHOICE",
+      "jurisdiction": "SG",
+      "title": "Do not infer consent from unmanaged browser settings",
+      "kind": "regulator-interpretation",
+      "summary": "The guidance distinguishes deliberate browser configuration from a failure to manage settings. Do not treat a browser accepting cookies as a site grant.",
+      "appliesWhen": "Assessing cookie-related personal-data collection, use or disclosure under the Singapore PDPA; legal applicability and exceptions require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-SELECTED-2024",
+          "locator": "Paragraph 7.12; printed page 55"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-CHOICES"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-BROWSER-CHOICE"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "The cited guideline was revised 23 May 2024; this is not a statutory commencement date.",
+      "caveats": "Selected guidance only. No general Singapore pack, automatic exemption qualification, browser-preference importer or production compliance claim. Statutory applicability, consent exceptions, collector responsibilities and actual integration remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md",
+        "packages/notabenda/src/consent-engine.ts",
+        "site/navigation.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective."
+    },
+    {
+      "id": "REQ-SG-COOKIE-TARGETING",
+      "jurisdiction": "SG",
+      "title": "Assess consent for personal-data advertising cookies",
+      "kind": "regulator-interpretation",
+      "summary": "Review consent for advertising cookies involving personal data, identify the collector and distinguish the recommended in-site preference mechanism from a blanket widget mandate.",
+      "appliesWhen": "Assessing cookie-related personal-data collection, use or disclosure under the Singapore PDPA; legal applicability and exceptions require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-SELECTED-2024",
+          "locator": "Paragraphs 7.13\u20137.14; printed page 55"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-ENFORCEMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-COOKIE-TARGETING"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "The cited guideline was revised 23 May 2024; this is not a statutory commencement date.",
+      "caveats": "Selected guidance only. No general Singapore pack, automatic exemption qualification, browser-preference importer or production compliance claim. Statutory applicability, consent exceptions, collector responsibilities and actual integration remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md",
+        "packages/notabenda/src/consent-engine.ts",
+        "site/navigation.mjs",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective."
     }
   ],
   "verification": [
@@ -11531,6 +11681,42 @@
         "scripts/check-cf-starter-rollout.mjs",
         "docs/verification/cloudflare-rollout.md"
       ]
+    },
+    {
+      "id": "VERIFY-SG-COOKIE-DATA",
+      "requirementIds": [
+        "REQ-SG-COOKIE-DATA"
+      ],
+      "status": "automated",
+      "expected": "Source/locator/revision and advisory parity are linked to partial requirements. Market selection preserves current policy, private reasons and contradictory answers; CLI/UI/agent outputs agree. Both public controllers and native controls require an explicit site choice, stop on withdrawal, preserve refusal on reload and retain unresolved scope restrictions. Synthetic mechanisms do not prove legal applicability or provider behavior.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
+    },
+    {
+      "id": "VERIFY-SG-BROWSER-CHOICE",
+      "requirementIds": [
+        "REQ-SG-BROWSER-CHOICE"
+      ],
+      "status": "automated",
+      "expected": "Source/locator/revision and advisory parity are linked to partial requirements. Market selection preserves current policy, private reasons and contradictory answers; CLI/UI/agent outputs agree. Both public controllers and native controls require an explicit site choice, stop on withdrawal, preserve refusal on reload and retain unresolved scope restrictions. Synthetic mechanisms do not prove legal applicability or provider behavior.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
+    },
+    {
+      "id": "VERIFY-SG-COOKIE-TARGETING",
+      "requirementIds": [
+        "REQ-SG-COOKIE-TARGETING"
+      ],
+      "status": "automated",
+      "expected": "Source/locator/revision and advisory parity are linked to partial requirements. Market selection preserves current policy, private reasons and contradictory answers; CLI/UI/agent outputs agree. Both public controllers and native controls require an explicit site choice, stop on withdrawal, preserve refusal on reload and retain unresolved scope restrictions. Synthetic mechanisms do not prove legal applicability or provider behavior.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
     }
   ],
   "researchBacklog": [
@@ -11538,14 +11724,15 @@
       "id": "GAP-SG",
       "jurisdiction": "SG",
       "sourceIds": [
-        "SRC-SG-PDPC"
+        "SRC-SG-PDPC",
+        "SRC-SG-SELECTED-2024"
       ],
       "featureIds": [
         "FEAT-REGIONS",
         "FEAT-FORMS"
       ],
-      "status": "needs-source-verification",
-      "question": "Retrieve and verify the current selected-topics cookie chapter and applicable PDPA exceptions before encoding a Singapore rule."
+      "status": "partially-researched",
+      "question": "Current linked May 2024 chapter-7 cookie guidance is retrieved and connected to setup and tests. Verify current PDPA text, chapter-12 consent/deemed-consent/exception conditions, applicability and other obligations before claiming broader Singapore coverage."
     },
     {
       "id": "GAP-JP",

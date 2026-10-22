@@ -43,6 +43,8 @@ A prepared Cookie choices pack also offers [a local rehearsal](COOKIE-REHEARSAL.
 
 The market list includes France, Germany, Ireland, Italy and Spain as separate coverage interests. Selecting Ireland, or importing an explicit Irish jurisdiction declaration, adds a duration recommendation linked to `REQ-IE-CONSENT-DURATION`. It points to the opt-in [six-calendar-month grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-six-calendar-months), names the configuration fields and distinguishes grants from refusal memory, solicitation and evidence retention. Existing policies and lifetimes are preserved. A supporting note remains private and does not qualify a longer period or disable a cap.
 
+Singapore adds a [cookie-use review](SINGAPORE-COOKIES.md) based on the current linked PDPC selected-topics guideline. It separates data/collector assessment, requested activities, deliberate browser choices and advertising. The same checks appear in CLI, browser and agent output. Selecting the market leaves jurisdiction declarations, consent, storage classification and exception policies unchanged; private reasons never become public policy text.
+
 ## Find project services during setup
 
 After installing the local preview, opt into a project scan in the same command:

@@ -88,7 +88,7 @@ Maintain the [source-linked catalog](../regulatory/README.md) as part of the pro
 source / article -> requirement + applicability -> feature -> verification -> code/test references
 ```
 
-The initial catalog contains individual requirements, planned/partial/implemented features, primary and discovery sources, and linked verification scenarios. It spans selected EU/national, UK, Swiss, Brazilian, Canadian/Québec, Australian, New Zealand, South African, Turkish, and US obligations, plus separate platform and product standards. Singapore/Japan source-access/version gaps and remaining jurisdictions are recorded explicitly.
+The initial catalog contains individual requirements, planned/partial/implemented features, primary and discovery sources, and linked verification scenarios. It spans selected EU/national, UK, Swiss, Brazilian, Canadian/Québec, Australian, New Zealand, South African, Turkish, Singaporean, and US items, plus separate platform and product standards. Singapore's selected cookie guidance is retrieved and connected to setup; wider Singapore research, Japan source/version gaps and remaining jurisdictions stay explicit.
 
 Use iubenda articles and web search to discover requirements, then verify against statutes, regulators, and platform specifications. Record source locators, retrieval status, timing, caveats, legal-review status, and implementation status. The [source index](requirements/SOURCES.md) distinguishes retrieved sources, search-result findings, and blocked access.
 

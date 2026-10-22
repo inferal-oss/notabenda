@@ -21,6 +21,8 @@
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 // @requirements REQ-US-OR-GPC REQ-US-MN-GPC
 import {getPrivacySignalReviews} from './privacy-signal-reviews.js';
+// @requirements REQ-SG-COOKIE-DATA REQ-SG-BROWSER-CHOICE REQ-SG-COOKIE-TARGETING
+import {getCookieJurisdictionReviews} from './cookie-jurisdiction-reviews.js';
 import {setupQuestions,setupMarkets,setupFactFields} from './setup.js';
 import type {SetupQuestionId} from './setup.js';
 
@@ -46,7 +48,7 @@ const targets:Record<string,Target>={
  'cookie-consent':{
   requiredConfigPaths:['consent','consent.purposes','consent.services'],
   title:'Cookie and optional-service controls',outcome:'Optional loaders run only while their declared purpose/service permission is effective.',
-  configPaths:['purposes','services','storage','consent','consent.purposes','consent.services','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders. Inspect the actual controller with @notabenda/core/consent/inspect; registration and matching inventory do not prove application behavior.','Choose vanilla, React or Astro controls around the same controller.'],
+  configPaths:['purposes','services','storage','consent','consent.purposes','consent.services','consent.information','scopeGuards'],hostWork:['Register actual start/cleanup lifecycles and remove parallel tags, hints or loaders. Inspect the actual controller with @notabenda/core/consent/inspect; registration and matching inventory do not prove application behavior.','Choose vanilla, React or Astro controls around the same controller. Read cookieJurisdictionReviews for source-linked Singapore checks; market interest and browser defaults do not create permission or qualify an exception.'],
   questionIds:['optional-storage','children','sensitive-data','high-risk-profiling','regulated-sector'],factsNeeded:['Actual optional loaders, storage names/types and cleanup targets','Purpose/service IDs and deliberate material scope revisions','Grant/refusal lifetimes and dismissal interval','Scope assessments; present or unknown specialized processing remains gated'],guides:['consent','connection-inspection','storage-cleanup','scope-guards','react','astro'],prerequisites:['legal-pages'],verify:['No optional request on initial load or after rejection.','Granular grants start only the selected work.','Withdrawal stops owned work and clears declared markers.','Reload, changed scopes and failure states retain restrictions.']
  },
  'technology-functions':{
@@ -179,6 +181,7 @@ function integrationReference(selected:string[]){
   questions:setupQuestions.map(q=>({id:q.id,title:q.title,detail:q.detail,choices:['yes','no','unknown'],configPaths:q.paths.filter(p=>!p.startsWith('host.')),hostWorkRefs:q.paths.filter(p=>p.startsWith('host.')),requirementIds:q.requirements,guide:'https://notabenda.org/guide/'+q.guide+'/index.md'})),
   markets:setupMarkets,
   privacySignalReviews:getPrivacySignalReviews(),
+  cookieJurisdictionReviews:getCookieJurisdictionReviews(),
   answersTemplate:{schemaVersion:1,publicFacts:{},markets:[],answers:Object.fromEntries(setupQuestions.map(q=>[q.id,{choice:'unknown',justification:''}])),storageJustifications:{}},
   targetAnswersTemplate:{schemaVersion:1,publicFacts:{},markets:[],answers:Object.fromEntries(relevantQuestionIds.map(id=>[id,{choice:'unknown',justification:''}])),storageJustifications:{}},
   workflow:['Record requested outcomes and existing integration points.','Separate confirmed facts, project evidence, unknowns and legal review decisions.','Read target guides and the installed SiteConfig type; host work is not a JSON config field.','Complete explicit answers and run wizard --answers FILE, adding --config FILE for an existing inventory.','Compare the exported draft against the original; apply only reviewed changes.','Run check/build in preview, integration scenarios, and production validation when review is complete.'],

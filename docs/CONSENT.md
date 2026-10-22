@@ -208,4 +208,8 @@ An optional [calendar grant cap](REGIONAL-PROMPTS.md#cap-remembered-grants-at-si
 
 The [cookie control settings editor](SETUP.md#configure-cookie-control-settings) and interactive wizard author enrollment, public material versions and separate memory periods from the actual inventory. They preserve scope restrictions and existing timing policies. Saving prepares a draft; registering actual service lifecycles and reviewing publication remain host work.
 
+### Review Singapore cookie use
+
+Selecting Singapore in setup adds a [source-linked review](SINGAPORE-COOKIES.md) of personal data, requested activities, browser choices and advertising cookies. It preserves your existing configuration. The ordinary runtime continues to require explicit site choices for declared optional services; it does not interpret browser defaults or qualify Singapore exceptions.
+
 The optional [connection inspector](CONNECTION-INSPECTION.md) reads the actual controller’s registration map and lifecycle phases, and can compare the intended compiled consent inventory. It does not refresh, start services or replace network/storage tests.

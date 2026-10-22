@@ -34,6 +34,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice), [REQ-PRODUCT-GUARANTEE-NOTICE](#req-product-guarantee-notice), [REQ-PRODUCT-PAID-ORDER-ARCHIVES](#req-product-paid-order-archives), [REQ-PRODUCT-ORDER-CONFIRMATION](#req-product-order-confirmation), [REQ-PRODUCT-STORAGE-EXCEPTIONS](#req-product-storage-exceptions), [REQ-PRODUCT-LOCALIZATION](#req-product-localization), [REQ-PRODUCT-AGENT-INTEGRATION](#req-product-agent-integration), [REQ-PRODUCT-COMPLIANCE-MAP](#req-product-compliance-map), [REQ-PRODUCT-CARTRIDGES](#req-product-cartridges), [REQ-PRODUCT-WORKSPACE-OVERVIEW](#req-product-workspace-overview), [REQ-PRODUCT-DRAFT-PREVIEW](#req-product-draft-preview), [REQ-PRODUCT-PACK-CONNECTION](#req-product-pack-connection), [REQ-PRODUCT-CONSENT-AUTHORING](#req-product-consent-authoring), [REQ-PRODUCT-PRIVACY-PACKS](#req-product-privacy-packs), [REQ-PRODUCT-PUBLICATION-CHECK](#req-product-publication-check), [REQ-PRODUCT-CONSUMER-PACKS](#req-product-consumer-packs), [REQ-PRODUCT-SPECIALIST-PACKS](#req-product-specialist-packs), [REQ-PRODUCT-RIGHTS-AUTHORING](#req-product-rights-authoring), [REQ-PRODUCT-RIGHTS-LOCALIZATION](#req-product-rights-localization), [REQ-PRODUCT-STORAGE-AUTHORING](#req-product-storage-authoring), [REQ-PRODUCT-CONNECTION-INSPECTION](#req-product-connection-inspection), [REQ-PRODUCT-CF-RECOVERY-REHEARSAL](#req-product-cf-recovery-rehearsal), [REQ-PRODUCT-TERMS-ADAPTERS](#req-product-terms-adapters), [REQ-PRODUCT-PACK-EDUCATION](#req-product-pack-education), [REQ-PRODUCT-STORAGE-LOCALIZATION](#req-product-storage-localization), [REQ-PRODUCT-RELEASE-CANDIDATE](#req-product-release-candidate), [REQ-PRODUCT-RECORDING-INSPECTION](#req-product-recording-inspection), [REQ-PRODUCT-AGENT-HANDOFF](#req-product-agent-handoff), [REQ-PRODUCT-AUTHORED-PREVIEW](#req-product-authored-preview), [REQ-PRODUCT-PROCESSING-LOCALIZATION](#req-product-processing-localization), [REQ-PRODUCT-SETUP-SESSION](#req-product-setup-session), [REQ-PRODUCT-SERVICE-LOCALIZATION](#req-product-service-localization), [REQ-PRODUCT-INDIRECT-LOCALIZATION](#req-product-indirect-localization), [REQ-PRODUCT-CF-REMOTE-RECOVERY](#req-product-cf-remote-recovery), [REQ-PRODUCT-TERMS-CONNECTION](#req-product-terms-connection), [REQ-PRODUCT-CONSENT-REHEARSAL](#req-product-consent-rehearsal), [REQ-PRODUCT-DOCS-SEARCH](#req-product-docs-search), [REQ-PRODUCT-EMBED-LOCALIZATION](#req-product-embed-localization), [REQ-PRODUCT-TERMS-AUTHORING](#req-product-terms-authoring), [REQ-PRODUCT-TERMS-HISTORY](#req-product-terms-history), [REQ-PRODUCT-CONTRACT-LOCALIZATION](#req-product-contract-localization), [REQ-PRODUCT-PRIVACY-CHOICE-LINK](#req-product-privacy-choice-link), [REQ-PRODUCT-CONFIG-SOURCES](#req-product-config-sources), [REQ-PRODUCT-CONSENT-NOTICE-FILES](#req-product-consent-notice-files), [REQ-PRODUCT-CF-ROLLOUT](#req-product-cf-rollout) | Selected items: implemented, partial |
 | US-OR | [REQ-US-OR-GPC](#req-us-or-gpc) | Selected items: partial |
 | US-MN | [REQ-US-MN-GPC](#req-us-mn-gpc) | Selected items: partial |
+| SG | [REQ-SG-COOKIE-DATA](#req-sg-cookie-data), [REQ-SG-BROWSER-CHOICE](#req-sg-browser-choice), [REQ-SG-COOKIE-TARGETING](#req-sg-cookie-targeting) | Selected items: partial |
 
 ## Individual requirements
 
@@ -3163,15 +3164,93 @@ Provide an explicit disposable remote exercise of the actual generated starter: 
 
 **Code/test references:** [scripts/check-cf-starter-rollout.mjs](../../scripts/check-cf-starter-rollout.mjs), [scripts/fixtures/starter-rollout.mjs](../../scripts/fixtures/starter-rollout.mjs), [scripts/fixtures/starter-rollout-entry.mjs](../../scripts/fixtures/starter-rollout-entry.mjs), [scripts/fixtures/starter-rollout-canary.mjs](../../scripts/fixtures/starter-rollout-canary.mjs), [scripts/check-cf-remote-recovery.mjs](../../scripts/check-cf-remote-recovery.mjs), [docs/CLOUDFLARE-ROLLOUT.md](../../docs/CLOUDFLARE-ROLLOUT.md), [site/navigation.mjs](../../site/navigation.mjs), [packages/notabenda-cf/test/starter-rollout.test.mjs](../../packages/notabenda-cf/test/starter-rollout.test.mjs), [scripts/check-cf-starter-rollout.mjs](../../scripts/check-cf-starter-rollout.mjs), [docs/verification/cloudflare-rollout.md](../../docs/verification/cloudflare-rollout.md)
 
+<a id="req-sg-cookie-data"></a>
+
+### REQ-SG-COOKIE-DATA — Assess personal data in cookie use
+
+Assess cookie data together with available linked information and the particular requested activity; labels alone do not decide whether the selected PDPC consent guidance applies.
+
+**Applies when:** Assessing cookie-related personal-data collection, use or disclosure under the Singapore PDPA; legal applicability and exceptions require review.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore PDPC: selected-topics guidelines, revision 23 May 2024](https://www.pdpc.gov.sg/assets/d1fbaa47-1471-4208-bfad-9f4bf33453ad) — Paragraphs 7.1–7.10; printed pages 53–55 (read; [SRC-SG-SELECTED-2024](SOURCES.md#src-sg-selected-2024)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-INVENTORY](../FEATURES.md#feat-inventory).
+
+<a id="verify-sg-cookie-data"></a>
+
+**VERIFY-SG-COOKIE-DATA (automated):** Source/locator/revision and advisory parity are linked to partial requirements. Market selection preserves current policy, private reasons and contradictory answers; CLI/UI/agent outputs agree. Both public controllers and native controls require an explicit site choice, stop on withdrawal, preserve refusal on reload and retain unresolved scope restrictions. Synthetic mechanisms do not prove legal applicability or provider behavior.
+
+**Timing:** The cited guideline was revised 23 May 2024; this is not a statutory commencement date.
+
+**Implementation boundary:** Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective.
+
+**Limits/open review:** Selected guidance only. No general Singapore pack, automatic exemption qualification, browser-preference importer or production compliance claim. Statutory applicability, consent exceptions, collector responsibilities and actual integration remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [site/navigation.mjs](../../site/navigation.mjs), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
+<a id="req-sg-browser-choice"></a>
+
+### REQ-SG-BROWSER-CHOICE — Do not infer consent from unmanaged browser settings
+
+The guidance distinguishes deliberate browser configuration from a failure to manage settings. Do not treat a browser accepting cookies as a site grant.
+
+**Applies when:** Assessing cookie-related personal-data collection, use or disclosure under the Singapore PDPA; legal applicability and exceptions require review.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore PDPC: selected-topics guidelines, revision 23 May 2024](https://www.pdpc.gov.sg/assets/d1fbaa47-1471-4208-bfad-9f4bf33453ad) — Paragraph 7.12; printed page 55 (read; [SRC-SG-SELECTED-2024](SOURCES.md#src-sg-selected-2024)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-CHOICES](../FEATURES.md#feat-choices).
+
+<a id="verify-sg-browser-choice"></a>
+
+**VERIFY-SG-BROWSER-CHOICE (automated):** Source/locator/revision and advisory parity are linked to partial requirements. Market selection preserves current policy, private reasons and contradictory answers; CLI/UI/agent outputs agree. Both public controllers and native controls require an explicit site choice, stop on withdrawal, preserve refusal on reload and retain unresolved scope restrictions. Synthetic mechanisms do not prove legal applicability or provider behavior.
+
+**Timing:** The cited guideline was revised 23 May 2024; this is not a statutory commencement date.
+
+**Implementation boundary:** Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective.
+
+**Limits/open review:** Selected guidance only. No general Singapore pack, automatic exemption qualification, browser-preference importer or production compliance claim. Statutory applicability, consent exceptions, collector responsibilities and actual integration remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [site/navigation.mjs](../../site/navigation.mjs), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
+<a id="req-sg-cookie-targeting"></a>
+
+### REQ-SG-COOKIE-TARGETING — Assess consent for personal-data advertising cookies
+
+Review consent for advertising cookies involving personal data, identify the collector and distinguish the recommended in-site preference mechanism from a blanket widget mandate.
+
+**Applies when:** Assessing cookie-related personal-data collection, use or disclosure under the Singapore PDPA; legal applicability and exceptions require review.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore PDPC: selected-topics guidelines, revision 23 May 2024](https://www.pdpc.gov.sg/assets/d1fbaa47-1471-4208-bfad-9f4bf33453ad) — Paragraphs 7.13–7.14; printed page 55 (read; [SRC-SG-SELECTED-2024](SOURCES.md#src-sg-selected-2024)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-ENFORCEMENT](../FEATURES.md#feat-enforcement).
+
+<a id="verify-sg-cookie-targeting"></a>
+
+**VERIFY-SG-COOKIE-TARGETING (automated):** Source/locator/revision and advisory parity are linked to partial requirements. Market selection preserves current policy, private reasons and contradictory answers; CLI/UI/agent outputs agree. Both public controllers and native controls require an explicit site choice, stop on withdrawal, preserve refusal on reload and retain unresolved scope restrictions. Synthetic mechanisms do not prove legal applicability or provider behavior.
+
+**Timing:** The cited guideline was revised 23 May 2024; this is not a statutory commencement date.
+
+**Implementation boundary:** Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective.
+
+**Limits/open review:** Selected guidance only. No general Singapore pack, automatic exemption qualification, browser-preference importer or production compliance claim. Statutory applicability, consent exceptions, collector responsibilities and actual integration remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [site/navigation.mjs](../../site/navigation.mjs), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
 ## Research gaps
 
 ### GAP-SG — SG
 
-**needs-source-verification:** Retrieve and verify the current selected-topics cookie chapter and applicable PDPA exceptions before encoding a Singapore rule.
+**partially-researched:** Current linked May 2024 chapter-7 cookie guidance is retrieved and connected to setup and tests. Verify current PDPA text, chapter-12 consent/deemed-consent/exception conditions, applicability and other obligations before claiming broader Singapore coverage.
 
 **Planned features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-FORMS](../FEATURES.md#feat-forms).
 
-**Starting sources:** [SRC-SG-PDPC](SOURCES.md#src-sg-pdpc).
+**Starting sources:** [SRC-SG-PDPC](SOURCES.md#src-sg-pdpc), [SRC-SG-SELECTED-2024](SOURCES.md#src-sg-selected-2024).
 
 ### GAP-JP — JP
 

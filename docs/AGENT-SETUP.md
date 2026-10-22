@@ -78,6 +78,8 @@ Both formats come from the same maintained document. Markdown links point to the
 
 For processing opt-outs, read `privacySignalReviews` from the installed `describe processing-opt-outs --json` reference. Its Oregon/Minnesota entries carry selected dates, source/requirement IDs and outstanding scope checks. Market choices add review tasks; they never enable `privacySignals` or establish applicability. The [signal guide](PRIVACY-SIGNALS.md#setup-and-agent-handoff) explains browser/header wiring, existing restrictions and why honoring a signal must not wait for login or receipt storage.
 
+For Singapore cookie use, read `cookieJurisdictionReviews` from `describe cookie-consent --json`. It links the retrieved PDPC revision and exact paragraphs to review tasks. Keep unknown data/collector facts unresolved; do not infer consent from browser defaults or qualify an exception from a market or storage label. See [Singapore cookie review](SINGAPORE-COOKIES.md).
+
 An agent can connect the components and test their behavior. You supply the actual operator and processing facts, select applicable requirements, review wording and decide when to publish. A source match or passing build does not establish a legal basis or complete jurisdiction coverage.
 
 Private discovery findings and justifications stay separate from public legal output. Markdown and MDX sources belong in the private history archive when retained there. MDX is trusted build code, so inspect its imports and components. The optional Cloudflare backend uses your authorization; the demonstration's access model is specific to that demo.
