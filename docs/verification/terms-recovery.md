@@ -17,7 +17,11 @@ The actual local HTTP rehearsal was exercised in in-app Chromium. Initially unch
 
 The vanilla example was also checked through a separate local Worker and session-isolated Durable Object. It loaded the recovery module, saved the sample assertion, reloaded unchecked and confirmed again only after an explicit check/retry. The independent one-record observations above come from the controlled HTTP fixture.
 
-This checks a real page reload and interrupted HTTP response against the actual example transport. It does not establish physical-device, screen-reader, Safari, Durable Object restart or operational acceptance coverage.
+### Native Safari, 22 October 2026
+
+The same disposable HTTP rehearsal was exercised in native desktop Safari. Opening the page and checking the statement left the server at zero attempts. The first explicit submission showed an unconfirmed outcome after one server record was stored. Reload returned to an unchecked statement and disabled action, with one attempt and one record. Checking again sent nothing; the next explicit submission confirmed the agreement. The independent server observations showed two attempts, one stored record, the same command and the original receipt.
+
+Screenshots and accessibility observations are retained privately. The test tab was closed and the dedicated fixture stopped after inspection. Safari version and CSS viewport dimensions were not independently established. This selected observation does not establish physical-device, screen-reader, complete Safari, Durable Object restart or operational acceptance coverage.
 
 ## Limits
 
