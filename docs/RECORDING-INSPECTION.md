@@ -58,6 +58,41 @@ Supply existing validated host authorization and storage. The package provides n
 
 Targets have a stable display ID, title, family, site, scope and a read callback. Use `form-permission` with the permission ID as `scopeId`, or `terms` with its agreement scope. The callback's result must match that declared identity. The view validates a bounded projection and escapes text; it cannot establish the truth of arbitrary host callback code. Use the supplied readers to verify retained descriptors and archives.
 
+## Compare the expected version
+
+A valid backend selection can still be the wrong version for your application. Add an optional fixed `expected` reference to a target when you want that comparison:
+
+```js
+const target = {
+  id: 'account-terms', title: 'Account terms', family: 'terms',
+  siteId: intendedOffer.siteId, scopeId: intendedOffer.scopeId,
+  expected: {
+    id: intendedOffer.offerId,
+    artifactId: intendedOffer.artifactId,
+    mode: intendedOffer.mode,
+  },
+  read: () => getTermsRecordingSelection(hostStorage, {
+    siteId: intendedOffer.siteId, scopeId: intendedOffer.scopeId,
+  }),
+};
+```
+
+Use the reviewed descriptor your application intends to record against. For a cookie notice, `id` is its `noticeId`; for terms and form permissions it is the `offerId`. The artifact ID and release mode are required too. Keep these values in trusted host configuration. Request parameters cannot select or override them. The view copies and validates the reference before invoking readers.
+
+| Observation | What to do |
+| --- | --- |
+| Uses the expected version | The descriptor, artifact and mode match. Check the served copies and actual running interface separately. |
+| Another version is selected | Review the expected release, current selection and recording endpoint. The comparison names differing fields; it changes neither version. |
+| Expected version is not selected | No activation record exists in this scope. Review archive registration and explicit host activation. |
+| This scope is inactive | Confirm whether that is intentional before changing activation. The view never reactivates anything. |
+| Expected version could not be compared | The current read failed validation, timed out or was unavailable. Check the reader/archive and retry. |
+
+**Expected selection references** is collapsed by default. With a configured history route it links to the expected release; the current selection keeps its separate history link. A comparison is also available as `observations[].comparison` in JSON, with `matches`, `different`, `unconfigured`, `inactive` or `unavailable`. Targets without an expectation retain the ordinary selection view and report `not-specified` in JSON.
+
+Expected references express host intent. This comparison does not look up or verify the expected archive, choose the newest release, authenticate the application's configuration or prove which offer its browser uses. An obsolete expectation can match an obsolete backend. An expected preview matching a selected preview stays a preview. Check the actual application and review the expected release independently; `boundaries.verifiesExpectedArchive` remains false.
+
+The served-copy check below still fetches the **currently selected** pinned document. Matching its HTML does not resolve an expected-version mismatch: two different offer statements can refer to the same policy HTML. These observations remain separate.
+
 At most twelve fixed targets are read concurrently. `readTimeoutMs` defaults to 5,000 and accepts 1,000–30,000. Remote callbacks should propagate the supplied `{signal}`; timed-out or invalid reads stay unavailable, and late completions cannot replace the rendered result. A callback that ignores cancellation may continue its read. Each scope is observed separately, not as a single cross-scope snapshot. No automatic polling is installed.
 
 The view supports GET/HEAD only and uses private, non-cacheable responses and nonce-bound inline styles without scripts. `?format=json` supplies the same authorized observations and explicit verification boundaries. Other selectors are rejected before the readers run. The optional served-copy check below adds the explicit `publication=check` action.

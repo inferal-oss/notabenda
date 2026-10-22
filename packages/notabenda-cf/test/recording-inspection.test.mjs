@@ -49,3 +49,45 @@ test('misrouted or accessor-bearing callback results are unavailable; late timed
 test('workspace links require an explicit inspection grant and never read selections on overview',async()=>{
  for(const allow of [false,true]){const worker=createWorkspaceOverviewWorker({basePath:'/admin',recordingPath:'/admin/recording',authorize:()=>({areas:[],allowRecordingInspection:allow})});const d=new JSDOM(await (await worker.fetch(request('/admin'),{})).text()).window.document;assert.equal(!!d.querySelector('a[href="/admin/recording"]'),allow);}
 });
+
+test('expected selection comparisons distinguish every family, absent intent, inactivity and unavailable reads without changing storage',async()=>{
+ const f=await setup(),targets=f.targets.map(t=>({...t,expected:{id:t.descriptor,artifactId:f.build.manifest.artifactId,mode:'production'}}));
+ const worker=createRecordingInspectionWorker({basePath:'/admin/recording',authorize:()=>({targets})}),observe=async()=>{
+  const before=await snapshot(f.storage),result=await(await worker.fetch(request('/admin/recording?format=json'),{})).json();assert.deepEqual(await snapshot(f.storage),before);return result;
+ };
+ assert.ok((await observe()).observations.every(o=>o.comparison.status==='unconfigured'));
+ for(const t of targets)await t.activate(t.descriptor);
+ const selected=await observe();assert.ok(selected.observations.every(o=>o.comparison.status==='matches'));assert.ok(selected.observations.every(o=>o.comparison.differingFields.length===0));assert.equal(selected.boundaries.verifiesExpectedArchive,false);
+ for(const t of targets)await t.activate(null);
+ assert.ok((await observe()).observations.every(o=>o.comparison.status==='inactive'));
+ const unavailable=createRecordingInspectionWorker({basePath:'/admin/recording',authorize:()=>({targets:targets.map(t=>({...t,read:async()=>{throw Error('PRIVATE');}}))})});
+ const result=await(await unavailable.fetch(request('/admin/recording?format=json'),{})).json();assert.ok(result.observations.every(o=>o.comparison.status==='unavailable'));assert.ok(result.observations.every(o=>o.selection===null));
+ const unrequested=createRecordingInspectionWorker({basePath:'/admin/recording',authorize:()=>({targets:f.targets})});assert.ok((await(await unrequested.fetch(request('/admin/recording?format=json'),{})).json()).observations.every(o=>o.comparison.status==='not-specified'));
+});
+
+test('descriptor, release and mode compare independently and expected host input is copied before callbacks',async()=>{
+ const f=await setup();await f.targets[0].activate(f.targets[0].descriptor);const expected={id:f.targets[0].descriptor,artifactId:f.build.manifest.artifactId,mode:'production'};
+ for(const [field,value] of [['id','b'.repeat(64)],['artifactId','c'.repeat(64)],['mode','preview']]){
+  const worker=createRecordingInspectionWorker({authorize:()=>({targets:[{...f.targets[0],expected:{...expected,[field]:value}}]})});
+  const result=await(await worker.fetch(request('/admin/notabenda/recording?format=json'),{})).json(),comparison=result.observations[0].comparison;assert.equal(comparison.status,'different');assert.deepEqual(comparison.differingFields,[field]);assert.equal(comparison.expected[field],value);
+ }
+ const captured={...expected},worker=createRecordingInspectionWorker({authorize:()=>({targets:[{...f.targets[0],expected:captured,read:async()=>{captured.id='d'.repeat(64);return f.targets[0].read();}}]})});
+ const result=await(await worker.fetch(request('/admin/notabenda/recording?format=json'),{})).json();assert.equal(result.observations[0].comparison.status,'matches');assert.equal(result.observations[0].comparison.expected.id,expected.id);assert.notEqual(captured.id,expected.id);
+});
+
+test('invalid or accessor-bearing expected references deny before any read and browser selectors cannot override host intent',async()=>{
+ const f=await setup();let reads=0,getters=0;const expected={id:f.targets[0].descriptor,artifactId:f.build.manifest.artifactId,mode:'production'},hostile={...expected};Object.defineProperty(hostile,'id',{enumerable:true,get(){getters++;throw Error('PRIVATE');}});
+ for(const input of [null,{},'PRIVATE',{...expected,id:'PRIVATE'},{...expected,artifactId:'x'.repeat(64)},{...expected,mode:'live'},{...expected,subject:'PRIVATE'},hostile]){
+  const worker=createRecordingInspectionWorker({authorize:()=>({targets:[{...f.targets[0],expected:input,read:async()=>{reads++;throw Error('PRIVATE');}}]})}),response=await worker.fetch(request('/admin/notabenda/recording'),{});assert.equal(response.status,403);assert.doesNotMatch(await response.text(),/PRIVATE/);
+ }
+ const worker=createRecordingInspectionWorker({authorize:()=>({targets:[{...f.targets[0],expected,read:async()=>{reads++;return f.targets[0].read();}}]})});for(const query of ['expected='+expected.id,'artifactId='+expected.artifactId,'mode=preview'])assert.equal((await worker.fetch(request('/admin/notabenda/recording?'+query),{})).status,400);
+ assert.equal(reads,0);assert.equal(getters,0);
+});
+
+test('a different real terms offer can serve matching policy bytes without matching the intended recording selection',async()=>{
+ const f=await setup(),t=f.targets[1],replacement=createTermsOffer(f.build.artifact,{scopeId:'signup',statement:'I agree to a different sample statement.',actionLabel:'Agree'});
+ await registerTermsOffer(f.storage,replacement,{...f.context,scopeId:'signup'});await t.activate(replacement.offerId);
+ const before=await snapshot(f.storage),paths=[],worker=createRecordingInspectionWorker({basePath:'/admin/recording',historyPath:'/admin/history',authorize:()=>({targets:[{...t,expected:{id:t.descriptor,artifactId:f.build.manifest.artifactId,mode:'production'},publication:{origin:'https://public.example.test',label:'Fixture reader',fetch:async r=>{paths.push(new URL(r.url).pathname);return new Response(f.build.artifact.pages[f.build.manifest.documents.find(d=>d.kind==='terms').file],{headers:{'Content-Type':'text/html'}});}}}]})});
+ const json=await(await worker.fetch(request('/admin/recording?publication=check&format=json'),{})).json();assert.equal(json.observations[0].publication.status,'matched');assert.equal(json.observations[0].comparison.status,'different');assert.deepEqual(json.observations[0].comparison.differingFields,['id']);assert.equal(json.observations[0].selection.selected.id,replacement.offerId);assert.deepEqual(paths,[t.family==='terms'?f.offer.document.url:'']);assert.deepEqual(await snapshot(f.storage),before);
+ const html=await(await worker.fetch(request('/admin/recording'),{})).text(),d=new JSDOM(html).window.document;assert.match(d.body.textContent,/Another version is selected/);assert.match(d.body.textContent,/Different: descriptor/);assert.equal(d.querySelectorAll('[data-comparison=different]').length,1);const card=d.querySelector('.recording-item'),children=[...card.children];assert.ok(children.indexOf(card.querySelector('.recording-expectation'))<children.indexOf(card.querySelector(':scope > dl')),'Show the mismatch and next step before metadata');assert.equal(d.querySelector('details[open]'),null);assert.match(d.querySelector('.recording-expectation a').href,/q=/);assert.equal(d.querySelector('form,button,input,script'),null);assert.deepEqual(await snapshot(f.storage),before);
+});

@@ -37,7 +37,7 @@ export {getTermsRecordingSelection} from './terms.js';
 export {getFormPermissionRecordingSelection} from './permissions.js';
 export type {RecordingFamily,RecordingDocument,RecordingTarget,RecordingSelection} from './recording-selection.js';
 export {createRecordingInspectionWorker} from './recording-inspection.js';
-export type {RecordingInspectionTarget,RecordingInspectionGrant,RecordingInspectionOptions} from './recording-inspection.js';
+export type {RecordingInspectionTarget,RecordingInspectionGrant,RecordingInspectionOptions,ExpectedRecordingSelection,RecordingSelectionComparison} from './recording-inspection.js';
 
 // @requirements REQ-PRODUCT-TERMS-HISTORY
 export {normalizeTermsSettingsRelease} from './terms-history.js';

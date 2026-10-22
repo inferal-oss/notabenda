@@ -10,6 +10,8 @@ import {presentation} from './host.mjs';
 
 /** Private binding/RPC integration. This is not a public ingestion handler. */
 // Supply fixed host-owned readers here; request values must never select their site or scope.
+// A target may include expected: {id, artifactId, mode} from the intended application descriptor.
+// The comparison is read-only and does not select or activate that expected version.
 export function createWorkspace(storage,{recordingTargets=[]}={}){return {
  async inspect(request,{allowExport=false,allowSource=false,allowCatalogReview=false,allowTermsSettings=false,allowSetup=false}={}){
   const path=new URL(request.url).pathname,section=path.slice(settings.basePath.length+1).split('/')[0];

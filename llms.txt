@@ -8,7 +8,7 @@ Use the installed package documentation and types for its version. Discovery fin
 
 For processing opt-outs, installed `notabenda describe processing-opt-outs --json` includes `privacySignalReviews`: selected Oregon/Minnesota sources, dates, scope questions and host checks. Market interest enables no policy. Honor assessed browser/header signals without waiting for login or receipt storage; preserve independent account/downstream restrictions when the signal is absent. See https://notabenda.org/guide/privacy-signals/index.md#setup-and-agent-handoff.
 
-Browse all twenty packs in five visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
+Browse all twenty-one packs in five visible groups at https://notabenda.org/start/. Start with a pack job: https://notabenda.org/guide/cartridges/index.md. The installed `notabenda packs [ID ...] --json` resolves versioned jobs into the existing target contracts and relevant setup questions. `wizard --packs ID,ID --answers FILE` prepares a draft and retains the selection in its private report. Selection never proves installation, applicability or deployment verification.
 
 ## Skill
 
@@ -87,7 +87,7 @@ Browse all twenty packs in five visible groups at https://notabenda.org/start/. 
 - [Package candidate checks](https://notabenda.org/guide/release-candidate/index.md): Maintainer-only offline packing and byte-level inventory/digest report. It performs no npm publication, dependency vulnerability review or deployment acceptance.
 - [Security reporting](https://notabenda.org/guide/security/index.md): Private contact and minimal synthetic reproductions for suspected vulnerabilities.
 
-- [Recording setup inspection](https://notabenda.org/guide/recording-inspection/index.md): Read-only fixed-scope CF cookie/terms/form activations verified against retained releases. No visitor heads, namespace selectors, writes, publication or enforcement verdict; host authorization and bounded readers are explicit.
+- [Recording setup inspection](https://notabenda.org/guide/recording-inspection/index.md): Read-only fixed-scope CF cookie/terms/form activations verified against retained releases, with optional expected descriptor/release/mode comparison and separate current/expected history links. No visitor heads, namespace selectors, writes, publication or enforcement verdict; host authorization and bounded readers are explicit.
 
 - [Compiled authored preview](https://notabenda.org/guide/authored-preview/index.md): Node-only reader and exact public ZIP for an existing MD/MDX compiler build. Private sources stay separate; configuration previews are distinct. Inspect actual component output, then use the exported artifact for publication checks.
 

@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-AGENT-INTEGRATION
+// @requirements REQ-PRODUCT-AGENT-INTEGRATION REQ-PRODUCT-RECORDING-INSPECTION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtemp,readFile,writeFile,readdir,rm} from 'node:fs/promises';
@@ -10,6 +10,13 @@ import {describeIntegration,selectIntegration} from '@notabenda/core/integration
 import {setupQuestions,createSetupPlan} from '@notabenda/core/setup';
 import {fixture} from './helpers.mjs';
 const cli=fileURLToPath(new URL('../dist/cli.js',import.meta.url));
+
+test('evidence handoff keeps expected selection comparison explicit and read-only for API and CLI users',()=>{
+ const reference=describeIntegration(['evidence']),target=reference.targets.find(t=>t.id==='evidence');
+ assert.ok(target.guides.includes('https://notabenda.org/guide/recording-inspection/index.md'));assert.match(target.hostWork.join(' '),/fixed expected descriptor ID, artifact ID and mode/);assert.match(target.hostWork.join(' '),/Never infer activation or fix it automatically/);
+ const result=spawnSync(process.execPath,[cli,'describe','evidence','--json'],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);assert.deepEqual(JSON.parse(result.stdout).targets.find(t=>t.id==='evidence').hostWork,target.hostWork);
+ assert.equal(reference.boundaries.activatesFeatures,false);
+});
 
 test('explicit task decisions select only requested outcomes and their supporting work',()=>{
  const cases=[
