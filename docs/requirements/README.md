@@ -35,6 +35,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-OR | [REQ-US-OR-GPC](#req-us-or-gpc) | Selected items: partial |
 | US-MN | [REQ-US-MN-GPC](#req-us-mn-gpc) | Selected items: partial |
 | SG | [REQ-SG-COOKIE-DATA](#req-sg-cookie-data), [REQ-SG-BROWSER-CHOICE](#req-sg-browser-choice), [REQ-SG-COOKIE-TARGETING](#req-sg-cookie-targeting), [REQ-SG-CONSENT-CONDITIONS](#req-sg-consent-conditions), [REQ-SG-CONSENT-ROUTES](#req-sg-consent-routes), [REQ-SG-WITHDRAWAL](#req-sg-withdrawal), [REQ-SG-ACCOUNTABILITY](#req-sg-accountability) | Selected items: partial |
+| JP | [REQ-JP-RELATED-SCOPE](#req-jp-related-scope), [REQ-JP-RECIPIENT-CONSENT](#req-jp-recipient-consent), [REQ-JP-RELATED-FOREIGN](#req-jp-related-foreign) | Selected items: partial |
 
 ## Individual requirements
 
@@ -3346,6 +3347,90 @@ Review designation and public business contact, policies/practices, complaints h
 
 **Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/collection.ts](../../packages/notabenda/src/collection.ts), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [packages/notabenda/test/singapore-consent.test.mjs](../../packages/notabenda/test/singapore-consent.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
 
+<a id="req-jp-related-scope"></a>
+
+### REQ-JP-RELATED-SCOPE — Assess recipient acquisition of personally referable information
+
+Assess the data and expected recipient linkage; the selected Article 31 guidance is conditional, rather than a blanket rule for all cookie data.
+
+**Applies when:** The relevant APPI and selected personally referable information/recipient conditions apply after host assessment. Other APPI duties and legal routes remain separate.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [PPC APPI general guidelines, selected personally referable information sections](https://www.ppc.go.jp/personalinfo/legal/guidelines_tsusoku/) — 2-8; 3-7-1, including 3-7-1-1 through 3-7-1-3 (read; [SRC-JP-GENERAL-2026](SOURCES.md#src-jp-general-2026)); [PPC FAQ 8-3: Article 31 scope](https://www.ppc.go.jp/all_faq_index/faq1-q8-3/) — Question and answer 8-3 (read; [SRC-JP-FAQ-8-3](SOURCES.md#src-jp-faq-8-3)).
+
+**Discovery articles:** [SRC-JP-PPC](SOURCES.md#src-jp-ppc), [SRC-JP-LEGAL-JA](SOURCES.md#src-jp-legal-ja), [SRC-JP-2026-PROMULGATION](SOURCES.md#src-jp-2026-promulgation).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-INVENTORY](../FEATURES.md#feat-inventory).
+
+<a id="verify-jp-related-scope"></a>
+
+**VERIFY-JP-RELATED-SCOPE (automated):** Read-source/locator/version metadata and unverified consolidation/commencement limits are visible through setup and agent reference. Japan selection preserves scopes, classifications and contradictory answers. UI/CLI agree and keep private reasons out of config. Existing controllers show declared recipient facts, start only after a saved explicit choice, stop on rejection and require a fresh choice after recipient changes. Synthetic checks do not determine APPI classification or legal validity.
+
+**Timing:** Selected guideline is labeled revised June 2026. Access date and 17 July 2026 promulgation are not automatic commencement dates; current consolidated law and detailed commencement remain unverified.
+
+**Implementation boundary:** Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work.
+
+**Limits/open review:** Advisory setup and existing explicit local choices only. No automatic data classification, recipient confirmation ledger, foreign-route qualification, specialized provision/receipt record or current-law/full Japan compliance claim.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/JAPAN-COOKIE-DATA.md](../../docs/JAPAN-COOKIE-DATA.md), [site/navigation.mjs](../../site/navigation.mjs), [packages/notabenda/test/japan-cookie-data.test.mjs](../../packages/notabenda/test/japan-cookie-data.test.mjs), [docs/verification/japan-cookie-data.md](../../docs/verification/japan-cookie-data.md)
+
+<a id="req-jp-recipient-consent"></a>
+
+### REQ-JP-RECIPIENT-CONSENT — Review recipient consent and confirmation before applicable provision
+
+Review the recipient, relevant data/use and who obtains and confirms consent. A notice, broad category choice or ordinary cookie receipt is not the recipient assessment.
+
+**Applies when:** The relevant APPI and selected personally referable information/recipient conditions apply after host assessment. Other APPI duties and legal routes remain separate.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [PPC APPI general guidelines, selected personally referable information sections](https://www.ppc.go.jp/personalinfo/legal/guidelines_tsusoku/) — 3-7-2 through 3-7-3-1 (read; [SRC-JP-GENERAL-2026](SOURCES.md#src-jp-general-2026)).
+
+**Discovery articles:** [SRC-JP-PPC](SOURCES.md#src-jp-ppc), [SRC-JP-LEGAL-JA](SOURCES.md#src-jp-legal-ja), [SRC-JP-2026-PROMULGATION](SOURCES.md#src-jp-2026-promulgation).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-CHOICES](../FEATURES.md#feat-choices), [FEAT-CONTROLS](../FEATURES.md#feat-controls).
+
+<a id="verify-jp-recipient-consent"></a>
+
+**VERIFY-JP-RECIPIENT-CONSENT (automated):** Read-source/locator/version metadata and unverified consolidation/commencement limits are visible through setup and agent reference. Japan selection preserves scopes, classifications and contradictory answers. UI/CLI agree and keep private reasons out of config. Existing controllers show declared recipient facts, start only after a saved explicit choice, stop on rejection and require a fresh choice after recipient changes. Synthetic checks do not determine APPI classification or legal validity.
+
+**Timing:** Selected guideline is labeled revised June 2026. Access date and 17 July 2026 promulgation are not automatic commencement dates; current consolidated law and detailed commencement remain unverified.
+
+**Implementation boundary:** Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work.
+
+**Limits/open review:** Advisory setup and existing explicit local choices only. No automatic data classification, recipient confirmation ledger, foreign-route qualification, specialized provision/receipt record or current-law/full Japan compliance claim.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/JAPAN-COOKIE-DATA.md](../../docs/JAPAN-COOKIE-DATA.md), [site/navigation.mjs](../../site/navigation.mjs), [packages/notabenda/src/controls.ts](../../packages/notabenda/src/controls.ts), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [packages/notabenda/test/japan-cookie-data.test.mjs](../../packages/notabenda/test/japan-cookie-data.test.mjs), [docs/verification/japan-cookie-data.md](../../docs/verification/japan-cookie-data.md)
+
+<a id="req-jp-related-foreign"></a>
+
+### REQ-JP-RELATED-FOREIGN — Assess the selected foreign-recipient information route
+
+Review applicable country/system/protection-measure information, exceptions and continuing safeguards; a service location does not determine qualification.
+
+**Applies when:** The relevant APPI and selected personally referable information/recipient conditions apply after host assessment. Other APPI duties and legal routes remain separate.
+
+**Type:** regulator-interpretation. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [PPC APPI general guidelines, selected personally referable information sections](https://www.ppc.go.jp/personalinfo/legal/guidelines_tsusoku/) — 3-7-3-2 (read; [SRC-JP-GENERAL-2026](SOURCES.md#src-jp-general-2026)).
+
+**Discovery articles:** [SRC-JP-PPC](SOURCES.md#src-jp-ppc), [SRC-JP-LEGAL-JA](SOURCES.md#src-jp-legal-ja), [SRC-JP-2026-PROMULGATION](SOURCES.md#src-jp-2026-promulgation).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-INVENTORY](../FEATURES.md#feat-inventory).
+
+<a id="verify-jp-related-foreign"></a>
+
+**VERIFY-JP-RELATED-FOREIGN (automated):** Read-source/locator/version metadata and unverified consolidation/commencement limits are visible through setup and agent reference. Japan selection preserves scopes, classifications and contradictory answers. UI/CLI agree and keep private reasons out of config. Existing controllers show declared recipient facts, start only after a saved explicit choice, stop on rejection and require a fresh choice after recipient changes. Synthetic checks do not determine APPI classification or legal validity.
+
+**Timing:** Selected guideline is labeled revised June 2026. Access date and 17 July 2026 promulgation are not automatic commencement dates; current consolidated law and detailed commencement remain unverified.
+
+**Implementation boundary:** Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work.
+
+**Limits/open review:** Advisory setup and existing explicit local choices only. No automatic data classification, recipient confirmation ledger, foreign-route qualification, specialized provision/receipt record or current-law/full Japan compliance claim.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/JAPAN-COOKIE-DATA.md](../../docs/JAPAN-COOKIE-DATA.md), [site/navigation.mjs](../../site/navigation.mjs), [packages/notabenda/test/japan-cookie-data.test.mjs](../../packages/notabenda/test/japan-cookie-data.test.mjs), [docs/verification/japan-cookie-data.md](../../docs/verification/japan-cookie-data.md)
+
 ## Research gaps
 
 ### GAP-SG — SG
@@ -3358,11 +3443,11 @@ Review designation and public business contact, policies/practices, complaints h
 
 ### GAP-JP — JP
 
-**needs-source-verification:** Verify the current Japanese APPI text, personally referable information/recipient linkage, and applicable transfer rules; do not reuse the obsolete June 2020 translation.
+**partially-researched:** Selected current Japanese PPC guidance 2-8 and 3-7-1 through 3-7-3 and FAQ 8-3 are read and connected to setup/tests. Current e-Gov law retrieval is blocked; linked 2023 translation is under maintenance. Verify current consolidation, 2026 amendment commencement, full applicability, foreign-transfer/rule details and specialized records before broader coverage. Do not reuse the obsolete June 2020 translation.
 
 **Planned features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-INVENTORY](../FEATURES.md#feat-inventory).
 
-**Starting sources:** [SRC-JP-PPC](SOURCES.md#src-jp-ppc).
+**Starting sources:** [SRC-JP-PPC](SOURCES.md#src-jp-ppc), [SRC-JP-LEGAL-JA](SOURCES.md#src-jp-legal-ja), [SRC-JP-GENERAL-2026](SOURCES.md#src-jp-general-2026), [SRC-JP-FAQ-8-3](SOURCES.md#src-jp-faq-8-3), [SRC-JP-2026-PROMULGATION](SOURCES.md#src-jp-2026-promulgation), [SRC-JP-APPI-DATA](SOURCES.md#src-jp-appi-data), [SRC-JP-TRANSLATION-2023](SOURCES.md#src-jp-translation-2023).
 
 ### GAP-US-STATES — US-OTHER
 

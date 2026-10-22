@@ -1,3 +1,4 @@
+// @requirements REQ-JP-RECIPIENT-CONSENT
 // @requirements REQ-SG-CONSENT-CONDITIONS
 // @requirements REQ-PRODUCT-LOCALIZATION
 import {formatMessage} from './localization-policy.js';

@@ -412,9 +412,9 @@ Read the relocated official page in the browser. It links the guideline revised 
 
 [Japan PPC legal-text index](https://www.ppc.go.jp/en/legal/)
 
-**Type:** official-explanation. **Checked:** 2026-10-18. **Access:** read.
+**Type:** official-explanation. **Checked:** 2026-10-22. **Access:** read.
 
-Index links a 2023 consolidated translation; linked law fetch returned 403. A separately found June 2020 PDF has obsolete numbering and was not used to encode a rule.
+Read current English index. It labels its linked translation as consolidated 1 April 2023 and says only Japanese texts have legal effect. The exact linked translation now returns an HTTP 200 system-maintenance page, not the law. No English consolidation was treated as retrieved/current and the obsolete June 2020 PDF was not used.
 
 <a id="src-eu-crd-20260927"></a>
 
@@ -1695,3 +1695,63 @@ Downloaded the exact PDF linked by the current landing page. Cover revision: 23 
 **Type:** legislation. **Checked:** 2026-10-22. **Access:** read.
 
 Official browser-rendered current version as at 22 October 2026. Read sections 11–12, 13–17 (including 15A) and 18–20 in the publisher’s selected-provision view. The revised-edition statement and current-view date are not new commencement dates. First/Second Schedules, prescribed regulations, chapter-12 guidance and full applicability/other obligations remain separate research.
+
+<a id="src-jp-legal-ja"></a>
+
+## SRC-JP-LEGAL-JA
+
+[Japan PPC Japanese legal and guideline index](https://www.ppc.go.jp/personalinfo/legal/)
+
+**Type:** official-explanation. **Checked:** 2026-10-22. **Access:** read.
+
+Read current index with the Japanese law/guideline links and October 2026 change references. The index is not a retrieved current consolidation; detailed effective-date and full statutory verification remain open.
+
+<a id="src-jp-general-2026"></a>
+
+## SRC-JP-GENERAL-2026
+
+[PPC APPI general guidelines, selected personally referable information sections](https://www.ppc.go.jp/personalinfo/legal/guidelines_tsusoku/)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Page labels June 2026 revision. Read 2-8 and 3-7-1 through 3-7-3, including recipient linkage, consent/confirmation and the selected foreign-recipient route and its qualifications. Broader guidelines, record duties, foreign-transfer guideline/rules and the current consolidated statute remain separate review.
+
+<a id="src-jp-faq-8-3"></a>
+
+## SRC-JP-FAQ-8-3
+
+[PPC FAQ 8-3: Article 31 scope](https://www.ppc.go.jp/all_faq_index/faq1-q8-3/)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Read question and answer 8-3. The Article 31(1) analysis is conditional on expected recipient acquisition as personal data; it is not a blanket rule for every provision of personally referable information.
+
+<a id="src-jp-2026-promulgation"></a>
+
+## SRC-JP-2026-PROMULGATION
+
+[PPC notice of 17 July 2026 APPI amendment promulgation](https://www.ppc.go.jp/news/press/2026/260717/)
+
+**Type:** official-explanation. **Checked:** 2026-10-22. **Access:** read.
+
+Read promulgation notice: passed 10 July and promulgated 17 July 2026; most provisions commence on a Cabinet-Order date within two years, with exceptions. Do not treat promulgation as a blanket effective date. Detailed commencement, exception and subordinate-rule review remain open.
+
+<a id="src-jp-appi-data"></a>
+
+## SRC-JP-APPI-DATA
+
+[e-Gov APPI law-data endpoint](https://laws.e-gov.go.jp/api/1/lawdata/415AC0000000057)
+
+**Type:** legislation. **Checked:** 2026-10-22. **Access:** blocked.
+
+Official law-data request returned HTTP 403. The legacy law link from PPC also failed through web retrieval. Not used as a retrieved current statutory text.
+
+<a id="src-jp-translation-2023"></a>
+
+## SRC-JP-TRANSLATION-2023
+
+[Official English APPI reference linked by PPC](https://www.japaneselawtranslation.go.jp/en/laws/view/4241/en)
+
+**Type:** official-explanation. **Checked:** 2026-10-22. **Access:** blocked.
+
+PPC labels the linked consolidation as 1 April 2023. Retrieval returned HTTP 200 but the document says System Maintenance; content identity failed. The translation was not treated as read or as the current binding law.

@@ -1,3 +1,4 @@
+// @requirements REQ-JP-RELATED-SCOPE REQ-JP-RECIPIENT-CONSENT REQ-JP-RELATED-FOREIGN
 // @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-CONSENT-ROUTES REQ-SG-WITHDRAWAL REQ-SG-ACCOUNTABILITY
 // @requirements REQ-PRODUCT-SPECIALIST-PACKS
 // @requirements REQ-PRODUCT-CONSUMER-PACKS
@@ -88,6 +89,7 @@ export const setupMarkets=[
   {id:'NZ',label:'New Zealand',requirements:['REQ-NZ-NOTICE','REQ-NZ-INDIRECT']},
   {id:'ZA',label:'South Africa',requirements:['REQ-ZA-MARKETING']},
   {id:'SG',label:'Singapore',requirements:['REQ-SG-COOKIE-DATA','REQ-SG-BROWSER-CHOICE','REQ-SG-COOKIE-TARGETING','REQ-SG-CONSENT-CONDITIONS','REQ-SG-CONSENT-ROUTES','REQ-SG-WITHDRAWAL','REQ-SG-ACCOUNTABILITY']},
+  {id:'JP',label:'Japan',requirements:['REQ-JP-RELATED-SCOPE','REQ-JP-RECIPIENT-CONSENT','REQ-JP-RELATED-FOREIGN']},
   {id:'US-CA',label:'California',requirements:['REQ-US-CA-CHOICES','REQ-US-CA-GPC','REQ-US-CA-UI']},
   {id:'US-CO',label:'Colorado',requirements:['REQ-US-CO-GPC']},
   {id:'US-CT',label:'Connecticut',requirements:['REQ-US-CT-GPC']},

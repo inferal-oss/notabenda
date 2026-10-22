@@ -87,3 +87,5 @@ Private discovery findings and justifications stay separate from public legal ou
 Ask for a concrete handoff: changed files, checks run, unresolved facts and deployment status. Discovery and CI are tools you may choose, rather than required services.
 
 Configuration format is a tooling choice, not a `SiteConfig` field. The browser setup can import JSON, YAML or Markdown frontmatter and select a draft download format. The CLI uses `wizard --config-format json|yaml|markdown`; its report remains JSON. Preserve the original file and comments, keep Markdown body notes separate, and use the filename shown in the agent handoff. `@notabenda/core/config/document` exposes the browser-safe codec; the Node reader re-exports it.
+
+For Japan, read the same reference’s Japan item, particularly `sourceStatus`: the current consolidation and amendment commencement are unverified. Review actual recipient linkage and required consent/foreign-recipient confirmation separately. Cookie choices do not perform those assessments or specialized recordkeeping. See [Japan recipient review](JAPAN-COOKIE-DATA.md).

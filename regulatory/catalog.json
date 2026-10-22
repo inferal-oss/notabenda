@@ -631,7 +631,8 @@
         "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
         "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
         "Source-linked Singapore cookie review in existing UI/CLI/agent setup, preserving explicit choices, current inventory and separate exception assessment; no new jurisdiction pack or automatic policy.",
-        "Selected Singapore statutory consent, deemed-consent, withdrawal and accountability review connected to setup, agent guidance and existing disclosure/choice mechanisms; scheduled exceptions and legal review remain open."
+        "Selected Singapore statutory consent, deemed-consent, withdrawal and accountability review connected to setup, agent guidance and existing disclosure/choice mechanisms; scheduled exceptions and legal review remain open.",
+        "Selected Japanese PPC recipient-linkage, consent-confirmation and foreign-recipient review shared by setup and agent guidance; current statutory consolidation and amendment commencement remain explicitly unverified."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -1678,9 +1679,9 @@
       "title": "Japan PPC legal-text index",
       "url": "https://www.ppc.go.jp/en/legal/",
       "kind": "official-explanation",
-      "checkedOn": "2026-10-18",
+      "checkedOn": "2026-10-22",
       "access": "read",
-      "note": "Index links a 2023 consolidated translation; linked law fetch returned 403. A separately found June 2020 PDF has obsolete numbering and was not used to encode a rule."
+      "note": "Read current English index. It labels its linked translation as consolidated 1 April 2023 and says only Japanese texts have legal effect. The exact linked translation now returns an HTTP 200 system-maintenance page, not the law. No English consolidation was treated as retrieved/current and the obsolete June 2020 PDF was not used."
     },
     {
       "id": "SRC-EU-CRD-20260927",
@@ -2834,6 +2835,60 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Official browser-rendered current version as at 22 October 2026. Read sections 11\u201312, 13\u201317 (including 15A) and 18\u201320 in the publisher\u2019s selected-provision view. The revised-edition statement and current-view date are not new commencement dates. First/Second Schedules, prescribed regulations, chapter-12 guidance and full applicability/other obligations remain separate research."
+    },
+    {
+      "id": "SRC-JP-LEGAL-JA",
+      "title": "Japan PPC Japanese legal and guideline index",
+      "url": "https://www.ppc.go.jp/personalinfo/legal/",
+      "kind": "official-explanation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Read current index with the Japanese law/guideline links and October 2026 change references. The index is not a retrieved current consolidation; detailed effective-date and full statutory verification remain open."
+    },
+    {
+      "id": "SRC-JP-GENERAL-2026",
+      "title": "PPC APPI general guidelines, selected personally referable information sections",
+      "url": "https://www.ppc.go.jp/personalinfo/legal/guidelines_tsusoku/",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Page labels June 2026 revision. Read 2-8 and 3-7-1 through 3-7-3, including recipient linkage, consent/confirmation and the selected foreign-recipient route and its qualifications. Broader guidelines, record duties, foreign-transfer guideline/rules and the current consolidated statute remain separate review."
+    },
+    {
+      "id": "SRC-JP-FAQ-8-3",
+      "title": "PPC FAQ 8-3: Article 31 scope",
+      "url": "https://www.ppc.go.jp/all_faq_index/faq1-q8-3/",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Read question and answer 8-3. The Article 31(1) analysis is conditional on expected recipient acquisition as personal data; it is not a blanket rule for every provision of personally referable information."
+    },
+    {
+      "id": "SRC-JP-2026-PROMULGATION",
+      "title": "PPC notice of 17 July 2026 APPI amendment promulgation",
+      "url": "https://www.ppc.go.jp/news/press/2026/260717/",
+      "kind": "official-explanation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Read promulgation notice: passed 10 July and promulgated 17 July 2026; most provisions commence on a Cabinet-Order date within two years, with exceptions. Do not treat promulgation as a blanket effective date. Detailed commencement, exception and subordinate-rule review remain open."
+    },
+    {
+      "id": "SRC-JP-APPI-DATA",
+      "title": "e-Gov APPI law-data endpoint",
+      "url": "https://laws.e-gov.go.jp/api/1/lawdata/415AC0000000057",
+      "kind": "legislation",
+      "checkedOn": "2026-10-22",
+      "access": "blocked",
+      "note": "Official law-data request returned HTTP 403. The legacy law link from PPC also failed through web retrieval. Not used as a retrieved current statutory text."
+    },
+    {
+      "id": "SRC-JP-TRANSLATION-2023",
+      "title": "Official English APPI reference linked by PPC",
+      "url": "https://www.japaneselawtranslation.go.jp/en/laws/view/4241/en",
+      "kind": "official-explanation",
+      "checkedOn": "2026-10-22",
+      "access": "blocked",
+      "note": "PPC labels the linked consolidation as 1 April 2023. Retrieval returned HTTP 200 but the document says System Maintenance; content identity failed. The translation was not treated as read or as the current binding law."
     }
   ],
   "jurisdictions": [
@@ -3149,6 +3204,16 @@
         "REQ-SG-CONSENT-ROUTES",
         "REQ-SG-WITHDRAWAL",
         "REQ-SG-ACCOUNTABILITY"
+      ]
+    },
+    {
+      "id": "JP",
+      "status": "initial-research",
+      "coverage": "Selected Japanese PPC personally referable information/recipient guidance only. Current consolidated law, amendment commencement, full applicability, exceptions, transfer/record duties and legal review remain open. No production-supported country pack.",
+      "requirementIds": [
+        "REQ-JP-RELATED-SCOPE",
+        "REQ-JP-RECIPIENT-CONSENT",
+        "REQ-JP-RELATED-FOREIGN"
       ]
     }
   ],
@@ -9990,6 +10055,145 @@
         "docs/verification/singapore-cookies.md"
       ],
       "implementationNote": "Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified."
+    },
+    {
+      "id": "REQ-JP-RELATED-SCOPE",
+      "jurisdiction": "JP",
+      "title": "Assess recipient acquisition of personally referable information",
+      "kind": "regulator-interpretation",
+      "summary": "Assess the data and expected recipient linkage; the selected Article 31 guidance is conditional, rather than a blanket rule for all cookie data.",
+      "appliesWhen": "The relevant APPI and selected personally referable information/recipient conditions apply after host assessment. Other APPI duties and legal routes remain separate.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-JP-GENERAL-2026",
+          "locator": "2-8; 3-7-1, including 3-7-1-1 through 3-7-1-3"
+        },
+        {
+          "sourceId": "SRC-JP-FAQ-8-3",
+          "locator": "Question and answer 8-3"
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-JP-PPC",
+        "SRC-JP-LEGAL-JA",
+        "SRC-JP-2026-PROMULGATION"
+      ],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-INVENTORY"
+      ],
+      "verificationIds": [
+        "VERIFY-JP-RELATED-SCOPE"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Selected guideline is labeled revised June 2026. Access date and 17 July 2026 promulgation are not automatic commencement dates; current consolidated law and detailed commencement remain unverified.",
+      "caveats": "Advisory setup and existing explicit local choices only. No automatic data classification, recipient confirmation ledger, foreign-route qualification, specialized provision/receipt record or current-law/full Japan compliance claim.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/JAPAN-COOKIE-DATA.md",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/japan-cookie-data.test.mjs",
+        "docs/verification/japan-cookie-data.md"
+      ],
+      "implementationNote": "Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work."
+    },
+    {
+      "id": "REQ-JP-RECIPIENT-CONSENT",
+      "jurisdiction": "JP",
+      "title": "Review recipient consent and confirmation before applicable provision",
+      "kind": "regulator-interpretation",
+      "summary": "Review the recipient, relevant data/use and who obtains and confirms consent. A notice, broad category choice or ordinary cookie receipt is not the recipient assessment.",
+      "appliesWhen": "The relevant APPI and selected personally referable information/recipient conditions apply after host assessment. Other APPI duties and legal routes remain separate.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-JP-GENERAL-2026",
+          "locator": "3-7-2 through 3-7-3-1"
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-JP-PPC",
+        "SRC-JP-LEGAL-JA",
+        "SRC-JP-2026-PROMULGATION"
+      ],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-CHOICES",
+        "FEAT-CONTROLS"
+      ],
+      "verificationIds": [
+        "VERIFY-JP-RECIPIENT-CONSENT"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Selected guideline is labeled revised June 2026. Access date and 17 July 2026 promulgation are not automatic commencement dates; current consolidated law and detailed commencement remain unverified.",
+      "caveats": "Advisory setup and existing explicit local choices only. No automatic data classification, recipient confirmation ledger, foreign-route qualification, specialized provision/receipt record or current-law/full Japan compliance claim.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/JAPAN-COOKIE-DATA.md",
+        "site/navigation.mjs",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/consent-engine.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/japan-cookie-data.test.mjs",
+        "docs/verification/japan-cookie-data.md"
+      ],
+      "implementationNote": "Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work."
+    },
+    {
+      "id": "REQ-JP-RELATED-FOREIGN",
+      "jurisdiction": "JP",
+      "title": "Assess the selected foreign-recipient information route",
+      "kind": "regulator-interpretation",
+      "summary": "Review applicable country/system/protection-measure information, exceptions and continuing safeguards; a service location does not determine qualification.",
+      "appliesWhen": "The relevant APPI and selected personally referable information/recipient conditions apply after host assessment. Other APPI duties and legal routes remain separate.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-JP-GENERAL-2026",
+          "locator": "3-7-3-2"
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-JP-PPC",
+        "SRC-JP-LEGAL-JA",
+        "SRC-JP-2026-PROMULGATION"
+      ],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-INVENTORY"
+      ],
+      "verificationIds": [
+        "VERIFY-JP-RELATED-FOREIGN"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Selected guideline is labeled revised June 2026. Access date and 17 July 2026 promulgation are not automatic commencement dates; current consolidated law and detailed commencement remain unverified.",
+      "caveats": "Advisory setup and existing explicit local choices only. No automatic data classification, recipient confirmation ledger, foreign-route qualification, specialized provision/receipt record or current-law/full Japan compliance claim.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/JAPAN-COOKIE-DATA.md",
+        "site/navigation.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/japan-cookie-data.test.mjs",
+        "docs/verification/japan-cookie-data.md"
+      ],
+      "implementationNote": "Japan coverage interest/imported jurisdiction creates source-linked UI/CLI/agent review while preserving configuration and private historical answers. Tests keep draft/notice states separate from permission and invalidate a saved grant after declared recipient changes. Legal validity, actual recipient confirmation and downstream fulfillment remain host work."
     }
   ],
   "verification": [
@@ -11959,6 +12163,42 @@
         "packages/notabenda/test/singapore-consent.test.mjs",
         "docs/verification/singapore-cookies.md"
       ]
+    },
+    {
+      "id": "VERIFY-JP-RELATED-SCOPE",
+      "requirementIds": [
+        "REQ-JP-RELATED-SCOPE"
+      ],
+      "status": "automated",
+      "expected": "Read-source/locator/version metadata and unverified consolidation/commencement limits are visible through setup and agent reference. Japan selection preserves scopes, classifications and contradictory answers. UI/CLI agree and keep private reasons out of config. Existing controllers show declared recipient facts, start only after a saved explicit choice, stop on rejection and require a fresh choice after recipient changes. Synthetic checks do not determine APPI classification or legal validity.",
+      "testRefs": [
+        "packages/notabenda/test/japan-cookie-data.test.mjs",
+        "docs/verification/japan-cookie-data.md"
+      ]
+    },
+    {
+      "id": "VERIFY-JP-RECIPIENT-CONSENT",
+      "requirementIds": [
+        "REQ-JP-RECIPIENT-CONSENT"
+      ],
+      "status": "automated",
+      "expected": "Read-source/locator/version metadata and unverified consolidation/commencement limits are visible through setup and agent reference. Japan selection preserves scopes, classifications and contradictory answers. UI/CLI agree and keep private reasons out of config. Existing controllers show declared recipient facts, start only after a saved explicit choice, stop on rejection and require a fresh choice after recipient changes. Synthetic checks do not determine APPI classification or legal validity.",
+      "testRefs": [
+        "packages/notabenda/test/japan-cookie-data.test.mjs",
+        "docs/verification/japan-cookie-data.md"
+      ]
+    },
+    {
+      "id": "VERIFY-JP-RELATED-FOREIGN",
+      "requirementIds": [
+        "REQ-JP-RELATED-FOREIGN"
+      ],
+      "status": "automated",
+      "expected": "Read-source/locator/version metadata and unverified consolidation/commencement limits are visible through setup and agent reference. Japan selection preserves scopes, classifications and contradictory answers. UI/CLI agree and keep private reasons out of config. Existing controllers show declared recipient facts, start only after a saved explicit choice, stop on rejection and require a fresh choice after recipient changes. Synthetic checks do not determine APPI classification or legal validity.",
+      "testRefs": [
+        "packages/notabenda/test/japan-cookie-data.test.mjs",
+        "docs/verification/japan-cookie-data.md"
+      ]
     }
   ],
   "researchBacklog": [
@@ -11981,14 +12221,20 @@
       "id": "GAP-JP",
       "jurisdiction": "JP",
       "sourceIds": [
-        "SRC-JP-PPC"
+        "SRC-JP-PPC",
+        "SRC-JP-LEGAL-JA",
+        "SRC-JP-GENERAL-2026",
+        "SRC-JP-FAQ-8-3",
+        "SRC-JP-2026-PROMULGATION",
+        "SRC-JP-APPI-DATA",
+        "SRC-JP-TRANSLATION-2023"
       ],
       "featureIds": [
         "FEAT-REGIONS",
         "FEAT-INVENTORY"
       ],
-      "status": "needs-source-verification",
-      "question": "Verify the current Japanese APPI text, personally referable information/recipient linkage, and applicable transfer rules; do not reuse the obsolete June 2020 translation."
+      "status": "partially-researched",
+      "question": "Selected current Japanese PPC guidance 2-8 and 3-7-1 through 3-7-3 and FAQ 8-3 are read and connected to setup/tests. Current e-Gov law retrieval is blocked; linked 2023 translation is under maintenance. Verify current consolidation, 2026 amendment commencement, full applicability, foreign-transfer/rule details and specialized records before broader coverage. Do not reuse the obsolete June 2020 translation."
     },
     {
       "id": "GAP-US-STATES",

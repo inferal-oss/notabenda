@@ -343,3 +343,8 @@ Use the current linked PDPC online-activities chapter for selected source-backed
 
 <!-- @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-CONSENT-ROUTES REQ-SG-WITHDRAWAL REQ-SG-ACCOUNTABILITY -->
 Connect selected current statutory consent, purpose/notification, withdrawal and accountability provisions to the same review. Keep consent, deemed consent and required/authorised routes distinct in agent metadata; these are legal-route explanations, not new runtime modes. Reuse existing purpose disclosures, public contact fields and cooperative choice/withdrawal mechanisms without treating them as proof of notification, validity, designation or downstream fulfillment. Full applicability, First/Second Schedule conditions, prescribed regulations, chapter 12 guidance and legal review remain open.
+
+## Japan recipient review
+
+<!-- @requirements REQ-JP-RELATED-SCOPE REQ-JP-RECIPIENT-CONSENT REQ-JP-RELATED-FOREIGN -->
+Use selected Japanese PPC guidance to review personally referable information, expected recipient acquisition, consent confirmation and the applicable foreign-recipient information route. Keep the current consolidated-law and commencement gaps explicit; an older translation or promulgation date must not activate runtime behavior. Japan market interest/imported jurisdiction adds advice without changing scopes, classifications, historical answers or permissions. Reuse the existing cookie pack. Recipient confirmation, specialized provision/receipt records, full applicability and legal review remain host/research work.

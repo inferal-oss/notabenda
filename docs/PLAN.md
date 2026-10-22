@@ -141,6 +141,8 @@ Provide privacy/cookie/terms link components, a persistent preferences trigger, 
 
 When JavaScript or storage is unavailable, optional integrations remain blocked and documents remain accessible. Show functional limitations where relevant. Avoid displaying a useless consent banner on sites with no optional processing, while preserving applicable notices and privacy-choice routes.
 
+The selected [Japan recipient review](JAPAN-COOKIE-DATA.md) connects PPC guidance to setup and agent instructions. It records expected recipient linkage, consent confirmation and foreign-recipient review while preserving the current-consolidation and commencement gaps. No automatic classification, recipient ledger or legal policy is added.
+
 ## 4. Consent and enforcement
 
 Selected Oregon/Minnesota universal-signal research now adds dated, source-linked reviews to setup and agent instructions. It reuses explicit GPC mechanisms without automatic applicability or runtime activation; historical questionnaire answers remain readable. Complete statutory review, recognized-mechanism assessment and actual downstream acceptance remain open. See [setup and agent handoff](PRIVACY-SIGNALS.md#setup-and-agent-handoff).
