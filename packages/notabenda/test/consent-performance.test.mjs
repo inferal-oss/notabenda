@@ -40,7 +40,18 @@ for(const [name,create,input] of profiles){
  test(name+': measurement fixtures exercise complete lifecycles and report finite samples without timing gates',async()=>{
   const d=data[0],result=await measureConsent({create,input:input(d),inventory:d.config,samples:3,warmup:1,batch:2});
   assert.equal(result.lifecycle.starts,result.lifecycle.stops);assert.ok(result.lifecycle.starts>4);
+  assert.equal(result.phases.returningConstructor.count,3);
   for(const phase of Object.values(result.phases)){assert.equal(phase.count,3);assert.ok(phase.samples.every(Number.isFinite));assert.ok(phase.p95>=phase.median);}
+ });
+ test(name+': returning-constructor measurements restore real saved choices and reject failed recovery',async()=>{
+  const d=data[0],key='notabenda:choices:v1:'+d.config.site.id;let restores=0;
+  const observe=(input,env)=>{const returning=env.storage.getItem(key)!==null,c=create(input,env);if(returning){restores++;assert.equal(c.isAllowed('p0'),true);}return c;};
+  const result=await measureConsent({create:observe,input:input(d),inventory:d.config,samples:3,warmup:1});
+  assert.equal(restores,4);assert.equal(result.phases.returningConstructor.count,3);
+  const broken=(input,env)=>{const returning=env.storage.getItem(key)!==null,c=create(input,env);if(returning)c.rejectAll();return c;};
+  await assert.rejects(measureConsent({create:broken,input:input(d),inventory:d.config,samples:2,warmup:0}),/returning choice changed or did not restore/);
+  const rewriting=(input,env)=>{const saved=env.storage.getItem(key),c=create(input,env);if(saved!==null)env.storage.setItem(key,saved);return c;};
+  await assert.rejects(measureConsent({create:rewriting,input:input(d),inventory:d.config,samples:2,warmup:0}),/returning choice changed or did not restore/);
  });
 }
 test('measurement input bounds reject before constructing a controller',async()=>{

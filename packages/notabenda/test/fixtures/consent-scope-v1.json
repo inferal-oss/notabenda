@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "instant": 1792584000000,
+  "config": {
+    "schemaVersion": 1,
+    "site": {
+      "id": "scope-contract",
+      "name": "Juniper Notes",
+      "url": "https://juniper.example.test",
+      "locale": "fr-CA",
+      "description": "A fictional independent writing studio used to demonstrate reusable legal pages."
+    },
+    "controller": {
+      "name": "Juniper Notes Cooperative (fictional)",
+      "email": "privacy@juniper.example.test",
+      "address": "12 Example Lane, Example City (fictional)"
+    },
+    "jurisdictions": [],
+    "purposes": [
+      {
+        "id": "p0",
+        "name": "Purpose 0",
+        "description": "Synthetic measurement purpose.",
+        "legalBasis": "Synthetic test declaration",
+        "dataCategories": [
+          "Usage"
+        ],
+        "retention": "Synthetic session",
+        "collection": {
+          "source": "direct",
+          "description": "Synthetic only",
+          "required": false,
+          "consequences": "No optional feature"
+        }
+      },
+      {
+        "id": "p1",
+        "name": "Purpose 1",
+        "description": "Synthetic measurement purpose.",
+        "legalBasis": "Synthetic test declaration",
+        "dataCategories": [
+          "Usage"
+        ],
+        "retention": "Synthetic session",
+        "collection": {
+          "source": "direct",
+          "description": "Synthetic only",
+          "required": false,
+          "consequences": "No optional feature"
+        }
+      }
+    ],
+    "services": [
+      {
+        "id": "not-managed",
+        "name": "Unmanaged",
+        "provider": "Synthetic",
+        "location": "This test",
+        "purposeIds": [
+          "p0"
+        ],
+        "processingActivities": []
+      },
+      {
+        "id": "z-last",
+        "name": "Service 0",
+        "provider": "Synthetic provider",
+        "location": "This test",
+        "purposeIds": [
+          "p0",
+          "p1",
+          "p0"
+        ],
+        "processingActivities": [
+          "sale",
+          "sharing",
+          "targeted-advertising"
+        ]
+      },
+      {
+        "id": "a-first",
+        "name": "Service 1",
+        "provider": "Synthetic provider",
+        "location": "This test",
+        "purposeIds": [
+          "p0"
+        ],
+        "processingActivities": []
+      },
+      {
+        "id": "constructor",
+        "name": "Service 2",
+        "provider": "Synthetic provider",
+        "location": "This test",
+        "purposeIds": [
+          "p1"
+        ],
+        "processingActivities": [
+          "sale",
+          "sharing",
+          "targeted-advertising"
+        ]
+      },
+      {
+        "id": "m-middle",
+        "name": "Service 3",
+        "provider": "Synthetic provider",
+        "location": "This test",
+        "purposeIds": [
+          "p1"
+        ],
+        "processingActivities": []
+      }
+    ],
+    "storage": [],
+    "privacy": {
+      "rights": [
+        "Request information about how personal information is used.",
+        "Ask to access, correct, or erase information where applicable.",
+        "Withdraw a permission or object to processing where the applicable rules provide that right."
+      ],
+      "rightsUrl": "mailto:privacy@juniper.example.test",
+      "complaints": {
+        "description": "Contact the operator with questions. An actual deployment must identify the applicable complaint and supervisory-authority options."
+      },
+      "transfers": "This fictional example describes no live transfers. An actual deployment must state its recipients, locations, and applicable safeguards.",
+      "automatedDecisions": "No automated decisions are represented in this fictional example."
+    },
+    "terms": {
+      "audience": "business",
+      "serviceType": "informational"
+    },
+    "documents": {
+      "privacy": {
+        "title": "Privacy policy",
+        "route": "/privacy",
+        "version": "draft-1",
+        "effectiveDate": "2026-10-18",
+        "source": "supplied",
+        "review": {
+          "status": "draft"
+        },
+        "sections": [
+          {
+            "id": "scope-contract",
+            "heading": "Synthetic scope fixture",
+            "paragraphs": [
+              "Only a regression fixture."
+            ]
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Cookie policy",
+        "route": "/cookies",
+        "version": "draft-1",
+        "effectiveDate": "2026-10-18",
+        "source": "supplied",
+        "review": {
+          "status": "draft"
+        },
+        "sections": [
+          {
+            "id": "scope-contract",
+            "heading": "Synthetic scope fixture",
+            "paragraphs": [
+              "Only a regression fixture."
+            ]
+          }
+        ]
+      },
+      "terms": {
+        "title": "Terms of use",
+        "route": "/terms",
+        "version": "draft-1",
+        "effectiveDate": "2026-10-18",
+        "source": "supplied",
+        "review": {
+          "status": "draft"
+        },
+        "sections": [
+          {
+            "id": "about",
+            "heading": "About these example pages",
+            "paragraphs": [
+              "Juniper Notes is a fictional studio. These sample sections demonstrate how your own reviewed terms can be rendered inside your site's design. They do not offer a service or establish a real contract."
+            ]
+          },
+          {
+            "id": "your-content",
+            "heading": "Your content, your structure",
+            "paragraphs": [
+              "Supply the terms appropriate to your audience, service, and applicable consumer rights. The renderer preserves your section structure and safely displays text and links."
+            ]
+          },
+          {
+            "id": "contact",
+            "heading": "Contact",
+            "links": [
+              {
+                "label": "privacy@juniper.example.test",
+                "href": "mailto:privacy@juniper.example.test"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "scopeGuards": {
+      "version": 1,
+      "revision": "synthetic-1",
+      "site": {
+        "children": "absent",
+        "sensitiveData": "absent",
+        "highRiskProfiling": "absent",
+        "regulatedSector": "absent"
+      },
+      "purposes": [
+        {
+          "id": "p1",
+          "facts": {
+            "sensitiveData": "unknown"
+          }
+        }
+      ]
+    },
+    "consent": {
+      "purposes": [
+        {
+          "id": "p1",
+          "scope": "1"
+        },
+        {
+          "id": "p0",
+          "scope": "1"
+        }
+      ],
+      "services": [
+        {
+          "id": "m-middle",
+          "scope": "service-m-middle"
+        },
+        {
+          "id": "constructor",
+          "scope": "service-constructor"
+        },
+        {
+          "id": "a-first",
+          "scope": "service-a-first"
+        },
+        {
+          "id": "z-last",
+          "scope": "service-z-last"
+        }
+      ],
+      "grantLifetimeDays": 1,
+      "refusalLifetimeDays": 30,
+      "dismissalMinutes": 10,
+      "grantExpiryPolicy": {
+        "profile": "ie-dpc-six-month-default",
+        "version": 1
+      }
+    },
+    "privacySignals": {
+      "globalPrivacyControl": {
+        "appliesTo": [
+          "sale",
+          "sharing",
+          "targeted-advertising"
+        ],
+        "explanation": "Synthetic benchmark policy only."
+      }
+    },
+    "localization": {
+      "schemaVersion": 1,
+      "locale": "fr-CA",
+      "direction": "ltr",
+      "revision": "fr-copy-1",
+      "disclosureRevision": "fr-disclosure-1",
+      "reviewStatus": "reviewed",
+      "consent": {
+        "title": "Vos choix de confidentialité",
+        "summary": "Autorisez-vous le profil de lecture facultatif ?",
+        "preferencesTitle": "Choix de confidentialité",
+        "preferencesIntro": "Sélectionnez les finalités à autoriser. Fermer sans enregistrer conserve vos choix actuels.",
+        "essentialNote": "Les fonctions essentielles relèvent du site. Les fonctions facultatives restent désactivées sans votre permission.",
+        "acceptLabel": "Autoriser les fonctions",
+        "rejectLabel": "Refuser les fonctions",
+        "saveLabel": "Enregistrer",
+        "preferencesLabel": "Préférences",
+        "dismissLabel": "Plus tard",
+        "closeLabel": "Fermer",
+        "triggerLabel": "Choix de confidentialité",
+        "noticeLabel": "Choix pour les fonctions facultatives",
+        "cookiePolicy": "Politique de témoins",
+        "retryLabel": "Réessayer",
+        "services": "Services : {services}",
+        "scopeUnavailable": "Cette finalité nécessite une autre procédure et reste désactivée.",
+        "privacyInformation": "Informations de confidentialité",
+        "storageUnavailable": "Vos choix ne peuvent pas être enregistrés. Les fonctions restent désactivées. Si les anciens choix ne peuvent pas être supprimés, ils peuvent réapparaître lors d’une autre visite.",
+        "reloadRequired": "Rechargez la page pour terminer le changement d’un service.",
+        "checking": "Vérification des choix enregistrés… Les fonctions restent désactivées.",
+        "saving": "Enregistrement… Les fonctions attendent la confirmation.",
+        "recorded": "Vos choix ont été enregistrés.",
+        "error": "L’enregistrement ne peut pas être confirmé. Les fonctions restent désactivées.",
+        "review": "Révisez vos choix avant d’autoriser les fonctions.",
+        "stale": "Cet avis a changé. Rechargez la page.",
+        "expired": "Le choix a expiré ou n’a pas été confirmé à temps. Choisissez de nouveau.",
+        "unavailable": "L’enregistrement est indisponible. Les fonctions restent désactivées; vous pouvez toujours les refuser.",
+        "retired": "Ce contexte est fermé. Les fonctions restent désactivées. Contactez le responsable du site.",
+        "signalObserved": "Global Privacy Control est actif. Les services couverts restent désactivés; les choix de témoins ne suppriment pas cette restriction.",
+        "signalUnavailable": "Global Privacy Control ne peut pas être vérifié. Les services couverts restent désactivés.",
+        "processingRecorded": "Une restriction de traitement est enregistrée. Les choix de témoins ne la suppriment pas.",
+        "processingPending": "Des restrictions sont en attente ou non confirmées. Les services couverts restent désactivés.",
+        "destroyed": "Les choix de confidentialité sont indisponibles.",
+        "choicesChanged": "Les choix ont changé. Révisez-les avant d’enregistrer.",
+        "restrictedSummary": "D’autres finalités nécessitent une procédure distincte et restent désactivées.",
+        "exceptionsSummary": "D’autres réglages de stockage ont des commandes distinctes.",
+        "unavailableSummary": "Les finalités facultatives nécessitent une procédure distincte et restent désactivées.",
+        "restrictedIntro": "Les finalités indisponibles nécessitent une procédure distincte.",
+        "materialChange": "Changements au traitement facultatif : {summary}"
+      },
+      "documents": {
+        "legalEyebrow": "{siteName} · Informations légales",
+        "versionLabel": "Version",
+        "effectiveLabel": "En vigueur",
+        "draft": "Brouillon à réviser avant publication.",
+        "contents": "Dans cette page",
+        "storageItem": "{count} élément",
+        "storageItems": "{count} éléments",
+        "legalLabel": "Informations légales",
+        "privacyRequests": "Demandes de confidentialité",
+        "skipToContent": "Aller au contenu",
+        "legalInformation": "Informations légales"
+      }
+    }
+  },
+  "scopes": {
+    "p1": "{\"scope\":\"1\",\"purpose\":{\"id\":\"p1\",\"name\":\"Purpose 1\",\"description\":\"Synthetic measurement purpose.\",\"legalBasis\":\"Synthetic test declaration\",\"dataCategories\":[\"Usage\"],\"retention\":\"Synthetic session\",\"collection\":{\"source\":\"direct\",\"description\":\"Synthetic only\",\"required\":false,\"consequences\":\"No optional feature\"}},\"services\":[{\"scope\":\"service-constructor\",\"service\":{\"id\":\"constructor\",\"name\":\"Service 2\",\"provider\":\"Synthetic provider\",\"purposeIds\":[\"p1\"],\"location\":\"This test\",\"processingActivities\":[\"sale\",\"sharing\",\"targeted-advertising\"]}},{\"scope\":\"service-m-middle\",\"service\":{\"id\":\"m-middle\",\"name\":\"Service 3\",\"provider\":\"Synthetic provider\",\"purposeIds\":[\"p1\"],\"location\":\"This test\",\"processingActivities\":[]}},{\"scope\":\"service-z-last\",\"service\":{\"id\":\"z-last\",\"name\":\"Service 0\",\"provider\":\"Synthetic provider\",\"purposeIds\":[\"p0\",\"p1\",\"p0\"],\"location\":\"This test\",\"processingActivities\":[\"sale\",\"sharing\",\"targeted-advertising\"]}}],\"grantExpiryPolicy\":{\"profile\":\"ie-dpc-six-month-default\",\"version\":1},\"scopeGuard\":{\"version\":1,\"revision\":\"synthetic-1\",\"facts\":{\"children\":\"absent\",\"sensitiveData\":\"unknown\",\"highRiskProfiling\":\"absent\",\"regulatedSector\":\"absent\"}},\"localization\":{\"locale\":\"fr-CA\",\"disclosureRevision\":\"fr-disclosure-1\"}}",
+    "p0": "{\"scope\":\"1\",\"purpose\":{\"id\":\"p0\",\"name\":\"Purpose 0\",\"description\":\"Synthetic measurement purpose.\",\"legalBasis\":\"Synthetic test declaration\",\"dataCategories\":[\"Usage\"],\"retention\":\"Synthetic session\",\"collection\":{\"source\":\"direct\",\"description\":\"Synthetic only\",\"required\":false,\"consequences\":\"No optional feature\"}},\"services\":[{\"scope\":\"service-a-first\",\"service\":{\"id\":\"a-first\",\"name\":\"Service 1\",\"provider\":\"Synthetic provider\",\"purposeIds\":[\"p0\"],\"location\":\"This test\",\"processingActivities\":[]}},{\"scope\":\"service-z-last\",\"service\":{\"id\":\"z-last\",\"name\":\"Service 0\",\"provider\":\"Synthetic provider\",\"purposeIds\":[\"p0\",\"p1\",\"p0\"],\"location\":\"This test\",\"processingActivities\":[\"sale\",\"sharing\",\"targeted-advertising\"]}}],\"grantExpiryPolicy\":{\"profile\":\"ie-dpc-six-month-default\",\"version\":1},\"scopeGuard\":{\"version\":1,\"revision\":\"synthetic-1\",\"facts\":{\"children\":\"absent\",\"sensitiveData\":\"absent\",\"highRiskProfiling\":\"absent\",\"regulatedSector\":\"absent\"}},\"localization\":{\"locale\":\"fr-CA\",\"disclosureRevision\":\"fr-disclosure-1\"}}"
+  },
+  "saved": "{\"schemaVersion\":1,\"siteId\":\"scope-contract\",\"dismissedUntil\":0,\"choices\":{\"p1\":{\"scope\":\"{\\\"scope\\\":\\\"1\\\",\\\"purpose\\\":{\\\"id\\\":\\\"p1\\\",\\\"name\\\":\\\"Purpose 1\\\",\\\"description\\\":\\\"Synthetic measurement purpose.\\\",\\\"legalBasis\\\":\\\"Synthetic test declaration\\\",\\\"dataCategories\\\":[\\\"Usage\\\"],\\\"retention\\\":\\\"Synthetic session\\\",\\\"collection\\\":{\\\"source\\\":\\\"direct\\\",\\\"description\\\":\\\"Synthetic only\\\",\\\"required\\\":false,\\\"consequences\\\":\\\"No optional feature\\\"}},\\\"services\\\":[{\\\"scope\\\":\\\"service-constructor\\\",\\\"service\\\":{\\\"id\\\":\\\"constructor\\\",\\\"name\\\":\\\"Service 2\\\",\\\"provider\\\":\\\"Synthetic provider\\\",\\\"purposeIds\\\":[\\\"p1\\\"],\\\"location\\\":\\\"This test\\\",\\\"processingActivities\\\":[\\\"sale\\\",\\\"sharing\\\",\\\"targeted-advertising\\\"]}},{\\\"scope\\\":\\\"service-m-middle\\\",\\\"service\\\":{\\\"id\\\":\\\"m-middle\\\",\\\"name\\\":\\\"Service 3\\\",\\\"provider\\\":\\\"Synthetic provider\\\",\\\"purposeIds\\\":[\\\"p1\\\"],\\\"location\\\":\\\"This test\\\",\\\"processingActivities\\\":[]}},{\\\"scope\\\":\\\"service-z-last\\\",\\\"service\\\":{\\\"id\\\":\\\"z-last\\\",\\\"name\\\":\\\"Service 0\\\",\\\"provider\\\":\\\"Synthetic provider\\\",\\\"purposeIds\\\":[\\\"p0\\\",\\\"p1\\\",\\\"p0\\\"],\\\"location\\\":\\\"This test\\\",\\\"processingActivities\\\":[\\\"sale\\\",\\\"sharing\\\",\\\"targeted-advertising\\\"]}}],\\\"grantExpiryPolicy\\\":{\\\"profile\\\":\\\"ie-dpc-six-month-default\\\",\\\"version\\\":1},\\\"scopeGuard\\\":{\\\"version\\\":1,\\\"revision\\\":\\\"synthetic-1\\\",\\\"facts\\\":{\\\"children\\\":\\\"absent\\\",\\\"sensitiveData\\\":\\\"unknown\\\",\\\"highRiskProfiling\\\":\\\"absent\\\",\\\"regulatedSector\\\":\\\"absent\\\"}},\\\"localization\\\":{\\\"locale\\\":\\\"fr-CA\\\",\\\"disclosureRevision\\\":\\\"fr-disclosure-1\\\"}}\",\"status\":\"denied\",\"at\":1792584000000,\"until\":1795176000000},\"p0\":{\"scope\":\"{\\\"scope\\\":\\\"1\\\",\\\"purpose\\\":{\\\"id\\\":\\\"p0\\\",\\\"name\\\":\\\"Purpose 0\\\",\\\"description\\\":\\\"Synthetic measurement purpose.\\\",\\\"legalBasis\\\":\\\"Synthetic test declaration\\\",\\\"dataCategories\\\":[\\\"Usage\\\"],\\\"retention\\\":\\\"Synthetic session\\\",\\\"collection\\\":{\\\"source\\\":\\\"direct\\\",\\\"description\\\":\\\"Synthetic only\\\",\\\"required\\\":false,\\\"consequences\\\":\\\"No optional feature\\\"}},\\\"services\\\":[{\\\"scope\\\":\\\"service-a-first\\\",\\\"service\\\":{\\\"id\\\":\\\"a-first\\\",\\\"name\\\":\\\"Service 1\\\",\\\"provider\\\":\\\"Synthetic provider\\\",\\\"purposeIds\\\":[\\\"p0\\\"],\\\"location\\\":\\\"This test\\\",\\\"processingActivities\\\":[]}},{\\\"scope\\\":\\\"service-z-last\\\",\\\"service\\\":{\\\"id\\\":\\\"z-last\\\",\\\"name\\\":\\\"Service 0\\\",\\\"provider\\\":\\\"Synthetic provider\\\",\\\"purposeIds\\\":[\\\"p0\\\",\\\"p1\\\",\\\"p0\\\"],\\\"location\\\":\\\"This test\\\",\\\"processingActivities\\\":[\\\"sale\\\",\\\"sharing\\\",\\\"targeted-advertising\\\"]}}],\\\"grantExpiryPolicy\\\":{\\\"profile\\\":\\\"ie-dpc-six-month-default\\\",\\\"version\\\":1},\\\"scopeGuard\\\":{\\\"version\\\":1,\\\"revision\\\":\\\"synthetic-1\\\",\\\"facts\\\":{\\\"children\\\":\\\"absent\\\",\\\"sensitiveData\\\":\\\"absent\\\",\\\"highRiskProfiling\\\":\\\"absent\\\",\\\"regulatedSector\\\":\\\"absent\\\"}},\\\"localization\\\":{\\\"locale\\\":\\\"fr-CA\\\",\\\"disclosureRevision\\\":\\\"fr-disclosure-1\\\"}}\",\"status\":\"granted\",\"at\":1792584000000,\"until\":1792670400000}},\"grantExpiryPolicy\":{\"profile\":\"ie-dpc-six-month-default\",\"version\":1},\"authorizationMode\":\"local\"}"
+}

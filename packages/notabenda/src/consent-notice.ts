@@ -15,15 +15,21 @@ import type {ConsentRuntimeInventory} from './consent-runtime-config.js';
 import {isPromptPolicy} from './prompt-policy.js';
 import type {PromptPolicy} from './types.js';
 
-/** Shared by the local runtime and the build-time evidence descriptor. */
+/** @requirements REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-CONSENT-RUNTIME
+ * Shared by the local runtime and the build-time evidence descriptor.
+ */
 export function consentScopes(config: ConsentRuntimeInventory): Record<string, string> {
-  if (!config.consent) throw new Error('Declare the optional consent scope first.');
-  return Object.fromEntries(config.consent.purposes.map(p => {
+  const policy=config.consent;
+  if (!policy) throw new Error('Declare the optional consent scope first.');
+  // Resolve and order managed services once. Filtering retains repeated purpose
+  // associations only once and preserves the existing serialized scope contract.
+  const managed=policy.services.map(s=>({scope:s.scope,service:config.services.find(item=>item.id===s.id)!}))
+    .sort((a,b) => a.service.id < b.service.id ? -1 : a.service.id > b.service.id ? 1 : 0);
+  return Object.fromEntries(policy.purposes.map(p => {
     const purpose = config.purposes.find(item => item.id === p.id)!;
-    const services = config.consent!.services.map(s => ({ scope:s.scope, service:config.services.find(item => item.id === s.id)! }))
-      .filter(s => s.service.purposeIds.includes(p.id)).sort((a,b) => a.service.id < b.service.id ? -1 : a.service.id > b.service.id ? 1 : 0);
+    const services = managed.filter(s => s.service.purposeIds.includes(p.id));
     const scopeGuard=scopeGuardContext(config.scopeGuards,p.id);
-    return [p.id, JSON.stringify({ scope:p.scope, purpose, services,...(config.consent!.grantExpiryPolicy?{grantExpiryPolicy:config.consent!.grantExpiryPolicy}:{}),...(scopeGuard?{scopeGuard}:{}),...(config.localization?{localization:{locale:config.localization.locale,disclosureRevision:config.localization.disclosureRevision}}:{}) })];
+    return [p.id, JSON.stringify({ scope:p.scope, purpose, services,...(policy.grantExpiryPolicy?{grantExpiryPolicy:policy.grantExpiryPolicy}:{}),...(scopeGuard?{scopeGuard}:{}),...(config.localization?{localization:{locale:config.localization.locale,disclosureRevision:config.localization.disclosureRevision}}:{}) })];
   }));
 }
 export interface ConsentWording {

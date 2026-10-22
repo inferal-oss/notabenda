@@ -5239,13 +5239,15 @@
         "packages/notabenda/src/consent-engine.ts",
         "packages/notabenda/src/consent-runtime-config.ts",
         "packages/notabenda/src/consent-runtime.ts",
-        "packages/notabenda/src/cli.ts"
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/consent-notice.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs",
         "packages/notabenda/test/setup-purpose.test.mjs",
-        "packages/notabenda/test/consent-build-cli.test.mjs"
+        "packages/notabenda/test/consent-build-cli.test.mjs",
+        "packages/notabenda/test/consent-scope-contract.test.mjs"
       ],
       "implementationNote": "CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate."
     },
@@ -5463,7 +5465,8 @@
         "docs/verification/consent-focus.md",
         "packages/notabenda-cf/test/recorded-cookie-application.test.mjs",
         "scripts/check-recorded-cookie-runtime.mjs",
-        "docs/verification/recorded-cookie-application.md"
+        "docs/verification/recorded-cookie-application.md",
+        "packages/notabenda/test/consent-scope-contract.test.mjs"
       ],
       "implementationNote": "Immutable notices, transactional stream revisions, restrictive revoke-all and historical receipts/current heads are implemented. Optional construction-time browser gating, exact-response validation, bounded single-command retries, immediate local withdrawal, reload/resume confirmation, storage-failure barriers and stale-generation retirement are covered by tests. Default browser mode remains local-only."
     },
@@ -6701,7 +6704,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Measured browser delivery and optional component styles",
       "kind": "product-standard",
-      "summary": "Measure actual browser bundles and published CSS; target 15 KiB gzip for core plus vanilla controls and 5 KiB for default consent CSS, reporting broader optional surfaces separately. Preserve validation and effective-permission behavior. Measure fresh-controller setup, granted snapshots and synchronous choice calls through public factories with explicit synthetic inputs, sample distributions and timing limits.",
+      "summary": "Measure actual browser bundles and published CSS; target 15 KiB gzip for core plus vanilla controls and 5 KiB for default consent CSS, reporting broader optional surfaces separately. Preserve validation and effective-permission behavior. Measure fresh and returning-controller setup, granted snapshots and synchronous choice calls through public factories with explicit synthetic inputs, sample distributions and timing limits.",
       "appliesWhen": "Documenting or releasing browser runtime and stylesheet entry points.",
       "sourceRefs": [
         {
@@ -6743,7 +6746,8 @@
         "scripts/build-performance-fixture.mjs",
         "scripts/performance-browser-app.mjs",
         "scripts/serve-performance.mjs",
-        "packages/notabenda/src/cli.ts"
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/consent-notice.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
@@ -6753,9 +6757,10 @@
         "packages/notabenda/test/react-consent.test.mjs",
         "packages/notabenda/test/consent-performance.test.mjs",
         "docs/verification/consent-performance.md",
-        "packages/notabenda/test/consent-build-cli.test.mjs"
+        "packages/notabenda/test/consent-build-cli.test.mjs",
+        "packages/notabenda/test/consent-scope-contract.test.mjs"
       ],
-      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results. CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate."
+      "implementationNote": "Build-time full validation produces a bounded, independently parsed browser inventory with exact legacy material scopes. The shared engine keeps required evidence in an explicit optional entry and records authorization provenance on local choices. Consent-only CSS preserves canonical cascade and accessibility rules. Compatibility core-controls still exceeds target. Detached service indexing and direct per-service GPC checks avoid repeated full-inventory restriction maps. Processing state is shared only inside one snapshot; live queries and lifecycle starts recheck restrictions. Optional Node/browser tools measure three synthetic inventories through both public local factories, including native control updates in the browser, without runtime imports or remote services. Startup module loading, paint/INP, receipts, attached processing controllers and broader platforms remain outside these timing results. CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate. Scope construction resolves managed service associations and sorts their IDs once per construction; previously saved scope strings and choices remain byte-compatible. Returning-constructor measurements restore an exact saved local grant through both public factories and verify permission recovery without rewriting storage; normalization, record parsing and synchronous initial state are timed, while seeding and checks are excluded."
     },
     {
       "id": "REQ-PRODUCT-SERVICE-CATALOG",
@@ -10347,7 +10352,8 @@
       "status": "automated",
       "expected": "Real controller tests exercise all-purpose gating, material scope, refusal persistence, malformed/unavailable storage, expiry/resume, cross-tab refresh, failed-grant dismissal, permanently retired async starts, cleanup failures, destruction, and snapshot isolation.",
       "testRefs": [
-        "packages/notabenda/test/consent.test.mjs"
+        "packages/notabenda/test/consent.test.mjs",
+        "packages/notabenda/test/consent-scope-contract.test.mjs"
       ]
     },
     {
@@ -10402,7 +10408,8 @@
       "expected": "Ledger and browser tests verify exact notice/command binding, transactional retries/CAS, old-notice revoke-all, fail-closed receipt gating, lost acknowledgments, stale reads, storage failures, reload/stream changes, server expiry, maximum response bounds and safe inspection. Manual Chromium and real local Worker observations supplement automation; production operations remain unverified.",
       "testRefs": [
         "packages/notabenda/test/consent-evidence.test.mjs",
-        "packages/notabenda/test/consent-delivery.test.mjs"
+        "packages/notabenda/test/consent-delivery.test.mjs",
+        "packages/notabenda/test/consent-scope-contract.test.mjs"
       ]
     },
     {
@@ -10790,14 +10797,15 @@
         "REQ-PRODUCT-BUNDLE-BUDGET"
       ],
       "status": "partial",
-      "expected": "Compiled local consent plus controls stays below 15 KiB gzip and excludes full site validation, evidence implementation and build/backend/framework modules; exact scope and lifecycle parity tests pass. Required receipt and compatibility profiles are reported separately. Consent CSS stays below 5 KiB; compatibility target, full page startup/interaction and broader platforms remain open. Synthetic fresh-constructor, snapshot and synchronous choice distributions are reported without timing pass/fail gates; semantic tests retain fresh restrictions, expiry, detached snapshots and lifecycle cleanup.",
+      "expected": "Compiled local consent plus controls stays below 15 KiB gzip and excludes full site validation, evidence implementation and build/backend/framework modules; exact scope and lifecycle parity tests pass. Required receipt and compatibility profiles are reported separately. Consent CSS stays below 5 KiB; compatibility target, full page startup/interaction and broader platforms remain open. Synthetic fresh-constructor, snapshot and synchronous choice distributions are reported without timing pass/fail gates; semantic tests retain fresh restrictions, expiry, detached snapshots and lifecycle cleanup. Returning-constructor samples restore prior local grants without a record rewrite. A fixed preceding scope/choice fixture preserves exact encoding across overlapping/repeated associations, ordering, localized disclosures, expiry policy and scope guards; managed edits invalidate their purpose while unrelated inventory edits do not.",
       "testRefs": [
         "packages/notabenda/test/delivery.test.mjs",
         "docs/verification/browser-delivery.md",
         "site/test/delivery.test.mjs",
         "packages/notabenda/test/consent-runtime.test.mjs",
         "packages/notabenda/test/consent-performance.test.mjs",
-        "docs/verification/consent-performance.md"
+        "docs/verification/consent-performance.md",
+        "packages/notabenda/test/consent-scope-contract.test.mjs"
       ]
     },
     {
