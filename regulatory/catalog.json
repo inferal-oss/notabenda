@@ -39,7 +39,8 @@
         "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state.",
         "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state.",
         "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
-        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports."
+        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
+        "Release-bound local processing notice editor and JSON/YAML/Markdown settings compiler, with explicit scope/activities/wording and direct final-artifact handoff; no recording or policy activation."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -176,7 +177,16 @@
         "examples/form-permissions/build.mjs",
         "examples/form-permissions/client.mjs",
         "examples/form-permissions/inspector.mjs",
-        "examples/form-permissions/inspector.css"
+        "examples/form-permissions/inspector.css",
+        "packages/notabenda/src/processing-notice-content.ts",
+        "packages/notabenda/src/processing-workbench.ts",
+        "packages/notabenda/src/processing-workbench-build.ts",
+        "packages/notabenda/src/processing-workbench-ui.ts",
+        "packages/notabenda/src/processing-workbench-cli.ts",
+        "packages/notabenda/src/processing-workbench-app.ts",
+        "packages/notabenda/src/processing-workbench.css",
+        "examples/processing-workbench/build.mjs",
+        "examples/static/choices-build.mjs"
       ]
     },
     {
@@ -745,7 +755,8 @@
         "Complete host-supplied recorded opt-out messages, archive-bound selection and explicit language/direction, preserving restrictions and pending request identities across copy revisions.",
         "Explicit script-free privacy-choice return link, optional California title/icon presentation, source provenance and separate host destination/placement checklist.",
         "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
-        "Complete processing application example with anonymous first-navigation signal gating, durable pending fences, dispatch-time restriction checks, independent synthetic destination observations and explicitly scoped retry/restart evidence."
+        "Complete processing application example with anonymous first-navigation signal gating, durable pending fences, dispatch-time restriction checks, independent synthetic destination observations and explicitly scoped retry/restart evidence.",
+        "Release-bound local processing notice editor and JSON/YAML/Markdown settings compiler, with explicit scope/activities/wording and direct final-artifact handoff; no recording or policy activation."
       ],
       "implementationRefs": [
         "packages/notabenda/src/privacy-signals.ts",
@@ -795,7 +806,20 @@
         "examples/processing-application/authorize.mjs",
         "examples/processing-application/notabenda.config.yaml",
         "examples/processing-application/README.md",
-        "docs/PROCESSING-APPLICATION.md"
+        "docs/PROCESSING-APPLICATION.md",
+        "packages/notabenda/src/processing-notice-content.ts",
+        "packages/notabenda/src/processing-workbench.ts",
+        "packages/notabenda/src/processing-workbench-build.ts",
+        "packages/notabenda/src/processing-workbench-ui.ts",
+        "packages/notabenda/src/processing-workbench-cli.ts",
+        "packages/notabenda/src/processing-workbench-app.ts",
+        "packages/notabenda/src/processing-workbench.css",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "examples/processing-workbench/build.mjs",
+        "examples/static/build.mjs",
+        "examples/static/choices-build.mjs"
       ]
     },
     {
@@ -3648,7 +3672,8 @@
         "REQ-PRODUCT-PUBLICATION-INSPECTION",
         "REQ-PRODUCT-COLLECTION-WORKBENCH",
         "REQ-PRODUCT-COLLECTION-REHEARSAL",
-        "REQ-PRODUCT-FORM-PERMISSION-CONNECTION"
+        "REQ-PRODUCT-FORM-PERMISSION-CONNECTION",
+        "REQ-PRODUCT-PROCESSING-WORKBENCH"
       ]
     },
     {
@@ -11338,6 +11363,54 @@
         "site/test/demo.test.mjs"
       ],
       "implementationNote": "Optional browser/SSR inspector with complete normalized offer comparison, fixed private projection, independent historical receipts and observed heads, bounded recovery flags, generic validation failures and explicitly loaded accessible light/midnight example panel."
+    },
+    {
+      "id": "REQ-PRODUCT-PROCESSING-WORKBENCH",
+      "jurisdiction": "PRODUCT",
+      "title": "Exact-release processing opt-out notice authoring",
+      "kind": "product-standard",
+      "summary": "Prepare explicit notice activities, stable workflow scope and wording from an intact final public release; preview the shared inert presentation and export data-file settings for a direct artifact compiler.",
+      "appliesWhen": "An operator or agent authors a recorded processing opt-out notice without JavaScript builder calls.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-PROCESSING-WORKBENCH"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Scope is part of durable restriction context. Release selection is not approval of new wording. No activity applicability, identity, signal policy, publication, recording or downstream effect is inferred. Prepared browser facts are not authenticated evidence.",
+      "implementationRefs": [
+        "packages/notabenda/src/processing-notice-content.ts",
+        "packages/notabenda/src/processing-choices.ts",
+        "packages/notabenda/src/processing-workbench.ts",
+        "packages/notabenda/src/processing-workbench-build.ts",
+        "packages/notabenda/src/processing-workbench-ui.ts",
+        "packages/notabenda/src/processing-workbench-cli.ts",
+        "packages/notabenda/src/processing-workbench-app.ts",
+        "packages/notabenda/src/processing-workbench.css",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/setup-connection-ui.ts",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "examples/processing-workbench/build.mjs",
+        "examples/static/build.mjs",
+        "site/navigation.mjs",
+        "examples/static/choices-build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/processing-workbench.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/processing-workbench.test.mjs",
+        "docs/verification/processing-workbench.md"
+      ],
+      "implementationNote": "Optional new-only local CLI/workbench, bounded JSON/YAML/Markdown settings, shared inert native presentation, language/direction, direct final-artifact notice compilation with exact retained pages and stale asynchronous operation fencing."
     }
   ],
   "verification": [
@@ -13519,6 +13592,20 @@
         "site/test/form-permission-connection.test.mjs",
         "docs/verification/form-permission-connection.md",
         "site/test/demo.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-PROCESSING-WORKBENCH",
+      "requirementIds": [
+        "REQ-PRODUCT-PROCESSING-WORKBENCH"
+      ],
+      "status": "automated",
+      "expected": "Exact legacy/localized notice parity, explicit activity order, immutable final-artifact and authored-release handoff, bounded hostile data rejection, local codec/CSP/exclusive-output behavior, inert accessible preview, import/export/disposal races and installed optional browser APIs.",
+      "testRefs": [
+        "packages/notabenda/test/processing-workbench.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/processing-workbench.test.mjs",
+        "docs/verification/processing-workbench.md"
       ]
     }
   ],

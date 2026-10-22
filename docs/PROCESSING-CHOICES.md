@@ -6,6 +6,8 @@ This mechanism implements `REQ-PRODUCT-PROCESSING-CHOICES`. It contributes to, a
 
 For return navigation, use an explicit [privacy-choice link](PRIVACY-CHOICE-LINKS.md). A generic text link can lead to your processing page; the California alternative-link presentation has a broader destination requirement.
 
+Use the [processing notice workbench](PROCESSING-WORKBENCH.md) to author JSON, YAML or Markdown-frontmatter settings from the exact final release, then compile them with `notabenda processing-notice`. JavaScript builder calls remain supported below.
+
 ## Build a pinned notice
 
 Explicitly classify **every** configured service with `processingActivities`: any of `sale`, `sharing`, `targeted-advertising`, or `[]`. This records a technical classification supplied by the operator; the library does not determine the legal meaning of a vendor's activity.

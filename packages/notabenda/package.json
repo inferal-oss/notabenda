@@ -17,7 +17,8 @@
     "./dist/technology.css",
     "./dist/cartridges.css",
     "./dist/agent-handoff.css",
-    "./dist/collection-workbench.css"
+    "./dist/collection-workbench.css",
+    "./dist/processing-workbench.css"
   ],
   "files": [
     "dist",
@@ -401,7 +402,23 @@
       "types": "./dist/form-permission-inspect.d.ts",
       "import": "./dist/form-permission-inspect.js",
       "default": "./dist/form-permission-inspect.js"
-    }
+    },
+    "./authoring/processing": {
+      "types": "./dist/processing-workbench-build.d.ts",
+      "import": "./dist/processing-workbench-build.js",
+      "default": "./dist/processing-workbench-build.js"
+    },
+    "./authoring/processing/ui": {
+      "types": "./dist/processing-workbench-ui.d.ts",
+      "import": "./dist/processing-workbench-ui.js",
+      "default": "./dist/processing-workbench-ui.js"
+    },
+    "./authoring/processing/model": {
+      "types": "./dist/processing-workbench.d.ts",
+      "import": "./dist/processing-workbench.js",
+      "default": "./dist/processing-workbench.js"
+    },
+    "./processing-workbench.css": "./dist/processing-workbench.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

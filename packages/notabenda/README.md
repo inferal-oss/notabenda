@@ -260,3 +260,5 @@ Use the optional [connection inspector](../../docs/CONNECTION-INSPECTION.md) to 
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
 
 Prepare direct-form notice settings from a final public release with `notabenda form-workbench`. The local browser editor previews selected public facts and exports JSON/YAML/Markdown settings for the existing collection-flow builder. See [the workbench guide](../../docs/COLLECTION-WORKBENCH.md).
+
+Prepare a recorded opt-out notice with `notabenda processing-workbench`, then compile its JSON/YAML/Markdown settings directly against the final artifact with `notabenda processing-notice`. See [the processing workbench guide](../../docs/PROCESSING-WORKBENCH.md).

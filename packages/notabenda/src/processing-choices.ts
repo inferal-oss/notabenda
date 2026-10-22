@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-PROCESSING-WORKBENCH
+import {createProcessingNoticeView} from './processing-notice-content.js';
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION
 import type {ProcessingMessages} from './processing-localization-policy.js';
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
@@ -151,12 +153,9 @@ const englishProcessingMessages:ProcessingMessages={
 };
 /** @requirements REQ-PRODUCT-PROCESSING-CHOICES A separate deliberate opt-out surface, never a cookie consent toggle. */
 export function mountProcessingChoices(container:HTMLElement,controller:ProcessingChoicesController):{destroy():void}{
-  const notice=controller.getNotice(),m=notice.localization?.processingChoices??englishProcessingMessages,doc=container.ownerDocument,root=doc.createElement('section');root.className='nb-processing-choices';root.lang=notice.localization?.locale??'en';root.dir=notice.localization?.direction??'ltr';root.setAttribute('aria-label',notice.wording.title);
-  const title=doc.createElement('h2');title.textContent=notice.wording.title;const description=doc.createElement('p');description.textContent=notice.wording.description;const status=doc.createElement('p');status.setAttribute('role','status');
-  const action=doc.createElement('button');action.type='button';action.className='nb-choice-button';action.textContent=notice.wording.actionLabel;const retryButton=doc.createElement('button');retryButton.type='button';retryButton.className='nb-text-button';retryButton.textContent=m.retryLabel;
-  const link=doc.createElement('a');link.href=notice.document.url;link.textContent=notice.document.title;root.append(title,description);
-  if(notice.mode==='preview'||notice.document.reviewStatus!=='reviewed'){const draft=doc.createElement('p');draft.className='nb-draft';draft.textContent=m.draft;root.append(draft);}
-  root.append(status,action,retryButton,link);container.append(root);
+  const notice=controller.getNotice(),m=notice.localization?.processingChoices??englishProcessingMessages;
+  const {noticeId,...content}=notice;
+  const {root,status,action,retry:retryButton}=createProcessingNoticeView(container.ownerDocument,content);container.append(root);
   const optOut=()=>{void controller.optOut();},retry=()=>{void controller.retry();};action.addEventListener('click',optOut);retryButton.addEventListener('click',retry);
   const unsubscribe=controller.subscribe(state=>{status.textContent=[state.needsConfirmation?m.needsConfirmation:m[state.status],state.persistence==='unavailable'?m.recoveryUnavailable:state.persistence==='invalid'?m.recoveryInvalid:''].filter(Boolean).join(' ');action.disabled=state.destroyed||state.status==='retired'||state.status==='saving'||notice.activities.every(a=>state.restrictedActivities.includes(a))&&state.status==='recorded';retryButton.hidden=state.destroyed||state.needsConfirmation||state.status!=='error';});
   return {destroy(){unsubscribe();action.removeEventListener('click',optOut);retryButton.removeEventListener('click',retry);root.remove();}};

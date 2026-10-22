@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// @requirements REQ-PRODUCT-PROCESSING-WORKBENCH
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 import {createCollectionFlow} from './collection-flow-build.js';
@@ -34,9 +35,11 @@ import {describeIntegration,selectIntegration} from './integration-reference.js'
 
 const canonicalOutput=async(path:string):Promise<string>=>{try{return await realpath(path);}catch(error){if((error as NodeJS.ErrnoException).code!=='ENOENT')throw error;const parent=dirname(path);if(parent===path)throw error;return resolve(await canonicalOutput(parent),basename(path));}};
 
-const usage = `Usage: notabenda <init|wizard|check|build|explain|discover|catalog|describe|assess|schema|packs|check-publication|form-workbench> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
+const usage = `Usage: notabenda <init|wizard|check|build|explain|discover|catalog|describe|assess|schema|packs|check-publication|form-workbench|processing-workbench|processing-notice> [--config FILE] [--preview] [--json] [--out-dir DIRECTORY]
 
 form-workbench --artifact FILE --purposes ID,ID --out-dir NEW [--settings FILE] [--preview]
+processing-workbench --artifact FILE --out-dir NEW [--settings FILE] [--preview]
+processing-notice --artifact FILE --settings FILE --out-dir NEW [--preview]
        Prepare a local notice/settings editor from an exact public release. No upload.
 discover Review explicit browser captures against the declared inventory; no crawling.
 wizard Ask about practices, coverage and justifications; write a draft and private report.
@@ -129,6 +132,7 @@ async function main(): Promise<void> {
   const args = process.argv.slice(2);
   if (!args.length || args.includes('--help') || args.includes('-h')) { console.log(usage); return; }
   const command = args.shift();
+  if(command==='processing-workbench'||command==='processing-notice'){await (await import('./processing-workbench-cli.js')).runProcessingWorkbenchCli(command,args);return;}
   if(command==='form-workbench'){await (await import('./collection-workbench-cli.js')).runCollectionWorkbenchCli(args);return;}
   if(command==='explain'){await (await import('./document-explanation-cli.js')).runDocumentExplanationCli(args);return;}
   if(command==='check-publication'){await runPublicationCli(args);return;}

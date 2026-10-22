@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-PROCESSING-WORKBENCH
 // @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION
 // @requirements REQ-PRODUCT-COLLECTION-REHEARSAL
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
@@ -370,6 +371,16 @@ const previewOpened:Promise<void>=previewCookies.open();previewCookies.close();p
 mountConsentRehearsal(container,{config,submit:()=>Promise.resolve()});
 import {inspectTermsConnection,type TermsConnectionInspection} from '@notabenda/core/terms/inspect';
 import {inspectFormPermissionConnection,type FormPermissionConnectionInspection} from '@notabenda/core/form-permissions/inspect';
+import {createProcessingNoticeFromSettings,prepareProcessingWorkbenchContext,createProcessingWorkbenchFiles} from '@notabenda/core/authoring/processing';
+import {mountProcessingWorkbench} from '@notabenda/core/authoring/processing/ui';
+import {normalizeProcessingNoticeSettings,type ProcessingNoticeSettings} from '@notabenda/core/authoring/processing/model';
+declare const processingArtifact:unknown;
+const processingSettings:ProcessingNoticeSettings=normalizeProcessingNoticeSettings({});
+createProcessingNoticeFromSettings(processingArtifact,processingSettings,{mode:'preview'});
+createProcessingWorkbenchFiles(processingArtifact,{settings:processingSettings});
+// @ts-expect-error preview cannot receive a transport or stream
+mountProcessingWorkbench(document.body,{context:prepareProcessingWorkbenchContext(processingArtifact),submit:async()=>{}});
+
 import type {FormPermissionController,FormPermissionOffer} from '@notabenda/core';
 declare const permissionDiagnosticController:FormPermissionController;
 declare const expectedPermissionOffer:FormPermissionOffer;

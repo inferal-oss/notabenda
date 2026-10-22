@@ -59,3 +59,7 @@ await copyFile(new URL('../../../node_modules/xmlchars/LICENSE',import.meta.url)
 await copyFile(new URL('../src/collection-workbench.css',import.meta.url),new URL('../dist/collection-workbench.css',import.meta.url));
 await build({entryPoints:[new URL('../dist/collection-workbench-app.js',import.meta.url).pathname],allowOverwrite:true,outfile:new URL('../dist/collection-workbench-app.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,sourcemap:false});
 await rm(new URL('../dist/collection-workbench-app.js.map',import.meta.url),{force:true});
+
+// @requirements REQ-PRODUCT-PROCESSING-WORKBENCH
+await copyFile(new URL('../src/processing-workbench.css',import.meta.url),new URL('../dist/processing-workbench.css',import.meta.url));
+await build({entryPoints:[new URL('../dist/processing-workbench-app.js',import.meta.url).pathname],allowOverwrite:true,outfile:new URL('../dist/processing-workbench-app.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,sourcemap:false});

@@ -382,3 +382,11 @@ The exact-release form workbench offers an explicit local rehearsal of notice-on
 
 <!-- @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION -->
 The optional form-permission connection inspector compares an actual controller with the intended complete offer and optional local host stream. It reads no journal, refreshes no state and performs no permission action. Controller projection, last observed head and historical acknowledgement remain separate, including lost acknowledgements, changed offers and recovery restrictions. Reports omit private identifiers and authored text; publication, backend activation, identity and downstream behavior require separate verification. The light and midnight examples load the observation panel only on request and invalidate old snapshots when controller state changes.
+
+<!-- @requirements REQ-PRODUCT-PROCESSING-WORKBENCH -->
+Processing opt-out notice authoring uses a separate settings file and optional local editor pinned to an intact final policy release. Activity selection and durable workflow scope are explicit; the editor infers no legal applicability or processing classification. Native preview actions and policy links are inert, use release-owned language/direction and show no invented saved state. A separate new-only artifact compiler emits the exact existing notice descriptor and retained policy files. No SiteConfig, signal policy, host identity, recording selection or existing restriction is changed.
+
+### Pack and capability visibility
+
+<!-- @requirements REQ-PRODUCT-CARTRIDGES -->
+A distinct supported job can have its own pack; adding a source review or a button does not automatically create one. The supported South African electronic-marketing request flow is a candidate for a focused pack with that exact scope. Singapore research belongs visibly with the relevant cookie/consent review guidance until a separate supported workflow warrants a pack. Explicit refusal belongs within form permissions and the marketing request flow. Inspectors, rehearsals and authoring tools belong with the pack they help connect. The pack library should expose these capabilities and clearly distinguish working mechanisms, review guidance and planned work. This visibility update is pending; the existing installed pack count is unchanged.
