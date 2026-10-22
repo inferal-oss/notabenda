@@ -391,7 +391,12 @@
       "import": "./dist/collection-workbench.js",
       "default": "./dist/collection-workbench.js"
     },
-    "./collection-workbench.css": "./dist/collection-workbench.css"
+    "./collection-workbench.css": "./dist/collection-workbench.css",
+    "./authoring/collection/rehearsal": {
+      "types": "./dist/collection-rehearsal.d.ts",
+      "import": "./dist/collection-rehearsal.js",
+      "default": "./dist/collection-rehearsal.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

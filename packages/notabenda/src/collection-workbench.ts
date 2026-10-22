@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-REHEARSAL
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH REQ-PRODUCT-COLLECTION-FLOW
 import {assertPlainCatalogData} from './catalog-plain.js';
 import {normalizeCollectionNoticeContent,renderCollectionNoticePreview} from './collection.js';
@@ -97,6 +98,11 @@ function checkSettings(context:CollectionWorkbenchContext,input:unknown):{settin
  if(new Set(permissions.map(p=>p.permissionId)).size!==permissions.length)throw Error('Use a different permission ID for each selected purpose/channel stream.');
  if(settings.decisions.some(d=>!notice.purposes.some(p=>p.id===d.purposeId)))return fail();
  return {settings,notice,permissions};
+}
+/** Validated identity-free content for local preview/rehearsal, never a final compiled descriptor. */
+export function prepareCollectionFlowPreview(contextInput:unknown,input:unknown,options:{releaseConfirmed:true}):{settings:CollectionFlowSettings;notice:CollectionNoticeContent;permissions:FormPermissionContent[]} {
+ if(!options||options.releaseConfirmed!==true)throw Error('Confirm the exact prepared release before trying the form.');
+ return checkSettings(normalizeCollectionWorkbenchContext(contextInput),input);
 }
 /** Export settings only after the operator explicitly chooses this exact release. Final build verification remains required. */
 export function prepareCollectionFlowSettings(contextInput:unknown,input:unknown,options:{releaseConfirmed:true;idPrefix?:string}):{settings:CollectionFlowSettings;previewHtml:string} {

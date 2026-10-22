@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-REHEARSAL
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH REQ-PRODUCT-COLLECTION-FLOW REQ-PRODUCT-A11Y REQ-PRODUCT-CONFIG-SOURCES
 import {test} from 'node:test';
 import assert from 'node:assert/strict';

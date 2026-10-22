@@ -25,9 +25,42 @@ The output directory must be new and its parent must exist. Open `index.html` di
 1. Check the document version, language, date and release reference. Explicitly choose that release for the settings; loading a file does not check this box.
 2. Enter a stable form scope, heading and introduction in the content language. Choose the purposes actually used here. No purpose is selected in a new workbench.
 3. Choose **Notice only** or **Separate permission** for every selected purpose. For a separate choice, enter its wording, action labels, withdrawal URL, channel, stable permission ID and wording revision. The editor does not interpret a legal basis, infer permission from optionality, or choose a route from a country.
-4. Open **Preview notice**. The shared renderer shows the selected facts and the separate permission text. Links are inactive. No permission controls, recording, submission or presentation receipt are connected. The preview has no authoritative notice or flow identity.
+4. Open **Preview notice**. The shared renderer shows the selected facts and the separate permission text. Links are inactive. This static view connects no permission controls, recording, submission or presentation receipt. Use the separate rehearsal below to try the choices locally. The preview has no authoritative notice or flow identity.
 5. Review notice and permission wording separately. Editing a permission resets that permission’s declaration and the notice declaration to draft; edits clear the release confirmation and stale preview/export. Keep field instructions and required-field behavior in your actual form.
 6. Choose **Copy build settings**. The dismissible drawer provides JSON, YAML or Markdown frontmatter and a copy button. If the clipboard is unavailable, copy the selected text manually. Save it as a separate settings file.
+
+## Try the form flow
+
+Confirm the selected release, then choose **Try form flow**. The drawer uses your current settings and the actual permission controls with a temporary recorder. It does not send information, run your form handler or change a review declaration.
+
+- **Try ordinary submission** stands in for your application's submit button. It works without a permission, after refusal or withdrawal, and while a permission is unconfirmed. Only its own counter changes.
+- **Check saved permissions** reads the temporary recorder. Reading and checking a box create no permission event. Each choice starts unchecked; choose its action deliberately.
+- In **Recording scenario**, choose a failed read, a failure before recording, or a lost response after recording. The observer distinguishes the recorder's state from the controller's confirmed permission. A lost response can leave one event recorded while permission remains unconfirmed.
+- Return to **Normal recording**, then use the choice's retry button. It resends the same pending request; the temporary recorder returns the earlier receipt without adding a second event. A refusal or withdrawal keeps permission off while confirmation is missing.
+- **Start fresh** clears this run. Closing, reloading, importing a file or editing the settings also discards the rehearsal. Nothing resumes automatically.
+
+The recovery journal exists only in memory. Native recovery messages such as “saved on this device” describe that temporary journal here; they do not mean the rehearsal survives reload. All policy, provider and withdrawal links are inactive. The source release remains visible under **Source release**; temporary rehearsal identities are never added to your settings or exported as a compiled flow.
+
+Ordinary permission scope and language checks still apply. This rehearsal does not cover specialized marketing invitations, actual field placement, identity/contact binding, delivery or downstream effects. Build the final output and test those in your application.
+
+To add the rehearsal to your own operator tool:
+
+```ts
+import {mountCollectionRehearsal} from '@notabenda/core/authoring/collection/rehearsal';
+import '@notabenda/core/styles.css';
+import '@notabenda/core/collection-workbench.css';
+
+const rehearsal = mountCollectionRehearsal(container, {
+  context,
+  settings: editor.getSettings(),
+  releaseConfirmed: true, // only after the operator chooses the release
+});
+await rehearsal.open(); // call from a deliberate user action
+// Dispose when the settings change or the operator tool unmounts.
+rehearsal.destroy();
+```
+
+Opening requires Web Crypto in a secure browser context. The context and settings are captured at mounting. Host controls and transports are intentionally not accepted; use the normal permission API when connecting the real application.
 
 ## Write a separate choice
 

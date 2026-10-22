@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-COLLECTION-REHEARSAL
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
 // @requirements REQ-PRODUCT-TERMS-REHEARSAL
@@ -349,6 +350,12 @@ const workbenchContext=prepareCollectionWorkbenchContext(workbenchArtifact,{purp
 const workbenchView:MountedCollectionWorkbench=mountCollectionWorkbench(document.body,{context:workbenchContext});
 const workbenchSettings=workbenchView.getSettings();
 const workbenchPlan=prepareCollectionFlowSettings(workbenchContext,workbenchSettings,{releaseConfirmed:true});
+import {mountCollectionRehearsal,type MountedCollectionRehearsal} from '@notabenda/core/authoring/collection/rehearsal';
+const formRehearsal:MountedCollectionRehearsal=mountCollectionRehearsal(document.body,{context:workbenchContext,settings:workbenchSettings,releaseConfirmed:true});
+const formRehearsalOpened:Promise<void>=formRehearsal.open();formRehearsal.close();formRehearsal.destroy();
+// @ts-expect-error rehearsal has no host recorder or actual submission option
+mountCollectionRehearsal(document.body,{context:workbenchContext,settings:workbenchSettings,releaseConfirmed:true,submit:()=>{}});
+
 import {checkDocumentPublication,type PublicationCheck,type PublishedDocumentSource} from '@notabenda/cloudflare';
 const publicationSource:PublishedDocumentSource={origin:'https://site.example.test',label:'Public website',fetch:request=>fetch(request)};
 const publicationResult:Promise<PublicationCheck>=checkDocumentPublication({path:'/artifacts/'+'a'.repeat(64)+'/terms.html',sha256:'b'.repeat(64)},publicationSource);

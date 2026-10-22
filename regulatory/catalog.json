@@ -3634,7 +3634,8 @@
         "REQ-PRODUCT-TERMS-RECOVERY",
         "REQ-PRODUCT-TERMS-REHEARSAL",
         "REQ-PRODUCT-PUBLICATION-INSPECTION",
-        "REQ-PRODUCT-COLLECTION-WORKBENCH"
+        "REQ-PRODUCT-COLLECTION-WORKBENCH",
+        "REQ-PRODUCT-COLLECTION-REHEARSAL"
       ]
     },
     {
@@ -11192,7 +11193,7 @@
         "docs/verification/collection-workbench.md",
         "packages/notabenda/test/collection-permission-authoring.test.mjs"
       ],
-      "implementationNote": "Shared notice and identity-free permission content projection/validation/rendering; explicit release confirmation; editable per-purpose ordinary offers, independent review reset, optional refusal and delivery-window fields; current imported values and preserved optional omissions; JSON/YAML/Markdown export; old contexts retain supplied complete branches. No permission action or final identity is created in the editor."
+      "implementationNote": "Shared notice and identity-free permission content projection/validation/rendering; explicit release confirmation; editable per-purpose ordinary offers, independent review reset, optional refusal and delivery-window fields; current imported values and preserved optional omissions; JSON/YAML/Markdown export; old contexts retain supplied complete branches. No real permission action or final identity is exported. The separate explicit rehearsal uses disposable preview identities."
     },
     {
       "id": "REQ-US-TX-AGENT-SIGNALS",
@@ -11246,6 +11247,44 @@
         "docs/verification/privacy-signal-reviews.md"
       ],
       "implementationNote": "Source-linked review reuses explicit generic browser/header restrictions. Market interest and imported labels change no configuration, service classification, identity or policy."
+    },
+    {
+      "id": "REQ-PRODUCT-COLLECTION-REHEARSAL",
+      "jurisdiction": "PRODUCT",
+      "title": "Disposable collection-form rehearsal",
+      "kind": "product-standard",
+      "summary": "Try current direct-form notice and ordinary permission wording with actual controls, independent ordinary submission and an in-memory recorder/journal. Keep simulated recording separate from real evidence and application integration.",
+      "appliesWhen": "An operator reviews a direct-only collection form before connecting the application.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-FORMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-COLLECTION-REHEARSAL"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Temporary preview-only identities and memory. No real form handler, authentication, contact binding, backend, persistence, delivery or downstream action. Specialized marketing and native/assistive acceptance remain separate. Current settings and real release identity are unchanged.",
+      "implementationRefs": [
+        "packages/notabenda/src/collection-rehearsal.ts",
+        "packages/notabenda/src/collection-workbench.ts",
+        "packages/notabenda/src/collection-workbench-ui.ts",
+        "packages/notabenda/src/collection-workbench.css",
+        "packages/notabenda/src/integration-reference.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/collection-rehearsal.test.mjs",
+        "packages/notabenda/test/collection-workbench.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/collection-rehearsal.test.mjs",
+        "docs/verification/collection-rehearsal.md"
+      ],
+      "implementationNote": "Shared identity-free validation, deliberate state reads and actions, independent submission counter, before/after-record failures, exact request deduplication, restrictive negative actions, generation-fenced teardown and inert links."
     }
   ],
   "verification": [
@@ -13397,6 +13436,21 @@
       "testRefs": [
         "packages/notabenda/test/privacy-signal-reviews.test.mjs",
         "docs/verification/privacy-signal-reviews.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-COLLECTION-REHEARSAL",
+      "requirementIds": [
+        "REQ-PRODUCT-COLLECTION-REHEARSAL"
+      ],
+      "status": "automated",
+      "expected": "Ordinary submission never reads or changes permission. Choices start unchecked; failed/lost replies stay unconfirmed until explicit same-key retry; a lost response records once. Negative actions and independent streams remain restrictive. Reset/close/edit/import/dispose cannot revive a run, inputs remain unchanged, links inert and storage/network untouched. Installed types and built-site semantic checks cover delivery. Native/browser observations remain separately scoped.",
+      "testRefs": [
+        "packages/notabenda/test/collection-rehearsal.test.mjs",
+        "packages/notabenda/test/collection-workbench.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/collection-rehearsal.test.mjs",
+        "docs/verification/collection-rehearsal.md"
       ]
     }
   ],

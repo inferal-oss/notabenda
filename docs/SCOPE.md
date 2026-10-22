@@ -374,3 +374,8 @@ The local form workbench can author notice-only and ordinary separate-permission
 ### Texas opt-out research
 
 Selected `US-TX` interest or an imported jurisdiction adds a source-linked agent-technology review. The research revision is independent of questionnaire answers and runtime policy. Generic GPC execution remains independent of login/receipts; those are toolkit dependencies, not legal authentication conclusions. Qualification, applicability and actual processing remain host review. No residency inference, new tracking, policy activation or approved-mechanism claim is introduced.
+
+### Local collection-form rehearsal
+
+<!-- @requirements REQ-PRODUCT-COLLECTION-REHEARSAL -->
+The exact-release form workbench offers an explicit local rehearsal of notice-only and ordinary separate-permission routes. Reuse validated current content and native permission controllers, with preview-only identities, an isolated in-memory recorder/journal and independent ordinary submission. Require explicit reads and actions; model read failure, failure before recording and response loss after recording. Retry deduplicates before revision checks; negative actions stay restrictive. Closing, reset, edits, import start and destruction invalidate the run. No real form handler, identity, recorder, browser persistence or downstream action is installed. Saved settings/reviews and the real release pin remain unchanged. Specialized marketing and real application acceptance remain separate.
