@@ -27,8 +27,22 @@ Screenshots: [initial phone notice](../assets/screenshots/consent-mobile.jpg), [
 
 ## Still required before release
 
-WebKit/Firefox and physical iOS/Android; 360-width and full breakpoint matrix; 200–400% zoom and large text; long translations and RTL; forced-colors and contrast audit; virtual keyboard/safe areas; screen-reader and full keyboard review; no-JS/blocked-script execution checks; network/storage inspection of real adapters and embeds; SPA/BFCache/navigation flows; lifecycle failures surfaced through the UI; and regional applicability/wording review. The product and legal requirements remain **partial** for these reasons.
+WebKit/Firefox and physical iOS/Android; 360-width and full breakpoint matrix; 200–400% zoom and large text; long translations and RTL; forced-colors and contrast audit; virtual keyboard/safe areas; screen-reader and full keyboard review; no-JS/blocked-script execution checks; network/storage inspection of real adapters and embeds; SPA/BFCache/navigation flows; broader lifecycle-failure presentation and recovery; and regional applicability/wording review. The product and legal requirements remain **partial** for these reasons.
 
 ## Long-copy and direction hardening
 
 Later checks and fixes are recorded in [controls-layout.md](controls-layout.md). Long headings now wrap with Close reachable; enlarged action labels stack when needed. Normal layouts retain fixed header/actions, while constrained layouts and browsers without resize observation use whole-dialog scrolling. This extends the initial Chromium width, keyboard and RTL evidence above; the remaining zoom/platform/assistive-technology items are still open.
+
+## 22 October: lifecycle failure warnings
+
+Requirements: `REQ-PRODUCT-CONSENT-RUNTIME`, `REQ-PRODUCT-STORAGE-CLEANUP`, `REQ-PRODUCT-A11Y`. The existing controls already show a reload warning for `reload-required`; this pass adds repeatable checks rather than changing the runtime or wording.
+
+The maintainer accessibility fixture now has three failure cases in both themes: rejected startup, rejected producer cleanup after withdrawal, and failed removal through the actual storage helper. Each uses the actual compiled controller and native controls, with disposable callbacks and in-memory storage. The storage case deliberately retains its marker. An aborted signal or recorded refusal cannot prove that stored data was deleted or an uncooperative producer stopped.
+
+Run `npm run a11y:fixture`, then `npm run a11y:serve -- --port 4188`. Select `consent-start-error`, `consent-stop-error` or `consent-storage-error`, or its `consent-dark-…` variant, and audit the mounted state. The fixture fails setup unless it reaches the expected runtime phase. Its visible observation reports start/cleanup counts, abort and selected marker outcomes without storage values or exception text. These scenarios never load a provider, write browser preferences or use an operational evidence store. Fixture code stays outside ordinary visitor and npm entry graphs.
+
+Chromium 155 checked the six scenarios at actual frame sizes 1215 × 848 and 390 × 850 CSS pixels with axe-core 4.14.0. All twelve scans returned zero detected violations and no fixture errors. Each retained one incomplete `aria-valid-attr-value` result for the closed trigger’s `aria-controls` reference. This remains incomplete, not a conformance pass. A separate direct DOM observation found exactly one referenced native dialog, and opening it exposed the retained warning and focused its heading.
+
+In the direct keyboard storage-failure check, Tab and Space selected measurement, Tab reached Save choices, and Enter saved that choice. The service remained at one start and one cleanup attempt with its failed marker still present. Reopening preferences retained the warning; Escape closed the dialog and returned focus to Privacy choices. The automated regression repeats refusal/regrant and unrelated-focus checks through both compatibility and compiled factories, retaining the distinction between permission and operational readiness.
+
+The narrow run constrains a desktop-browser frame; it is not physical mobile acceptance. Native Safari/Firefox, assistive technologies, other failures, real providers, persistent storage restrictions and actual reload recovery remain open. The warning itself does not confirm deletion, server/vendor cleanup or undo earlier transmission.

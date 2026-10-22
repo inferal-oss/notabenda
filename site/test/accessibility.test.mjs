@@ -9,6 +9,7 @@ import {readFile} from 'node:fs/promises';
 import {createAccessibilityAudit,auditAccessibility,accessibilityTags} from '../../scripts/accessibility-audit.mjs';
 import axe from 'axe-core';
 import {accessibilityFixtureData} from '../../scripts/accessibility-fixtures.mjs';
+import {mountConsentLifecycleFixture} from '../../scripts/consent-lifecycle-fixture.mjs';
 import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 import {createTermsAcceptance,mountTermsAcceptance,createFormPermission,mountFormPermission} from '@notabenda/core';
 import {mountSetup} from '@notabenda/core/setup/ui';
@@ -150,4 +151,16 @@ test('storage authoring names public fields, affected versions and the explicit 
  const data=await accessibilityFixtureData(),audit=await createAccessibilityAudit(shell,{label:'storage authoring editor'}),d=audit.dom.window.document;
  const ui=mountStorageEditor(d.querySelector('#component'),{getConfig:()=>data.config,onChange:()=>{}});
  try{ui.open();clean(await audit.scan());[...d.querySelectorAll('button')].find(b=>b.textContent==='Save storage declaration').click();assert.ok(d.activeElement.hasAttribute('aria-invalid'));clean(await audit.scan());}finally{ui.destroy();audit.close();}
+});
+
+// @requirements REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-STORAGE-CLEANUP
+test('mounted lifecycle failures retain semantic warning and observation structure outside public assets',async()=>{
+ const data=await accessibilityFixtureData();
+ for(const failure of ['start','stop','storage']){
+  const audit=await createAccessibilityAudit(shell,{label:'lifecycle '+failure}),d=audit.dom.window.document,values=new Map();
+  audit.dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};audit.dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
+  const controller=createConsentRuntime(data.runtimeConfig,{storage:{getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},schedule:()=>()=>{}}),ui=await mountConsentLifecycleFixture(d.querySelector('#component'),{controller,failure});
+  try{assert.equal(ui.getObservation().phase,'reload-required');clean(await audit.scan());controller.openPreferences();clean(await audit.scan());}finally{await ui.destroy();audit.close();}
+ }
+ const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));assert.equal(manifest.some(path=>/qa-a11y|narrow-failures/.test(path)||/consent-lifecycle-fixture\.(?:mjs|js)$/.test(path)),false);
 });

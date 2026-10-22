@@ -151,6 +151,8 @@ The selected [Japan recipient review](JAPAN-COOKIE-DATA.md) connects PPC guidanc
 
 Selected [California choice-design review](CONSENT.md#california-choice-review) now connects the current regulation/advisory to setup and agent metadata, with native rejection/dismissal regressions. Applicability, complete host paths and rendered prominence remain separate review; this is no new jurisdiction pack or policy activation.
 
+Selected [lifecycle warning verification](verification/consent-browser.md#22-october-lifecycle-failure-warnings) now exercises failed starts, producer cleanup and marker removal through native controls in both themes. Permission remains separate from runtime readiness; broad platform, provider and reload recovery checks remain open.
+
 ## 4. Consent and enforcement
 
 Selected Oregon/Minnesota universal-signal research now adds dated, source-linked reviews to setup and agent instructions. It reuses explicit GPC mechanisms without automatic applicability or runtime activation; historical questionnaire answers remain readable. Complete statutory review, recognized-mechanism assessment and actual downstream acceptance remain open. See [setup and agent handoff](PRIVACY-SIGNALS.md#setup-and-agent-handoff).

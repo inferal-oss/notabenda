@@ -5564,7 +5564,10 @@
         "packages/notabenda/test/consent-runtime.test.mjs",
         "packages/notabenda/test/setup-purpose.test.mjs",
         "packages/notabenda/test/consent-build-cli.test.mjs",
-        "packages/notabenda/test/consent-scope-contract.test.mjs"
+        "packages/notabenda/test/consent-scope-contract.test.mjs",
+        "packages/notabenda/test/consent-lifecycle-ui.test.mjs",
+        "scripts/consent-lifecycle-fixture.mjs",
+        "docs/verification/consent-browser.md"
       ],
       "implementationNote": "CLI build can explicitly emit the bounded local/required descriptor and consent-only CSS from any supported configuration format. An output directory with an existing descriptor requires an explicit mode on rebuild; host lifecycle and receipt connections remain separate."
     },
@@ -6186,7 +6189,10 @@
       ],
       "testRefs": [
         "packages/notabenda/test/storage-cleanup.test.mjs",
-        "docs/verification/storage-cleanup.md"
+        "docs/verification/storage-cleanup.md",
+        "packages/notabenda/test/consent-lifecycle-ui.test.mjs",
+        "scripts/consent-lifecycle-fixture.mjs",
+        "docs/verification/consent-browser.md"
       ],
       "implementationNote": "Exact inventory ownership validation precedes mutation; independent blocked observation covers queued cancellation. Abort, failed startup, final teardown and destroy cleanup participate in the same generation lifecycle."
     },
@@ -11133,10 +11139,13 @@
         "REQ-PRODUCT-CONSENT-RUNTIME"
       ],
       "status": "automated",
-      "expected": "Real controller tests exercise all-purpose gating, material scope, refusal persistence, malformed/unavailable storage, expiry/resume, cross-tab refresh, failed-grant dismissal, permanently retired async starts, cleanup failures, destruction, and snapshot isolation.",
+      "expected": "Real controller tests exercise all-purpose gating, material scope, refusal persistence, malformed/unavailable storage, expiry/resume, cross-tab refresh, failed-grant dismissal, permanently retired async starts, cleanup failures, destruction, and snapshot isolation. Native failure regressions keep the warning visible across refusal/regrant, retain failed cleanup outcomes and do not restart the failed generation; permission and operational readiness remain distinct.",
       "testRefs": [
         "packages/notabenda/test/consent.test.mjs",
-        "packages/notabenda/test/consent-scope-contract.test.mjs"
+        "packages/notabenda/test/consent-scope-contract.test.mjs",
+        "packages/notabenda/test/consent-lifecycle-ui.test.mjs",
+        "scripts/consent-lifecycle-fixture.mjs",
+        "docs/verification/consent-browser.md"
       ]
     },
     {
@@ -11313,10 +11322,13 @@
         "REQ-PRODUCT-STORAGE-CLEANUP"
       ],
       "status": "automated",
-      "expected": "Only selected owned optional storage is touched; no producer starts after revocation, old final deletion precedes new writes, cleanup covers partial failures and zero-generation destruction, and cookie outcomes remain expiration requests.",
+      "expected": "Only selected owned optional storage is touched; no producer starts after revocation, old final deletion precedes new writes, cleanup covers partial failures and zero-generation destruction, and cookie outcomes remain expiration requests. Native failure regressions keep the warning visible across refusal/regrant, retain failed cleanup outcomes and do not restart the failed generation; permission and operational readiness remain distinct.",
       "testRefs": [
         "packages/notabenda/test/storage-cleanup.test.mjs",
-        "docs/verification/storage-cleanup.md"
+        "docs/verification/storage-cleanup.md",
+        "packages/notabenda/test/consent-lifecycle-ui.test.mjs",
+        "scripts/consent-lifecycle-fixture.mjs",
+        "docs/verification/consent-browser.md"
       ]
     },
     {

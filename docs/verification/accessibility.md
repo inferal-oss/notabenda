@@ -73,3 +73,7 @@ The browser's incomplete results remain visible rather than being suppressed:
 - Closed-dialog triggers produced an unresolved reference check. The semantic regression test separately confirms each `aria-controls` reference resolves to exactly one real element; opening the actual dialog was also exercised in the browser.
 
 The full reports stay in ignored local output. No incomplete result is evidence of conformance. WebKit, Firefox, physical devices, assistive technologies, forced colors, broader zoom/text-size combinations and the rest of the component/state matrix still need review. Existing focused layout and keyboard reports cover their own narrower scenarios.
+
+## Lifecycle warning scenarios
+
+The current fixture includes six additional mounted cookie lifecycle failures (38 available scenarios total). A selected Chromium pass ran these six in both themes at wide and 390-pixel frame widths; it did not rerun the historical 32-scenario matrix above. [Lifecycle warning verification](consent-browser.md#22-october-lifecycle-failure-warnings) records the actual phases, keyboard path, incomplete dialog-reference results and limits.
