@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 # @notabenda/core
 
 For agent-assisted integration, use the bundled `dist/skill/SKILL.md` and optional `dist/skill/agents/openai.yaml`, also exported as `@notabenda/core/skill/SKILL.md` and `@notabenda/core/skill/agents/openai.yaml`. See the [agent setup guide](../../docs/AGENT-SETUP.md). Copy the complete `dist/skill/` directory, including its configuration-target reference. The installed copy follows this package version; the website follows the current preview.
@@ -262,3 +263,6 @@ For suspected vulnerabilities, use the [private security contact](https://notabe
 Prepare direct-form notice settings from a final public release with `notabenda form-workbench`. The local browser editor previews selected public facts and exports JSON/YAML/Markdown settings for the existing collection-flow builder. See [the workbench guide](../../docs/COLLECTION-WORKBENCH.md).
 
 Prepare a recorded opt-out notice with `notabenda processing-workbench`, then compile its JSON/YAML/Markdown settings directly against the final artifact with `notabenda processing-notice`. See [the processing workbench guide](../../docs/PROCESSING-WORKBENCH.md).
+
+
+South African web marketing requests can be prepared as JSON, YAML or Markdown-frontmatter settings with the optional [local request editor](https://notabenda.org/guide/marketing-workbench/). The `marketing-request` command compiles against the exact final public artifact using the existing schema-4 builder. Invitation eligibility, recording, identity and actual sending remain host work.

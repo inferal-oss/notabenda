@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-MARKETING-AUTHORING
 // @requirements REQ-PRODUCT-PACK-CAPABILITIES
 // @requirements REQ-PRODUCT-CONFIG-SOURCES
 import type {ConfigSourceFormat} from './config-document.js';
@@ -155,7 +156,7 @@ export function reviewPackInputs(selection:unknown,input:unknown):PackInputRevie
   const add=(id:string,state:PackInputReview['packs'][number]['items'][number]['state'],label:string,paths:string[]=[])=>items.push({id,state,label,paths});
   if(pack.id==='za-marketing-requests'){
    add('purpose',config.purposes.some(p=>p.collection.source==='direct'||p.collection.source==='both')?'declared':'missing','Choose the actual direct or mixed-source marketing purpose. Do not infer it from the market or pack selection.',['purposes.collection']);
-   add('request','host-work','Use createSouthAfricaMarketingOffer with za-popia-web-request (schema 4). Author goods/services, email/SMS/WhatsApp method, methodLabel, complete labels, mandatory refusal copy, revision and withdrawal route. These are builder inputs, not SiteConfig fields; the ordinary form workbench cannot author this profile.');
+   add('request','host-work','Use createSouthAfricaMarketingOffer with za-popia-web-request (schema 4). Author goods/services, email/SMS/WhatsApp method, methodLabel, complete labels, mandatory refusal copy, revision and withdrawal route. Author JSON/YAML/Markdown settings with marketing-workbench and compile with marketing-request against the exact artifact, or use the builder API. These are separate inputs, not SiteConfig fields; the ordinary form workbench cannot author this profile.');
    add('eligibility','host-work','Establish whether this person may be approached. Retain invitation and prior-withholding history across sites, channels and contact changes; a fresh stream or revision does not reset it.');
    add('review','needs-review','Review prescribed information, accessibility, the actual request language and applicable rules. No complete POPIA or customer-exception implementation is supplied.');
    add('recording','host-work','Archive and activate the exact offer, bind host identity/context and test explicit refusal, failed reads, withdrawal and exact retries. A channel change needs a separate stable permission.');

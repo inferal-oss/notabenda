@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 <!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
 # South African electronic marketing
 
@@ -25,6 +26,10 @@ npx --no-install notabenda packs za-marketing-requests --brief
 Use the returned unknown-answer template for focused setup. The private input review keeps solicitation eligibility, request review, recording and sending-system work visible even when the inventory is structurally valid. The [shared working example](https://notabenda.org/form-permissions) uses this specialized builder and offers explicit refusal. It sends no marketing.
 
 The ordinary [form-notice workbench](COLLECTION-WORKBENCH.md) cannot author `za-popia-web-request`. Use `createSouthAfricaMarketingOffer` with explicit builder settings; do not invent `SiteConfig` fields. Its input reference is in [Form permissions](FORM-PERMISSIONS.md#south-african-web-marketing-requests).
+
+## Prepare request settings
+
+Use the [marketing request editor](MARKETING-WORKBENCH.md) or supply JSON, YAML or Markdown-frontmatter settings directly. Its compiler calls the same specialized builder against the exact final public artifact. It adds no recipient binding, recording transport, eligibility assessment or sending system.
 
 ## Connect the current mechanism
 

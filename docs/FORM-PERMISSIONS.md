@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 # Optional form permissions
 
 Use one stable permission for one declared purpose and one channel. Keep it separate from collection notices, terms agreement and cookie choices. A checkbox starts unchecked; omitting it, leaving it unchecked, submitting the surrounding form or following a privacy link sends no permission command.
@@ -215,3 +216,8 @@ For a form that combines information with an optional permission, [compose the t
 For ordinary direct-collection forms, the [form workbench](COLLECTION-WORKBENCH.md) can author the separate choice, channel, revision, withdrawal route and optional refusal messages. It exports collection-flow settings for the existing final builder. The selected release supplies scope assessments and interface messages; the editor cannot replace them. Specialized marketing requests continue through their separate builder.
 
 Supply only the declared plain-data settings fields. Omit unused optional fields instead of passing `undefined`, `null`, private notes or specialized fields; malformed/extra inputs are rejected rather than silently discarded.
+
+
+### Prepare the South African request as data
+
+The focused [marketing request editor](MARKETING-WORKBENCH.md) exports complete JSON, YAML or Markdown-frontmatter settings for the same schema-4 builder. Compile with `notabenda marketing-request --artifact FILE --settings FILE --out-dir NEW`. The ordinary form composer keeps its separate contract; these are builder settings, not SiteConfig fields.

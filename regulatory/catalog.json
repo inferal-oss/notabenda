@@ -41,7 +41,8 @@
         "Optional explicit served-document copy checks for selected recording references, with fixed host readers, bounded HTML hashing and separate missing/different/unavailable results; no readiness or publication certification.",
         "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
         "Release-bound local processing notice editor and JSON/YAML/Markdown settings compiler, with explicit scope/activities/wording and direct final-artifact handoff; no recording or policy activation.",
-        "Requirement-linked per-pack feature/tool/review discovery and a focused South African web marketing request path; no selection-based solicitation authorization or full-country coverage claim."
+        "Requirement-linked per-pack feature/tool/review discovery and a focused South African web marketing request path; no selection-based solicitation authorization or full-country coverage claim.",
+        "Exact-release South African web-request settings compiler and local editor with shared native preview, mandatory refusal and separate host eligibility/sending work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -193,7 +194,19 @@
         "packages/notabenda/src/cartridges-cli.ts",
         "docs/CARTRIDGES.md",
         "docs/SOUTH-AFRICA-MARKETING.md",
-        "skills/notabenda/references/configuration-target.md"
+        "skills/notabenda/references/configuration-target.md",
+        "packages/notabenda/src/marketing-workbench.ts",
+        "packages/notabenda/src/marketing-workbench-build.ts",
+        "packages/notabenda/src/marketing-workbench-cli.ts",
+        "packages/notabenda/src/marketing-workbench-ui.ts",
+        "packages/notabenda/src/marketing-workbench-app.ts",
+        "packages/notabenda/src/marketing-workbench.css",
+        "packages/notabenda/src/form-permission-content.ts",
+        "packages/notabenda/src/form-permission-presentation.ts",
+        "examples/marketing-workbench/build.mjs",
+        "docs/MARKETING-WORKBENCH.md",
+        "docs/FORM-PERMISSIONS.md",
+        "packages/notabenda/README.md"
       ]
     },
     {
@@ -577,7 +590,8 @@
         "Optional South African web-request profile with explicit goods/services and method, visible archived responsible-party details, required refusal and complete host-language labels; declaration truth and legal sufficiency remain host review.",
         "Optional release-bound direct-form composer with explicit notice-only/separate-permission routes, unconditional static notices, exact SSR hydration, separate host controllers and data-file CLI builds.",
         "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
-        "Read-only running-controller inspection of intended permission offer and local stream, separating observed head from historical action confirmation without refreshing or making a permission decision."
+        "Read-only running-controller inspection of intended permission offer and local stream, separating observed head from historical action confirmation without refreshing or making a permission decision.",
+        "Exact-release South African web-request settings compiler and local editor with shared native preview, mandatory refusal and separate host eligibility/sending work."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -628,7 +642,23 @@
         "examples/form-permissions/build.mjs",
         "examples/form-permissions/client.mjs",
         "examples/form-permissions/inspector.mjs",
-        "examples/form-permissions/inspector.css"
+        "examples/form-permissions/inspector.css",
+        "packages/notabenda/src/marketing-workbench.ts",
+        "packages/notabenda/src/marketing-workbench-build.ts",
+        "packages/notabenda/src/marketing-workbench-cli.ts",
+        "packages/notabenda/src/marketing-workbench-ui.ts",
+        "packages/notabenda/src/marketing-workbench-app.ts",
+        "packages/notabenda/src/marketing-workbench.css",
+        "packages/notabenda/src/form-permission-content.ts",
+        "packages/notabenda/src/form-permission-presentation.ts",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "packages/notabenda/src/pack-capabilities.ts",
+        "examples/marketing-workbench/build.mjs",
+        "docs/MARKETING-WORKBENCH.md",
+        "docs/SOUTH-AFRICA-MARKETING.md",
+        "docs/FORM-PERMISSIONS.md",
+        "skills/notabenda/references/configuration-target.md",
+        "packages/notabenda/README.md"
       ]
     },
     {
@@ -3681,7 +3711,8 @@
         "REQ-PRODUCT-COLLECTION-REHEARSAL",
         "REQ-PRODUCT-FORM-PERMISSION-CONNECTION",
         "REQ-PRODUCT-PROCESSING-WORKBENCH",
-        "REQ-PRODUCT-PACK-CAPABILITIES"
+        "REQ-PRODUCT-PACK-CAPABILITIES",
+        "REQ-PRODUCT-MARKETING-AUTHORING"
       ]
     },
     {
@@ -4700,7 +4731,12 @@
         "packages/notabenda/src/south-africa-marketing-policy.ts",
         "packages/notabenda/src/content.ts",
         "packages/notabenda/src/styles.css",
-        "packages/notabenda-cf/src/render.ts"
+        "packages/notabenda-cf/src/render.ts",
+        "packages/notabenda/src/marketing-workbench.ts",
+        "packages/notabenda/src/marketing-workbench-build.ts",
+        "packages/notabenda/src/form-permission-content.ts",
+        "packages/notabenda/src/form-permission-presentation.ts",
+        "docs/MARKETING-WORKBENCH.md"
       ],
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
@@ -4708,7 +4744,10 @@
         "packages/notabenda/test/south-africa-marketing.test.mjs",
         "packages/notabenda/test/react-form-permission.test.mjs",
         "packages/notabenda/test/astro-form-permission.test.mjs",
-        "docs/verification/form-permissions.md"
+        "docs/verification/form-permissions.md",
+        "packages/notabenda/test/marketing-workbench.test.mjs",
+        "site/test/marketing-workbench.test.mjs",
+        "docs/verification/marketing-authoring.md"
       ]
     },
     {
@@ -11459,6 +11498,62 @@
         "docs/verification/pack-capabilities.md"
       ],
       "implementationNote": "Installed per-pack metadata distinguishes features, setup tools and review guides, each with requirement IDs and limits. The reusable console, examples, CLI and agent briefs expose these records. The twenty-first pack resolves a distinct South African web-request target and explicit host input review using the existing permission engine; selection changes no runtime or jurisdiction facts."
+    },
+    {
+      "id": "REQ-PRODUCT-MARKETING-AUTHORING",
+      "jurisdiction": "PRODUCT",
+      "title": "Author a release-bound South African marketing request as data",
+      "kind": "product-standard",
+      "summary": "Provide bounded JSON/YAML/Markdown settings, a direct final-artifact compiler and an optional local editor for the supported South African web request. Keep explicit request particulars, future method and mandatory refusal copy together, preserve existing offer identities and scope/language facts, and preview shared native presentation without a controller or authoritative offer.",
+      "appliesWhen": "Preparing one supported South African web request from a selected final public release and direct or mixed-source purpose.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-FORMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-MARKETING-AUTHORING"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "No eligibility to approach, complete legal review, recipient identity, registration/activation, actual recording or provider suppression is established. Ordinary collection-flow settings keep their existing exclusion. Existing restricted-scope negative actions remain representable.",
+      "implementationRefs": [
+        "packages/notabenda/src/marketing-workbench.ts",
+        "packages/notabenda/src/marketing-workbench-build.ts",
+        "packages/notabenda/src/marketing-workbench-cli.ts",
+        "packages/notabenda/src/marketing-workbench-ui.ts",
+        "packages/notabenda/src/marketing-workbench-app.ts",
+        "packages/notabenda/src/marketing-workbench.css",
+        "packages/notabenda/src/form-permission-content.ts",
+        "packages/notabenda/src/form-permission-presentation.ts",
+        "packages/notabenda/src/form-permission.ts",
+        "packages/notabenda/src/content.ts",
+        "packages/notabenda/scripts/copy-assets.mjs",
+        "packages/notabenda/src/cli.ts",
+        "packages/notabenda/src/cartridges.ts",
+        "packages/notabenda/src/pack-capabilities.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/marketing-workbench/build.mjs",
+        "examples/static/build.mjs",
+        "examples/static/choices-build.mjs",
+        "site/host.mjs",
+        "site/navigation.mjs",
+        "docs/MARKETING-WORKBENCH.md",
+        "docs/SOUTH-AFRICA-MARKETING.md",
+        "docs/FORM-PERMISSIONS.md",
+        "skills/notabenda/references/configuration-target.md",
+        "packages/notabenda/README.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/marketing-workbench.test.mjs",
+        "site/test/marketing-workbench.test.mjs",
+        "docs/verification/marketing-authoring.md"
+      ],
+      "implementationNote": "The compiler normalizes the intact final artifact and calls the existing schema-4 builder. Standalone/directory editors project only selected public facts and export settings. Shared content and presentation preserve legacy identities, mixed-source purposes, permission-only localization and restrictive scope behavior. Edits/imports invalidate review/selection/exports; delayed work is fenced and final publication remains separate."
     }
   ],
   "verification": [
@@ -13667,6 +13762,19 @@
         "packages/notabenda/test/pack-capabilities.test.mjs",
         "site/test/pack-capabilities.test.mjs",
         "docs/verification/pack-capabilities.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-MARKETING-AUTHORING",
+      "requirementIds": [
+        "REQ-PRODUCT-MARKETING-AUTHORING"
+      ],
+      "status": "automated",
+      "expected": "Legacy schema-4 bytes and hashes remain stable across methods/languages; exact-artifact and exclusive-output checks reject tampering, foreign pins and hostile settings. Shared inert preview includes particulars/refusal with no controller, links or saved state; UI import/export, errors, language, focus and stale-work cancellation are checked. Browser/site graph and effective Worker policy checks remain separate from host/legal acceptance.",
+      "testRefs": [
+        "packages/notabenda/test/marketing-workbench.test.mjs",
+        "site/test/marketing-workbench.test.mjs",
+        "docs/verification/marketing-authoring.md"
       ]
     }
   ],

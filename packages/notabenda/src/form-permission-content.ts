@@ -10,3 +10,18 @@ export function assembleFormPermissionContent(facts:FormPermissionPublicFacts,se
  if(!settings||typeof settings!=='object'||Array.isArray(settings)||!required.every(k=>Object.hasOwn(settings,k))||Object.keys(settings).some(k=>!required.includes(k)&&!optional.includes(k))||settings.purposeId!==facts.facts.purpose.id||Object.hasOwn(settings,'refusal')&&(!settings.refusal||typeof settings.refusal!=='object')||Object.hasOwn(settings,'deliveryWindowSeconds')&&(typeof settings.deliveryWindowSeconds!=='number'||!Number.isInteger(settings.deliveryWindowSeconds)||settings.deliveryWindowSeconds<30||settings.deliveryWindowSeconds>3600))throw Error('Supply complete ordinary permission settings; specialized marketing requests use their separate builder.');
  return normalizeFormPermissionContent({schemaVersion:settings.refusal?3:facts.localization?2:1,...(facts.localization?{localization:facts.localization}:{}),...(settings.refusal?{refusal:settings.refusal}:{}),siteId:facts.siteId,permissionId:settings.permissionId,purposeId:settings.purposeId,channel:settings.channel,revision:settings.revision,artifactId:facts.artifactId,mode:facts.mode,reviewStatus:settings.reviewStatus,document:facts.document,facts:facts.facts,wording:settings.wording,withdrawalUrl:settings.withdrawalUrl,deliveryWindowSeconds:settings.deliveryWindowSeconds??600},options);
 }
+
+// @requirements REQ-PRODUCT-MARKETING-AUTHORING REQ-ZA-MARKETING
+import {normalizeSouthAfricaMarketingRequest} from './south-africa-marketing-policy.js';
+import type {SouthAfricaMarketingSettings} from './form-permission.js';
+/** Same schema-4 projection for authoritative compilation and identity-free local previews. */
+export function specializeSouthAfricaMarketingContent(input:FormPermissionContent,request:unknown,options:{allowPreview?:boolean}={}):FormPermissionContent {
+ assertPlainCatalogData(input);
+ return normalizeFormPermissionContent({...input,schemaVersion:4,marketingRequest:normalizeSouthAfricaMarketingRequest(request)},options);
+}
+export function assembleSouthAfricaMarketingContent(facts:FormPermissionPublicFacts,settings:SouthAfricaMarketingSettings,options:{allowPreview?:boolean}={}):FormPermissionContent {
+ assertPlainCatalogData(settings);
+ const {marketingRequest,methodLabel,...ordinary}=settings,request=normalizeSouthAfricaMarketingRequest(marketingRequest);
+ const base=assembleFormPermissionContent(facts,{...ordinary,channel:{id:request.method,label:methodLabel}},options);
+ return specializeSouthAfricaMarketingContent(base,request,options);
+}

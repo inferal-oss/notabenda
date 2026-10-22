@@ -18,7 +18,8 @@
     "./dist/cartridges.css",
     "./dist/agent-handoff.css",
     "./dist/collection-workbench.css",
-    "./dist/processing-workbench.css"
+    "./dist/processing-workbench.css",
+    "./dist/marketing-workbench.css"
   ],
   "files": [
     "dist",
@@ -418,7 +419,23 @@
       "import": "./dist/processing-workbench.js",
       "default": "./dist/processing-workbench.js"
     },
-    "./processing-workbench.css": "./dist/processing-workbench.css"
+    "./processing-workbench.css": "./dist/processing-workbench.css",
+    "./authoring/marketing": {
+      "types": "./dist/marketing-workbench-build.d.ts",
+      "import": "./dist/marketing-workbench-build.js",
+      "default": "./dist/marketing-workbench-build.js"
+    },
+    "./authoring/marketing/ui": {
+      "types": "./dist/marketing-workbench-ui.d.ts",
+      "import": "./dist/marketing-workbench-ui.js",
+      "default": "./dist/marketing-workbench-ui.js"
+    },
+    "./authoring/marketing/model": {
+      "types": "./dist/marketing-workbench.d.ts",
+      "import": "./dist/marketing-workbench.js",
+      "default": "./dist/marketing-workbench.js"
+    },
+    "./marketing-workbench.css": "./dist/marketing-workbench.css"
   },
   "bin": {
     "notabenda": "./dist/cli.js"

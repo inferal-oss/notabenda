@@ -465,3 +465,7 @@ Pack discovery needs a further pass: expose implemented options and tools under 
 
 <!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
 The twenty-one-pack library now exposes supplied features, setup tools and review guides in the reusable console, examples and CLI/agent reference. Singapore cookie/consent research is visible as guidance within Cookie choices. Explicit refusal is listed within Form permissions. The focused South African web-request pack resolves a separate integration target, supported builder, exact request particulars, refusal and host input review; invitation eligibility, customer exceptions, prescribed-information review and external suppression stay unresolved host work. The ordinary form editor does not author the specialized profile. Broader legal and operational completion remains tracked separately.
+
+
+<!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
+The focused [marketing request workbench](MARKETING-WORKBENCH.md) and direct artifact compiler close the JavaScript-only authoring gap in the South African request pack. JSON/YAML/Markdown settings retain the exact public release, one selected purpose and future method, complete particulars and refusal. The local shared preview remains inactive; the host still supplies invitation history/eligibility, identity, recording, activation and actual sending/suppression. The ordinary form flow contract is unchanged.

@@ -64,3 +64,7 @@ await rm(new URL('../dist/collection-workbench-app.js.map',import.meta.url),{for
 // @requirements REQ-PRODUCT-PROCESSING-WORKBENCH
 await copyFile(new URL('../src/processing-workbench.css',import.meta.url),new URL('../dist/processing-workbench.css',import.meta.url));
 await build({entryPoints:[new URL('../dist/processing-workbench-app.js',import.meta.url).pathname],allowOverwrite:true,outfile:new URL('../dist/processing-workbench-app.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,sourcemap:false});
+
+// @requirements REQ-PRODUCT-MARKETING-AUTHORING
+await writeFile(new URL('../dist/marketing-workbench.css',import.meta.url),(await readFile(new URL('../src/processing-workbench.css',import.meta.url),'utf8'))+'\n'+await readFile(new URL('../src/marketing-workbench.css',import.meta.url),'utf8'));
+await build({entryPoints:[new URL('../dist/marketing-workbench-app.js',import.meta.url).pathname],allowOverwrite:true,outfile:new URL('../dist/marketing-workbench-app.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',minify:true,sourcemap:false});

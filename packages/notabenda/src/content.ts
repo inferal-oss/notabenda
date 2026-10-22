@@ -1,3 +1,5 @@
+// @requirements REQ-PRODUCT-MARKETING-AUTHORING
+import {specializeSouthAfricaMarketingContent} from './form-permission-content.js';
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 import {assembleFormPermissionContent} from './form-permission-content.js';
 import {assembleCollectionNoticeContent} from './collection-workbench.js';
@@ -306,7 +308,7 @@ export function createFormPermissionOffer(artifact:LegalArtifact,settings:FormPe
 export function createSouthAfricaMarketingOffer(artifact:LegalArtifact,settings:SouthAfricaMarketingSettings,options:ValidationOptions={}):SouthAfricaMarketingOffer {
   const {marketingRequest,methodLabel,...ordinary}=settings,request=normalizeSouthAfricaMarketingRequest(marketingRequest);
   const base=createFormPermissionOffer(artifact,{...ordinary,channel:{id:request.method,label:methodLabel}},options);
-  const value=normalizeFormPermissionOffer({...base,schemaVersion:4,marketingRequest:request},{allowPreview:options.mode==='preview'});
-  const {offerId:_,...descriptor}=value;return {...value,offerId:sha256(canonicalJson(descriptor))} as SouthAfricaMarketingOffer;
+  const {offerId:_,...ordinaryContent}=base,descriptor=specializeSouthAfricaMarketingContent(ordinaryContent,request,{allowPreview:options.mode==='preview'});
+  return {...base,schemaVersion:4,marketingRequest:descriptor.marketingRequest!,offerId:sha256(canonicalJson(descriptor))} as SouthAfricaMarketingOffer;
 }
 // @requirements REQ-PRODUCT-TERMS-AUTHORING

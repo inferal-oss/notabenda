@@ -390,3 +390,9 @@ Processing opt-out notice authoring uses a separate settings file and optional l
 
 <!-- @requirements REQ-PRODUCT-CARTRIDGES -->
 A distinct supported job can have its own pack; adding a source review or a button does not automatically create one. The installed library exposes features, setup tools and review guides within each pack, with requirement links and explicit limits. The focused South African web-request pack has its own integration target, host input review and instructions, using the existing permission foundation. Singapore remains source-linked guidance within Cookie choices; refusal remains an explicit purpose/channel action. Pack selections retain their existing revisions and activate no policy. Invitation eligibility, prescribed-information review, customer exceptions and real sending/suppression remain separate host work.
+
+
+### South African request authoring
+
+<!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
+Provide a focused single-purpose, single-method data compiler and optional local editor for the existing South African web-request profile. Pin the exact final artifact, require explicit particulars/refusal wording and derive the channel from the declared future method. Preserve mixed-source purposes, selected permission-only localization, restricted-scope negative actions and existing schema-4 identities. Share native presentation without a controller or invented saved state in preview. Separate builder inputs from SiteConfig, and keep the ordinary composer’s exclusion. No invitation eligibility, recipient identity, registration/activation, customer exception, sending or suppression is supplied.

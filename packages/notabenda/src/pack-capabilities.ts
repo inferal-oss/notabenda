@@ -285,6 +285,15 @@ const capabilities:Record<string,readonly PackCapability[]>={
       "requirementIds": [
         "REQ-PRODUCT-FORM-PERMISSIONS"
       ]
+    },
+    {
+      "id": "request-editor",
+      "kind": "tool",
+      "title": "Marketing request editor",
+      "summary": "Prepare request particulars, separate choice and refusal copy as JSON, YAML or Markdown-frontmatter settings.",
+      "guide": "marketing-workbench",
+      "boundary": "One purpose and future method per request. The editor authorizes no approach and connects no recipient or sending system.",
+      "requirementIds": ["REQ-PRODUCT-MARKETING-AUTHORING", "REQ-ZA-MARKETING"]
     }
   ],
   "gated-media": [

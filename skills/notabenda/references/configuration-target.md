@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 <!-- @requirements REQ-PRODUCT-PACK-CAPABILITIES -->
 # Determine the configuration target
 
@@ -123,3 +124,6 @@ Run the exact target scenarios and validation. A successful preview is a draft m
 Use `za-marketing-requests` / target `south-africa-marketing-request` for the supported South African web request. It requires `createSouthAfricaMarketingOffer`, profile `za-popia-web-request` (schema 4), explicit goods/services, future method, methodLabel, complete labels, mandatory refusal copy, revision and withdrawal route. These are builder inputs, not SiteConfig fields. The ordinary form editor cannot author the specialized profile. Preserve unknown solicitation eligibility and wider withholding history; connect actual sending/suppression separately.
 
 Singapore consent-route research remains review guidance within Cookie choices, not an installable deemed-consent mode. Explicit refusal belongs to its purpose/channel permission; silence, an unchecked box and withdrawal are distinct. Selection must not manufacture any answers, grants or jurisdiction policies.
+
+
+For the South African request, prefer explicit data settings when useful: `notabenda marketing-workbench --artifact FILE --purpose ID --out-dir NEW` prepares a local editor, and `notabenda marketing-request --artifact FILE --settings FILE --out-dir NEW` compiles JSON/YAML/Markdown frontmatter against that exact final release. Use `@notabenda/core/authoring/marketing` for build APIs and read [the input envelope and limits](https://notabenda.org/guide/marketing-workbench/index.md). It needs the selected permission dictionary, not collection-notice messages; direct/mixed-source purposes remain supported. Restricted-scope negative actions remain representable. Register/activate the final offer and connect actual host transports separately.
