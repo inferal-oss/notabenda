@@ -6,6 +6,14 @@ import {JSDOM} from 'jsdom';
 import {build} from 'esbuild';
 import {createAccessibilityAudit} from '../../scripts/accessibility-audit.mjs';
 import {mountProcessingWorkbench} from '@notabenda/core/authoring/processing/ui';
+import {publicResponse} from '../host.mjs';
+test('served processing editor permits its own module while its guide remains script-free',()=>{
+ for(const path of ['/processing-notice-workbench','/processing-notice-workbench/','/processing-notice-workbench/index.html']){
+  const response=publicResponse(new Response('editor'),path),csp=response.headers.get('Content-Security-Policy');
+  assert.match(csp,/script-src 'self'/);assert.doesNotMatch(csp,/unsafe-inline|unsafe-eval/);assert.equal(response.headers.get('Set-Cookie'),null);
+ }
+ assert.doesNotMatch(publicResponse(new Response('guide'),'/guide/processing-workbench/').headers.get('Content-Security-Policy'),/script-src/);
+});
 test('published editor mounts with semantic controls and inert preview without a recording or network controller',async()=>{
  const html=await readFile(new URL('../dist/public/processing-notice-workbench/index.html',import.meta.url),'utf8'),audit=await createAccessibilityAudit(html,{label:'processing notice workbench'}),d=audit.dom.window.document;
  const context=JSON.parse(d.querySelector('#processing-workbench-context').textContent),ui=mountProcessingWorkbench(d.querySelector('#processing-workbench'),{context});
