@@ -1685,3 +1685,13 @@ A specific immutable version exposes its ID and hashed script-content etag. The 
 **Type:** regulator-guidance. **Checked:** 2026-10-21. **Access:** read.
 
 Downloaded the exact PDF linked by the current landing page. Cover revision: 23 May 2024. Read chapter 7 on printed pages 53–55; visually verified cookie paragraphs on pages 54–55. Current PDPA text, chapter 12 exceptions and complete Singapore review remain separate.
+
+<a id="src-sg-pdpa-current"></a>
+
+## SRC-SG-PDPA-CURRENT
+
+[Singapore Personal Data Protection Act 2012, current statutory text](https://sso.agc.gov.sg/Act/PDPA2012)
+
+**Type:** legislation. **Checked:** 2026-10-22. **Access:** read.
+
+Official browser-rendered current version as at 22 October 2026. Read sections 11–12, 13–17 (including 15A) and 18–20 in the publisher’s selected-provision view. The revised-edition statement and current-view date are not new commencement dates. First/Second Schedules, prescribed regulations, chapter-12 guidance and full applicability/other obligations remain separate research.

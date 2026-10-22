@@ -34,7 +34,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | PRODUCT | [REQ-PRODUCT-A11Y](#req-product-a11y), [REQ-PRODUCT-MOBILE](#req-product-mobile), [REQ-PRODUCT-CONFIG](#req-product-config), [REQ-PRODUCT-DOCUMENTS](#req-product-documents), [REQ-PRODUCT-SAFE-CONTENT](#req-product-safe-content), [REQ-PRODUCT-ARTIFACTS](#req-product-artifacts), [REQ-PRODUCT-PACKAGE](#req-product-package), [REQ-PRODUCT-CF-ADMIN](#req-product-cf-admin), [REQ-PRODUCT-CF-HISTORY](#req-product-cf-history), [REQ-PRODUCT-CONSENT-RUNTIME](#req-product-consent-runtime), [REQ-PRODUCT-TERMS-ACCEPTANCE](#req-product-terms-acceptance), [REQ-PRODUCT-CF-HOST](#req-product-cf-host), [REQ-PRODUCT-CONSENT-EVIDENCE](#req-product-consent-evidence), [REQ-PRODUCT-AUTHORING](#req-product-authoring), [REQ-PRODUCT-REACT](#req-product-react), [REQ-PRODUCT-ASTRO](#req-product-astro), [REQ-PRODUCT-EMBEDS](#req-product-embeds), [REQ-PRODUCT-PRIVACY-SIGNALS](#req-product-privacy-signals), [REQ-PRODUCT-PROCESSING-CHOICES](#req-product-processing-choices), [REQ-PRODUCT-RETAINED-RELEASES](#req-product-retained-releases), [REQ-PRODUCT-STORAGE-CLEANUP](#req-product-storage-cleanup), [REQ-PRODUCT-SETUP](#req-product-setup), [REQ-PRODUCT-COLLECTION-NOTICE](#req-product-collection-notice), [REQ-PRODUCT-EVIDENCE-EXPORT](#req-product-evidence-export), [REQ-PRODUCT-DISCOVERY](#req-product-discovery), [REQ-PRODUCT-REGIONAL-PROMPTS](#req-product-regional-prompts), [REQ-PRODUCT-EVIDENCE-LIFECYCLE](#req-product-evidence-lifecycle), [REQ-PRODUCT-SCOPE-GUARDS](#req-product-scope-guards), [REQ-PRODUCT-DEMO-WORKSPACE](#req-product-demo-workspace), [REQ-PRODUCT-RIGHTS-CENTER](#req-product-rights-center), [REQ-PRODUCT-CF-STARTER](#req-product-cf-starter), [REQ-PRODUCT-FORM-PERMISSIONS](#req-product-form-permissions), [REQ-PRODUCT-CF-DOCTOR](#req-product-cf-doctor), [REQ-PRODUCT-CONTRACT-ACTIONS](#req-product-contract-actions), [REQ-PRODUCT-SYNTAX-HIGHLIGHTING](#req-product-syntax-highlighting), [REQ-PRODUCT-BUNDLE-BUDGET](#req-product-bundle-budget), [REQ-PRODUCT-SERVICE-CATALOG](#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](#req-product-service-profiles), [REQ-PRODUCT-INDIRECT-NOTICE](#req-product-indirect-notice), [REQ-PRODUCT-GUARANTEE-NOTICE](#req-product-guarantee-notice), [REQ-PRODUCT-PAID-ORDER-ARCHIVES](#req-product-paid-order-archives), [REQ-PRODUCT-ORDER-CONFIRMATION](#req-product-order-confirmation), [REQ-PRODUCT-STORAGE-EXCEPTIONS](#req-product-storage-exceptions), [REQ-PRODUCT-LOCALIZATION](#req-product-localization), [REQ-PRODUCT-AGENT-INTEGRATION](#req-product-agent-integration), [REQ-PRODUCT-COMPLIANCE-MAP](#req-product-compliance-map), [REQ-PRODUCT-CARTRIDGES](#req-product-cartridges), [REQ-PRODUCT-WORKSPACE-OVERVIEW](#req-product-workspace-overview), [REQ-PRODUCT-DRAFT-PREVIEW](#req-product-draft-preview), [REQ-PRODUCT-PACK-CONNECTION](#req-product-pack-connection), [REQ-PRODUCT-CONSENT-AUTHORING](#req-product-consent-authoring), [REQ-PRODUCT-PRIVACY-PACKS](#req-product-privacy-packs), [REQ-PRODUCT-PUBLICATION-CHECK](#req-product-publication-check), [REQ-PRODUCT-CONSUMER-PACKS](#req-product-consumer-packs), [REQ-PRODUCT-SPECIALIST-PACKS](#req-product-specialist-packs), [REQ-PRODUCT-RIGHTS-AUTHORING](#req-product-rights-authoring), [REQ-PRODUCT-RIGHTS-LOCALIZATION](#req-product-rights-localization), [REQ-PRODUCT-STORAGE-AUTHORING](#req-product-storage-authoring), [REQ-PRODUCT-CONNECTION-INSPECTION](#req-product-connection-inspection), [REQ-PRODUCT-CF-RECOVERY-REHEARSAL](#req-product-cf-recovery-rehearsal), [REQ-PRODUCT-TERMS-ADAPTERS](#req-product-terms-adapters), [REQ-PRODUCT-PACK-EDUCATION](#req-product-pack-education), [REQ-PRODUCT-STORAGE-LOCALIZATION](#req-product-storage-localization), [REQ-PRODUCT-RELEASE-CANDIDATE](#req-product-release-candidate), [REQ-PRODUCT-RECORDING-INSPECTION](#req-product-recording-inspection), [REQ-PRODUCT-AGENT-HANDOFF](#req-product-agent-handoff), [REQ-PRODUCT-AUTHORED-PREVIEW](#req-product-authored-preview), [REQ-PRODUCT-PROCESSING-LOCALIZATION](#req-product-processing-localization), [REQ-PRODUCT-SETUP-SESSION](#req-product-setup-session), [REQ-PRODUCT-SERVICE-LOCALIZATION](#req-product-service-localization), [REQ-PRODUCT-INDIRECT-LOCALIZATION](#req-product-indirect-localization), [REQ-PRODUCT-CF-REMOTE-RECOVERY](#req-product-cf-remote-recovery), [REQ-PRODUCT-TERMS-CONNECTION](#req-product-terms-connection), [REQ-PRODUCT-CONSENT-REHEARSAL](#req-product-consent-rehearsal), [REQ-PRODUCT-DOCS-SEARCH](#req-product-docs-search), [REQ-PRODUCT-EMBED-LOCALIZATION](#req-product-embed-localization), [REQ-PRODUCT-TERMS-AUTHORING](#req-product-terms-authoring), [REQ-PRODUCT-TERMS-HISTORY](#req-product-terms-history), [REQ-PRODUCT-CONTRACT-LOCALIZATION](#req-product-contract-localization), [REQ-PRODUCT-PRIVACY-CHOICE-LINK](#req-product-privacy-choice-link), [REQ-PRODUCT-CONFIG-SOURCES](#req-product-config-sources), [REQ-PRODUCT-CONSENT-NOTICE-FILES](#req-product-consent-notice-files), [REQ-PRODUCT-CF-ROLLOUT](#req-product-cf-rollout) | Selected items: implemented, partial |
 | US-OR | [REQ-US-OR-GPC](#req-us-or-gpc) | Selected items: partial |
 | US-MN | [REQ-US-MN-GPC](#req-us-mn-gpc) | Selected items: partial |
-| SG | [REQ-SG-COOKIE-DATA](#req-sg-cookie-data), [REQ-SG-BROWSER-CHOICE](#req-sg-browser-choice), [REQ-SG-COOKIE-TARGETING](#req-sg-cookie-targeting) | Selected items: partial |
+| SG | [REQ-SG-COOKIE-DATA](#req-sg-cookie-data), [REQ-SG-BROWSER-CHOICE](#req-sg-browser-choice), [REQ-SG-COOKIE-TARGETING](#req-sg-cookie-targeting), [REQ-SG-CONSENT-CONDITIONS](#req-sg-consent-conditions), [REQ-SG-CONSENT-ROUTES](#req-sg-consent-routes), [REQ-SG-WITHDRAWAL](#req-sg-withdrawal), [REQ-SG-ACCOUNTABILITY](#req-sg-accountability) | Selected items: partial |
 
 ## Individual requirements
 
@@ -3242,15 +3242,119 @@ Review consent for advertising cookies involving personal data, identify the col
 
 **Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [site/navigation.mjs](../../site/navigation.mjs), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
 
+<a id="req-sg-consent-conditions"></a>
+
+### REQ-SG-CONSENT-CONDITIONS — Review consent conditions and purpose notification
+
+Review purpose-specific information before collection or a new use/disclosure, reasonable purposes and conditions, and misleading practices. A recorded action alone does not establish valid consent.
+
+**Applies when:** The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore Personal Data Protection Act 2012, current statutory text](https://sso.agc.gov.sg/Act/PDPA2012) — Sections 13, 14, 18 and 20 (read; [SRC-SG-PDPA-CURRENT](SOURCES.md#src-sg-pdpa-current)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-CONTROLS](../FEATURES.md#feat-controls), [FEAT-FORMS](../FEATURES.md#feat-forms).
+
+<a id="verify-sg-consent-conditions"></a>
+
+**VERIFY-SG-CONSENT-CONDITIONS (automated):** Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.
+
+**Timing:** Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.
+
+**Implementation boundary:** Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified.
+
+**Limits/open review:** Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/controls.ts](../../packages/notabenda/src/controls.ts), [packages/notabenda/src/collection.ts](../../packages/notabenda/src/collection.ts), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [packages/notabenda/test/singapore-consent.test.mjs](../../packages/notabenda/test/singapore-consent.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
+<a id="req-sg-consent-routes"></a>
+
+### REQ-SG-CONSENT-ROUTES — Assess deemed-consent and without-consent routes separately
+
+Distinguish section 15 conduct/contract rules, section 15A adverse-effect/notification safeguards and section 17 scheduled circumstances, alongside required/authorised routes under section 13(b). Do not create permission from a notice, silence, an elapsed timer or an unassessed exception.
+
+**Applies when:** The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore Personal Data Protection Act 2012, current statutory text](https://sso.agc.gov.sg/Act/PDPA2012) — Sections 13(b), 15, 15A and 17 (read; [SRC-SG-PDPA-CURRENT](SOURCES.md#src-sg-pdpa-current)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-CHOICES](../FEATURES.md#feat-choices).
+
+<a id="verify-sg-consent-routes"></a>
+
+**VERIFY-SG-CONSENT-ROUTES (automated):** Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.
+
+**Timing:** Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.
+
+**Implementation boundary:** Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified.
+
+**Limits/open review:** Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [packages/notabenda/test/singapore-consent.test.mjs](../../packages/notabenda/test/singapore-consent.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
+<a id="req-sg-withdrawal"></a>
+
+### REQ-SG-WITHDRAWAL — Keep withdrawal available and fulfill it beyond the browser
+
+Explain likely consequences and support withdrawal, then cease the relevant collection, use and disclosure, including intermediaries/agents, subject to the statutory qualifications. Local teardown is only one part.
+
+**Applies when:** The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore Personal Data Protection Act 2012, current statutory text](https://sso.agc.gov.sg/Act/PDPA2012) — Section 16, including subsections (2)–(4) (read; [SRC-SG-PDPA-CURRENT](SOURCES.md#src-sg-pdpa-current)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-CHOICES](../FEATURES.md#feat-choices), [FEAT-ENFORCEMENT](../FEATURES.md#feat-enforcement).
+
+<a id="verify-sg-withdrawal"></a>
+
+**VERIFY-SG-WITHDRAWAL (automated):** Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.
+
+**Timing:** Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.
+
+**Implementation boundary:** Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified.
+
+**Limits/open review:** Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/consent-engine.ts](../../packages/notabenda/src/consent-engine.ts), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [packages/notabenda/test/singapore-consent.test.mjs](../../packages/notabenda/test/singapore-consent.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
+<a id="req-sg-accountability"></a>
+
+### REQ-SG-ACCOUNTABILITY — Provide responsible contact and operate accountability processes
+
+Review designation and public business contact, policies/practices, complaints handling and staff communication. Published notice/contact fields support disclosure, not operation of those processes.
+
+**Applies when:** The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Singapore Personal Data Protection Act 2012, current statutory text](https://sso.agc.gov.sg/Act/PDPA2012) — Sections 11(3)–(6), 12 and 20(1)(c) (read; [SRC-SG-PDPA-CURRENT](SOURCES.md#src-sg-pdpa-current)).
+
+**Features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-DOCUMENTS](../FEATURES.md#feat-documents), [FEAT-FORMS](../FEATURES.md#feat-forms).
+
+<a id="verify-sg-accountability"></a>
+
+**VERIFY-SG-ACCOUNTABILITY (automated):** Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.
+
+**Timing:** Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.
+
+**Implementation boundary:** Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified.
+
+**Limits/open review:** Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.
+
+**Code/test references:** [packages/notabenda/src/cookie-jurisdiction-reviews.ts](../../packages/notabenda/src/cookie-jurisdiction-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [docs/SINGAPORE-COOKIES.md](../../docs/SINGAPORE-COOKIES.md), [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/collection.ts](../../packages/notabenda/src/collection.ts), [packages/notabenda/test/singapore-cookies.test.mjs](../../packages/notabenda/test/singapore-cookies.test.mjs), [packages/notabenda/test/singapore-consent.test.mjs](../../packages/notabenda/test/singapore-consent.test.mjs), [docs/verification/singapore-cookies.md](../../docs/verification/singapore-cookies.md)
+
 ## Research gaps
 
 ### GAP-SG — SG
 
-**partially-researched:** Current linked May 2024 chapter-7 cookie guidance is retrieved and connected to setup and tests. Verify current PDPA text, chapter-12 consent/deemed-consent/exception conditions, applicability and other obligations before claiming broader Singapore coverage.
+**partially-researched:** Current linked May 2024 chapter-7 guidance and selected current PDPA sections 11–20 are read and connected to setup/tests. Review full applicability, First/Second Schedule conditions, prescribed regulations, chapter-12 guidance and remaining obligations before claiming broader Singapore coverage.
 
 **Planned features:** [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-FORMS](../FEATURES.md#feat-forms).
 
-**Starting sources:** [SRC-SG-PDPC](SOURCES.md#src-sg-pdpc), [SRC-SG-SELECTED-2024](SOURCES.md#src-sg-selected-2024).
+**Starting sources:** [SRC-SG-PDPC](SOURCES.md#src-sg-pdpc), [SRC-SG-SELECTED-2024](SOURCES.md#src-sg-selected-2024), [SRC-SG-PDPA-CURRENT](SOURCES.md#src-sg-pdpa-current).
 
 ### GAP-JP — JP
 

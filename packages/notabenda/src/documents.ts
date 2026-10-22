@@ -1,3 +1,4 @@
+// @requirements REQ-SG-ACCOUNTABILITY
 // @requirements REQ-PRODUCT-PRIVACY-CHOICE-LINK
 import {renderPrivacyChoicesLink} from './privacy-choices-link.js';
 import {localizedSections} from './localized-documents.js';

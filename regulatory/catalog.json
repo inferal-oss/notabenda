@@ -630,7 +630,8 @@
         "ANPD-linked Portuguese two-purpose flow, optional host-authored rights/browser information, archived notice parity and evidence inspection. Actual applicability, wording review and complete country/platform coverage remain host work.",
         "Optional Qu\u00e9bec technology disclosure with host-language activation instructions, exact release/scope binding and on-demand native controls; host placement, supplemental retention and legal review remain explicit.",
         "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
-        "Source-linked Singapore cookie review in existing UI/CLI/agent setup, preserving explicit choices, current inventory and separate exception assessment; no new jurisdiction pack or automatic policy."
+        "Source-linked Singapore cookie review in existing UI/CLI/agent setup, preserving explicit choices, current inventory and separate exception assessment; no new jurisdiction pack or automatic policy.",
+        "Selected Singapore statutory consent, deemed-consent, withdrawal and accountability review connected to setup, agent guidance and existing disclosure/choice mechanisms; scheduled exceptions and legal review remain open."
       ],
       "implementationRefs": [
         "packages/notabenda/src/prompt-policy.ts",
@@ -2824,6 +2825,15 @@
       "access": "read",
       "contentSha256": "f478abfa8c0cf2be1e0af16502ed0be95ffce7524f68e010cc861859e32df039",
       "note": "Downloaded the exact PDF linked by the current landing page. Cover revision: 23 May 2024. Read chapter 7 on printed pages 53\u201355; visually verified cookie paragraphs on pages 54\u201355. Current PDPA text, chapter 12 exceptions and complete Singapore review remain separate."
+    },
+    {
+      "id": "SRC-SG-PDPA-CURRENT",
+      "title": "Singapore Personal Data Protection Act 2012, current statutory text",
+      "url": "https://sso.agc.gov.sg/Act/PDPA2012",
+      "kind": "legislation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official browser-rendered current version as at 22 October 2026. Read sections 11\u201312, 13\u201317 (including 15A) and 18\u201320 in the publisher\u2019s selected-provision view. The revised-edition statement and current-view date are not new commencement dates. First/Second Schedules, prescribed regulations, chapter-12 guidance and full applicability/other obligations remain separate research."
     }
   ],
   "jurisdictions": [
@@ -3130,11 +3140,15 @@
     {
       "id": "SG",
       "status": "initial-research",
-      "coverage": "Selected chapter-7 cookie/online-activities guidance only; broader PDPA research and legal review remain open. No production-supported pack.",
+      "coverage": "Selected chapter-7 cookie/online-activities guidance and current statutory consent, withdrawal and accountability provisions. Scheduled exceptions, prescribed requirements, full applicability and legal review remain open. No production-supported pack.",
       "requirementIds": [
         "REQ-SG-COOKIE-DATA",
         "REQ-SG-BROWSER-CHOICE",
-        "REQ-SG-COOKIE-TARGETING"
+        "REQ-SG-COOKIE-TARGETING",
+        "REQ-SG-CONSENT-CONDITIONS",
+        "REQ-SG-CONSENT-ROUTES",
+        "REQ-SG-WITHDRAWAL",
+        "REQ-SG-ACCOUNTABILITY"
       ]
     }
   ],
@@ -9808,6 +9822,174 @@
         "docs/verification/singapore-cookies.md"
       ],
       "implementationNote": "Singapore coverage interest or an imported SG label produces the same source-backed UI/CLI/agent review without changing configuration or historical answers. Both consent factories retain explicit native choice/withdrawal mechanics; permissive browser settings grant nothing and scope guards remain effective."
+    },
+    {
+      "id": "REQ-SG-CONSENT-CONDITIONS",
+      "jurisdiction": "SG",
+      "title": "Review consent conditions and purpose notification",
+      "kind": "law",
+      "summary": "Review purpose-specific information before collection or a new use/disclosure, reasonable purposes and conditions, and misleading practices. A recorded action alone does not establish valid consent.",
+      "appliesWhen": "The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-PDPA-CURRENT",
+          "locator": "Sections 13, 14, 18 and 20"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-CONTROLS",
+        "FEAT-FORMS"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-CONSENT-CONDITIONS"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.",
+      "caveats": "Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md",
+        "packages/notabenda/src/controls.ts",
+        "packages/notabenda/src/collection.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified."
+    },
+    {
+      "id": "REQ-SG-CONSENT-ROUTES",
+      "jurisdiction": "SG",
+      "title": "Assess deemed-consent and without-consent routes separately",
+      "kind": "law",
+      "summary": "Distinguish section 15 conduct/contract rules, section 15A adverse-effect/notification safeguards and section 17 scheduled circumstances, alongside required/authorised routes under section 13(b). Do not create permission from a notice, silence, an elapsed timer or an unassessed exception.",
+      "appliesWhen": "The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-PDPA-CURRENT",
+          "locator": "Sections 13(b), 15, 15A and 17"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-CHOICES"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-CONSENT-ROUTES"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.",
+      "caveats": "Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified."
+    },
+    {
+      "id": "REQ-SG-WITHDRAWAL",
+      "jurisdiction": "SG",
+      "title": "Keep withdrawal available and fulfill it beyond the browser",
+      "kind": "law",
+      "summary": "Explain likely consequences and support withdrawal, then cease the relevant collection, use and disclosure, including intermediaries/agents, subject to the statutory qualifications. Local teardown is only one part.",
+      "appliesWhen": "The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-PDPA-CURRENT",
+          "locator": "Section 16, including subsections (2)\u2013(4)"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-CHOICES",
+        "FEAT-ENFORCEMENT"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-WITHDRAWAL"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.",
+      "caveats": "Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md",
+        "packages/notabenda/src/consent-engine.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified."
+    },
+    {
+      "id": "REQ-SG-ACCOUNTABILITY",
+      "jurisdiction": "SG",
+      "title": "Provide responsible contact and operate accountability processes",
+      "kind": "law",
+      "summary": "Review designation and public business contact, policies/practices, complaints handling and staff communication. Published notice/contact fields support disclosure, not operation of those processes.",
+      "appliesWhen": "The relevant Singapore PDPA duties apply to the operator and the assessed collection, use or disclosure. Territorial, data, role and exception scope require review.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-SG-PDPA-CURRENT",
+          "locator": "Sections 11(3)\u2013(6), 12 and 20(1)(c)"
+        }
+      ],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-REGIONS",
+        "FEAT-DOCUMENTS",
+        "FEAT-FORMS"
+      ],
+      "verificationIds": [
+        "VERIFY-SG-ACCOUNTABILITY"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": null,
+      "timingNote": "Current statutory view as at 22 October 2026, retrieved 22 October UTC. This snapshot date is not a commencement date.",
+      "caveats": "Selected provisions and reusable mechanisms only. No legal-validity determination, deemed-consent mode, automatic exemption, downstream fulfillment or full Singapore pack. Scheduled exceptions, prescribed requirements, wider applicability and legal review remain open.",
+      "implementationRefs": [
+        "packages/notabenda/src/cookie-jurisdiction-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/SINGAPORE-COOKIES.md",
+        "packages/notabenda/src/documents.ts",
+        "packages/notabenda/src/collection.ts"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ],
+      "implementationNote": "Shared UI/CLI/agent review preserves operator settings and private answers. Tests connect declared purposes and public contacts to static disclosures, distinguish information from permission, retain material-scope review and exercise cooperative withdrawal despite storage failure. Host policies, actual notice delivery, validity, consequences, intermediaries and production use remain to be verified."
     }
   ],
   "verification": [
@@ -11725,6 +11907,58 @@
         "packages/notabenda/test/singapore-cookies.test.mjs",
         "docs/verification/singapore-cookies.md"
       ]
+    },
+    {
+      "id": "VERIFY-SG-CONSENT-CONDITIONS",
+      "requirementIds": [
+        "REQ-SG-CONSENT-CONDITIONS"
+      ],
+      "status": "automated",
+      "expected": "Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
+    },
+    {
+      "id": "VERIFY-SG-CONSENT-ROUTES",
+      "requirementIds": [
+        "REQ-SG-CONSENT-ROUTES"
+      ],
+      "status": "automated",
+      "expected": "Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
+    },
+    {
+      "id": "VERIFY-SG-WITHDRAWAL",
+      "requirementIds": [
+        "REQ-SG-WITHDRAWAL"
+      ],
+      "status": "automated",
+      "expected": "Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
+    },
+    {
+      "id": "VERIFY-SG-ACCOUNTABILITY",
+      "requirementIds": [
+        "REQ-SG-ACCOUNTABILITY"
+      ],
+      "status": "automated",
+      "expected": "Source-linked, advisory-only route/notice/withdrawal/contact checks agree across setup and agent reference without enabling a policy. Synthetic flows render declared purposes and contact, never grant from a notice, retain material-scope changes, and stop registered work on withdrawal despite failed local storage; they do not prove legal validity, service delivery or downstream fulfillment.",
+      "testRefs": [
+        "packages/notabenda/test/singapore-cookies.test.mjs",
+        "packages/notabenda/test/singapore-consent.test.mjs",
+        "docs/verification/singapore-cookies.md"
+      ]
     }
   ],
   "researchBacklog": [
@@ -11733,14 +11967,15 @@
       "jurisdiction": "SG",
       "sourceIds": [
         "SRC-SG-PDPC",
-        "SRC-SG-SELECTED-2024"
+        "SRC-SG-SELECTED-2024",
+        "SRC-SG-PDPA-CURRENT"
       ],
       "featureIds": [
         "FEAT-REGIONS",
         "FEAT-FORMS"
       ],
       "status": "partially-researched",
-      "question": "Current linked May 2024 chapter-7 cookie guidance is retrieved and connected to setup and tests. Verify current PDPA text, chapter-12 consent/deemed-consent/exception conditions, applicability and other obligations before claiming broader Singapore coverage."
+      "question": "Current linked May 2024 chapter-7 guidance and selected current PDPA sections 11\u201320 are read and connected to setup/tests. Review full applicability, First/Second Schedule conditions, prescribed regulations, chapter-12 guidance and remaining obligations before claiming broader Singapore coverage."
     },
     {
       "id": "GAP-JP",

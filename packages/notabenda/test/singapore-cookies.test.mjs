@@ -1,3 +1,4 @@
+// @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-CONSENT-ROUTES REQ-SG-WITHDRAWAL REQ-SG-ACCOUNTABILITY
 // @requirements REQ-SG-COOKIE-DATA REQ-SG-BROWSER-CHOICE REQ-SG-COOKIE-TARGETING
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
 import test from 'node:test';
@@ -25,11 +26,11 @@ async function inventory(){
 }
 test('Singapore advice cites the current retrieved guideline, exact chapter and partial catalog requirements',async()=>{
  const r=reviews(),catalog=JSON.parse(await readFile(new URL('../../../regulatory/catalog.json',import.meta.url),'utf8'));assert.equal(r.advisoryOnly,true);assert.equal(r.determinesApplicability,false);assert.equal(r.activatesPolicy,false);assert.equal(r.legalReviewStatus,'unreviewed');
- assert.deepEqual(r.mechanism,{detectsBrowserConsent:false,declaresExemptions:false,importsBrowserPreferences:false,grantsFromMarketSelection:false});assert.equal(r.items.length,1);const item=r.items[0];assert.equal(item.marketId,'SG');assert.equal(item.guidelineRevision,'2024-05-23');assert.equal(item.checkedOn,'2026-10-21');assert.match(item.checks.map(c=>c.locator).join(' '),/7\.12/);
+ assert.deepEqual(r.mechanism,{detectsBrowserConsent:false,declaresExemptions:false,importsBrowserPreferences:false,grantsFromMarketSelection:false});assert.equal(r.items.length,1);const item=r.items[0];assert.equal(item.marketId,'SG');assert.equal(item.guidelineRevision,'2024-05-23');assert.equal(item.checkedOn,'2026-10-22');assert.equal(item.statuteAsAt,'2026-10-22');assert.match(item.checks.map(c=>c.locator).join(' '),/7\.12/);
  for(const source of r.sources){const authoritative=catalog.sources.find(s=>s.id===source.id);assert.ok(authoritative);assert.deepEqual(source,Object.fromEntries(Object.keys(source).map(k=>[k,authoritative[k]])));assert.equal(source.access,'read');}
- for(const id of item.requirementIds){const req=catalog.requirements.find(v=>v.id===id);assert.equal(req.jurisdiction,'SG');assert.equal(req.implementationStatus,'partial');assert.equal(req.legalReviewStatus,'unreviewed');assert.deepEqual(req.sourceRefs.map(v=>v.sourceId),item.sourceIds);assert.equal(req.effectiveFrom,null);}
+ for(const id of item.requirementIds){const req=catalog.requirements.find(v=>v.id===id);assert.equal(req.jurisdiction,'SG');assert.equal(req.implementationStatus,'partial');assert.equal(req.legalReviewStatus,'unreviewed');assert.deepEqual(req.sourceRefs.map(v=>v.sourceId),[['REQ-SG-COOKIE-DATA','REQ-SG-COOKIE-TARGETING','REQ-SG-BROWSER-CHOICE'].includes(id)?'SRC-SG-SELECTED-2024':'SRC-SG-PDPA-CURRENT']);assert.equal(req.effectiveFrom,null);}
  const revision=catalog.sources.find(s=>s.id==='SRC-SG-SELECTED-2024');assert.match(revision.note,/23 May 2024/);assert.match(revision.contentSha256,/^[a-f0-9]{64}$/);
- r.items[0].checks.length=0;r.sources.length=0;assert.equal(reviews().items[0].checks.length,3);assert.equal(reviews().sources.length,2);
+ r.items[0].checks.length=0;r.sources.length=0;assert.equal(reviews().items[0].checks.length,7);assert.equal(reviews().sources.length,3);
 });
 test('Singapore market interest or imported jurisdiction creates advice without rewriting consent, classification or a conflicting answer',async()=>{
  for(const imported of [false,true]){

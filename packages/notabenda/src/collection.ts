@@ -1,3 +1,4 @@
+// @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-ACCOUNTABILITY
 // @requirements REQ-PRODUCT-LOCALIZATION
 /** @requirements REQ-PRODUCT-COLLECTION-NOTICE REQ-EU-NOTICE REQ-NZ-NOTICE
  * Display-only direct-collection disclosures. No permission, form submission, persistence or presentation receipt.
