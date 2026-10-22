@@ -105,12 +105,23 @@ test('concurrent dispatch shares one in-flight send; malformed stored payloads n
   const bad=await workspace.enqueue('visitor-b'),key='application:processing:jobs:'+bad.deliveryId,stored=await f.raw.get(key);stored.payload.visitor='unexpected';await f.raw.put(key,stored);await assert.rejects(workspace.dispatch(bad.deliveryId));assert.equal(calls,1);
 });
 
-test('a timed-out producer is uncertain, and a slow context resolver cannot prevent a usable GPC page',async()=>{
-  const f=await setup();await f.workspace.register();let finish;const hold=new Promise(r=>finish=r),original=f.rpc.produce;
-  f.rpc.produce=async(...args)=>{const result=await original(...args);await hold;return result;};
+test('a timed-out producer is uncertain, and a slow context resolver cannot prevent a usable GPC page',{timeout:5000},async t=>{
+  const f=await setup();await f.workspace.register();let finish,produced;const hold=new Promise(r=>finish=r),started=new Promise(r=>produced=r),original=f.rpc.produce;
+  t.mock.timers.enable({apis:['setTimeout']});
+  f.rpc.produce=async(...args)=>{const result=await original(...args);produced();await hold;return result;};
   const host=createProcessingHost({release,resolveVisitor:async()=>({streamId:'visitor-a'}),authorizeOperator:async()=>null,rpcTimeoutMs:20});
-  const response=await host(new Request(origin+'/'),f.env);assert.equal(response.headers.get('X-Example-Processing'),'uncertain');assert.match(await response.text(),/delivery-unconfirmed/);assert.equal((await f.sink.observations()).filter(e=>e.serviceId==='ad-service').length,1);finish();
-  const slow=createProcessingHost({release,resolveVisitor:()=>new Promise(()=>{}),authorizeOperator:async()=>null,rpcTimeoutMs:20});const gpc=await slow(new Request(origin+'/',{headers:{'Sec-GPC':'1'}}),f.env);assert.equal(gpc.status,200);assert.equal(gpc.headers.get('X-Example-Processing'),'blocked');assert.equal((await f.sink.observations()).filter(e=>e.serviceId==='ad-service').length,1);
+  let responded=false;
+  const pending=host(new Request(origin+'/'),f.env).then(response=>{responded=true;return response;});
+  try{
+    // Expire the acknowledgment only after the actual sink delivery has completed.
+    await started;t.mock.timers.tick(19);await Promise.resolve();assert.equal(responded,false);t.mock.timers.tick(1);
+    const response=await pending;assert.equal(response.headers.get('X-Example-Processing'),'uncertain');assert.match(await response.text(),/delivery-unconfirmed/);assert.equal((await f.sink.observations()).filter(e=>e.serviceId==='ad-service').length,1);
+  }finally{finish();}
+  let resolving;const contextStarted=new Promise(r=>resolving=r);
+  const slow=createProcessingHost({release,resolveVisitor:()=>{resolving();return new Promise(()=>{});},authorizeOperator:async()=>null,rpcTimeoutMs:20});
+  let contextResponded=false;
+  const blocked=slow(new Request(origin+'/',{headers:{'Sec-GPC':'1'}}),f.env).then(response=>{contextResponded=true;return response;});await contextStarted;t.mock.timers.tick(19);await Promise.resolve();assert.equal(contextResponded,false);t.mock.timers.tick(1);
+  const gpc=await blocked;assert.equal(gpc.status,200);assert.equal(gpc.headers.get('X-Example-Processing'),'blocked');assert.equal((await f.sink.observations()).filter(e=>e.serviceId==='ad-service').length,1);
 });
 
 test('browser lost acknowledgments recover original commands; session changes stop the old client',async()=>{
