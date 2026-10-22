@@ -98,6 +98,8 @@ Go project discovery now reads static module requirements and package imports, i
 
 Python project discovery now reads standard `pyproject.toml` project, optional, group and build requirements with separate evidence contexts. A pinned Node-only TOML parser and bounded group checks preserve private source/value boundaries; dynamic and unsupported tool selection stays limited coverage. See [Python discovery](SERVICE-CATALOG.md#python-projects).
 
+PHP [Composer discovery](SERVICE-CATALOG.md#php-composer-projects) now separates direct/development declarations from lock observations, with seven source-backed exact package signatures. Private values and auth files stay excluded; unresolved overrides and bounded input failures remain limited coverage. It does not run PHP/Composer or establish installed/live use.
+
 The initial [standalone discovery tool](DISCOVERY.md) captures buffered resource observations, DOM resource/hint origins and accessible storage names in an explicitly invoked browser UI/API, then compares capture JSON with declared inventory through a local CLI. Deeper network interception, frame/worker/server coverage and automatic crawling remain separate work. Support human-readable and machine-readable output. Adopters decide when to run it and whether to integrate it into CI or use findings as deployment gates; the toolkit does not require a CI workflow. Observations suggest configuration changes for review rather than automatically classifying services as legally exempt.
 
 Current runtime API (configure explicit consent scope and lifetimes in the site inventory first):

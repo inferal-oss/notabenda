@@ -1785,3 +1785,103 @@ Normalized group names, requirement/include entries and include semantics. The s
 **Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
 
 Named requirement structure, extras, markers and direct references. Only distribution-name candidates are extracted; full grammar validation, values and environment resolution are outside this scanner.
+
+<a id="src-composer-manifest"></a>
+
+## SRC-COMPOSER-MANIFEST
+
+[Composer manifest schema](https://getcomposer.org/doc/04-schema.md)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Package naming, require/require-dev, platform requirements and root repository/replacement/provision semantics; static extraction is not dependency resolution.
+
+<a id="src-composer-lock"></a>
+
+## SRC-COMPOSER-LOCK
+
+[Composer lock-file schema](https://raw.githubusercontent.com/composer/composer/main/res/composer-lock-schema.json)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Separate packages/packages-dev observations and content-hash field; scanner does not assert hash freshness or installed code.
+
+<a id="src-composer-usage"></a>
+
+## SRC-COMPOSER-USAGE
+
+[Composer basic dependency workflow](https://getcomposer.org/doc/01-basic-usage.md)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Declared requirements, lockfiles and installation are distinct; the scanner runs none of these tools.
+
+<a id="src-aws-php-sdk"></a>
+
+## SRC-AWS-PHP-SDK
+
+[Aws Php Sdk](https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/getting-started_installation.html)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-stripe-php-sdk"></a>
+
+## SRC-STRIPE-PHP-SDK
+
+[Stripe Php Sdk](https://github.com/stripe/stripe-php)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-sentry-php-sdk"></a>
+
+## SRC-SENTRY-PHP-SDK
+
+[Sentry Php Sdk](https://github.com/getsentry/sentry-php)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-twilio-php-sdk"></a>
+
+## SRC-TWILIO-PHP-SDK
+
+[Twilio Php Sdk](https://github.com/twilio/twilio-php)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-sendgrid-php-sdk"></a>
+
+## SRC-SENDGRID-PHP-SDK
+
+[Sendgrid Php Sdk](https://github.com/sendgrid/sendgrid-php)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-google-cloud-php-storage"></a>
+
+## SRC-GOOGLE-CLOUD-PHP-STORAGE
+
+[Google Cloud Php Storage](https://docs.cloud.google.com/php/docs/reference/cloud-storage/latest)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.
+
+<a id="src-mongodb-php-library"></a>
+
+## SRC-MONGODB-PHP-LIBRARY
+
+[Mongodb Php Library](https://www.mongodb.com/docs/php-library/current/get-started/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Official Composer package identifier only; no provider-practice, installation, runtime or legal classification.

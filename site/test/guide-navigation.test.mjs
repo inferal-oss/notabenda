@@ -34,3 +34,12 @@ test('document input review and its verification stay in the document publishing
  }
  const area=new JSDOM(await readFile(new URL('../dist/public/guide/areas/privacy-information/index.html',import.meta.url),'utf8'));assert.ok(area.window.document.querySelector('#main a[href="/guide/document-inputs"]'));area.window.close();
 });
+
+// @requirements REQ-PRODUCT-SERVICE-DETECTION
+test('Composer discovery stays in the service setup path with a working section and verification link',async()=>{
+ const route='/guide/verification/composer-discovery';assert.equal(sectionForGuide(route).id,'start');
+ const doc=new JSDOM(await readFile(new URL('../dist/public/guide/service-catalog/index.html',import.meta.url),'utf8'));
+ assert.match(doc.window.document.querySelector('#php-composer-projects').textContent,/Composer/);assert.ok(doc.window.document.querySelector('#main a[href="/guide/verification/composer-discovery"]'));doc.window.close();
+ const report=new JSDOM(await readFile(new URL('../dist/public'+route+'/index.html',import.meta.url),'utf8'));
+ assert.equal(report.window.document.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/start/');assert.equal(report.window.document.querySelector('.guide-nav-desktop [aria-current="page"]').getAttribute('href'),route);report.window.close();
+});

@@ -2,7 +2,7 @@
 
 ## Search a project with npx
 
-After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
+After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports, Composer manifests/locks and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
 
 For a single interactive workflow, run `npx @notabenda/core wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
 
@@ -43,15 +43,41 @@ const draft = createCatalogServiceDraft(catalog, 'stripe-payments', {
 
 `@notabenda/core/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `@notabenda/core/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
 
-Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements and test-file imports. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
+Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports, Composer requirements/lock observations and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements, test-file imports and Composer lock observations. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
 
-Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files, symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
+Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files (including Composer’s `auth.json`), symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
 `--out-dir` requires a new directory and writes a private review JSON, text and `.gitignore`. Scanning does not execute project modules, SDKs, installers or network probes. It leaves configuration unchanged, keeps findings local and leaves CI policy to the adopter. An explicit build finalizer can bind current selected-reference facts to an immutable release; private reasons remain separate. See [verification](verification/service-catalog.md).
 
 The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
 
 The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `@notabenda/core/catalog/selection` exports explicit draft selection and private pin validation; `@notabenda/core/catalog/ui` supplies the optional local picker. Use the explicit release finalizer below to retain selected references with policies.
+
+## PHP / Composer projects
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG -->
+Use the same local command; no PHP or Composer installation is needed:
+
+```sh
+npx @notabenda/core discover --project . --out-dir ./discovery-review
+```
+
+| File/field | Evidence context | What to check |
+| --- | --- | --- |
+| `composer.json` → `require` | `dependency` | Does deployed application code use this package and contact a service? |
+| `composer.json` → `require-dev` | `development-dependency` | Does it run only during development, or also in builds/tests? |
+| `composer.lock` → `packages` | `locked-dependency` | Is the lock current, and which direct or transitive package brings this in? |
+| `composer.lock` → `packages-dev` | `locked-development-dependency` | Is the package installed in the environment being reviewed? |
+
+The seed recognizes `aws/aws-sdk-php`, `stripe/stripe-php`, `sentry/sentry`, `twilio/sdk`, `sendgrid/sendgrid`, `google/cloud-storage` and `mongodb/mongodb`. Each exact signature links to its official technical reference in the catalog. A database client can use self-hosted infrastructure; an SDK can be unused or point at an emulator. None establishes a contractual provider, destination, data category or legal basis.
+
+Only declared package names are matched. Project identity, suggestions, conflicts, autoload paths, descriptions, scripts and nested lock-package requirements are not dependency findings. PHP/platform requirements are not service identities. Custom catalogs can use `ecosystem: 'composer'` with an exact lowercase `vendor/package` or a vendor-only prefix ending in `/`.
+
+Lock observations remain separate even without a neighboring manifest. The scanner does not compare content hashes, resolve versions, establish directness, inspect `vendor`, or verify installed code. A stale lock can still produce candidates. Root manifest `repositories`, `replace` and `provide` declarations mark coverage limited; their URLs, paths and replacement claims are not followed. No PHP, Composer plugin, script, autoloader, installer or network request is executed.
+
+Malformed fields, duplicate decoded JSON keys and parser limits produce limited coverage. Files retain the shared 256 KiB cap; JSON nesting is bounded at 32, object keys and extracted entries at 10,000 per file. Large lockfiles may therefore be skipped. The private report omits constraints, versions, hashes, repository URLs, credentials, package metadata and source text. Composer’s `auth.json` is excluded from reads. File paths and matched identifiers remain private project information; review the report before sharing.
+
+The format follows Composer’s [manifest schema](https://getcomposer.org/doc/04-schema.md), [lock schema](https://raw.githubusercontent.com/composer/composer/main/res/composer-lock-schema.json) and [basic dependency workflow](https://getcomposer.org/doc/01-basic-usage.md), checked 22 October 2026 UTC. See [Composer discovery verification](verification/composer-discovery.md) for the test boundary. Other PHP configuration and source discovery remain open.
 
 ## Python projects
 

@@ -166,6 +166,7 @@ Features link to individual obligations, implementation files and verification s
 - Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.
 - Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery.
 - Standard Python pyproject dependencies with separate optional/group/build evidence, bounded include checks and private Node-only parsing; dynamic/tool-specific selection remains unresolved.
+- Seven source-linked Composer package signatures and static manifest/development/lock evidence, with private values, auth files, unresolved overrides and no-execution boundaries.
 
 **Requirement links:** [REQ-EU-INTERESTS-DISCLOSURE](requirements/README.md#req-eu-interests-disclosure), [REQ-PRODUCT-SERVICE-CATALOG](requirements/README.md#req-product-service-catalog), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection), [REQ-PRODUCT-SERVICE-PROFILES](requirements/README.md#req-product-service-profiles).
 

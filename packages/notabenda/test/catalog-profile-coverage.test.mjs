@@ -20,7 +20,7 @@ test('project candidates resolve to current source-backed guidance without selec
   await writeFile(join(directory,'package.json'),JSON.stringify({dependencies:{'@clerk/nextjs':'1','posthog-js':'1','@sentry/browser':'1','vercel':'1'},scripts:{install:'DO_NOT_EXECUTE_PROFILE_DISCOVERY'}}));
   const report=await scanProjectServices(directory,serviceCatalogSeed);assert.deepEqual(report.findings.map(f=>f.productId),products);assert.ok(report.findings.every(f=>f.reviewRequired));
   assert.doesNotMatch(JSON.stringify(report),/DO_NOT_EXECUTE|session claims|data processing addendum|profile-clerk/);
-  for(const finding of report.findings){const view=readCatalogProductProfile(serviceCatalogSeed,finding.productId);assert.equal(view.productRevision,finding.productId==='sentry-monitoring'?'2026-10-20.3':'2026-10-20.1');assert.ok(view.profile.facts.length>=3);for(const fact of view.profile.facts)for(const source of fact.sourceIds){const ref=view.sources.find(s=>s.id===source);assert.equal(ref.access,'read');assert.equal(ref.checkedOn,'2026-10-20');}assert.ok(view.profile.links.some(l=>l.kind==='privacy'));assert.ok(view.profile.links.some(l=>l.kind==='dpa'));}
+  for(const finding of report.findings){const view=readCatalogProductProfile(serviceCatalogSeed,finding.productId);assert.equal(view.productRevision,finding.productId==='sentry-monitoring'?'2026-10-22.1':'2026-10-20.1');assert.ok(view.profile.facts.length>=3);for(const fact of view.profile.facts)for(const source of fact.sourceIds){const ref=view.sources.find(s=>s.id===source);assert.equal(ref.access,'read');assert.equal(ref.checkedOn,'2026-10-20');}assert.ok(view.profile.links.some(l=>l.kind==='privacy'));assert.ok(view.profile.links.some(l=>l.kind==='dpa'));}
  }finally{await rm(directory,{recursive:true,force:true});}
 });
 test('new documentation requires explicit renewal while old pins and exact legal pages remain unchanged',async()=>{
@@ -34,6 +34,6 @@ test('new documentation requires explicit renewal while old pins and exact legal
  }
 });
 test('coverage additions retain unaffected profiled product revisions and stay readable through the installed CLI',()=>{
- for(const id of ['cloudflare-workers','supabase-platform','resend-email'])assert.equal(serviceCatalogSeed.products.find(p=>p.id===id).revision,'2026-10-19.3');assert.equal(serviceCatalogSeed.products.find(p=>p.id==='stripe-payments').revision,'2026-10-20.2');
+ for(const id of ['cloudflare-workers','supabase-platform','resend-email'])assert.equal(serviceCatalogSeed.products.find(p=>p.id===id).revision,'2026-10-19.3');assert.equal(serviceCatalogSeed.products.find(p=>p.id==='stripe-payments').revision,'2026-10-22.1');
  for(const id of products){const result=spawnSync(process.execPath,[new URL('../dist/cli.js',import.meta.url).pathname,'catalog','show',id,'--json'],{encoding:'utf8',timeout:10000});assert.equal(result.status,0,result.stderr);const view=JSON.parse(result.stdout);assert.equal(view.product.id,id);assert.equal(view.product.review,'unreviewed');assert.ok(view.product.profile.reviewPrompts.length>=3);}
 });

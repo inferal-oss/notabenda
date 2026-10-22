@@ -79,7 +79,18 @@ for product_id,source_ids in expanded['productSourceAdditions'].items():
  product=products[product_id];product['revision']=newer_revision(product['revision'],expanded['productRevisions'][product_id])
  for source_id in source_ids:
   if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+# Keep the passive browser reference snapshot independent of backend-only signatures.
+browser_reference=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),sources=list(sources),providers=sorted(providers.values(),key=lambda p:p['id']),products=[dict(p,identifiers=[],storageHints=[],sourceIds=list(p['sourceIds'])) for p in sorted(products.values(),key=lambda p:p['id'])])
+# Source-linked Composer identifiers change only explicitly affected product revisions.
+composer=json.loads((root/'catalog/composer-providers.json').read_text())
+if composer['schemaVersion']!=1:raise ValueError('Unsupported Composer signature source version')
+sources+=composer['sources']
+for product_id,identifiers in composer['productIdentifierAdditions'].items():
+ if product_id not in products:raise ValueError('Unknown Composer signature product')
+ product=products[product_id];product['identifiers']+=identifiers;product['revision']=newer_revision(product['revision'],composer['revision'])
+ for source_id in [s for rule in identifiers for s in rule['sourceIds']]:
+  if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),composer['revision']),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
 def emit(path,output):
@@ -90,10 +101,10 @@ emit(path,output)
 # Browser rules retain a compact exact reference snapshot, not the full imported database.
 rule_set=json.loads((root/'catalog/browser-rules.json').read_text())
 product_ids={r['productId'] for r in rule_set['rules']}
-selected=[dict(p,identifiers=[],storageHints=[]) for p in result['products'] if p['id'] in product_ids]
+selected=[dict(p,identifiers=[],storageHints=[]) for p in browser_reference['products'] if p['id'] in product_ids]
 provider_ids={p['providerId'] for p in selected}
-selected_providers=[p for p in result['providers'] if p['id'] in provider_ids]
+selected_providers=[p for p in browser_reference['providers'] if p['id'] in provider_ids]
 source_ids={i for r in rule_set['rules'] for i in r['sourceIds']}|{i for p in selected+selected_providers for i in p['sourceIds']}
-rule_set['catalog']=dict(result,products=selected,providers=selected_providers,sources=[s for s in sources if s['id'] in source_ids])
+rule_set['catalog']=dict(browser_reference,products=selected,providers=selected_providers,sources=[s for s in browser_reference['sources'] if s['id'] in source_ids])
 emit(root/'packages/notabenda/src/catalog-browser-data.json',json.dumps(rule_set,ensure_ascii=False,separators=(',',':'))+'\n')
 print(f"Catalog seed: {len(providers)} providers, {len(products)} products, {sum(len(p['storageHints']) for p in products.values())} imported storage hints; imported facts remain unreviewed.")

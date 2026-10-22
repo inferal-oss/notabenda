@@ -337,7 +337,8 @@
         "Initial optional reference seed: 368 provider identities, 409 product/reference entries and 2,278 imported storage hints; all entries unreviewed.",
         "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.",
         "Nineteen optional passive browser rules for sixteen products, with first-party references and historical snapshot preservation; official Clarity, Plausible and Crisp npm identities also feed project discovery.",
-        "Standard Python pyproject dependencies with separate optional/group/build evidence, bounded include checks and private Node-only parsing; dynamic/tool-specific selection remains unresolved."
+        "Standard Python pyproject dependencies with separate optional/group/build evidence, bounded include checks and private Node-only parsing; dynamic/tool-specific selection remains unresolved.",
+        "Seven source-linked Composer package signatures and static manifest/development/lock evidence, with private values, auth files, unresolved overrides and no-execution boundaries."
       ],
       "implementationRefs": [
         "packages/notabenda/src/catalog.ts",
@@ -2924,6 +2925,96 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Named requirement structure, extras, markers and direct references. Only distribution-name candidates are extracted; full grammar validation, values and environment resolution are outside this scanner."
+    },
+    {
+      "id": "SRC-COMPOSER-MANIFEST",
+      "title": "Composer manifest schema",
+      "url": "https://getcomposer.org/doc/04-schema.md",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Package naming, require/require-dev, platform requirements and root repository/replacement/provision semantics; static extraction is not dependency resolution."
+    },
+    {
+      "id": "SRC-COMPOSER-LOCK",
+      "title": "Composer lock-file schema",
+      "url": "https://raw.githubusercontent.com/composer/composer/main/res/composer-lock-schema.json",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Separate packages/packages-dev observations and content-hash field; scanner does not assert hash freshness or installed code."
+    },
+    {
+      "id": "SRC-COMPOSER-USAGE",
+      "title": "Composer basic dependency workflow",
+      "url": "https://getcomposer.org/doc/01-basic-usage.md",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Declared requirements, lockfiles and installation are distinct; the scanner runs none of these tools."
+    },
+    {
+      "id": "SRC-AWS-PHP-SDK",
+      "title": "Aws Php Sdk",
+      "url": "https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/getting-started_installation.html",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-STRIPE-PHP-SDK",
+      "title": "Stripe Php Sdk",
+      "url": "https://github.com/stripe/stripe-php",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-SENTRY-PHP-SDK",
+      "title": "Sentry Php Sdk",
+      "url": "https://github.com/getsentry/sentry-php",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-TWILIO-PHP-SDK",
+      "title": "Twilio Php Sdk",
+      "url": "https://github.com/twilio/twilio-php",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-SENDGRID-PHP-SDK",
+      "title": "Sendgrid Php Sdk",
+      "url": "https://github.com/sendgrid/sendgrid-php",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-GOOGLE-CLOUD-PHP-STORAGE",
+      "title": "Google Cloud Php Storage",
+      "url": "https://docs.cloud.google.com/php/docs/reference/cloud-storage/latest",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+    },
+    {
+      "id": "SRC-MONGODB-PHP-LIBRARY",
+      "title": "Mongodb Php Library",
+      "url": "https://www.mongodb.com/docs/php-library/current/get-started/",
+      "kind": "technical-documentation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
     }
   ],
   "jurisdictions": [
@@ -6957,7 +7048,12 @@
         "packages/notabenda-cf/src/catalog-render.ts",
         "packages/notabenda-cf/src/worker.ts",
         "examples/catalog-releases/build.mjs",
-        "packages/notabenda/src/catalog-python-project.ts"
+        "packages/notabenda/src/catalog-python-project.ts",
+        "packages/notabenda/src/catalog-composer.ts",
+        "packages/notabenda/src/catalog-composer-policy.ts",
+        "catalog/composer-providers.json",
+        "packages/notabenda-cf/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/catalog-composer-policy.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -6979,7 +7075,9 @@
         "site/test/host.test.mjs",
         "packages/notabenda-cf/test/starter.test.mjs",
         "packages/notabenda/test/catalog-python-project.test.mjs",
-        "docs/verification/python-project-discovery.md"
+        "docs/verification/python-project-discovery.md",
+        "packages/notabenda/test/catalog-composer.test.mjs",
+        "docs/verification/composer-discovery.md"
       ],
       "implementationNote": "Optional versioned catalog normalization/search, licensed offline seed and source-linked public directory views now connect to CLI/admin setup review. Explicit selection supplies actual provider/location/purposes, preserves integrations/restrictions, and keeps minimized pinned reference metadata plus justification in a bounded private setup report. Resume checks the matching declared service facts. Optional browser recognition now preserves its complete rule/source snapshot. Optional documentation profiles now cover eight products; independent provider-practice review and broader coverage remain open. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Explicit CLI/admin renewal compares selected reference/service/purpose facts, requires a new private reason and confirmation, rejects stale full-service snapshots and retains prior/next pins in bounded private report history. Operator labels and enforcement settings remain unchanged; focused CLI review does not reapply historical setup facts. Explicit post-compilation catalog finalization now binds current selected reference/site-use facts to a digest-only public descriptor and separate archive. Exact legal/source bytes are preserved; CF validates immutable storage and separately granted inspection/comparison. Justifications and questionnaire/re-review history stay outside the attachment."
     },
@@ -6988,7 +7086,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Explainable passive third-party recognition",
       "kind": "product-standard",
-      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes. Go discovery distinguishes declared and indirect requirements and test-file imports; unresolved module/workspace choices remain limited coverage. Python pyproject discovery separates standard project, optional, group and build requirements while retaining private values and unresolved selection limits.",
+      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes. Go discovery distinguishes declared and indirect requirements and test-file imports; unresolved module/workspace choices remain limited coverage. Python pyproject discovery separates standard project, optional, group and build requirements while retaining private values and unresolved selection limits. Composer discovery separates manifest requirements/development requirements and lock observations without PHP/Composer execution or installation claims.",
       "appliesWhen": "An authorized operator explicitly invokes catalog-backed service discovery.",
       "sourceRefs": [
         {
@@ -7118,6 +7216,46 @@
         {
           "sourceId": "SRC-PYPA-SPECIFIERS",
           "locator": "Named requirement structure, extras, markers and direct references. Only distribution-name candidates are extracted; full grammar validation, values and environment resolution are outside this scanner."
+        },
+        {
+          "sourceId": "SRC-COMPOSER-MANIFEST",
+          "locator": "Package naming, require/require-dev, platform requirements and root repository/replacement/provision semantics; static extraction is not dependency resolution."
+        },
+        {
+          "sourceId": "SRC-COMPOSER-LOCK",
+          "locator": "Separate packages/packages-dev observations and content-hash field; scanner does not assert hash freshness or installed code."
+        },
+        {
+          "sourceId": "SRC-COMPOSER-USAGE",
+          "locator": "Declared requirements, lockfiles and installation are distinct; the scanner runs none of these tools."
+        },
+        {
+          "sourceId": "SRC-AWS-PHP-SDK",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-STRIPE-PHP-SDK",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-SENTRY-PHP-SDK",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-TWILIO-PHP-SDK",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-SENDGRID-PHP-SDK",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-GOOGLE-CLOUD-PHP-STORAGE",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-MONGODB-PHP-LIBRARY",
+          "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
         }
       ],
       "discoverySourceIds": [],
@@ -7161,7 +7299,12 @@
         "examples/static/choices-build.mjs",
         "catalog/browser-expansion.json",
         "scripts/build-service-catalog.py",
-        "packages/notabenda/src/catalog-python-project.ts"
+        "packages/notabenda/src/catalog-python-project.ts",
+        "packages/notabenda/src/catalog-composer.ts",
+        "packages/notabenda/src/catalog-composer-policy.ts",
+        "catalog/composer-providers.json",
+        "packages/notabenda-cf/src/catalog-reference.ts",
+        "packages/notabenda-cf/src/catalog-composer-policy.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -7177,7 +7320,10 @@
         "packages/notabenda/test/catalog-browser-expansion.test.mjs",
         "site/test/browser-service-coverage.test.mjs",
         "packages/notabenda/test/catalog-python-project.test.mjs",
-        "docs/verification/python-project-discovery.md"
+        "docs/verification/python-project-discovery.md",
+        "packages/notabenda/test/catalog-composer.test.mjs",
+        "docs/verification/composer-discovery.md",
+        "site/test/guide-navigation.test.mjs"
       ],
       "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project. Ten additional browser-service signatures now cover common analytics, monitoring and support references, for nineteen rules across sixteen products. Seventeen new first-party references and three official npm identifiers connect to reviewed candidates; older capture snapshots and unaffected product pins remain unchanged. Rule patterns do not validate SDK versions or infer enabled features, execution, identity or legal exemptions."
     },
@@ -11318,7 +11464,7 @@
         "REQ-PRODUCT-SERVICE-DETECTION"
       ],
       "status": "partial",
-      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities. Python manifests distinguish project/optional/group/build candidates, skip TOML prose/comments, bound malformed/cyclic includes, retain limited dynamic/tool selection, minimize private values and work in an offline installed package.",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities. Python manifests distinguish project/optional/group/build candidates, skip TOML prose/comments, bound malformed/cyclic includes, retain limited dynamic/tool selection, minimize private values and work in an offline installed package. Composer cases separate manifest/dev and lock/dev observations, minimize private values, reject duplicate decoded keys, retain unresolved override limits, bound inputs, skip auth files and exercise an offline packed wizard without selecting services.",
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
@@ -11332,7 +11478,9 @@
         "packages/notabenda/test/catalog-browser-expansion.test.mjs",
         "site/test/browser-service-coverage.test.mjs",
         "packages/notabenda/test/catalog-python-project.test.mjs",
-        "docs/verification/python-project-discovery.md"
+        "docs/verification/python-project-discovery.md",
+        "packages/notabenda/test/catalog-composer.test.mjs",
+        "docs/verification/composer-discovery.md"
       ]
     },
     {

@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-22.1",
+  "sources": [
+    {
+      "id": "aws-php-sdk",
+      "url": "https://docs.aws.amazon.com/sdk-for-php/v3/developer-guide/getting-started_installation.html",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    },
+    {
+      "id": "stripe-php-sdk",
+      "url": "https://github.com/stripe/stripe-php",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    },
+    {
+      "id": "sentry-php-sdk",
+      "url": "https://github.com/getsentry/sentry-php",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    },
+    {
+      "id": "twilio-php-sdk",
+      "url": "https://github.com/twilio/twilio-php",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    },
+    {
+      "id": "sendgrid-php-sdk",
+      "url": "https://github.com/sendgrid/sendgrid-php",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    },
+    {
+      "id": "google-cloud-php-storage",
+      "url": "https://docs.cloud.google.com/php/docs/reference/cloud-storage/latest",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    },
+    {
+      "id": "mongodb-php-library",
+      "url": "https://www.mongodb.com/docs/php-library/current/get-started/",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Official technical reference identifies this Composer package. Only identifier facts and original notes are recorded; no SDK code or documentation prose is copied. A match does not establish installed or live use, provider relationship, hosting or legal classification."
+    }
+  ],
+  "productIdentifierAdditions": {
+    "aws-sdk": [
+      {
+        "id": "aws-php-sdk-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "aws/aws-sdk-php",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "aws-php-sdk"
+        ]
+      }
+    ],
+    "stripe-payments": [
+      {
+        "id": "stripe-php-sdk-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "stripe/stripe-php",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "stripe-php-sdk"
+        ]
+      }
+    ],
+    "sentry-monitoring": [
+      {
+        "id": "sentry-php-sdk-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "sentry/sentry",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "sentry-php-sdk"
+        ]
+      }
+    ],
+    "twilio-messaging": [
+      {
+        "id": "twilio-php-sdk-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "twilio/sdk",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "twilio-php-sdk"
+        ]
+      }
+    ],
+    "sendgrid-email": [
+      {
+        "id": "sendgrid-php-sdk-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "sendgrid/sendgrid",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "sendgrid-php-sdk"
+        ]
+      }
+    ],
+    "google-cloud": [
+      {
+        "id": "google-cloud-php-storage-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "google/cloud-storage",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "google-cloud-php-storage"
+        ]
+      }
+    ],
+    "mongodb-client": [
+      {
+        "id": "mongodb-php-library-exact",
+        "ecosystem": "composer",
+        "match": "exact",
+        "value": "mongodb/mongodb",
+        "explanation": "A declared Composer requirement or locked package is a candidate for actual-use review. Development and lock observations remain distinct; dependencies can be unused, stale, replaced, self-hosted or pointed at an emulator.",
+        "sourceIds": [
+          "mongodb-php-library"
+        ]
+      }
+    ]
+  }
+}

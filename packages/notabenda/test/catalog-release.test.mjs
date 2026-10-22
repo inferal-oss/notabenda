@@ -31,7 +31,7 @@ test('finalization binds selected facts without changing legal bytes or publishi
  assert.equal(Object.hasOwn(first.files,`artifacts/${base.manifest.artifactId}.json`),false);assert.equal(createTermsOffer(first.artifact,{scopeId:'join',statement:'I agree',actionLabel:'Agree'},{mode:'preview'}).artifactId,first.manifest.artifactId);
  const noteOnly=structuredClone(selection);noteOnly.justification='Another private reason';assert.equal(attachCatalogReview(base,[noteOnly]).manifest.artifactId,first.manifest.artifactId);assert.throws(()=>attachCatalogReview(first,[selection]),/fresh/);
  await validateLegalArtifact(first.artifact);await validateLegalSourceArchive(first.archive);const retained=createRetainedReleaseFiles([base.artifact,first.artifact,latest.artifact],{siteId:config.site.id,mode:'preview'});assert.equal(retained[`artifacts/${first.manifest.artifactId}/terms.html`],base.artifact.pages['terms/index.html']);
- for(const name of ['catalog-profile.ts','catalog-reference.ts','catalog-plain.ts','catalog-go-policy.ts','catalog-release-policy.ts'])assert.equal(await readFile(new URL('../src/'+name,import.meta.url),'utf8'),await readFile(new URL('../../notabenda-cf/src/'+name,import.meta.url),'utf8'));
+ for(const name of ['catalog-profile.ts','catalog-reference.ts','catalog-plain.ts','catalog-go-policy.ts','catalog-composer-policy.ts','catalog-release-policy.ts'])assert.equal(await readFile(new URL('../src/'+name,import.meta.url),'utf8'),await readFile(new URL('../../notabenda-cf/src/'+name,import.meta.url),'utf8'));
 });
 
 test('stale or unrelated pins, duplicate services and private attachment changes fail before archival',async()=>{

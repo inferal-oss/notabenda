@@ -9,6 +9,8 @@ import type {CatalogIdentifier} from './catalog.js';
 import {goSourceIdentifiers,goModuleIdentifiers} from './catalog-go.js';
 import {isGoImportPath} from './catalog-go-policy.js';
 import {pythonProjectIdentifiers} from './catalog-python-project.js';
+import {composerIdentifiers} from './catalog-composer.js';
+import {isComposerPackageName} from './catalog-composer-policy.js';
 const exec=promisify(execFile);
 async function systemGit(root:string):Promise<string>{
  const candidates=process.platform==='win32'?[join(process.env.ProgramFiles??'C:\\Program Files','Git','cmd','git.exe'),join(process.env.ProgramFiles??'C:\\Program Files','Git','bin','git.exe')]:['/opt/homebrew/bin/git','/usr/local/bin/git','/usr/bin/git','/bin/git'];
@@ -17,8 +19,8 @@ async function systemGit(root:string):Promise<string>{
 }
 const skippedDirectories=new Set(['.git','node_modules','vendor','dist','build','coverage','.next','.nuxt','.output','.local','.wrangler','.aws','.ssh','.codex','.agents','.venv','venv','__pycache__','target']);
 const extensions=new Set(['.js','.mjs','.cjs','.jsx','.ts','.tsx','.py','.tf','.json','.toml','.yaml','.yml','.go']);
-const safePath=(p:string)=>p.length<=500&&!/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(p)&&!p.split('/').some(x=>skippedDirectories.has(x))&&!p.split('/').some(x=>/^\.env(?:\.|$)|^\.dev\.vars(?:\.|$)|secret|credential|\.pem$|\.key$/iu.test(x));
-export interface ProjectServiceEvidence {file:string;ruleId:string;ecosystem:CatalogIdentifier['ecosystem'];identifier:string;match:'exact'|'prefix';context:'dependency'|'indirect-dependency'|'development-dependency'|'optional-dependency'|'dependency-group'|'build-dependency'|'source-import'|'test-source-import'|'infrastructure';explanation:string}
+const safePath=(p:string)=>p.length<=500&&!/[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/u.test(p)&&!p.split('/').some(x=>skippedDirectories.has(x))&&!p.split('/').some(x=>/^\.env(?:\.|$)|^\.dev\.vars(?:\.|$)|^auth\.json$|secret|credential|\.pem$|\.key$/iu.test(x));
+export interface ProjectServiceEvidence {file:string;ruleId:string;ecosystem:CatalogIdentifier['ecosystem'];identifier:string;match:'exact'|'prefix';context:'dependency'|'indirect-dependency'|'development-dependency'|'optional-dependency'|'dependency-group'|'build-dependency'|'locked-dependency'|'locked-development-dependency'|'source-import'|'test-source-import'|'infrastructure';explanation:string}
 export interface ProjectServiceFinding {productId:string;productName:string;providerId:string;providerName:string;reviewRequired:true;evidence:ProjectServiceEvidence[]}
 export interface ProjectServiceReport {schemaVersion:1;kind:'project-service-discovery';catalog:{id:string;revision:string};coverage:{selection:'git-ignore-aware'|'built-in-skips';filesExamined:number;bytesExamined:number;identifierTokensExamined:number;omittedEvidence:number;skippedFiles:number;limited:boolean};findings:ProjectServiceFinding[];notes:string[]}
 /** Static, local scan. Never imports project modules, runs scripts/installers or reads secret-file values. */
@@ -48,7 +50,7 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
  const rules=catalog.products.flatMap(product=>product.identifiers.map(rule=>({product,rule})));
  const emit=(file:string,ecosystem:CatalogIdentifier['ecosystem'],identifier:string,context:ProjectServiceEvidence['context'])=>{
   // Only known identifier tokens are retained. No source line, value, URL, account key or package URL is output.
-  const valid=identifier.length<=200&&(ecosystem==='go'?isGoImportPath(identifier):ecosystem==='npm'?/^(?:@[A-Za-z0-9][A-Za-z0-9._-]*\/)?[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(identifier):ecosystem==='python'?/^[a-z0-9][a-z0-9-]*$/u.test(identifier):ecosystem==='terraform'?/^[A-Za-z0-9_-]+$/u.test(identifier):/^[A-Za-z0-9][A-Za-z0-9_./:-]*$/u.test(identifier));
+  const valid=identifier.length<=200&&(ecosystem==='composer'?isComposerPackageName(identifier):ecosystem==='go'?isGoImportPath(identifier):ecosystem==='npm'?/^(?:@[A-Za-z0-9][A-Za-z0-9._-]*\/)?[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(identifier):ecosystem==='python'?/^[a-z0-9][a-z0-9-]*$/u.test(identifier):ecosystem==='terraform'?/^[A-Za-z0-9_-]+$/u.test(identifier):/^[A-Za-z0-9][A-Za-z0-9_./:-]*$/u.test(identifier));
   if(!valid){limited=true;return;}
   const token=JSON.stringify([file,ecosystem,identifier,context]);if(observed.has(token))return;if(observed.size>=20000){limited=true;return;}observed.add(token);
   for(const {product,rule} of rules){if(rule.ecosystem!==ecosystem||!(rule.match==='exact'?identifier===rule.value:identifier.startsWith(rule.value)))continue;
@@ -59,7 +61,7 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
  };
  for(const file of paths){
   if(observed.size>=20000){limited=true;break;}
-  if(!safePath(file)||file.startsWith('/')||file.split('/').includes('..')||!(extensions.has(extname(file))||['go.mod','go.work'].includes(file.split('/').at(-1)!)||file.endsWith('requirements.txt')||file.endsWith('Dockerfile'))){skippedFiles++;continue;}
+  if(!safePath(file)||file.startsWith('/')||file.split('/').includes('..')||!(extensions.has(extname(file))||['go.mod','go.work','composer.lock'].includes(file.split('/').at(-1)!)||file.endsWith('requirements.txt')||file.endsWith('Dockerfile'))){skippedFiles++;continue;}
   const path=resolve(root,file);if(relative(root,path).startsWith('..'+sep)){skippedFiles++;continue;}
   // Reject symlinks in every ancestor, including tracked directory links and the final file.
   let unsafe=false,cursor=root;for(const part of file.split('/')){cursor=join(cursor,part);try{if((await lstat(cursor)).isSymbolicLink()){unsafe=true;break;}}catch{unsafe=true;break;}}
@@ -79,6 +81,10 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
    const parsed=pythonProjectIdentifiers(source);limited||=parsed.limited;
    for(const item of parsed.identifiers)emit(file,'python',item.identifier,item.context);
   }
+  if(['composer.json','composer.lock'].includes(file.split('/').at(-1)!)){
+   const parsed=composerIdentifiers(source,file.endsWith('composer.lock')?'lock':'manifest');limited||=parsed.limited;
+   for(const item of parsed.identifiers)emit(file,'composer',item.identifier,item.context);
+  }
   if(file.split('/').at(-1)==='package.json')try{const value=JSON.parse(source);for(const [key,context] of [['dependencies','dependency'],['optionalDependencies','dependency'],['peerDependencies','dependency'],['devDependencies','development-dependency']] as const){const record=value?.[key];if(record&&typeof record==='object'&&!Array.isArray(record))for(const name of Object.keys(record))emit(file,'npm',name,context);}}catch{limited=true;}
   if(/\.[cm]?[jt]sx?$/u.test(file)){
    // Capture package/module specifiers, never surrounding source. Strings and comments can still produce candidates.
@@ -95,6 +101,7 @@ export async function scanProjectServices(directory:string,input:unknown):Promis
   'Development dependencies and source imports remain separate evidence. JavaScript/Python text matches can include comments or strings; generic database clients can be self-hosted.',
   'Go require directives, // indirect requirements and _test.go imports have distinct contexts. Go comments and ordinary strings are skipped; escaped import paths are unsupported. Build tags, module replacements/exclusions, workspaces, vendoring and resolved versions are not evaluated. No go commands or downloads are used; go.sum alone is not evidence of declared use.',
   'Python pyproject.toml separates project, optional, dependency-group and build requirements. Only named candidates are read; extras, versions, markers, URLs and group names are not retained or resolved. Dynamic dependencies, unsupported Poetry/PDM tables and uv source/workspace overrides report limited coverage. No Python, build backend, installer, lockfile resolution or network access is used.',
+  'Composer require/require-dev declarations and packages/packages-dev lock observations have separate contexts. Lock entries can be transitive or stale; freshness, versions, installed code and runtime use are not verified. Repository/replace/provide declarations report limited coverage without following their values. PHP source, plugins, scripts, autoloaders and installers are never run; private values and package metadata are omitted.',
   'Secret-named files, symlinks, dependency/generated directories and unsupported or oversized files are skipped. No project modules, package scripts, SDKs or network probes are executed.',
   'Git projects use Git’s ignore-aware file list with filesystem monitoring disabled. Other projects use built-in skips; custom ignore rules are not interpreted by that fallback.',
   'File names and known identifiers may still reveal private project structure. Review before sharing. Empty or limited results never prove no third parties.',

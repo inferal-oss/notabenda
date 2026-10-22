@@ -29,3 +29,9 @@ See [the catalog guide](../docs/SERVICE-CATALOG.md) for actual APIs and remainin
 `go-providers.json` adds retrieved official SDK namespace references to seven existing products. It records identifiers and original factual notes, without copying SDK code or documentation prose. Sources remain separate from provider-practice review; products remain unreviewed. The generator applies the catalog and affected-product revision explicitly, after existing profiles, while preserving unaffected product pins.
 
 Go matching is case-sensitive. Exact rules identify a module/package root; prefix rules end with a slash. Project scanning distinguishes ordinary and indirect `go.mod` requirements from production-file and test-file imports. It does not resolve versions, build tags, replacements, workspaces or runtime use. See [the service-catalog guide](../docs/SERVICE-CATALOG.md#go-projects).
+
+## Composer SDK signatures
+
+`composer-providers.json` adds seven exact package names to existing provider/client products. Each has a retrieved official reference, an explicit catalog/product revision and original factual notes. No SDK code or provider legal text is imported. Products remain unreviewed, and existing selected snapshots stay readable.
+
+The Node scanner separates manifest requirements/development requirements from lock-package/development-lock observations. It never runs PHP or Composer, follows repository paths, resolves versions or infers installed/live use. See [PHP / Composer discovery](../docs/SERVICE-CATALOG.md#php-composer-projects).
