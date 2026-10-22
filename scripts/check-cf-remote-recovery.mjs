@@ -81,6 +81,23 @@ export async function waitForRemoteRecoveryReady(call,pause=wait,{consecutive=1,
  }
  throw Error('New private Worker did not accept its configured capability.');
 }
+/** Read-only paired probes: a new key working alone does not prove the old deployment was revoked. */
+export async function waitForRotatedRecoveryAccess(current,prior,pause=wait,{consecutive=10,attempts=120}={}){
+ let stable=0;for(let i=0;i<attempts;i++){
+  try{const state=await current('state'),denied=await prior('state',undefined,{status:403});if(state.phase==='closed'&&denied?.error==='access-denied'){stable++;if(stable>=consecutive){assert.equal((await current('state',undefined,{status:403,anonymous:true})).error,'access-denied');return;}}else stable=0;}catch{stable=0;}
+  await pause(1000);
+ }
+ throw Error('Rotated fixture access did not stabilize; do not assume the old key was revoked.');
+}
+/** Attest before mutation while outside changes are still rejected, then reconcile uncertain outcomes. */
+export async function updateRecoveryFixtureSecret(directory,run,api,key,{execute=command,attest=reconcileOwnership,persist=save,label='rotate-secret'}={}){
+ if(typeof key!=='string'||!/^[a-f0-9]{64}$/u.test(key)||!['secret','rotate-secret'].includes(label))throw Error('Invalid private fixture secret update.');
+ if(run.stage!=='deployed')throw Error('Secret update requires the attested deployed stage.');
+ const before=await attest(directory,run,api);if(before?.live!==true||before.cleanupSource)throw Error('Disposable Worker is absent or cleaning up; refusing secret update.');
+ run.stage='secret-updating';await persist(directory,'run.private.json',run);
+ try{await execute(directory,label,['secret','put','FIXTURE_KEY','--config','wrangler.json'],key+'\n');}finally{const after=await attest(directory,run,api);if(after?.live!==true||after.cleanupSource)throw Error('Disposable Worker identity was lost during secret update.');}
+ run.stage='deployed';await persist(directory,'run.private.json',run);
+}
 export async function cleanup(directory,run,api){
  checkRunIdentity(run);const observed=await reconcileOwnership(directory,run,api);
  if(!observed.live){run.stage='cleaned';run.cleanup={workerRemoved:true,namespacesRemoved:true,verified:true};await save(directory,'run.private.json',run);return;}
@@ -118,8 +135,8 @@ async function execute(directory,run,key,data,api){
  await command(directory,'bundle-dry-run',['deploy','--dry-run','--config','wrangler.json','--outdir','bundle']);run.expectedSourceSha256=await bundledHash(directory,'bundle');await save(directory,'run.private.json',run);
  try{await command(directory,'deploy',['deploy','--config','wrangler.json','--outdir','bundle']);}finally{await reconcileOwnership(directory,run,api);}
  run.stage='deployed';await save(directory,'run.private.json',run);assert.deepEqual(run.namespaces.map(n=>n.class).sort(),['RecoveryControl','RecoveryEvidence','RecoverySink']);
- run.stage='secret-updating';await save(directory,'run.private.json',run);try{await command(directory,'secret',['secret','put','FIXTURE_KEY','--config','wrangler.json'],key+'\n');}finally{await reconcileOwnership(directory,run,api);}run.stage='deployed';await save(directory,'run.private.json',run);
- const call=await callFactory(run.url,key,directory);await waitForRemoteRecoveryReady(call,wait,{consecutive:20,attempts:120});
+ await updateRecoveryFixtureSecret(directory,run,api,key,{label:'secret'});
+ let call=await callFactory(run.url,key,directory);await waitForRemoteRecoveryReady(call,wait,{consecutive:20,attempts:120});
  await call('inspect',undefined,{status:503});await call('archive-write',undefined,{status:503});await call('grant',undefined,{status:503});
  const seeded=await call('seed');assert.equal(seeded.events,4);assert.equal(seeded.sourceSha256,data.sourceSha256);assert.equal(seeded.families.permissionStates['permission-withdrawn'].permitted,true);const bookmark=await call('bookmark');await save(directory,'bookmark.private.json',bookmark);await call('open');assert.equal((await call('inspect')).events,4);assert.equal((await call('archive-write')).created,false);assert.equal((await call('processing-produce')).state,'delivered');
  const transactionOriginal=await call('transaction-inspect'),transactionSource=await call('transaction-source-delivery');
@@ -144,7 +161,11 @@ async function execute(directory,run,key,data,api){
  const checkedFiles=await call('transaction-files');for(const role of ['held','delivered','uncertain'])for(const file of data.transactions.orders[role].bundle.files){const expected=expandTransactionFile(file);assert.deepEqual(checkedFiles[role][file.id],{bytes:expected.length,sha256:hash(expected)});}
  await call('close');const transactionFinal=await call('summary');for(const [key,value] of Object.entries(transactionFinal.transactionProvider)){assert.equal(value.calls,expectedTransactionCalls.get(key));assert.equal(value.commits,1);assert.equal(value.digest,beforeRestore.transactionProvider[key].digest);}assert.deepEqual(Object.values(transactionFinal.transactionProvider).map(v=>v.calls).sort(),[1,1,1,2,2,2,3,3,3]);
 for(const id of ['old-held-context','new-held-context','retained-context'])assert.equal(finalSummary.heads[id],1);
- run.stage='verified';run.proof={provider:'Cloudflare SQLite Time Travel',bookmarkSha256:hash(bookmark.bookmark),journalDigest:saved.journalDigest,sqlRewound:true,erasedHeadResurrectedThenPurged:true,eventsRetained:3,existingAndNewerHoldsPreserved:true,unrelatedHeadsPreserved:true,sourceBytesPreserved:true,externalGateSurvivedRollback:true,ordinaryRpcClosedBeforeReplay:true,purgeRestartPreserved:true,oldGrantBlocked:true,termsTwoScopesErased:true,formWithdrawalReplayed:true,historicalGrantNotCurrentPermission:true,processingRestrictionReplayed:true,unconfirmedIntentRestoredWithoutReceipt:true,queuedAndNewProcessingSuppressed:true,independentSinkHistorySurvivedRollback:true,independentSinkAttemptsUnchanged:true,unrelatedPositiveDelivered:true,replayAndPurgeRestartsPreserved:true,contractAndOrderNativeRollback:true,transactionHoldsReplayedBeforeRetirement:true,transactionPayloadsPurged:true,retiredAdmissionCallbackNotInvoked:true,confirmationFileBytesPreserved:true,stableProviderPayloads:true,providerJobs:9,providerAttempts:18,providerCommits:9,uncertainTransactionRestartPreserved:true};await save(directory,'run.private.json',run);
+ // Rotate only this disposable host's HTTP capability, after all recovery work is closed.
+ const beforeRotation=await call('summary');assert.equal(beforeRotation.control.phase,'closed');const rotatedKey=randomBytes(32).toString('hex');assert.notEqual(rotatedKey,key);await save(directory,'fixture-key-rotated.private.txt',rotatedKey+'\n');assert.equal((await stat(join(directory,'fixture-key-rotated.private.txt'))).mode&0o777,0o600);
+ await updateRecoveryFixtureSecret(directory,run,api,rotatedKey);
+ const previousCall=call;call=await callFactory(run.url,rotatedKey,directory);await waitForRotatedRecoveryAccess(call,previousCall);const afterRotation=await call('summary');assert.deepEqual(afterRotation,beforeRotation);await call('transaction-inspect',undefined,{status:503});await call('grant',undefined,{status:503});assert.equal((await previousCall('summary',undefined,{status:403})).error,'access-denied');run.keyRotation={oldKeyRevoked:true,newKeyAccepted:true,anonymousDenied:true,closedGatePreserved:true,evidenceAndDestinationsUnchanged:true};await save(directory,'run.private.json',run);
+ run.stage='verified';run.proof={provider:'Cloudflare SQLite Time Travel',bookmarkSha256:hash(bookmark.bookmark),journalDigest:saved.journalDigest,sqlRewound:true,erasedHeadResurrectedThenPurged:true,eventsRetained:3,existingAndNewerHoldsPreserved:true,unrelatedHeadsPreserved:true,sourceBytesPreserved:true,externalGateSurvivedRollback:true,ordinaryRpcClosedBeforeReplay:true,purgeRestartPreserved:true,oldGrantBlocked:true,termsTwoScopesErased:true,formWithdrawalReplayed:true,historicalGrantNotCurrentPermission:true,processingRestrictionReplayed:true,unconfirmedIntentRestoredWithoutReceipt:true,queuedAndNewProcessingSuppressed:true,independentSinkHistorySurvivedRollback:true,independentSinkAttemptsUnchanged:true,unrelatedPositiveDelivered:true,replayAndPurgeRestartsPreserved:true,contractAndOrderNativeRollback:true,transactionHoldsReplayedBeforeRetirement:true,transactionPayloadsPurged:true,retiredAdmissionCallbackNotInvoked:true,confirmationFileBytesPreserved:true,stableProviderPayloads:true,providerJobs:9,providerAttempts:18,providerCommits:9,uncertainTransactionRestartPreserved:true,fixtureKeyRotation:run.keyRotation};await save(directory,'run.private.json',run);
 }
 async function main(){
  const parsed=parseRemoteRecoveryArgs(args);if(parsed.help){process.stdout.write('Optional maintainer-only Cloudflare SQLite recovery rehearsal.\nUse: CLOUDFLARE_API_TOKEN=... node scripts/check-cf-remote-recovery.mjs --run --account-id ACCOUNT_ID\nCreates a fresh synthetic Worker and three SQLite namespaces; permanently removes only these disposable resources after the run. No production bindings or domains.\nCleanup a retained run: --cleanup .local/cf-remote-recovery-RUN_ID\n');return;}

@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createRemoteRecoveryControl,createRemoteRecoveryEvidence,createRemoteRecoveryHandler,fixtureReply,fixtureJson} from '../../../scripts/fixtures/remote-recovery.mjs';
-import {parseRemoteRecoveryArgs,checkRunIdentity,sourceBodyIdentity,reconcileOwnership,cleanup,waitForRemoteRecoveryReady} from '../../../scripts/check-cf-remote-recovery.mjs';
+import {parseRemoteRecoveryArgs,checkRunIdentity,sourceBodyIdentity,reconcileOwnership,cleanup,waitForRemoteRecoveryReady,waitForRotatedRecoveryAccess,updateRecoveryFixtureSecret} from '../../../scripts/check-cf-remote-recovery.mjs';
 import {createSyntheticStorage} from '../examples/synthetic.mjs';
 import {randomUUID,createHash} from 'node:crypto';
 import {mkdtemp,readFile,rm} from 'node:fs/promises';
@@ -80,4 +80,21 @@ test('remote readiness requires authenticated closed state before testing anonym
 
 test('route propagation checks require consecutive authenticated successes and never retry a mutation',async()=>{
  const sequence=['closed','closed','html','closed','open','closed','closed','closed'];let calls=0,anonymous=0;await waitForRemoteRecoveryReady(async(action,payload,options)=>{assert.equal(action,'state');if(options?.anonymous){anonymous++;assert.equal(calls,8);return;}const phase=sequence[calls++];if(phase==='html')throw Error('Temporary route 404');return {phase};},async()=>{},{consecutive:3,attempts:8});assert.equal(anonymous,1);assert.equal(calls,8);
+});
+
+test('key-rotation readiness requires paired new acceptance and old rejection, then anonymous rejection',async()=>{
+ let probes=0,oldProbes=0,anonymous=0;const phases=['closed','closed','closed','closed','closed'];await waitForRotatedRecoveryAccess(async(action,payload,options)=>{assert.equal(action,'state');if(options?.anonymous){anonymous++;return {error:'access-denied'};}return {phase:phases[probes++]};},async(action,payload,options)=>{assert.equal(action,'state');assert.equal(options.status,403);oldProbes++;if(oldProbes===2)throw Error('Old edge still accepts previous key');return {error:'access-denied'};},async()=>{},{consecutive:3,attempts:5});assert.equal(probes,5);assert.equal(oldProbes,5);assert.equal(anonymous,1);
+ for(const reply of [{error:'not-found'},{}])await assert.rejects(waitForRotatedRecoveryAccess(async()=>({phase:'closed'}),async()=>reply,async()=>{},{consecutive:1,attempts:2}),/did not stabilize/);
+});
+test('a rotated fixture capability rejects old-key reads before selecting any object',async()=>{
+ const host=createRemoteRecoveryHandler(data),old='a'.repeat(64),next='b'.repeat(64);let lookups=0;const env={FIXTURE_KEY:next,CONTROL:{getByName(){lookups++;return {command:async()=>({ok:true,value:{phase:'closed'}})};}}};
+ const request=key=>new Request('https://fixture.example.test/rehearse',{method:'POST',headers:{Authorization:'Bearer '+key},body:JSON.stringify({action:'state'})});for(const key of [old,'']){const denied=await host.fetch(request(key),env);assert.equal(denied.status,403);assert.deepEqual(await denied.json(),{error:'access-denied'});}assert.equal(lookups,0);assert.equal((await host.fetch(request(next),env)).status,200);assert.equal(lookups,1);
+});
+
+test('secret updates attest ownership before granting the mutation window and reconcile uncertain writes',async()=>{
+ const key='a'.repeat(64),calls=[],run={stage:'deployed'},options={attest:async()=>{calls.push('attest:'+run.stage);return {live:true,cleanupSource:false};},persist:async()=>{calls.push('save:'+run.stage);},execute:async(directory,label,argv,input)=>{calls.push('update:'+run.stage);assert.equal(label,'rotate-secret');assert.deepEqual(argv,['secret','put','FIXTURE_KEY','--config','wrangler.json']);assert.equal(input,key+'\n');}};
+ await updateRecoveryFixtureSecret('/private/fixture',run,{},key,options);assert.deepEqual(calls,['attest:deployed','save:secret-updating','update:secret-updating','attest:secret-updating','save:deployed']);
+ const changed={stage:'deployed'};let mutations=0,saves=0;for(const result of [{live:false},{live:true,cleanupSource:true}]){await assert.rejects(updateRecoveryFixtureSecret('/private/fixture',changed,{},key,{attest:async()=>result,persist:async()=>{saves++},execute:async()=>{mutations++}}),/refusing secret update/);assert.equal(mutations,0);assert.equal(saves,0);}
+await assert.rejects(updateRecoveryFixtureSecret('/private/fixture',changed,{},key,{attest:async()=>{throw Error('Outside change')},persist:async()=>{saves++},execute:async()=>{mutations++}}),/Outside change/);assert.equal(changed.stage,'deployed');assert.equal(mutations,0);assert.equal(saves,0);
+ calls.length=0;await assert.rejects(updateRecoveryFixtureSecret('/private/fixture',run,{},key,{...options,execute:async()=>{calls.push('update:uncertain');throw Error('Transport interrupted')}}),/Transport interrupted/);assert.deepEqual(calls,['attest:deployed','save:secret-updating','update:uncertain','attest:secret-updating']);assert.equal(run.stage,'secret-updating');
 });

@@ -873,7 +873,7 @@
         "Offline local package-candidate byte/content checks and digest manifests, private security reporting policy, and migration/removal guidance. Publication, vulnerabilities, build provenance and operational/legal acceptance remain separate gates.",
         "Optional current recording-selection inspection for fixed host cookie/terms/form scopes, with archive verification, independent authorization and no visitor-head reads; publication and application enforcement remain separate checks.",
         "Read-only compiled MD/MDX release preview and exact public export, separate from configuration previews and private source archives.",
-        "Optional disposable native SQLite recovery for six evidence families, with an external gate/journal, independent destinations and attested cleanup. Transaction recovery checks full pending jobs, later holds/deletions, exact receipts and multi-chunk files, stable-ID retries and persisted uncertainty. Sends drain before maintenance; unresolved RPCs keep it closed. Actual providers, full host acceptance, key rotation and partial-deployment recovery remain open.",
+        "Optional disposable native SQLite recovery for six evidence families, with an external gate/journal, independent destinations and attested cleanup. Transaction recovery checks full pending jobs, later holds/deletions, exact receipts and multi-chunk files, stable-ID retries and persisted uncertainty. Sends drain before maintenance; unresolved RPCs keep it closed. Actual providers, full host acceptance, key rotation and partial-deployment recovery remain open. Disposable host-key rotation checks paired old/new endpoint behavior and unchanged complete state; production credentials and signing keys remain host acceptance.",
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
         "Optional native consent notice files from the final legal release, explicit CLI scope and notice-ID URLs, verified old-notice retention and unchanged host registration/activation boundaries."
       ],
@@ -2761,6 +2761,24 @@
       "checkedOn": "2026-10-20",
       "access": "read",
       "note": "Selected secure/reliable request means, no-new-account rule and manual/automatic opt-outs read. Official explanatory guidance does not replace the statute or establish controller applicability."
+    },
+    {
+      "id": "SRC-CF-WORKER-SECRETS",
+      "title": "Cloudflare: deployed Worker secrets",
+      "url": "https://developers.cloudflare.com/workers/configuration/secrets/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "note": "Read deployed secret updates: secret put creates and immediately deploys a Worker version; versioned secret commands separate upload from deployment. Used only for a disposable fixture capability. No production credential or global revocation claim."
+    },
+    {
+      "id": "SRC-CF-WORKER-VERSIONS",
+      "title": "Cloudflare: Worker versions and deployments",
+      "url": "https://developers.cloudflare.com/workers/versions-and-deployments/",
+      "kind": "platform-documentation",
+      "checkedOn": "2026-10-21",
+      "access": "read",
+      "note": "Read version/deployment boundaries: versions capture code/configuration/bindings; state changes in associated storage resources are not versioned. The disposable rotation check compares actual evidence and independent destinations across a secret deployment."
     }
   ],
   "jurisdictions": [
@@ -8928,6 +8946,14 @@
         {
           "sourceId": "SRC-CF-WORKER-SCRIPTS-API",
           "locator": "Script identity, tag and modification metadata"
+        },
+        {
+          "sourceId": "SRC-CF-WORKER-SECRETS",
+          "locator": "Secrets on deployed Workers: immediate secret put deployment"
+        },
+        {
+          "sourceId": "SRC-CF-WORKER-VERSIONS",
+          "locator": "Versions: storage resource state is outside version snapshots"
         }
       ],
       "discoverySourceIds": [],
@@ -8943,7 +8969,7 @@
       "implementationStatus": "implemented",
       "effectiveFrom": null,
       "timingNote": null,
-      "caveats": "Fixed six-family contexts, stable active selections, document archives, synthetic destinations and one SQL table. Production access/journal completeness/authentication, actual provider behavior and idempotency retention, key rotation, backup/downstream deletion and legal readiness remain open. No production bindings/routes; adopters choose CI.",
+      "caveats": "Fixed six-family contexts, stable active selections, document archives, synthetic destinations and one SQL table. Production access/journal completeness/authentication, actual provider behavior and idempotency retention, production credential/signing-key rotation, backup/downstream deletion and legal readiness remain open. No production bindings/routes; adopters choose CI.",
       "implementationRefs": [
         "scripts/check-cf-remote-recovery.mjs",
         "scripts/fixtures/remote-recovery.mjs",
@@ -8965,7 +8991,7 @@
         "packages/notabenda-cf/test/processing-application.test.mjs",
         "packages/notabenda-cf/test/transaction-native-recovery.test.mjs"
       ],
-      "implementationNote": "External default-closed control, sealed fixed journal, hold/negative-intent-first replay and exact surviving receipts/heads/files. Native six-family Cloudflare rollback passed on 21 October 2026 with verified cleanup of three namespaces and Worker. Contract/order outboxes retry stable IDs and complete provider-hashed payloads; nine jobs, eighteen attempts, nine commits. First opening checks full original pending jobs; later openings check external snapshots and unchanged held jobs. Actual sends drain before release; rejected RPCs retain an external unresolved-work marker. Ownership source/tag/ID checks and atomic private checkpoints remain required."
+      "implementationNote": "External default-closed control, sealed fixed journal, hold/negative-intent-first replay and exact surviving receipts/heads/files. Native six-family Cloudflare rollback passed on 21 October 2026 with verified cleanup of three namespaces and Worker. Contract/order outboxes retry stable IDs and complete provider-hashed payloads; nine jobs, eighteen attempts, nine commits. First opening checks full original pending jobs; later openings check external snapshots and unchanged held jobs. Actual sends drain before release; rejected RPCs retain an external unresolved-work marker. Ownership source/tag/ID checks and atomic private checkpoints remain required. A real disposable host capability rotation also passed with paired new-key acceptance/old-key rejection, anonymous denial and unchanged complete state. Local ownership-order regressions require live attestation before and after secret mutation; no production or global revocation claim."
     },
     {
       "id": "REQ-PRODUCT-TERMS-CONNECTION",
@@ -11170,7 +11196,7 @@
         "REQ-PRODUCT-CF-REMOTE-RECOVERY"
       ],
       "status": "automated",
-      "expected": "Direct regressions cover authenticated stable readiness, closed-gate ordering, sealed six-family journals, plain RPC data, source attestation and cleanup ownership. Native SQL/KV rollback verifies later choices/holds/retirements, pending-job preservation, exact receipts and multi-chunk files, interruption/restart, retired admission before host work and stable-ID provider retries with explicit uncertain/accepted job state. Delayed sends drain; rejected sends retain the independent unresolved-work marker. Synthetic provider: nine jobs, eighteen attempts, nine commits. All three owned namespaces and Worker removed. Fixed selections; no production or real-provider certification.",
+      "expected": "Direct regressions cover authenticated stable readiness, closed-gate ordering, sealed six-family journals, plain RPC data, source attestation and cleanup ownership. Native SQL/KV rollback verifies later choices/holds/retirements, pending-job preservation, exact receipts and multi-chunk files, interruption/restart, retired admission before host work and stable-ID provider retries with explicit uncertain/accepted job state. Delayed sends drain; rejected sends retain the independent unresolved-work marker. Synthetic provider: nine jobs, eighteen attempts, nine commits. All three owned namespaces and Worker removed. Fixed selections; no production or real-provider certification. Disposable capability rotation uses paired new/old/anonymous probes and exact pre/post evidence/gate/provider comparison; pre/post ownership checks refuse changed/missing resources and reconcile uncertain updates.",
       "testRefs": [
         "packages/notabenda-cf/test/remote-recovery.test.mjs",
         "scripts/check-cf-remote-recovery.mjs",

@@ -11,7 +11,7 @@ The optional remote command asserts native SQL and KV rollback through a Cloudfl
 
 ## Direct checks
 
-Fourteen remote-tool regressions cover gate ordering, authenticated readiness before anonymous refusal, journal identity, outgoing/incoming plain-JSON RPC normalization, HTTP authority, executable source attestation and cleanup ownership. Every exposed ordinary family operation checks the closed gate before touching evidence storage.
+Seventeen remote-tool regressions cover gate ordering, authenticated readiness before anonymous refusal, journal identity, outgoing/incoming plain-JSON RPC normalization, HTTP authority, executable source attestation and cleanup ownership. Every exposed ordinary family operation checks the closed gate before touching evidence storage.
 
 Three family regressions use the actual terms/permission/processing APIs and processing application workspace with an independent destination. They cover replay interruption and purge restart; a historical grant alongside current withdrawal; both erased terms scopes; missing, duplicated or substituted journal entries; and an unresolved restriction restored without a fabricated receipt. Deleting each of the held/retained permission and processing head pointers prevents reopening. A before/after storage comparison verifies that readiness inspection writes nothing.
 
@@ -42,5 +42,11 @@ Accepted-job retries preserve stable IDs and content digests. Another accepted r
 Seven direct transaction regressions cover the complete replay/retry path, malformed or substituted journals, gate-before-storage ordering, changed provider content, delayed sends, aborted work and rejected provider RPCs. A dispatch timeout does not end actual work: fulfilled sends drain before releasing the gate. A rejected send leaves an external in-flight marker and blocks decisions, purge, restore and reopening. Valid cancelled delivery metadata fails the initial pending-state check; corrupted stored file chunks fail readiness.
 
 Four attempts were made for this extension. The first three ended on non-JSON route responses before restore; the later two explicitly recorded HTML 404 pages. Every attempt was cleaned and none counts as recovery proof. The successful run waits for consecutive authenticated read-only readiness responses; it never blindly retries mutation. All three owned namespaces and the Worker were confirmed removed afterward.
+
+## Disposable access-key rotation
+
+A further native run passed on 21 October 2026 with the recovered gate closed. A real secret update installed a new random fixture capability. Consecutive paired endpoint probes accepted the replacement and rejected the previous key; anonymous access remained denied. The complete summary before and after matched, including SQL/KV evidence, external journal/gate, stored outbox snapshots and independent provider histories. Ordinary evidence access remained closed. Namespace and Worker cleanup was verified.
+
+Three added direct regressions cover paired propagation probes, old-key refusal before object selection, and pre/post-update ownership ordering. A changed, missing or cleaning-up Worker receives no secret update; uncertain update responses still trigger re-attestation. The ownership-order tightening was checked directly after the native observation. This check rotates only a disposable fixture capability. It does not certify global revocation, production host keys, account-token rotation, signing-key continuity or identity-provider sessions.
 
 This is a same-object provider recovery exercise using deployed package APIs and a fixed application producer, not a generated-starter or production-host recovery certification. Active selections stay fixed. Complete authenticated journals, access fencing for real jobs/callers, downstream and backup copies, key rotation and legal readiness remain open. Adopters choose CI and operational acceptance.

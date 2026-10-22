@@ -1625,3 +1625,23 @@ Selected subdivisions 2(d), 3 and 4(h), and effective-date note read. Current co
 **Type:** regulator-guidance. **Checked:** 2026-10-20. **Access:** read.
 
 Selected secure/reliable request means, no-new-account rule and manual/automatic opt-outs read. Official explanatory guidance does not replace the statute or establish controller applicability.
+
+<a id="src-cf-worker-secrets"></a>
+
+## SRC-CF-WORKER-SECRETS
+
+[Cloudflare: deployed Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
+
+Read deployed secret updates: secret put creates and immediately deploys a Worker version; versioned secret commands separate upload from deployment. Used only for a disposable fixture capability. No production credential or global revocation claim.
+
+<a id="src-cf-worker-versions"></a>
+
+## SRC-CF-WORKER-VERSIONS
+
+[Cloudflare: Worker versions and deployments](https://developers.cloudflare.com/workers/versions-and-deployments/)
+
+**Type:** platform-documentation. **Checked:** 2026-10-21. **Access:** read.
+
+Read version/deployment boundaries: versions capture code/configuration/bindings; state changes in associated storage resources are not versioned. The disposable rotation check compares actual evidence and independent destinations across a secret deployment.

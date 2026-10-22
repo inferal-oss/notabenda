@@ -42,9 +42,18 @@ The restored evidence object contains consent, terms, form permissions, processi
 6. Restart again during bounded purge. Reopen only after every fixed decision is reconciled, erased payloads/heads are gone, and surviving event bytes, live heads and evaluated permissions match the expected state. The check is read-only; a missing retained head or changed surviving pending job fails it. First reopening requires every restored transaction job to match its original pending state. Later reopenings compare full job states with snapshots retained by the external control; held jobs must always match their original state.
 7. Retry an old form grant and both erased terms scopes. Check that the grant's current state remains withdrawn and neither agreement is recreated. New processing and restored queued jobs receive no covered admission. Compare actual destination attempt counts, then deliver an unrelated sample to confirm the destination still works.
 8. Refuse retired transaction capture, dispatch and confirmation files. Retry restored pending jobs with their original IDs and complete immutable payloads. Lose an accepted response again, assert the persisted uncertain state, restart, then retry successfully. Verify all surviving file lengths and hashes, including 150 KB attachments. The independent provider must show nine jobs, eighteen attempts and nine commits.
-9. Verify archived private source bytes, close the fixture and remove all three owned namespaces and the Worker.
+9. With recovery closed, rotate only the disposable host’s HTTP capability. Require consecutive paired probes that accept the replacement key and reject the previous one, plus anonymous rejection. Compare the complete evidence, gate/journal and both destination histories before and after the update.
+10. Verify archived private source bytes and remove all three owned namespaces and the Worker.
 
 Every target operation is serialized across its gate check and storage effects. Closing the gate and then queuing maintenance drains an already admitted operation before maintenance starts. The fixture has no alarms, WebSockets or scheduled/background dispatch. Transaction dispatch uses bounded timeout timers but drains the actual provider promises before releasing its operation. An external in-flight marker prevents maintenance if the object aborts or an actual provider RPC rejects; local transport failure does not prove that remote work ended. Real applications need fencing for their own jobs and callers. A real network call already admitted before closure cannot be recalled.
+
+### Fixture access-key rotation
+
+The runner re-attests the existing Worker’s source, tag, modification metadata and namespace IDs before updating its secret, while outside changes are still rejected. A missing or cleaning-up Worker cannot receive the update. It records the mutation window privately and re-attests afterward, including when the update response is uncertain. It does not retry that mutation automatically.
+
+Cloudflare’s [secret documentation](https://developers.cloudflare.com/workers/configuration/secrets/) explains that this command deploys a Worker version. [Worker versions](https://developers.cloudflare.com/workers/versions-and-deployments/) do not version the associated storage state. The rehearsal checks this separation directly rather than treating deployment success as evidence preservation.
+
+The old and replacement fixture keys remain in owner-only ignored files. Paired probes establish the observed endpoint behavior, not global edge revocation. No account token, production credential, host identity provider or receipt-signing key is rotated. Adopters must exercise their own credential lifecycle and authorization paths.
 
 ## Inspect or finish a run
 
