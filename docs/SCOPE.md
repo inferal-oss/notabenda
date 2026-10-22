@@ -370,3 +370,7 @@ The local scanner now recognizes [NuGet project and central package declarations
 ### Ordinary permission authoring in the form workbench
 
 The local form workbench can author notice-only and ordinary separate-permission routes from one exact public release. Each purpose retains its own editable copy, channel, stream ID, explicit revision, withdrawal route, review declaration and optional refusal/delivery settings. Only selected effective scope assessments and the selected permission dictionary enter the prepared context. Missing/restrictive assessments and required-language gaps block that route without selecting another one. Shared identity-free validation/rendering provides provisional preview; the final builder still creates and verifies offers. Specialized marketing requests, historical revision checks, recording, identity and downstream use stay separate.
+
+### Texas opt-out research
+
+Selected `US-TX` interest or an imported jurisdiction adds a source-linked agent-technology review. The research revision is independent of questionnaire answers and runtime policy. Generic GPC execution remains independent of login/receipts; those are toolkit dependencies, not legal authentication conclusions. Qualification, applicability and actual processing remain host review. No residency inference, new tracking, policy activation or approved-mechanism claim is introduced.

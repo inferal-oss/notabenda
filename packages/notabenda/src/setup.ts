@@ -96,6 +96,7 @@ export const setupMarkets=[
   {id:'US-CA',label:'California',requirements:['REQ-US-CA-CHOICES','REQ-US-CA-GPC','REQ-US-CA-UI']},
   {id:'US-CO',label:'Colorado',requirements:['REQ-US-CO-GPC']},
   {id:'US-CT',label:'Connecticut',requirements:['REQ-US-CT-GPC']},
+  {id:'US-TX',label:'Texas',requirements:['REQ-US-TX-AGENT-SIGNALS']},
   {id:'US-OR',label:'Oregon',requirements:['REQ-US-OR-GPC']},
   {id:'US-MN',label:'Minnesota',requirements:['REQ-US-MN-GPC']},
   {id:'US-VA',label:'Virginia',requirements:['REQ-US-VA-RIGHTS']},
@@ -151,11 +152,11 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
     reviewItems.push(...[...review.checks.map(check=>check.text+' ('+check.locator+')'),...review.limits].map(text=>review.label+': '+text));
   }
   // Coverage interest advises a reviewed selection; it never changes consent settings.
-  // @requirements REQ-US-OR-GPC REQ-US-MN-GPC
+  // @requirements REQ-US-OR-GPC REQ-US-MN-GPC REQ-US-TX-AGENT-SIGNALS
   const signalReviews=getPrivacySignalReviews();
   for(const review of signalReviews.items){
     if(!answers.markets.includes(review.marketId)&&!config.jurisdictions.includes(review.marketId))continue;
-    recommendations.push({id:'privacy-signal-'+review.marketId,status:'review',title:review.title,reason:review.summary+' Source check '+review.checkedOn+'; research revision '+signalReviews.revision+', legally unreviewed. Setup has not changed your policy.',configPaths:signalReviews.configPaths,requirementIds:review.requirementIds,guide:'privacy-signals'});
+    recommendations.push({id:'privacy-signal-'+review.marketId,status:'review',title:review.title,reason:review.summary+' Source check '+review.checkedOn+'; research revision '+signalReviews.revision+', legally unreviewed. Setup has not changed your policy.',configPaths:signalReviews.configPaths,requirementIds:review.requirementIds,guide:review.guide});
     reviewItems.push(...[...review.applicabilityChecks,...review.limits,...signalReviews.hostChecks].map(item=>review.label+': '+item));
   }
   if(answers.markets.includes('IE')||config.jurisdictions.includes('IE')){

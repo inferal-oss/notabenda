@@ -36,6 +36,7 @@ Research baseline: **2026-10-18**. Implementation and verification status are re
 | US-MN | [REQ-US-MN-GPC](#req-us-mn-gpc) | Selected items: partial |
 | SG | [REQ-SG-COOKIE-DATA](#req-sg-cookie-data), [REQ-SG-BROWSER-CHOICE](#req-sg-browser-choice), [REQ-SG-COOKIE-TARGETING](#req-sg-cookie-targeting), [REQ-SG-CONSENT-CONDITIONS](#req-sg-consent-conditions), [REQ-SG-CONSENT-ROUTES](#req-sg-consent-routes), [REQ-SG-WITHDRAWAL](#req-sg-withdrawal), [REQ-SG-ACCOUNTABILITY](#req-sg-accountability) | Selected items: partial |
 | JP | [REQ-JP-RELATED-SCOPE](#req-jp-related-scope), [REQ-JP-RECIPIENT-CONSENT](#req-jp-recipient-consent), [REQ-JP-RELATED-FOREIGN](#req-jp-related-foreign) | Selected items: partial |
+| US-TX | [REQ-US-TX-AGENT-SIGNALS](#req-us-tx-agent-signals) | Selected items: partial |
 
 ## Individual requirements
 
@@ -3565,6 +3566,34 @@ Prepare a local browser editor from an intact final public release, explicitly c
 
 **Code/test references:** [packages/notabenda/src/collection-workbench.ts](../../packages/notabenda/src/collection-workbench.ts), [packages/notabenda/src/collection-workbench-build.ts](../../packages/notabenda/src/collection-workbench-build.ts), [packages/notabenda/src/collection-workbench-ui.ts](../../packages/notabenda/src/collection-workbench-ui.ts), [packages/notabenda/src/collection-workbench-app.ts](../../packages/notabenda/src/collection-workbench-app.ts), [packages/notabenda/src/collection-workbench-cli.ts](../../packages/notabenda/src/collection-workbench-cli.ts), [packages/notabenda/src/collection-workbench.css](../../packages/notabenda/src/collection-workbench.css), [packages/notabenda/src/collection.ts](../../packages/notabenda/src/collection.ts), [packages/notabenda/src/collection-flow.ts](../../packages/notabenda/src/collection-flow.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda/src/cli.ts](../../packages/notabenda/src/cli.ts), [packages/notabenda/src/setup-connection-ui.ts](../../packages/notabenda/src/setup-connection-ui.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [examples/collection-workbench/build.mjs](../../examples/collection-workbench/build.mjs), [examples/static/build.mjs](../../examples/static/build.mjs), [site/host.mjs](../../site/host.mjs), [site/navigation.mjs](../../site/navigation.mjs), [packages/notabenda/src/form-permission-content.ts](../../packages/notabenda/src/form-permission-content.ts), [packages/notabenda/src/form-permission.ts](../../packages/notabenda/src/form-permission.ts), [packages/notabenda/src/collection-permission-editor.ts](../../packages/notabenda/src/collection-permission-editor.ts), [packages/notabenda/test/collection-workbench.test.mjs](../../packages/notabenda/test/collection-workbench.test.mjs), [packages/notabenda/test/package.test.mjs](../../packages/notabenda/test/package.test.mjs), [site/test/collection-workbench.test.mjs](../../site/test/collection-workbench.test.mjs), [docs/verification/collection-workbench.md](../../docs/verification/collection-workbench.md), [packages/notabenda/test/collection-permission-authoring.test.mjs](../../packages/notabenda/test/collection-permission-authoring.test.mjs)
 
+<a id="req-us-tx-agent-signals"></a>
+
+### REQ-US-TX-AGENT-SIGNALS — Texas technology-designated authorized-agent opt-outs
+
+Review technology-designated agent requests for sale and targeted-advertising opt-outs under section 541.055(e), including request verification, exceptions and subsection (f) technology criteria. A GPC observation alone establishes none of that qualification.
+
+**Applies when:** The Texas Act applies to the controller and processing after evaluating scope and exemptions; this is not a jurisdiction preset.
+
+**Type:** law. **Research:** initial-research. **Legal review:** unreviewed. **Implementation:** partial.
+
+**Sources:** [Texas Business & Commerce Code chapter 541, selected current sections](https://statutes.capitol.texas.gov/?artSec=541.055&chapter=BC.541&code=BC&tab=1) — Sections 541.002–.003, 541.051(b)(5), 541.055(a)–(f), 541.102–.103; current-through-2025 banner (read; [SRC-US-TX-CODE](SOURCES.md#src-us-tx-code)); [Texas HB 4, enrolled and signed 2023 Act](https://capitol.texas.gov/tlodocs/88R/billtext/html/HB00004F.htm) — Section 7(a)–(b), commencement; enacted sections 541.055(e)–(f) (read; [SRC-US-TX-HB4](SOURCES.md#src-us-tx-hb4)); [Texas Attorney General, Data Privacy and Security Act overview](https://www.texasattorneygeneral.gov/consumer-protection/file-consumer-complaint/consumer-privacy-rights/texas-data-privacy-and-security-act) — Scope/small-business discussion; privacy notice, consumer rights and request methods (read; [SRC-US-TX-AG](SOURCES.md#src-us-tx-ag)).
+
+**Discovery articles:** [SRC-IUB-US-STANDARDS](SOURCES.md#src-iub-us-standards).
+
+**Features:** [FEAT-US-CHOICES](../FEATURES.md#feat-us-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions), [FEAT-SETUP](../FEATURES.md#feat-setup).
+
+<a id="verify-us-tx-agent-signals"></a>
+
+**VERIFY-US-TX-AGENT-SIGNALS (automated):** Texas source/date/qualification advice agrees across catalog, installed reference and UI/CLI. Selected or imported Texas, including a declared-no signal answer, changes no policy or classifications. Complete generated advice distinguishes toolkit execution from legal authentication and does not certify GPC. Explicit generic policy still blocks covered synthetic producers; a Texas label alone activates no restriction.
+
+**Timing:** Specific commencement of section 541.055(e), not the general Act or a GPC certification date.
+
+**Implementation boundary:** Source-linked review reuses explicit generic browser/header restrictions. Market interest and imported labels change no configuration, service classification, identity or policy.
+
+**Limits/open review:** Commercially reasonable qualification/authority/residency efforts, technology criteria and four exceptions are host review. No mandatory-new-account rule is distinct from an authentication exemption. Profiling, full request/appeal handling, disclosures, actual downstream behavior and full current-law/legal review remain separate.
+
+**Code/test references:** [packages/notabenda/src/privacy-signal-reviews.ts](../../packages/notabenda/src/privacy-signal-reviews.ts), [packages/notabenda/src/setup.ts](../../packages/notabenda/src/setup.ts), [packages/notabenda/src/integration-reference.ts](../../packages/notabenda/src/integration-reference.ts), [packages/notabenda/src/privacy-signals.ts](../../packages/notabenda/src/privacy-signals.ts), [packages/notabenda/src/privacy-signal-policy.ts](../../packages/notabenda/src/privacy-signal-policy.ts), [docs/PRIVACY-SIGNALS.md](../../docs/PRIVACY-SIGNALS.md), [examples/setup/build.mjs](../../examples/setup/build.mjs), [packages/notabenda/test/privacy-signal-reviews.test.mjs](../../packages/notabenda/test/privacy-signal-reviews.test.mjs), [docs/verification/privacy-signal-reviews.md](../../docs/verification/privacy-signal-reviews.md)
+
 ## Research gaps
 
 ### GAP-SG — SG
@@ -3585,7 +3614,7 @@ Prepare a local browser editor from an intact final public release, explicitly c
 
 ### GAP-US-STATES — US-OTHER
 
-**not-researched:** Continue individual research beyond selected CA/CO/CT/VA and Oregon/Minnesota signal items. Verify remaining state thresholds/exemptions, current amendments, sensitive/health/child rules and signal criteria; no blanket state-law support claim.
+**not-researched:** Continue individual research beyond selected CA/CO/CT/VA and Oregon/Minnesota signal and selected Texas agent-technology items. Verify remaining state thresholds/exemptions, current amendments, sensitive/health/child rules and signal criteria; no blanket state-law support claim.
 
 **Planned features:** [FEAT-US-CHOICES](../FEATURES.md#feat-us-choices), [FEAT-REGIONS](../FEATURES.md#feat-regions).
 

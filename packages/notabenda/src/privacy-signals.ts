@@ -1,3 +1,4 @@
+// @requirements REQ-US-TX-AGENT-SIGNALS
 // @requirements REQ-US-OR-GPC REQ-US-MN-GPC
 // @requirements REQ-US-CA-GPC REQ-US-CO-GPC REQ-US-CT-GPC
 import {toPublicConfig} from './config.js';

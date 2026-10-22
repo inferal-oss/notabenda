@@ -2141,3 +2141,43 @@ ItemGroup declarations, literal semicolon lists, conditions, metadata, execution
 **Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
 
 Pinned parser documentation on XML well-formedness, namespaces, errors and DTD behavior. The upstream repository is archived; the optional Node wrapper rejects DTDs, bounds input/structure and discards malformed results. Original ISC and xmlchars notices are retained; release dependency/security review remains separate.
+
+<a id="src-us-tx-code"></a>
+
+## SRC-US-TX-CODE
+
+[Texas Business & Commerce Code chapter 541, selected current sections](https://statutes.capitol.texas.gov/?artSec=541.055&chapter=BC.541&code=BC&tab=1)
+
+**Type:** law. **Checked:** 2026-10-22. **Access:** read.
+
+Dynamic page browser-read; site states consolidation through the 89th 2nd Called Session, 2025. Selected applicability, rights, agent technology and notice sections read. This is not a review of the complete chapter or every amendment.
+
+<a id="src-us-tx-hb4"></a>
+
+## SRC-US-TX-HB4
+
+[Texas HB 4, enrolled and signed 2023 Act](https://capitol.texas.gov/tlodocs/88R/billtext/html/HB00004F.htm)
+
+**Type:** law. **Checked:** 2026-10-22. **Access:** read.
+
+Selected sections and Section 7 read. General commencement July 1, 2024; section 541.055(e) specifically January 1, 2025. Use the current chapter separately for amended text.
+
+<a id="src-us-tx-ag"></a>
+
+## SRC-US-TX-AG
+
+[Texas Attorney General, Data Privacy and Security Act overview](https://www.texasattorneygeneral.gov/consumer-protection/file-consumer-complaint/consumer-privacy-rights/texas-data-privacy-and-security-act)
+
+**Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
+
+Selected scope, rights, notice and request-method overview read. The Act and its specific agent-technology conditions remain controlling; this overview does not certify GPC.
+
+<a id="src-iub-us-standards"></a>
+
+## SRC-IUB-US-STANDARDS
+
+[iubenda state-specific US privacy-policy additions](https://www.iubenda.com/en/help/21474-how-to-apply-state-specific-us-standards-within-the-generator/)
+
+**Type:** secondary-explainer. **Checked:** 2026-10-22. **Access:** read.
+
+Texas section used only as discovery lead for rights, notice, applicability and opt-outs. Dates under adjacent state headings must not be attributed to Texas; statutory commencement is checked separately.

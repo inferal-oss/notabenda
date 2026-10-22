@@ -3308,6 +3308,42 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Pinned parser documentation on XML well-formedness, namespaces, errors and DTD behavior. The upstream repository is archived; the optional Node wrapper rejects DTDs, bounds input/structure and discards malformed results. Original ISC and xmlchars notices are retained; release dependency/security review remains separate."
+    },
+    {
+      "id": "SRC-US-TX-CODE",
+      "title": "Texas Business & Commerce Code chapter 541, selected current sections",
+      "url": "https://statutes.capitol.texas.gov/?artSec=541.055&chapter=BC.541&code=BC&tab=1",
+      "kind": "law",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Dynamic page browser-read; site states consolidation through the 89th 2nd Called Session, 2025. Selected applicability, rights, agent technology and notice sections read. This is not a review of the complete chapter or every amendment."
+    },
+    {
+      "id": "SRC-US-TX-HB4",
+      "title": "Texas HB 4, enrolled and signed 2023 Act",
+      "url": "https://capitol.texas.gov/tlodocs/88R/billtext/html/HB00004F.htm",
+      "kind": "law",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Selected sections and Section 7 read. General commencement July 1, 2024; section 541.055(e) specifically January 1, 2025. Use the current chapter separately for amended text."
+    },
+    {
+      "id": "SRC-US-TX-AG",
+      "title": "Texas Attorney General, Data Privacy and Security Act overview",
+      "url": "https://www.texasattorneygeneral.gov/consumer-protection/file-consumer-complaint/consumer-privacy-rights/texas-data-privacy-and-security-act",
+      "kind": "regulator-guidance",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Selected scope, rights, notice and request-method overview read. The Act and its specific agent-technology conditions remain controlling; this overview does not certify GPC."
+    },
+    {
+      "id": "SRC-IUB-US-STANDARDS",
+      "title": "iubenda state-specific US privacy-policy additions",
+      "url": "https://www.iubenda.com/en/help/21474-how-to-apply-state-specific-us-standards-within-the-generator/",
+      "kind": "secondary-explainer",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Texas section used only as discovery lead for rights, notice, applicability and opt-outs. Dates under adjacent state headings must not be attributed to Texas; statutory commencement is checked separately."
     }
   ],
   "jurisdictions": [
@@ -3639,6 +3675,14 @@
         "REQ-JP-RELATED-SCOPE",
         "REQ-JP-RECIPIENT-CONSENT",
         "REQ-JP-RELATED-FOREIGN"
+      ]
+    },
+    {
+      "id": "US-TX",
+      "status": "initial-research",
+      "coverage": "Selected agent-technology opt-out research and setup/agent advice only; no complete Texas pack or approved-mechanism claim.",
+      "requirementIds": [
+        "REQ-US-TX-AGENT-SIGNALS"
       ]
     }
   ],
@@ -11149,6 +11193,59 @@
         "packages/notabenda/test/collection-permission-authoring.test.mjs"
       ],
       "implementationNote": "Shared notice and identity-free permission content projection/validation/rendering; explicit release confirmation; editable per-purpose ordinary offers, independent review reset, optional refusal and delivery-window fields; current imported values and preserved optional omissions; JSON/YAML/Markdown export; old contexts retain supplied complete branches. No permission action or final identity is created in the editor."
+    },
+    {
+      "id": "REQ-US-TX-AGENT-SIGNALS",
+      "jurisdiction": "US-TX",
+      "title": "Texas technology-designated authorized-agent opt-outs",
+      "kind": "law",
+      "summary": "Review technology-designated agent requests for sale and targeted-advertising opt-outs under section 541.055(e), including request verification, exceptions and subsection (f) technology criteria. A GPC observation alone establishes none of that qualification.",
+      "appliesWhen": "The Texas Act applies to the controller and processing after evaluating scope and exemptions; this is not a jurisdiction preset.",
+      "sourceRefs": [
+        {
+          "sourceId": "SRC-US-TX-CODE",
+          "locator": "Sections 541.002\u2013.003, 541.051(b)(5), 541.055(a)\u2013(f), 541.102\u2013.103; current-through-2025 banner"
+        },
+        {
+          "sourceId": "SRC-US-TX-HB4",
+          "locator": "Section 7(a)\u2013(b), commencement; enacted sections 541.055(e)\u2013(f)"
+        },
+        {
+          "sourceId": "SRC-US-TX-AG",
+          "locator": "Scope/small-business discussion; privacy notice, consumer rights and request methods"
+        }
+      ],
+      "discoverySourceIds": [
+        "SRC-IUB-US-STANDARDS"
+      ],
+      "featureIds": [
+        "FEAT-US-CHOICES",
+        "FEAT-REGIONS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-US-TX-AGENT-SIGNALS"
+      ],
+      "researchStatus": "initial-research",
+      "legalReviewStatus": "unreviewed",
+      "implementationStatus": "partial",
+      "effectiveFrom": "2025-01-01",
+      "timingNote": "Specific commencement of section 541.055(e), not the general Act or a GPC certification date.",
+      "caveats": "Commercially reasonable qualification/authority/residency efforts, technology criteria and four exceptions are host review. No mandatory-new-account rule is distinct from an authentication exemption. Profiling, full request/appeal handling, disclosures, actual downstream behavior and full current-law/legal review remain separate.",
+      "implementationRefs": [
+        "packages/notabenda/src/privacy-signal-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "packages/notabenda/src/privacy-signals.ts",
+        "packages/notabenda/src/privacy-signal-policy.ts",
+        "docs/PRIVACY-SIGNALS.md",
+        "examples/setup/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/privacy-signal-reviews.test.mjs",
+        "docs/verification/privacy-signal-reviews.md"
+      ],
+      "implementationNote": "Source-linked review reuses explicit generic browser/header restrictions. Market interest and imported labels change no configuration, service classification, identity or policy."
     }
   ],
   "verification": [
@@ -13289,6 +13386,18 @@
         "docs/verification/collection-workbench.md",
         "packages/notabenda/test/collection-permission-authoring.test.mjs"
       ]
+    },
+    {
+      "id": "VERIFY-US-TX-AGENT-SIGNALS",
+      "requirementIds": [
+        "REQ-US-TX-AGENT-SIGNALS"
+      ],
+      "status": "automated",
+      "expected": "Texas source/date/qualification advice agrees across catalog, installed reference and UI/CLI. Selected or imported Texas, including a declared-no signal answer, changes no policy or classifications. Complete generated advice distinguishes toolkit execution from legal authentication and does not certify GPC. Explicit generic policy still blocks covered synthetic producers; a Texas label alone activates no restriction.",
+      "testRefs": [
+        "packages/notabenda/test/privacy-signal-reviews.test.mjs",
+        "docs/verification/privacy-signal-reviews.md"
+      ]
     }
   ],
   "researchBacklog": [
@@ -13337,7 +13446,7 @@
         "FEAT-REGIONS"
       ],
       "status": "not-researched",
-      "question": "Continue individual research beyond selected CA/CO/CT/VA and Oregon/Minnesota signal items. Verify remaining state thresholds/exemptions, current amendments, sensitive/health/child rules and signal criteria; no blanket state-law support claim."
+      "question": "Continue individual research beyond selected CA/CO/CT/VA and Oregon/Minnesota signal and selected Texas agent-technology items. Verify remaining state thresholds/exemptions, current amendments, sensitive/health/child rules and signal criteria; no blanket state-law support claim."
     },
     {
       "id": "GAP-EU-NATIONAL",

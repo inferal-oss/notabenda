@@ -1,4 +1,4 @@
-// @requirements REQ-US-OR-GPC REQ-US-MN-GPC REQ-PRODUCT-AGENT-INTEGRATION
+// @requirements REQ-US-OR-GPC REQ-US-MN-GPC REQ-US-TX-AGENT-SIGNALS REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,mkdtemp,writeFile,rm} from 'node:fs/promises';
@@ -32,13 +32,13 @@ test('agent research resolves to read primary sources, partial requirements and 
   const r=reviews(),catalog=JSON.parse(await readFile(new URL('../../../regulatory/catalog.json',import.meta.url),'utf8'));
   assert.equal(r.advisoryOnly,true);assert.equal(r.determinesApplicability,false);assert.equal(r.activatesPolicy,false);assert.equal(r.legalReviewStatus,'unreviewed');
   for(const source of r.sources){const authoritative=catalog.sources.find(s=>s.id===source.id);assert.ok(authoritative);assert.deepEqual(source,Object.fromEntries(Object.keys(source).map(key=>[key,authoritative[key]])));}
-  assert.deepEqual(r.items.map(i=>[i.marketId,i.effectiveFrom]),[['US-OR','2026-01-01'],['US-MN','2025-07-31']]);
+  assert.deepEqual(r.items.map(i=>[i.marketId,i.effectiveFrom]),[['US-TX','2025-01-01'],['US-OR','2026-01-01'],['US-MN','2025-07-31']]);
   for(const item of r.items){
     assert.deepEqual(item.processingActivities,['sale','targeted-advertising']);
     for(const id of item.requirementIds){const req=catalog.requirements.find(v=>v.id===id);assert.equal(req.jurisdiction,item.marketId);assert.equal(req.implementationStatus,'partial');assert.equal(req.legalReviewStatus,'unreviewed');assert.equal(req.effectiveFrom,item.effectiveFrom);assert.deepEqual(req.sourceRefs.map(v=>v.sourceId),item.sourceIds);}
     for(const id of item.sourceIds){const source=catalog.sources.find(v=>v.id===id);assert.equal(source.access,'read');assert.equal(source.checkedOn,item.checkedOn);assert.notEqual(source.kind,'secondary-explainer');}
   }
-  assert.match(r.items[0].limits.join(' '),/statute was not retrieved/);assert.match(r.items[1].applicabilityChecks.join(' '),/2029/);
+  assert.match(r.items.find(i=>i.marketId==='US-OR').limits.join(' '),/statute was not retrieved/);assert.match(r.items.find(i=>i.marketId==='US-MN').applicabilityChecks.join(' '),/2029/);
   r.items[0].sourceIds.push('mutated');r.hostChecks.length=0;assert.equal(reviews().items[0].sourceIds.includes('mutated'),false);assert.ok(reviews().hostChecks.length);
 });
 
@@ -74,11 +74,11 @@ test('CLI describe and wizard carry the same reviewed-market advice and keep pri
   }finally{await rm(dir,{recursive:true,force:true});}
 });
 
-test('browser setup exposes both market choices and regenerates the same advisory review',()=>{
+test('browser setup exposes the researched market choices and regenerates the same advisory review',()=>{
   const dom=new JSDOM('<main></main>',{url:'https://operator.example.test/setup'}),root=dom.window.document.querySelector('main');dom.window.URL.createObjectURL=()=> 'blob:synthetic-signal-review';dom.window.URL.revokeObjectURL=()=>{};const ui=mountSetup(root);
   try{
-    for(const label of ['Oregon','Minnesota']){const node=[...root.querySelectorAll('.nb-setup-markets label')].find(n=>n.textContent===label);assert.ok(node);node.querySelector('input').click();}
-    root.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));const plan=ui.getPlan();assert.equal(regional(plan).length,2);assert.equal(plan.config.privacySignals,undefined);assert.deepEqual(plan.config.jurisdictions,[]);assert.match(root.querySelector('[aria-label="Setup recommendations"]').textContent,/Review Oregon universal opt-outs/);assert.match(root.textContent,/Review Minnesota universal opt-outs/);
+    for(const label of ['Texas','Oregon','Minnesota']){const node=[...root.querySelectorAll('.nb-setup-markets label')].find(n=>n.textContent===label);assert.ok(node);node.querySelector('input').click();}
+    root.querySelector('form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));const plan=ui.getPlan();assert.equal(regional(plan).length,3);assert.equal(plan.config.privacySignals,undefined);assert.deepEqual(plan.config.jurisdictions,[]);assert.match(root.querySelector('[aria-label="Setup recommendations"]').textContent,/Review Oregon universal opt-outs/);assert.match(root.textContent,/Review Minnesota universal opt-outs/);assert.match(root.textContent,/Review Texas authorized-agent opt-outs/);
   }finally{ui.destroy();dom.window.close();}
 });
 
@@ -101,4 +101,18 @@ test('no signal grants nothing and cannot clear a separately retained processing
   const processing=createProcessingChoices(notice,{streamRef:head.streamRef,read:()=>getProcessingHead(storage,context),submit:()=>{throw Error('No new request expected');}},{storage:memory()});await processing.settled();
   const controller=createConsent(c,{storage:memory(),schedule:()=>()=>{},globalPrivacyControl:()=>false},{processingChoices:processing});
   try{assert.equal(controller.getSnapshot().permissions[purpose],false);controller.acceptAll();await controller.settled();assert.equal(controller.isServiceAllowed('ad-service'),false);assert.equal(controller.isServiceAllowed('local-tool'),true);assert.equal((await getProcessingHead(storage,context)).revision,1);assert.deepEqual(processing.getSnapshot().blockedActivities,['sale']);}finally{controller.destroy();processing.destroy();}
+});
+
+
+test('Texas generated advice distinguishes statutory qualification and commencement from toolkit dependencies',async()=>{
+ const a=answers();a.markets=['US-TX'];a.answers['browser-opt-out-signals']={choice:'no',justification:'A private practice statement, not a legal scope finding.'};const plan=createSetupPlan(a),r=reviews(),texas=r.items.find(i=>i.marketId==='US-TX'),text=plan.report.reviewItems.join(' ');
+ assert.equal(texas.effectiveFrom,'2025-01-01');assert.match(texas.summary,/541.055\(e\)/);assert.match(texas.summary,/January 2025/);assert.match(r.mechanism.dependencyScope,/Toolkit execution dependencies only/);assert.equal(r.mechanism.requiresLogin,false);assert.equal(r.mechanism.requiresReceiptStorage,false);
+ for(const term of ['commercially reasonable effort','identity','agent-authority','residency','four request exceptions','non-default affirmative choice','existing account','request qualification remains separate'])assert.ok(text.includes(term),term);
+ assert.doesNotMatch(text,/Do not wait for login|GPC is approved|GPC is certified|July 2026|July 1, 2026/);assert.match(text,/Toolkit execution without login is not a Texas no-authentication rule/);assert.equal(regional(plan).length,1);assert.equal(regional(plan)[0].guide,'privacy-signals#texas-agent-requests-through-technology');assert.equal(plan.config.privacySignals,undefined);assert.deepEqual(plan.config.jurisdictions,[]);assert.equal(plan.report.questionnaireVersion,'8');
+ const catalog=JSON.parse(await readFile(new URL('../../../regulatory/catalog.json',import.meta.url),'utf8')),req=catalog.requirements.find(x=>x.id==='REQ-US-TX-AGENT-SIGNALS');assert.deepEqual(req.discoverySourceIds,['SRC-IUB-US-STANDARDS']);assert.equal(catalog.sources.find(x=>x.id===req.discoverySourceIds[0]).kind,'secondary-explainer');assert.match(catalog.sources.find(x=>x.id==='SRC-US-TX-CODE').note,/browser-read/);
+});
+
+test('a Texas market label and observed GPC activate no policy or classifications',async()=>{
+ const {c,purpose}=await inventory();c.jurisdictions=['US-TX'];delete c.privacySignals;const before=structuredClone(c),started=[],controller=createConsent(c,{storage:memory(),schedule:()=>()=>{},globalPrivacyControl:()=>true});
+ try{for(const id of ['ad-service','local-tool'])controller.registerService(id,{purposes:[purpose],start(){started.push(id);}});assert.equal(controller.getSnapshot().permissions[purpose],false);controller.acceptAll();await controller.settled();assert.deepEqual(started,['ad-service','local-tool']);assert.equal(controller.getSnapshot().privacySignals,undefined);assert.deepEqual(c,before);assert.equal(getPrivacySignalRestrictions(c,{globalPrivacyControl:true}),undefined);}finally{controller.destroy();await controller.settled();}
 });

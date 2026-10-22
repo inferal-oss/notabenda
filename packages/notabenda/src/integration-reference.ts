@@ -26,7 +26,7 @@
 // @requirements REQ-EU-INTERESTS-DISCLOSURE
 // @requirements REQ-QC-PROFILING
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
-// @requirements REQ-US-OR-GPC REQ-US-MN-GPC
+// @requirements REQ-US-OR-GPC REQ-US-MN-GPC REQ-US-TX-AGENT-SIGNALS
 import {getPrivacySignalReviews} from './privacy-signal-reviews.js';
 // @requirements REQ-US-CA-UI
 import {getPrivacyInterfaceReviews} from './privacy-interface-reviews.js';

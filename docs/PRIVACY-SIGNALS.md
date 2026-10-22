@@ -105,20 +105,32 @@ For explicit manual actions or host-retained restrictions, see [recorded process
 
 ## Setup and agent handoff
 
-Selecting Oregon or Minnesota in setup, or reviewing an inventory that already lists `US-OR` or `US-MN`, adds a regional review. It leaves `jurisdictions`, `privacySignals` and service classifications unchanged. Even an answer of “no” to the signal question does not suppress a selected market's review. Resolve that assessment explicitly.
+Selecting Texas, Oregon or Minnesota in setup, or reviewing an inventory that already lists `US-TX`, `US-OR` or `US-MN`, adds a regional review. It leaves `jurisdictions`, `privacySignals` and service classifications unchanged. Even an answer of “no” to the signal question does not suppress a selected market's review. Resolve that assessment explicitly.
 
 ```sh
 npx @notabenda/core describe processing-opt-outs --json
 ```
 
-The installed reference's `privacySignalReviews` contains the research revision, check dates, selected effective dates, requirement/source IDs, activity mappings, applicability questions and host checks. These are advisory metadata, outside `SiteConfig`. They are not jurisdiction presets or a freshness guarantee. The questionnaire remains version 8; these additional market choices and independently versioned research do not change existing questions or answers. Resuming an old report preserves its answers and regenerates advice from the installed version. Keep the original report when its historical advice matters.
+The installed reference's `privacySignalReviews` contains the research revision, check dates, selected effective dates, requirement/source IDs, activity mappings, applicability questions and host checks. These are advisory metadata, outside `SiteConfig`. They are not jurisdiction presets or a freshness guarantee. The mechanism’s login/storage booleans describe toolkit dependencies, not legal authentication rules. The questionnaire remains version 8; these additional market choices and independently versioned research do not change existing questions or answers. Resuming an old report preserves its answers and regenerates advice from the installed version. Keep the original report when its historical advice matters.
 
 For a site assessment:
 
 1. Establish actual applicability, processing and the public opt-out route. Use [project discovery](DISCOVERY.md) to find additional integrations; matches still require review.
 2. Explicitly choose policy activities and classify every service. Do not copy California's `sharing` category into another state's policy solely from a press release's wording.
-3. Apply the header helper before server producers run, and connect the browser controller before optional client producers. Honor a signal without waiting for login or a recorded-consent backend. The authenticated cookie-evidence example is a separate integration.
+3. Apply the header helper before server producers run, and connect the browser controller before optional client producers. The configured toolkit restriction path runs independently of login and receipt storage; host request qualification remains separate. The authenticated cookie-evidence example is a separate integration.
 4. Preserve independent account/downstream restrictions when no signal is present. Test actual provider calls, exports and associated accounts; a browser status or saved receipt is insufficient.
 5. Test cookie accept-all while GPC is active, reload with existing restrictions, and backend failure. Cookie acceptance cannot remove the restriction. Minnesota's separate conflicting-settings confirmation provision is not implemented as re-opt-in.
 
 The [verification record](verification/privacy-signal-reviews.md) describes automated synthetic checks and the remaining legal and deployment work.
+
+## Texas: agent requests through technology
+
+Checked 22 October 2026. [REQ-US-TX-AGENT-SIGNALS](requirements/README.md#req-us-tx-agent-signals) remains partial and legally unreviewed.
+
+Texas allows technology-designated agents for sale and targeted-advertising opt-outs. Section 541.055(e) has its own **1 January 2025** commencement in [HB 4, section 7](https://capitol.texas.gov/tlodocs/88R/billtext/html/HB00004F.htm); the general Act began in July 2024.
+
+The [current chapter](https://statutes.capitol.texas.gov/?artSec=541.055&chapter=BC.541&code=BC&tab=1) ties the agent route to commercially reasonable verification efforts and exceptions. Its technology criteria also require affirmative non-default choice and usability. A GPC value does not establish those facts.
+
+Selecting Texas adds review tasks to setup and `describe` output. It changes no service classification or policy. After assessing applicability and the actual mechanism, an operator can explicitly use the existing `sale`/`targeted-advertising` restrictions. These toolkit calls run without login; that is not a legal finding about request authentication. The host still handles qualification and associated account/downstream restrictions. The [Attorney General’s overview](https://www.texasattorneygeneral.gov/consumer-protection/file-consumer-complaint/consumer-privacy-rights/texas-data-privacy-and-security-act) also identifies separate notice and request-handling work.
+
+No GPC approval, residency detector or agent-verification service is included. Profiling, sensitive/child data, appeals and complete Texas coverage remain separate.
