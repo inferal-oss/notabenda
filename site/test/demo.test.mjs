@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION
 // @requirements REQ-PRODUCT-COLLECTION-FLOW REQ-TR-BASIS
 // @requirements REQ-PRODUCT-PACK-EDUCATION
 // @requirements REQ-PRODUCT-TERMS-ADAPTERS
@@ -209,15 +210,17 @@ test('permission controls mount before the first read and keep explicit refusal 
    if(path==='/demo/permissions/record')writes++;
    return serveHost(req(path,{...options,headers:{Cookie:s.cookie,Origin:'https://demo.example.test',...options.headers}}),env);
   };
-  const setup=Function('document','fetch','createFormPermission','mountFormPermission','FormPermissionError','demoSessionEnded','createIndexedDBFormPermissionJournal','return (async()=>{'+source.replace(/^import .*;\n/gmu,'')+'})()');
+  const setup=Function('window','document','fetch','createFormPermission','mountFormPermission','FormPermissionError','demoSessionEnded','createIndexedDBFormPermissionJournal','return (async()=>{'+source.replace(/^import .*;\n/gmu,'')+'})()');
   try{
-   const completion=setup(dom.window.document,fetch,(offer,options)=>(controller=createFormPermission(offer,{...options,timeoutMs:100})),mountFormPermission,FormPermissionError,()=>false,()=>(localJournal=createIndexedDBFormPermissionJournal({indexedDB:new IDBFactory(),broadcastChannel:null})));
+   const completion=setup(dom.window,dom.window.document,fetch,(offer,options)=>(controller=createFormPermission(offer,{...options,timeoutMs:100})),mountFormPermission,FormPermissionError,()=>false,()=>(localJournal=createIndexedDBFormPermissionJournal({indexedDB:new IDBFactory(),broadcastChannel:null})));
    const refuse=[...dom.window.document.querySelectorAll('button')].find(button=>button.textContent==='I do not consent');
    assert.ok(refuse);assert.equal(refuse.hidden,false);assert.equal(refuse.disabled,false);assert.equal(controller.getSnapshot().allowed,false);
    await completion;assert.equal(controller.getSnapshot().status,'error');assert.equal(refuse.disabled,false);
    dom.window.document.querySelector('button[type=submit]').click();assert.equal(writes,0);
    await new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(Error('Refusal did not complete')),2000);const off=controller.subscribe(state=>{if(state.receipt){clearTimeout(timer);queueMicrotask(()=>{off();resolve();});}});refuse.click();});
    assert.equal(writes,1);assert.equal(controller.getSnapshot().receipt.action,'refuse');assert.equal(controller.getSnapshot().current.reason,'refused');assert.equal(controller.getSnapshot().allowed,false);
+   dom.window.dispatchEvent(new dom.window.PageTransitionEvent('pagehide',{persisted:true}));assert.equal(controller.getSnapshot().status,'recorded');
+   dom.window.dispatchEvent(new dom.window.PageTransitionEvent('pagehide',{persisted:false}));assert.equal(controller.getSnapshot().status,'destroyed');
   }finally{controller?.destroy();localJournal?.close();dom.window.close();}
  }
 });

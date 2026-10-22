@@ -170,7 +170,13 @@
         "packages/notabenda/src/collection.ts",
         "packages/notabenda/src/collection-flow.ts",
         "examples/collection-workbench/build.mjs",
-        "examples/static/build.mjs"
+        "examples/static/build.mjs",
+        "packages/notabenda/src/form-permission-inspect.ts",
+        "packages/notabenda/src/form-permission.ts",
+        "examples/form-permissions/build.mjs",
+        "examples/form-permissions/client.mjs",
+        "examples/form-permissions/inspector.mjs",
+        "examples/form-permissions/inspector.css"
       ]
     },
     {
@@ -553,7 +559,8 @@
         "Optional archived refusal copy and explicit negative events, native refusal/withdrawal presentation, exact-request recovery and operator search; regional solicitation and suppression remain separate host work.",
         "Optional South African web-request profile with explicit goods/services and method, visible archived responsible-party details, required refusal and complete host-language labels; declaration truth and legal sufficiency remain host review.",
         "Optional release-bound direct-form composer with explicit notice-only/separate-permission routes, unconditional static notices, exact SSR hydration, separate host controllers and data-file CLI builds.",
-        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports."
+        "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
+        "Read-only running-controller inspection of intended permission offer and local stream, separating observed head from historical action confirmation without refreshing or making a permission decision."
       ],
       "implementationRefs": [
         "packages/notabenda/src/terms.ts",
@@ -599,7 +606,12 @@
         "packages/notabenda/src/setup-connection-ui.ts",
         "examples/collection-workbench/build.mjs",
         "examples/static/build.mjs",
-        "site/host.mjs"
+        "site/host.mjs",
+        "packages/notabenda/src/form-permission-inspect.ts",
+        "examples/form-permissions/build.mjs",
+        "examples/form-permissions/client.mjs",
+        "examples/form-permissions/inspector.mjs",
+        "examples/form-permissions/inspector.css"
       ]
     },
     {
@@ -3635,7 +3647,8 @@
         "REQ-PRODUCT-TERMS-REHEARSAL",
         "REQ-PRODUCT-PUBLICATION-INSPECTION",
         "REQ-PRODUCT-COLLECTION-WORKBENCH",
-        "REQ-PRODUCT-COLLECTION-REHEARSAL"
+        "REQ-PRODUCT-COLLECTION-REHEARSAL",
+        "REQ-PRODUCT-FORM-PERMISSION-CONNECTION"
       ]
     },
     {
@@ -11285,6 +11298,46 @@
         "docs/verification/collection-rehearsal.md"
       ],
       "implementationNote": "Shared identity-free validation, deliberate state reads and actions, independent submission counter, before/after-record failures, exact request deduplication, restrictive negative actions, generation-fenced teardown and inert links."
+    },
+    {
+      "id": "REQ-PRODUCT-FORM-PERMISSION-CONNECTION",
+      "jurisdiction": "PRODUCT",
+      "title": "Read-only form permission offer and local stream inspection",
+      "kind": "product-standard",
+      "summary": "Compare an actual form permission controller with the complete intended offer and optional local host stream without refreshing, reading recovery storage or taking permission actions. Separate local state, observed head and historical acknowledgement.",
+      "appliesWhen": "An operator or agent checks which offer and host stream a mounted form permission control uses.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-FORMS",
+        "FEAT-SETUP"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-FORM-PERMISSION-CONNECTION"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Local comparison methods are trusted host assertions. Observed state can be old or refer to another offer; historical receipts can survive later errors and pending actions. No publication, current backend selection, identity, downstream permission or compliance verdict follows.",
+      "implementationRefs": [
+        "packages/notabenda/src/form-permission-inspect.ts",
+        "packages/notabenda/src/form-permission.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "examples/form-permissions/build.mjs",
+        "examples/form-permissions/client.mjs",
+        "examples/form-permissions/inspector.mjs",
+        "examples/form-permissions/inspector.css"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/form-permission-inspect.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/form-permission-connection.test.mjs",
+        "docs/verification/form-permission-connection.md",
+        "site/test/demo.test.mjs"
+      ],
+      "implementationNote": "Optional browser/SSR inspector with complete normalized offer comparison, fixed private projection, independent historical receipts and observed heads, bounded recovery flags, generic validation failures and explicitly loaded accessible light/midnight example panel."
     }
   ],
   "verification": [
@@ -13451,6 +13504,21 @@
         "packages/notabenda/test/package.test.mjs",
         "site/test/collection-rehearsal.test.mjs",
         "docs/verification/collection-rehearsal.md"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-FORM-PERMISSION-CONNECTION",
+      "requirementIds": [
+        "REQ-PRODUCT-FORM-PERMISSION-CONNECTION"
+      ],
+      "status": "automated",
+      "expected": "Actual/custom controller inspection leaves state and backend data unchanged, compares complete normalized offers and optional local streams, preserves uncertainty and historical receipt semantics, excludes private identifiers and wording, rejects hostile inputs, bundles without backend dependencies and exposes installed types and accessible lazy example UI.",
+      "testRefs": [
+        "packages/notabenda/test/form-permission-inspect.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "site/test/form-permission-connection.test.mjs",
+        "docs/verification/form-permission-connection.md",
+        "site/test/demo.test.mjs"
       ]
     }
   ],

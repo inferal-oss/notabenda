@@ -46,3 +46,5 @@ For agent-assisted setup, include this runtime report alongside configuration as
 See [verification](verification/connection-inspection.md).
 
 For agreement flows, use the separate [terms connection inspector](TERMS-CONNECTION.md).
+
+For optional form choices, use the [form permission inspector](FORM-PERMISSIONS.md#inspect-the-running-controller) on the actual mounted controller. It distinguishes observed backend state from historical action receipts.

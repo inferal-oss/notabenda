@@ -39,3 +39,5 @@ The private report includes public offer/artifact/site/scope references, documen
 Open the [terms example](https://notabenda.org/agreement/) or its [midnight appearance](https://notabenda.org/dark/agreement/), then expand **Inspect this connection** and press **Inspect runtime**. The separate inspector module loads only on that request. Checking the agreement box invalidates the displayed result and its download. Inspection itself submits nothing.
 
 See [verification](verification/terms-connection.md) and the separate [consent inspector](CONNECTION-INSPECTION.md).
+
+For optional form choices, use the [form permission inspector](FORM-PERMISSIONS.md#inspect-the-running-controller) on the actual mounted controller. It distinguishes observed backend state from historical action receipts.

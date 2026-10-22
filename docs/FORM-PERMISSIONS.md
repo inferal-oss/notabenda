@@ -119,6 +119,32 @@ Withdrawal accepts a registered older offer for the same stable permission and i
 
 Use `result.state` or `getFormPermissionState` at downstream use. A historical `receipt.action === 'grant'`, an event row or a raw head is insufficient. The evaluated state checks current activation, exact offer and guards. This still does not decide whether a message may legally be sent, or atomically couple the ledger to a delivery provider.
 
+<!-- @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION -->
+## Inspect the running controller
+
+To check a control you have already mounted, use the optional inspector. Pass the same controller the page uses, the intended offer and, if available, the opaque stream reference selected by the host:
+
+```js
+import {inspectFormPermissionConnection} from '@notabenda/core/form-permissions/inspect';
+
+const report = inspectFormPermissionConnection(permission, {
+  expectedOffer: intendedOffer,
+  expectedStreamRef: hostStreamRef,
+});
+```
+
+This reads the controller’s memory. It does not refresh state, read the recovery journal, subscribe, select the checkbox, submit, retry or withdraw. Omit the expected values to observe the supplied controller without a comparison. Custom controllers may omit `isForStream`; the stream comparison then reports `unavailable`. A custom comparator is a host assertion, not proof of identity or server authorization.
+
+The report separates three observations:
+
+- **Controller state:** status, draft checkbox, local `allowed` projection and recovery flags. `allowed` is not a fresh backend decision or permission to send a message.
+- **Observed head:** the last state the controller received, its numeric revisions and whether its active offer matches the mounted offer. It may be old or refer to different wording. `not-observed` means unknown, rather than no saved choice.
+- **Historical action receipt:** an action previously acknowledged to this controller. It can remain after later reads, errors or pending actions, and may refer to an earlier offer. A read-only controller can observe a granted head without having confirmed an action itself.
+
+Offer comparison covers the complete normalized offer, including wording, facts, document metadata, localization, refusal and marketing-request settings. The output includes only public offer references, fixed field names and bounded observations; it omits stream, request and receipt identifiers, action timestamps, contact details and authored text. Keep it private. A match does not authenticate document digests or prove publication, active backend selection, current permission, legal suitability or downstream behavior.
+
+The [form permission example](/form-permissions/) includes a collapsed **Inspect this connection** panel. Its inspector loads on request; any controller change clears the old snapshot and download. [Verification details](verification/form-permission-connection.md) describe automated coverage. See also [consent inspection](CONNECTION-INSPECTION.md) and [terms inspection](TERMS-CONNECTION.md).
+
 ## Inspection and retention
 
 The scoped store supports existing authorized admin search and export. Detail panels distinguish the historical action from evaluated current state at read time, display purpose/channel and exact wording, and distinguish host-received and browser-reported times. Store scope and export permission remain host-owned.

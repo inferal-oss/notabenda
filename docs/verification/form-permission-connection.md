@@ -1,0 +1,14 @@
+<!-- @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION -->
+# Form permission connection inspection verification
+
+Requirement: `REQ-PRODUCT-FORM-PERMISSION-CONNECTION`.
+
+The optional public inspector compares complete normalized offers and local stream references from actual supplied controllers. Tests cover changed wording, facts, scope assessment, document metadata, refusal, marketing-request particulars and selected localization under unchanged offer IDs. The comparator works across separate browser bundles and remains available after destruction; absent custom comparators report unavailable. Custom controller methods remain trusted host code.
+
+Real controller scenarios cover idle and checked states, read-only observation of a granted head without an action receipt, a head referring to a different active offer, receipt retention through refresh and read error, newer observed events, lost acknowledgements, volatile negative-action recovery and terminal state. Older negative receipts can refer to earlier offers or artifacts. Inspection reads no journal, subscribes to nothing, creates no UUID, performs no refresh or permission action, and leaves controller and retained recording state unchanged.
+
+Strict plain-data validation rejects accessors, executable values, unknown fields, invalid identifiers and timestamps, oversized data, malformed heads and receipts. Errors do not echo rejected values. The fixed output projection excludes stream/request/receipt identifiers, historical timestamps, contact details and authored text. Publication, backend selection and downstream behavior remain explicitly unchecked; there is no installation, current authorization or compliance verdict.
+
+Installed package checks import the public entry and compile its types. Browser bundling excludes backend and authoring compiler dependencies. Light and midnight example panels start collapsed, load their self-contained module only after an explicit request, invalidate old snapshots on state changes, revoke downloads and dispose subscriptions with the page. Automated accessibility checks cover named controls, statuses and semantic observation lists. Native layout and actual host integration are separate checks.
+
+Local Chromium checks against the isolated demo Worker confirmed inspection without checkbox changes, invalidation after a draft edit, explicit grant acknowledgement, and a fresh page observing the saved grant without claiming an action receipt of its own. Native Safari confirmed inspection, invalidation and explicit refusal with permission remaining off. Emulated narrow layouts at requested widths 390 and 320 had no horizontal overflow (observed content widths 375 and 305, respectively). These checks do not establish physical-device, screen-reader, legal or adopter integration acceptance.

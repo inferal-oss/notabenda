@@ -396,6 +396,11 @@
       "types": "./dist/collection-rehearsal.d.ts",
       "import": "./dist/collection-rehearsal.js",
       "default": "./dist/collection-rehearsal.js"
+    },
+    "./form-permissions/inspect": {
+      "types": "./dist/form-permission-inspect.d.ts",
+      "import": "./dist/form-permission-inspect.js",
+      "default": "./dist/form-permission-inspect.js"
     }
   },
   "bin": {

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-ZA-MARKETING
@@ -73,7 +74,8 @@ export interface FormPermissionOptions {
   streamRef:string;read(context:{signal:AbortSignal}):Promise<unknown>;submit(command:FormPermissionCommand,context:{signal:AbortSignal}):Promise<unknown>;
   allowPreview?:boolean;now?:()=>Date;timeoutMs?:number;journal?:FormPermissionJournal;
 }
-export interface FormPermissionController {getOffer():FormPermissionOffer;getSnapshot():FormPermissionSnapshot;subscribe(listener:(state:FormPermissionSnapshot)=>void):()=>void;setChecked(checked:boolean):void;refresh():Promise<FormPermissionState>;reconcile():Promise<void>;retryPending():Promise<FormPermissionResult|null>;grant():Promise<FormPermissionResult>;withdraw():Promise<FormPermissionResult>;refuse():Promise<FormPermissionResult>;destroy():void}
+/** Optional stream comparison is local only; it does not authenticate host identity or authorization. */
+export interface FormPermissionController {isForStream?(expectedStreamRef:string):boolean;getOffer():FormPermissionOffer;getSnapshot():FormPermissionSnapshot;subscribe(listener:(state:FormPermissionSnapshot)=>void):()=>void;setChecked(checked:boolean):void;refresh():Promise<FormPermissionState>;reconcile():Promise<void>;retryPending():Promise<FormPermissionResult|null>;grant():Promise<FormPermissionResult>;withdraw():Promise<FormPermissionResult>;refuse():Promise<FormPermissionResult>;destroy():void}
 interface PendingPermission {command:FormPermissionCommand;artifactId:string;epoch:number}
 interface PermissionJournalRecord {schemaVersion:1;siteId:string;permissionId:string;streamRef:string;epoch:number;blocked:boolean;retired:boolean;head:FormPermissionState|null;grant:PendingPermission|null;withdraw:PendingPermission|null}
 /** Unchecked/absent fields and ordinary form submission never create a permission command. */
@@ -225,7 +227,7 @@ export function createFormPermission(input:unknown,options:FormPermissionOptions
     return action(entry.command.action,entry);
   }
   const stop=journal?.subscribe?.(journalKey,()=>{if(!terminal())void reconcile().catch(()=>{});});
-  return {getOffer:()=>structuredClone(offer),getSnapshot:snapshot,subscribe(listener){listeners.add(listener);try{listener(snapshot());}catch{}return()=>listeners.delete(listener);},setChecked(checked){if(typeof checked!=='boolean'||terminal()||flight)throw new Error('This permission draft cannot be edited.');state={...state,checked};emit();},refresh,reconcile,retryPending,grant:()=>action('grant'),withdraw:()=>action('withdraw'),refuse:()=>action('refuse'),destroy(){if(state.status==='destroyed')return;epoch++;reading?.abort();flight?.abort.abort();recovery=undefined;try{stop?.();}catch{}state={checked:false,status:'destroyed',current:null,allowed:false};emit();listeners.clear();}};
+  return {isForStream(expectedStreamRef){if(!hash(expectedStreamRef))throw Error('Provide a valid expected stream reference.');return expectedStreamRef===streamRef;},getOffer:()=>structuredClone(offer),getSnapshot:snapshot,subscribe(listener){listeners.add(listener);try{listener(snapshot());}catch{}return()=>listeners.delete(listener);},setChecked(checked){if(typeof checked!=='boolean'||terminal()||flight)throw new Error('This permission draft cannot be edited.');state={...state,checked};emit();},refresh,reconcile,retryPending,grant:()=>action('grant'),withdraw:()=>action('withdraw'),refuse:()=>action('refuse'),destroy(){if(state.status==='destroyed')return;epoch++;reading?.abort();flight?.abort.abort();recovery=undefined;try{stop?.();}catch{}state={checked:false,status:'destroyed',current:null,allowed:false};emit();listeners.clear();}};
 }
 /** @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE No submit listener, identity fields, automatic network read, or forced privacy acceptance. */
 // @requirements REQ-PRODUCT-COLLECTION-FLOW

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-FORM-PERMISSION-CONNECTION
 // @requirements REQ-PRODUCT-COLLECTION-REHEARSAL
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-PUBLICATION-INSPECTION
@@ -337,7 +338,7 @@ createRightsDraftPlan(config,{baseline:config,settings:rightsSettings});
 rightsSettings.reviewStatus='reviewed';
 `);
     for(const file of ['dist/setup-storage.js','dist/setup-storage-ui.js','dist/setup-storage-cli.js','dist/setup-storage.d.ts','dist/setup-storage-ui.d.ts'])assert.ok(manifest.files.some(f=>f.path===file),file);
-    const inspectionImport=spawnSync(process.execPath,['--input-type=module','-e',"import {inspectConsentConnection} from '@notabenda/core/consent/inspect';import {inspectTermsConnection} from '@notabenda/core/terms/inspect';if(typeof inspectConsentConnection!=='function'||typeof inspectTermsConnection!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(inspectionImport.status,0,inspectionImport.stderr);
+    const inspectionImport=spawnSync(process.execPath,['--input-type=module','-e',"import {inspectConsentConnection} from '@notabenda/core/consent/inspect';import {inspectTermsConnection} from '@notabenda/core/terms/inspect';import {inspectFormPermissionConnection} from '@notabenda/core/form-permissions/inspect';if(typeof inspectFormPermissionConnection!=='function'||typeof inspectConsentConnection!=='function'||typeof inspectTermsConnection!=='function')process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(inspectionImport.status,0,inspectionImport.stderr);
     const storageImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createStorageDraftPlan,normalizeStorageDraftInput} from '@notabenda/core/setup/storage';import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';if([createStorageDraftPlan,normalizeStorageDraftInput,mountStorageEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(storageImport.status,0,storageImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {mountConsentRehearsal,type MountedConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';
@@ -368,6 +369,13 @@ const previewOpened:Promise<void>=previewCookies.open();previewCookies.close();p
 // @ts-expect-error rehearsal does not accept host provider callbacks or receipt transport
 mountConsentRehearsal(container,{config,submit:()=>Promise.resolve()});
 import {inspectTermsConnection,type TermsConnectionInspection} from '@notabenda/core/terms/inspect';
+import {inspectFormPermissionConnection,type FormPermissionConnectionInspection} from '@notabenda/core/form-permissions/inspect';
+import type {FormPermissionController,FormPermissionOffer} from '@notabenda/core';
+declare const permissionDiagnosticController:FormPermissionController;
+declare const expectedPermissionOffer:FormPermissionOffer;
+const permissionReport:FormPermissionConnectionInspection=inspectFormPermissionConnection(permissionDiagnosticController,{expectedOffer:expectedPermissionOffer,expectedStreamRef:'a'.repeat(64)});
+// @ts-expect-error inspection cannot submit or refresh permission
+inspectFormPermissionConnection(permissionDiagnosticController,{refresh:true});
 import type {TermsAcceptanceController,TermsOffer} from '@notabenda/core/terms';
 declare const termsDiagnosticController:TermsAcceptanceController;
 declare const expectedTermsOffer:TermsOffer;
