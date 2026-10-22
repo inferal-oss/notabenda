@@ -474,3 +474,5 @@ The focused [marketing request workbench](MARKETING-WORKBENCH.md) and direct art
 
 <!-- @requirements REQ-PRODUCT-SOURCE-CANDIDATE -->
 The optional [source candidate workflow](SOURCE-CANDIDATE.md) builds one explicit committed revision twice in separate temporary trees, compares complete archives, verifies their installed bytes in an isolated adopter and independently installs/checks the generated Cloudflare starter. Production validation and exact authored-release references are exercised with synthetic inputs. Offline dependencies, failures and claim limits remain explicit; publication, native-browser and actual cloud/host acceptance stay separate.
+
+Its optional native-browser review now serves a hash-bound copy of the installed controls and exact pinned documents on loopback. A synthetic service and independent in-memory request counter expose grant, reload, rejection, cross-tab and simulated unavailable choice storage for direct inspection. Preparing the page is not a browser pass; platform observations stay separate from the candidate verdict and do not establish provider or production acceptance.

@@ -34,6 +34,26 @@ The starter check creates no cloud resources and supplies no authentication syst
 
 `packages/` contains the checked archives. `consumer/` contains the independent package manifest, lockfile, verifier, fixture inputs and copies of those archives. `evidence/` retains the exercised YAML, collection settings, authored public release and browser bundle. `starter/` records the generated and locally adapted manifests, lockfile and result. These are local review artifacts; do not upload the directory as website assets.
 
+## Try the installed controls in a browser
+
+Successful new runs also prepare `evidence/browser-review/` from the isolated consumer's installed bundle, stylesheet, compiled configuration and exact pinned documents. Start its loopback server separately:
+
+```sh
+npm run release:review -- \
+  --candidate .local/source-candidate-1 \
+  --port 62546
+```
+
+Open the printed `http://127.0.0.1:62546/` URL in the browser you want to check. Use a new unused port for a fresh browser origin. An occupied port is an error; the command never stops another server. Stop your review server when finished.
+
+The page walks through the actual native controls, saved-choice reload, rejection and a second tab. It shows service starts, cleanup calls and presence of one disposable localStorage marker. Each allowed service start makes one real `POST /probe` request to that server. **Read local counter** shows how many probes the server received, across every tab since that server started. Page counters reset on reload. Rejecting a choice cannot remove a request already counted, and an aborted response does not prove that a request never arrived.
+
+The separate choice-storage failure route supplies an adapter whose methods throw. It does not change browser settings. A grant that cannot be saved must keep optional work blocked, before and after reload; inaccessible saved choices must not become restored permission. The sample service's marker still uses ordinary localStorage, so this route is not a simulation of every browser storage restriction. Only that exact disposable marker is removed; the tool never clears a storage area. Native keyboard behavior, focus, narrow layouts and the pinned MDX reader can be inspected directly.
+
+Before listening, the server checks every declared file against the manifest digest retained in the candidate report and snapshots those bytes. It serves only that small allowlist, not the consumer directory, package archives, reports or private authoring inputs. Probes require a fixed same-origin header and an empty body; cross-origin requests and alternate Host values are refused. The server keeps only a bounded in-memory count, with no browser identifiers, request bodies or access log. No external provider is contacted by this sample. Its Content Security Policy permits local scripts, styles and connections only.
+
+Preparing or serving the page records no browser pass. Keep native observations separately with the source commit, candidate digest, browser/version, origin, scenarios and actual results. A synthetic loopback request does not verify an adopter's loaders, provider cleanup, recorded-evidence transport or production integration. No real visitor consent is collected. The candidate report's native/physical-browser acceptance boundary stays false.
+
 Failed or blocked runs keep their report, logs and any completed candidate archives. The workflow removes only its own temporary directories. If temporary cleanup fails, the overall result is failed. An existing output remains untouched; correct the problem and select a new output directory.
 
 Publication still requires a separate decision. This workflow does not audit dependency vulnerabilities, prove secret absence, conduct legal review, verify external providers or certify an adopter's production integration. Adopters decide which checks to use and how to integrate them into CI. See the [verification record](verification/source-candidate.md).

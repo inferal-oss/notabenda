@@ -1113,7 +1113,10 @@
         "scripts/source-candidate.mjs",
         "scripts/source-candidate-consumer.mjs",
         "scripts/source-candidate-backend.mjs",
-        "docs/SOURCE-CANDIDATE.md"
+        "docs/SOURCE-CANDIDATE.md",
+        "scripts/source-candidate-review.mjs",
+        "scripts/source-candidate-review-app.mjs",
+        "scripts/source-candidate-review.css"
       ]
     },
     {
@@ -11588,14 +11591,18 @@
         "scripts/source-candidate-backend.mjs",
         "docs/SOURCE-CANDIDATE.md",
         "docs/RELEASE-CANDIDATE.md",
-        "site/navigation.mjs"
+        "site/navigation.mjs",
+        "scripts/source-candidate-review.mjs",
+        "scripts/source-candidate-review-app.mjs",
+        "scripts/source-candidate-review.css"
       ],
       "testRefs": [
         "packages/notabenda/test/source-candidate.test.mjs",
         "docs/verification/source-candidate.md",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/source-candidate-review.test.mjs"
       ],
-      "implementationNote": "Bounded regular Git object projection disables replace refs and inherited Git overrides. Separate offline source installs/builds/checks compare actual archives; independent locked consumer/starter installs reject sibling substitution and verify every candidate file. Synthetic production validation, authored pins, DOM-shim controls, browser graph, selected declarations and generated npm check/default denial are exercised. Missing cache and failed stages remain explicit."
+      "implementationNote": "Bounded regular Git object projection disables replace refs and inherited Git overrides. Separate offline source installs/builds/checks compare actual archives; independent locked consumer/starter installs reject sibling substitution and verify every candidate file. Synthetic production validation, authored pins, DOM-shim controls, browser graph, selected declarations and generated npm check/default denial are exercised. Missing cache and failed stages remain explicit. A digest-bound native browser review is generated from the installed consumer, with a narrow loopback server and independent synthetic request count; preparing it records no browser acceptance."
     }
   ],
   "verification": [
@@ -13825,11 +13832,12 @@
         "REQ-PRODUCT-SOURCE-CANDIDATE"
       ],
       "status": "automated",
-      "expected": "Verified committed blobs exclude dirty/untracked output and replacement refs; independent source builds produce equal actual archives and installed copies match their manifests. Lock closure retains nested resolution and rejects substitutions. Production/draft gates, exact authored policy/notice/form identities, browser boundary and selected types pass in an independent consumer; separately installed starter local check/default denial pass. Missing offline dependencies block without fallback and existing output remains unchanged.",
+      "expected": "Verified committed blobs exclude dirty/untracked output and replacement refs; independent source builds produce equal actual archives and installed copies match their manifests. Lock closure retains nested resolution and rejects substitutions. Production/draft gates, exact authored policy/notice/form identities, browser boundary and selected types pass in an independent consumer; separately installed starter local check/default denial pass. Missing offline dependencies block without fallback and existing output remains unchanged. Generated browser review retains exact installed bytes and pinned readers; hostile or changed assets stop startup. Loopback Host/origin guards, no private file serving and explicit bounded synthetic probes are checked; native browser observations remain separate.",
       "testRefs": [
         "packages/notabenda/test/source-candidate.test.mjs",
         "docs/verification/source-candidate.md",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/source-candidate-review.test.mjs"
       ]
     }
   ],

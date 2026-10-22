@@ -13,6 +13,7 @@ import {renderCollectionFlow} from '@notabenda/core/collection/flow';
 import {compileAuthoredDocuments} from '@notabenda/authoring';
 import {JSDOM} from 'jsdom';
 import {build as bundle} from 'esbuild';
+import {writeCandidateBrowserReview} from './source-candidate-review.mjs';
 const cwd=process.cwd(),checks=[];
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 function run(file,args,directory=cwd){const result=spawnSync(process.execPath,[file,...args],{cwd:directory,encoding:'utf8',timeout:60000,maxBuffer:4*1024*1024});assert.equal(result.status,0,result.stderr);return result;}
@@ -49,9 +50,10 @@ try{controller.registerService('sample-metrics',{purposes:['audience-measurement
 await writeFile('browser-entry.mjs',"export {createConsentRuntime,mountControls} from '@notabenda/core/consent';\n");const browser=await bundle({entryPoints:['browser-entry.mjs'],outfile:'browser/consent.js',bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',metafile:true});
 for(const input of Object.keys(browser.metafile.inputs)){const path=resolve(input);assert.ok(path===join(cwd,'browser-entry.mjs')||path.startsWith(join(cwd,'node_modules')+'/'));assert.doesNotMatch(input,/node:|notabenda-authoring|notabenda-cf|content\.js|config-source\.js/);}
 await mkdir('browser');await writeFile('browser/consent.js',browser.outputFiles[0].contents);await writeFile('browser/consent.css',await readFile(fileURLToPath(import.meta.resolve('@notabenda/core/consent.css'))));checks.push('browser-bundle-boundary');
+const browserReview=await writeCandidateBrowserReview({directory:'browser-review',bundle:browser.outputFiles[0].contents,consentCss:await readFile('browser/consent.css'),documentCss:await readFile(fileURLToPath(import.meta.resolve('@notabenda/core/styles.css'))),descriptor,artifact});checks.push('installed-native-browser-review-prepared');
 const cfCli=packageFile('@notabenda/cloudflare','bin/notabenda-cf.mjs');run(cfCli,['init','--site-id',config.site.id,'--out-dir','backend']);
 checks.push('starter-generated');
 await writeFile('consumer.ts',`import {createConsentRuntime,type ConsentRuntimeConfig} from '@notabenda/core/consent';\nimport {compileAuthoredDocuments,type DocumentSource} from '@notabenda/authoring';\nimport {createWorkspaceOverviewWorker} from '@notabenda/cloudflare';\nimport {createCollectionFlow,type CollectionFlowSettings} from '@notabenda/core/content';\ndeclare const runtime:ConsentRuntimeConfig;createConsentRuntime(runtime);\nconst source:DocumentSource={format:'mdx',source:'# Example'};void source;void compileAuthoredDocuments;void createWorkspaceOverviewWorker;declare const settings:CollectionFlowSettings;void settings;void createCollectionFlow;\n`);
 run(packageFile('typescript','bin/tsc'),['--noEmit','--strict','--target','ES2022','--module','NodeNext','--moduleResolution','NodeNext','consumer.ts']);checks.push('installed-types');
-await writeFile('consumer-result.json',JSON.stringify({schemaVersion:1,status:'passed',checks,artifactId:id,browserBundleSha256:sha(browser.outputFiles[0].contents),boundaries:{syntheticReviewedFixtures:true,syntheticServices:true,hostAuthorizationProvided:false,cloudDeployment:false,physicalBrowser:false,realProviderTraffic:false}},null,2)+'\n');
+await writeFile('consumer-result.json',JSON.stringify({schemaVersion:1,status:'passed',checks,artifactId:id,browserBundleSha256:sha(browser.outputFiles[0].contents),browserReview,boundaries:{syntheticReviewedFixtures:true,syntheticServices:true,hostAuthorizationProvided:false,cloudDeployment:false,physicalBrowser:false,realProviderTraffic:false}},null,2)+'\n');
 process.stdout.write(JSON.stringify({status:'passed',checks,artifactId:id})+'\n');
