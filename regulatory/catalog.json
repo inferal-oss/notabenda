@@ -36,7 +36,8 @@
         "Local published-guide search by topic, API name and requirement ID, with section destinations and a complete script-free directory.",
         "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
         "Source-linked Oregon/Minnesota universal-signal assessment guidance shared by setup and agent reference, with explicit dates, applicability limits and no automatic policy activation.",
-        "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state."
+        "Prepared pack review summary before preview/export, with separate configuration, unanswered-practice and scope topics, direct focus actions and full review notes; no completion score or approval state.",
+        "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -150,7 +151,12 @@
         "packages/notabenda-cf/src/terms-settings.ts",
         "examples/agreements/example.mjs",
         "packages/notabenda/src/privacy-signal-reviews.ts",
-        "packages/notabenda/src/setup-review-ui.ts"
+        "packages/notabenda/src/setup-review-ui.ts",
+        "packages/notabenda/src/setup-terms-rehearsal.ts",
+        "packages/notabenda/package.json",
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/bin/doctor.mjs"
       ]
     },
     {
@@ -266,7 +272,8 @@
         "Optional named terms agreement wording, baseline-bound local authoring and final-release offer files with archived backend copy checks.",
         "Separately authorized archive inspection and comparison of named agreement wording, versions, interface copy and terms-document references.",
         "Read-only document input review with actual section origin, configuration pointers and requirement context; strict authoring/production checks without changing release bytes or declaring legal approval.",
-        "Optional atomic private retry-key journal for agreement recovery after reload, with fresh unchecked UI, explicit receipt retry and host-coordinated cleanup."
+        "Optional atomic private retry-key journal for agreement recovery after reload, with fresh unchecked UI, explicit receipt retry and host-coordinated cleanup.",
+        "Optional configured terms rehearsal with the real agreement controller, local draft reader and disposable in-memory receipts/failures; no host connection, persistent evidence or review state."
       ],
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
@@ -322,7 +329,11 @@
         "site/build.mjs",
         "site/worker.mjs",
         "packages/notabenda/src/document-explanation.ts",
-        "packages/notabenda/src/document-explanation-cli.ts"
+        "packages/notabenda/src/document-explanation-cli.ts",
+        "packages/notabenda/src/setup-terms-rehearsal.ts",
+        "packages/notabenda/package.json",
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs",
+        "packages/notabenda-cf/bin/doctor.mjs"
       ]
     },
     {
@@ -3541,7 +3552,8 @@
         "REQ-PRODUCT-CF-ROLLOUT",
         "REQ-PRODUCT-DOCUMENT-EXPLANATION",
         "REQ-PRODUCT-COLLECTION-FLOW",
-        "REQ-PRODUCT-TERMS-RECOVERY"
+        "REQ-PRODUCT-TERMS-RECOVERY",
+        "REQ-PRODUCT-TERMS-REHEARSAL"
       ]
     },
     {
@@ -10958,6 +10970,47 @@
         "site/test/website-notice.test.mjs"
       ],
       "implementationNote": "Optional browser entry reuses the existing controller and receipt admission. IndexedDB reserves and commits before returning; participating tabs share a key. Mismatched/corrupt rows are not overwritten. Initialization/storage failure is explicit; pre-submit row loss/replacement and destruction stop transmission. The adapter supplies deliberate per-context removal without expiry or total-record eviction. Vanilla example and actual interrupted-HTTP rehearsal use the helper; other hosts/adapters may opt in."
+    },
+    {
+      "id": "REQ-PRODUCT-TERMS-REHEARSAL",
+      "jurisdiction": "PRODUCT",
+      "title": "Disposable configured terms-agreement rehearsal",
+      "kind": "product-standard",
+      "summary": "Let operators try the saved statement and action for one configured workflow with the actual agreement controller, local draft reader and in-memory receipt/failure model. Keep simulation separate from publication, real agreements and host authentication.",
+      "appliesWhen": "An operator reviews configured terms wording before connecting the host workflow.",
+      "sourceRefs": [],
+      "discoverySourceIds": [],
+      "featureIds": [
+        "FEAT-SETUP",
+        "FEAT-TERMS"
+      ],
+      "verificationIds": [
+        "VERIFY-PRODUCT-TERMS-REHEARSAL"
+      ],
+      "researchStatus": "product-decision",
+      "legalReviewStatus": "not-applicable",
+      "implementationStatus": "implemented",
+      "effectiveFrom": null,
+      "timingNote": null,
+      "caveats": "Temporary simulation only. It does not publish or review documents, authenticate an operation, store evidence, test an actual recorder or recover after reload. Host-authored scopes without configured wording remain supported separately.",
+      "implementationRefs": [
+        "packages/notabenda/src/setup-terms-rehearsal.ts",
+        "packages/notabenda/src/setup-terms-ui.ts",
+        "packages/notabenda/src/styles.css",
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs",
+        "packages/notabenda-cf/templates/src/host.mjs",
+        "packages/notabenda-cf/bin/doctor.mjs",
+        "site/build.mjs"
+      ],
+      "testRefs": [
+        "packages/notabenda/test/terms-rehearsal.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "packages/notabenda-cf/test/doctor.test.mjs",
+        "site/test/terms-rehearsal.test.mjs",
+        "docs/verification/terms-rehearsal.md"
+      ],
+      "implementationNote": "Lazy native-controls rehearsal with detached public inventory, script-disabled frame, bounded same-origin CSS loading, private Map storage, inert start/stop counters, real cancellable timers, fresh/return visits, explicit GPC simulation and generation-fenced teardown on close/edit/import."
     }
   ],
   "verification": [
@@ -13051,6 +13104,22 @@
         "docs/TERMS-RECOVERY.md",
         "docs/verification/terms-recovery.md",
         "site/test/website-notice.test.mjs"
+      ]
+    },
+    {
+      "id": "VERIFY-PRODUCT-TERMS-REHEARSAL",
+      "requirementIds": [
+        "REQ-PRODUCT-TERMS-REHEARSAL"
+      ],
+      "status": "automated",
+      "expected": "Configured scopes pin exact draft copy; reading/checking submit nothing, simulated failure creates no receipt, explicit retry keeps the key, fresh/close/reset destroy memory and stale handlers, editor refresh/disposal fence lazy imports, installed types and independently authorized starter assets work without ordinary visitor bundle changes. Native responsive and keyboard observations remain bounded evidence.",
+      "testRefs": [
+        "packages/notabenda/test/terms-rehearsal.test.mjs",
+        "packages/notabenda/test/package.test.mjs",
+        "packages/notabenda-cf/test/starter.test.mjs",
+        "packages/notabenda-cf/test/doctor.test.mjs",
+        "site/test/terms-rehearsal.test.mjs",
+        "docs/verification/terms-rehearsal.md"
       ]
     }
   ],

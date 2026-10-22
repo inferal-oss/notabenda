@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-REHEARSAL
 // @requirements REQ-PRODUCT-CONSENT-REHEARSAL
 // @requirements REQ-PRODUCT-DRAFT-PREVIEW
 // @requirements REQ-PRODUCT-CF-DOCTOR REQ-PRODUCT-CF-STARTER
@@ -20,7 +21,7 @@ async function fixture(){
  const directory=await mkdtemp(join(tmpdir(),'notabenda-doctor-')),target=join(directory,'backend');
  const result=spawnSync(process.execPath,[cli,'init','--out-dir',target],{encoding:'utf8'});assert.equal(result.status,0,result.stderr);
  return {directory,target,async ready(){
-  await mkdir(join(target,'public/assets'),{recursive:true});await writeFile(join(target,'public/assets/setup.mjs'),'export {};');await writeFile(join(target,'public/assets/setup-preview.mjs'),'export {};');await writeFile(join(target,'public/assets/setup-consent-rehearsal.mjs'),'export {};');await writeFile(join(target,'public/assets/notabenda.css'),':root {}');await writeFile(join(target,'public/assets/cartridges.css'),'.cartridge-shell {}');
+  await mkdir(join(target,'public/assets'),{recursive:true});await writeFile(join(target,'public/assets/setup.mjs'),'export {};');await writeFile(join(target,'public/assets/setup-preview.mjs'),'export {};');await writeFile(join(target,'public/assets/setup-consent-rehearsal.mjs'),'export {};');await writeFile(join(target,'public/assets/setup-terms-rehearsal.mjs'),'export {};');await writeFile(join(target,'public/assets/notabenda.css'),':root {}');await writeFile(join(target,'public/assets/cartridges.css'),'.cartridge-shell {}');
   for(const name of ['@notabenda/core','@notabenda/cloudflare','esbuild','wrangler']){await mkdir(join(target,'node_modules',name),{recursive:true});await writeFile(join(target,'node_modules',name,'package.json'),JSON.stringify({name,version:'0.1.0'}));}
   // This file would fail if imported. Existence is not an authorization verdict.
   await writeFile(join(target,'src/authorize.mjs'),"throw new Error('DOCTOR-MUST-NOT-EXECUTE'); export async function authorizeHostRequest(){return {inspect:true};}\n");

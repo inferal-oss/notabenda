@@ -290,3 +290,5 @@ Release detail uses `/terms-settings?id=RELEASE_ID`; comparison uses `/diff?befo
 ## Maintainer HTTP recovery check
 
 Run `npm run build` and `npm run terms:transport -- --port 4208` from this repository to exercise a committed agreement whose first HTTP receipt is deliberately truncated. The actual demo transport and native field must remain unconfirmed until an explicit retry recovers the original receipt. The server observations should show two accepted attempts and one record, with the same command and receipt. It is a disposable loopback check, absent from package entries and public routes. Reload starts unchecked; the optional recovery helper retains the request key, and an explicit new check and retry can recover the original receipt. Storage loss, host identity and operation lifetime remain separate responsibilities. See [the verification boundary](verification/terms-browser.md#http-receipt-loss-rehearsal).
+
+Try configured wording before connecting a recorder with the [terms rehearsal](TERMS-REHEARSAL.md). It uses a local draft reader and temporary simulated receipts; actual publication, operation binding and recording remain host work.

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-TERMS-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-COLLECTION-FLOW
 // @requirements REQ-PRODUCT-DOCUMENT-EXPLANATION
@@ -337,6 +338,8 @@ rightsSettings.reviewStatus='reviewed';
     const storageImport=spawnSync(process.execPath,['--input-type=module','-e',"import {createStorageDraftPlan,normalizeStorageDraftInput} from '@notabenda/core/setup/storage';import {mountStorageEditor} from '@notabenda/core/setup/storage/ui';if([createStorageDraftPlan,normalizeStorageDraftInput,mountStorageEditor].some(f=>typeof f!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(storageImport.status,0,storageImport.stderr);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {mountConsentRehearsal,type MountedConsentRehearsal} from '@notabenda/core/setup/consent-rehearsal';
+import {mountTermsRehearsal,type MountedTermsRehearsal} from '@notabenda/core/setup/terms-rehearsal';
+const termsRehearsal:MountedTermsRehearsal=mountTermsRehearsal(document.body,{config,scopeId:'signup'});const termsRehearsalOpened:Promise<void>=termsRehearsal.open();termsRehearsal.close();termsRehearsal.destroy();
 const previewCookies:MountedConsentRehearsal=mountConsentRehearsal(container,{config,stylesheetUrls:['/assets/notabenda.css']});
 const previewOpened:Promise<void>=previewCookies.open();previewCookies.close();previewCookies.destroy();
 // @ts-expect-error rehearsal does not accept host provider callbacks or receipt transport

@@ -1,9 +1,11 @@
+// @requirements REQ-PRODUCT-TERMS-REHEARSAL
 // @requirements REQ-PRODUCT-TERMS-AUTHORING REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE REQ-PRODUCT-SETUP-SESSION
 import {toPublicConfig} from './config.js';
 import {createTermsDraftPlan} from './setup-terms.js';
 import type {TermsDraftPlan,TermsDraftSetting} from './setup-terms.js';
 import {captureEditorFields,restoreEditorFields} from './setup-session-fields.js';
 import type {InventoryEditorDraft} from './setup-session-fields.js';
+import type {MountedTermsRehearsal} from './setup-terms-rehearsal.js';
 /** Local configuration only. The host adopts the draft; no agreement is submitted or activated. */
 export function mountTermsEditor(container:HTMLElement,options:{getConfig():unknown;onChange(plan:TermsDraftPlan):void;onStatus?(message:string):void}){
  const doc=container.ownerDocument;if(!doc.defaultView||!options||typeof options.getConfig!=='function'||typeof options.onChange!=='function')throw Error('Provide a browser window and current draft read/change callbacks.');
@@ -11,12 +13,14 @@ export function mountTermsEditor(container:HTMLElement,options:{getConfig():unkn
  const root=node('details');root.className='nb-setup-purpose-editor nb-setup-terms-editor';const summary=node('summary','Terms agreements');root.append(summary);container.append(root);
  const body=node('div');body.className='nb-setup-purpose-body';body.append(node('p','Configure the statement and button label for each signup or other workflow. This is optional when your application already builds its own offers. It does not write the terms document or activate an agreement.'));root.append(body);
  const list=node('div');list.className='nb-setup-purpose-list';const add=node('button','Add an agreement scope');add.type='button';add.className='nb-choice-button';const status=node('p');status.setAttribute('role','status');const panel=node('section');panel.className='nb-setup-purpose-proposal';panel.hidden=true;body.append(list,add,status,panel);
- let destroyed=false,proposal:InventoryEditorDraft['proposal']|undefined;
+ let destroyed=false,proposal:InventoryEditorDraft['proposal']|undefined,rehearsal:MountedTermsRehearsal|undefined,rehearsalEpoch=0;
+ const stopRehearsal=()=>{rehearsalEpoch++;rehearsal?.destroy();rehearsal=undefined;};
+ root.addEventListener('toggle',()=>{if(!root.open)stopRehearsal();});
  for(const type of ['input','change'])root.addEventListener(type,event=>event.stopPropagation());
  root.addEventListener('keydown',event=>{event.stopPropagation();if(event.key==='Enter'&&!event.isComposing&&(event.target as HTMLElement)?.tagName==='INPUT')event.preventDefault();});
  const message=(text:string)=>{status.textContent=text;try{options.onStatus?.(text);}catch{}};
  function edit(id?:string,remove=false,restored?:NonNullable<InventoryEditorDraft['proposal']>){
-  if(destroyed)return;let baseline;try{baseline=toPublicConfig(restored?.baseline??options.getConfig(),{mode:'preview'});}catch{message('Load a valid site draft before editing agreements.');return;}
+  if(destroyed)return;stopRehearsal();let baseline;try{baseline=toPublicConfig(restored?.baseline??options.getConfig(),{mode:'preview'});}catch{message('Load a valid site draft before editing agreements.');return;}
   const previous=id?baseline.terms.agreements?.find(entry=>entry.scopeId===id):undefined;if(id&&!previous){message('That scope is no longer in this draft. Reopen the list.');return;}
   root.open=true;proposal={...(id?{id}:{}),remove,fields:{values:[],details:[]},baseline};const activeProposal=proposal;panel.replaceChildren();panel.hidden=false;
   const heading=node('h3',remove?'Remove agreement settings':id?'Edit agreement settings':'New agreement scope');heading.tabIndex=-1;panel.append(heading);const controls=new Map<string,HTMLInputElement|HTMLTextAreaElement>();
@@ -41,12 +45,13 @@ export function mountTermsEditor(container:HTMLElement,options:{getConfig():unkn
   else heading.focus();
  }
  function refresh(refreshOptions:{discardDraft?:boolean}={}){
-  if(destroyed)return;if(refreshOptions.discardDraft){proposal=undefined;panel.hidden=true;panel.replaceChildren();}list.replaceChildren();
+  if(destroyed)return;stopRehearsal();if(refreshOptions.discardDraft){proposal=undefined;panel.hidden=true;panel.replaceChildren();}list.replaceChildren();
   try{const config=toPublicConfig(options.getConfig(),{mode:'preview'}),entries=config.terms.agreements??[];summary.textContent='Terms agreements'+(entries.length?' · '+entries.length:'');add.disabled=false;
    if(!entries.length)list.append(node('p','No configured scopes. Host-authored offers remain supported.'));
-   for(const entry of entries){const card=node('article');card.className='nb-setup-purpose-card';card.dataset.termsScope=entry.scopeId;card.append(node('h3',entry.scopeId),node('p',entry.statement),node('p','Button: '+entry.actionLabel),node('small','Revision '+entry.revision+' · '+(entry.reviewStatus==='reviewed'?'Host-declared reviewed':'Draft')));const actions=node('div');actions.className='nb-setup-purpose-actions';for(const [label,remove] of [['Edit',false],['Remove',true]] as const){const button=node('button',label);button.type='button';button.className='nb-choice-button';button.setAttribute('aria-label',label+' '+entry.scopeId);button.addEventListener('click',()=>edit(entry.scopeId,remove));actions.append(button);}card.append(actions);list.append(card);}
+   for(const entry of entries){const card=node('article');card.className='nb-setup-purpose-card';card.dataset.termsScope=entry.scopeId;card.append(node('h3',entry.scopeId),node('p',entry.statement),node('p','Button: '+entry.actionLabel),node('small','Revision '+entry.revision+' · '+(entry.reviewStatus==='reviewed'?'Host-declared reviewed':'Draft')));const actions=node('div');actions.className='nb-setup-purpose-actions';for(const [label,remove] of [['Edit',false],['Remove',true]] as const){const button=node('button',label);button.type='button';button.className='nb-choice-button';button.setAttribute('aria-label',label+' '+entry.scopeId);button.addEventListener('click',()=>edit(entry.scopeId,remove));actions.append(button);}
+    const tryIt=node('button','Try agreement');tryIt.type='button';tryIt.className='nb-choice-button';tryIt.setAttribute('aria-label','Try agreement '+entry.scopeId);tryIt.addEventListener('click',async()=>{if(destroyed||!tryIt.isConnected||tryIt.disabled)return;if(proposal){message('Save or cancel the agreement editor before trying the saved draft.');return;}stopRehearsal();const token=rehearsalEpoch;tryIt.disabled=true;try{const snapshot=toPublicConfig(options.getConfig(),{mode:'preview'});const {mountTermsRehearsal}=await import('./setup-terms-rehearsal.js');if(destroyed||rehearsalEpoch!==token||!tryIt.isConnected)return;if(JSON.stringify(snapshot)!==JSON.stringify(toPublicConfig(options.getConfig(),{mode:'preview'})))throw Error('Draft changed.');rehearsal=mountTermsRehearsal(doc.body,{config:snapshot,scopeId:entry.scopeId,onClose:()=>{if(!destroyed&&rehearsalEpoch===token&&tryIt.isConnected)tryIt.focus();}});await rehearsal.open();}catch{if(!destroyed&&rehearsalEpoch===token)message('Could not open this agreement rehearsal. Review the current scope, document and language settings, then try again.');}finally{if(!destroyed&&tryIt.isConnected)tryIt.disabled=false;}});actions.append(tryIt);card.append(actions);list.append(card);}
   }catch{add.disabled=true;list.append(node('p','Load a valid configuration to edit terms agreements.'));}
  }
  add.addEventListener('click',()=>edit());refresh();
- return {show(){if(destroyed)throw Error('Editor has ended.');root.open=true;summary.focus();},refresh,getSessionDraft():InventoryEditorDraft{return structuredClone({open:root.open,...(proposal?{proposal:{...proposal,fields:captureEditorFields(panel)}}:{})});},restoreSessionDraft(draft:InventoryEditorDraft){if(destroyed)return;if(draft.proposal)edit(draft.proposal.id,draft.proposal.remove,draft.proposal);root.open=draft.open;},destroy(){if(destroyed)return;destroyed=true;proposal=undefined;root.remove();}};
+ return {show(){if(destroyed)throw Error('Editor has ended.');root.open=true;summary.focus();},refresh,getSessionDraft():InventoryEditorDraft{return structuredClone({open:root.open,...(proposal?{proposal:{...proposal,fields:captureEditorFields(panel)}}:{})});},restoreSessionDraft(draft:InventoryEditorDraft){if(destroyed)return;stopRehearsal();if(draft.proposal)edit(draft.proposal.id,draft.proposal.remove,draft.proposal);root.open=draft.open;},destroy(){if(destroyed)return;destroyed=true;stopRehearsal();proposal=undefined;root.remove();}};
 }

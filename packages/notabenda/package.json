@@ -369,6 +369,11 @@
       "types": "./dist/terms-recovery.d.ts",
       "import": "./dist/terms-recovery.js",
       "default": "./dist/terms-recovery.js"
+    },
+    "./setup/terms-rehearsal": {
+      "types": "./dist/setup-terms-rehearsal.d.ts",
+      "import": "./dist/setup-terms-rehearsal.js",
+      "default": "./dist/setup-terms-rehearsal.js"
     }
   },
   "bin": {
