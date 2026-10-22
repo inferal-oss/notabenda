@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "revision": "2026-10-22.2",
+  "sources": [
+    {
+      "id": "aws-rust-sdk",
+      "url": "https://docs.aws.amazon.com/sdk-for-rust/latest/dg/hello.html",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "aws-rust-s3",
+      "url": "https://raw.githubusercontent.com/awslabs/aws-sdk-rust/main/sdk/s3/Cargo.toml",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "sentry-rust-sdk",
+      "url": "https://raw.githubusercontent.com/getsentry/sentry-rust/master/sentry/Cargo.toml",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "mongodb-rust-driver",
+      "url": "https://www.mongodb.com/docs/drivers/rust/current/get-started/",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "redis-rust-client",
+      "url": "https://redis.io/docs/latest/develop/clients/rust/",
+      "revision": "2026-10-22",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "license": "original-factual-reference",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices. Redis documents this third-party client and states it is not developed or supported directly by Redis."
+    }
+  ],
+  "productIdentifierAdditions": {
+    "aws-sdk": [
+      {
+        "id": "cargo-aws-config",
+        "ecosystem": "cargo",
+        "match": "exact",
+        "value": "aws-config",
+        "explanation": "A named Cargo dependency is a candidate for actual-use review. Optional, development, build, target and workspace declarations can be unused; generic clients may use self-hosted or local services.",
+        "sourceIds": [
+          "aws-rust-sdk"
+        ]
+      },
+      {
+        "id": "cargo-aws-sdk-dynamodb",
+        "ecosystem": "cargo",
+        "match": "exact",
+        "value": "aws-sdk-dynamodb",
+        "explanation": "A named Cargo dependency is a candidate for actual-use review. Optional, development, build, target and workspace declarations can be unused; generic clients may use self-hosted or local services.",
+        "sourceIds": [
+          "aws-rust-sdk"
+        ]
+      },
+      {
+        "id": "cargo-aws-sdk-s3",
+        "ecosystem": "cargo",
+        "match": "exact",
+        "value": "aws-sdk-s3",
+        "explanation": "A named Cargo dependency is a candidate for actual-use review. Optional, development, build, target and workspace declarations can be unused; generic clients may use self-hosted or local services.",
+        "sourceIds": [
+          "aws-rust-s3"
+        ]
+      }
+    ],
+    "sentry-monitoring": [
+      {
+        "id": "cargo-sentry",
+        "ecosystem": "cargo",
+        "match": "exact",
+        "value": "sentry",
+        "explanation": "A named Cargo dependency is a candidate for actual-use review. Optional, development, build, target and workspace declarations can be unused; generic clients may use self-hosted or local services.",
+        "sourceIds": [
+          "sentry-rust-sdk"
+        ]
+      }
+    ],
+    "mongodb-client": [
+      {
+        "id": "cargo-mongodb",
+        "ecosystem": "cargo",
+        "match": "exact",
+        "value": "mongodb",
+        "explanation": "A named Cargo dependency is a candidate for actual-use review. Optional, development, build, target and workspace declarations can be unused; generic clients may use self-hosted or local services.",
+        "sourceIds": [
+          "mongodb-rust-driver"
+        ]
+      }
+    ],
+    "redis-client": [
+      {
+        "id": "cargo-redis",
+        "ecosystem": "cargo",
+        "match": "exact",
+        "value": "redis",
+        "explanation": "A named Cargo dependency is a candidate for actual-use review. Optional, development, build, target and workspace declarations can be unused; generic clients may use self-hosted or local services.",
+        "sourceIds": [
+          "redis-rust-client"
+        ]
+      }
+    ]
+  }
+}

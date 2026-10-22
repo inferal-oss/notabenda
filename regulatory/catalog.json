@@ -828,7 +828,8 @@
         "Browser-assisted inventory of observed requests, cookies/storage, embeds, and resource hints.",
         "Human-readable and JSON findings with route, scenario, evidence, and candidate purpose/service mappings.",
         "Adopters choose when to run it, whether to use CI, and which findings should block their deployments.",
-        "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits."
+        "Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.",
+        "Static Cargo dependency declarations with separate optional, development, build, target and workspace contexts; named source-linked SDK candidates and explicit unresolved inheritance/override limits."
       ],
       "implementationRefs": [
         "packages/notabenda/src/discovery.ts",
@@ -837,7 +838,9 @@
         "examples/discovery/build.mjs",
         "examples/discovery/client.mjs",
         "packages/notabenda/src/catalog-go.ts",
-        "catalog/go-providers.json"
+        "catalog/go-providers.json",
+        "packages/notabenda/src/catalog-cargo.ts",
+        "catalog/cargo-providers.json"
       ]
     },
     {
@@ -3025,6 +3028,87 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Read all four pages, including the illustrative UI scenarios and page-4 review questions. Issued 4 September 2024. The advisory disclaims legal advice, substantive policy and safe harbor; statutes and regulations control."
+    },
+    {
+      "id": "SRC-CARGO-DEPENDENCIES",
+      "title": "Cargo dependency declarations",
+      "url": "https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Dependency tables, package renaming, optional flags, target-specific declarations and inherited dependency limits."
+    },
+    {
+      "id": "SRC-CARGO-WORKSPACES",
+      "title": "Cargo workspace declarations",
+      "url": "https://doc.rust-lang.org/cargo/reference/workspaces.html",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Workspace dependency definitions are declarations, not evidence a selected package consumes them. Membership and inherited aliases are not resolved."
+    },
+    {
+      "id": "SRC-CARGO-MANIFEST",
+      "title": "Cargo manifest format",
+      "url": "https://doc.rust-lang.org/cargo/reference/manifest.html",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Cargo.toml table structure, bounded ASCII package-name subset and override/build metadata. No Rust compilation or complete Cargo validation."
+    },
+    {
+      "id": "SRC-CARGO-CONFIG",
+      "title": "Cargo configuration",
+      "url": "https://doc.rust-lang.org/cargo/reference/config.html",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Source/registry overrides and embedded credentials are possible. Selected configuration paths flag unresolved coverage; their values are not read."
+    },
+    {
+      "id": "SRC-AWS-RUST-SDK",
+      "title": "Aws Rust Sdk",
+      "url": "https://docs.aws.amazon.com/sdk-for-rust/latest/dg/hello.html",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "SRC-AWS-RUST-S3",
+      "title": "Aws Rust S3",
+      "url": "https://raw.githubusercontent.com/awslabs/aws-sdk-rust/main/sdk/s3/Cargo.toml",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "SRC-SENTRY-RUST-SDK",
+      "title": "Sentry Rust Sdk",
+      "url": "https://raw.githubusercontent.com/getsentry/sentry-rust/master/sentry/Cargo.toml",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "SRC-MONGODB-RUST-DRIVER",
+      "title": "Mongodb Rust Driver",
+      "url": "https://www.mongodb.com/docs/drivers/rust/current/get-started/",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices."
+    },
+    {
+      "id": "SRC-REDIS-RUST-CLIENT",
+      "title": "Redis Rust Client",
+      "url": "https://redis.io/docs/latest/develop/clients/rust/",
+      "kind": "technical-reference",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices. Redis documents this third-party client and states it is not developed or supported directly by Redis."
     }
   ],
   "jurisdictions": [
@@ -7117,7 +7201,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Explainable passive third-party recognition",
       "kind": "product-standard",
-      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes. Go discovery distinguishes declared and indirect requirements and test-file imports; unresolved module/workspace choices remain limited coverage. Python pyproject discovery separates standard project, optional, group and build requirements while retaining private values and unresolved selection limits. Composer discovery separates manifest requirements/development requirements and lock observations without PHP/Composer execution or installation claims.",
+      "summary": "Recognize candidate products with bounded exact, pattern and combined passive signals, minimize retained observations and require review before configuration changes. Initial static project discovery covers declared SDK dependencies/imports and Terraform names without project execution or network probes. Go discovery distinguishes declared and indirect requirements and test-file imports; unresolved module/workspace choices remain limited coverage. Python pyproject discovery separates standard project, optional, group and build requirements while retaining private values and unresolved selection limits. Composer discovery separates manifest requirements/development requirements and lock observations without PHP/Composer execution or installation claims. Cargo manifests separate package, optional, development, build, workspace and target-specific declarations; unresolved inheritance and overrides remain limited, without running Cargo.",
       "appliesWhen": "An authorized operator explicitly invokes catalog-backed service discovery.",
       "sourceRefs": [
         {
@@ -7287,6 +7371,42 @@
         {
           "sourceId": "SRC-MONGODB-PHP-LIBRARY",
           "locator": "Official Composer package identifier only; no provider-practice, installation, runtime or legal classification."
+        },
+        {
+          "sourceId": "SRC-CARGO-DEPENDENCIES",
+          "locator": "Dependency tables, package renaming, optional flags, target-specific declarations and inherited dependency limits."
+        },
+        {
+          "sourceId": "SRC-CARGO-WORKSPACES",
+          "locator": "Workspace dependency definitions are declarations, not evidence a selected package consumes them. Membership and inherited aliases are not resolved."
+        },
+        {
+          "sourceId": "SRC-CARGO-MANIFEST",
+          "locator": "Cargo.toml table structure, bounded ASCII package-name subset and override/build metadata. No Rust compilation or complete Cargo validation."
+        },
+        {
+          "sourceId": "SRC-CARGO-CONFIG",
+          "locator": "Source/registry overrides and embedded credentials are possible. Selected configuration paths flag unresolved coverage; their values are not read."
+        },
+        {
+          "sourceId": "SRC-AWS-RUST-SDK",
+          "locator": "Selected Cargo package identity only; installation, runtime use and provider practices are not established."
+        },
+        {
+          "sourceId": "SRC-AWS-RUST-S3",
+          "locator": "Selected Cargo package identity only; installation, runtime use and provider practices are not established."
+        },
+        {
+          "sourceId": "SRC-SENTRY-RUST-SDK",
+          "locator": "Selected Cargo package identity only; installation, runtime use and provider practices are not established."
+        },
+        {
+          "sourceId": "SRC-MONGODB-RUST-DRIVER",
+          "locator": "Selected Cargo package identity only; installation, runtime use and provider practices are not established."
+        },
+        {
+          "sourceId": "SRC-REDIS-RUST-CLIENT",
+          "locator": "Selected Cargo package identity only; installation, runtime use and provider practices are not established."
         }
       ],
       "discoverySourceIds": [],
@@ -7335,7 +7455,11 @@
         "packages/notabenda/src/catalog-composer-policy.ts",
         "catalog/composer-providers.json",
         "packages/notabenda-cf/src/catalog-reference.ts",
-        "packages/notabenda-cf/src/catalog-composer-policy.ts"
+        "packages/notabenda-cf/src/catalog-composer-policy.ts",
+        "packages/notabenda/src/catalog-cargo.ts",
+        "packages/notabenda/src/catalog-cargo-policy.ts",
+        "packages/notabenda/src/catalog-toml.ts",
+        "catalog/cargo-providers.json"
       ],
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
@@ -7354,7 +7478,9 @@
         "docs/verification/python-project-discovery.md",
         "packages/notabenda/test/catalog-composer.test.mjs",
         "docs/verification/composer-discovery.md",
-        "site/test/guide-navigation.test.mjs"
+        "site/test/guide-navigation.test.mjs",
+        "packages/notabenda/test/catalog-cargo.test.mjs",
+        "docs/verification/cargo-discovery.md"
       ],
       "implementationNote": "Bounded offline Node scanner and npx CLI, Git ignore-aware selection with fsmonitor disabled, built-in non-Git skips, source/development evidence labels and private exclusive review outputs are implemented. Optional browser path/name/global/marker and combined rules now add minimized channel witnesses, exact rule/source snapshots, local review UI and explicit CLI analysis. Arbitrary regex/executable rules are unsupported. Broader project detectors and automated release-provenance archival remain planned. Explicit wizard --project scanning now feeds the same actual-use confirmation as manual catalog search and writes separate private discovery findings. Noninteractive runs preserve prior pins and never select services from matches. Setup/catalog JSON and tracked source reads reject nonregular inputs without FIFO blocking. Browser/admin local-filesystem scanning remains unavailable. Browser setup links to offline project discovery and displays the npx command for dependency/infrastructure coverage, with manual review and private-report handling. The UI does not execute commands or inspect the local project. Ten additional browser-service signatures now cover common analytics, monitoring and support references, for nineteen rules across sixteen products. Seventeen new first-party references and three official npm identifiers connect to reviewed candidates; older capture snapshots and unaffected product pins remain unchanged. Rule patterns do not validate SDK versions or infer enabled features, execution, identity or legal exemptions."
     },
@@ -11499,7 +11625,7 @@
         "REQ-PRODUCT-SERVICE-DETECTION"
       ],
       "status": "partial",
-      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities. Python manifests distinguish project/optional/group/build candidates, skip TOML prose/comments, bound malformed/cyclic includes, retain limited dynamic/tool selection, minimize private values and work in an offline installed package. Composer cases separate manifest/dev and lock/dev observations, minimize private values, reject duplicate decoded keys, retain unresolved override limits, bound inputs, skip auth files and exercise an offline packed wizard without selecting services.",
+      "expected": "Positive/negative and shared-host fixtures, bounded hostile patterns, no probe requests or SDK/getter execution, minimized witnesses with explicit legacy-name sensitivity, exact snapshot compatibility, unavailable/limited coverage and review-before-apply. Go cases distinguish direct/indirect/test evidence, skip comment/literal confusers, flag unresolved replacements/workspaces and preserve private output and prior pins. Expanded source cases exercise ten product families through both observation channels, partial queues/getters, confusers, historical snapshot preservation and three npm identities. Python manifests distinguish project/optional/group/build candidates, skip TOML prose/comments, bound malformed/cyclic includes, retain limited dynamic/tool selection, minimize private values and work in an offline installed package. Composer cases separate manifest/dev and lock/dev observations, minimize private values, reject duplicate decoded keys, retain unresolved override limits, bound inputs, skip auth files and exercise an offline packed wizard without selecting services. Cargo cases exercise renamed/optional/dev/build/workspace/target declarations, six source-linked identities, bounded malformed TOML, unsupported resolution, config/secret exclusions, no execution, schema parity, old selection pins and an offline packed wizard.",
       "testRefs": [
         "packages/notabenda/test/catalog.test.mjs",
         "packages/notabenda/test/package.test.mjs",
@@ -11515,7 +11641,9 @@
         "packages/notabenda/test/catalog-python-project.test.mjs",
         "docs/verification/python-project-discovery.md",
         "packages/notabenda/test/catalog-composer.test.mjs",
-        "docs/verification/composer-discovery.md"
+        "docs/verification/composer-discovery.md",
+        "packages/notabenda/test/catalog-cargo.test.mjs",
+        "docs/verification/cargo-discovery.md"
       ]
     },
     {

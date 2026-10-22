@@ -2,10 +2,11 @@
 /** @requirements REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-SERVICE-DETECTION */
 import {assertPlainCatalogData as plain} from './catalog-plain.js';
 import {isComposerPackageName,isComposerVendorPrefix} from './catalog-composer-policy.js';
+import {isCargoPackageName,isCargoPackagePrefix} from './catalog-cargo-policy.js';
 import {isGoImportPath} from './catalog-go-policy.js';
 export interface CatalogSource {id:string;url:string;revision:string;checkedOn:string|null;access:'read'|'reference-only';license:string;note:string;title?:string}
 export interface CatalogProvider {id:string;revision:string;name:string;aliases:string[];website?:string;sourceIds:string[];review:'unreviewed'|'technical-reference'}
-export interface CatalogIdentifier {id:string;ecosystem:'npm'|'python'|'terraform'|'docker'|'go'|'composer';match:'exact'|'prefix';value:string;explanation:string;sourceIds:string[]}
+export interface CatalogIdentifier {id:string;ecosystem:'npm'|'python'|'terraform'|'docker'|'go'|'composer'|'cargo';match:'exact'|'prefix';value:string;explanation:string;sourceIds:string[]}
 export interface CatalogStorageHint {sourceRowId:string;name:string;wildcard:boolean;description:string;reportedCategory:string;retentionHint:string;domainHint:string}
 export interface CatalogProfileFact {id:string;title:string;description:string;sourceIds:string[]}
 export interface CatalogProfileLink {id:string;kind:'privacy'|'dpa'|'documentation'|'subprocessors';label:string;url:string;sourceIds:string[]}
@@ -44,7 +45,7 @@ export function normalizeServiceCatalog(input:unknown):ServiceCatalog {
    for(const raw of profile.reviewPrompts){shape(raw,['id','prompt','sourceIds','requirementIds']);need(nonempty(raw.prompt,500));profileRefs(raw.sourceIds,false);strings(raw.requirementIds,8);need((raw.requirementIds as string[]).every(id=>/^REQ-[A-Z0-9-]+$/u.test(id)));}
   }
   list(p.identifiers,100);unique(p.identifiers,ruleIds);
-  for(const r of p.identifiers){shape(r,['id','ecosystem','match','value','explanation','sourceIds']);need(oneOf(r.ecosystem,['npm','python','terraform','docker','go','composer'])&&oneOf(r.match,['exact','prefix'])&&nonempty(r.value,200)&&(r.ecosystem==='go'||/^[a-zA-Z0-9@_./:+-]+$/u.test(String(r.value)))&&nonempty(r.explanation,1000));if(r.ecosystem==='go')need(typeof r.value==='string'&&(r.match==='prefix'?r.value.endsWith('/')&&isGoImportPath(r.value.slice(0,-1)):isGoImportPath(r.value)));if(r.ecosystem==='composer')need(r.match==='prefix'?isComposerVendorPrefix(r.value):isComposerPackageName(r.value));refs(r.sourceIds);}
+  for(const r of p.identifiers){shape(r,['id','ecosystem','match','value','explanation','sourceIds']);need(oneOf(r.ecosystem,['npm','python','terraform','docker','go','composer','cargo'])&&oneOf(r.match,['exact','prefix'])&&nonempty(r.value,200)&&(r.ecosystem==='go'||/^[a-zA-Z0-9@_./:+-]+$/u.test(String(r.value)))&&nonempty(r.explanation,1000));if(r.ecosystem==='go')need(typeof r.value==='string'&&(r.match==='prefix'?r.value.endsWith('/')&&isGoImportPath(r.value.slice(0,-1)):isGoImportPath(r.value)));if(r.ecosystem==='composer')need(r.match==='prefix'?isComposerVendorPrefix(r.value):isComposerPackageName(r.value));if(r.ecosystem==='cargo')need(r.match==='prefix'?isCargoPackagePrefix(r.value):isCargoPackageName(r.value));refs(r.sourceIds);}
   list(p.storageHints,5000);const rows=new Set<string>();
   for(const h of p.storageHints){shape(h,['sourceRowId','name','wildcard','description','reportedCategory','retentionHint','domainHint']);need(nonempty(h.sourceRowId,120)&&!rows.has(String(h.sourceRowId))&&nonempty(h.name,256)&&typeof h.wildcard==='boolean'&&['description','reportedCategory','retentionHint','domainHint'].every(k=>text(h[k])));rows.add(String(h.sourceRowId));}
  }

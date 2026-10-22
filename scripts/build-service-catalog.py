@@ -90,7 +90,16 @@ for product_id,identifiers in composer['productIdentifierAdditions'].items():
  product=products[product_id];product['identifiers']+=identifiers;product['revision']=newer_revision(product['revision'],composer['revision'])
  for source_id in [s for rule in identifiers for s in rule['sourceIds']]:
   if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
-result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),composer['revision']),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
+# Rust crate facts are backend-only; keep browser rule snapshots unchanged.
+cargo=json.loads((root/'catalog/cargo-providers.json').read_text())
+if cargo['schemaVersion']!=1:raise ValueError('Unsupported Cargo signature source version')
+sources+=cargo['sources']
+for product_id,identifiers in cargo['productIdentifierAdditions'].items():
+ if product_id not in products:raise ValueError('Unknown Cargo signature product')
+ product=products[product_id];product['identifiers']+=identifiers;product['revision']=newer_revision(product['revision'],cargo['revision'])
+ for source_id in [s for rule in identifiers for s in rule['sourceIds']]:
+  if source_id not in product['sourceIds']:product['sourceIds'].append(source_id)
+result=dict(schemaVersion=1,kind='notabenda-service-catalog',id='notabenda-reference',revision=newer_revision(newer_revision(newer_revision(profiles['revision'],go['revision']),expanded['revision']),newer_revision(composer['revision'],cargo['revision'])),sources=sources,providers=sorted(providers.values(),key=lambda p:p['id']),products=sorted(products.values(),key=lambda p:p['id']))
 output=json.dumps(result,ensure_ascii=False,separators=(',',':'))+'\n'
 path=root/'packages/notabenda/src/catalog-data.json'
 def emit(path,output):

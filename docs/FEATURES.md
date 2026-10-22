@@ -468,10 +468,11 @@ Features link to individual obligations, implementation files and verification s
 - Human-readable and JSON findings with route, scenario, evidence, and candidate purpose/service mappings.
 - Adopters choose when to run it, whether to use CI, and which findings should block their deployments.
 - Static Go requirements and imports with source-linked SDK namespaces, separate indirect/test evidence and explicit unresolved module/workspace limits.
+- Static Cargo dependency declarations with separate optional, development, build, target and workspace contexts; named source-linked SDK candidates and explicit unresolved inheritance/override limits.
 
 **Requirement links:** [REQ-AU-PIXELS](requirements/README.md#req-au-pixels), [REQ-PRODUCT-DISCOVERY](requirements/README.md#req-product-discovery), [REQ-PRODUCT-SERVICE-DETECTION](requirements/README.md#req-product-service-detection).
 
-**Code references:** [packages/notabenda/src/discovery.ts](../packages/notabenda/src/discovery.ts), [packages/notabenda/src/discovery-ui.ts](../packages/notabenda/src/discovery-ui.ts), [packages/notabenda/src/discovery-cli.ts](../packages/notabenda/src/discovery-cli.ts), [examples/discovery/build.mjs](../examples/discovery/build.mjs), [examples/discovery/client.mjs](../examples/discovery/client.mjs), [packages/notabenda/src/catalog-go.ts](../packages/notabenda/src/catalog-go.ts), [catalog/go-providers.json](../catalog/go-providers.json)
+**Code references:** [packages/notabenda/src/discovery.ts](../packages/notabenda/src/discovery.ts), [packages/notabenda/src/discovery-ui.ts](../packages/notabenda/src/discovery-ui.ts), [packages/notabenda/src/discovery-cli.ts](../packages/notabenda/src/discovery-cli.ts), [examples/discovery/build.mjs](../examples/discovery/build.mjs), [examples/discovery/client.mjs](../examples/discovery/client.mjs), [packages/notabenda/src/catalog-go.ts](../packages/notabenda/src/catalog-go.ts), [catalog/go-providers.json](../catalog/go-providers.json), [packages/notabenda/src/catalog-cargo.ts](../packages/notabenda/src/catalog-cargo.ts), [catalog/cargo-providers.json](../catalog/cargo-providers.json)
 
 <a id="feat-google"></a>
 

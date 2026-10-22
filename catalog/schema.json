@@ -344,7 +344,8 @@
             "terraform",
             "docker",
             "go",
-            "composer"
+            "composer",
+            "cargo"
           ]
         },
         "match": {
@@ -451,6 +452,36 @@
               "properties": {
                 "value": {
                   "pattern": "^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9](([_.]|-{1,2})?[a-z0-9]+)*$"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "ecosystem": {
+                "const": "cargo"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "pattern": "^[A-Za-z0-9_-]{1,64}$"
+              }
+            },
+            "if": {
+              "properties": {
+                "match": {
+                  "const": "prefix"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "value": {
+                  "pattern": "^[A-Za-z0-9_-]{0,63}[-_]$"
                 }
               }
             }

@@ -1897,3 +1897,93 @@ Official Composer package identifier only; no provider-practice, installation, r
 **Type:** regulator-guidance. **Checked:** 2026-10-22. **Access:** read.
 
 Read all four pages, including the illustrative UI scenarios and page-4 review questions. Issued 4 September 2024. The advisory disclaims legal advice, substantive policy and safe harbor; statutes and regulations control.
+
+<a id="src-cargo-dependencies"></a>
+
+## SRC-CARGO-DEPENDENCIES
+
+[Cargo dependency declarations](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Dependency tables, package renaming, optional flags, target-specific declarations and inherited dependency limits.
+
+<a id="src-cargo-workspaces"></a>
+
+## SRC-CARGO-WORKSPACES
+
+[Cargo workspace declarations](https://doc.rust-lang.org/cargo/reference/workspaces.html)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Workspace dependency definitions are declarations, not evidence a selected package consumes them. Membership and inherited aliases are not resolved.
+
+<a id="src-cargo-manifest"></a>
+
+## SRC-CARGO-MANIFEST
+
+[Cargo manifest format](https://doc.rust-lang.org/cargo/reference/manifest.html)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Cargo.toml table structure, bounded ASCII package-name subset and override/build metadata. No Rust compilation or complete Cargo validation.
+
+<a id="src-cargo-config"></a>
+
+## SRC-CARGO-CONFIG
+
+[Cargo configuration](https://doc.rust-lang.org/cargo/reference/config.html)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Source/registry overrides and embedded credentials are possible. Selected configuration paths flag unresolved coverage; their values are not read.
+
+<a id="src-aws-rust-sdk"></a>
+
+## SRC-AWS-RUST-SDK
+
+[Aws Rust Sdk](https://docs.aws.amazon.com/sdk-for-rust/latest/dg/hello.html)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices.
+
+<a id="src-aws-rust-s3"></a>
+
+## SRC-AWS-RUST-S3
+
+[Aws Rust S3](https://raw.githubusercontent.com/awslabs/aws-sdk-rust/main/sdk/s3/Cargo.toml)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices.
+
+<a id="src-sentry-rust-sdk"></a>
+
+## SRC-SENTRY-RUST-SDK
+
+[Sentry Rust Sdk](https://raw.githubusercontent.com/getsentry/sentry-rust/master/sentry/Cargo.toml)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices.
+
+<a id="src-mongodb-rust-driver"></a>
+
+## SRC-MONGODB-RUST-DRIVER
+
+[Mongodb Rust Driver](https://www.mongodb.com/docs/drivers/rust/current/get-started/)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices.
+
+<a id="src-redis-rust-client"></a>
+
+## SRC-REDIS-RUST-CLIENT
+
+[Redis Rust Client](https://redis.io/docs/latest/develop/clients/rust/)
+
+**Type:** technical-reference. **Checked:** 2026-10-22. **Access:** read.
+
+Retrieved technical reference identifies these Cargo crate names. Only identifier facts and original notes are recorded; no SDK code or documentation prose is imported. A match does not establish installation, runtime use, hosting or provider practices. Redis documents this third-party client and states it is not developed or supported directly by Redis.

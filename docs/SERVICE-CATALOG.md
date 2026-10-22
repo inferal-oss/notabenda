@@ -2,7 +2,7 @@
 
 ## Search a project with npx
 
-After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports, Composer manifests/locks and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
+After installing the preview package, run `npx @notabenda/core discover --project . --out-dir ./service-review`. The scanner searches supported npm dependencies, JavaScript/TypeScript imports, Python package declarations, Go requirements/imports, Composer manifests/locks, Cargo manifests and Terraform names against the same product identifiers used by setup and the service directory. It does not execute project code, install dependencies, send requests or infer production use. Review its private output, then explicitly select confirmed services in setup. A dependency can be unused, development-only or a self-hosted integration; unsupported languages and dynamic configuration can be missed.
 
 For a single interactive workflow, run `npx @notabenda/core wizard --project . --out-dir ./setup-review`. After purpose authoring, detected candidates open the same explicit actual-use review as catalog search. Noninteractive `--answers` runs save the scan without selecting services. An optional `--catalog FILE` selects the scanner/search reference; the default seed remains lazy unless requested. Findings stay in a separate ignored `discovery.private.json`, and existing reviewed pins do not refresh from a new scan. See [guided setup](SETUP.md#find-project-services-during-setup).
 
@@ -43,7 +43,7 @@ const draft = createCatalogServiceDraft(catalog, 'stripe-payments', {
 
 `@notabenda/core/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `@notabenda/core/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
 
-Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports, Composer requirements/lock observations and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements, test-file imports and Composer lock observations. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
+Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports, Composer requirements/lock observations, Cargo dependency declarations and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements, test-file imports and Composer lock observations. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
 
 Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files (including Composer’s `auth.json`), symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
@@ -298,3 +298,24 @@ These contexts describe source declarations, not the resolved build or a product
 A replacement, exclusion or selected `go.work` file makes coverage **limited**. The scanner does not follow those paths or run `go list`, `go mod` or a build. Build tags, vendoring and escaped import paths are not resolved. `go.sum` alone does not add a candidate. Review the active deployment and provider relationship yourself before selecting a service. The same findings are available to `wizard --project`; no extra wizard step or automatic service selection is introduced.
 
 SDK signatures and their retrieved references live in [the Go seed](../catalog/go-providers.json). See [verification](verification/go-discovery.md). Updating the seed revises affected products; existing setup pins still require explicit re-review rather than a background refresh.
+
+## Rust / Cargo projects
+
+Run the same `npx @notabenda/core discover --project . --out-dir ./service-review` command. It reads each selected `Cargo.toml` and matches declared package names. The seed covers `aws-config`, `aws-sdk-s3`, `aws-sdk-dynamodb`, `sentry`, `mongodb` and `redis`. Each signature has a retrieved technical reference; a database driver does not identify a hosting provider. Redis documents `redis-rs` as a third-party client.
+
+| Declaration | Evidence context |
+| --- | --- |
+| `dependencies` | `dependency` |
+| Normal dependency with `optional = true` | `optional-dependency` |
+| `dev-dependencies` | `development-dependency` |
+| `build-dependencies` | `build-dependency` |
+| `workspace.dependencies` | `workspace-dependency`; consumption is unresolved |
+| `target` dependency tables | The corresponding context prefixed with `target-` |
+
+A renamed dependency uses its explicit `package` name. An inherited `workspace = true` key may itself be an alias, so it contributes no guessed package identity. Workspace and target declarations flag limited coverage: membership, features and target selection are not evaluated. Git/path/alternate-registry references and overrides also flag unresolved coverage. Their values, aliases and conditions are omitted from findings. The scanner does not follow dependency paths, resolve locks, inspect Rust imports or run Cargo, rustc or build scripts.
+
+Selected `.cargo/config` and `.cargo/config.toml` paths flag limited coverage without reading their contents; these files can contain credentials and source overrides. Cargo credentials, generated `target` directories, ignored files and symlinks remain excluded. Ancestor/global configuration and environment overrides are outside the scan. No configuration is applied or service selected automatically.
+
+Custom catalogs use `ecosystem: 'cargo'`, an exact bounded ASCII crate name, or a prefix ending in `-` or `_`. Matching preserves case and punctuation. These are identifier rules, not namespace-ownership claims. Historical selected references remain readable; new catalog facts require explicit review.
+
+Sources checked 22 October 2026 UTC: [Cargo declarations](https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html), [workspaces](https://doc.rust-lang.org/cargo/reference/workspaces.html), [manifest format](https://doc.rust-lang.org/cargo/reference/manifest.html) and [configuration](https://doc.rust-lang.org/cargo/reference/config.html). SDK references live in [the Cargo seed](../catalog/cargo-providers.json). See [verification](verification/cargo-discovery.md).

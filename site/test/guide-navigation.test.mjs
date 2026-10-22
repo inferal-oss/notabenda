@@ -43,3 +43,12 @@ test('Composer discovery stays in the service setup path with a working section 
  const report=new JSDOM(await readFile(new URL('../dist/public'+route+'/index.html',import.meta.url),'utf8'));
  assert.equal(report.window.document.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/start/');assert.equal(report.window.document.querySelector('.guide-nav-desktop [aria-current="page"]').getAttribute('href'),route);report.window.close();
 });
+
+// @requirements REQ-PRODUCT-SERVICE-DETECTION
+test('Cargo discovery stays with project setup and links its declaration contexts to verification',async()=>{
+ const route='/guide/verification/cargo-discovery';assert.equal(sectionForGuide(route).id,'start');
+ const doc=new JSDOM(await readFile(new URL('../dist/public/guide/service-catalog/index.html',import.meta.url),'utf8'));
+ assert.match(doc.window.document.querySelector('#rust-cargo-projects').textContent,/Rust/);assert.ok(doc.window.document.querySelector('#main a[href="/guide/verification/cargo-discovery"]'));assert.match(doc.window.document.querySelector('#main').textContent,/workspace-dependency/);doc.window.close();
+ const report=new JSDOM(await readFile(new URL('../dist/public'+route+'/index.html',import.meta.url),'utf8'));
+ assert.equal(report.window.document.querySelector('.guide-breadcrumb a:last-child').getAttribute('href'),'/guide/areas/start/');report.window.close();
+});

@@ -35,3 +35,7 @@ Go matching is case-sensitive. Exact rules identify a module/package root; prefi
 `composer-providers.json` adds seven exact package names to existing provider/client products. Each has a retrieved official reference, an explicit catalog/product revision and original factual notes. No SDK code or provider legal text is imported. Products remain unreviewed, and existing selected snapshots stay readable.
 
 The Node scanner separates manifest requirements/development requirements from lock-package/development-lock observations. It never runs PHP or Composer, follows repository paths, resolves versions or infers installed/live use. See [PHP / Composer discovery](../docs/SERVICE-CATALOG.md#php-composer-projects).
+
+## Cargo crate signatures
+
+`cargo-providers.json` adds six exact crate names to four existing SDK/client products, with retrieved technical references and explicit affected-product revisions. No SDK code or documentation text is imported. Products remain unreviewed; a client does not establish its hosting provider. The shared Node TOML reader preserves declaration contexts and unresolved workspace/target/source choices. See [Rust / Cargo discovery](../docs/SERVICE-CATALOG.md#rust-cargo-projects).

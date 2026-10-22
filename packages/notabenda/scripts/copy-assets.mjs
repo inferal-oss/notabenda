@@ -44,6 +44,6 @@ await copyFile(new URL('../../../node_modules/yaml/LICENSE',import.meta.url),new
 
 // @requirements REQ-PRODUCT-SERVICE-DETECTION
 // Bundle the pinned parser only into the Node project scanner, with its original license.
-await build({entryPoints:[new URL('../src/catalog-python-project.ts',import.meta.url).pathname],outfile:new URL('../dist/catalog-python-project.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline'});
-await rm(new URL('../dist/catalog-python-project.js.map',import.meta.url),{force:true});
+await build({entryPoints:[new URL('../src/catalog-toml.ts',import.meta.url).pathname],outfile:new URL('../dist/catalog-toml.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline'});
+await rm(new URL('../dist/catalog-toml.js.map',import.meta.url),{force:true});
 await copyFile(new URL('../../../node_modules/smol-toml/LICENSE',import.meta.url),new URL('../dist/licenses/smol-toml-LICENSE.txt',import.meta.url));

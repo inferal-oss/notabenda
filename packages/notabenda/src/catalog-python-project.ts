@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG
-import {parse} from 'smol-toml';
+import {readProjectToml} from './catalog-toml.js';
 
 type Context='dependency'|'optional-dependency'|'dependency-group'|'build-dependency';
 export interface PythonProjectIdentifiers {identifiers:{identifier:string;context:Context}[];limited:boolean}
@@ -11,7 +11,7 @@ const normalized=(v:string)=>v.toLowerCase().replace(/[-_.]+/gu,'-');
 export function pythonProjectIdentifiers(source:string):PythonProjectIdentifiers {
  const identifiers:PythonProjectIdentifiers['identifiers']=[];let limited=false,count=0;
  let root:Record<string,unknown>;
- try{if(Buffer.byteLength(source)>262144)return {identifiers,limited:true};root=parse(source,{maxDepth:32,unsafeKeyBehaviour:'throw',integersAsBigInt:'asNeeded'});}catch{return {identifiers,limited:true};}
+ try{root=readProjectToml(source);}catch{return {identifiers,limited:true};}
  const tick=()=>{if(++count>10000){limited=true;return false;}return true;};
  const requirement=(value:unknown,context:Context)=>{
   if(typeof value!=='string'||value.length>4096){limited=true;return;}

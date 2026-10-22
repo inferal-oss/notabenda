@@ -96,6 +96,8 @@ The [guided setup wizard](SETUP.md) now shares a bounded questionnaire/recommend
 
 Go project discovery now reads static module requirements and package imports, including separate indirect/test contexts and explicit unresolved build-graph limits. Seven SDK families have source-linked namespace signatures; matches still need actual-use review. See [service discovery](SERVICE-CATALOG.md#go-projects).
 
+Rust project discovery now reads static Cargo dependency declarations, including renamed packages and distinct optional/dev/build/workspace/target contexts. It records six source-linked crate identities while leaving inherited aliases, resolution and runtime use unresolved. See [Cargo discovery](SERVICE-CATALOG.md#rust-cargo-projects).
+
 Python project discovery now reads standard `pyproject.toml` project, optional, group and build requirements with separate evidence contexts. A pinned Node-only TOML parser and bounded group checks preserve private source/value boundaries; dynamic and unsupported tool selection stays limited coverage. See [Python discovery](SERVICE-CATALOG.md#python-projects).
 
 PHP [Composer discovery](SERVICE-CATALOG.md#php-composer-projects) now separates direct/development declarations from lock observations, with seven source-backed exact package signatures. Private values and auth files stay excluded; unresolved overrides and bounded input failures remain limited coverage. It does not run PHP/Composer or establish installed/live use.
