@@ -10282,7 +10282,8 @@
       "testRefs": [
         "packages/notabenda/test/document-explanation.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/document-inputs.md"
+        "docs/verification/document-inputs.md",
+        "site/test/guide-navigation.test.mjs"
       ]
     }
   ],
@@ -12302,7 +12303,8 @@
       "testRefs": [
         "packages/notabenda/test/document-explanation.test.mjs",
         "packages/notabenda/test/package.test.mjs",
-        "docs/verification/document-inputs.md"
+        "docs/verification/document-inputs.md",
+        "site/test/guide-navigation.test.mjs"
       ]
     }
   ],

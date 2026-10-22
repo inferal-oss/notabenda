@@ -8,3 +8,5 @@ The report describes current configuration inputs. It neither changes a release 
 CLI cases cover JSON/YAML/Markdown parity, explicit files/document kinds, duplicate and unrelated flags, no writes, authoring typos, accessor rejection and production draft refusal. The packed-consumer test invokes the installed command and type-checks the build-time API.
 
 Paths describe declaration dependencies, with the whole selected localization dictionary identified as one dependency. They do not prove minimal byte-level dependencies, historical source attribution or actual notification. Supplied content remains supplied; MDX sources/components require their separate compiled preview and trust review. Generated section IDs without a registered explanation fail rather than silently losing attribution.
+
+Website checks verify that both the guide and its verification report belong to Publish privacy information, with the matching breadcrumb, current sidebar entry and area-directory link.
