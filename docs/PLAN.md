@@ -329,6 +329,8 @@ Browser delivery now has an explicit `@notabenda/core/headless` export, a consen
 
 Selected [native Safari terms checks](verification/terms-browser.md#22-october-native-safari-reader-agreement-and-evidence) now exercise pinned reading, deliberate keyboard acknowledgment, status focus, scoped evidence search and callback-rejection retry. Exact fixture reader publication is checked separately from the hosted demo; full platform, network, assistive and production host acceptance remains open.
 
+A separate [HTTP receipt-loss rehearsal](verification/terms-browser.md#http-receipt-loss-rehearsal) now exercises the real demo transport and recorder with a response interrupted after commit, an explicit same-controller retry and independent server observations. Cross-reload host recovery, durable persistence and broader network/provider acceptance remain separate work.
+
 ## 11. Public release checklist and deferred work
 
 Before release: verify npm names; include the project's Apache-2.0 OR MIT license choice and both license texts; document separate content licenses; include a security reporting policy; pin/review dependencies; verify package contents exclude secrets and private examples; provide install/uninstall/migration instructions and evidence-format versioning. Use only fictional operators, domains, vendors, and subjects in project fixtures and examples.

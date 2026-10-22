@@ -57,3 +57,27 @@ Keyboard submission showed the explicit unconfirmed error and focused its status
 The review also found a broken fixture document link: its offer referenced a compiled release that the local server did not serve. The fixture now keeps exact pinned HTML in its own generated directory. A bounded manifest exposes only those canonical reader paths through the read-only loopback server. Tests compare served bytes with the offer's HTML hash, retain ordinary public-file fallback and reject unrelated/duplicate/oversized manifests and escaping symlinks. Native Safari then opened the fixed reader and followed its contents on the same pinned path. These test releases never enter deployable site output.
 
 Run `npm run a11y:fixture`, then `npm run a11y:serve -- --port 4188` after the normal package/site build. Open the terms widget above and make the explicit keyboard choice. This verifies callback-rejection presentation; real HTTP outages, uncertain delivery, browser retry identity, other framework views and full host acceptance remain separate work.
+
+## HTTP receipt-loss rehearsal
+
+<!-- @requirements REQ-PRODUCT-TERMS-ACCEPTANCE -->
+The dedicated maintainer check uses the actual demo agreement transport, native field and Cloudflare recorder across real loopback HTTP:
+
+```sh
+npm run build
+npm run terms:transport -- --port 4208
+```
+
+Open the printed loopback URL. Reading and checking the field send no agreement. On the first explicit submission, the recorder commits, then the server transmits HTTP headers and only part of the JSON receipt before closing the connection. The field must keep the outcome unconfirmed. Explicit retry should send the same command, recover the original receipt and leave one stored record. A separate read-only panel reports server attempt/record counts and canonical command/receipt equality; it does not change the controller's outcome.
+
+The process uses fresh in-memory storage and fictional terms. It binds only to loopback, serves an explicit asset map and the exact pinned terms reader, and accepts bounded submissions only for its synthetic server context with matching Host/Origin/demo headers. No operational account, authentication credential or durable database is used. Four accepted attempts bound a run; restart this dedicated server for a fresh run. An occupied port is an error and no existing server is stopped. The separate accessibility server remains read-only.
+
+Automated cases exercise an actual truncated response, the real recorder and controller, a deliberate retry, one-record preservation, a changed-command negative control, request guards, pinned HTML bytes, isolated assets and the concurrent attempt bound. They do not substitute a mocked callback error for HTTP loss. The browser fixture uses the existing demo transport; automated controller tests supply their own fetch callback.
+
+This check covers same-controller explicit retry. Reload starts unchecked and does not recover a pending request; the host must retain and bind its own uncertain operation/request when cross-reload recovery is required. Server restarts discard this fixture's data. It is not a Durable Object persistence/restart test, arbitrary network-failure simulation, provider acknowledgment test, legal review or production host acceptance.
+
+### Native Safari observation, 22 October 2026
+
+The desktop run used Option-Tab, Space and Return with browser preferences unchanged. Initial load and checking left both server counts at zero. The first explicit action showed the unconfirmed error and focused its status container; server observations showed one accepted attempt and one stored record. Shift-Option-Tab returned to the enabled action. Return retried, the field acknowledged its pinned version and disabled both controls, and the panel showed two attempts, one record, the same canonical command and the original receipt. Reload then started unchecked/disabled with no acknowledgment and unchanged server counts. A separate current-server read confirmed those final observations.
+
+Screenshots and accessibility observations are retained privately. The browser version and CSS viewport were not independently established; this is selected desktop Safari evidence, not complete platform or assistive-technology acceptance. The test tab was closed and the dedicated server stopped after inspection.

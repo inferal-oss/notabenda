@@ -5563,12 +5563,16 @@
         "packages/notabenda/src/styles.css",
         "packages/notabenda-cf/src/admin-style.ts",
         "examples/static/terms-build.mjs",
-        "examples/static/example-theme.css"
+        "examples/static/example-theme.css",
+        "scripts/terms-transport-fixture.mjs",
+        "scripts/terms-transport-client.mjs",
+        "scripts/terms-transport-fixture.css"
       ],
       "testRefs": [
         "packages/notabenda/test/terms.test.mjs",
         "docs/verification/terms-browser.md",
-        "packages/notabenda-cf/test/admin.test.mjs"
+        "packages/notabenda-cf/test/admin.test.mjs",
+        "site/test/terms-transport-fixture.test.mjs"
       ],
       "implementationNote": "Immutable offer registration, explicit activation, active-check plus acceptance write in one transaction, deterministic per-site/subject/request idempotence, conservative client acknowledgment and readable agreement context are implemented. No public ingestion/auth endpoint is supplied."
     },
@@ -11002,11 +11006,12 @@
         "REQ-PRODUCT-TERMS-ACCEPTANCE"
       ],
       "status": "automated",
-      "expected": "Exercise unchecked/coalesced submission, exact pinned document/action hashes, no optimistic success, lost-ack retry, active-offer transaction race, idempotency conflicts, server-bound subject/site/scope/operation, independent preview rejection, invalid clocks, store isolation and readable authorized evidence. Selected native Safari desktop review covers pinned reading, explicit keyboard submission/status focus, scoped evidence search and retryable callback failure; broader platform/network acceptance remains open.",
+      "expected": "Exercise unchecked/coalesced submission, exact pinned document/action hashes, no optimistic success, lost-ack retry, active-offer transaction race, idempotency conflicts, server-bound subject/site/scope/operation, independent preview rejection, invalid clocks, store isolation and readable authorized evidence. Selected native Safari desktop review covers pinned reading, explicit keyboard submission/status focus, scoped evidence search and retryable callback failure; broader platform/network acceptance remains open. A dedicated loopback fixture commits through the real recorder then truncates the HTTP receipt; controller tests require explicit same-command retry, one retained event and the original receipt. A changed-command control must expose a second record. This is same-controller transport recovery, not host cross-reload or durable restart acceptance. Selected native Safari keyboard checks observe the real HTTP-loss error, explicit retry, original receipt and unchanged one-record count; reload sends nothing. Browser/version/viewport, assistive, mobile and production-host limits remain explicit.",
       "testRefs": [
         "packages/notabenda/test/terms.test.mjs",
         "docs/verification/terms-browser.md",
-        "packages/notabenda-cf/test/admin.test.mjs"
+        "packages/notabenda-cf/test/admin.test.mjs",
+        "site/test/terms-transport-fixture.test.mjs"
       ]
     },
     {
