@@ -43,7 +43,7 @@ const draft = createCatalogServiceDraft(catalog, 'stripe-payments', {
 
 `@notabenda/core/catalog/project` exports the Node-only `scanProjectServices(directory, catalog)` API. The optional seed is absent from normal consent graphs. The published schema is available at `@notabenda/core/catalog/schema.json` and [/schemas/service-catalog-v1.json](/schemas/service-catalog-v1.json). Cross-reference/identity and resource checks additionally run in the normalizer.
 
-Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports, Go requirements/imports and Terraform resource/data names. It distinguishes development dependencies, Go indirect requirements and test-file imports. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
+Static scan recognizes declared npm dependencies, JavaScript/TypeScript module imports, Python requirements/imports and standard `pyproject.toml` dependency tables, Go requirements/imports and Terraform resource/data names. It distinguishes development dependencies, Python optional/group/build requirements, Go indirect requirements and test-file imports. Generic drivers, self-hosted software, commented imports and unused dependencies remain candidates. It does not establish deployed services. Docker identifier matching is available for custom catalog rules; the current seed has no reviewed Docker signatures. Optional browser path/global/combined signatures are described in [the discovery guide](DISCOVERY.md); additional language/config-file detectors remain planned.
 
 Git projects use Git's ignored-file selection with filesystem monitoring disabled; failure to obtain that selection does not fall back to scanning ignored files in an identifiable repository. Non-Git projects use documented built-in skips. The scan excludes secret-named files, symlinks, dependency/generated directories and unsupported extensions. Limits are 5,000 selected files, 256 KiB per file, 32 MiB total read data and 20,000 distinct identifier tokens, with explicit limited coverage. It stores matched file/rule/known identifier references, never source snippets, dependency values, credentials or project execution results. Output paths and identifiers can still reveal private structure.
 
@@ -52,6 +52,30 @@ Git projects use Git's ignored-file selection with filesystem monitoring disable
 The [service directory guide](SERVICES.md) covers the shared native/React/Astro renderers, local search, themes and retained-inventory views. A reviewed `draft.service` can be added explicitly to the site configuration; the directory never imports or publishes the reference seed.
 
 The [setup guide](SETUP.md) covers purpose authoring and the CLI/admin selection flow. A fresh setup can declare actual processing purposes before selecting services, with unresolved basis/retention text retained as production-blocking draft placeholders. `@notabenda/core/catalog/selection` exports explicit draft selection and private pin validation; `@notabenda/core/catalog/ui` supplies the optional local picker. Use the explicit release finalizer below to retain selected references with policies.
+
+## Python projects
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG -->
+Run the same private scan from the project directory:
+
+```sh
+npx @notabenda/core discover --project . --out-dir ./discovery-review
+```
+
+The scanner reads these standard `pyproject.toml` declarations through a bundled TOML parser:
+
+| Table/field | Evidence context | How to review it |
+| --- | --- | --- |
+| `project.dependencies` | `dependency` | Check whether the application actually uses the provider. |
+| `project.optional-dependencies` | `optional-dependency` | Check which extras are installed. A declared extra may be unused. |
+| `dependency-groups` | `dependency-group` | Check the selected deployment or development groups. The group name alone does not decide its role. |
+| `build-system.requires` | `build-dependency` | Review build tooling separately from visitor/application processing. |
+
+Named requirements with extras, version constraints, markers or direct URLs can produce candidates. Only the known catalog identifier and context enter evidence; those other values and the names of extras/groups are omitted. This is not a complete requirement-syntax validator or environment resolver. It does not evaluate markers, install extras, run a build backend, follow a URL/path or infer deployment from a lockfile.
+
+Every dependency group is scanned once. Includes are checked for missing targets, cycles, normalized-name collisions and bounds; they never expand into repeated work. Malformed TOML/fields and unresolved dynamic dependencies report limited coverage. Poetry/PDM dependency tables and uv source/workspace overrides also make coverage limited; these tool-specific environments are not resolved. Standard named candidates can still be reported for review.
+
+File selection, secret/symlink exclusions and private output permissions are shared with the other project scanners. The parser stays in the Node scanner, outside ordinary visitor bundles. Its pinned BSD-3-Clause license is included in the package. See the [PyPA project specification](https://packaging.python.org/en/latest/specifications/pyproject-toml/), [dependency groups](https://packaging.python.org/en/latest/specifications/dependency-groups/) and [dependency specifiers](https://packaging.python.org/en/latest/specifications/dependency-specifiers/), checked 22 October 2026 UTC.
 
 ## Design direction
 

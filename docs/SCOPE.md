@@ -348,3 +348,8 @@ Connect selected current statutory consent, purpose/notification, withdrawal and
 
 <!-- @requirements REQ-JP-RELATED-SCOPE REQ-JP-RECIPIENT-CONSENT REQ-JP-RELATED-FOREIGN -->
 Use selected Japanese PPC guidance to review personally referable information, expected recipient acquisition, consent confirmation and the applicable foreign-recipient information route. Keep the current consolidated-law and commencement gaps explicit; an older translation or promulgation date must not activate runtime behavior. Japan market interest/imported jurisdiction adds advice without changing scopes, classifications, historical answers or permissions. Reuse the existing cookie pack. Recipient confirmation, specialized provision/receipt records, full applicability and legal review remain host/research work.
+
+## Python project discovery
+
+<!-- @requirements REQ-PRODUCT-SERVICE-DETECTION REQ-PRODUCT-SERVICE-CATALOG -->
+Read standard pyproject project, optional, group and build dependencies as separate candidate evidence. Keep versions, URLs, markers and group names private, and never run project tools, build backends or installers. Use a pinned licensed parser only in the Node scanner; preserve visitor bundle boundaries. Group/entry limits and unresolved dynamic or tool-specific selection remain explicit limited coverage. Discovery does not select an environment, alter inventory, grant permission or decide CI.

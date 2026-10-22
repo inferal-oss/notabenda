@@ -1755,3 +1755,33 @@ Official law-data request returned HTTP 403. The legacy law link from PPC also f
 **Type:** official-explanation. **Checked:** 2026-10-22. **Access:** blocked.
 
 PPC labels the linked consolidation as 1 April 2023. Retrieval returned HTTP 200 but the document says System Maintenance; content identity failed. The translation was not treated as read or as the current binding law.
+
+<a id="src-pypa-pyproject"></a>
+
+## SRC-PYPA-PYPROJECT
+
+[PyPA pyproject.toml specification](https://packaging.python.org/en/latest/specifications/pyproject-toml/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Project dependencies, optional dependencies, dynamic metadata and build-system requirements; used for named static candidates, not environment resolution.
+
+<a id="src-pypa-groups"></a>
+
+## SRC-PYPA-GROUPS
+
+[PyPA dependency groups specification](https://packaging.python.org/en/latest/specifications/dependency-groups/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Normalized group names, requirement/include entries and include semantics. The scanner reads each declared group once and validates bounded includes without environment selection.
+
+<a id="src-pypa-specifiers"></a>
+
+## SRC-PYPA-SPECIFIERS
+
+[PyPA dependency specifiers specification](https://packaging.python.org/en/latest/specifications/dependency-specifiers/)
+
+**Type:** technical-documentation. **Checked:** 2026-10-22. **Access:** read.
+
+Named requirement structure, extras, markers and direct references. Only distribution-name candidates are extracted; full grammar validation, values and environment resolution are outside this scanner.

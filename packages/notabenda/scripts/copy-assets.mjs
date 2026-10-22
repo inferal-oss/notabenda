@@ -41,3 +41,9 @@ for(const path of ['SKILL.md','agents/openai.yaml','references/configuration-tar
 await build({entryPoints:[new URL('../src/config-yaml.ts',import.meta.url).pathname],outfile:new URL('../dist/config-yaml.js',import.meta.url).pathname,bundle:true,platform:'browser',format:'esm',target:'es2022',sourcemap:false,legalComments:'inline'});
 await rm(new URL('../dist/config-yaml.js.map',import.meta.url),{force:true});
 await copyFile(new URL('../../../node_modules/yaml/LICENSE',import.meta.url),new URL('../dist/licenses/yaml-LICENSE.txt',import.meta.url));
+
+// @requirements REQ-PRODUCT-SERVICE-DETECTION
+// Bundle the pinned parser only into the Node project scanner, with its original license.
+await build({entryPoints:[new URL('../src/catalog-python-project.ts',import.meta.url).pathname],outfile:new URL('../dist/catalog-python-project.js',import.meta.url).pathname,bundle:true,platform:'node',format:'esm',target:'node22',sourcemap:false,legalComments:'inline'});
+await rm(new URL('../dist/catalog-python-project.js.map',import.meta.url),{force:true});
+await copyFile(new URL('../../../node_modules/smol-toml/LICENSE',import.meta.url),new URL('../dist/licenses/smol-toml-LICENSE.txt',import.meta.url));
