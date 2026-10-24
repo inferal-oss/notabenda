@@ -5766,7 +5766,7 @@
       "jurisdiction": "PRODUCT",
       "title": "Safe content, links, routes, and output writing",
       "kind": "product-standard",
-      "summary": "Escape supplied text and reject unsafe links, inconsistent fields, traversal routes, and symbolic-link output destinations.",
+      "summary": "Escape supplied text and reject unsafe links, inconsistent fields, traversal routes and symbolic-link output destinations. Read authored project sources as bounded regular UTF-8 files without following symlinks or waiting for special files.",
       "appliesWhen": "The corresponding package feature is used.",
       "sourceRefs": [],
       "discoverySourceIds": [],
@@ -5786,13 +5786,16 @@
       "implementationRefs": [
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/documents.ts",
-        "packages/notabenda/src/files.ts"
+        "packages/notabenda/src/files.ts",
+        "packages/notabenda-authoring/src/index.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
         "packages/notabenda/test/documents.test.mjs",
         "packages/notabenda/test/content.test.mjs",
-        "packages/notabenda/test/cli.test.mjs"
+        "packages/notabenda/test/cli.test.mjs",
+        "packages/notabenda-authoring/test/file-source.test.mjs",
+        "docs/verification/authoring.md"
       ]
     },
     {
@@ -6277,7 +6280,8 @@
         "site/test/host.test.mjs",
         "scripts/check-site-runtime.mjs",
         "docs/verification/authoring.md",
-        "site/test/documentation-links.test.mjs"
+        "site/test/documentation-links.test.mjs",
+        "packages/notabenda-authoring/test/file-source.test.mjs"
       ],
       "implementationNote": "Optional Node build package compiles Markdown/MDX with strict YAML frontmatter and static custom components. Source/output hashes bind immutable private archives; the host-authorized backend supports escaped source inspection and source/rendered comparisons. Core and CF packages retain zero runtime dependencies."
     },
@@ -12141,12 +12145,13 @@
         "REQ-PRODUCT-SAFE-CONTENT"
       ],
       "status": "automated",
-      "expected": "Hostile content is inert; unsafe mailto/site links, malformed optional text, unsafe paths, and symlink destinations fail without leaking private metadata or replacing their targets.",
+      "expected": "Hostile content is inert; unsafe mailto/site links, malformed optional text, unsafe paths, and symlink destinations fail without leaking private metadata or replacing their targets. Local authoring file reads preserve source bytes within 24 KiB and reject invalid UTF-8, special files, symlinks, replacement races and growth beyond the limit without disclosing paths or contents.",
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
         "packages/notabenda/test/documents.test.mjs",
         "packages/notabenda/test/content.test.mjs",
-        "packages/notabenda/test/cli.test.mjs"
+        "packages/notabenda/test/cli.test.mjs",
+        "packages/notabenda-authoring/test/file-source.test.mjs"
       ]
     },
     {
@@ -12281,13 +12286,14 @@
         "REQ-PRODUCT-AUTHORING"
       ],
       "status": "automated",
-      "expected": "Both .md and .mdx compile with validated YAML frontmatter, stable section IDs, custom component rendering, source and output hashes, review guards and readable revision diffs. Invalid metadata fails clearly; default core remains import-safe and framework-free.",
+      "expected": "Both .md and .mdx compile with validated YAML frontmatter, stable section IDs, custom component rendering, source and output hashes, review guards and readable revision diffs. Invalid metadata fails clearly; default core remains import-safe and framework-free. Local authoring file reads preserve source bytes within 24 KiB and reject invalid UTF-8, special files, symlinks, replacement races and growth beyond the limit without disclosing paths or contents.",
       "testRefs": [
         "packages/notabenda-authoring/test/authoring.test.mjs",
         "packages/notabenda-authoring/test/package.test.mjs",
         "site/test/host.test.mjs",
         "scripts/check-site-runtime.mjs",
-        "docs/verification/authoring.md"
+        "docs/verification/authoring.md",
+        "packages/notabenda-authoring/test/file-source.test.mjs"
       ]
     },
     {

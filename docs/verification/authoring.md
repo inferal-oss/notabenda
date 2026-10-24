@@ -12,3 +12,11 @@
 Screenshots: [mobile authored terms](../assets/screenshots/authoring-mobile.jpg), [source comparison](../assets/screenshots/authoring-source-diff.jpg).
 
 Full keyboard/screen-reader review, platform-matrix testing, reproducibility across arbitrary host components and retention/erasure operations remain adopter work or later verification. Static-output sanitization does not sandbox trusted MDX execution.
+
+## 23 October file-reader review
+
+Review of the local `readDocumentSource()` helper found that it read the entire input before the compiler applied the existing 24 KiB source limit. A disposable 24,577-byte file was returned by the reader; a named pipe with no writer left its child process waiting until the reproduction deadline terminated it. This was an explicit local build-input issue, not evidence of a remote attack or MDX sandbox escape.
+
+The reader now checks file type and size before opening, opens without following a final symlink or waiting for a pipe writer, and compares the opened file's identity with the earlier check. Reads use a fixed 24,577-byte buffer: the extra byte detects growth beyond the source limit. UTF-8 decoding remains strict and preserves byte-order marks and line endings. Read failures return a fixed error without the local filename or source contents.
+
+Seven focused tests passed on macOS. They cover a multibyte UTF-8 source exactly at the limit, one byte over it, invalid encoding, empty regular files, path and file-URL inputs, option/base-URL preservation, directories, symlinks and a named pipe. Child-process tests deterministically replace the file with a pipe, symlink or different regular file after the initial check, and grow it after the opened-file check. Each replacement is confirmed to have occurred; the growth case reads exactly the boundary sentinel before rejection. Child deadlines detect blocking reads. These tests do not establish physical Windows/Linux filesystem behavior or turn trusted MDX into safe untrusted input.

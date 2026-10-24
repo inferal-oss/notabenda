@@ -1080,7 +1080,7 @@ Render versioned, safely structured documents with visible drafts and production
 
 ### REQ-PRODUCT-SAFE-CONTENT — Safe content, links, routes, and output writing
 
-Escape supplied text and reject unsafe links, inconsistent fields, traversal routes, and symbolic-link output destinations.
+Escape supplied text and reject unsafe links, inconsistent fields, traversal routes and symbolic-link output destinations. Read authored project sources as bounded regular UTF-8 files without following symlinks or waiting for special files.
 
 **Applies when:** The corresponding package feature is used.
 
@@ -1090,11 +1090,11 @@ Escape supplied text and reject unsafe links, inconsistent fields, traversal rou
 
 <a id="verify-product-safe-content"></a>
 
-**VERIFY-PRODUCT-SAFE-CONTENT (automated):** Hostile content is inert; unsafe mailto/site links, malformed optional text, unsafe paths, and symlink destinations fail without leaking private metadata or replacing their targets.
+**VERIFY-PRODUCT-SAFE-CONTENT (automated):** Hostile content is inert; unsafe mailto/site links, malformed optional text, unsafe paths, and symlink destinations fail without leaking private metadata or replacing their targets. Local authoring file reads preserve source bytes within 24 KiB and reject invalid UTF-8, special files, symlinks, replacement races and growth beyond the limit without disclosing paths or contents.
 
 **Limits/open review:** Implementation checks establish the documented software behavior, not legal validity, completeness of operator facts, or production jurisdiction support.
 
-**Code/test references:** [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/files.ts](../../packages/notabenda/src/files.ts), [packages/notabenda/test/config.test.mjs](../../packages/notabenda/test/config.test.mjs), [packages/notabenda/test/documents.test.mjs](../../packages/notabenda/test/documents.test.mjs), [packages/notabenda/test/content.test.mjs](../../packages/notabenda/test/content.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs)
+**Code/test references:** [packages/notabenda/src/config.ts](../../packages/notabenda/src/config.ts), [packages/notabenda/src/documents.ts](../../packages/notabenda/src/documents.ts), [packages/notabenda/src/files.ts](../../packages/notabenda/src/files.ts), [packages/notabenda-authoring/src/index.ts](../../packages/notabenda-authoring/src/index.ts), [packages/notabenda/test/config.test.mjs](../../packages/notabenda/test/config.test.mjs), [packages/notabenda/test/documents.test.mjs](../../packages/notabenda/test/documents.test.mjs), [packages/notabenda/test/content.test.mjs](../../packages/notabenda/test/content.test.mjs), [packages/notabenda/test/cli.test.mjs](../../packages/notabenda/test/cli.test.mjs), [packages/notabenda-authoring/test/file-source.test.mjs](../../packages/notabenda-authoring/test/file-source.test.mjs), [docs/verification/authoring.md](../../docs/verification/authoring.md)
 
 <a id="req-product-artifacts"></a>
 
@@ -1318,13 +1318,13 @@ Support both Markdown and MDX legal-document sources with YAML frontmatter for d
 
 <a id="verify-product-authoring"></a>
 
-**VERIFY-PRODUCT-AUTHORING (automated):** Both .md and .mdx compile with validated YAML frontmatter, stable section IDs, custom component rendering, source and output hashes, review guards and readable revision diffs. Invalid metadata fails clearly; default core remains import-safe and framework-free.
+**VERIFY-PRODUCT-AUTHORING (automated):** Both .md and .mdx compile with validated YAML frontmatter, stable section IDs, custom component rendering, source and output hashes, review guards and readable revision diffs. Invalid metadata fails clearly; default core remains import-safe and framework-free. Local authoring file reads preserve source bytes within 24 KiB and reject invalid UTF-8, special files, symlinks, replacement races and growth beyond the limit without disclosing paths or contents.
 
 **Implementation boundary:** Optional Node build package compiles Markdown/MDX with strict YAML frontmatter and static custom components. Source/output hashes bind immutable private archives; the host-authorized backend supports escaped source inspection and source/rendered comparisons. Core and CF packages retain zero runtime dependencies.
 
 **Limits/open review:** MDX is trusted executable build-time project code. Output is static, validated and sanitized; no browser hydration. The legal-document authoring API is optional; site configuration separately supports JSON, YAML and Markdown frontmatter. Private source archives have explicit size limits; host auth, retention and reproducible component builds remain adopter responsibilities.
 
-**Code/test references:** [packages/notabenda-authoring/src/index.ts](../../packages/notabenda-authoring/src/index.ts), [packages/notabenda-authoring/src/frontmatter.ts](../../packages/notabenda-authoring/src/frontmatter.ts), [packages/notabenda-authoring/src/html.ts](../../packages/notabenda-authoring/src/html.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda-cf/src/history.ts](../../packages/notabenda-cf/src/history.ts), [packages/notabenda-cf/src/render.ts](../../packages/notabenda-cf/src/render.ts), [examples/authoring/build.mjs](../../examples/authoring/build.mjs), [packages/notabenda-cf/src/source-diff.ts](../../packages/notabenda-cf/src/source-diff.ts), [examples/authoring/terms.mdx](../../examples/authoring/terms.mdx), [examples/authoring/cookies.md](../../examples/authoring/cookies.md), [packages/notabenda-authoring/test/authoring.test.mjs](../../packages/notabenda-authoring/test/authoring.test.mjs), [packages/notabenda-authoring/test/package.test.mjs](../../packages/notabenda-authoring/test/package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [scripts/check-site-runtime.mjs](../../scripts/check-site-runtime.mjs), [docs/verification/authoring.md](../../docs/verification/authoring.md), [site/test/documentation-links.test.mjs](../../site/test/documentation-links.test.mjs)
+**Code/test references:** [packages/notabenda-authoring/src/index.ts](../../packages/notabenda-authoring/src/index.ts), [packages/notabenda-authoring/src/frontmatter.ts](../../packages/notabenda-authoring/src/frontmatter.ts), [packages/notabenda-authoring/src/html.ts](../../packages/notabenda-authoring/src/html.ts), [packages/notabenda/src/content.ts](../../packages/notabenda/src/content.ts), [packages/notabenda-cf/src/history.ts](../../packages/notabenda-cf/src/history.ts), [packages/notabenda-cf/src/render.ts](../../packages/notabenda-cf/src/render.ts), [examples/authoring/build.mjs](../../examples/authoring/build.mjs), [packages/notabenda-cf/src/source-diff.ts](../../packages/notabenda-cf/src/source-diff.ts), [examples/authoring/terms.mdx](../../examples/authoring/terms.mdx), [examples/authoring/cookies.md](../../examples/authoring/cookies.md), [packages/notabenda-authoring/test/authoring.test.mjs](../../packages/notabenda-authoring/test/authoring.test.mjs), [packages/notabenda-authoring/test/package.test.mjs](../../packages/notabenda-authoring/test/package.test.mjs), [site/test/host.test.mjs](../../site/test/host.test.mjs), [scripts/check-site-runtime.mjs](../../scripts/check-site-runtime.mjs), [docs/verification/authoring.md](../../docs/verification/authoring.md), [site/test/documentation-links.test.mjs](../../site/test/documentation-links.test.mjs), [packages/notabenda-authoring/test/file-source.test.mjs](../../packages/notabenda-authoring/test/file-source.test.mjs)
 
 <a id="req-product-react"></a>
 

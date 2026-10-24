@@ -1,5 +1,6 @@
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
-import {readFile} from 'node:fs/promises';
+import {lstat,open} from 'node:fs/promises';
+import {constants} from 'node:fs';
 import {resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {evaluate} from '@mdx-js/mdx';
@@ -14,7 +15,7 @@ import {toPublicConfig} from '@notabenda/core';
 import type {DocumentKind,LegalDocument,PublicSiteConfig,ValidationOptions} from '@notabenda/core';
 import {compileLegalDocuments,canonicalJson,sha256} from '@notabenda/core/content';
 import type {LegalBuild,LegalSourceArchive,AuthoredDocumentDescriptor} from '@notabenda/core/content';
-import {AuthoringError,parseDocumentSource} from './frontmatter.js';
+import {AuthoringError,parseDocumentSource,MAX_SOURCE_BYTES} from './frontmatter.js';
 import {parseHtml,printHtml,prepareHtml,elements} from './html.js';
 export {AuthoringError,parseDocumentSource,MAX_SOURCE_BYTES} from './frontmatter.js';
 export type {Frontmatter} from './frontmatter.js';
@@ -56,14 +57,32 @@ function revision(source:DocumentSource):string {
   return label;
 }
 
-/** Read a local project source explicitly. No path or filename is copied into release metadata. */
+/** @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-SAFE-CONTENT
+ * Read a bounded regular project file explicitly. No path or filename enters release metadata. */
 export async function readDocumentSource(file:string|URL,options:Omit<DocumentSource,'format'|'source'|'baseUrl'>={}):Promise<DocumentSource> {
   const url=file instanceof URL?file:pathToFileURL(resolve(file));
   if(url.protocol!=='file:')throw new AuthoringError('invalid-source','Read an explicit local .md or .mdx project file.');
   const format=url.pathname.endsWith('.mdx')?'mdx':url.pathname.endsWith('.md')?'md':undefined;
   if(!format)throw new AuthoringError('invalid-source','Use a .md or .mdx source file.');
   let source:string;
-  try{source=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(await readFile(url));}catch{throw new AuthoringError('invalid-source','The local document could not be read as UTF-8.');}
+  try{
+    const before=await lstat(url);
+    if(!before.isFile()||before.size>MAX_SOURCE_BYTES)throw Error();
+    // Nonblocking/no-follow open also protects the lstat-to-open replacement window.
+    const handle=await open(url,constants.O_RDONLY|constants.O_NOFOLLOW|constants.O_NONBLOCK);
+    try{
+      const stat=await handle.stat();
+      if(!stat.isFile()||stat.size>MAX_SOURCE_BYTES||stat.dev!==before.dev||stat.ino!==before.ino)throw Error();
+      const buffer=Buffer.alloc(MAX_SOURCE_BYTES+1);let size=0;
+      while(size<buffer.length){
+        const {bytesRead}=await handle.read(buffer,size,buffer.length-size,size);
+        if(!bytesRead)break;
+        size+=bytesRead;
+      }
+      if(size>MAX_SOURCE_BYTES)throw Error();
+      source=new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(buffer.subarray(0,size));
+    }finally{await handle.close();}
+  }catch{throw new AuthoringError('invalid-source','Read a regular UTF-8 .md or .mdx file no larger than 24 KiB. Symlinks and special files are not accepted.');}
   return {...options,format,source,baseUrl:url};
 }
 

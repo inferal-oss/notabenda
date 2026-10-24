@@ -36,6 +36,8 @@ For MDX, pass `components` and `componentsRevision` to `readDocumentSource`. Com
 
 `release.files` and `release.artifact` contain public rendered output and hashes. **`release.archive` contains original source and must remain private.** It can be atomically registered with `recordLegalRelease` from `@notabenda/cloudflare`; source inspection and comparisons use the host's existing authorization hook.
 
+`readDocumentSource()` reads regular UTF-8 `.md` and `.mdx` files, preserving byte-order marks and line endings. It rejects symlinks, special files and sources over 24 KiB, including files replaced during opening or growing past the limit. Read errors omit file paths and contents.
+
 Source limit: 24 KiB per document. Rendered body: 48 KiB. Combined private archive: 124 KiB. Markdown, MDX, metadata, component output, source integrity and private inspection are covered by tests.
 
 Full guide: [docs/AUTHORING.md](../../docs/AUTHORING.md). Working example: [examples/authoring](../../examples/authoring/build.mjs). Legal review, applicability, reproducible builds and host security remain the adopter's responsibility.

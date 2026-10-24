@@ -55,6 +55,8 @@ const release = await compileAuthoredDocuments(config, { terms, cookies }, {
 // Keep release.archive outside your public output directory.
 ```
 
+`readDocumentSource()` accepts regular UTF-8 `.md` and `.mdx` files up to 24 KiB, including any byte-order mark. It preserves the original text and line endings for source history. Symlinks, directories and special files such as named pipes are rejected. A file replaced during opening or growing past the limit also fails; error messages omit its path and contents.
+
 Unspecified documents continue to come from site configuration. Document frontmatter overrides that document's configuration; shared inventory stays unchanged. The `notabenda` CLI accepts JSON, YAML or configuration-document frontmatter for site facts. Legal Markdown and MDX bodies still use this optional build API.
 
 ## Your own MDX components
