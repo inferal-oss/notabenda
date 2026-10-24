@@ -1,5 +1,5 @@
 // @requirements REQ-EU-CONSENT REQ-CA-MEANINGFUL REQ-EU-MARKETING REQ-CA-CASL-OPTIN
-// @requirements REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-SCOPE-GUARDS REQ-PRODUCT-EVIDENCE-LIFECYCLE
+// @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-FORM-PERMISSIONS REQ-PRODUCT-SCOPE-GUARDS REQ-PRODUCT-EVIDENCE-LIFECYCLE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
@@ -222,6 +222,14 @@ test('native field keeps keyboard focus when read and retry actions disappear, a
  checkbox.checked=true;checkbox.dispatchEvent(new dom.window.Event('change'));button(f.offer.wording.grantLabel).focus();await reject(c.grant(),'recording-failed');assert.equal(doc.activeElement,button('Retry permission request'));assert.equal(checkbox.closest('label').hidden,true);assert.equal(doc.querySelector('.nb-form-permission-saved-statement').textContent,f.offer.wording.statement);
  const saved=wait(s=>s.status==='recorded'&&!s.recovery.pending);button('Retry permission request').click();await saved;assert.equal(doc.activeElement,button(f.offer.wording.withdrawLabel));mount.destroy();c.destroy();dom.window.close();journal.close();other.close();
  const config=structuredClone(f.config);config.scopeGuards.site.children='unknown';const offer=await nextOffer(f,{},config);await setActiveFormPermissionOffer(f.storage,offer.offerId,f.context);const restricted=await controller({...f,offer}),page=new JSDOM('<main></main>'),field=mountFormPermission(page.window.document.querySelector('main'),{permission:restricted});await restricted.refresh();assert.equal(page.window.document.querySelector('label').hidden,true);assert.match(page.window.document.querySelector('[role=status]').textContent,/separate process/);assert.equal([...page.window.document.querySelectorAll('button')].find(b=>b.textContent===offer.wording.withdrawLabel).disabled,false);field.destroy();restricted.destroy();page.window.close();
+});
+
+test('a saved-permission response does not reclaim focus after the visitor moves elsewhere',async()=>{
+ const f=await setup(),gate=deferred(),arrived=deferred(),c=await controller(f,{async read(){arrived.resolve();await gate.promise;return getFormPermissionState(f.storage,f.context);}}),dom=new JSDOM('<main></main><button id="elsewhere">Continue with the form</button>'),doc=dom.window.document,mount=mountFormPermission(doc.querySelector('main'),{permission:c});
+ try{
+  doc.querySelector('.nb-form-permission-refresh').focus();const pending=c.refresh();await arrived.promise;assert.equal(doc.activeElement,doc.querySelector('[role=status]'));
+  const elsewhere=doc.getElementById('elsewhere');elsewhere.focus();gate.resolve();await pending;assert.equal(doc.activeElement,elsewhere);assert.equal(c.getSnapshot().allowed,false);
+ }finally{mount.destroy();c.destroy();dom.window.close();}
 });
 
 test('the current replacement offer can be reviewed without an endless reload instruction',async()=>{

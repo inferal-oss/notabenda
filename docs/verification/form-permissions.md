@@ -1,6 +1,6 @@
 # Form permission verification
 
-Requirements: `REQ-PRODUCT-FORM-PERMISSIONS`, `REQ-EU-CONSENT`, `REQ-CA-MEANINGFUL`, `REQ-EU-MARKETING`, `REQ-CA-CASL-OPTIN`. Legal research links are contextual; the product mechanism does not certify regional compliance.
+Requirements: `REQ-PRODUCT-A11Y`, `REQ-PRODUCT-FORM-PERMISSIONS`, `REQ-EU-CONSENT`, `REQ-CA-MEANINGFUL`, `REQ-EU-MARKETING`, `REQ-CA-CASL-OPTIN`. Legal research links are contextual; the product mechanism does not certify regional compliance.
 
 Automated tests exercise intact release/wording binding, independent archive reconstruction, stable purpose/channel/revision identities, preview gates, unchecked/absent-field behavior, no automatic reads or form submission, acknowledged grants, old-offer withdrawal, late first withdrawal versus historical retry, lost acknowledgments, grant/withdraw orderings, activation rollback, non-cookie scope guards, subject/contact/channel isolation, pending contact-change rejection, delivery windows, invalid requests/replies, monotonic response bounds across errors, cancellation before transport, hung transports and nonce-preserving retries, retirement/holds/purge isolation, minimized projections, and host-authorized export. Admin presentation is also checked for distinct historical/read-time state and both time sources.
 
@@ -63,3 +63,22 @@ Checking the box enabled Save without recording a choice. Explicit Save then fai
 The same Safari session scanned the initial and grant-error fixtures with the browser audit runner: two scenarios, zero violations, zero fixture errors and zero incomplete rule results. The report identified Safari 27.0 and an outer viewport of 1,707 × 909 CSS pixels. These are selected desktop Safari observations; they do not extend the earlier Chromium frame measurements to Safari or establish every WebKit state.
 
 Screenshots and the observed audit summary remain in ignored local release evidence. Native access stopped when the Mac locked during a subsequent zoom check, so that check has no accepted result. Firefox, physical devices, assistive technology, the remaining zoom/platform matrix, durable recovery, actual delivery and regional legal review remain open.
+
+### 23 October: enlarged Safari permission checks
+
+The resumed Safari 27.0 review used committed source `ce096047f560139931b539f00ab94acd9997eb9e` with the local audit-fixture changes in this update. The actual controller, regional offer, synthetic saved-off response and intentionally failing submit callback retain the earlier isolation boundaries.
+
+Safari's Page Menu confirmed each zoom setting. The selected scans before the focus correction reported:
+
+| Zoom | Mounted state | Frame viewport (CSS px) | Document / usable width (px) | Violations / errors / incomplete |
+| --- | --- | --- | --- | --- |
+| 200% | Initially unchecked | 803 × 848 | 804 / 804 | 0 / 0 / 0 |
+| 200% | Failed explicit refusal, unchecked | 803 × 848 | 804 / 804 | 0 / 0 / 0 |
+| 300% | Failed explicit refusal, unchecked | 569 × 848 | 569 / 569 | 0 / 0 / 0 |
+| 300% | Failed grant, checked draft | 569 × 848 | 569 / 569 | 0 / 0 / 0 |
+
+The visible layout summary reported no horizontal document overflow in these four scans. The runner uses a fixed-height iframe: its 848-pixel viewport is not the height visible in the enlarged Safari window. These measurements do not establish short-screen acceptance.
+
+A separate direct-widget check at 300% used Option-Tab and Space to open and close the explanation, reach the pinned reader link, skip disabled Save, refuse and refresh the saved state. The failed refusal retained focus and the unchecked draft. Refresh returned the saved-off message and checkbox focus, but initially left that checkbox above the visible area. The native field now explicitly scrolls a restored focus target into view, centered vertically so its outline remains clear of the viewport edges. Rebuilding and repeating the same keyboard path showed the unchecked checkbox and full focus outline visibly centered after refresh. The interim nearest-edge scroll still clipped the outline; that attempt is retained locally and is not the final fix.
+
+Safari offered at most 300% and disabled **Zoom In** there. No 400% result is claimed. The review tab was restored to the confirmed 100% setting and closed, preserving the existing unrelated tab. The focused permission suite passed after the correction; native screenshots and audit observations remain in ignored release evidence. This is selected desktop zoom and recovery evidence, not a complete browser, physical-device, screen-reader or regional compliance acceptance result.

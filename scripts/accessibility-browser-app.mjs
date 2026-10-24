@@ -1,11 +1,12 @@
 // @requirements REQ-PRODUCT-A11Y
 // Browser entry for the local maintainer fixture, never a production asset.
 const scenarios=await fetch('./scenarios.json').then(r=>r.json());
-const picker=document.querySelector('select'),frame=document.querySelector('iframe'),status=document.querySelector('[role=status]'),report=document.querySelector('textarea'),button=document.querySelector('#run-one'),results=[];
+const picker=document.querySelector('select'),frame=document.querySelector('iframe'),status=document.querySelector('[role=status]'),report=document.querySelector('textarea'),button=document.querySelector('#run-one'),layout=document.querySelector('#layout'),results=[];
 for(const [index,s] of scenarios.entries())picker.add(new Option(s.label,String(index)));
 let current=0,runId,expectedRoute,pending=null;
 function load(index){
  current=index;runId=crypto.randomUUID();pending=null;button.disabled=true;picker.disabled=false;
+ layout.textContent='No layout measurement for this scenario yet.';
  const url=new URL(scenarios[index].url,location.href);expectedRoute=url.pathname+url.search;url.searchParams.set('auditRun',runId);
  frame.src=url.href;status.textContent='Loading '+scenarios[index].label;
 }
@@ -23,6 +24,10 @@ window.addEventListener('message',e=>{
  pending=null;const result={scenario:scenarios[current],...data},previous=results.findIndex(r=>r.scenario.label===result.scenario.label);
  if(previous<0)results.push(result);else results[previous]=result;
  report.textContent=JSON.stringify({environment:navigator.userAgent,viewport:{width:innerWidth,height:innerHeight},results},null,2);
+ const {width,height}=data.viewport??{},{documentWidth,clientWidth}=data.layout??{};
+ layout.textContent=!data.error&&[width,height,documentWidth,clientWidth].every(n=>Number.isSafeInteger(n)&&n>0)?
+  `Last checked frame: ${width} × ${height} CSS px. Page width: ${documentWidth} px; available: ${clientWidth} px. `+(documentWidth>clientWidth?`Horizontal overflow: ${documentWidth-clientWidth} px.`:'No horizontal overflow measured.'):
+  'Layout measurements were not available for this result.';
  document.querySelector('#summary').textContent=results.length+' scenarios checked; '+results.reduce((n,r)=>n+(r.violations?.length??0),0)+' violations; '+results.filter(r=>r.error).length+' errors; '+results.reduce((n,r)=>n+(r.incomplete?.length??0),0)+' incomplete rule results.';
  status.textContent='Checked '+scenarios[current].label;button.disabled=false;picker.disabled=false;
 });

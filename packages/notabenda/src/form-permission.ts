@@ -257,7 +257,7 @@ export function mountFormPermission(container:HTMLElement,options:{permission:Fo
       else if(pending)message.textContent=s.error==='stale-offer'?t('earlierPending','The saved request uses earlier wording. Withdraw it before making a new choice.'):t('permissionPending','Your choice is saved on this device, waiting for confirmation. Retry the permission request to check its outcome.');
     }
     if(focused===checkbox&&label.hidden||[grant,withdraw,load,retry,...(refuse?[refuse]:[])].some(button=>focused===button&&(button.hidden||button.disabled))){restoreFocus=true;message.focus();}
-    if(restoreFocus&&!busy&&s.status!=='loading'&&doc.activeElement===message){const target=!retry.hidden&&!retry.disabled?retry:!label.hidden&&!checkbox.disabled?checkbox:refuse&&!refuse.hidden&&!refuse.disabled?refuse:!withdraw.hidden&&!withdraw.disabled?withdraw:message;target.focus();restoreFocus=false;}
+    if(restoreFocus&&!busy&&s.status!=='loading'&&doc.activeElement===message){const target=!retry.hidden&&!retry.disabled?retry:!label.hidden&&!checkbox.disabled?checkbox:refuse&&!refuse.hidden&&!refuse.disabled?refuse:!withdraw.hidden&&!withdraw.disabled?withdraw:message;target.focus();target.scrollIntoView?.({block:'center',inline:'nearest'});restoreFocus=false;}
     else if(restoreFocus&&doc.activeElement!==message)restoreFocus=false;
   });
   return {destroy(){unsubscribe();root.remove();}};

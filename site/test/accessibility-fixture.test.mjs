@@ -48,7 +48,7 @@ test('fixture serving is read-only and cannot reach files outside its explicit a
 });
 test('late, mismatched and duplicate browser audit responses cannot credit another scenario',async()=>{
  const source=await readFile(new URL('../../scripts/accessibility-browser-app.mjs',import.meta.url),'utf8');
- const nodes=Object.fromEntries(['select','iframe','[role=status]','textarea','#run-one','#summary'].map(key=>[key,{textContent:'',disabled:false,listeners:{},addEventListener(type,fn){this.listeners[type]=fn;}}]));
+ const nodes=Object.fromEntries(['select','iframe','[role=status]','textarea','#run-one','#summary','#layout'].map(key=>[key,{textContent:'',disabled:false,listeners:{},addEventListener(type,fn){this.listeners[type]=fn;}}]));
  const messages=[],frame=nodes.iframe,picker=nodes.select,button=nodes['#run-one'];frame.contentWindow={postMessage:m=>messages.push(m)};picker.add=()=>{};
  let listener,sequence=0;
  const context=vm.createContext({URL,crypto:{randomUUID:()=>String(++sequence)},Option:class{},fetch:async()=>({json:async()=>[{label:'A',url:'pages/a.html'},{label:'B',url:'pages/b.html'}]}),document:{querySelector:key=>nodes[key]},window:{addEventListener:(type,fn)=>{listener=fn;}},location:{href:'http://127.0.0.1/qa-a11y/',origin:'http://127.0.0.1'},navigator:{userAgent:'Fixture VM'},innerWidth:390,innerHeight:844});
@@ -58,12 +58,20 @@ test('late, mismatched and duplicate browser audit responses cannot credit anoth
  button.listeners.click();const aRequest=messages.at(-1).requestId;assert.equal(picker.disabled,true);
  // Simulate a navigation/cancellation while the older frame's WindowProxy survives.
  picker.value='1';picker.listeners.change();const bRun=new URL(frame.src).searchParams.get('auditRun');
+ assert.match(nodes['#layout'].textContent,/No layout measurement/u);
  send({type:'accessibility-ready',runId:aRun,url:'/qa-a11y/pages/a.html'});assert.equal(button.disabled,true);
  send({type:'accessibility-ready',runId:bRun,url:'/qa-a11y/pages/a.html'});assert.equal(button.disabled,true);
- send({type:'accessibility-result',runId:aRun,requestId:aRequest,url:'/qa-a11y/pages/a.html',violations:[],incomplete:[]});assert.equal(nodes.textarea.textContent,'');
+ send({type:'accessibility-result',runId:aRun,requestId:aRequest,url:'/qa-a11y/pages/a.html',violations:[],incomplete:[],viewport:{width:390,height:844},layout:{documentWidth:375,clientWidth:375}});assert.equal(nodes.textarea.textContent,'');assert.match(nodes['#layout'].textContent,/No layout measurement/u);
  send({type:'accessibility-ready',runId:bRun,url:'/qa-a11y/pages/b.html'});button.listeners.click();const bRequest=messages.at(-1).requestId;
  send({type:'accessibility-result',runId:bRun,requestId:aRequest,url:'/qa-a11y/pages/b.html',violations:[],incomplete:[]});assert.equal(nodes.textarea.textContent,'');
- const bResult={type:'accessibility-result',runId:bRun,requestId:bRequest,url:'/qa-a11y/pages/b.html',violations:[],incomplete:[]};send(bResult);
+ // The content fits innerWidth, but exceeds the usable width after its scrollbar.
+ const bResult={type:'accessibility-result',runId:bRun,requestId:bRequest,url:'/qa-a11y/pages/b.html',violations:[],incomplete:[],viewport:{width:390,height:844},layout:{documentWidth:380,clientWidth:375,viewportWidth:390}};send(bResult);
  const report=JSON.parse(nodes.textarea.textContent);assert.equal(report.results.length,1);assert.equal(report.results[0].scenario.label,'B');assert.equal(picker.disabled,false);
- send({...bResult,violations:[{id:'late-change'}]});assert.equal(JSON.parse(nodes.textarea.textContent).results[0].violations.length,0);
+ assert.match(nodes['#layout'].textContent,/390 × 844 CSS px/u);assert.match(nodes['#layout'].textContent,/Horizontal overflow: 5 px/u);
+ send({...bResult,violations:[{id:'late-change'}],layout:{documentWidth:375,clientWidth:375}});assert.equal(JSON.parse(nodes.textarea.textContent).results[0].violations.length,0);assert.match(nodes['#layout'].textContent,/Horizontal overflow: 5 px/u);
+ function rescan(changes){button.listeners.click();send({...bResult,...changes,requestId:messages.at(-1).requestId});}
+ rescan({layout:{documentWidth:375,clientWidth:375}});assert.match(nodes['#layout'].textContent,/No horizontal overflow measured/u);assert.equal(JSON.parse(nodes.textarea.textContent).results.length,1);
+ for(const clientWidth of [undefined,0,'375',NaN]){rescan({layout:{documentWidth:375,clientWidth}});assert.match(nodes['#layout'].textContent,/not available/u);}
+ rescan({error:'Fixture failed before measurement',layout:{documentWidth:375,clientWidth:375}});assert.match(nodes['#layout'].textContent,/not available/u);
+ picker.value='0';picker.listeners.change();assert.match(nodes['#layout'].textContent,/No layout measurement/u);
 });
