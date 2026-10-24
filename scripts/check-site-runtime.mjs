@@ -1,4 +1,6 @@
 // @requirements REQ-PRODUCT-RIGHTS-CENTER
+// @requirements REQ-PRODUCT-CF-ADMIN
+// @requirements REQ-PRODUCT-DEMO-WORKSPACE
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-EVIDENCE-LIFECYCLE
 // @requirements REQ-PRODUCT-PROCESSING-CHOICES REQ-PRODUCT-RETAINED-RELEASES
@@ -6,19 +8,28 @@
 // Local integration check of the HTTP/DO boundary; never prints the host key.
 import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
-const runtimePort=process.env.NOTABENDA_CHECK_PORT??'4179';assert.ok(['4178','4179'].includes(runtimePort));
-const origin='http://127.0.0.1:'+runtimePort;
+const runtimePort=process.env.NOTABENDA_CHECK_PORT??'4179';assert.ok(/^\d{4,5}$/u.test(runtimePort)&&Number(runtimePort)>=1024&&Number(runtimePort)<=65535,'Choose a loopback test port from 1024 to 65535.');
+const origin='http://127.0.0.1:'+Number(runtimePort);
 const auth={Authorization:'Basic '+Buffer.from('admin:admin').toString('base64')};
-const nativeFetch=globalThis.fetch;const demoStart=await nativeFetch(origin+'/demo/admin');assert.equal(demoStart.status,200);
-assert.doesNotMatch(demoStart.headers.get('Set-Cookie'),/Max-Age|Expires/i);
-const demoCookie=demoStart.headers.get('Set-Cookie').split(';')[0];const demoGeneration=Buffer.from(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(demoCookie.split('=')[1].split('.')[0]))).toString('hex');
+// Supply the same private test cookie on both sides of a restart; a new session cannot prove recovery.
+const recoveryCookie=process.env.NOTABENDA_CHECK_COOKIE;
+assert.ok(recoveryCookie===undefined||/^notabenda_demo=[a-f0-9]{64}\.[a-f0-9]{64}$/u.test(recoveryCookie),'Use a signed local test-session cookie.');
+const nativeFetch=globalThis.fetch;const demoStart=await nativeFetch(origin+'/demo/admin',{headers:recoveryCookie?{Cookie:recoveryCookie}:{}});assert.equal(demoStart.status,200);
+const setCookie=demoStart.headers.get('Set-Cookie');assert.ok(!setCookie||!/Max-Age|Expires/iu.test(setCookie),'The demo cookie must remain session scoped.');
+const demoCookie=setCookie?.split(';')[0]??recoveryCookie;assert.ok(typeof demoCookie==='string'&&/^notabenda_demo=[a-f0-9]{64}\.[a-f0-9]{64}$/u.test(demoCookie),'Expected a signed local test-session cookie.');
+assert.ok(recoveryCookie===undefined||demoCookie===recoveryCookie,'The recovery check must retain its original demo session.');
+const demoGeneration=Buffer.from(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(demoCookie.split('=')[1].split('.')[0]))).toString('hex');
 const fetch=(input,options={})=>nativeFetch(input,{...options,headers:{...options.headers,...(new URL(input).pathname.startsWith('/demo/')?{Cookie:demoCookie,'X-Notabenda-Demo-Generation':demoGeneration}:{})}});
 
 const checkFile=new URL('../.local/site-runtime-'+demoGeneration+'.json',import.meta.url);
 const data=JSON.parse(await readFile(new URL('../site/dist/server-data.json',import.meta.url),'utf8'));
 const retainedPair=data.releases.map(release=>release.artifact.artifact??release.artifact).filter(artifact=>artifact.manifest.siteId==='juniper-releases');assert.equal(retainedPair.length,2);
 for(const artifact of retainedPair){const pinned=await fetch(`${origin}/artifacts/${artifact.manifest.artifactId}/terms.html`);assert.equal(pinned.status,200);assert.equal(await pinned.text(),artifact.pages['releases/terms/index.html']);assert.doesNotMatch(pinned.headers.get('Content-Security-Policy'),/script-src/);}
-const latestTerms=await fetch(origin+'/releases/terms/');assert.equal(latestTerms.status,200);assert.equal(await latestTerms.text(),retainedPair[1].pages['releases/terms/index.html']);
+const latestTerms=await fetch(origin+'/releases/terms/');assert.equal(latestTerms.status,200);
+const latestTermsHtml=await latestTerms.text(),demoStylesheet='<link rel="stylesheet" href="/assets/demo-marker.css">',demoRibbon='<aside class="demo-corner" aria-label="Demonstration">Demo</aside>';
+assert.ok(latestTermsHtml.includes(demoStylesheet));assert.ok(latestTermsHtml.includes(demoRibbon));
+// Only these two presentation additions differ; pinned downloads above remain byte-exact.
+assert.equal(latestTermsHtml.replace(demoStylesheet,'').replace(demoRibbon,''),retainedPair[1].pages['releases/terms/index.html']);
 const releaseDiff=await fetch(`${origin}/backoffice/history/diff?before=${retainedPair[0].manifest.artifactId}&after=${retainedPair[1].manifest.artifactId}&kind=terms`,{headers:auth});assert.equal(releaseDiff.status,200);assert.match(await releaseDiff.text(),/export your notes before leaving/);
 console.log('Local Workers retained releases: exact prior/current public HTML and protected terms comparison verified.');
 const offer=data.agreements.find(entry=>entry.theme==='light').offer;
@@ -27,15 +38,15 @@ try { saved=JSON.parse(await readFile(checkFile,'utf8')); } catch(error) { if(er
 if(saved && saved.body.offerId !== offer.offerId) saved=undefined;
 const body=saved?.body ?? {schemaVersion:1,offerId:offer.offerId,requestId:crypto.randomUUID(),accepted:true};
 for(const path of ['/backoffice/history']) {
-  const denied=await fetch(origin+path); assert.equal(denied.status,401); assert.equal(denied.headers.get('Cache-Control'),'private, no-store');
+  const denied=await fetch(origin+path); assert.equal(denied.status,401); assert.equal(denied.headers.get('Cache-Control'),'private, no-store, no-transform');
 }
 const invalid=await fetch(origin+'/demo/agreements/light',{method:'POST',headers:{...auth,Origin:'https://attacker.test','Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(body)}); assert.equal(invalid.status,400);
 const response=await fetch(origin+'/demo/agreements/light',{method:'POST',headers:{...auth,Origin:origin,'Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(body)}); assert.equal(response.status,200); const receipt=await response.json();
 if(saved) assert.deepEqual(receipt,saved.receipt);
 else await writeFile(checkFile,JSON.stringify({body,receipt})+'\n',{mode:0o600});
-const detail=await fetch(origin+'/demo/admin/agreements/record?id='+receipt.id,{headers:auth}); assert.equal(detail.status,200); assert.match(await detail.text(),/Recorded agreement context/);
+const detail=await fetch(origin+'/demo/admin/agreements/record?id='+receipt.id,{headers:auth}); assert.equal(detail.status,200); const detailHtml=await detail.text(); assert.match(detailHtml,/<h2>Statement shown<\/h2>/); assert.ok(detailHtml.includes(receipt.id));
 const history=await fetch(origin+'/backoffice/history',{headers:auth}); assert.equal(history.status,200); assert.match(await history.text(),/Compare document releases/);
-const authored=data.releases.filter(release=>release.artifact.sourceAttachments);
+const authored=data.releases.filter(release=>release.artifact.sourceAttachments&&release.artifact.artifact.manifest.siteId==='juniper-authored');
 assert.equal(authored.length,2);
 const authoredIds=authored.map(release=>release.artifact.artifact.manifest.artifactId);
 const sourcePath='/backoffice/history/source?id='+authoredIds[1]+'&kind=terms';
@@ -87,7 +98,7 @@ console.log(saved ? 'Local Workers runtime: auth/routes, origin rejection, store
 const setupDenied=await fetch(origin+'/backoffice/setup');assert.equal(setupDenied.status,401);
 const setupReview=await fetch(origin+'/backoffice/setup',{headers:auth});assert.equal(setupReview.status,200);assert.match(setupReview.headers.get('Cache-Control'),/private, no-store/);assert.match(await setupReview.text(),/data-notabenda-setup/);assert.doesNotMatch(setupReview.headers.get('Content-Security-Policy'),/connect-src/);
 assert.equal((await fetch(origin+'/backoffice/setup',{method:'POST',headers:auth})).status,405);
-const cleanupDemo=await fetch(origin+'/storage-cleanup/');assert.equal(cleanupDemo.status,200);assert.match(cleanupDemo.headers.get('Content-Security-Policy'),/script-src 'self'/);assert.match(await cleanupDemo.text(),/Leave a little less/);
+const cleanupDemo=await fetch(origin+'/storage-cleanup/');assert.equal(cleanupDemo.status,200);assert.match(cleanupDemo.headers.get('Content-Security-Policy'),/script-src 'self'/);assert.match(await cleanupDemo.text(),/<script type="module" src="\/assets\/storage-cleanup\.mjs"><\/script>/);assert.equal((await fetch(origin+'/assets/storage-cleanup.mjs')).status,200);
 const cleanupPolicy=await fetch(origin+'/storage-cleanup/cookies/');assert.equal(cleanupPolicy.status,200);assert.doesNotMatch(cleanupPolicy.headers.get('Content-Security-Policy'),/script-src/);
 console.log('Local Workers setup and storage cleanup: host-protected local questionnaire, write refusal and script-free policy verified.');
 

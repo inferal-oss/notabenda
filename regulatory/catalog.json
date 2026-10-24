@@ -5788,7 +5788,8 @@
         "packages/notabenda/src/config.ts",
         "packages/notabenda/src/documents.ts",
         "packages/notabenda/src/files.ts",
-        "packages/notabenda-authoring/src/index.ts"
+        "packages/notabenda-authoring/src/index.ts",
+        "packages/notabenda-cf/src/records.ts"
       ],
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
@@ -5797,7 +5798,8 @@
         "packages/notabenda/test/cli.test.mjs",
         "packages/notabenda-authoring/test/file-source.test.mjs",
         "docs/verification/authoring.md",
-        "packages/notabenda/test/config-revalidation.test.mjs"
+        "packages/notabenda/test/config-revalidation.test.mjs",
+        "packages/notabenda-cf/test/record-values.test.mjs"
       ]
     },
     {
@@ -5922,7 +5924,8 @@
         "examples/processing-application/build.mjs",
         "examples/processing-application/authorize.mjs",
         "examples/processing-application/notabenda.config.yaml",
-        "examples/processing-application/README.md"
+        "examples/processing-application/README.md",
+        "packages/notabenda-cf/src/records.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
@@ -5933,7 +5936,9 @@
         "docs/verification/recorded-cookie-application.md",
         "packages/notabenda-cf/test/processing-application.test.mjs",
         "scripts/check-processing-application.mjs",
-        "docs/verification/processing-application.md"
+        "docs/verification/processing-application.md",
+        "packages/notabenda-cf/test/record-values.test.mjs",
+        "scripts/check-site-runtime.mjs"
       ]
     },
     {
@@ -6765,14 +6770,16 @@
         "packages/notabenda-cf/src/export.ts",
         "packages/notabenda-cf/src/worker.ts",
         "packages/notabenda-cf/src/render.ts",
-        "packages/notabenda-cf/src/types.ts"
+        "packages/notabenda-cf/src/types.ts",
+        "packages/notabenda-cf/src/records.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/export.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "scripts/check-site-runtime.mjs",
-        "docs/verification/evidence-export.md"
+        "docs/verification/evidence-export.md",
+        "packages/notabenda-cf/test/record-values.test.mjs"
       ],
       "implementationNote": "Script-free live review and attachment-only JSON preserve filters and incoming/forward cursors. Shared page validation checks normalized records against filters and UTF-8 order; each request requires fresh host authorization plus explicit bulk-read permission."
     },
@@ -12149,14 +12156,15 @@
         "REQ-PRODUCT-SAFE-CONTENT"
       ],
       "status": "automated",
-      "expected": "Hostile content is inert; unsafe mailto/site links, malformed optional text, unsafe paths, and symlink destinations fail without leaking private metadata or replacing their targets. Local authoring file reads preserve source bytes within 24 KiB and reject invalid UTF-8, special files, symlinks, replacement races and growth beyond the limit without disclosing paths or contents.",
+      "expected": "Hostile content is inert; unsafe mailto/site links, malformed optional text, unsafe paths, and symlink destinations fail without leaking private metadata or replacing their targets. Local authoring file reads preserve source bytes within 24 KiB and reject invalid UTF-8, special files, symlinks, replacement races and growth beyond the limit without disclosing paths or contents. Record envelopes and array slots use own data values without invoking getters, iterators or serialization hooks; malformed data fails inspection/export without payload leaks.",
       "testRefs": [
         "packages/notabenda/test/config.test.mjs",
         "packages/notabenda/test/documents.test.mjs",
         "packages/notabenda/test/content.test.mjs",
         "packages/notabenda/test/cli.test.mjs",
         "packages/notabenda-authoring/test/file-source.test.mjs",
-        "packages/notabenda/test/config-revalidation.test.mjs"
+        "packages/notabenda/test/config-revalidation.test.mjs",
+        "packages/notabenda-cf/test/record-values.test.mjs"
       ]
     },
     {
@@ -12193,9 +12201,11 @@
         "REQ-PRODUCT-CF-ADMIN"
       ],
       "status": "automated",
-      "expected": "Missing/denied/failed authorization never reads data; scope isolation, bounded scanning, search, safe details and sanitized errors pass simulated Worker/DO tests.",
+      "expected": "Missing/denied/failed authorization never reads data; scope isolation, bounded scanning, search, safe details and sanitized errors pass simulated Worker/DO tests. Record envelopes and array slots use own data values without invoking getters, iterators or serialization hooks; malformed data fails inspection/export without payload leaks.",
       "testRefs": [
-        "packages/notabenda-cf/test/admin.test.mjs"
+        "packages/notabenda-cf/test/admin.test.mjs",
+        "packages/notabenda-cf/test/record-values.test.mjs",
+        "scripts/check-site-runtime.mjs"
       ]
     },
     {
@@ -12453,13 +12463,14 @@
         "REQ-PRODUCT-EVIDENCE-EXPORT"
       ],
       "status": "automated",
-      "expected": "Unauthorized or revoked export access reaches no store. Exact filtered scoped fields, bounded traversal including empty continuing segments, fresh-read semantics and safe attachment headers pass; hostile adapter pages, backward cursors and out-of-filter records fail closed without payload leaks.",
+      "expected": "Unauthorized or revoked export access reaches no store. Exact filtered scoped fields, bounded traversal including empty continuing segments, fresh-read semantics and safe attachment headers pass; hostile adapter pages, backward cursors and out-of-filter records fail closed without payload leaks. Record envelopes and array slots use own data values without invoking getters, iterators or serialization hooks; malformed data fails inspection/export without payload leaks.",
       "testRefs": [
         "packages/notabenda-cf/test/export.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "site/test/host.test.mjs",
         "scripts/check-site-runtime.mjs",
-        "docs/verification/evidence-export.md"
+        "docs/verification/evidence-export.md",
+        "packages/notabenda-cf/test/record-values.test.mjs"
       ]
     },
     {

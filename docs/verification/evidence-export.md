@@ -20,3 +20,15 @@ Visual inspection used the loopback-only synthetic host, rendering the package U
 
 - [Desktop export review](../assets/screenshots/evidence-export-desktop.jpg)
 - [Mobile export selection and download](../assets/screenshots/evidence-export-mobile.jpg)
+
+## 23 October record-copying review
+
+Synthetic inputs reproduced two gaps in the prior normalizer. Record and array getters were invoked during copying. A custom array iterator also replaced an indexed value in the normalized record, changing the data used for inspection and export. These were host-adapter data-boundary issues; the reproduction used no network, storage or provider calls.
+
+Normalization now reads the record envelope and array entries through their own property descriptors. It rejects accessor-backed or inherited record fields and missing/accessor-backed array entries, and never calls an array iterator or serialization hook. Output remains detached from the input. Positive safe-integer byte limits are required; existing traversal, depth and encoded-size budgets remain in place. The comparison route now normalizes both records before inspecting their IDs, matching the detail and source routes.
+
+The six new regression tests and the existing admin/export suites passed together: 33 tests. They check preserved indexed values, inert iterators and serialization hooks, getter rejection without invocation, nested mutation isolation, null-prototype/frozen envelopes, inherited and sparse entries, cycles, invalid limits and a multibyte/escaped UTF-8 boundary. Worker requests exercise generic failures in search, detail, comparison, source inspection, export review and download. An authorized attachment retains the indexed array data rather than the iterator's substituted output. These checks do not establish an adapter-code sandbox, storage authenticity or legal sufficiency.
+
+The actual local SQLite-backed Worker passed authorization, retained document/source history and export checks before and after a process restart. Reusing the same signed test session recovered the original agreement, cookie-choice and processing receipts and their current heads. This is local runtime evidence, not cloud or arbitrary-host acceptance.
+
+The maintainer checker accepts `NOTABENDA_CHECK_PORT` for a separately started loopback Worker and optional `NOTABENDA_CHECK_COOKIE` for the same private disposable session on both sides of a restart. It fails if the server replaces that session. Starting with a fresh session cannot establish recovery of the earlier records. The pass also corrected stale presentation checks: current example terms must carry the Demo ribbon, with every other HTML byte matching the corresponding archive; pinned downloads remain byte-exact. Agreement inspection checks the statement section and exact receipt ID, and storage cleanup checks its served module rather than a former tagline.

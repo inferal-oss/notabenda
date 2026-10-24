@@ -61,6 +61,8 @@ interface RecordStore {
 
 The built-in adapter reads JSON-compatible values with `ctx.storage.list/get`. Values may be objects, arrays, strings, numbers, booleans, or null. Cycles, accessors, dates, Maps, buffers, and other structured-clone types need a host adapter projecting them to JSON. The adapter never writes evidence records. [Cloudflare documents its asynchronous KV storage API, key ordering and prefix/cursor options here](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#asynchronous-kv-api).
 
+Record `id` and `data` must be own data fields. Normalization rejects getters without invoking them and copies arrays by their own numeric entries, preserving those entries even if an array defines a custom iterator. Iterators and serialization hooks are not called. Sparse or accessor-backed entries fail rather than producing a successful partial record. The default inspection limit is 64 KiB; a custom `normalizeRecord` byte limit must be a positive safe integer.
+
 Search uses AND matching of whitespace-separated words across record keys and serialized JSON. Additional filters select record kind, key prefix, and UTC event-date range. Useful optional fields are:
 
 | Field | Presentation |

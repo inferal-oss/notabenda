@@ -49,6 +49,8 @@ Save each file separately. Follow the **downloaded file’s** `nextReview` or `n
 
 Records follow UTF-8 key order. Every returned page is normalized and checked against the filters, strictly increasing keys, incoming cursor, forward continuation, record count and scan limits. Invalid, oversized or out-of-filter adapter output fails with a generic error; it is never silently omitted from an apparently successful export. A compact HTTP attachment is capped at 4 MiB.
 
+Each record's `id` and `data` must be own data fields. Arrays are copied from their own numeric entries, without calling getters, custom iterators or serialization hooks. An iterator cannot substitute different values into the export; sparse or accessor-backed entries fail the read. This validates the returned data, rather than sandboxing the host's adapter implementation.
+
 These reads do not supply snapshot isolation. Inserts behind a prior cursor, modifications, deletions and changing read-time projections can change the combined result. A host requiring a frozen export must supply a separately authorized snapshot store and preserve its identity and lifetime. These files are unsigned; they do not establish authenticity, completeness, valid consent or that a person saw a notice. They are evidence from one store, not an automatic response to an access request or a backup of the entire application.
 
 ## Application API

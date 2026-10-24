@@ -149,10 +149,11 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
         const beforeId = url.searchParams.get('before'); const afterId = url.searchParams.get('after'); const kind = url.searchParams.get('kind') ?? 'privacy';
         if (!validId(beforeId) || !validId(afterId) || !['privacy','cookies','terms'].includes(kind) || [...url.searchParams.keys()].some(key => !['before','after','kind'].includes(key) || url.searchParams.getAll(key).length !== 1)) return response('Invalid release comparison.', 400);
         try {
-          const [before, after] = await Promise.all([grant.store.get(beforeId), grant.store.get(afterId)]);
-          if (!before || !after) return response('Release not found.', 404);
+          const [rawBefore, rawAfter] = await Promise.all([grant.store.get(beforeId), grant.store.get(afterId)]);
+          if (!rawBefore || !rawAfter) return response('Release not found.', 404);
+          const before = normalizeRecord(rawBefore), after = normalizeRecord(rawAfter);
           if (before.id !== beforeId || after.id !== afterId) throw new Error('Invalid store response.');
-          return response(renderRecordDiff(normalizeRecord(before), normalizeRecord(after), kind, view), 200, headers(nonce));
+          return response(renderRecordDiff(before, after, kind, view), 200, headers(nonce));
         } catch { return response('The releases could not be compared.', 500); }
       }
       if (url.pathname === `${basePath}/record`) {

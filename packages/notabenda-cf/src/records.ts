@@ -10,9 +10,13 @@ export function boundedText(value: unknown, max: number): value is string {
 }
 export function validId(value: unknown): value is string { return boundedText(value, 512) && value.length > 0; }
 
-/** Reject non-JSON values and excessive data before rendering or searching them. */
+/** @requirements REQ-PRODUCT-CF-ADMIN REQ-PRODUCT-EVIDENCE-EXPORT REQ-PRODUCT-SAFE-CONTENT
+ * Copy own JSON values before inspection, without invoking getters or array iterators. */
 export function normalizeRecord(value: unknown, maxBytes = MAX_RECORD_BYTES): EvidenceRecord {
-  if (!value || typeof value !== 'object' || !('id' in value) || !validId(value.id) || !('data' in value)) throw new Error('Invalid record.');
+  if (!Number.isSafeInteger(maxBytes) || maxBytes < 1) throw new Error('Invalid inspection limit.');
+  if (!value || typeof value !== 'object') throw new Error('Invalid record.');
+  const id = Object.getOwnPropertyDescriptor(value, 'id'), body = Object.getOwnPropertyDescriptor(value, 'data');
+  if (!id || !('value' in id) || !validId(id.value) || !body || !('value' in body)) throw new Error('Invalid record.');
   let budget = maxBytes;
   let nodes = 0;
   const active = new Set<object>();
@@ -32,7 +36,14 @@ export function normalizeRecord(value: unknown, maxBytes = MAX_RECORD_BYTES): Ev
     if (Array.isArray(input)) {
       if (input.length > 10_000) throw new Error('Record exceeds inspection limits.');
       budget -= input.length + 2;
-      result = Array.from(input, item => copy(item, depth + 1));
+      if (budget < 0) throw new Error('Record exceeds inspection limits.');
+      const array: JsonValue[] = [];
+      for (let index = 0; index < input.length; index++) {
+        const descriptor = Object.getOwnPropertyDescriptor(input, String(index));
+        if (!descriptor || !('value' in descriptor)) throw new Error('Record is not JSON.');
+        array.push(copy(descriptor.value, depth + 1));
+      }
+      result = array;
     } else {
       if (Object.getPrototypeOf(input) !== Object.prototype && Object.getPrototypeOf(input) !== null) throw new Error('Record is not JSON.');
       const keys = Object.keys(input);
@@ -51,10 +62,10 @@ export function normalizeRecord(value: unknown, maxBytes = MAX_RECORD_BYTES): Ev
     if (budget < 0) throw new Error('Record exceeds inspection limits.');
     return result;
   }
-  const data = copy(value.data, 0);
+  const data = copy(body.value, 0);
   // The traversal budget bounds work; this exact check also counts structural JSON punctuation.
   if (encoder.encode(JSON.stringify(data)).length > maxBytes) throw new Error('Record exceeds inspection limits.');
-  return { id: value.id, data };
+  return { id: id.value, data };
 }
 
 export interface RecordFacts {
