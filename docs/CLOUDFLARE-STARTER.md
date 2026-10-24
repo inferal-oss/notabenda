@@ -47,6 +47,10 @@ Trusted host code can call the private object's `recordRelease` method with a co
 
 The private `inspect` RPC receives only the permission already resolved by the host. Protect any service/namespace binding callers with your own policy. Do not turn it into a public generic RPC dispatcher or pass a browser-supplied grant through to it.
 
+## Build dependencies
+
+The generated private npm manifest pins Miniflare's Undici client to `7.30.1` through a scoped override. Keep that override when installing the starter: the pinned Wrangler toolchain otherwise selects an affected version. This concerns local build/development tooling, not a new Worker or visitor dependency. See the [dependency verification](verification/toolchain-dependencies.md) for upstream advisories and checks.
+
 ## Deployment and removal
 
 The generated [Wrangler configuration](https://developers.cloudflare.com/workers/wrangler/configuration/) declares assets with `run_worker_first` and a private object binding. Its [Durable Object class export](https://developers.cloudflare.com/durable-objects/reference/durable-objects-migrations/) uses SQLite storage; it does not mix the current declarative flow with legacy migration declarations. Package adapters use the [asynchronous key/value API on SQLite-backed storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/).

@@ -7132,13 +7132,15 @@
         "packages/notabenda-cf/templates/src/workspace.mjs",
         "packages/notabenda-cf/templates/src/authorize.mjs",
         "packages/notabenda-cf/templates/src/setup.mjs",
-        "packages/notabenda-cf/templates/scripts/build-assets.mjs"
+        "packages/notabenda-cf/templates/scripts/build-assets.mjs",
+        "docs/verification/toolchain-dependencies.md"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/starter.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/cloudflare-starter.md",
-        "scripts/check-cf-starter-runtime.mjs"
+        "scripts/check-cf-starter-runtime.mjs",
+        "packages/notabenda-cf/test/toolchain.test.mjs"
       ],
       "implementationNote": "Exclusive local scaffolding, a fail-closed host hook, fixed configured-site namespace selection, separate setup/export permission, private archive RPC and explicit Wrangler build/check/dev/deploy scripts."
     },
@@ -9569,12 +9571,15 @@
         "scripts/check-package-release.mjs",
         "SECURITY.md",
         "docs/RELEASE-CANDIDATE.md",
-        "docs/MIGRATION.md"
+        "docs/MIGRATION.md",
+        "docs/RELEASE-010.md",
+        "docs/verification/toolchain-dependencies.md"
       ],
       "testRefs": [
         "packages/notabenda/test/release-check.test.mjs",
         "packages/notabenda/test/migration.test.mjs",
-        "docs/verification/release-candidate.md"
+        "docs/verification/release-candidate.md",
+        "packages/notabenda-cf/test/toolchain.test.mjs"
       ],
       "implementationNote": "Offline pack-only command with fresh ignored/external output, bounded strict ustar parsing without extraction, exact source/build inventory and license checks, source-map and export/bin validation, file/archive digests, failed-report preservation and separate public security/migration docs."
     },
@@ -11615,13 +11620,15 @@
         "site/navigation.mjs",
         "scripts/source-candidate-review.mjs",
         "scripts/source-candidate-review-app.mjs",
-        "scripts/source-candidate-review.css"
+        "scripts/source-candidate-review.css",
+        "docs/verification/toolchain-dependencies.md"
       ],
       "testRefs": [
         "packages/notabenda/test/source-candidate.test.mjs",
         "docs/verification/source-candidate.md",
         "site/test/guide-navigation.test.mjs",
-        "packages/notabenda/test/source-candidate-review.test.mjs"
+        "packages/notabenda/test/source-candidate-review.test.mjs",
+        "packages/notabenda-cf/test/toolchain.test.mjs"
       ],
       "implementationNote": "Bounded regular Git object projection disables replace refs and inherited Git overrides. Separate offline source installs/builds/checks compare actual archives; independent locked consumer/starter installs reject sibling substitution and verify every candidate file. Synthetic production validation, authored pins, DOM-shim controls, browser graph, selected declarations and generated npm check/default denial are exercised. Missing cache and failed stages remain explicit. A digest-bound native browser review is generated from the installed consumer, with a narrow loopback server and independent synthetic request count; preparing it records no browser acceptance."
     }
@@ -12545,7 +12552,8 @@
         "packages/notabenda-cf/test/starter.test.mjs",
         "packages/notabenda/test/package.test.mjs",
         "docs/verification/cloudflare-starter.md",
-        "scripts/check-cf-starter-runtime.mjs"
+        "scripts/check-cf-starter-runtime.mjs",
+        "packages/notabenda-cf/test/toolchain.test.mjs"
       ]
     },
     {
@@ -13189,7 +13197,8 @@
       "testRefs": [
         "packages/notabenda/test/release-check.test.mjs",
         "packages/notabenda/test/migration.test.mjs",
-        "docs/verification/release-candidate.md"
+        "docs/verification/release-candidate.md",
+        "packages/notabenda-cf/test/toolchain.test.mjs"
       ]
     },
     {
@@ -13861,7 +13870,8 @@
         "packages/notabenda/test/source-candidate.test.mjs",
         "docs/verification/source-candidate.md",
         "site/test/guide-navigation.test.mjs",
-        "packages/notabenda/test/source-candidate-review.test.mjs"
+        "packages/notabenda/test/source-candidate-review.test.mjs",
+        "packages/notabenda-cf/test/toolchain.test.mjs"
       ]
     }
   ],

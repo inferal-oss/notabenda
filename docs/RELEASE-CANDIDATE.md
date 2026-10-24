@@ -39,6 +39,8 @@ For two fresh builds, archive comparison, isolated consumer installation and an 
 
 ## Before a public release
 
+Use [Preparing 0.1.0](RELEASE-010.md) for the frozen preview scope, outstanding gates and publication sequence. The full product roadmap remains separate.
+
 Run the applicable tests, inspect the actual tarballs and clean source state, review dependency and content licenses, and complete the release checklist in [the plan](PLAN.md#11-public-release-checklist-and-deferred-work). Confirm documentation and supported scope, security reporting, installation and migration behavior. Keep private fixtures, operator reports, keys and source archives outside package assets. Publishing requires a separate explicit decision; a successful candidate check grants no permission to publish.
 
 Read [migration and removal](MIGRATION.md) before replacing an existing deployment, and use the [security policy](../SECURITY.md) for suspected vulnerabilities. The [verification record](verification/release-candidate.md) describes the checked boundary.
