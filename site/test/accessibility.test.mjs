@@ -164,3 +164,13 @@ test('mounted lifecycle failures retain semantic warning and observation structu
  }
  const manifest=JSON.parse(await readFile(new URL('../dist/asset-manifest.json',import.meta.url),'utf8'));assert.equal(manifest.some(path=>/qa-a11y|narrow-failures/.test(path)||/consent-lifecycle-fixture\.(?:mjs|js)$/.test(path)),false);
 });
+
+// @requirements REQ-EU-ORDER-ACTION
+test('native paid-order ready and rejected-label states retain semantic structure and never submit during audit',async()=>{
+ const {createPaidOrderAction,mountPaidOrderAction}=await import('@notabenda/core/orders'),data=await accessibilityFixtureData();
+ for(const rejected of [false,true]){
+  const audit=await createAccessibilityAudit(shell,{label:'payment action '+rejected}),doc=audit.dom.window.document;let submissions=0;
+  const controller=createPaidOrderAction(data.orderReview,{allowPreview:true,now:()=>new Date(data.orderAt),submit:async()=>{submissions++;throw Error('No audit submission');}}),ui=mountPaidOrderAction(doc.querySelector('#component'),{action:controller,idPrefix:'audited-order',allowPreview:true});
+  try{const button=doc.querySelector('.nb-order-submit');if(rejected){const text=button.textContent,split=text.indexOf(' ')+1,hidden=doc.createElement('span');hidden.hidden=true;hidden.textContent=text.slice(split);button.replaceChildren(doc.createTextNode(text.slice(0,split)),hidden);button.click();}assert.equal(button.disabled,rejected);assert.equal(controller.getSnapshot().presentationReady,!rejected);assert.equal(submissions,0);clean(await audit.scan());}finally{ui.destroy();controller.destroy();audit.close();}
+ }
+});

@@ -19,7 +19,7 @@ export function mountPaidOrderAction(container:HTMLElement,options:{action:PaidO
   button.disabled=state.status!=='ready'||!state.presentationReady;reconcile.hidden=!state.canReconcile||!['uncertain','reconciling'].includes(state.status);reconcile.disabled=state.status!=='uncertain';
   status.textContent=state.status==='ready'?failed?wording.imageUnavailable:state.presentationReady?wording.ready:wording.loadingImages:state.status==='submitting'?wording.submitting:state.status==='reconciling'?wording.reconciling:state.status==='uncertain'?wording.uncertain:state.status==='received'?wording.received:state.status==='stale'?wording.stale:state.outcome?.status==='rejected'&&state.outcome.reason==='checkout-used'?wording.checkoutUsed:wording.unavailable;
  }
- function unchanged(){return information.innerHTML===expected&&button.textContent===wording.paymentActionLabel&&!button.hasAttribute('aria-label')&&!button.hasAttribute('aria-labelledby');}
+ function unchanged(){return information.innerHTML===expected&&button.childNodes.length===1&&button.firstChild?.nodeType===3&&button.textContent===wording.paymentActionLabel&&!button.hasAttribute('aria-label')&&!button.hasAttribute('aria-labelledby');}
  async function place(){if(!unchanged()){failed=true;action.setPresentationReady(false);status.textContent=wording.unavailable;status.focus();return;}present();try{await action.submit();}catch{}if(!closed)status.focus();}
  async function recover(){try{await action.reconcile();}catch{}if(!closed)status.focus();}
  button.addEventListener('click',place);reconcile.addEventListener('click',recover);

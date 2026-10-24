@@ -2349,11 +2349,11 @@
     {
       "id": "SRC-EU-ORDER-FUHRMANN",
       "title": "CJEU C-249/21 Fuhrmann-2 judgment",
-      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62021CJ0249",
+      "url": "https://eur-lex.europa.eu/legal-content/en/TXT/PDF/?uri=ecli%3AECLI%3AEU%3AC%3A2022%3A269",
       "kind": "court-judgment",
-      "checkedOn": "2026-10-19",
-      "access": "search-result",
-      "note": "Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; official press release also read. The wording on the button itself must unambiguously express payment obligation. Full judgment retrieval remains open; direct requests show a JavaScript verification challenge."
+      "checkedOn": "2026-10-23",
+      "access": "read",
+      "note": "Full nine-page official ECLI PDF read on 23 October 2026. Paragraphs 23-34 and operative part checked; CELEX route still returned verification. Button wording and language-specific equivalence assessed separately from surrounding checkout information."
     },
     {
       "id": "SRC-CF-DO-LIMITS",
@@ -6048,7 +6048,7 @@
         },
         {
           "sourceId": "SRC-EU-ORDER-FUHRMANN",
-          "locator": "Indexed primary paragraphs 28/34: button wording itself; complete judgment retrieval remains open"
+          "locator": "Full judgment paragraphs 23-34 and operative part: action wording itself; language-specific equivalence."
         }
       ],
       "discoverySourceIds": [],
@@ -6092,7 +6092,9 @@
         "packages/notabenda-cf/src/worker.ts",
         "packages/notabenda-cf/scripts/sync-order-policy.mjs",
         "site/order-demo-legacy.mjs",
-        "site/order-demo-admin-legacy.mjs"
+        "site/order-demo-admin-legacy.mjs",
+        "scripts/accessibility-fixtures.mjs",
+        "scripts/build-accessibility-fixture.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/paid-order.test.mjs",
@@ -6101,7 +6103,8 @@
         "docs/verification/paid-orders.md",
         "packages/notabenda-cf/test/orders.test.mjs",
         "packages/notabenda-cf/test/orders-package.test.mjs",
-        "scripts/check-order-archive-runtime.mjs"
+        "scripts/check-order-archive-runtime.mjs",
+        "site/test/accessibility.test.mjs"
       ]
     },
     {

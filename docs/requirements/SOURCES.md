@@ -986,11 +986,11 @@ Full primary judgment retrieved and read, including paragraphs 42–56 and the o
 
 ## SRC-EU-ORDER-FUHRMANN
 
-[CJEU C-249/21 Fuhrmann-2 judgment](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A62021CJ0249)
+[CJEU C-249/21 Fuhrmann-2 judgment](https://eur-lex.europa.eu/legal-content/en/TXT/PDF/?uri=ecli%3AECLI%3AEU%3AC%3A2022%3A269)
 
-**Type:** court-judgment. **Checked:** 2026-10-19. **Access:** search-result.
+**Type:** court-judgment. **Checked:** 2026-10-23. **Access:** read.
 
-Indexed primary judgment excerpts reviewed, including paragraphs 28 and 34; official press release also read. The wording on the button itself must unambiguously express payment obligation. Full judgment retrieval remains open; direct requests show a JavaScript verification challenge.
+Full nine-page official ECLI PDF read on 23 October 2026. Paragraphs 23-34 and operative part checked; CELEX route still returned verification. Button wording and language-specific equivalence assessed separately from surrounding checkout information.
 
 <a id="src-cf-do-limits"></a>
 

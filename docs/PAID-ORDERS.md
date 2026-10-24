@@ -4,6 +4,8 @@ Show the goods or services, total price, payment schedule and commitments immedi
 
 The preview includes three [working examples](/orders/mixed/): a lamp with a monthly service, a deposit with a later balance, and a conditional fee calculated from hours worked. Actions are recorded in the browser’s isolated demo database. No payment is taken and no contract is formed there.
 
+Review the action's own wording in each language; nearby price text does not replace it. See [Fuhrmann-2, paragraphs 23-34](https://eur-lex.europa.eu/legal-content/en/TXT/PDF/?uri=ecli%3AECLI%3AEU%3AC%3A2022%3A269).
+
 ## Define the information, then issue a quote
 
 `@notabenda/authoring/orders` supplies `createPaidOrderDefinition`, `createPaidOrderReview` and `verifyPaidOrderReview`. The authoring package runs in a trusted build or server process. `@notabenda/core/orders` supplies the static renderer, a headless action controller and a small vanilla view; it has no runtime dependencies.
@@ -169,3 +171,8 @@ This implements selected frontend mechanics for [REQ-EU-ORDER-ACTION](requiremen
 Contract confirmation on a durable medium is separate under Article 8(7). It includes broader required information; a received-request message or mutable page link is insufficient. Your host must supply and retain the complete confirmation and applicable permissions, and track delivery separately from payment and fulfillment. Production legal/linguistic review, national implementation, physical-device label legibility, real payment/stock-system acceptance remain open. Optional [confirmation archives and host delivery](ORDER-CONFIRMATIONS.md) now retain supplied complete customer files and a separate recoverable job; actual provision remains host work.
 
 The [verification record](verification/paid-orders.md) links tests and remaining checks. The examples use explicit draft previews; do not mark their product facts or documents reviewed for a real shop.
+
+
+## Keep the native action label intact
+
+The vanilla view owns its payment button as a single plain-text label. Its pre-dispatch guard rejects nested elements, including hidden or ARIA-hidden words, even when `textContent` still matches the review. Restyle this view with CSS; use the headless controller for custom markup. Review the actual layout and accessible name in your application: the guard does not verify every CSS rule, surrounding overlay or custom interface.

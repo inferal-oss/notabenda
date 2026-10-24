@@ -145,3 +145,21 @@ test('mounted action uses the reviewed native button, keeps facts visible and re
  }
  const {review}=fixture(),h=host(review),c=createPaidOrderAction(review,{now:h.now,submit:async()=>{throw Error('Unavailable');}}),dom=new JSDOM('<main></main>'),view=mountPaidOrderAction(dom.window.document.querySelector('main'),{action:c,idPrefix:'unrecoverable'});await reject(c.submit(),'uncertain');assert.equal(dom.window.document.querySelector('.nb-order-reconcile').hidden,true,'do not offer a recovery action without a host recovery transport');view.destroy();c.destroy();dom.window.close();
 });
+
+test('payment label descendants cannot hide the reviewed words while preserving textContent',async t=>{
+ for(const mode of ['hidden','aria-hidden']){
+  const {review}=fixture(),{c,h}=action(review),dom=new JSDOM('<main></main>'),doc=dom.window.document,view=mountPaidOrderAction(doc.querySelector('main'),{action:c,idPrefix:'label'}),button=doc.querySelector('.nb-order-submit'),label=button.textContent,tail=doc.createElement('span');
+  t.after(()=>{view.destroy();c.destroy();dom.window.close();});
+  const split=label.indexOf(' ')+1;tail.textContent=label.slice(split);if(mode==='hidden')tail.hidden=true;else tail.setAttribute('aria-hidden','true');button.replaceChildren(doc.createTextNode(label.slice(0,split)),tail);
+  assert.equal(button.textContent,label);button.click();assert.equal(c.getSnapshot().presentationReady,false);assert.equal(doc.querySelector('[role=status]').textContent,review.definition.wording.unavailable);assert.equal(h.orders(),0);assert.equal(c.getRecoveryRequest(),undefined);
+  await reject(c.submit(),'presentation-required');assert.equal(h.orders(),0);
+ }
+ // Keeping the same plain-text label does not invalidate a harmless text refresh.
+ const {review}=fixture(),{c,h}=action(review),dom=new JSDOM('<main></main>'),doc=dom.window.document,view=mountPaidOrderAction(doc.querySelector('main'),{action:c,idPrefix:'plain'}),button=doc.querySelector('.nb-order-submit');t.after(()=>{view.destroy();c.destroy();dom.window.close();});button.textContent=button.textContent;button.click();await until(()=>c.getSnapshot().status==='received');assert.equal(h.orders(),1);
+});
+
+test('payment label mutation during digest work cannot dispatch a new order',async t=>{
+ const {review}=fixture(),{c,h}=action(review),dom=new JSDOM('<main></main>'),doc=dom.window.document,view=mountPaidOrderAction(doc.querySelector('main'),{action:c,idPrefix:'late-label'}),button=doc.querySelector('.nb-order-submit');t.after(()=>{view.destroy();c.destroy();dom.window.close();});
+ const pending=c.submit(),hidden=doc.createElement('span');hidden.textContent=button.textContent;hidden.hidden=true;button.replaceChildren(hidden);
+ await reject(pending,'presentation-required');assert.equal(h.orders(),0);assert.equal(c.getRecoveryRequest(),undefined);
+});

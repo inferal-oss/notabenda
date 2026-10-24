@@ -1,5 +1,7 @@
+// @requirements REQ-EU-ORDER-ACTION
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-PRODUCT-COLLECTION-FLOW
+import {createPaidOrderReview} from '@notabenda/authoring/orders';
 import {consentLayoutFixture} from './consent-layout-fixture.mjs';
 import {collectionFlowExample} from '../examples/collection-flow/example.mjs';
 // @requirements REQ-ZA-MARKETING
@@ -15,6 +17,7 @@ export async function accessibilityFixtureData(){
  // A synthetic declaration exercises production markup, not actual content/legal review.
  for(const doc of Object.values(config.documents))doc.review.status='reviewed';
  config.scopeGuards={version:1,revision:'accessibility-fixture-1',site:{children:'absent',sensitiveData:'absent',highRiskProfiling:'absent',regulatedSector:'absent'}};
+ const template=JSON.parse(await readFile(new URL('../site/dist/public/orders/conditional/template.json',import.meta.url),'utf8')),orderAt='2026-10-19T12:00:00.000Z',orderReview=createPaidOrderReview(template.definition,{quoteId:'layout-quote',revision:'1',contextRef:'a'.repeat(64),definitionId:template.definition.definitionId,issuedAt:orderAt,expiresAt:'2026-10-19T12:10:00.000Z',lines:template.lines,pricing:template.pricing},{},{allowPreview:true});
  const build=compileLegalDocuments(config),storage=createSyntheticStorage([]);
  await recordLegalRelease(storage,build.artifact);
  const second=structuredClone(config);second.documents.privacy.version='accessibility-2';second.purposes[0].description+=' Contact support to ask about this processing.';
@@ -44,5 +47,5 @@ export async function accessibilityFixtureData(){
  // Keep exact pinned reader files private to the local fixture server. Do not add
  // test releases to the deployable site's artifact collection.
  const artifactFiles=Object.fromEntries([build,revision,flowExample.build].flatMap(b=>Object.entries(b.files).filter(([path])=>/^artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(path))));
- return {runtimeLongConfig:consentLayoutFixture(config,'ltr'),runtimeRtlConfig:consentLayoutFixture(config,'rtl'),collectionFlow,flowPermissionState,config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
+ return {orderReview,orderAt,runtimeLongConfig:consentLayoutFixture(config,'ltr'),runtimeRtlConfig:consentLayoutFixture(config,'rtl'),collectionFlow,flowPermissionState,config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
 }
