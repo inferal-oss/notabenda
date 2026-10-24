@@ -51,3 +51,15 @@ These tests establish presentation and archival mechanics, not solicitation elig
 The clean build passed 1,332 package tests and 205 site tests, catalog validation and the Worker dry run. The previous published version 3 offer reproduced exactly with the updated generic builder. Local Chromium observed an ordinary workspace action leave a checked permission draft unrecorded, then an explicit grant and an operator view containing the pinned goods/services, method, controller and exact labels.
 
 The regional native fixture was scanned in its initial and intentional recording-error states at actual frame widths of 320, 390 and 1,215 pixels. All six scans reported zero violations, errors and incomplete results. Measured document widths were 305, 375 and 1,200 pixels, with the request within each viewport and referenced by its checkbox. These are desktop Chromium frame layouts. Physical devices, Firefox/Safari, assistive technology and full application/marketing acceptance remain separate work.
+
+### 23 October: native Safari keyboard and failure checks
+
+Safari 27.0 on macOS checked the regional permission fixture built from commit `1d0a40133386bce5377126b7bd8f6c50ed59bceb`. The local fixture uses the actual controller and field, a synthetic saved-off response and an intentionally failing submit callback. It has no recovery journal, live backend or provider connection.
+
+Using Option-Tab and Space, the reviewer reached the initially unchecked field, expanded and collapsed its explanation, opened the pinned privacy document and returned to the same reader link. The disabled Save action was skipped, while **I do not consent** remained reachable without checking the field. A failed refusal left the field unchecked, showed no saved-choice acknowledgement and retained focus on the refusal action. **Check saved permission** was reachable next; refreshing restored the saved-off message and moved focus to the checkbox.
+
+Checking the box enabled Save without recording a choice. Explicit Save then failed as intended: the interface displayed the unconfirmed-choice message, disabled Save and moved focus to the checkbox. Refreshing the saved state retained the checked draft but reported the option as off; unchecking remained available. A checked draft is not a recorded permission.
+
+The same Safari session scanned the initial and grant-error fixtures with the browser audit runner: two scenarios, zero violations, zero fixture errors and zero incomplete rule results. The report identified Safari 27.0 and an outer viewport of 1,707 × 909 CSS pixels. These are selected desktop Safari observations; they do not extend the earlier Chromium frame measurements to Safari or establish every WebKit state.
+
+Screenshots and the observed audit summary remain in ignored local release evidence. Native access stopped when the Mac locked during a subsequent zoom check, so that check has no accepted result. Firefox, physical devices, assistive technology, the remaining zoom/platform matrix, durable recovery, actual delivery and regional legal review remain open.

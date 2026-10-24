@@ -77,3 +77,7 @@ The full reports stay in ignored local output. No incomplete result is evidence 
 ## Lifecycle warning scenarios
 
 The current fixture includes six additional mounted cookie lifecycle failures (38 available scenarios total). A selected Chromium pass ran these six in both themes at wide and 390-pixel frame widths; it did not rerun the historical 32-scenario matrix above. [Lifecycle warning verification](consent-browser.md#22-october-lifecycle-failure-warnings) records the actual phases, keyboard path, incomplete dialog-reference results and limits.
+
+## 23 October: selected native Safari permission checks
+
+The [regional form-permission review](form-permissions.md#23-october-native-safari-keyboard-and-failure-checks) adds native Safari 27.0 keyboard observations for the unchecked choice, disclosure, pinned document reader, refusal failure, grant failure and saved-state refresh. The initial and grant-error browser scans reported zero violations, fixture errors and incomplete results across two scenarios. This supplements the historical Chromium matrix; it is not a full Safari pass. The interrupted zoom check has no accepted result, and physical-device and assistive-technology acceptance remain open.
