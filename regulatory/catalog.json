@@ -9621,13 +9621,18 @@
         "docs/MIGRATION.md",
         "docs/RELEASE-010.md",
         "CHANGELOG.md",
-        "docs/verification/toolchain-dependencies.md"
+        "docs/verification/toolchain-dependencies.md",
+        "examples/static/licenses.mjs",
+        "examples/static/build.mjs",
+        "site/footer.mjs"
       ],
       "testRefs": [
         "packages/notabenda/test/release-check.test.mjs",
         "packages/notabenda/test/migration.test.mjs",
         "docs/verification/release-candidate.md",
-        "packages/notabenda-cf/test/toolchain.test.mjs"
+        "packages/notabenda-cf/test/toolchain.test.mjs",
+        "site/test/distribution-licenses.test.mjs",
+        "docs/verification/distribution-licenses.md"
       ],
       "implementationNote": "Offline pack-only command with fresh ignored/external output, bounded strict ustar parsing without extraction, exact source/build inventory and license checks, source-map and export/bin validation, file/archive digests, failed-report preservation and separate public security/migration docs."
     },
