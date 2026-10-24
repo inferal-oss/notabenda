@@ -55,7 +55,7 @@ On 19 October 2026, Chromium 154 completed all six profiles at desktop and mobil
 
 These are measurements from one machine and run order, with no cross-platform speed claim. The small profiles include zero-duration samples at the browser clock's exposed resolution. The raw reports remain in `.local/consent-perf-browser-desktop.json` and `.local/consent-perf-browser-mobile.json`; Node runs use the same harness without mounting controls.
 
-![Completed desktop controller measurements](../assets/screenshots/consent-performance-desktop.png)
+![Completed desktop controller measurements](../assets/screenshots/consent-performance-desktop.jpg)
 
 
 ## Returning-visitor Chromium run

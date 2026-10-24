@@ -125,7 +125,7 @@ The local example also serves [evidence search](http://127.0.0.1:4178/demo/admin
 
 ![Terms agreements in the searchable evidence workspace](docs/assets/screenshots/workspace-current.png)
 
-![Compact mobile cookie notice with balanced choices](docs/assets/screenshots/consent-current.png)
+![Compact mobile cookie notice with balanced choices](docs/assets/screenshots/consent-current.jpg)
 
 See a [policy comparison](docs/assets/screenshots/admin-diff-desktop.jpg) and [evidence search on a phone](docs/assets/screenshots/admin-agreements-mobile.jpg).
 

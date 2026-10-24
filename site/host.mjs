@@ -1,3 +1,4 @@
+import {legacyScreenshotTarget} from './screenshot-aliases.mjs';
 // @requirements REQ-PRODUCT-MARKETING-AUTHORING
 // @requirements REQ-PRODUCT-COLLECTION-WORKBENCH
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
@@ -117,6 +118,8 @@ export async function serveHost(input, env) {
     } catch { return protectedResponse(new Response('Workspace unavailable.',{status:503})); }
   }
   if (!['GET','HEAD'].includes(request.method)) return new Response('Method not allowed.',{status:405,headers:{Allow:'GET, HEAD'}});
+  const screenshotTarget=legacyScreenshotTarget(path);
+  if(screenshotTarget)return publicResponse(new Response(null,{status:308,headers:{Location:screenshotTarget,'Cache-Control':'public, max-age=86400'}}),path);
   // Workers Assets canonicalizes .html to extensionless paths. Resolve these
   // known immutable files internally so the published pinned URL remains a 200.
   let assetRequest=request;

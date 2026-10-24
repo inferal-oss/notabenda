@@ -63,7 +63,7 @@ A mobile-width native dialog exposed Close, both checkboxes, both legal links, R
 
 In the mobile document comparison, PageDown focused and scrolled **Before text** from 0 to 112.5 CSS pixels. The block had 719 pixels of content in a 606-pixel viewport. Its focus outline and retained text remained visible.
 
-![Keyboard focus in the mobile document comparison](../assets/screenshots/accessibility-diff-mobile.png)
+![Keyboard focus in the mobile document comparison](../assets/screenshots/accessibility-diff-mobile.jpg)
 
 The browser's incomplete results remain visible rather than being suppressed:
 
