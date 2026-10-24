@@ -22,7 +22,7 @@ The binding name, class export and configured site ID determine where data lives
 
 ## Local diagnostics
 
-Keep the generated `overrides.miniflare.undici` pin when installing this private project. It selects the patched local HTTP client while retaining the chosen Wrangler version. This is a build/development dependency, not a visitor script or Worker runtime dependency. Review upstream dependency advisories before changing the pin.
+Keep the generated `overrides["miniflare@5.20261012.1-beta"].undici` pin when installing this private project. The explicit parent version makes the patched client selection work with npm 10 and Miniflare's prerelease version. It retains the chosen Wrangler version. This is a build/development dependency, not a visitor script or Worker runtime dependency. Review upstream dependency advisories before changing the pin, and update the parent selector when changing Miniflare.
 
 `npx @notabenda/cloudflare doctor --json` emits a versioned report with requirement IDs, local blockers and manual review items. Use `--config wrangler.jsonc --env staging` to explicitly select a JSON/JSONC config and named environment. Named environments must declare their own evidence binding. The command never imports host/settings code, reads environment-file values, installs, builds, contacts Cloudflare or changes files. It checks the generated starter contract; custom dynamic/Vite/TOML setups need separate Wrangler validation. Filename and manifest checks cannot prove private-content absence, authorization behavior, package integrity or record lifecycle safety.
 

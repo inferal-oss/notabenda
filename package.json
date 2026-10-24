@@ -56,7 +56,7 @@
     "node": ">=22.22.0"
   },
   "overrides": {
-    "miniflare": {
+    "miniflare@5.20261012.1-beta": {
       "undici": "7.30.1"
     }
   }

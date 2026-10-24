@@ -8,10 +8,17 @@ import {readFile} from 'node:fs/promises';
 
 // Resolve exactly the client used by Miniflare, rather than an unrelated root copy.
 const require=createRequire(import.meta.url),toolRequire=createRequire(require.resolve('miniflare'));
+const root=JSON.parse(await readFile(new URL('../../../package.json',import.meta.url),'utf8'));
+const miniflareVersion=require('miniflare/package.json').version;
+const clientOverride=root.overrides[`miniflare@${miniflareVersion}`]?.undici;
+
+test('the client override explicitly selects the installed Miniflare prerelease for npm 10',()=>{
+  assert.equal(Object.hasOwn(root.overrides,'miniflare'),false);
+  assert.equal(clientOverride,'7.30.1');
+});
 
 test('the isolated Worker toolchain uses the patched client and enforces mixed-case response integrity',async()=>{
-  const root=JSON.parse(await readFile(new URL('../../../package.json',import.meta.url),'utf8'));
-  assert.equal(root.overrides.miniflare.undici,'7.30.1');assert.equal(toolRequire('undici/package.json').version,root.overrides.miniflare.undici);
+  assert.equal(toolRequire('undici/package.json').version,clientOverride);
   const {fetch}=toolRequire('undici'),body='Synthetic release-tool response';
   const server=createServer((_request,response)=>{response.setHeader('content-type','text/plain');response.end(body);});
   await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
