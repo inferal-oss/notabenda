@@ -9,6 +9,11 @@ import data from './data.mjs';
 const gate='fixture/open',journalKey='fixture/reconciled',clockKey='fixture/clock';
 const roles=['retired','held','delivered','uncertain'];
 const familyNames=['contracts','orders'];
+// Synthetic legacy-shaped heads, not records written by the current contract recorder.
+const headKey=role=>'notabenda/contracts/'+data.siteId+'/heads/'+data.contracts[role].contextRef;
+const headValue=role=>{const item=data.contracts[role];return {id:item.id,siteId:data.siteId,scopeId:data.definition.actionId,streamRef:item.contextRef,request:structuredClone(item.request)};};
+const canonical=v=>JSON.stringify(v,(_k,value)=>value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.entries(value).sort(([a],[b])=>a.localeCompare(b))):value);
+async function headsMatch(storage,selectedRoles){for(const role of selectedRoles)if(canonical(await storage.get(headKey(role)))!==canonical(headValue(role)))return false;return true;}
 const now=storage=>async()=>await storage.get(clockKey)??data.at;
 const encode=value=>JSON.stringify(value,(_key,v)=>v instanceof Uint8Array?{fixtureBytes:[...v]}:v);
 const decode=value=>JSON.parse(value,(_key,v)=>v&&typeof v==='object'&&Object.keys(v).length===1&&Array.isArray(v.fixtureBytes)?new Uint8Array(v.fixtureBytes):v);
@@ -53,6 +58,7 @@ export class RecoveryCase extends DurableObject {
    await recordLegalRelease(s,data.artifact);await registerContractActionDefinition(s,data.definition,context('contracts','retired'));
    for(const role of roles){
     await recordContractDeclaration(s,data.contracts[role].request,context('contracts',role));
+    await s.put(headKey(role),headValue(role));
     const order=data.orders[role],c=context('orders',role);
     await archivePaidOrderReview(s,order.review,c);await activatePaidOrderReview(s,{reviewId:order.review.reviewId,expectedRevision:0},c);
     await admitPaidOrder(s,order.request,c,{hostPrefix:'fixture-host/stock/',async decide(){return {status:'admit',writes:[]};}});
@@ -146,6 +152,7 @@ export class RecoveryCase extends DurableObject {
   if(action==='open'){
    if(open||await s.get(journalKey)!==true)throw Error('Reconciliation incomplete.');
    for(const family of familyNames)if((await (await lifecycle(family,'retired')).getState())?.phase!=='complete'||!(await (await lifecycle(family,'held')).getState())?.hold.active)throw Error('Reconciliation incomplete.');
+   if(await s.get(headKey('retired'))!==undefined||!await headsMatch(s,['held','delivered','uncertain']))throw Error('Contract head reconciliation incomplete.');
    await s.put(gate,true);return Response.json({opened:true});
   }
   if(action==='status'){
@@ -158,6 +165,7 @@ export class RecoveryCase extends DurableObject {
     result.retiredHeadPresent[family]=await s.get(prefix+'heads/'+life.contextRef)!==undefined;
     result.retiredPayloadKeys[family]=family==='orders'?(await s.list({prefix:prefix+'intents/'+life.contextRef+'/',limit:1000})).size:result.retiredEventPresent[family]?1:0;
    }
+   result.contractHeadsMatch=await headsMatch(s,open&&result.contracts.retired?.phase!=='complete'?roles:['held','delivered','uncertain']);
    return Response.json(result);
   }
   return new Response('Not found',{status:404});

@@ -45,6 +45,7 @@ async function isolated(){
 try{
  await start();assert.equal((await fetch(origin+'/source/seed',{method:'POST',body:'{}'})).status,404);
  assert.deepEqual(await call('/source/seed'),{contracts:4,orders:4});
+ const seeded=await call('/source/status');assert.equal(seeded.retiredHeadPresent.contracts,true);assert.equal(seeded.contractHeadsMatch,true);
  const original={},originalHeld={};for(const family of families){original[family]=await call('/source/inspect',{family,role:'delivered'});originalHeld[family]=await call('/source/inspect',{family,role:'held'});}
  const backup=await call('/source/snapshot'),backupFile=await saved('backup.json',backup);
  await call('/source/clock',{at:'2026-10-20T12:01:00.000Z'});
@@ -54,10 +55,12 @@ try{
  await call('/source/hold');await call('/source/retire');
  let purged;for(let i=0;i<100;i++){purged=await call('/source/purge');if(families.every(f=>purged[f].phase==='complete'))break;}
  assert.ok(families.every(f=>purged[f].phase==='complete'));
+ const sourcePurged=await call('/source/status');assert.equal(sourcePurged.retiredHeadPresent.contracts,false);assert.equal(sourcePurged.contractHeadsMatch,true);
  const journal=await call('/source/journal'),journalFile=await saved('later-decisions.json',journal),providerBefore=await call('/provider');
  assert.equal(Object.keys(providerBefore).length,9);assert.ok(Object.values(providerBefore).every(v=>v.calls===1&&v.commits===1));
  // Hydrate another SQLite object. The independent provider is never rolled back.
  await isolated();await call('/restored/open',{},409);await call('/restored/hydrate',backup);await call('/restored/hydrate',backup,409);await call('/restored/seed',{},409);await isolated();
+ const hydrated=await call('/restored/status');assert.equal(hydrated.retiredHeadPresent.contracts,true);assert.equal(hydrated.contractHeadsMatch,true);
  const wrong=structuredClone(journal);wrong.entries[0].state.contextRef='0'.repeat(64);await call('/restored/reconcile',wrong,409);
  assert.equal((await call('/restored/status')).contracts.held,null);
  await call('/restored/clock',{at:'2026-10-20T12:02:00.000Z'});
@@ -69,7 +72,7 @@ try{
  const resumed=await call('/restored/status');assert.equal(resumed.orders.retired.progress.batches,1);assert.ok(resumed.orders.retired.progress.deleted>0);
  for(let i=0;i<100;i++){purged=await call('/restored/purge');if(families.every(f=>purged[f].phase==='complete'))break;}
  assert.ok(families.every(f=>purged[f].phase==='complete'));await call('/restored/open');await stop();await start();
- const ready=await call('/restored/status');assert.equal(ready.open,true);assert.deepEqual(ready.retiredPayloadKeys,{contracts:0,orders:0});assert.deepEqual(ready.retiredEventPresent,{contracts:false,orders:false});assert.deepEqual(ready.retiredHeadPresent,{contracts:false,orders:false});
+ const ready=await call('/restored/status');assert.equal(ready.open,true);assert.equal(ready.contractHeadsMatch,true);assert.deepEqual(ready.retiredPayloadKeys,{contracts:0,orders:0});assert.deepEqual(ready.retiredEventPresent,{contracts:false,orders:false});assert.deepEqual(ready.retiredHeadPresent,{contracts:false,orders:false});
  assert.deepEqual(await call('/restored/hold-probe'),{contracts:'legal-hold',orders:'legal-hold'});
  assert.deepEqual(await call('/provider'),providerBefore);
  const uncertainStates={};
@@ -101,7 +104,7 @@ try{
  for(const [key,value] of Object.entries(after)){assert.equal(value.commits,1);assert.equal(value.digest,providerBefore[key].digest);assert.equal(value.calls,expectedCalls.get(key));}
  assert.deepEqual(Object.values(after).map(v=>v.calls).sort(),[1,1,1,2,2,2,3,3,3]);
  for(const role of ['held','delivered','uncertain'])for(const file of data.orders[role].bundle.files)assert.deepEqual((await call('/restored/file',{family:'orders',role,file:file.id})).bytes,file.bytes);
- const report={schemaVersion:1,kind:'local-transaction-recovery-report',passed:true,backup:backupFile,journal:journalFile,contextCounts:{contracts:4,orders:4},provider:{uniqueJobs:9,commits:9,attempts:Object.values(after).reduce((n,v)=>n+v.calls,0)},checks:['default-closed reads/writes/dispatch/files','hold-first replay across restart','retirement replay before reopening','bounded purge across restart','retired payloads unavailable','stable downstream identifiers and exact payloads','uncertain response survives restart','original receipts and chunked confirmation bytes preserved'],limitations:['local synthetic KV backup, not native SQLite restore','known fixture journal, not proof of host journal completeness','independent idempotent fake provider, not real delivery','no external-copy deletion or legal readiness claim']};
+ const report={schemaVersion:1,kind:'local-transaction-recovery-report',passed:true,backup:backupFile,journal:journalFile,contextCounts:{contracts:4,orders:4},provider:{uniqueJobs:9,commits:9,attempts:Object.values(after).reduce((n,v)=>n+v.calls,0)},checks:['default-closed reads/writes/dispatch/files','hold-first replay across restart','retirement replay before reopening','bounded purge across restart','populated synthetic legacy contract head restored then purged; three surviving heads unchanged','retired payloads unavailable','stable downstream identifiers and exact payloads','uncertain response survives restart','original receipts and chunked confirmation bytes preserved'],limitations:['local synthetic KV backup, not native SQLite restore','known fixture journal, not proof of host journal completeness','independent idempotent fake provider, not real delivery','no external-copy deletion or legal readiness claim']};
  await saved('report.json',report);
  console.log('Local SQLite transaction recovery passed: eight contexts; later holds/deletions reconciled before opening; purge resumed after restart.');
  console.log('Independent provider: nine jobs, eighteen attempts, nine commits. Exact declaration payloads, receipts and chunked confirmation files survived rollback/retry.');

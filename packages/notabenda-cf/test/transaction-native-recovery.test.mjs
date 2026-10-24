@@ -65,3 +65,31 @@ test('rejected actual provider RPC retains the external in-flight marker and ref
  const evidence=createRemoteRecoveryEvidence({storage:f.source,blockConcurrencyWhile:run=>run()},{command:async(action,payload)=>fixtureReply(()=>control.run(action,payload))},base,null,{transactionReceive:async()=>{throw Error('Synthetic transport loss')}});
  assert.deepEqual(await evidence.command('transaction-delivered-dispatch'),{ok:false,error:'synthetic-provider-unresolved'});assert.ok((await control.run('state')).transactionInFlight);await control.run('close');for(const action of ['post-backup-decisions','purge','restore','open'])assert.deepEqual(await evidence.command(action),{ok:false,error:'transaction-work-not-drained'});
 });
+
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY REQ-PRODUCT-EVIDENCE-LIFECYCLE REQ-PRODUCT-CONTRACT-ACTIONS
+test('transaction recovery purges a populated legacy contract head and refuses reopening if it returns',async()=>{
+ const f=await setup(),item=f.data.contracts.retired,key='notabenda/contracts/'+f.data.siteId+'/heads/'+item.contextRef;
+ const legacy={id:item.id,siteId:f.data.siteId,scopeId:f.data.definition.actionId,streamRef:item.contextRef,request:structuredClone(item.request)};
+ await f.source.put(key,legacy);f.snapshot=[...await all(f.source)];assert.deepEqual(await f.source.get(key),legacy);
+ const {journal}=await later(f);assert.equal(await f.source.get(key),undefined,'source purge removes the populated head');
+ const {storage,recovery}=await restored(f);assert.deepEqual(await storage.get(key),legacy,'backup restoration actually returns the head');await recovery.replayJournal(journal);
+ for(let n=0;n<100;n++){const state=await recovery.purge();if(Object.values(state).every(value=>value.phase==='complete'))break;}
+ assert.equal(await storage.get(key),undefined,'restored purge removes the populated head');assert.equal(await recovery.recoveredReady(journal),true);
+ await storage.put(key,legacy);const before=[...await all(storage)];assert.equal(await recovery.recoveredReady(journal),false,'leftover legacy payload prevents reopening');assert.deepEqual([...await all(storage)],before,'readiness does not erase or repair the leftover');
+ await storage.delete(key);assert.equal(await recovery.recoveredReady(journal),true);
+});
+
+// @requirements REQ-PRODUCT-CF-REMOTE-RECOVERY REQ-PRODUCT-EVIDENCE-LIFECYCLE REQ-PRODUCT-CONTRACT-ACTIONS
+test('transaction recovery preserves surviving legacy-shaped contract heads and detects changed bytes before reopening',async()=>{
+ const f=await setup(),item=f.data.contracts.held,key='notabenda/contracts/'+f.data.siteId+'/heads/'+item.contextRef;
+ const head={id:item.id,siteId:f.data.siteId,scopeId:f.data.definition.actionId,streamRef:item.contextRef,request:structuredClone(item.request)};
+ await f.source.put(key,head);f.snapshot=[...await all(f.source)];const {journal}=await later(f);assert.deepEqual(await f.source.get(key),head);
+ const {storage,recovery}=await restored(f);await recovery.replayJournal(journal);
+ for(let n=0;n<100;n++){const state=await recovery.purge();if(Object.values(state).every(value=>value.phase==='complete'))break;}
+ assert.deepEqual(await storage.get(key),head);assert.equal(await recovery.recoveredReady(journal),true);
+ for(const altered of [undefined,{...head,request:{...head.request,fields:{...head.request.fields,name:'Changed synthetic name'}}}]){
+  if(altered===undefined)await storage.delete(key);else await storage.put(key,altered);
+  const before=[...await all(storage)];assert.equal(await recovery.recoveredReady(journal),false,'missing or changed surviving head prevents reopening');assert.deepEqual([...await all(storage)],before);
+ }
+ await storage.put(key,head);assert.equal(await recovery.recoveredReady(journal),true);
+});
