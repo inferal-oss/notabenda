@@ -32,7 +32,7 @@ test('published consent CSS retains canonical declarations, cascade and accessib
 });
 
 test('real browser entry measurements expose missed targets and exclude backend, build and framework modules',async()=>{
- const report=await measureBundles();assert.equal(report.schemaVersion,1);assert.equal(report.tool.target,'es2022');assert.equal(report.compression.level,9);
+ const report=await measureBundles();assert.equal(report.schemaVersion,1);assert.equal(report.tool.target,'es2022');assert.equal(report.compression.level,9);assert.equal(report.compression.version,process.versions.zlib);assert.equal(report.environment.version,process.version);
  const core=report.profiles.find(p=>p.id==='core-controls'),state=report.profiles.find(p=>p.id==='headless'),css=report.profiles.find(p=>p.id==='consent-css');assert.equal(core.budgetBytes,15*1024);assert.equal(css.budgetBytes,5*1024);assert.ok(css.withinBudget);
  for(const profile of [core,state]){assert.ok(profile.gzipBytes>0);assert.ok(profile.inputs.some(path=>path.endsWith('/consent.js')));assert.ok(profile.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:cli|content|setup|discovery)\.js$)/u.test(path)));}
  assert.ok(state.inputs.every(path=>!/(?:controls|documents|terms|react)\.js$/u.test(path)));assert.ok(core.inputs.some(path=>path.endsWith('/controls.js')));
@@ -43,9 +43,28 @@ test('real browser entry measurements expose missed targets and exclude backend,
  const recovery=report.profiles.find(p=>p.id==='terms-recovery');assert.ok(recovery.gzipBytes>0);assert.ok(recovery.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:content|setup|cli)\.js$)/u.test(path)));assert.ok(compiled.inputs.every(path=>!path.endsWith('/terms-recovery.js')));
  const flow=report.profiles.find(p=>p.id==='collection-flow');assert.ok(flow.gzipBytes>0);assert.ok(flow.inputs.some(path=>path.endsWith('/collection-flow.js')));assert.ok(flow.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:collection-flow-build|content|setup|cli)\.js$)/u.test(path)));assert.ok(compiled.inputs.every(path=>!path.endsWith('/collection-flow.js')));
  const technologyCss=report.profiles.find(p=>p.id==='technology-notice-css');assert.equal(technologyCss.entry,'@notabenda/core/technology.css');assert.equal(technologyCss.gzipBytes,gzipSync(await readFile(new URL('../dist/technology.css',import.meta.url)),{level:9}).length);
- for(const profile of report.profiles)assert.ok(profile.inputs.every(path=>!/\/catalog-(?:project|composer|python-project|nuget)\.js$/u.test(path)),'Node-only discovery in '+profile.id);
+ for(const profile of report.profiles){assert.match(profile.sha256,/^[a-f0-9]{64}$/u);assert.ok(profile.inputs.every(path=>!/\/catalog-(?:project|composer|python-project|nuget)\.js$/u.test(path)),'Node-only discovery in '+profile.id);}
  const failed=report.profiles.filter(p=>p.budgetBytes!==null&&p.gzipBytes>p.budgetBytes);assert.equal(report.allBudgetsMet,failed.length===0);
  assert.match(formatBundleReport(report),core.withinBudget?/core-controls.*within target/u:/core-controls.*OVER TARGET/u);assert.doesNotMatch(JSON.stringify(report),/\/Users\/|ADMIN_KEY/u);
  const cli=spawnSync(process.execPath,[new URL('../../../scripts/measure-bundles.mjs',import.meta.url).pathname,'--json','--check'],{encoding:'utf8',timeout:10000});assert.equal(cli.status,report.allBudgetsMet?0:1,cli.stderr);assert.deepEqual(JSON.parse(cli.stdout),report);
  const invalid=spawnSync(process.execPath,[new URL('../../../scripts/measure-bundles.mjs',import.meta.url).pathname,'--invented'],{encoding:'utf8',timeout:10000});assert.equal(invalid.status,2);assert.match(invalid.stderr,/Usage/);
+});
+
+test('size explanations measure real public boundaries without changing budgets or depending on the caller directory',async()=>{
+ const report=await measureBundles({explain:true}),plain=await measureBundles();
+ assert.deepEqual(report.profiles,plain.profiles);assert.equal(report.allBudgetsMet,plain.allBudgetsMet);
+ const e=report.explanation;assert.equal(e.sizesAreAdditive,false);assert.equal(e.kind,'current-public-composition');
+ assert.deepEqual(e.publicBoundaryProfiles.map(p=>p.exports),[['validateSiteConfig'],['toPublicConfig'],['toPublicConfig','mountControls']]);
+ for(const p of e.publicBoundaryProfiles){assert.equal(p.entry,'@notabenda/core');assert.equal(p.budgetBytes,null);assert.equal(p.withinBudget,null);assert.ok(p.gzipBytes>0);assert.match(p.sha256,/^[a-f0-9]{64}$/u);assert.ok(p.inputs.some(path=>path.endsWith('/config.js')));assert.ok(p.inputs.every(path=>!/(?:consent-engine|consent-evidence)\.js$/u.test(path)));}
+ assert.ok(e.publicBoundaryProfiles.at(-1).inputs.some(path=>path.endsWith('/controls.js')));
+ const core=report.profiles.find(p=>p.id==='core-controls');assert.deepEqual(e.coreInputContributions.map(c=>c.path),core.inputs);assert.ok(e.coreInputContributions.every(c=>Number.isSafeInteger(c.bytesInOutput)&&c.bytesInOutput>0));
+ assert.ok(e.coreInputContributions.reduce((n,c)=>n+c.bytesInOutput,0)<=core.bytes);
+ assert.match(formatBundleReport(report),/gzip sizes are not additive; original budgets are unchanged/u);
+ const {mkdtemp,rm}=await import('node:fs/promises'),{tmpdir}=await import('node:os'),{join}=await import('node:path'),cwd=await mkdtemp(join(tmpdir(),'nb-size-caller-'));
+ try{
+  const cli=spawnSync(process.execPath,[new URL('../../../scripts/measure-bundles.mjs',import.meta.url).pathname,'--json','--check','--explain'],{cwd,encoding:'utf8',timeout:10000});
+  assert.equal(cli.status,plain.allBudgetsMet?0:1,cli.stderr);assert.deepEqual(JSON.parse(cli.stdout),report);
+  for(const p of [...report.profiles,...e.publicBoundaryProfiles])assert.ok(p.inputs.every(path=>!/(?:^|\/)\.\.(?:\/|$)|^\/|^[A-Za-z]:/u.test(path)));
+  assert.doesNotMatch(cli.stdout,/\/Users\/|ADMIN_KEY|nb-size-caller-/u);
+ }finally{await rm(cwd,{recursive:true,force:true});}
 });

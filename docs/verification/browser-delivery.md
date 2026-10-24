@@ -87,3 +87,35 @@ A temporary prototype reused the complete results of seven optional policy norma
 For ordinary data, 2,592 malformed-leaf comparisons matched validation results and errors. Three valid fixtures retained serialized public output, ordering and separate-call mutation isolation. Repeated local Node measurements found about 0.09–0.11 ms less construction time for richer localized fixtures; the basic fixture stayed within measurement noise. These synthetic CPU measurements do not establish browser startup or interaction performance.
 
 The prototype was rejected after two independently reproduced counterexamples. A root getter can supply a valid policy during validation and an invalid replacement during projection. A later document-field getter can also mutate the original policy body without changing its identity. The existing projection rejects both; unconditional reuse accepts them. Reference equality is insufficient to preserve this behavior. Regression tests cover both changes in preview and production modes. All four tests pass the current implementation and fail against the rejected prototype. No normalization reuse or weaker validation was shipped, and the general-entry size gate remains open.
+
+
+## 23 October: public composition and portable reports
+
+Run `node scripts/measure-bundles.mjs --explain` after building the packages. The optional explanation bundles three additional groups of real public exports and lists each input's minified contribution to the general controls bundle. `--json --check --explain` emits the same data and still exits nonzero when an original budget is missed. The explanation groups are reported separately and do not replace or change any budget. No implementation is stubbed or omitted for these measurements. Reports include the Node/platform versions, compression-library version and SHA-256 of each uncompressed profile.
+
+At committed baseline `b64201e`, Node 26.10.0 with zlib 1.2.12, esbuild 0.28.2 and gzip level 9 produced:
+
+| Public exports | Gzip bytes |
+| --- | ---: |
+| `validateSiteConfig` | 13,858 |
+| `toPublicConfig` | 14,973 |
+| `toPublicConfig` and `mountControls` | 19,213 |
+| `createConsent` and `mountControls` | 28,268 |
+
+The current full-site validation/projection plus controls already exceeds the unchanged 15,360-byte target by 3,853 bytes before adding the consent engine and receipt session. The general entry's gap remains 12,908 bytes. Shared dependencies and gzip dictionaries mean these independently bundled values are **not additive**. They describe the current factoring, not a theoretical lower bound or evidence that no redesign could meet the target. Minified input contributions are raw output bytes, not per-module gzip costs.
+
+An independent Astra review found no demonstrated, maintainable reduction of at least 1 KiB that preserves the complete current synchronous API. Full site validation and public projection remain reachable; optional receipt support is also reachable through the general controller's options. No substantial accidentally retained implementation was identified. The prior normalization-reuse counterexamples and rejected compact representations remain relevant to a larger redesign. No runtime change, removed validation, target increase or size-gate pass follows from this investigation.
+
+A separate reproduction found that running the measurement script from a different directory changed input paths in its JSON report, including developer-directory components, while transfer sizes stayed equal. Bundling now sets the project working directory explicitly. On the same runtime and built inputs, the report is byte-for-byte stable when invoked from a separate temporary directory. Its input paths remain project-relative. Regression checks cover the explanatory public imports, actual graph contributions, unmodified default profiles/budgets and the failing `--check` exit status. This is deterministic build-reporting evidence, not a browser performance or secret-absence claim. Compiled local controls remain 15,288 bytes, required-receipt controls 19,200 bytes and consent CSS 2,840 bytes.
+
+
+A cross-toolchain check initially failed when it compared gzip counts from Node 22 against a prior Node 26 report. Repeating the measurement with content digests confirmed that all 18 ordinary JS/CSS profile contents were byte-identical; the compression-library results differed:
+
+| Profile | Node 26.10.0 / zlib 1.2.12 | Node 22.22.0 / zlib 1.3.1-470d3a2 |
+| --- | ---: | ---: |
+| Compiled local controls | 15,288 | 15,336 |
+| Compiled required-receipt controls | 19,200 | 19,269 |
+| General controls | 28,268 | 28,327 |
+| Consent CSS | 2,840 | 2,842 |
+
+The supported Node 22 release toolchain therefore leaves only **24 bytes** of compiled-local headroom and a **12,967-byte** general-entry gap. Its `--check` still exits 1. Node 22 measures validation at 13,929 bytes, public projection at 15,042 and projection plus controls at 19,273. These differences do not represent changed package code or faster/slower browser execution. Compression counts must be compared with their recorded runtime/library versions; equal uncompressed SHA-256 values identify unchanged profile content. No target has changed, and the size gate remains open on both toolchains.
