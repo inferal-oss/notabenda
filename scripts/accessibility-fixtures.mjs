@@ -1,4 +1,6 @@
+// @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE REQ-PRODUCT-LOCALIZATION
 // @requirements REQ-PRODUCT-COLLECTION-FLOW
+import {consentLayoutFixture} from './consent-layout-fixture.mjs';
 import {collectionFlowExample} from '../examples/collection-flow/example.mjs';
 // @requirements REQ-ZA-MARKETING
 // @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-CF-ADMIN
@@ -42,5 +44,5 @@ export async function accessibilityFixtureData(){
  // Keep exact pinned reader files private to the local fixture server. Do not add
  // test releases to the deployable site's artifact collection.
  const artifactFiles=Object.fromEntries([build,revision,flowExample.build].flatMap(b=>Object.entries(b.files).filter(([path])=>/^artifacts\/[a-f0-9]{64}\/(?:privacy|cookies|terms)\.html$/u.test(path))));
- return {collectionFlow,flowPermissionState,config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
+ return {runtimeLongConfig:consentLayoutFixture(config,'ltr'),runtimeRtlConfig:consentLayoutFixture(config,'rtl'),collectionFlow,flowPermissionState,config,runtimeConfig:compileConsentRuntimeConfig(exampleConsentConfig(config),{evidence:'local'}),offer,permissionOffer,permissionState,streamRef,pages,artifactFiles};
 }

@@ -1,4 +1,4 @@
-// @requirements REQ-PRODUCT-A11Y
+// @requirements REQ-PRODUCT-A11Y REQ-PRODUCT-MOBILE REQ-PRODUCT-LOCALIZATION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
@@ -8,6 +8,8 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {accessibilityAssetHandler} from '../../scripts/serve-accessibility.mjs';
 import {accessibilityFixtureData} from '../../scripts/accessibility-fixtures.mjs';
+import {consentLayoutFixture} from '../../scripts/consent-layout-fixture.mjs';
+import {createConsentRuntime} from '@notabenda/core/consent';
 import {createHash} from 'node:crypto';
 
 test('fixture terms readers serve exact compiler bytes at their pinned URLs without publishing test releases',async()=>{
@@ -48,8 +50,8 @@ test('fixture serving is read-only and cannot reach files outside its explicit a
 });
 test('late, mismatched and duplicate browser audit responses cannot credit another scenario',async()=>{
  const source=await readFile(new URL('../../scripts/accessibility-browser-app.mjs',import.meta.url),'utf8');
- const nodes=Object.fromEntries(['select','iframe','[role=status]','textarea','#run-one','#summary','#layout'].map(key=>[key,{textContent:'',disabled:false,listeners:{},addEventListener(type,fn){this.listeners[type]=fn;}}]));
- const messages=[],frame=nodes.iframe,picker=nodes.select,button=nodes['#run-one'];frame.contentWindow={postMessage:m=>messages.push(m)};picker.add=()=>{};
+ const nodes=Object.fromEntries(['#scenario','#frame-width','#frame-height','iframe','[role=status]','textarea','#run-one','#summary','#layout'].map(key=>[key,{textContent:'',disabled:false,listeners:{},addEventListener(type,fn){this.listeners[type]=fn;}}]));
+ const messages=[],frame=nodes.iframe,picker=nodes['#scenario'],button=nodes['#run-one'];frame.contentWindow={postMessage:m=>messages.push(m)};picker.add=()=>{};frame.style={};nodes['#frame-width'].value='auto';nodes['#frame-height'].value='850';
  let listener,sequence=0;
  const context=vm.createContext({URL,crypto:{randomUUID:()=>String(++sequence)},Option:class{},fetch:async()=>({json:async()=>[{label:'A',url:'pages/a.html'},{label:'B',url:'pages/b.html'}]}),document:{querySelector:key=>nodes[key]},window:{addEventListener:(type,fn)=>{listener=fn;}},location:{href:'http://127.0.0.1/qa-a11y/',origin:'http://127.0.0.1'},navigator:{userAgent:'Fixture VM'},innerWidth:390,innerHeight:844});
  await vm.runInContext('(async()=>{'+source+'})()',context);
@@ -73,5 +75,32 @@ test('late, mismatched and duplicate browser audit responses cannot credit anoth
  rescan({layout:{documentWidth:375,clientWidth:375}});assert.match(nodes['#layout'].textContent,/No horizontal overflow measured/u);assert.equal(JSON.parse(nodes.textarea.textContent).results.length,1);
  for(const clientWidth of [undefined,0,'375',NaN]){rescan({layout:{documentWidth:375,clientWidth}});assert.match(nodes['#layout'].textContent,/not available/u);}
  rescan({error:'Fixture failed before measurement',layout:{documentWidth:375,clientWidth:375}});assert.match(nodes['#layout'].textContent,/not available/u);
+ // A width change cancels the old request even when the frame WindowProxy survives.
+ button.listeners.click();const oldRequest=messages.at(-1).requestId;
+ nodes['#frame-width'].value='320';nodes['#frame-width'].listeners.change();assert.equal(frame.style.width,'320px');assert.equal(frame.style.boxSizing,'content-box');assert.match(nodes['#layout'].textContent,/No layout measurement/u);
+ const narrowRun=new URL(frame.src).searchParams.get('auditRun');assert.notEqual(narrowRun,bRun);
+ send({...bResult,requestId:oldRequest});assert.match(nodes['#layout'].textContent,/No layout measurement/u);
+ send({type:'accessibility-ready',runId:narrowRun,url:'/qa-a11y/pages/b.html'});button.listeners.click();assert.equal(nodes['#frame-width'].disabled,true);
+ send({...bResult,runId:narrowRun,requestId:messages.at(-1).requestId,viewport:{width:320,height:844},layout:{documentWidth:320,clientWidth:320}});
+ const narrow=JSON.parse(nodes.textarea.textContent).results;assert.equal(narrow.length,2);assert.equal(narrow[1].requestedWidth,'320');assert.equal(narrow[1].requestedHeight,'850');assert.equal(nodes['#frame-width'].disabled,false);
+ nodes['#frame-height'].value='320';nodes['#frame-height'].listeners.change();assert.equal(frame.style.height,'320px');
+ const shortRun=new URL(frame.src).searchParams.get('auditRun');send({type:'accessibility-ready',runId:shortRun,url:'/qa-a11y/pages/b.html'});button.listeners.click();
+ send({...bResult,runId:shortRun,requestId:messages.at(-1).requestId,viewport:{width:320,height:320},layout:{documentWidth:320,clientWidth:320}});
+ const short=JSON.parse(nodes.textarea.textContent).results;assert.equal(short.length,3);assert.equal(short[2].requestedHeight,'320');
+ nodes['#frame-width'].value='auto';nodes['#frame-width'].listeners.change();assert.equal(frame.style.width,'100%');assert.equal(frame.style.boxSizing,'border-box');
  picker.value='0';picker.listeners.change();assert.match(nodes['#layout'].textContent,/No layout measurement/u);
+});
+
+
+test('layout stress descriptors remain bounded preview inputs with explicit direction and optional purposes off',async()=>{
+ const base=JSON.parse(await readFile(new URL('../../examples/static/notabenda.config.json',import.meta.url),'utf8'));
+ for(const direction of ['ltr','rtl']){
+  const input=consentLayoutFixture(base,direction);assert.equal(input.mode,'preview');assert.equal(input.inventory.localization.reviewStatus,'draft');
+  const controller=createConsentRuntime(input,{storage:null,schedule:()=>()=>{}});
+  try{assert.equal(controller.getConfig().localization.direction,direction);for(const p of input.inventory.consent.purposes)assert.equal(controller.isAllowed(p.id),false);
+   if(direction==='ltr'){assert.ok(input.inventory.localization.consent.summary.length>900);assert.match(input.inventory.purposes[0].name,/SemEspaços/u);}
+   else{assert.equal(input.inventory.site.locale,'ar-XB');assert.match(input.inventory.localization.consent.title,/اختبار/u);}
+  }finally{controller.destroy();}
+ }
+ assert.throws(()=>consentLayoutFixture(base,'auto'));
 });
