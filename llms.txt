@@ -12,6 +12,8 @@ Browse all twenty-one packs in five visible groups at https://notabenda.org/star
 
 ## Skill
 
+For South African requests, `notabenda describe south-africa-marketing-request --json` includes `marketingRequestReviews`: selected source locators, prior-approach/withholding checks and separate engineering advice. A purpose/channel permission stream is not responsible-party/person approach history. The shared approach ledger is planned, not an installed API. See https://notabenda.org/guide/south-africa-marketing/index.md#invitation-history-review.
+
 - [Notabenda integration skill](https://notabenda.org/skills/notabenda/SKILL.md): Reusable instructions for an agent integrating or updating the library.
 - [Configuration target selection](https://notabenda.org/skills/notabenda/references/configuration-target.md): Match the user's requested behavior to facts, config changes, host work and acceptance scenarios.
 - [Machine-readable integration reference](https://notabenda.org/integration-reference.json): Current preview targets, relevant practice-answer templates and config prerequisites. Prefer installed `notabenda describe --json` and read-only `assess` for version-matched target, authoring-shape and runtime checks. Consent controls and assessed storage exceptions are separate targets.

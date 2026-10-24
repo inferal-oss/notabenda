@@ -472,6 +472,10 @@ The twenty-one-pack library now exposes supplied features, setup tools and revie
 <!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 The focused [marketing request workbench](MARKETING-WORKBENCH.md) and direct artifact compiler close the JavaScript-only authoring gap in the South African request pack. JSON/YAML/Markdown settings retain the exact public release, one selected purpose and future method, complete particulars and refusal. The local shared preview remains inactive; the host still supplies invitation history/eligibility, identity, recording, activation and actual sending/suppression. The ordinary form flow contract is unchanged.
 
+### Marketing approach history
+
+Selected [South African invitation-history review](SOUTH-AFRICA-MARKETING.md#invitation-history-review) now connects source locators to setup and installed agent advice. The [shared approach-history design](MARKETING-APPROACH-HISTORY.md) specifies atomic admission/refusal, uncertain delivery and restore safety as the next backend workflow. These are planned mechanics; current purpose/channel permission records provide no invitation allowance or sending authority.
+
 ### Source-built package candidates
 
 <!-- @requirements REQ-PRODUCT-SOURCE-CANDIDATE -->

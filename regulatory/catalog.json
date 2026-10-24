@@ -42,7 +42,8 @@
         "Exact-release direct form notice workbench with explicit routes, ordinary permission authoring, release-owned scope/language gates, identity-free preview and separate build-settings exports.",
         "Release-bound local processing notice editor and JSON/YAML/Markdown settings compiler, with explicit scope/activities/wording and direct final-artifact handoff; no recording or policy activation.",
         "Requirement-linked per-pack feature/tool/review discovery and a focused South African web marketing request path; no selection-based solicitation authorization or full-country coverage claim.",
-        "Exact-release South African web-request settings compiler and local editor with shared native preview, mandatory refusal and separate host eligibility/sending work."
+        "Exact-release South African web-request settings compiler and local editor with shared native preview, mandatory refusal and separate host eligibility/sending work.",
+        "Source-linked South African prior-approach/withholding review in setup and installed agent metadata; no invitation authorization or automatic policy selection. Shared atomic approach-history mechanics remain a separate proposal."
       ],
       "implementationRefs": [
         "packages/notabenda/src/setup.ts",
@@ -206,7 +207,8 @@
         "examples/marketing-workbench/build.mjs",
         "docs/MARKETING-WORKBENCH.md",
         "docs/FORM-PERMISSIONS.md",
-        "packages/notabenda/README.md"
+        "packages/notabenda/README.md",
+        "packages/notabenda/src/marketing-request-reviews.ts"
       ]
     },
     {
@@ -3425,6 +3427,15 @@
       "checkedOn": "2026-10-22",
       "access": "read",
       "note": "Texas section used only as discovery lead for rights, notice, applicability and opt-outs. Dates under adjacent state headings must not be attributed to Texas; statutory commencement is checked separately."
+    },
+    {
+      "id": "SRC-ZA-HEALTH-REGS-2026",
+      "title": "South Africa: health information regulations, Gazette 54268 notice 7198",
+      "url": "https://www.gov.za/sites/default/files/gcis_document/202603/54268gon7198.pdf",
+      "kind": "regulation",
+      "checkedOn": "2026-10-22",
+      "access": "read",
+      "note": "Screened English regulations 2, 3 and 7.1\u20137.2. Published 6 March 2026, signed 27 February. Concerns health information by certain responsible parties under sections 32(6) and 112(2)(c); not a replacement for marketing regulation 6. No health-sector implementation or full legal review supplied."
     }
   ],
   "jurisdictions": [
@@ -4717,7 +4728,9 @@
           "locator": "Part B: specified goods/services, method and affirmative/negative responses; legacy heading limitation"
         }
       ],
-      "discoverySourceIds": [],
+      "discoverySourceIds": [
+        "SRC-ZA-HEALTH-REGS-2026"
+      ],
       "featureIds": [
         "FEAT-FORMS",
         "FEAT-RECORDS",
@@ -4731,7 +4744,7 @@
       "implementationStatus": "partial",
       "effectiveFrom": null,
       "timingNote": "Selected amended regulation 6 was published for immediate implementation on 17 April 2025 (Gazette 52523, notice 6126). Original section 69 commencement and current consolidated Act not established by that notice.",
-      "caveats": "Web request particulars and explicit negative-choice mechanics only; no prescribed-form equivalence, invitation-eligibility check, customer-exception engine, call recording, message-level unsubscribe or external suppression. Email/SMS/WhatsApp are current product methods, not an exhaustive legal classification. Request declarations are host-authored; archival integrity does not prove their truth. Host-wide responsible-party/subject records remain separate. Legal review remains unreviewed.",
+      "caveats": "Web request particulars and explicit negative-choice mechanics only; no prescribed-form equivalence, invitation-eligibility check, customer-exception engine, call recording, message-level unsubscribe or external suppression. Email/SMS/WhatsApp are current product methods, not an exhaustive legal classification. Request declarations are host-authored; archival integrity does not prove their truth. Host-wide responsible-party/subject records remain separate. Legal review remains unreviewed. Dated setup/agent advice provides selected source locators without authorizing approaches. Shared atomic approach/refusal history, delivery fencing and restore barriers are proposed only; the screened 2026 health-information instrument is not a marketing amendment.",
       "implementationRefs": [
         "packages/notabenda/src/form-permission.ts",
         "packages/notabenda/src/form-refusal-policy.ts",
@@ -4745,7 +4758,11 @@
         "packages/notabenda/src/marketing-workbench-build.ts",
         "packages/notabenda/src/form-permission-content.ts",
         "packages/notabenda/src/form-permission-presentation.ts",
-        "docs/MARKETING-WORKBENCH.md"
+        "docs/MARKETING-WORKBENCH.md",
+        "packages/notabenda/src/marketing-request-reviews.ts",
+        "packages/notabenda/src/setup.ts",
+        "packages/notabenda/src/integration-reference.ts",
+        "docs/MARKETING-APPROACH-HISTORY.md"
       ],
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
@@ -4756,7 +4773,9 @@
         "docs/verification/form-permissions.md",
         "packages/notabenda/test/marketing-workbench.test.mjs",
         "site/test/marketing-workbench.test.mjs",
-        "docs/verification/marketing-authoring.md"
+        "docs/verification/marketing-authoring.md",
+        "packages/notabenda/test/marketing-request-reviews.test.mjs",
+        "docs/verification/marketing-history-review.md"
       ]
     },
     {
@@ -11838,14 +11857,16 @@
         "REQ-ZA-MARKETING"
       ],
       "status": "partial",
-      "expected": "Visible goods/services, method and archived responsible-party details are linked to the unchecked choice; exact request declarations/refusal copy survive profile revisions, inspection and retry. Invitation eligibility, prescribed information, customer exceptions and actual message suppression remain unverified.",
+      "expected": "Visible goods/services, method and archived responsible-party details are linked to the unchecked choice; exact request declarations/refusal copy survive profile revisions, inspection and retry. Invitation eligibility, prescribed information, customer exceptions and actual message suppression remain unverified. Dated setup/agent guidance preserves configuration, negative answers and old reports, distinguishes source checks from engineering advice, and identifies the shared approach ledger as planned. The 2026 health instrument is screened separately; no invitation admission or health compliance is asserted.",
       "testRefs": [
         "packages/notabenda/test/form-permission.test.mjs",
         "packages/notabenda/test/form-permission-localization.test.mjs",
         "packages/notabenda/test/south-africa-marketing.test.mjs",
         "packages/notabenda/test/react-form-permission.test.mjs",
         "packages/notabenda/test/astro-form-permission.test.mjs",
-        "docs/verification/form-permissions.md"
+        "docs/verification/form-permissions.md",
+        "packages/notabenda/test/marketing-request-reviews.test.mjs",
+        "docs/verification/marketing-history-review.md"
       ]
     },
     {

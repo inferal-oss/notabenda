@@ -2181,3 +2181,13 @@ Selected scope, rights, notice and request-method overview read. The Act and its
 **Type:** secondary-explainer. **Checked:** 2026-10-22. **Access:** read.
 
 Texas section used only as discovery lead for rights, notice, applicability and opt-outs. Dates under adjacent state headings must not be attributed to Texas; statutory commencement is checked separately.
+
+<a id="src-za-health-regs-2026"></a>
+
+## SRC-ZA-HEALTH-REGS-2026
+
+[South Africa: health information regulations, Gazette 54268 notice 7198](https://www.gov.za/sites/default/files/gcis_document/202603/54268gon7198.pdf)
+
+**Type:** regulation. **Checked:** 2026-10-22. **Access:** read.
+
+Screened English regulations 2, 3 and 7.1–7.2. Published 6 March 2026, signed 27 February. Concerns health information by certain responsible parties under sections 32(6) and 112(2)(c); not a replacement for marketing regulation 6. No health-sector implementation or full legal review supplied.

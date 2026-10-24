@@ -45,6 +45,14 @@ Evaluate `getFormPermissionState` on the server at downstream use. `refuse` and 
 - Apply objections to actual sending systems, including imports, queues and external copies. Maintain the appropriate wider suppression scope and test it end to end.
 - Provide the required identity and cessation route in every message; review other applicable laws and the current statutory text.
 
+## Invitation history review
+
+Setup now adds a dated review when South Africa is selected or already declared. Installed `notabenda describe south-africa-marketing-request --json` includes `marketingRequestReviews`: source locators, current mechanism limits and separate engineering checks. It changes no configuration and authorizes no approach.
+
+Before asking, establish earlier approaches and withholding across the responsible party's relevant systems. A new site, channel, address or offer revision is not evidence of a fresh opportunity. Missing history is unresolved. Test refusal races and uncertain delivery; do not treat a historical receipt as permission to send again. The [proposed shared-history workflow](MARKETING-APPROACH-HISTORY.md) records the backend design and acceptance work; it is not available in the package yet.
+
+The [6 March 2026 Gazette, notice 7198](https://www.gov.za/sites/default/files/gcis_document/202603/54268gon7198.pdf) was screened separately. Regulations 2, 3 and 7.1 concern health information processed by certain responsible parties. This instrument is not a replacement for marketing regulation 6, and the request pack supplies no health-sector compliance. Selected sources were checked on 22 October 2026; full current-law and legal review remain open.
+
 ## Verification boundary
 
 The linked tests cover explicit refusal before any grant, archived copy, backoffice search/inspection, failed reads, activation changes, late grants and exact retry after a lost acknowledgement or local-journal failure. The version 4 profile also covers method/channel consistency, complete host-language labels, visible scope and controller details, archive integrity, adapter presentation and profile revisions. These are mechanism checks. They do not verify invitation eligibility, prescribed-form equivalence, identity, contact ownership, customer exceptions, actual sending or external suppression. See `VERIFY-ZA-MARKETING` in the [requirement catalog](requirements/README.md).

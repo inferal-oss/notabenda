@@ -27,6 +27,8 @@ import {getPrivacySignalReviews} from './privacy-signal-reviews.js';
 import {getPrivacyInterfaceReviews} from './privacy-interface-reviews.js';
 // @requirements REQ-SG-COOKIE-DATA REQ-SG-BROWSER-CHOICE REQ-SG-COOKIE-TARGETING
 import {getCookieJurisdictionReviews} from './cookie-jurisdiction-reviews.js';
+// @requirements REQ-ZA-MARKETING
+import {getMarketingRequestReviews} from './marketing-request-reviews.js';
 import type {ScopeGuardFacts,ScopeGuardFact} from './scope-guard-policy.js';
 import {createStarterConfig} from './starter.js';
 import {toPublicConfig,validateSiteConfig} from './config.js';
@@ -140,6 +142,12 @@ export function createSetupPlan(input:unknown,options:{config?:unknown;catalogSe
   if(!answers.markets.length||answers.markets.includes('other'))reviewItems.push('Determine applicable jurisdictions from establishment, audience, targeting and practices; this market list is incomplete and is not an applicability decision.');
   for(const market of setupMarkets)if(answers.markets.includes(market.id))recommendations.push({id:'market-'+market.id,status:'review',title:market.label+' applicability review',reason:'Selected coverage interest. Check thresholds, territorial scope, exceptions and effective dates in the catalog. Country-specific rules and unlisted jurisdictions may also apply.',configPaths:['jurisdictions'],requirementIds:market.requirements,guide:'requirements'});
   const cookieReviews=getCookieJurisdictionReviews();
+  const marketingReviews=getMarketingRequestReviews();
+  for(const review of marketingReviews.items){
+    if(!answers.markets.includes(review.marketId)&&!config.jurisdictions.includes(review.marketId))continue;
+    recommendations.push({id:'marketing-request-'+review.marketId,status:'review',title:review.title,reason:review.summary+' Source check '+review.checkedOn+'; research revision '+marketingReviews.revision+', legally unreviewed. Setup authorizes no approach.',configPaths:marketingReviews.configPaths,requirementIds:review.requirementIds,guide:review.guide});
+    reviewItems.push(...[...review.checks.map(check=>check.text+' ('+check.sourceId+', '+check.locator+')'),...review.engineeringChecks,...review.limits].map(text=>review.label+': '+text));
+  }
   const interfaceReviews=getPrivacyInterfaceReviews();
   for(const review of interfaceReviews.items){
     if(!answers.markets.includes(review.marketId)&&!config.jurisdictions.includes(review.marketId))continue;
