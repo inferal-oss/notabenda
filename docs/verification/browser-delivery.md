@@ -79,3 +79,11 @@ The same 18-profile measurement reports these changes in gzip bytes:
 | Collection flow | 10,690 | 10,727 | +37 |
 
 Compiled local controls remain 15,288 bytes, compiled required-receipt controls 19,200 bytes and consent CSS 2,840 bytes. The general entry still exceeds its unchanged 15,360-byte target by 12,908 bytes; the size gate remains open. These are modest transfer-size changes, not evidence of faster page startup or broader browser acceptance.
+
+## 23 October normalization-reuse investigation
+
+A temporary prototype reused the complete results of seven optional policy normalizers between full site validation and public projection. It retained validation order, cross-field checks and the public validation-result shape. General-entry gzip changed from **28,268 to 28,244 bytes**, a 24-byte reduction; localization-only and storage-exception-only variants saved three bytes and one byte respectively. None meets the original target.
+
+For ordinary data, 2,592 malformed-leaf comparisons matched validation results and errors. Three valid fixtures retained serialized public output, ordering and separate-call mutation isolation. Repeated local Node measurements found about 0.09–0.11 ms less construction time for richer localized fixtures; the basic fixture stayed within measurement noise. These synthetic CPU measurements do not establish browser startup or interaction performance.
+
+The prototype was rejected after two independently reproduced counterexamples. A root getter can supply a valid policy during validation and an invalid replacement during projection. A later document-field getter can also mutate the original policy body without changing its identity. The existing projection rejects both; unconditional reuse accepts them. Reference equality is insufficient to preserve this behavior. Regression tests cover both changes in preview and production modes. All four tests pass the current implementation and fail against the rejected prototype. No normalization reuse or weaker validation was shipped, and the general-entry size gate remains open.
