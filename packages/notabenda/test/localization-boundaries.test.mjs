@@ -2,6 +2,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 import {normalizeSiteLocalization} from '../dist/document-localization.js';
 import {normalizeTermsLocalization} from '../dist/terms-localization-policy.js';
 import {normalizeFormPermissionLocalization} from '../dist/form-permission-localization-policy.js';
@@ -78,8 +79,21 @@ test('form action copy has a 120-byte UTF-8 boundary, independently of the descr
  }
 });
 test('full-site missing-body diagnostics retain each selected interface context',()=>{
- const errors={terms:'Localized acceptance needs localization.terms messages.',formPermission:'Localized form permissions need localization.formPermission messages.',collection:'Localized collection notices need localization.collection messages.'};
+ const errors={terms:'Localized acceptance needs localization.terms messages.',formPermission:'Localized form permissions need localization.formPermission messages.',collection:'Localized collection notices need localization.collection messages.',indirectCollection:'Localized indirect-collection notices need localization.indirectCollection messages.',processingChoices:'Localized processing choices need localization.processingChoices messages.',serviceDirectory:'Localized service directories need localization.serviceDirectory messages.'};
  for(const [key,message] of Object.entries(errors))for(const value of [null,false,0,''])assert.throws(()=>normalizeSiteLocalization({...site,[key]:value}),{message});
+});
+
+test('combined site dictionaries preserve prior ordered public bytes and detached copy',async()=>{
+ const input=structuredClone(site);
+ for(const [key,file] of Object.entries({indirectCollection:'indirect',processingChoices:'processing',serviceDirectory:'service',embeds:'embed',storageExceptions:'storage'}))input[key]=await load(file+'-messages.json');
+ input.contractActions=(await load('contracts-messages.json')).contractActions;
+ // Captured from the verified 838a057 archive with these same example dictionaries.
+ const result=normalizeSiteLocalization(input),serialized=JSON.stringify(result);
+ assert.equal(createHash('sha256').update(serialized).digest('hex'),'9954061f9c0b8b452ec2ca37700bcd44b2c48d54241192188b6a32b4e1fb6c8a');
+ const reversed=Object.fromEntries(Object.entries(input).reverse().map(([key,value])=>[key,value&&typeof value==='object'&&!Array.isArray(value)?Object.fromEntries(Object.entries(value).reverse()):value]));
+ assert.deepEqual(normalizeSiteLocalization(reversed),result);
+ result.formPermission.off='Edited result';result.collection.required='Edited result';
+ assert.notEqual(input.formPermission.off,'Edited result');assert.notEqual(input.collection.required,'Edited result');
 });
 
 // Optional dictionaries must remain own data fields even when dispatch is shared.

@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-BUNDLE-BUDGET
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION REQ-PRODUCT-LOCALIZATION
 import {normalizeInterfaceLocalization} from './localization-policy.js';
 import type {InterfaceLocalizationMetadata} from './localization-policy.js';
@@ -7,12 +8,12 @@ export const serviceDirectoryMessageFields={
 } as const;
 export type ServiceDirectoryMessages={[K in keyof typeof serviceDirectoryMessageFields]:string};
 export interface ServiceDirectoryLocalization extends InterfaceLocalizationMetadata {serviceDirectory:ServiceDirectoryMessages}
-export const serviceDirectoryLocalizationPolicy={key:'serviceDirectory',fields:serviceDirectoryMessageFields,maxBytes:16384,error:'Invalid service-directory localization. Supply a complete versioned message set for the selected language.'} as const;
+export const serviceDirectoryLocalizationPolicy={missing:'Localized service directories need localization.serviceDirectory messages.',key:'serviceDirectory',fields:serviceDirectoryMessageFields,maxBytes:16384,error:'Invalid service-directory localization. Supply a complete versioned message set for the selected language.'} as const;
 export function normalizeServiceDirectoryLocalization(input:unknown,options:{locale?:string;allowPreview?:boolean}={}):ServiceDirectoryLocalization {
  return normalizeInterfaceLocalization(input,serviceDirectoryLocalizationPolicy,options);
 }
 export function selectServiceDirectoryLocalization(input:InterfaceLocalizationMetadata&{serviceDirectory?:ServiceDirectoryMessages}):ServiceDirectoryLocalization {
- if(!input.serviceDirectory)throw Error('Localized service directories need localization.serviceDirectory messages.');
+ if(!input.serviceDirectory)throw Error(serviceDirectoryLocalizationPolicy.missing);
  const {schemaVersion,locale,direction,revision,reviewStatus,serviceDirectory}=input;return {schemaVersion,locale,direction,revision,reviewStatus,serviceDirectory};
 }
 /** Legacy English output remains unchanged when no dictionary is supplied. */

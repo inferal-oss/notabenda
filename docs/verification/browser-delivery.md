@@ -60,3 +60,22 @@ The 21 October delivery refactor shares ordered, allowlisted purpose/service/sto
 With esbuild 0.28.2, ES2022 ESM minification and gzip level 9, compiled local plus native controls is **15,288 bytes** (72 bytes below the unchanged 15,360-byte target), required-receipt controls **19,200 bytes**, and compatibility core plus controls **28,449 bytes**. The preceding sizes were 15,360, 19,256 and 28,726 bytes respectively. These are small transfer-size reductions; compatibility remains above target and compiled headroom remains limited. Consent CSS is unchanged at **2,840 bytes**. This work does not establish faster browser startup or broader platform acceptance. The optional size gate continues to report failure for the compatibility target.
 
 Verification for this refactor passed 1,333 package tests, 205 site tests, catalog checks and a Worker deployment dry run. Chromium's rebuilt local example started only Measurement after its deliberate granular grant, left Suggestions blocked and returned both to blocked after rejection without another sample request; captured console warnings/errors were empty. The 416 previously retained artifact files remained byte-identical. This browser check does not add a Safari, Firefox or physical-mobile acceptance claim.
+
+## 23 October: localization dispatch cleanup
+
+Full-site normalization previously called six interface selectors only to discard their selected metadata objects. It now checks each policy's missing-body diagnostic directly, then runs the same complete body validator. The standalone selectors share those diagnostics with their policies. Policy order, own-data-field checks, byte limits and public message ordering remain unchanged; generated Cloudflare copies retain the same source.
+
+A comparison against the verified `838a057` package archive covered 493 cases: combined dictionaries, absent and malformed bodies, missing keys, invalid placeholders and markup, accessors, extra fields and metadata variations. Accepted serialized output and observed error names/messages matched. A regression fingerprint retains the combined public bytes; nested output edits remain separate from the input. This comparison covers these cases, rather than proving equivalence for every possible JavaScript value.
+
+The same 18-profile measurement reports these changes in gzip bytes:
+
+| Profile | Before | After | Change |
+| --- | ---: | ---: | ---: |
+| General consent plus controls | 28,449 | 28,268 | −181 |
+| General headless consent | 25,031 | 24,847 | −184 |
+| Service directory | 18,527 | 18,358 | −169 |
+| Storage exceptions | 18,909 | 18,715 | −194 |
+| Terms recovery | 4,155 | 4,182 | +27 |
+| Collection flow | 10,690 | 10,727 | +37 |
+
+Compiled local controls remain 15,288 bytes, compiled required-receipt controls 19,200 bytes and consent CSS 2,840 bytes. The general entry still exceeds its unchanged 15,360-byte target by 12,908 bytes; the size gate remains open. These are modest transfer-size changes, not evidence of faster page startup or broader browser acceptance.
