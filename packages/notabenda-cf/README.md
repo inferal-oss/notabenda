@@ -1,14 +1,15 @@
+<!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
 # @notabenda/cloudflare
 
-Optional, dependency-free Cloudflare integration for **read-only evidence inspection** and **immutable legal-document archives**. The host supplies authentication and authorization. Recording helpers run through host-owned calls, separately from public document rendering.
+Optional, dependency-free Cloudflare storage and an evidence workspace. Keep document revisions, privacy choices, agreements and supported purchase/contract records in Durable Objects. The admin interface inspects those records; recording, activation, lifecycle and delivery-job helpers run through host-owned calls. The host supplies authentication and authorization.
 
 ## Start a project
 
-After installing the local preview package, run `npx @notabenda/cloudflare init --out-dir ./privacy-backend --site-id your-site`. It creates a new standalone Worker project with SQLite storage, the responsive admin, local setup assets and a host authorization stub that denies access until implemented. Existing directories are never replaced, and initialization performs no install, login or deployment.
+After installing the local preview package, run `npx --no-install notabenda-cf init --out-dir ./privacy-backend --site-id your-site`. It creates a new standalone Worker project with SQLite storage, the responsive admin, local setup assets and a host authorization stub that denies access until implemented. Existing directories are never replaced, and initialization performs no install, login or deployment.
 
-The generated project supplies `build`, `doctor` (read-only local checks), `check` (Wrangler dry run), `dev` and explicit `deploy` scripts. The packages remain unpublished; its README explains installing local tarballs. See [the starter guide](../../docs/CLOUDFLARE-STARTER.md) for project files, permission separation, private archive RPC, deployment and removal.
+The generated project supplies `build`, `doctor` (read-only local checks), `check` (Wrangler dry run), `dev` and explicit `deploy` scripts. The packages remain unpublished; its README explains installing local tarballs. See [the starter guide](https://notabenda.org/guide/cloudflare-starter/) for project files, permission separation, private archive RPC, deployment and removal.
 
-`npx @notabenda/cloudflare doctor [--directory PATH] [--config wrangler.jsonc] [--env staging] [--json]` reports bounded local starter issues and separate manual reviews. It never executes project code, loads credentials, installs, builds or deploys. A successful check still needs to be followed by host authorization and lifecycle testing. See [doctor scope and report format](../../docs/CLOUDFLARE-DOCTOR.md).
+`npx --no-install notabenda-cf doctor [--directory PATH] [--config wrangler.jsonc] [--env staging] [--json]` reports bounded local starter issues and separate manual reviews. It never executes project code, loads credentials, installs, builds or deploys. A successful check still needs to be followed by host authorization and lifecycle testing. See [doctor scope and report format](https://notabenda.org/guide/cloudflare-doctor/).
 
 ## Host-owned authorization
 
@@ -87,7 +88,7 @@ Records are limited to 64 KiB, 20 nesting levels, and 10,000 JSON nodes; keys to
 
 Return `allowExport: true` in the host's authorization grant to enable the export review and JSON attachment routes. It defaults to false and is checked on every request, separately from ordinary inspection. The review screen preserves the current filters, explains the disclosure boundary and shows a live preview; the download reads the store again. Each versioned JSON segment contains exact normalized records, filters, read times, counts and continuation links. Empty segments can still have continuation.
 
-All fields returned by the scoped store are included without redaction. Source hooks and external artifact links are not followed. Downloads are bounded, unsigned live reads, without snapshot or completeness guarantees, and do not export the application's other data. Use the downloaded file's continuation links and save each segment separately. Hosts own export auditing, access policy, secure handling and retention of copies. The trusted application API `createEvidenceExportSegment(store, query, {scopeLabel})` supplies the same one-segment envelope without HTTP links. See [the export guide](../../docs/EVIDENCE-EXPORT.md) for the schema, limits and operational contract.
+All fields returned by the scoped store are included without redaction. Source hooks and external artifact links are not followed. Downloads are bounded, unsigned live reads, without snapshot or completeness guarantees, and do not export the application's other data. Use the downloaded file's continuation links and save each segment separately. Hosts own export auditing, access policy, secure handling and retention of copies. The trusted application API `createEvidenceExportSegment(store, query, {scopeLabel})` supplies the same one-segment envelope without HTTP links. See [the export guide](https://notabenda.org/guide/evidence-export/) for the schema, limits and operational contract.
 
 ## Immutable release history and readable differences
 
@@ -135,7 +136,7 @@ The host can opt into `registerTermsOffer`, `setActiveTermsOffer`, `recordTermsA
 import { registerTermsOffer, setActiveTermsOffer, recordTermsAcceptance,
   createTermsAcceptanceStore } from '@notabenda/cloudflare';
 
-// build-time offer from notabenda/content; release already archived.
+// Build-time offer from @notabenda/core/content; release already archived.
 const scope = {siteId: 'site-one', scopeId: 'account-terms'};
 await registerTermsOffer(ctx.storage, offer, scope);
 await setActiveTermsOffer(ctx.storage, offer.offerId, scope);
@@ -153,25 +154,25 @@ const agreements = createTermsAcceptanceStore(ctx.storage, {siteId: 'site-one'})
 
 A request accepts exactly `{schemaVersion:1, offerId, requestId, accepted:true}`. The host independently supplies subject, intended scope, operation and optional server `now: () => Date`. Do not copy those authority fields from browser JSON. New attempts require the currently active offer; already committed retries return their original receipt after activation changes. The event ID hashes `[siteId, subjectId, requestId]`, with operation/scope/offer conflicts rejected. Preview needs independent explicit server opt-in, regardless of frontend flags.
 
-Registration payloads are limited to 16 KiB, requests to 2 KiB and events to 64 KiB. Each event stores exact offer wording, document references/digests, host subject/operation, server time and host-received provenance. The event is also its idempotency record; host deletion/retention must coordinate replay protection and operation expiry. No cleanup/deletion service is supplied. Receipt storage is separate from actual signup, purchase or fulfillment.
+Registration payloads are limited to 16 KiB, requests to 2 KiB and events to 64 KiB. Each event stores exact offer wording, document references/digests, host subject/operation, server time and host-received provenance. The event is also its idempotency record; host deletion/retention must coordinate replay protection and operation expiry. No automatic retention policy or cleanup scheduling is supplied; host-owned lifecycle calls are described below. Receipt storage is separate from actual signup, purchase or fulfillment.
 
-`createTermsAcceptanceStore` exposes only matching site events to the existing bounded search/detail UI. Agreement cards and detail context support review by subject, operation, document version and statement. The UI does not infer a human click, identity, contract validity, delivery or operation completion. The host must retain and serve pinned document bytes; the admin Worker does not execute or serve archive HTML. See the repository's [terms integration guide](../../docs/TERMS.md) for frontend/retry/retention details and legal boundaries.
+`createTermsAcceptanceStore` exposes only matching site events to the existing bounded search/detail UI. Agreement cards and detail context support review by subject, operation, document version and statement. The UI does not infer a human click, identity, contract validity, delivery or operation completion. The host must retain and serve pinned document bytes; the admin Worker does not execute or serve archive HTML. See the repository's [terms integration guide](https://notabenda.org/guide/terms/) for frontend/retry/retention details and legal boundaries.
 
 ## Cookie-choice evidence
 
 Optional host-callable helpers include `registerConsentNotice`, `setActiveConsentNotice`, `recordConsentChoice`, `getConsentHead` and `createConsentEvidenceStore`. They bind browser reports to exact notice wording and archived documents, use transactional revisions for grants, accept restrictive old-notice revoke-all, and return historical receipts together with the current head on retries. Host authorization and stream resolution remain mandatory. The frontend can opt into a required-receipt gate at construction. The package provides no public ingestion/authentication endpoint or retention service.
 
-See the [cookie evidence guide](../../docs/CONSENT-EVIDENCE.md) for the complete contract, limits, deployment obligations and remaining work. Run the local example and open [the fictional history](http://127.0.0.1:4178/backoffice/choices) to inspect fixed reports with purpose cards, notice wording and version references.
+See the [cookie evidence guide](https://notabenda.org/guide/consent-evidence/) for the complete contract, limits, deployment obligations and remaining work. Run the repository’s local example and open [the demo history](http://127.0.0.1:4178/demo/admin/choices) to inspect fixed reports with purpose cards, notice wording and version references.
 
 ## Paid orders
 
 The optional `@notabenda/cloudflare/orders` entry retains complete reviews and original producer files, activates quotes with compare-and-swap revisions, and records one admission per host-selected checkout intent. A mandatory local decision returns host reservation writes; those commit atomically with the receipt and replay guard. Exact outcomes remain recoverable after quote expiry or replacement. External payments, fulfillment, contract formation and confirmation need separate host workflows.
 
-`createPaidOrderStore` supplies small searchable summaries. Return `allowOrderArchive:true` from your admin authorization hook to allow the full retained-review page and original-file inspection; `allowExport` remains independent and never follows these large archives. Downloads are attachments, image views are sandboxed, and every request is authorized again. Retirement can fence and purge one intent’s private reviews, files, attempts and event after host eligibility/hold review and external-job fencing. See [the paid-order guide](../../docs/PAID-ORDERS.md) for API examples, bounds and recovery requirements.
+`createPaidOrderStore` supplies small searchable summaries. Return `allowOrderArchive:true` from your admin authorization hook to allow the full retained-review page and original-file inspection; `allowExport` remains independent and never follows these large archives. Downloads are attachments, image views are sandboxed, and every request is authorized again. Retirement can fence and purge one intent’s private reviews, files, attempts and event after host eligibility/hold review and external-job fencing. See [the paid-order guide](https://notabenda.org/guide/paid-orders/) for API examples, bounds and recovery requirements.
 
 ## Routes, security and previews
 
-The optional `@notabenda/authoring` build package accepts Markdown and MDX with YAML frontmatter. Register its **private `release.archive` envelope**, rather than the public `release.artifact`, to retain original source atomically with the rendered release. Source attachments must match declared hashes and byte counts. Ordinary history search does not return raw source. See the [authoring guide](../../docs/AUTHORING.md) for integration and size limits.
+The optional `@notabenda/authoring` build package accepts Markdown and MDX with YAML frontmatter. Register its **private `release.archive` envelope**, rather than the public `release.artifact`, to retain original source atomically with the rendered release. Source attachments must match declared hashes and byte counts. Ordinary history search does not return raw source. See the [authoring guide](https://notabenda.org/guide/authoring/) for integration and size limits.
 
 `createDocumentHistory` also supplies `getSource(releaseId, kind)`. Authenticated `/source?id=RELEASE_ID&kind=terms` and `/source-diff?before=RELEASE_ID&after=RELEASE_ID&kind=terms` routes display escaped original text. They never evaluate stored MDX. Expose this hook only when the caller is authorized to inspect private source. A custom authorized store may omit `getSource`; source routes then return 404 and their entry links are omitted. Release comparison distinguishes source changes from rendered-body changes, so a component update or source-only edit is visible to reviewers.
 
@@ -181,6 +182,8 @@ The default mount is `/admin/notabenda`. Routes are the base list, `/record?id=.
 
 `examples/synthetic.mjs` exports `syntheticRecords` and `createSyntheticStorage(records?, prefix?)` for a local preview or tests. The fake supports `get`, `put`, `list`, and serialized test transactions. It is not persistent storage and is not an authentication provider. Never replace production authorization with an unconditional demo grant.
 
+From a repository checkout:
+
 ```sh
 npm run build --workspace @notabenda/cloudflare
 npm run test --workspace @notabenda/cloudflare
@@ -188,38 +191,38 @@ npm run test --workspace @notabenda/cloudflare
 
 Tests simulate Worker requests and DO storage, including denied/failed authorization, scope isolation, search pagination, XSS, sanitized failures, atomic history, idempotence, hash validation, and escaped differences. No Cloudflare deployment is performed by these tests.
 
-[Recorded processing opt-outs](../../docs/PROCESSING-CHOICES.md) expose `registerProcessingNotice`, `recordProcessingRestriction`, `getProcessingHead` and `createProcessingRestrictionStore`. Events add restrictions transactionally and retries return the current head. The host supplies stable context, provenance, authorization, retention and downstream enforcement. The admin view shows requested activities, historical cumulative restrictions, current retained state and pinned notice wording.
+[Recorded processing opt-outs](https://notabenda.org/guide/processing-choices/) expose `registerProcessingNotice`, `recordProcessingRestriction`, `getProcessingHead` and `createProcessingRestrictionStore`. Events add restrictions transactionally and retries return the current head. The host supplies stable context, provenance, authorization, retention and downstream enforcement. The admin view shows requested activities, historical cumulative restrictions, current retained state and pinned notice wording.
 
-For guided operator setup, `createSetupWorker` serves the host-authorized local questionnaire with your same-origin entry module and stylesheet. It accepts GET/HEAD, adds no account system or server answer storage, and exports private notes separately. See [guided setup](../../docs/SETUP.md).
+For guided operator setup, `createSetupWorker` serves the host-authorized local questionnaire with your same-origin entry module and stylesheet. It accepts GET/HEAD, adds no account system or server answer storage, and exports private notes separately. See [guided setup](https://notabenda.org/guide/setup/).
 
 
 ## Evidence lifecycle
 
 Use `createEvidenceLifecycle` from trusted host code to retire a fixed consent/processing stream or whole terms subject, apply revisioned holds, and purge matching event payloads in bounded transactional steps. Retirement blocks new commands and historical retries before deletion begins. `createEvidenceLifecycleStore` plugs hold, purge and restore progress into the read-only admin and export UI.
 
-The host owns authorization, eligibility, scheduling and authoritative retirement manifests outside the backup rollback boundary. Reapply those manifests before restored storage receives traffic. Shared archives and minimal pseudonymous metadata remain; downloaded copies and external data need separate handling. No full-erasure or legal sufficiency claim is implied. Map trusted terminal responses to the frontend `context-retired` error classes so browser workflows close without retry loops. See [the lifecycle guide](../../docs/EVIDENCE-LIFECYCLE.md) for target scope, API examples and restore requirements.
+The host owns authorization, eligibility, scheduling and authoritative retirement manifests outside the backup rollback boundary. Reapply those manifests before restored storage receives traffic. Shared archives and minimal pseudonymous metadata remain; downloaded copies and external data need separate handling. No full-erasure or legal sufficiency claim is implied. Map trusted terminal responses to the frontend `context-retired` error classes so browser workflows close without retry loops. See [the lifecycle guide](https://notabenda.org/guide/evidence-lifecycle/) for target scope, API examples and restore requirements.
 
 
-Cookie-choice recording also enforces the archived [scope guard policy](../../docs/SCOPE-GUARDS.md). A new grant for an unavailable purpose fails with `scope-restricted`; historical receipts remain historical and known older notices can still withdraw. Inspection distinguishes a purpose held off by a guard from a reported decline. Scope declarations and receipts do not establish specialized authorization or legal validity.
+Cookie-choice recording also enforces the archived [scope guard policy](https://notabenda.org/guide/scope-guards/). A new grant for an unavailable purpose fails with `scope-restricted`; historical receipts remain historical and known older notices can still withdraw. Inspection distinguishes a purpose held off by a guard from a reported decline. Scope declarations and receipts do not establish specialized authorization or legal validity.
 
 ## Form permissions
 
-Register and activate exact purpose/channel offers with `registerFormPermissionOffer` and `setActiveFormPermissionOffer`. Trusted application code records grant/withdrawal commands with `recordFormPermission`; downstream use reads `getFormPermissionState`. `createFormPermissionStore` provides scoped history, search and export with historical action separated from current evaluation. The existing evidence lifecycle supports the `permissions` family. See [the integration guide](../../docs/FORM-PERMISSIONS.md) for host contact-generation binding and remaining limits.
+Register and activate exact purpose/channel offers with `registerFormPermissionOffer` and `setActiveFormPermissionOffer`. Trusted application code records grant/withdrawal commands with `recordFormPermission`; downstream use reads `getFormPermissionState`. `createFormPermissionStore` provides scoped history, search and export with historical action separated from current evaluation. The existing evidence lifecycle supports the `permissions` family. See [the integration guide](https://notabenda.org/guide/form-permissions/) for host contact-generation binding and remaining limits.
 
 ## Contract declarations and delivery jobs
 
-`registerContractActionDefinition`, `recordContractDeclaration` and `createContractDeclarationStore` provide a separate archive-bound declaration ledger. Capture commits an exact savable receipt and independent application/acknowledgement jobs atomically. `claimContractDelivery` / `settleContractDelivery` expose bounded leased delivery to a host runner; they send nothing themselves. Provider acceptance, recipient delivery and contract fulfillment remain distinct. Declaration-scoped lifecycle waits for draining or explicit host quiescence. See [the initial contract-action API and limits](../../docs/CONTRACT-ACTIONS.md).
+`registerContractActionDefinition`, `recordContractDeclaration` and `createContractDeclarationStore` provide a separate archive-bound declaration ledger. Capture commits an exact savable receipt and independent application/acknowledgement jobs atomically. `claimContractDelivery` / `settleContractDelivery` expose bounded leased delivery to a host runner; they send nothing themselves. Provider acceptance, recipient delivery and contract fulfillment remain distinct. Declaration-scoped lifecycle waits for draining or explicit host quiescence. See [the initial contract-action API and limits](https://notabenda.org/guide/contract-actions/).
 
-`dispatchContractDeclaration` starts both host-configured delivery callbacks independently; `dispatchContractDelivery` runs one channel for an explicit retry. They bound asynchronous attempts, preserve stable downstream IDs, and separate provider acceptance from settlement uncertainty. They add no provider, auth, scheduler or automatic retry. See [delivery runners](../../docs/CONTRACT-DISPATCH.md) for the API, result meanings and rehearsal boundaries.
+`dispatchContractDeclaration` starts both host-configured delivery callbacks independently; `dispatchContractDelivery` runs one channel for an explicit retry. They bound asynchronous attempts, preserve stable downstream IDs, and separate provider acceptance from settlement uncertainty. They add no provider, auth, scheduler or automatic retry. See [delivery runners](https://notabenda.org/guide/contract-dispatch/) for the API, result meanings and rehearsal boundaries.
 
 
 ## Retained catalog review
 
-An explicitly finalized release can include a digest-bound selected-reference attachment alongside optional Markdown/MDX sources. Pass its `archive` to `recordLegalRelease`; public artifacts alone cannot satisfy declared private attachments. `createDocumentHistory` keeps these snapshots out of ordinary records and exports and exposes `getCatalogReview` separately. Grant `allowCatalogReview: true` only after your host authorizes this inspection; source/export permissions do not imply it. The generated starter accepts the independent host grant `catalogReview: true`. See [the release workflow](../../docs/SERVICE-CATALOG.md#retain-selections-with-policy-releases).
+An explicitly finalized release can include a digest-bound selected-reference attachment alongside optional Markdown/MDX sources. Pass its `archive` to `recordLegalRelease`; public artifacts alone cannot satisfy declared private attachments. `createDocumentHistory` keeps these snapshots out of ordinary records and exports and exposes `getCatalogReview` separately. Grant `allowCatalogReview: true` only after your host authorizes this inspection; source/export permissions do not imply it. The generated starter accepts the independent host grant `catalogReview: true`. See [the release workflow](https://notabenda.org/guide/service-catalog/#retain-selections-with-policy-releases).
 
 ## Customer confirmations
 
-The optional `@notabenda/cloudflare/order-confirmations` subpath retains complete personally addressed host files and queues a recoverable delivery job. Hosts supply contract facts, reviewed content, a fixed destination version, authentication, provider and scheduling. Admin inspection uses a separate `allowOrderConfirmation` permission; original files download as inert attachments. Provider acceptance remains distinct from recipient delivery. See the [confirmation guide](../../docs/ORDER-CONFIRMATIONS.md).
+The optional `@notabenda/cloudflare/order-confirmations` subpath retains complete personally addressed host files and queues a recoverable delivery job. Hosts supply contract facts, reviewed content, a fixed destination version, authentication, provider and scheduling. Admin inspection uses a separate `allowOrderConfirmation` permission; original files download as inert attachments. Provider acceptance remains distinct from recipient delivery. See the [confirmation guide](https://notabenda.org/guide/order-confirmations/).
 
 ## Workspace overview and record finder
 
@@ -266,6 +269,6 @@ History keeps agreement statements and button labels separate from document sect
 
 `createDocumentHistory().getTermsSettings(id)` validates the archive before returning named declarations, selected versioned interface messages and terms-document references, within 64 KiB. Missing declarations return `declaration: 'not-declared'`; a missing release returns `undefined`. Generic records and exports remain unchanged. Custom adapters can use `TermsSettingsRelease` and `normalizeTermsSettingsRelease`.
 
-The comparison shows changed declarations, document facts and interface messages independently. It does not reconstruct unretained built-in copy, infer active offers or record acceptance. See [the terms guide](../../docs/TERMS.md#review-archived-agreement-wording).
+The comparison shows changed declarations, document facts and interface messages independently. It does not reconstruct unretained built-in copy, infer active offers or record acceptance. See [the terms guide](https://notabenda.org/guide/terms/#review-archived-agreement-wording).
 
-Connect a fixed document reader to Recording setup to enable **Check document copies**. It compares bounded HTML bytes with selected retained references and keeps differences, missing files and failed checks distinct. No credentials or redirects are used; asset-binding checks do not establish public routing. See [served-copy checks](../../docs/RECORDING-INSPECTION.md#compare-served-document-copies).
+Connect a fixed document reader to Recording setup to enable **Check document copies**. It compares bounded HTML bytes with selected retained references and keeps differences, missing files and failed checks distinct. No credentials or redirects are used; asset-binding checks do not establish public routing. See [served-copy checks](https://notabenda.org/guide/recording-inspection/#compare-served-document-copies).

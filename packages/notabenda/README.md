@@ -1,16 +1,17 @@
+<!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
 <!-- @requirements REQ-PRODUCT-MARKETING-AUTHORING -->
 # @notabenda/core
 
-For agent-assisted integration, use the bundled `dist/skill/SKILL.md` and optional `dist/skill/agents/openai.yaml`, also exported as `@notabenda/core/skill/SKILL.md` and `@notabenda/core/skill/agents/openai.yaml`. See the [agent setup guide](../../docs/AGENT-SETUP.md). Copy the complete `dist/skill/` directory, including its configuration-target reference. The installed copy follows this package version; the website follows the current preview.
+For agent-assisted integration, use the bundled `dist/skill/SKILL.md` and optional `dist/skill/agents/openai.yaml`, also exported as `@notabenda/core/skill/SKILL.md` and `@notabenda/core/skill/agents/openai.yaml`. See the [agent setup guide](https://notabenda.org/guide/agent-setup/). Copy the complete `dist/skill/` directory, including its configuration-target reference. The installed copy follows this package version; the website follows the current preview.
 
 
 Reusable site configuration and legal pages for your own website. Render privacy, cookie, and supplied terms documents as ordinary HTML, with optional styles and no runtime dependencies.
 
-Optional [repeat-prompt policy](../../docs/REGIONAL-PROMPTS.md) keeps solicitation separate from permission expiry, with configured applicability, public change explanations and linked requirements.
+Optional [repeat-prompt policy](https://notabenda.org/guide/regional-prompts/) keeps solicitation separate from permission expiry, with configured applicability, public change explanations and linked requirements.
 
 Developer preview. The package has not been published to npm yet; build/pack it from the repository and install the resulting tarball locally. Requires Node.js 22 or newer for the CLI and build-time API. The root renderer is browser/SSR-safe.
 
-Site configuration can also use YAML or a Markdown document with YAML frontmatter. Use `--config notabenda.config.yaml` (or `.md`) with the same CLI commands, or `readSiteConfig` from `@notabenda/core/config/node` in a build. Browser setup can import the same formats and select the draft download format; `wizard --config-format yaml|markdown` selects CLI output. Configuration-document notes stay outside published output and saved browser drafts. CLI checks/builds and `readSiteConfig` reject unknown fields through the installed schema, then apply semantic and review rules. For a loaded object, use `validateAuthoredConfig` from the optional `@notabenda/core/config/validate` entry. See [configuration sources](../../docs/CONFIGURATION-SOURCES.md).
+Site configuration can also use YAML or a Markdown document with YAML frontmatter. Use `--config notabenda.config.yaml` (or `.md`) with the same CLI commands, or `readSiteConfig` from `@notabenda/core/config/node` in a build. Browser setup can import the same formats and select the draft download format; `wizard --config-format yaml|markdown` selects CLI output. Configuration-document notes stay outside published output and saved browser drafts. CLI checks/builds and `readSiteConfig` reject unknown fields through the installed schema, then apply semantic and review rules. For a loaded object, use `validateAuthoredConfig` from the optional `@notabenda/core/config/validate` entry. See [configuration sources](https://notabenda.org/guide/configuration-sources/).
 
 ## Start with the CLI
 
@@ -25,11 +26,11 @@ Use `assess --selection FILE --config FILE [--answers FILE] --json` to reconcile
 To create a new draft:
 
 ```sh
-npx @notabenda/core init
+npx --no-install notabenda init
 # Edit notabenda.config.json: public operator facts, purposes, services,
 # storage inventory, rights information, and your own terms sections.
-npx @notabenda/core check --preview
-npx @notabenda/core build --preview --out-dir public/legal-output
+npx --no-install notabenda check --preview
+npx --no-install notabenda build --preview --out-dir public/legal-output
 ```
 
 The starter is a draft containing explicit `{{placeholders}}`. Preview output includes a visible draft notice. Production checks/builds are the default and reject drafts and unresolved placeholders. Setting a review declaration is an operator assertion, not a review performed by the package.
@@ -50,7 +51,7 @@ const footer = renderLegalLinks(site);
 
 `defineSite` is a typed authoring helper. For arbitrary parsed JSON, use `validateSiteConfig(input)` and `toPublicConfig(input)`. Rendering always validates input. Use `renderLegalPage` for a complete document with a language attribute, viewport, headings, contents navigation, and legal links. Build and render with `{ mode: 'production' }` when publishing reviewed documents; fragment rendering defaults to preview validation.
 
-Use optional CSS variables on your layout to set `--nb-font`, `--nb-surface`, `--nb-text`, `--nb-muted`, `--nb-line`, `--nb-accent`, and `--nb-document-width`. Omit the CSS entirely for your own styles. Content strings are plain text and escaped; structured section links allow HTTPS, plain mailto, or same-site paths. Raw HTML and Markdown execution are not supported. Built-in wording is English; hosts can supply versioned [localization](../../docs/LOCALIZATION.md).
+Use optional CSS variables on your layout to set `--nb-font`, `--nb-surface`, `--nb-text`, `--nb-muted`, `--nb-line`, `--nb-accent`, and `--nb-document-width`. Omit the CSS entirely for your own styles. Content strings are plain text and escaped; structured section links allow HTTPS, plain mailto, or same-site paths. The core renderer does not interpret raw HTML or Markdown. Use the optional [authoring package](https://notabenda.org/guide/authoring-package/) for build-time Markdown or MDX. Built-in wording is English; hosts can supply versioned [localization](https://notabenda.org/guide/localization/).
 
 ## Build a release artifact
 
@@ -72,17 +73,17 @@ Only allowlisted public fields enter pages, public configuration, and artifacts.
 
 Optional `rightsCenter` configuration supplies explicit actions, scope explanations, safe application links, next steps and a public email/phone fallback. `renderRightsCenter` renders a fragment; `renderRightsPage` produces the full static page. Both default to production validation and require a reviewed declaration; pass `{mode: 'preview'}` explicitly for drafts. The compiler and Markdown/MDX authoring preserve this supporting page alongside the three legal documents.
 
-Use `RightsCenter` from `@notabenda/core/react/documents` or `@notabenda/core/astro/RightsCenter.astro` for framework layouts without hydration. The wizard recommends configuration without inventing workflows, and imported rights declarations return to draft review. These are navigation surfaces: the application owns intake, identity checks, acknowledgments, response handling and fulfillment. See [the guide and examples](../../docs/RIGHTS.md).
+Use `RightsCenter` from `@notabenda/core/react/documents` or `@notabenda/core/astro/RightsCenter.astro` for framework layouts without hydration. The wizard recommends configuration without inventing workflows, and imported rights declarations return to draft review. These are navigation surfaces: the application owns intake, identity checks, acknowledgments, response handling and fulfillment. See [the guide and examples](https://notabenda.org/guide/rights/).
 
 ## Optional form permissions
 
-Build a purpose/channel offer with `createFormPermissionOffer`, then use `createFormPermission` and the optional `mountFormPermission` field. The host supplies the person/contact binding and recording transport; the field keeps grant and withdrawal independent from the surrounding form. An optional IndexedDB journal retains unconfirmed actions across reload for explicit retry. See [the form-permission guide](../../docs/FORM-PERMISSIONS.md) for activation, retries and current-state checks.
+Build a purpose/channel offer with `createFormPermissionOffer`, then use `createFormPermission` and the optional `mountFormPermission` field. The host supplies the person/contact binding and recording transport; the field keeps grant and withdrawal independent from the surrounding form. An optional IndexedDB journal retains unconfirmed actions across reload for explicit retry. See [the form-permission guide](https://notabenda.org/guide/form-permissions/) for activation, retries and current-state checks.
 
 ## Cookie choices
 
-For a smaller browser bundle, build a descriptor with `compileConsentRuntimeConfig(config, {evidence: 'local'})` from `@notabenda/core/content`, then use `createConsentRuntime` and `mountControls` from `@notabenda/core/consent` with optional `@notabenda/core/consent.css`. Required receipts use explicit `evidence: 'required'` and `requiredConsentEvidence` from `@notabenda/core/consent/evidence`. The [consent guide](../../docs/CONSENT.md) explains validation, adapter support and the conservative migration of older stored grants. React hosts can use `@notabenda/core/react/consent` with the compiled controller. Existing `createConsent` and `@notabenda/core/react` remain available with full config validation and the complete public getter.
+For a smaller browser bundle, build a descriptor with `compileConsentRuntimeConfig(config, {evidence: 'local'})` from `@notabenda/core/content`, then use `createConsentRuntime` and `mountControls` from `@notabenda/core/consent` with optional `@notabenda/core/consent.css`. Required receipts use explicit `evidence: 'required'` and `requiredConsentEvidence` from `@notabenda/core/consent/evidence`. The [consent guide](https://notabenda.org/guide/consent/) explains validation, adapter support and the conservative migration of older stored grants. React hosts can use `@notabenda/core/react/consent` with the compiled controller. Existing `createConsent` and `@notabenda/core/react` remain available with full config validation and the complete public getter.
 
-The [setup editor and interactive wizard](../../docs/SETUP.md#configure-cookie-control-settings) can author consent settings from your declared inventory. Custom operator tools can use `createConsentDraftPlan` from `@notabenda/core/setup/consent` or `mountConsentEditor` from `@notabenda/core/setup/consent/ui`. These prepare a local draft and preserve scope restrictions; the host still connects actual services and reviews publication.
+The [setup editor and interactive wizard](https://notabenda.org/guide/setup/#configure-cookie-control-settings) can author consent settings from your declared inventory. Custom operator tools can use `createConsentDraftPlan` from `@notabenda/core/setup/consent` or `mountConsentEditor` from `@notabenda/core/setup/consent/ui`. These prepare a local draft and preserve scope restrictions; the host still connects actual services and reviews publication.
 
 Add an explicit runtime scope to the site inventory. IDs refer to declared purposes and services; every purpose of a managed service must be included:
 
@@ -121,7 +122,7 @@ Use `getSnapshot`, `subscribe`, `choose` (all optional purposes required), `acce
 
 Adapters must honor the abort signal and return cleanup, including cancellation and storage deletion. Pending revoked starts are retired permanently; cleanup completes before restart. Failed start/cleanup requires reload. Recheck permission before any optional action. Browser defaults observe storage changes and resume events; clocks, synchronous storage, subscriptions and timer scheduling can be injected with the second `createConsent` argument. SSR imports access no browser globals; without storage, grants stay blocked.
 
-Only registered cooperative work is gated. Arbitrary scripts, resource hints, third-party/HttpOnly storage, and server processing need explicit integration. No automatic legal applicability, US privacy signals, notice delivery or contract cancellation are implemented yet. Optional required-receipt mode is available with host-owned authorization and transport; see the [evidence guide](../../docs/CONSENT-EVIDENCE.md). Terms agreement has a separate acknowledged path below.
+Only registered cooperative work is gated. Arbitrary scripts, resource hints, third-party/HttpOnly storage, and server processing need explicit integration. Applicability and downstream processing remain host decisions. Optional [GPC restrictions](https://notabenda.org/guide/privacy-signals/) and [withdrawal/cancellation declarations](https://notabenda.org/guide/contract-actions/) are separate mechanisms; cookie consent does not supply them automatically. Optional required-receipt mode is available with host-owned authorization and transport; see the [evidence guide](https://notabenda.org/guide/consent-evidence/). Terms agreement has a separate acknowledged path below.
 
 ## Explicit terms agreement
 
@@ -131,17 +132,17 @@ Use `createTermsAcceptance(offer, {operationId, submit})` and `mountTermsAccepta
 
 `getOffer`, `getSnapshot`, `subscribe`, `setChecked`, `submit`, and `destroy` support a custom UI. The optional `requestId` constructor field is for host recovery of an uncertain attempt, never authorization. Mount destruction removes UI only. Controller destruction aborts transport; a server write may already have committed. This does not withdraw an agreement.
 
-For React, `@notabenda/core/react/terms` supplies `TermsAcceptanceProvider`, `TermsAcceptanceControl` and controller/snapshot hooks. Astro supplies `TermsAcceptance.astro` and `mountAstroTermsAcceptance` from `@notabenda/core/astro/client`. Both use the same native control, preserve uncertain requests across view remounts and submit nothing on mount or navigation. See [React](../../docs/TERMS.md#react) and [Astro](../../docs/TERMS.md#astro) for host operation binding and fallback content.
+For React, `@notabenda/core/react/terms` supplies `TermsAcceptanceProvider`, `TermsAcceptanceControl` and controller/snapshot hooks. Astro supplies `TermsAcceptance.astro` and `mountAstroTermsAcceptance` from `@notabenda/core/astro/client`. Both use the same native control, preserve uncertain requests across view remounts and submit nothing on mount or navigation. See [React](https://notabenda.org/guide/terms/#react) and [Astro](https://notabenda.org/guide/terms/#astro) for host operation binding and fallback content.
 
-The optional `@notabenda/cloudflare` helpers register archived offers, explicitly activate them, and atomically record acceptance under a server-bound subject, scope and operation. The host provides all endpoint auth/CSRF, operation authorization, pinned hosting and retention. A recorded assertion does not establish a valid contract, durable-medium delivery or completion of a signup/payment. See the repository's [terms guide](../../docs/TERMS.md) for the full integration and boundaries.
+The optional `@notabenda/cloudflare` helpers register archived offers, explicitly activate them, and atomically record acceptance under a server-bound subject, scope and operation. The host provides all endpoint auth/CSRF, operation authorization, pinned hosting and retention. A recorded assertion does not establish a valid contract, durable-medium delivery or completion of a signup/payment. See the repository's [terms guide](https://notabenda.org/guide/terms/) for the full integration and boundaries.
 
 ## Technology function notices
 
-The optional build-time `@notabenda/core/technology` entry supplies versioned identification, location and profiling disclosures bound to an intact legal release and a fresh consent-managed service scope. Host-language text and activation instructions stay visible without JavaScript. The host uses the existing service lifecycle and controls; it retains the supplemental descriptor separately. See [technology collection](../../docs/TECHNOLOGY-COLLECTION.md). This initial Québec profile does not determine applicability or implement specialized workflows.
+The optional build-time `@notabenda/core/technology` entry supplies versioned identification, location and profiling disclosures bound to an intact legal release and a fresh consent-managed service scope. Host-language text and activation instructions stay visible without JavaScript. The host uses the existing service lifecycle and controls; it retains the supplemental descriptor separately. See [technology collection](https://notabenda.org/guide/technology-collection/). This initial Québec profile does not determine applicability or implement specialized workflows.
 
 ## Build from a configuration file
 
-`notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist` builds legal pages plus the small browser consent descriptor and its separate stylesheet. JSON and Markdown with YAML frontmatter work too. Select `required` when optional processing needs a host receipt; the mode has no default and needs an archived notice and host receipt transport. Add `--consent-scope cookie-choices` with required mode to build the native notice and a hash-pinned public copy. Retain selected old notices with `--retain-consent-notice FILE` plus their legal releases. The [consent guide](../../docs/CONSENT.md#smaller-browser-entry) shows the browser connection and service lifecycles.
+`notabenda build --config notabenda.config.yaml --consent-runtime local --out-dir legal-dist` builds legal pages plus the small browser consent descriptor and its separate stylesheet. JSON and Markdown with YAML frontmatter work too. Select `required` when optional processing needs a host receipt; the mode has no default and needs an archived notice and host receipt transport. Add `--consent-scope cookie-choices` with required mode to build the native notice and a hash-pinned public copy. Retain selected old notices with `--retain-consent-notice FILE` plus their legal releases. The [consent guide](https://notabenda.org/guide/consent/#smaller-browser-entry) shows the browser connection and service lifecycles.
 
 ## Exports
 
@@ -150,56 +151,56 @@ The optional build-time `@notabenda/core/technology` entry supplies versioned id
 - `@notabenda/core/integration/assessment`: read-only `assessIntegration({selection, config, answers?})` for an explicit inventory and optional practice answers. Reports observations and remaining work; never drafts or enables configuration.
 - `@notabenda/core/content`: Node build-time compilation and portable artifacts.
 - `@notabenda/core/styles.css`: optional responsive, namespaced styles.
-- `notabenda` CLI: JSON-only `init`, `check`, and `build` commands; `check --json` exposes diagnostics and requirement IDs.
+- `notabenda` CLI: `init`, `check` and `build` accept JSON, YAML and Markdown configuration. `wizard` prepares a draft; `describe`, `schema` and `assess` support integration review. `check --json` exposes diagnostics and requirement IDs. Use `notabenda --help` for the full command list.
 
 Code is licensed under Apache-2.0 OR MIT, at your option. The license does not replace review of the operator's processing facts, applicability, or legal content.
 
 ## Optional React integration
 
-`@notabenda/core/react` provides a React 19 provider, effective-permission hooks and the existing native controls. React is an optional peer; default imports remain framework-independent. `@notabenda/core/react/documents` offers server-safe structured legal document/link components. The host owns controller creation, service registration and destruction. See [docs/REACT.md](../../docs/REACT.md) for APIs, SSR/hydration and limits.
+`@notabenda/core/react` provides a React 19 provider, effective-permission hooks and the existing native controls. React is an optional peer; default imports remain framework-independent. `@notabenda/core/react/documents` offers server-safe structured legal document/link components. The host owns controller creation, service registration and destruction. See [docs/REACT.md](https://notabenda.org/guide/react/) for APIs, SSR/hydration and limits.
 
 React form permissions use a host-owned controller through `FormPermissionProvider`, `FormPermissionField` and the `useFormPermissionSnapshot` / `useFormPermissionAllowed` hooks in `@notabenda/core/react`. Mounting does not read, save or retry permission; the host explicitly loads current state. See the React guide for lifecycle, recovery and server-rendering limits.
 
 ## Optional Astro integration
 
-`@notabenda/core/astro/LegalDocument.astro`, `LegalLinks.astro`, `ConsentControls.astro` and `PreferencesButton.astro` provide static surfaces for Astro 7. The browser-only `mountAstroConsent` function is exported from `@notabenda/core/astro/client`; it connects one host-owned controller to page swaps without recreating it. Astro is an optional peer. Static legal pages need no scripts; the host must retain a preferences surface on client-routed pages with ongoing optional services. See [docs/ASTRO.md](../../docs/ASTRO.md) for the real build example and limits.
+`@notabenda/core/astro/LegalDocument.astro`, `LegalLinks.astro`, `ConsentControls.astro` and `PreferencesButton.astro` provide static surfaces for Astro 7. The browser-only `mountAstroConsent` function is exported from `@notabenda/core/astro/client`; it connects one host-owned controller to page swaps without recreating it. Astro is an optional peer. Static legal pages need no scripts; the host must retain a preferences surface on client-routed pages with ongoing optional services. See [docs/ASTRO.md](https://notabenda.org/guide/astro/) for the real build example and limits.
 
 ### Gated media
 
-`createEmbedService({consent, serviceId})` manages several iframe/image placeholders through one declared lifecycle. Set `services[].resourceOrigins` to exact HTTPS origins or `self`; destinations join the consent scope. `renderEmbedPlaceholder` supplies inert, escaped SSR copy. The placeholder opens preferences without granting, and withdrawal removes owned resources. See the repository’s `docs/EMBEDS.md` for lifecycle, CSP and remote-processing limits.
+`createEmbedService({consent, serviceId})` manages several iframe/image placeholders through one declared lifecycle. Set `services[].resourceOrigins` to exact HTTPS origins or `self`; destinations join the consent scope. `renderEmbedPlaceholder` supplies inert, escaped SSR copy. The placeholder opens preferences without granting, and withdrawal removes owned resources. See [gated media](https://notabenda.org/guide/embeds/) for lifecycle, CSP and remote-processing limits.
 
 ### Privacy signals
 
-An explicit `privacySignals.globalPrivacyControl` policy and exhaustive `services[].processingActivities` classification enable a separate GPC runtime restriction. `servicePermissions`/`isServiceAllowed` combine that restriction with cookie/receipt permission; saved cookie grants stay separate. `hasGlobalPrivacyControl` and `getPrivacySignalRestrictions` support host request processing. Account/profile opt-out retention and downstream enforcement belong to the host. See `docs/PRIVACY-SIGNALS.md`.
+An explicit `privacySignals.globalPrivacyControl` policy and exhaustive `services[].processingActivities` classification enable a separate GPC runtime restriction. `servicePermissions`/`isServiceAllowed` combine that restriction with cookie/receipt permission; saved cookie grants stay separate. `hasGlobalPrivacyControl` and `getPrivacySignalRestrictions` support host request processing. Account/profile opt-out retention and downstream enforcement belong to the host. See [privacy signals](https://notabenda.org/guide/privacy-signals/).
 
-Use [recorded processing opt-outs](../../docs/PROCESSING-CHOICES.md) for a separate manual sale/sharing/targeted-advertising action, optional CF retention and pending-request recovery. Bind it through `createConsent(config, environment, {processingChoices})`; cookie grants cannot override its service restrictions. Host identity and downstream handling remain application responsibilities.
+Use [recorded processing opt-outs](https://notabenda.org/guide/processing-choices/) for a separate manual sale/sharing/targeted-advertising action, optional CF retention and pending-request recovery. Bind it through `createConsent(config, environment, {processingChoices})`; cookie grants cannot override its service restrictions. Host identity and downstream handling remain application responsibilities.
 
-Keep earlier pinned document URLs available in clean deployments with `createRetainedReleaseFiles` from `@notabenda/core/content`, or repeat `--retain-artifact FILE` with the CLI build. Supply trusted public compiler artifacts explicitly; private MD/MDX archives stay in backend history. See [retained releases](../../docs/RELEASES.md).
+Keep earlier pinned document URLs available in clean deployments with `createRetainedReleaseFiles` from `@notabenda/core/content`, or repeat `--retain-artifact FILE` with the CLI build. Supply trusted public compiler artifacts explicitly; private MD/MDX archives stay in backend history. See [retained releases](https://notabenda.org/guide/releases/).
 
-For an optional producer that owns exact declared browser keys, use [storage cleanup](../../docs/STORAGE-CLEANUP.md) to tie removal to withdrawal, failed startup and final teardown. Cookie expiration requests remain distinct from verified web-storage absence.
+For an optional producer that owns exact declared browser keys, use [storage cleanup](https://notabenda.org/guide/storage-cleanup/) to tie removal to withdrawal, failed startup and final teardown. Cookie expiration requests remain distinct from verified web-storage absence.
 
-Use [guided setup](../../docs/SETUP.md) through `npx @notabenda/core wizard` or the reusable `@notabenda/core/setup/ui` questionnaire. Start fresh or import a config, describe your processing purposes, review providers, record private justifications and inspect catalog-linked recommendations before adopting a draft. Optional `@notabenda/core/setup/purposes` and `@notabenda/core/setup/purposes/ui` APIs support custom purpose editors.
+Use [guided setup](https://notabenda.org/guide/setup/) through `npx --no-install notabenda wizard` or the reusable `@notabenda/core/setup/ui` questionnaire. Start fresh or import a config, describe your processing purposes, review providers, record private justifications and inspect catalog-linked recommendations before adopting a draft. Optional `@notabenda/core/setup/purposes` and `@notabenda/core/setup/purposes/ui` APIs support custom purpose editors.
 
-Use a [collection notice](../../docs/COLLECTION.md) to place selected purpose information beside a form, with a pinned privacy version and native details. Static vanilla, React and Astro renderers share the same reviewed descriptor; notice display creates no permission or receipt.
+Use a [collection notice](https://notabenda.org/guide/collection/) to place selected purpose information beside a form, with a pinned privacy version and native details. Static vanilla, React and Astro renderers share the same reviewed descriptor; notice display creates no permission or receipt.
 
 Ordinary form permissions use `FormPermissionField.astro` and `mountAstroFormPermission` from `@notabenda/core/astro/client`. A named field checks its exact offer before mounting and follows Astro navigation without reading, saving or retrying. The host owns the controller and person/contact binding. See the Astro guide for context changes and the working two-page example.
 
 ## Optional discovery tooling
 
-Use `@notabenda/core/discovery` for an explicit browser capture of visible request/reference origins and accessible storage names, and `@notabenda/core/discovery/ui` for a local review/download surface. `npx @notabenda/core discover --capture capture.json --config notabenda.config.json` compares explicit captures with declared inventory. Candidate mappings are advisory, with bounded/partial coverage and no automatic configuration, uploads or CI requirements. See [discovery](../../docs/DISCOVERY.md).
+Use `@notabenda/core/discovery` for an explicit browser capture of visible request/reference origins and accessible storage names, and `@notabenda/core/discovery/ui` for a local review/download surface. `npx --no-install notabenda discover --capture capture.json --config notabenda.config.json` compares explicit captures with declared inventory. Candidate mappings are advisory, with bounded/partial coverage and no automatic configuration, uploads or CI requirements. See [discovery](https://notabenda.org/guide/discovery/).
 
 
 ## Scope guards
 
-Declare `scopeGuards` to hold optional work off for child-data, sensitive-data, high-risk-profiling or specialized sector contexts. Site and purpose facts are public, explicit `absent` / `present` / `unknown` declarations with a material revision. Present and unknown block affected purposes; ordinary policies, terms and rejection remain usable. `evaluateScopeGuards` and controller snapshots explain the result with requirement references. The toolkit does not verify parenthood or supply specialized authorization. See [the guide](../../docs/SCOPE-GUARDS.md) and the fictional light/dark laboratory.
+Declare `scopeGuards` to hold optional work off for child-data, sensitive-data, high-risk-profiling or specialized sector contexts. Site and purpose facts are public, explicit `absent` / `present` / `unknown` declarations with a material revision. Present and unknown block affected purposes; ordinary policies, terms and rejection remain usable. `evaluateScopeGuards` and controller snapshots explain the result with requirement references. The toolkit does not verify parenthood or supply specialized authorization. See [the guide](https://notabenda.org/guide/scope-guards/) and the fictional light/dark laboratory.
 
 ## Optional Google Basic adapter
 
-Declare `service.googleBasic` with explicit targets and all four signal mappings, then register it through `@notabenda/core/google` before any Google snippet. The existing effective-permission engine gates tag insertion. Events are explicit and never buffered while blocked. Withdrawal after an attempted load requires a full document reset; this is not a certified CMP or a guarantee that already executed vendor code stops sending. See [the guide](../../docs/GOOGLE-BASIC.md) and the local simulator.
+Declare `service.googleBasic` with explicit targets and all four signal mappings, then register it through `@notabenda/core/google` before any Google snippet. The existing effective-permission engine gates tag insertion. Events are explicit and never buffered while blocked. Withdrawal after an attempted load requires a full document reset; this is not a certified CMP or a guarantee that already executed vendor code stops sending. See [the guide](https://notabenda.org/guide/google-basic/) and the local simulator.
 
 ## Contract actions
 
-The optional `@notabenda/core/contracts` subpath supplies explicit withdrawal/cancellation form state and native controls. Build reviewed, versioned definitions with `createContractActionDefinition` from `@notabenda/core/content`. The separate CF API captures declarations and independent delivery jobs; actual dispatch, contract matching and regional eligibility remain host work. This is an initial mechanism. See [contract declarations](../../docs/CONTRACT-ACTIONS.md).
+The optional `@notabenda/core/contracts` subpath supplies explicit withdrawal/cancellation form state and native controls. Build reviewed, versioned definitions with `createContractActionDefinition` from `@notabenda/core/content`. The separate CF API captures declarations and independent delivery jobs; actual dispatch, contract matching and regional eligibility remain host work. This is an initial mechanism. See [contract declarations](https://notabenda.org/guide/contract-actions/).
 
 ## Choose browser delivery
 
@@ -215,40 +216,40 @@ mountControls(document.querySelector('#privacy-controls'), {consent});
 
 Use `@notabenda/core/consent.css` for cookie controls, their privacy links and the package’s opt-in `.nb-page`/skip-link foundations. It uses the same tokens, focus rules, mobile drawer, reduced-motion and forced-color styling as `@notabenda/core/styles.css`. The latter remains the complete stylesheet for legal pages, setup, forms, contract actions and other components. The narrower stylesheet supplies no full legal-document or operator-UI layout.
 
-The repository’s `npm run size` reports measured browser/CSS sizes; `npm run size:check` additionally enforces the stated targets when you choose to run it. Current core JavaScript exceeds the 15 KiB gzip target, while consent-only CSS is below 5 KiB. See [delivery verification](../../docs/verification/browser-delivery.md). These are transfer sizes, not startup or accessibility certification.
+The repository’s `npm run size` reports measured browser/CSS sizes; `npm run size:check` additionally enforces the stated targets when you choose to run it. Current core JavaScript exceeds the 15 KiB gzip target, while consent-only CSS is below 5 KiB. See [delivery verification](https://notabenda.org/guide/verification/browser-delivery/). These are transfer sizes, not startup or accessibility certification.
 
-The optional [service catalog](../../docs/SERVICE-CATALOG.md) supplies offline provider/product search and static project discovery, including backend SDKs. Use `notabenda catalog search email --delivery backend` or `notabenda discover --project .` after installing the local preview. Results remain candidates for review; reference data and Node scanning stay outside ordinary consent bundles.
+The optional [service catalog](https://notabenda.org/guide/service-catalog/) supplies offline provider/product search and static project discovery, including backend SDKs. Use `notabenda catalog search email --delivery backend` or `notabenda discover --project .` after installing the local preview. Results remain candidates for review; reference data and Node scanning stay outside ordinary consent bundles.
 
-`npx @notabenda/core wizard --project . --out-dir ./setup-review` connects those candidates to explicit actual-use review after purpose authoring. Add `--catalog FILE` for a custom reference. The wizard saves full findings separately in ignored `discovery.private.json`; noninteractive `--answers` runs never select services from detection. Existing settings and private reviewed pins remain intact. See [project-aware setup](../../docs/SETUP.md#find-project-services-during-setup).
+`npx --no-install notabenda wizard --project . --out-dir ./setup-review` connects those candidates to explicit actual-use review after purpose authoring. Add `--catalog FILE` for a custom reference. The wizard saves full findings separately in ignored `discovery.private.json`; noninteractive `--answers` runs never select services from detection. Existing settings and private reviewed pins remain intact. See [project-aware setup](https://notabenda.org/guide/setup/#find-project-services-during-setup).
 
 [Service directories](https://notabenda.org/guide/services) render the declared inventory as native, React or Astro cards with optional local search. Import `@notabenda/core/services` and `@notabenda/core/services.css`; no reference dataset is loaded by the visitor view.
 
 
-For optional browser recognition, import `@notabenda/core/catalog/browser` and the separately selected `@notabenda/core/catalog/browser/seed`; pass that seed as `browserRules` to `mountDiscovery`, or capture explicitly with `captureBrowserCatalog`. `notabenda catalog detect --capture FILE` reviews rich pinned captures or origin/name-only legacy hints. Source snapshots, partial matches and coverage remain visible; no result activates a service. See [discovery](../../docs/DISCOVERY.md) for rule semantics, privacy limits and private exports.
+For optional browser recognition, import `@notabenda/core/catalog/browser` and the separately selected `@notabenda/core/catalog/browser/seed`; pass that seed as `browserRules` to `mountDiscovery`, or capture explicitly with `captureBrowserCatalog`. `notabenda catalog detect --capture FILE` reviews rich pinned captures or origin/name-only legacy hints. Source snapshots, partial matches and coverage remain visible; no result activates a service. See [discovery](https://notabenda.org/guide/discovery/) for rule semantics, privacy limits and private exports.
 
 
-`@notabenda/core/catalog/release` provides `attachCatalogReview` to bind current selected catalog facts to a compiled static/MDX release. Public files carry only a descriptor; the separate archive is for authorized history storage. Finalize before creating notices/offers. [Release workflow](../../docs/SERVICE-CATALOG.md#retain-selections-with-policy-releases).
+`@notabenda/core/catalog/release` provides `attachCatalogReview` to bind current selected catalog facts to a compiled static/MDX release. Public files carry only a descriptor; the separate archive is for authorized history storage. Finalize before creating notices/offers. [Release workflow](https://notabenda.org/guide/service-catalog/#retain-selections-with-policy-releases).
 
-For information obtained from another source, the optional [indirect collection notice](../../docs/INDIRECT-COLLECTION.md) renders reviewed New Zealand IPP3A particulars in static HTML or plain text. It keeps the collection phase and privacy revision explicit; your application handles notification and any delivery records.
+For information obtained from another source, the optional [indirect collection notice](https://notabenda.org/guide/indirect-collection/) renders reviewed New Zealand IPP3A particulars in static HTML or plain text. It keeps the collection phase and privacy revision explicit; your application handles notification and any delivery records.
 
-The optional [EU guarantee notice](../../docs/GUARANTEES.md) supplies the unchanged official shop-level artwork in 24 languages, with selected-file build output and text alternatives. Code is Apache-2.0 OR MIT; official graphics keep their own source/use conditions. Product labels and paid ordering remain separate work.
+The optional [EU guarantee notice](https://notabenda.org/guide/guarantees/) supplies the unchanged official shop-level artwork in 24 languages, with selected-file build output and text alternatives. Code is Apache-2.0 OR MIT; official graphics keep their own source/use conditions. Product labels and paid ordering use the separate entries described below.
 
-The optional `@notabenda/core/guarantees/label` entry supplies `normalizeDurabilityGuaranteeLabel` and `renderDurabilityGuaranteeLabel` for finished producer GARAN files. React and Astro provide static wrappers. Ingestion and image validation live in `@notabenda/authoring/guarantees`, keeping frontend installs dependency-free. See [product durability labels](../../docs/GUARANTEE-LABELS.md) for qualification, review and retention boundaries. **REQ-EU-GUARANTEE-LABEL**.
+The optional `@notabenda/core/guarantees/label` entry supplies `normalizeDurabilityGuaranteeLabel` and `renderDurabilityGuaranteeLabel` for finished producer GARAN files. React and Astro provide static wrappers. Ingestion and image validation live in `@notabenda/authoring/guarantees`, keeping frontend installs dependency-free. See [product durability labels](https://notabenda.org/guide/guarantee-labels/) for qualification, review and retention boundaries. **REQ-EU-GUARANTEE-LABEL**.
 
 ## Paid orders
 
-Use `@notabenda/core/orders` and `@notabenda/core/orders.css` for expanded final-order information and an explicit payment-obligation action. Mixed carts, deposit/balance, subscriptions and conditional/calculated charges have separate totals and commitments. Your host supplies authenticated quotes, atomic admission, payment execution and durable contract confirmation. See [paid orders](../../docs/PAID-ORDERS.md) for setup and recovery behavior.
+Use `@notabenda/core/orders` and `@notabenda/core/orders.css` for expanded final-order information and an explicit payment-obligation action. Mixed carts, deposit/balance, subscriptions and conditional/calculated charges have separate totals and commitments. Your host supplies authenticated quotes, atomic admission, payment execution and durable contract confirmation. See [paid orders](https://notabenda.org/guide/paid-orders/) for setup and recovery behavior.
 
 
-Optional [UK storage settings](../../docs/STORAGE-EXCEPTIONS.md) use `@notabenda/core/storage-exceptions` and `@notabenda/core/storage-exceptions/ui`. These keep explicit host-assessed exception declarations and objections separate from consent, with inline controls and atomic browser persistence. Scope and legal review remain recorded per requirement.
+Optional [UK storage settings](https://notabenda.org/guide/storage-exceptions/) use `@notabenda/core/storage-exceptions` and `@notabenda/core/storage-exceptions/ui`. These keep explicit host-assessed exception declarations and objections separate from consent, with inline controls and atomic browser persistence. Scope and legal review remain recorded per requirement.
 
 ## Bring your own language
 
-Supply complete versioned messages for legal pages, cookie-choice controls and terms acceptance, including status and accessibility text. Set an explicit locale and direction; the compiled runtime contains only the selected consent copy. See the [localization guide](../../docs/LOCALIZATION.md) and [Portuguese example](../../examples/localization/config.mjs). Translation review, remaining interfaces and multi-language routing remain host or future work.
+Supply complete versioned messages for legal pages, cookie-choice controls and terms acceptance, including status and accessibility text. Set an explicit locale and direction; the compiled runtime contains only the selected consent copy. See the [localization guide](https://notabenda.org/guide/localization/) and [Portuguese example](https://notabenda.org/source/examples/localization/config.mjs.txt). Translation review, remaining interfaces and multi-language routing remain host or future work.
 
-The [privacy packs](../../docs/PRIVACY-PACKS.md) add focused form/indirect notices, request entry points and processing opt-out setup. `reviewPackInputs` and `packGroups` are exported from `@notabenda/core/packs`. The scoped report and optional third `formatPackBrief` argument identify missing/manual inputs without copying config values or marking anything configured.
+The [privacy packs](https://notabenda.org/guide/privacy-packs/) add focused form/indirect notices, request entry points and processing opt-out setup. `reviewPackInputs` and `packGroups` are exported from `@notabenda/core/packs`. The scoped report and optional third `formatPackBrief` argument identify missing/manual inputs without copying config values or marking anything configured.
 
-The Node-only `@notabenda/core/publication` API and `notabenda check-publication` command compare an intended public artifact with four deployed pinned files. See [publication checks](../../docs/PUBLICATION-CHECK.md) for explicit network authority, limits and unverified work.
+The Node-only `@notabenda/core/publication` API and `notabenda check-publication` command compare an intended public artifact with four deployed pinned files. See [publication checks](https://notabenda.org/guide/publication-check/) for explicit network authority, limits and unverified work.
 
 <!-- @requirements REQ-PRODUCT-RIGHTS-AUTHORING -->
 Privacy-request setup includes an explicit public-page editor, atomic page/ privacy-link draft API and versioned CLI proposal. It requires actual destinations, contact, scope and wording; it supplies no entitlement or intake process. Changed public content needs a new revision. Non-English native pages require complete `localization.rights` messages; the operator editor remains English. See [request-page authoring](https://notabenda.org/guide/rights-authoring/).
@@ -256,13 +257,13 @@ Privacy-request setup includes an explicit public-page editor, atomic page/ priv
 <!-- @requirements REQ-PRODUCT-STORAGE-AUTHORING -->
 Storage inventory can be authored explicitly in the operator UI or with `wizard --storage FILE`. Changes require fresh material versions for affected consent-managed owners, preserve unrelated settings and retain previous declarations in a private migration review. No browser data or permission is changed. See [storage authoring](https://notabenda.org/guide/storage-authoring/).
 
-Use the optional [connection inspector](../../docs/CONNECTION-INSPECTION.md) to compare the intended consent descriptor with the actual controller and identify missing lifecycle registrations. It leaves publication and application testing explicitly unverified.
+Use the optional [connection inspector](https://notabenda.org/guide/connection-inspection/) to compare the intended consent descriptor with the actual controller and identify missing lifecycle registrations. It leaves publication and application testing explicitly unverified.
 
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
 
-Prepare direct-form notice settings from a final public release with `notabenda form-workbench`. The local browser editor previews selected public facts and exports JSON/YAML/Markdown settings for the existing collection-flow builder. See [the workbench guide](../../docs/COLLECTION-WORKBENCH.md).
+Prepare direct-form notice settings from a final public release with `notabenda form-workbench`. The local browser editor previews selected public facts and exports JSON/YAML/Markdown settings for the existing collection-flow builder. See [the workbench guide](https://notabenda.org/guide/collection-workbench/).
 
-Prepare a recorded opt-out notice with `notabenda processing-workbench`, then compile its JSON/YAML/Markdown settings directly against the final artifact with `notabenda processing-notice`. See [the processing workbench guide](../../docs/PROCESSING-WORKBENCH.md).
+Prepare a recorded opt-out notice with `notabenda processing-workbench`, then compile its JSON/YAML/Markdown settings directly against the final artifact with `notabenda processing-notice`. See [the processing workbench guide](https://notabenda.org/guide/processing-workbench/).
 
 
 South African web marketing requests can be prepared as JSON, YAML or Markdown-frontmatter settings with the optional [local request editor](https://notabenda.org/guide/marketing-workbench/). The `marketing-request` command compiles against the exact final public artifact using the existing schema-4 builder. Invitation eligibility, recording, identity and actual sending remain host work.

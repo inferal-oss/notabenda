@@ -1,3 +1,4 @@
+<!-- @requirements REQ-PRODUCT-RELEASE-CANDIDATE -->
 # @notabenda/authoring
 
 Write legal documents in Markdown or MDX, with YAML frontmatter for titles, versions, routes and review status. Bring your own static MDX components and keep exact source alongside immutable rendered releases.
@@ -40,13 +41,13 @@ For MDX, pass `components` and `componentsRevision` to `readDocumentSource`. Com
 
 Source limit: 24 KiB per document. Rendered body: 48 KiB. Combined private archive: 124 KiB. Markdown, MDX, metadata, component output, source integrity and private inspection are covered by tests.
 
-Full guide: [docs/AUTHORING.md](../../docs/AUTHORING.md). Working example: [examples/authoring](../../examples/authoring/build.mjs). Legal review, applicability, reproducible builds and host security remain the adopter's responsibility.
+Full guide: [docs/AUTHORING.md](https://notabenda.org/guide/authoring/). Working example: [examples/authoring](https://notabenda.org/source/examples/authoring/build.mjs.txt). Legal review, applicability, reproducible builds and host security remain the adopter's responsibility.
 
 ## Finished producer guarantee labels
 
-The optional `@notabenda/authoring/guarantees` entry imports finished producer PNG/JPEG/outlined-SVG files without changing their bytes. `buildDurabilityGuaranteeLabel` requires explicit qualifying facts and binds a product to its file; `verifyDurabilityGuaranteeLabel` checks the descriptor and supplied original bytes. Image parsers remain build-only. Preparation of the prescribed artwork, offer review, host retention and actual display acceptance remain the adopter’s work. See [product labels](../../docs/GUARANTEE-LABELS.md). **REQ-EU-GUARANTEE-LABEL**.
+The optional `@notabenda/authoring/guarantees` entry imports finished producer PNG/JPEG/outlined-SVG files without changing their bytes. `buildDurabilityGuaranteeLabel` requires explicit qualifying facts and binds a product to its file; `verifyDurabilityGuaranteeLabel` checks the descriptor and supplied original bytes. Image parsers remain build-only. Preparation of the prescribed artwork, offer review, host retention and actual display acceptance remain the adopter’s work. See [product labels](https://notabenda.org/guide/guarantee-labels/). **REQ-EU-GUARANTEE-LABEL**.
 
-`@notabenda/authoring/orders` creates reviewed order definitions, binds live host quotes and verifies original guarantee-label files. It does not calculate commercial prices or execute orders. See [paid orders](../../docs/PAID-ORDERS.md).
+`@notabenda/authoring/orders` creates reviewed order definitions, binds live host quotes and verifies original guarantee-label files. It does not calculate commercial prices or execute orders. See [paid orders](https://notabenda.org/guide/paid-orders/).
 
 For suspected vulnerabilities, use the [private security contact](https://notabenda.org/guide/security/). Read [migration and removal](https://notabenda.org/guide/migration/) before replacing an existing integration or retiring its records.
 

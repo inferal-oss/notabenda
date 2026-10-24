@@ -1,3 +1,4 @@
+// @requirements REQ-PRODUCT-RELEASE-CANDIDATE
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION REQ-PRODUCT-AUTHORING
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
