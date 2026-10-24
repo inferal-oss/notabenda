@@ -9573,6 +9573,7 @@
         "docs/RELEASE-CANDIDATE.md",
         "docs/MIGRATION.md",
         "docs/RELEASE-010.md",
+        "CHANGELOG.md",
         "docs/verification/toolchain-dependencies.md"
       ],
       "testRefs": [

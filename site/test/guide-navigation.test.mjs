@@ -14,7 +14,7 @@ test('every grouped guide has a human label, including technology functions',()=
 });
 
 test('script-free guides expose a native collapsed mobile menu and keep the current area and links to every other area',async()=>{
- for(const route of ['cloudflare-doctor','cloudflare-recovery','package','requirements']){
+ for(const route of ['cloudflare-doctor','cloudflare-recovery','package','requirements','changelog']){
   const html=await readFile(new URL('../dist/public/guide/'+route+'/index.html',import.meta.url),'utf8'),dom=new JSDOM(html),document=dom.window.document;
   assert.equal(document.querySelectorAll('script').length,0);
   const compact=document.querySelector('details.guide-nav-mobile');assert.ok(compact);assert.equal(compact.open,false);assert.match(compact.querySelector('summary').textContent,/Browse documentation/);

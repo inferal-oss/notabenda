@@ -3,6 +3,8 @@
 
 The first npm release is being prepared as a developer preview. No packages have been published. Finish release hardening before expanding the pack library; the [full plan](PLAN.md) and [feature catalog](FEATURES.md) retain their broader scope.
 
+The [draft release notes](../CHANGELOG.md) describe the preview for adopters. They remain unreleased while the gates below are open.
+
 ## What the release contains
 
 | Package | Included surface |

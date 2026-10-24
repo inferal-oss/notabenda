@@ -98,7 +98,7 @@ const areaGroups={
 };
 // Cross-area references are links, not duplicate primary homes.
 const primaryHome={authoring:'privacy-information','order-confirmations':'contracts','release-candidate':'integrations'};
-export const referenceSection={id:'reference',title:'Reference and verification',description:'Requirements, primary sources, scope, verification reports and asset provenance.',guides:[guide('project','Project overview'),guide('requirements','Requirements catalog'),guide('requirements/sources','Primary sources'),guide('features','Feature status'),guide('scope','Scope & limits'),guide('research','Research workflow'),guide('all','All guides & reports')]};
+export const referenceSection={id:'reference',title:'Reference and verification',description:'Requirements, primary sources, scope, verification reports and asset provenance.',guides:[guide('project','Project overview'),guide('changelog','Changelog'),guide('requirements','Requirements catalog'),guide('requirements/sources','Primary sources'),guide('features','Feature status'),guide('scope','Scope & limits'),guide('research','Research workflow'),guide('all','All guides & reports')]};
 const labels=new Map([...siteSections.flatMap(s=>s.guides),...referenceSection.guides].map(g=>[g.href,g.label]));
 labels.set('/guide/agent-setup','Agent setup');
 labels.set('/guide/localization','Localization');

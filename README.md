@@ -10,6 +10,8 @@ Choose a job: publish privacy pages, manage cookie choices, or ask for agreement
 
 The packages are **`@notabenda/core`**, **`@notabenda/cloudflare`** and **`@notabenda/authoring`**. The npm organization is reserved; use local builds for now. [Package names and installation](docs/PACKAGES.md).
 
+Read the [draft 0.1.0 release notes](CHANGELOG.md) for the preview's contents and current limits.
+
 Start with the [pack library](https://notabenda.org/start/) or explore the [documentation](https://notabenda.org/guide/) or try the [examples and your own temporary demo workspace](https://notabenda.org/examples/).
 
 Start with the [compliance component map](https://notabenda.org/guide/compliance-map/) to see what notices, permissions, contract actions and evidence serve. The separate [software and storage diagram](https://notabenda.org/guide/architecture/) shows how those parts fit into a site and optional backend.

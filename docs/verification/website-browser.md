@@ -23,7 +23,7 @@ Browser Basic-login entry itself, cloud routing, private repository integration,
 
 Screenshots: [website desktop](../assets/screenshots/site-desktop.jpg), [website mobile](../assets/screenshots/site-mobile.jpg), [mobile controls](../assets/screenshots/consent-mobile.jpg), [preferences](../assets/screenshots/consent-drawer-mobile.jpg), [midnight theme](../assets/screenshots/consent-dark-mobile.jpg), and [document history](../assets/screenshots/history-desktop.jpg).
 
-The project website footer includes the requested “Sponsored by Inferal” link and blue chevron, matching the attribution on kimage.dev. The generated public homepage was checked in Chromium at desktop, 390×844 and 320×700 sizes; the logo loaded and client/scroll widths matched at both mobile sizes. This credit belongs to the website layout. Screenshots: [desktop footer](../assets/screenshots/site-sponsor.jpg) and [mobile footer](../assets/screenshots/site-sponsor-mobile.jpg).
+The project website footer credits Inferal with a link and blue chevron. The generated public homepage was checked in Chromium at desktop, 390×844 and 320×700 sizes; the logo loaded and client/scroll widths matched at both mobile sizes. This credit belongs to the website layout. Screenshots: [desktop footer](../assets/screenshots/site-sponsor.jpg) and [mobile footer](../assets/screenshots/site-sponsor-mobile.jpg).
 
 Full contrast audit, screen-reader and keyboard review, forced colors, zoom/large text, translations/RTL, safe-area/virtual-keyboard behavior and physical iOS/Android/WebKit/Firefox checks remain required. Selected text/background pairs were checked numerically while refining the palette; this is not a complete contrast audit.
 
