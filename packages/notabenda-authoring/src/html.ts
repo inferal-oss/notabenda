@@ -22,7 +22,12 @@ function cleanUrl(value:unknown,route:string,image=false):string {
   try {
     const url=new URL(value,`https://notabenda.invalid${route}/`);
     if(url.protocol!=='https:'||url.username||url.password||image&&url.origin!=='https://notabenda.invalid')return unsupported('Images must use local paths; external links must use HTTPS.');
-    return url.origin==='https://notabenda.invalid'?url.pathname+url.search+url.hash:url.href;
+    if(url.origin!=='https://notabenda.invalid')return url.href;
+    const local=url.pathname+url.search+url.hash;
+    // Removing the parsed origin must not turn a normalized local path into
+    // a new authority when the published document's browser resolves it.
+    if(local.startsWith('//'))return unsupported('Use local paths with one leading slash.');
+    return local;
   }catch{return unsupported('Invalid content URL.');}
 }
 

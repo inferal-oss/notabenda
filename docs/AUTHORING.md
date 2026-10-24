@@ -104,7 +104,7 @@ MDX is **trusted project code**: evaluation can run JavaScript and imports with 
 
 Output is ordinary HTML, with no React runtime or hydration delivered to visitors. Markdown supports paragraphs, headings, emphasis, lists, links, code and GFM tables. Raw HTML requires explicit MDX. MDX components can render static callouts, local images with alternative text, accessible disclosure sections, and similar content.
 
-The output policy rejects scripts, frames, forms, event handlers, inline styles and components requiring interactive controls. Use classes and your site's stylesheet. Images use local paths; links allow HTTPS, mailto and same-origin paths. IDs and local references are namespaced; tables scroll within their own region on small screens. A component that suspends with a fallback fails rather than publishing temporary text.
+The output policy rejects scripts, frames, forms, event handlers, inline styles and components requiring interactive controls. Use classes and your site's stylesheet. Images use local paths; links allow HTTPS, mailto and same-origin paths. URL normalization must also leave a local path local: dot segments that would produce a protocol-relative `//host/path` are rejected. IDs and local references are namespaced; tables scroll within their own region on small screens. A component that suspends with a fallback fails rather than publishing temporary text.
 
 The actual rendered output is validated and sanitized before hashes and readable comparison text are derived. Readable history includes component text, list and table boundaries, link targets and image alternatives. Exact HTML remains authoritative; the text comparison does not decide legal materiality.
 

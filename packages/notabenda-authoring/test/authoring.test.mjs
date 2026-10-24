@@ -140,3 +140,25 @@ test('source comparison separates distant changes, handles insertions/deletions 
   assert.deepEqual(sourceDiff('A\r\nB','A\nB').ranges,[]);
   const large=sourceDiff('A\n'.repeat(1000),'B\n'.repeat(1000));assert.equal(large.precise,false);assert.equal(large.ranges.length,1);
 });
+
+// @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-SAFE-CONTENT
+test('Markdown image paths cannot normalize into external authorities',async()=>{
+  for(const path of ['/assets/../..//tracker.example/pixel','/%2e%2e//tracker.example/pixel','/%2E./%2e%2E//tracker.example/pixel','../..//tracker.example/pixel','/.//tracker.example/pixel','https://notabenda.invalid/assets/../..//tracker.example/pixel']){
+    await assert.rejects(build(source(`## Image\n\n![Illustration](${path})`)),error=>error.code==='unsupported-content',path);
+  }
+  for(const [path,expected] of [['../assets/mark.svg','/assets/mark.svg'],['/assets/./mark.svg?version=1#symbol','/assets/mark.svg?version=1#symbol'],['/assets//mark.svg','/assets//mark.svg'],['/assets/%2Fmark.svg','/assets/%2Fmark.svg']]){
+    const result=await build(source(`## Image\n\n![Illustration](${path})`)),src=/<img\b[^>]*\bsrc="([^"]+)"/u.exec(result.fragments.terms)?.[1];
+    assert.equal(src,expected);assert.equal(new URL(src,'https://publisher.example/terms/').origin,'https://publisher.example');
+  }
+});
+
+// @requirements REQ-PRODUCT-AUTHORING REQ-PRODUCT-SAFE-CONTENT
+test('MDX component image and link output rejects normalized scheme-relative paths',async()=>{
+  for(const path of ['/assets/../..//tracker.example/target','/%2e%2e//tracker.example/target','../..//tracker.example/target'])for(const tag of ['img','a']){
+    const Custom=()=>tag==='img'?createElement('img',{src:path,alt:'Illustration'}):createElement('a',{href:path},'Read more');
+    await assert.rejects(build(source('## Content\n\n<Custom />'),{format:'mdx',componentsRevision:'url-1',components:{Custom}}),error=>error.code==='unsupported-content',tag+' '+path);
+  }
+  const Custom=()=>createElement('div',null,createElement('img',{src:'../assets/mark.svg',alt:'Illustration'}),createElement('a',{href:'../help?version=1#details'},'Help'),createElement('a',{href:'https://reference.example/help'},'Reference'));
+  const result=await build(source('## Content\n\n<Custom />'),{format:'mdx',componentsRevision:'url-1',components:{Custom}});
+  assert.match(result.fragments.terms,/src="\/assets\/mark\.svg"/u);assert.match(result.fragments.terms,/href="\/help\?version=1#details"/u);assert.match(result.fragments.terms,/href="https:\/\/reference\.example\/help"/u);
+});
