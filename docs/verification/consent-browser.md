@@ -46,3 +46,12 @@ Chromium 155 checked the six scenarios at actual frame sizes 1215 × 848 and 390
 In the direct keyboard storage-failure check, Tab and Space selected measurement, Tab reached Save choices, and Enter saved that choice. The service remained at one start and one cleanup attempt with its failed marker still present. Reopening preferences retained the warning; Escape closed the dialog and returned focus to Privacy choices. The automated regression repeats refusal/regrant and unrelated-focus checks through both compatibility and compiled factories, retaining the distinction between permission and operational readiness.
 
 The narrow run constrains a desktop-browser frame; it is not physical mobile acceptance. Native Safari/Firefox, assistive technologies, other failures, real providers, persistent storage restrictions and actual reload recovery remain open. The warning itself does not confirm deletion, server/vendor cleanup or undo earlier transmission.
+
+
+## 23 October: navigation after withdrawal in another tab
+
+The current compiled local-choice example was checked in two disposable in-app browser tabs on a fresh loopback origin. A granular Measurement grant left Suggestions blocked and started one sample request in each tab. The first tab then followed the example’s **How it works** link to the consent guide. The second tab rejected optional purposes through the real preferences dialog.
+
+Returning with browser Back showed both services blocked and a zero request counter. Forward to the guide and a second Back return produced the same result. The zero counters indicate fresh example loads rather than preservation of the previous mounted instance; no `pageshow.persisted` observation was collected. This is navigation-after-withdrawal evidence, not a BFCache acceptance result.
+
+With both example tabs loaded again, a new granular grant in the first tab became effective in the second. Their cumulative request counters were one and two respectively. Rejecting in the second tab blocked both services in both tabs without increasing either counter. The checks used the visible service status and the example’s own initiated-request counter. They did not capture network traffic, inspect storage values, contact an external provider or prove cleanup of an arbitrary integration. Only the disposable tabs and local server were closed. BFCache, SPA remounts, physical devices and assistive-technology acceptance remain open.
