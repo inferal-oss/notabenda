@@ -21,3 +21,11 @@ The full project check passed 622 package tests and 82 site tests, catalog valid
 Desktop and 390px Chromium review checked current status separately from retained files, readable contract/addressee/date context, escaped plain-text customer copy, exact file links and collapsed delivery references. At 390px the document client and scroll widths both measured 375px, and file links measured at least 44px high. This selected browser review does not replace full accessibility, contrast, assistive-technology, translation or physical-device acceptance.
 
 The final 320px pass also contained the page width (305px client and scroll). After the last presentation changes, all 113 selected package/site tests and the Worker dry run passed. Astra's final read-only review found no remaining concrete blocker; broader acceptance remains listed above.
+
+
+## 23 October: confirmation file byte ownership
+
+The [original-byte review](paid-orders.md#23-october-original-byte-copying) also covers customer confirmation files. Preparing a confirmation and inspecting/downloading its retained copy use actual indexed bytes and intrinsic size checks, with no caller iterator or shadowed property reads. The new integration test prepares a file with hostile view properties, reads its exact attachment and escaped text through separately authorized admin routes, and confirms that denial causes no private file lookup. Existing manifest/chunk corruption and delivery-state scenarios remain separate checks.
+
+
+The actual local SQLite confirmation rehearsal also passed on Node 22 after this change. A 360,000-byte attachment, immutable manifest/destination and original admission receipt survived a Worker process restart. A lost simulated provider response remained uncertain; the expired lease retried the same delivery ID and payload. Two attempts committed once, and a stale settlement was refused. Both owned Worker processes stopped. This uses two disposable Durable Objects and a simulated provider, not external delivery or cloud acceptance.

@@ -18,7 +18,7 @@ import {validateOrderArchive,orderArchiveBody} from './order-render.js';
 import {renderWorkspaceShell} from './render.js';
 import {orderReviewCss} from './order-review-style.js';
 import {canonicalJson} from './history.js';
-import {orderBytesHash} from './order-blobs.js';
+import {orderBytesHash,ownedOrderBytes} from './order-blobs.js';
 import type {JsonValue} from './types.js';
 
 const date = (value: string) => !value || /^\d{4}-\d{2}-\d{2}$/u.test(value) && Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value;
@@ -76,7 +76,7 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
         try{
           const raw=await grant.store.get(id);if(!raw)return response('Order request not found.',404);const record=normalizeRecord(raw);if(record.id!==id)throw Error('Invalid store response.');
           const retained=await grant.store.getOrderConfirmation(id);if(!retained)return response('Confirmation not found.',404);const archive=await validateConfirmationArchive(retained,record),file=archive.manifest.files.find(f=>download?f.id===fileId:f.role==='confirmation');if(!file)return response('File not found.',404);
-          const input=await grant.store.getOrderConfirmationFile(id,file.id);if(!(input instanceof Uint8Array)||input.buffer instanceof SharedArrayBuffer||input.length!==file.bytes||input.length>2097152)throw Error('Invalid file.');const bytes=Uint8Array.from(input);if(await orderBytesHash(bytes)!==file.sha256)throw Error('Invalid file.');
+          const input=await grant.store.getOrderConfirmationFile(id,file.id),bytes=ownedOrderBytes(input!,file.bytes);if(bytes.length!==file.bytes||await orderBytesHash(bytes)!==file.sha256)throw Error('Invalid file.');
           if(download){const h=headers();h.set('Content-Type','application/octet-stream');h.set('Content-Disposition',`attachment; filename="${file.filename}"`);h.set('Content-Security-Policy',"sandbox; default-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'");h.set('Cross-Origin-Resource-Policy','same-origin');return new Response(request.method==='HEAD'?null:bytes.buffer,{headers:h});}
           const text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);return response(renderWorkspaceShell(confirmationBody(archive,record,basePath,text),view),200,headers(nonce));
         }catch{return response('The confirmation could not be inspected.',500);}
@@ -92,7 +92,7 @@ export function createAdminWorker<Env = unknown>(options: AdminWorkerOptions<Env
           if(file){
             const item=archive.review.definition.items.find(i=>i.guarantee?.status==='label-provided'&&i.guarantee.label.asset.sha256===sha);if(!item||item.guarantee?.status!=='label-provided')return response('Original file not found.',404);
             const asset=item.guarantee.label.asset,rawBytes=await grant.store.getOrderAsset(id,sha!);if(rawBytes===undefined)return response('Original file not found.',404);
-            if(!(rawBytes instanceof Uint8Array)||rawBytes.buffer instanceof SharedArrayBuffer||rawBytes.byteLength!==asset.bytes||rawBytes.byteLength>2097152)throw Error('Invalid original file.');const bytes=Uint8Array.from(rawBytes);if(await orderBytesHash(bytes)!==sha)throw Error('Invalid original file.');
+            const bytes=ownedOrderBytes(rawBytes,asset.bytes);if(bytes.length!==asset.bytes||await orderBytesHash(bytes)!==sha)throw Error('Invalid original file.');
             const inline=url.pathname.endsWith('/order-image'),h=headers(),extension=asset.mediaType==='image/png'?'png':asset.mediaType==='image/jpeg'?'jpg':'svg';h.set('Content-Type',inline?asset.mediaType:'application/octet-stream');h.set('Content-Disposition',`${inline?'inline':'attachment'}; filename="${sha}.${extension}"`);h.set('Content-Security-Policy',"sandbox; default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'");h.set('Cross-Origin-Resource-Policy','same-origin');
             return new Response(request.method==='HEAD'?null:bytes.buffer,{headers:h});
           }

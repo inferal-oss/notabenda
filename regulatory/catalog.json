@@ -5931,7 +5931,8 @@
         "examples/processing-application/authorize.mjs",
         "examples/processing-application/notabenda.config.yaml",
         "examples/processing-application/README.md",
-        "packages/notabenda-cf/src/records.ts"
+        "packages/notabenda-cf/src/records.ts",
+        "packages/notabenda-cf/src/order-blobs.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/admin.test.mjs",
@@ -5944,7 +5945,8 @@
         "scripts/check-processing-application.mjs",
         "docs/verification/processing-application.md",
         "packages/notabenda-cf/test/record-values.test.mjs",
-        "scripts/check-site-runtime.mjs"
+        "scripts/check-site-runtime.mjs",
+        "packages/notabenda-cf/test/order-bytes.test.mjs"
       ]
     },
     {
@@ -8442,7 +8444,8 @@
         "site/test/demo.test.mjs",
         "docs/verification/paid-orders.md",
         "scripts/check-transaction-recovery.mjs",
-        "scripts/fixtures/transaction-recovery-worker.mjs"
+        "scripts/fixtures/transaction-recovery-worker.mjs",
+        "packages/notabenda-cf/test/order-bytes.test.mjs"
       ],
       "implementationNote": "64 KiB sealed chunks, bounded review/files, CAS activation, intent-level consumption, fresh post-decision clock, local mutation plans, scoped private archives, safe admin rendering/downloads and resumable retirement. Existing demo receipts retain their compatibility path."
     },
@@ -8536,7 +8539,8 @@
         "packages/notabenda-cf/src/worker.ts",
         "packages/notabenda-cf/src/types.ts",
         "site/order-confirmation-seed.mjs",
-        "site/order-demo-admin.mjs"
+        "site/order-demo-admin.mjs",
+        "packages/notabenda-cf/src/order-blobs.ts"
       ],
       "testRefs": [
         "packages/notabenda-cf/test/order-confirmations.test.mjs",
@@ -8545,7 +8549,8 @@
         "scripts/check-order-confirmation-runtime.mjs",
         "docs/verification/order-confirmations.md",
         "scripts/check-transaction-recovery.mjs",
-        "scripts/fixtures/transaction-recovery-worker.mjs"
+        "scripts/fixtures/transaction-recovery-worker.mjs",
+        "packages/notabenda-cf/test/order-bytes.test.mjs"
       ],
       "implementationNote": "Bounded original files and manifest plus pending job seal atomically. Stable delivery identity, host callback dispatch, separate private inspection and lifecycle fencing preserve the admission capture. Production/regional and real delivery acceptance remain open. Actual local SQLite confirmation/provider stores survived restart with the exact large attachment, manifest/destination and original admission. Lost-response recovery made two provider attempts with one simulated downstream commit; stale settlement was refused.",
       "id": "REQ-PRODUCT-ORDER-CONFIRMATION",

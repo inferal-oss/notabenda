@@ -146,3 +146,14 @@ test('retirement fences attempts, assets, activation and restores, and resumably
  let state;do{state=await lifecycle.purge({requestId:decision.requestId,legalHold:false,limit:2});}while(state.phase!=='complete');assert.equal((await f.storage.list({prefix:f.base,limit:200})).size,0);assert.equal((await f.storage.list({prefix:f.prefix+'events/',limit:200})).size,0);assert.equal(await f.storage.get('shop/stock/lamp'),3,'host stock state is outside evidence erasure');
  await lifecycle.restore(retired);await reject(admitPaidOrder(f.storage,f.request,f.context,f.options),'context-retired');
 });
+
+test('asset archival and authorized downloads preserve indexed bytes without caller or adapter hooks',async()=>{
+ const g=await goods(),f=await setup({preview:true,items:[g.item],assets:{[g.label.asset.url]:g.bytes}});let calls=0;
+ const poison=source=>{const bytes=new Uint8Array(source);for(const key of ['length','byteLength','buffer','constructor',Symbol.iterator])Object.defineProperty(bytes,key,{get(){calls++;throw Error('Do not read input hooks');}});return bytes;};
+ await archivePaidOrderAsset(f.storage,g.label,poison(g.bytes),f.context);await ready(f);const receipt=await admitPaidOrder(f.storage,f.request,f.context,f.options),store=createPaidOrderStore(f.storage,f.context);
+ let allowed=false,fileReads=0;const worker=createAdminWorker({authorize:()=>({store:{...store,getOrderAsset:async()=>{fileReads++;return poison(g.bytes);}},allowOrderArchive:allowed})});
+ const path='https://shop.example/admin/notabenda/order-asset?'+new URLSearchParams({id:receipt.id,sha256:g.label.asset.sha256});assert.equal((await worker.fetch(new Request(path),{})).status,403);assert.equal(fileReads,0);allowed=true;
+ for(const path of ['order-asset','order-image']){const response=await worker.fetch(new Request('https://shop.example/admin/notabenda/'+path+'?'+new URLSearchParams({id:receipt.id,sha256:g.label.asset.sha256})),{});assert.equal(response.status,200);assert.deepEqual(new Uint8Array(await response.arrayBuffer()),new Uint8Array(g.bytes));}
+ assert.equal(calls,0);
+ const wrong=new Uint8Array(g.bytes);wrong[0]^=1;wrong[Symbol.iterator]=function*(){calls++;yield* g.bytes;};const other=await setup({preview:true});await reject(archivePaidOrderAsset(other.storage,g.label,wrong,other.context),'invalid-asset');assert.equal(calls,0);assert.equal((await other.storage.list({prefix:other.base,limit:100})).size,0);
+});
