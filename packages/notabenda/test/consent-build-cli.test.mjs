@@ -17,7 +17,7 @@ async function temporary(fn){const cwd=await mkdtemp(join(tmpdir(),'notabenda-co
 
 test('CLI builds the same bounded runtime from every config format with explicit evidence modes and separate consent CSS',()=>temporary(async cwd=>{
  const config=await setup(),legal=compileLegalDocuments(config);
- const delivery=describeIntegration().configContract.consentRuntimeBuild;assert.equal(delivery.option,'--consent-runtime local|required');assert.equal(delivery.evidenceModeHasNoDefault,true);assert.equal(delivery.hostConnectionRequired,true);
+ const delivery=describeIntegration().configContract.consentRuntimeBuild;assert.equal(delivery.option,'--consent-runtime local|required');assert.equal(delivery.primaryFactory,'createConsent');assert.equal(delivery.acceptedInput,'ConsentRuntimeConfig');assert.equal(delivery.fullSiteInputAccepted,false);assert.equal(delivery.compilerRunsIn,'build-or-ssr');assert.equal(delivery.requiredAdapterFactory,'requiredConsentEvidence');assert.equal(delivery.evidenceModeHasNoDefault,true);assert.equal(delivery.hostConnectionRequired,true);
  for(const [format,extension] of [['json','json'],['yaml','yaml'],['yaml','yml'],['markdown','md']]){
   const source=await formatConfigSource(config,format,format==='markdown'?'\nPRIVATE_BODY_SENTINEL\n':'');await writeFile(join(cwd,'site.'+extension),source);
   for(const mode of ['local','required']){

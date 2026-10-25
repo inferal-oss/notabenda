@@ -27,9 +27,9 @@ Origins restrict the **initial requested URL**. They do not constrain redirects,
 
 ```js
 import {createConsent, createEmbedService, mountControls} from '@notabenda/core';
-import publicConfig from './legal/notabenda.public.json';
+import runtimeConfig from './legal/consent-runtime.json';
 
-const consent = createConsent(publicConfig);
+const consent = createConsent(runtimeConfig);
 mountControls(document.querySelector('#privacy-controls'), {consent});
 
 // One registration for this service, owned by the host bootstrap.
@@ -59,19 +59,21 @@ The placeholder button opens the existing preferences UI. It makes **no** consen
 
 ### Language and fixed interface messages
 
-For a non-English site, supply all four `localization.embeds` messages: `preferencesLabel`, `waiting`, `allowed` and `error`. They share the site's locale, direction, revision and review metadata. Titles, descriptions and image alternatives remain separate host-written facts. A full `createConsent` controller supplies the configured dictionary automatically. Missing or mismatched non-English messages stop group creation before a lifecycle is registered.
+For a non-English site, supply all four `localization.embeds` messages: `preferencesLabel`, `waiting`, `allowed` and `error`. They share the site's locale, direction, revision and review metadata. Titles, descriptions and image alternatives remain separate host-written facts. Select the dictionary in build/server code and pass it separately to the browser media group; `createConsent` receives a cookie-runtime descriptor that excludes media copy. Only the explicit full-site compatibility controller selects that dictionary automatically. Missing or mismatched non-English messages stop group creation before a lifecycle is registered.
 
 ```js
+// Build/server code: select the public dictionary and render the fallback.
 import {selectEmbedLocalization, renderEmbedPlaceholder} from '@notabenda/core';
 const localization = selectEmbedLocalization(publicConfig);
 const fallback = renderEmbedPlaceholder(
   {title: 'Your media title', description: 'Your explanation'},
   {localization},
 );
+// Browser code: receive the serialized selected dictionary as localization.
 const media = createEmbedService({consent, serviceId: 'optional-video', localization});
 ```
 
-Select this dictionary before compiling a narrow cookie runtime: `compileConsentRuntimeConfig` leaves media copy out of that descriptor. Pass the selected dictionary separately when using `createConsentRuntime`. Its locale must match the controller's site locale. Draft dictionaries require explicit `allowPreview: true` on the renderer and service group; review them before production use. SSR can also declare `locale` to reject a missing non-English dictionary.
+Select this dictionary before compiling a narrow cookie runtime: `compileConsentRuntimeConfig` leaves media copy out of that descriptor. Pass the selected dictionary separately when using `createConsent` or `createConsentRuntime`. See [browser configuration](BROWSER-CONFIG.md). Its locale must match the controller's site locale. Draft dictionaries require explicit `allowPreview: true` on the renderer and service group; review them before production use. SSR can also declare `locale` to reject a missing non-English dictionary.
 
 The dictionary is retained in public release configuration. Advance `localization.revision` when it changes. A copy-only edit does not change cookie scopes, grant permission or expand resource origins. Actual provider/purpose changes still require their material revisions. Explicit presentation overrides describe the local view; they do not establish that a particular copy was presented or recorded. Existing English output is unchanged when no dictionary is selected. The older per-resource `preferencesLabel` override remains available for deliberately supplied labels.
 

@@ -93,6 +93,7 @@ For South African requests, `notabenda describe south-africa-marketing-request -
 
 - [Compiled authored preview](https://notabenda.org/guide/authored-preview/index.md): Node-only reader and exact public ZIP for an existing MD/MDX compiler build. Private sources stay separate; configuration previews are distinct. Inspect actual component output, then use the exported artifact for publication checks.
 
+- [Browser configuration](https://notabenda.org/guide/browser-config/index.md): Root/headless `createConsent` requires a descriptor compiled in build/SSR code. Both React entries return the narrow controller. Never compile full site configuration in browser code. Required mode needs `requiredConsentEvidence` from `@notabenda/core/consent/evidence`; full-site rendering remains separate. Explicit `@notabenda/core/consent/compat` is a temporary larger migration path.
 - Browser consent build: `notabenda build --config FILE --consent-runtime local|required` emits `consent-runtime.json` and `assets/notabenda-consent.css`. Evidence mode is explicit; loaders, archived notice and host transport remain separate connections.
 
 - Native recorded-consent build: add `--consent-scope SLUG` to `build --consent-runtime required` for `consent-notice.json` plus `artifacts/{artifactId}/consent/{noticeId}.json`. Retain selected old notices with `--retain-consent-notice FILE` and their explicit legal releases. Publication does not register or activate a notice.

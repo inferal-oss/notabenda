@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-ASTRO
 import base from '../../../static/notabenda.config.json' with {type:'json'};
-import {compileLegalDocuments} from '@notabenda/core/content';
+import {compileConsentRuntimeConfig,compileLegalDocuments} from '@notabenda/core/content';
 import {exampleConsentConfig} from '../../../static/choices-build.mjs';
 
 const config=exampleConsentConfig(base);config.site.id='juniper-astro';
@@ -9,3 +9,4 @@ for(const item of config.storage)if(config.consent.services.some(s=>s.id===item.
 for(const [kind,doc] of Object.entries(config.documents))doc.route=`/astro/${kind}`;
 export const release=compileLegalDocuments(config,{mode:'preview',stylesheetUrl:'/astro/site.css'});
 export const publicConfig=release.publicConfig;
+export const consentRuntime=compileConsentRuntimeConfig(publicConfig,{mode:'preview',evidence:'local'});

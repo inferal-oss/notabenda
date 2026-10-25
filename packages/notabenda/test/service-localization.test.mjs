@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-SERVICE-LOCALIZATION REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-SERVICE-CATALOG REQ-PRODUCT-A11Y
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -5,7 +6,7 @@ import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {validateSiteConfig,toPublicConfig,createConsent} from '@notabenda/core';
+import {validateSiteConfig,toPublicConfig} from '@notabenda/core';
 import {createServiceDirectory,renderServiceDirectory,renderServiceDirectoryPage,mountServiceDirectory,normalizeServiceDirectoryLocalization} from '@notabenda/core/services';
 import {ServiceDirectory} from '@notabenda/core/react/documents';
 import {compileLegalDocuments,compileConsentRuntimeConfig,createConsentNotice} from '@notabenda/core/content';

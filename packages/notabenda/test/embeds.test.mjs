@@ -1,9 +1,10 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 // @requirements REQ-PRODUCT-EMBEDS REQ-EU-DEVICE REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-SAFE-CONTENT
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM,ResourceLoader} from 'jsdom';
-import {createConsent,createEmbedService,renderEmbedPlaceholder,toPublicConfig,validateSiteConfig} from '@notabenda/core';
+import {createEmbedService,renderEmbedPlaceholder,toPublicConfig,validateSiteConfig} from '@notabenda/core';
 import {compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
 import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';

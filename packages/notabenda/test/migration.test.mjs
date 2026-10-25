@@ -1,8 +1,9 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-RELEASE-CANDIDATE REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-STORAGE-CLEANUP
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,mountControls,registerStorageService} from '@notabenda/core';
+import {mountControls,registerStorageService} from '@notabenda/core';
 import {fixture} from './helpers.mjs';
 
 test('migration does not import opaque old grants; on-demand controls grant nothing and withdrawal preserves unrelated history',async()=>{

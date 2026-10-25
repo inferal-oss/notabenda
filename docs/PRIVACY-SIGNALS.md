@@ -2,6 +2,8 @@
 
 This preview can apply an operator-declared Global Privacy Control (GPC) policy to registered services. It keeps **device-access cookie permission** separate from **restrictions on sale, sharing or targeted advertising**. A cookie grant does not cancel a signal restriction.
 
+Cookie-controller examples below use `runtimeConfig`, a descriptor compiled in build/SSR code with `compileConsentRuntimeConfig` or `notabenda build --consent-runtime local|required`. Keep full configuration separate for other workflows. See [browser configuration](BROWSER-CONFIG.md).
+
 This is a runtime mechanism, not a complete US privacy workflow or a reviewed jurisdiction pack. The host decides applicable law, classifies processing, retains and propagates account/profile opt-outs, and governs downstream processing. There is no automatic location inference, sensitive-data permission, loyalty-program exception or re-opt-in workflow.
 
 ## Declare the policy and every service
@@ -31,7 +33,7 @@ Generated privacy documents include the supplied explanation as an escaped secti
 
 ```js
 import {createConsent, mountControls} from '@notabenda/core';
-const consent = createConsent(publicConfig);
+const consent = createConsent(runtimeConfig);
 mountControls(document.querySelector('#privacy-controls'), {consent});
 
 consent.registerService('your-advertising-service', {
@@ -76,7 +78,7 @@ if (restrictions && Object.hasOwn(restrictions.restrictedServices, 'your-adverti
 }
 
 // Pass a host observation into the browser controller before registration.
-const consent = createConsent(publicConfig, undefined, {
+const consent = createConsent(runtimeConfig, undefined, {
   globalPrivacyControl: observed,
 });
 ```

@@ -1,8 +1,9 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-BUNDLE-BUDGET
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {createConsent,toPublicConfig} from '@notabenda/core';
+import {toPublicConfig} from '@notabenda/core';
 import {compileConsentRuntimeConfig} from '@notabenda/core/content';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {consentScopes} from '../dist/consent-notice.js';

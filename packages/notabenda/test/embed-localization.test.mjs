@@ -1,8 +1,9 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION REQ-PRODUCT-EMBEDS REQ-PRODUCT-LOCALIZATION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM,ResourceLoader} from 'jsdom';
-import {createConsent,createEmbedService,renderEmbedPlaceholder,normalizeEmbedLocalization,selectEmbedLocalization,validateSiteConfig} from '@notabenda/core';
+import {createEmbedService,renderEmbedPlaceholder,normalizeEmbedLocalization,selectEmbedLocalization,validateSiteConfig} from '@notabenda/core';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {describeIntegration} from '@notabenda/core/integration';
 import {assessIntegration} from '@notabenda/core/integration/assessment';

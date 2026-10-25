@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-STORAGE-CLEANUP
 import {createConsent,registerStorageService,mountControls} from '/assets/runtime/index.js';
-const config=await (await fetch('/storage-cleanup/site.json')).json();
+const config=await (await fetch('/storage-cleanup/consent.json')).json();
 const consent=createConsent(config);let starts=0;
 const display=(id,value)=>{document.getElementById(id).textContent=value;};
 function refresh(){

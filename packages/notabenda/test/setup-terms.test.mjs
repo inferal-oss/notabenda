@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-TERMS-AUTHORING REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-SETUP-SESSION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -6,7 +7,7 @@ import {readFile,writeFile,mkdtemp,rm,symlink,stat,readdir} from 'node:fs/promis
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {spawnSync} from 'node:child_process';
-import {toPublicConfig,validateSiteConfig,createConsent} from '@notabenda/core';
+import {toPublicConfig,validateSiteConfig} from '@notabenda/core';
 import {createTermsDraftPlan,normalizeTermsDraftInput} from '@notabenda/core/setup/terms';
 import {mountTermsEditor} from '@notabenda/core/setup/terms/ui';
 import {mountSetup} from '@notabenda/core/setup/ui';

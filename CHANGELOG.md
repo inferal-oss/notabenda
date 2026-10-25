@@ -26,7 +26,7 @@ Regional support is tracked requirement by requirement. The source catalog, setu
 
 Your application owns identity, eligibility, provider behavior and downstream fulfillment. Privacy-request pages link to your workflows; they do not fulfill requests. Marketing approach-history mechanics remain a proposal. Customer-exception decisions and advertising CMP certification are not implemented. Confirmation delivery uses host callbacks rather than a built-in email provider.
 
-The general-purpose consent entry remains above its 15 KiB gzip target; the compiled local entry meets that target. Browser and accessibility acceptance is incomplete, including physical devices and assistive technology. The [0.1.0 release checklist](docs/RELEASE-010.md) records the remaining gates. No release tag or publication is implied by these draft notes.
+Browser cookie controls require configuration compiled at build time. The primary entry now meets its 15 KiB gzip target; the explicit full-input compatibility and receipt-backed entries are larger and reported separately. See the [browser API migration guide](docs/BROWSER-CONFIG.md). Browser and accessibility acceptance is incomplete, including physical devices and assistive technology. The [0.1.0 release checklist](docs/RELEASE-010.md) records the remaining gates. No release tag or publication is implied by these draft notes.
 
 ### Licensing and security
 

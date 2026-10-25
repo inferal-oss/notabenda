@@ -7,11 +7,11 @@ async function json(path,options){const response=await fetch(path,{cache:'no-sto
 function stop(){if(stopped)return;stopped=true;processing?.destroy();consent?.destroy();processingUI?.destroy();choicesUI?.destroy();document.getElementById('count-interaction').disabled=true;}
 window.addEventListener('pagehide',event=>{if(!event.persisted)stop();});
 try{
- const [config,notice,initial]=await Promise.all([json('/localization/processing/site.json'),json('/localization/processing/notice.json'),json('/demo/processing/pt/head')]);
+ const [runtime,notice,initial]=await Promise.all([json('/localization/processing/consent.json'),json('/localization/processing/notice.json'),json('/demo/processing/pt/head')]);
  if(!stopped){
   processing=createProcessingChoices(notice,{streamRef:initial.streamRef,allowPreview:true,read:({signal})=>json('/demo/processing/pt/head',{signal}),submit:(body,{signal})=>json('/demo/processing/pt/record',{method:'POST',signal,headers:{'Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(body)})});
-  consent=createConsent(config,undefined,{processingChoices:processing});
-  for(const service of config.consent.services)consent.registerService(service.id,{purposes:config.services.find(s=>s.id===service.id).purposeIds,start(){return ()=>{};}});
+  consent=createConsent(runtime,undefined,{processingChoices:processing});
+  for(const service of runtime.inventory.consent.services)consent.registerService(service.id,{purposes:runtime.inventory.services.find(s=>s.id===service.id).purposeIds,start(){return ()=>{};}});
   document.querySelector('[data-processing-fallback]')?.remove();processingUI=mountProcessingChoices(document.getElementById('processing-controls'),processing);choicesUI=mountControls(document.getElementById('privacy-controls'),{consent});
   consent.subscribe(state=>{document.getElementById('suggestions-state').textContent=state.services.reading==='active'?'Disponíveis':'Bloqueadas';const on=state.services['reading-counter']==='active';document.getElementById('counter-state').textContent=on?'Disponível':'Desativado';document.getElementById('count-interaction').disabled=!on;});
   processing.subscribe(state=>{document.getElementById('processing-revision').textContent=state.status==='checking'?'Consultando…':String(state.revision);});

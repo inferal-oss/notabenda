@@ -1,5 +1,7 @@
 # Software and storage architecture
 
+The build/SSR boundary validates full site configuration and emits the cookie runtime descriptor. Root/headless `createConsent` consumes that descriptor and exposes only the cookie inventory; full-site documents and workflow inputs stay separate. See [browser configuration](BROWSER-CONFIG.md) for CLI output, required evidence and compatibility migration.
+
 The [compliance map](COMPLIANCE-MAP.md) explains what each component serves. This diagram shows where the supporting software runs and where its information is kept.
 
 ## All twenty-one packs

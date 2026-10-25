@@ -1,8 +1,8 @@
 // @requirements REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE
-import type {PublicSiteConfig} from './types.js';
 import type {ConsentRuntimeInventory} from './consent-runtime-config.js';
+import type {RequiredConsentEvidence} from './consent-evidence-factory.js';
 import type {ConsentNotice} from './consent-notice.js';
-import type {ConsentEvidenceOptions,ConsentEvidenceSnapshot} from './consent-evidence.js';
+import type {ConsentEvidenceSnapshot} from './consent-evidence.js';
 import type {ScopeGuardDecision} from './scope-guards.js';
 import type {PrivacySignalSnapshot} from './privacy-signal-policy.js';
 import type {ProcessingChoicesController,ProcessingChoicesSnapshot} from './processing-choices.js';
@@ -29,7 +29,7 @@ export interface ConsentSnapshot {
   /** @requirements REQ-IT-REPROMPT Solicitation only; independent of saved/effective permission. */
   promptDecision?: PromptPolicyDecision;
 }
-export interface ConsentOptions { evidence?:ConsentEvidenceOptions; globalPrivacyControl?:boolean;processingChoices?:ProcessingChoicesController }
+export interface ConsentOptions { evidence?:RequiredConsentEvidence; globalPrivacyControl?:boolean;processingChoices?:ProcessingChoicesController }
 export interface ChoiceStorage {
   getItem(key: string): string | null;
   setItem(key: string, value: string): void;
@@ -71,5 +71,5 @@ export interface ConsentStateController<Config extends ConsentRuntimeInventory =
   destroy(): void;
 }
 
-/** Compatibility controller retains the complete validated public site configuration. */
-export interface ConsentController extends ConsentStateController<PublicSiteConfig> {}
+/** Primary controller exposes only the compiled cookie inventory. */
+export interface ConsentController extends ConsentStateController {}

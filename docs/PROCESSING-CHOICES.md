@@ -2,6 +2,8 @@
 
 Cookie permission and permission to sell, share or use data for targeted advertising are separate questions. `createProcessingChoices` supplies an explicit opt-out, local pending recovery and a host-confirmed restriction state. It has no grant, reset, automatic expiry or re-opt-in method. `@notabenda/cloudflare` provides the corresponding transactional ledger and authorized search view.
 
+Cookie-controller examples below use `runtimeConfig`, a descriptor compiled in build/SSR code with `compileConsentRuntimeConfig` or `notabenda build --consent-runtime local|required`. Keep full configuration separate for other workflows. See [browser configuration](BROWSER-CONFIG.md).
+
 This mechanism implements `REQ-PRODUCT-PROCESSING-CHOICES`. It contributes to, and does not complete, `REQ-US-CA-CHOICES`. Reviewed applicability, alternative request methods, identity continuity, downstream handling, sensitive-information rights and retention remain operator work. A cookie banner alone does not supply the California sale/sharing opt-out method. See the [catalog entry](requirements/README.md#req-us-ca-choices) and its primary regulation source.
 
 For return navigation, use an explicit [privacy-choice link](PRIVACY-CHOICE-LINKS.md). A generic text link can lead to your processing page; the California alternative-link presentation has a broader destination requirement.
@@ -72,7 +74,7 @@ const processing = createProcessingChoices(notice, {
   read: ({signal}) => readCurrentHead({signal}),
   submit: (request, {signal}) => submitOptOut(request, {signal}),
 });
-const consent = createConsent(publicConfig, undefined, {processingChoices: processing});
+const consent = createConsent(runtimeConfig, undefined, {processingChoices: processing});
 mountProcessingChoices(document.querySelector('#privacy-choices')!, processing);
 // Register optional services with this consent controller before doing any work.
 ```

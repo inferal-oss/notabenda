@@ -91,6 +91,8 @@ No framework or runtime dependencies are required. The build-time API lives sepa
 
 The optional [`@notabenda/authoring`](packages/notabenda-authoring/README.md) build package accepts **Markdown and MDX with YAML frontmatter**, including your own static components. Publish the HTML and keep source revisions in the authenticated history workspace. [Authoring guide](docs/AUTHORING.md) · [Working example](http://127.0.0.1:4178/authored/terms).
 
+For browser cookie controls, compile full configuration in build/SSR code with `compileConsentRuntimeConfig` or `notabenda build --consent-runtime local|required`. Pass the resulting descriptor to `createConsent`; keep legal rendering and other workflows on their separate inputs. [Browser configuration](docs/BROWSER-CONFIG.md) · [Migration from earlier previews](docs/MIGRATION.md#unreleased-browser-api-migration).
+
 For React, import the optional `@notabenda/core/react` provider, hooks and controls, or `@notabenda/core/react/documents` for server-rendered legal content. They use the same consent engine. [React guide](docs/REACT.md) · [Live example](http://127.0.0.1:4178/react).
 
 For Astro, packaged `.astro` components render static legal pages, and `@notabenda/core/astro/client` keeps controls connected through client navigation. [Astro guide](docs/ASTRO.md) · [Real Astro example](http://127.0.0.1:4178/astro/).

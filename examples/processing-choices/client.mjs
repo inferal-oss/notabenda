@@ -5,10 +5,10 @@ const generation=document.querySelector('meta[name=notabenda-demo-generation]')?
 let consent,processing;
 async function json(path,options){const response=await fetch(path,{cache:'no-store',...options,headers:{...options?.headers,'X-Notabenda-Demo-Generation':generation??''}});if(!response.ok){const value=await response.json().catch(()=>({}));if(demoSessionEnded(value)||response.status===410&&value.code==='context-retired')throw new ProcessingChoicesError('context-retired');throw new Error('Example unavailable.');}return response.json();}
 try{
-  const [config,notice,initial]=await Promise.all([json('/processing-choices/site.json'),json('/processing-choices/notice.json'),json('/demo/processing/head')]);
+  const [runtime,notice,initial]=await Promise.all([json('/processing-choices/consent.json'),json('/processing-choices/notice.json'),json('/demo/processing/head')]);
   processing=createProcessingChoices(notice,{streamRef:initial.streamRef,allowPreview:true,read:({signal})=>json('/demo/processing/head',{signal}),submit:(request,{signal})=>json('/demo/processing/record',{method:'POST',signal,headers:{'Content-Type':'application/json','X-Notabenda-Demo':'1'},body:JSON.stringify(request)})});
-  consent=createConsent(config,undefined,{processingChoices:processing});let requests=0;
-  for(const service of config.consent.services)consent.registerService(service.id,{purposes:config.services.find(s=>s.id===service.id).purposeIds,async start({signal}){
+  consent=createConsent(runtime,undefined,{processingChoices:processing});let requests=0;
+  for(const service of runtime.inventory.consent.services)consent.registerService(service.id,{purposes:runtime.inventory.services.find(s=>s.id===service.id).purposeIds,async start({signal}){
     if(signal.aborted)return ()=>{};requests++;
     try{const response=await fetch('/processing-choices/sample.json?service='+service.id,{signal,cache:'no-store'});if(!response.ok)throw new Error('Sample unavailable.');}catch(error){if(!signal.aborted)throw error;}
     return ()=>{};

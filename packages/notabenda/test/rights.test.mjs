@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-EU-NOTICE REQ-US-CA-CHOICES REQ-US-VA-RIGHTS
 // @requirements REQ-PRODUCT-RIGHTS-CENTER REQ-PRODUCT-SAFE-CONTENT REQ-PRODUCT-A11Y
 import {test} from 'node:test';
@@ -5,7 +6,7 @@ import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
 import {createElement} from 'react';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {renderRightsCenter,renderRightsPage,renderLegalLinks,toPublicConfig,validateSiteConfig,createConsent} from '@notabenda/core';
+import {renderRightsCenter,renderRightsPage,renderLegalLinks,toPublicConfig,validateSiteConfig} from '@notabenda/core';
 import {RightsCenter} from '@notabenda/core/react/documents';
 import {compileLegalDocuments} from '@notabenda/core/content';
 import {compileAuthoredDocuments} from '@notabenda/authoring';

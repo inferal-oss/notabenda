@@ -1,6 +1,6 @@
 # Cookie-choice evidence
 
-The optional ledger in `@notabenda/cloudflare` stores host-received cookie-choice reports against an immutable notice and legal-document release. It provides transactional ordering and a read-only compliance view. `createConsent` remains local-only by default; configuring its third argument enables **required-receipt mode**, which blocks optional services until the exact local choice matches the server's current record. An ordinary local grant is not remotely recorded.
+The optional ledger in `@notabenda/cloudflare` stores host-received cookie-choice reports against an immutable notice and legal-document release. It provides transactional ordering and a read-only compliance view. `createConsent` requires an explicit evidence mode in its build-time descriptor. A `local` descriptor uses browser-local choices. A `required` descriptor and its `requiredConsentEvidence` adapter enable **required-receipt mode**, which blocks optional services until the exact local choice matches the server's current record. An ordinary local grant is not remotely recorded.
 
 For complete application wiring, start with the [recorded-cookie example](RECORDED-COOKIE-APPLICATION.md): generated YAML inputs, host session hooks, separate operator activation, native controls and ledger inspection. The API reference below explains each boundary.
 
@@ -143,7 +143,7 @@ mountControls(container, {consent});
 // Register each optional service lifecycle before its requests can start.
 ```
 
-For an existing complete-config integration, `createConsent(publicSiteConfig, environment, {evidence})` retains its synchronous validation and accepts the receipt options directly. Its `evidence` value is the plain options object above, without the `requiredConsentEvidence` wrapper. Both paths use the same receipt protocol.
+Root/headless `createConsent` has the same descriptor and adapter contract as `createConsentRuntime`. For a temporary complete-config integration, explicitly import `createCompatibilityConsent` from `@notabenda/core/consent/compat`; only that factory accepts full site configuration and plain receipt options without the wrapper. Both paths use the same receipt protocol. See [browser configuration](BROWSER-CONFIG.md) and [migration limits](MIGRATION.md#unreleased-browser-api-migration).
 
 
 `read` returns `ConsentHead`; `write` returns `{receipt, head}`. The transport must use the host's existing authorization/CSRF controls and map server `revision-conflict`, `stale-notice`, and `expired-command` responses to `ConsentEvidenceError` with that code. Other errors remain uncertain failures. A matching ID alone is insufficient: the controller checks the site, scope, stream digest, nonce, original action/time, notice/artifact/material-scope references, choices, revisions and expiry. These checks validate a response contract, not human identity.

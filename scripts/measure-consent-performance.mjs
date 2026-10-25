@@ -1,5 +1,5 @@
 // @requirements REQ-PRODUCT-BUNDLE-BUDGET
-import {createConsent} from '@notabenda/core';
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {performanceInventories} from './performance-inventories.mjs';
 import {measureConsent} from './consent-performance.mjs';

@@ -435,7 +435,12 @@
       "import": "./dist/marketing-workbench.js",
       "default": "./dist/marketing-workbench.js"
     },
-    "./marketing-workbench.css": "./dist/marketing-workbench.css"
+    "./marketing-workbench.css": "./dist/marketing-workbench.css",
+    "./consent/compat": {
+      "types": "./dist/consent-compat.d.ts",
+      "import": "./dist/consent-compat.js",
+      "default": "./dist/consent-compat.js"
+    }
   },
   "bin": {
     "notabenda": "./dist/cli.js"

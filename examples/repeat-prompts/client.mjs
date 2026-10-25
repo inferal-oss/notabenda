@@ -3,7 +3,7 @@ import {sixCalendarMonthsAfter} from '/assets/runtime/grant-expiry-policy.js';
 // @requirements REQ-IT-REPROMPT REQ-PRODUCT-REGIONAL-PROMPTS
 // @requirements REQ-IT-REPROMPT
 import {createConsent,mountControls} from '/assets/runtime/index.js';
-const config=await(await fetch(location.pathname.replace(/\/index\.html$/u,'/').replace(/\/?$/u,'/')+'site.json')).json();
+const runtime=await(await fetch(location.pathname.replace(/\/index\.html$/u,'/').replace(/\/?$/u,'/')+'consent.json')).json(),config=runtime.inventory;
 const values=new Map();let clock=Date.now(),starts=0,stops=0,consent,ui,unsubscribe;
 const environment={now:()=>clock,storage:{getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)},schedule:()=>()=>{}};
 const show=(id,value)=>{document.getElementById(id).textContent=value;};
@@ -17,7 +17,7 @@ function paint(snapshot){
   show('grant-policy',config.consent.grantExpiryPolicy?'Six UTC calendar months; shorter day limits still apply':'Configured day lifetime only');show('grant-deadline',deadlines.length?dates.format(Math.min(...deadlines))+' UTC':'No current grants');
 }
 function mount(){
-  consent=createConsent(config,environment);for(const service of config.consent.services)consent.registerService(service.id,{purposes:config.services.find(s=>s.id===service.id).purposeIds,start(){starts++;paint(consent.getSnapshot());return()=>{stops++;paint(consent.getSnapshot());};}});
+  consent=createConsent(runtime,environment);for(const service of config.consent.services)consent.registerService(service.id,{purposes:config.services.find(s=>s.id===service.id).purposeIds,start(){starts++;paint(consent.getSnapshot());return()=>{stops++;paint(consent.getSnapshot());};}});
   ui=mountControls(document.getElementById('privacy-controls'),{consent});unsubscribe=consent.subscribe(paint);
 }
 mount();

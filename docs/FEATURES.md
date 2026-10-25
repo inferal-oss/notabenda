@@ -124,7 +124,7 @@ Features link to individual obligations, implementation files and verification s
 - Vanilla, React, static HTML, and Astro examples with fictional operators and data.
 - Optional Cloudflare deployment commands, same-origin configuration, and install/uninstall instructions.
 - Local notabenda-cf init starter and read-only doctor are implemented with host authorization boundaries and explicit generated Wrangler scripts. Fresh-account provisioning and broader production rollout verification remain separate.
-- Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; compatibility JavaScript size target remains open.
+- Explicit headless entry, derived consent-only CSS and opt-in reproducible bundle-size reports; the primary browser API requires a compiled descriptor; full-input compatibility is separately measured.
 - Versioned integration skill, curated llms.txt and Markdown guide alternates for agent-assisted setup, with explicit unknowns and host-owned review/authorization.
 - Read-only, version-matched integration target map with actual config paths, separate host work, current setup question IDs and concrete acceptance scenarios.
 - Maintainer semantic and browser accessibility audits, with explicit incomplete results, local component/operator fixtures and keyboard-reachable comparison records. Full platform and assistive-technology review remains open.

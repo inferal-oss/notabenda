@@ -1,11 +1,5 @@
-// @requirements REQ-PRODUCT-CONFIG REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE
-import {toPublicConfig} from './config.js';
-import {createConsentEngine} from './consent-engine.js';
-import {createEvidenceSession} from './consent-evidence.js';
-import type {ConsentOptions,ConsentEnvironment,ConsentController} from './consent-types.js';
+// @requirements REQ-PRODUCT-CONFIG REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-BUNDLE-BUDGET
+/** Primary browser factory. Compile full site input at build time through core/content. */
+export {createConsentRuntime as createConsent} from './consent-runtime.js';
 export type * from './consent-types.js';
-/** Compatibility entry: full synchronous site validation and complete public configuration. */
-export function createConsent(input:unknown,environment?:ConsentEnvironment,options:ConsentOptions={}):ConsentController {
- const config=toPublicConfig(input);
- return createConsentEngine(config,environment,{...options,...(options.evidence?{evidence:(config,env,changed)=>createEvidenceSession(config,options.evidence!,env,changed)}:{evidence:undefined})});
-}
+export type {ConsentRuntimeConfig,ConsentRuntimeInventory} from './consent-runtime-config.js';

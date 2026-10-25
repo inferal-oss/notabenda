@@ -8,7 +8,7 @@ The default `@notabenda/core` entry remains framework-independent and has no run
 
 ## Use the compiled consent entry
 
-For browser applications that already compile the site inventory, import the provider, hooks and controls from `@notabenda/core/react/consent`:
+Compile the site inventory in build/SSR code for every browser integration. For a focused consent import, use the provider, hooks and controls from `@notabenda/core/react/consent`:
 
 ```jsx
 import {createConsentRuntime} from '@notabenda/core/consent';
@@ -27,9 +27,9 @@ root.render(<ConsentProvider controller={consent}>
 </ConsentProvider>);
 ```
 
-This entry accepts both compiled and complete-config controllers. Its `useConsentController()` returns `ConsentStateController`, whose `getConfig()` is the smaller `ConsentRuntimeInventory`. It does not promise operator contacts, terms authoring or other workflow configuration. The existing `@notabenda/core/react` provider and hook retain their complete-config controller contract. A compiled controller cannot be passed to that compatibility provider in TypeScript.
+Both `@notabenda/core/react` and `@notabenda/core/react/consent` accept `ConsentStateController`. Their `useConsentController()` returns that narrow type, whose `getConfig()` is `ConsentRuntimeInventory`. It does not promise operator contacts, terms authoring or other workflow configuration. Keep those inputs separately in build/SSR code. A full-site compatibility controller can be passed structurally, but neither hook promises its full getter. See [browser configuration](BROWSER-CONFIG.md) and [API migration](MIGRATION.md#unreleased-browser-api-migration).
 
-Import a provider and its hooks/components from the **same entry point**. Each entry has a separately typed context; mixing them throws an explanatory error instead of pretending that a smaller controller has a complete config. Controls ownership is shared: the same controller can have only one native controls mount, including across the two entries. Multiple preference buttons remain supported.
+Import a provider and its hooks/components from the **same entry point**. The entries retain separate contexts, and mixing them throws an explanatory error. Controls ownership is shared: the same controller can have only one native controls mount, including across the two entries. Multiple preference buttons remain supported.
 
 Both entries share subscription, SSR/hydration, effective-permission and controls behavior. Required evidence is selected on the compiled descriptor and supplied through `requiredConsentEvidence` from `@notabenda/core/consent/evidence` when constructing the controller; React never creates or downgrades that adapter. The [consent guide](CONSENT.md) covers its bounded descriptor and stored-choice migration.
 
@@ -45,7 +45,8 @@ import { ConsentProvider, ConsentControls, PreferencesButton } from '@notabenda/
 import { createRoot } from 'react-dom/client';
 import '@notabenda/core/styles.css'; // Optional; the same theme tokens apply.
 
-const consent = createConsent(publicConfig);
+// runtimeConfig was compiled in build/server code and delivered as public JSON.
+const consent = createConsent(runtimeConfig);
 consent.registerService('optional-metrics', {
   purposes: ['measurement'],
   async start({ signal }) {
@@ -129,9 +130,9 @@ The wrappers render structured site configuration. For rich **Markdown/MDX relea
 
 Permission hooks return a stable conservative snapshot during server rendering and initial hydration: unknown purposes, false permissions and blocked services. No consent controls are inserted by server effects. The legal content remains ordinary readable HTML with JavaScript unavailable.
 
-For SSR, use a fresh request-scoped controller with an empty environment (`createConsent(config, {})`), no optional lifecycles and no evidence transport; destroy it after rendering. In the browser, create the real controller once before hydration. The same server snapshot lets hydration match, then React updates to current browser state. Do not serialize browser storage or treat a browser-controlled choice as server authorization. The [React hydration guide](https://react.dev/reference/react-dom/client/hydrateRoot) describes the matching-output requirement.
+For SSR with a local descriptor, use a fresh request-scoped controller with an empty environment (`createConsent(runtimeConfig, {})`) and no optional lifecycles; destroy it after rendering. Compile and fully validate configuration in build/SSR code. A required descriptor still needs its required-evidence adapter; do not downgrade it for rendering. In the browser, create the real controller once before hydration. The same server snapshot lets hydration match, then React updates to current browser state. Do not serialize browser storage or treat a browser-controlled choice as server authorization. The [React hydration guide](https://react.dev/reference/react-dom/client/hydrateRoot) describes the matching-output requirement.
 
-Required receipts are still configured at controller construction through its third argument, before any optional lifecycle is registered. The provider needs no alternative mode. Use the explicit adapter when constructing a compiled controller. See [cookie evidence](CONSENT-EVIDENCE.md) for the authority and transport contract.
+Required receipts are still configured at controller construction through its third argument, before any optional lifecycle is registered. The provider needs no alternative mode. Use the explicit adapter when constructing either primary factory. See [cookie evidence](CONSENT-EVIDENCE.md) for the authority and transport contract.
 
 ## Working example and verification
 

@@ -2,10 +2,10 @@
 import {createConsent,mountControls} from '/assets/runtime/index.js';
 let consent;
 try{
-  const response=await fetch('/privacy-signals/site.json');if(!response.ok)throw new Error('Example unavailable.');
-  const config=await response.json();let simulated=new URL(location.href).searchParams.get('simulate-gpc')==='1';let requests=0;
+  const response=await fetch('/privacy-signals/consent.json');if(!response.ok)throw new Error('Example unavailable.');
+  const runtime=await response.json(),config=runtime.inventory;let simulated=new URL(location.href).searchParams.get('simulate-gpc')==='1';let requests=0;
   // This environment adds a visible fixture signal without changing the actual browser setting.
-  consent=createConsent(config,{
+  consent=createConsent(runtime,{
     storage:{getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value),removeItem:key=>localStorage.removeItem(key)},
     globalPrivacyControl:()=>simulated?true:navigator.globalPrivacyControl,
     subscribe(key,refresh){

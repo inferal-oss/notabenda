@@ -1,8 +1,9 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-ASTRO REQ-PRODUCT-CONSENT-RUNTIME
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent} from '@notabenda/core';
+
 import {mountAstroConsent} from '@notabenda/core/astro/client';
 import {fixture} from './helpers.mjs';
 import {exampleConsentConfig} from '../../../examples/static/choices-build.mjs';

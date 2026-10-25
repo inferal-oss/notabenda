@@ -2,9 +2,10 @@
 import {createConsent,mountControls,registerStorageService} from '/assets/runtime/index.js';
 import {mountDiscovery} from '/assets/runtime/discovery-ui.js';
 import {browserCatalogSeed} from '/assets/browser-rules.mjs';
-const config=await (await fetch(location.pathname.replace(/\/index\.html$/u,'/').replace(/\/?$/u,'/')+'site.json')).json();
+const base=location.pathname.replace(/\/index\.html$/u,'/').replace(/\/?$/u,'/');
+const [config,runtime]=await Promise.all(['site.json','consent.json'].map(async path=>(await fetch(base+path)).json()));
 // Explicit development observation origin; the report preserves the configured fictional deployment separately.
-const consent=createConsent(config);
+const consent=createConsent(runtime);
 registerStorageService({consent,serviceId:'sample-measurements',targets:[{storageId:'sample-measurements'}],start:()=>{localStorage.setItem('juniper-discovery-memory','fictional-marker');return()=>{};}});
 mountControls(document.querySelector('#privacy-controls'),{consent});
 const tool=mountDiscovery(document.querySelector('#discovery-tool'),{config,browserRules:browserCatalogSeed,captureOrigin:location.origin,routeLabel:'Discovery playground',scenario:'Initial load'});

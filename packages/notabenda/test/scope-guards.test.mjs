@@ -1,9 +1,10 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-CONFIG REQ-US-COPPA-SCOPE REQ-CH-PROFILING REQ-CA-OBA REQ-US-VA-RIGHTS REQ-AU-PIXELS
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,mountControls,ScopeGuardError,evaluateScopeGuards,toPublicConfig,validateSiteConfig,createTermsAcceptance} from '@notabenda/core';
+import {mountControls,ScopeGuardError,evaluateScopeGuards,toPublicConfig,validateSiteConfig,createTermsAcceptance} from '@notabenda/core';
 import {compileLegalDocuments,createConsentNotice,createTermsOffer,createCollectionNotice,canonicalJson,sha256} from '@notabenda/core/content';
 import {createSetupPlan,readSetupAnswers} from '@notabenda/core/setup';
 import {createConsentEvidenceStore,createAdminWorker,recordLegalRelease,registerConsentNotice,setActiveConsentNotice,getConsentHead,recordConsentChoice,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance} from '@notabenda/cloudflare';

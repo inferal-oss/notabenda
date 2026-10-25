@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-CONFIG REQ-PRODUCT-BUNDLE-BUDGET REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -5,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 import {compileConsentRuntimeConfig,compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
 import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 import {requiredConsentEvidence,ConsentEvidenceError} from '@notabenda/core/consent/evidence';
-import {createConsent,toPublicConfig} from '@notabenda/core';
+import {toPublicConfig} from '@notabenda/core';
 import {consentScopes} from '../dist/consent-notice.js';
 import {consentProfiles} from './consent-profiles.mjs';
 import {fixture} from './helpers.mjs';

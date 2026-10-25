@@ -1,3 +1,4 @@
+import {createConsent} from '@notabenda/core';
 // @requirements REQ-PRODUCT-TERMS-RECOVERY
 // @requirements REQ-PRODUCT-COLLECTION-FLOW
 // @requirements REQ-QC-PROFILING
@@ -9,7 +10,7 @@ import {spawnSync} from 'node:child_process';
 import postcss from 'postcss';
 import {gzipSync} from 'node:zlib';
 import * as headless from '../dist/headless.js';
-import {createConsent} from '../dist/index.js';
+
 import {measureBundles,formatBundleReport} from '../../../scripts/measure-bundles.mjs';
 
 test('headless entry shares the exact consent engine and imports with browser globals unavailable',()=>{
@@ -34,8 +35,8 @@ test('published consent CSS retains canonical declarations, cascade and accessib
 test('real browser entry measurements expose missed targets and exclude backend, build and framework modules',async()=>{
  const report=await measureBundles();assert.equal(report.schemaVersion,1);assert.equal(report.tool.target,'es2022');assert.equal(report.compression.level,9);assert.equal(report.compression.version,process.versions.zlib);assert.equal(report.environment.version,process.version);
  const core=report.profiles.find(p=>p.id==='core-controls'),state=report.profiles.find(p=>p.id==='headless'),css=report.profiles.find(p=>p.id==='consent-css');assert.equal(core.budgetBytes,15*1024);assert.equal(css.budgetBytes,5*1024);assert.ok(css.withinBudget);
- for(const profile of [core,state]){assert.ok(profile.gzipBytes>0);assert.ok(profile.inputs.some(path=>path.endsWith('/consent.js')));assert.ok(profile.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:cli|content|setup|discovery)\.js$)/u.test(path)));}
- assert.ok(state.inputs.every(path=>!/(?:controls|documents|terms|react)\.js$/u.test(path)));assert.ok(core.inputs.some(path=>path.endsWith('/controls.js')));
+ for(const profile of [core,state]){assert.ok(profile.gzipBytes>0);assert.ok(profile.inputs.some(path=>path.endsWith('/consent-runtime.js')));assert.ok(profile.inputs.every(path=>!/(?:notabenda-cf|notabenda-authoring|node_modules\/(?:react|astro)|\/(?:cli|content|setup|discovery)\.js$)/u.test(path)));}
+ assert.ok(state.inputs.every(path=>!/(?:controls|documents|terms|react)\.js$/u.test(path)));assert.ok(core.inputs.some(path=>path.endsWith('/controls.js')));assert.ok(core.withinBudget);assert.ok(core.inputs.every(path=>!/\/(?:config|consent-evidence|consent-compat)\.js$/u.test(path)));const legacy=report.profiles.find(p=>p.id==='compatibility-controls');assert.equal(legacy.budgetBytes,null);assert.ok(legacy.inputs.some(path=>path.endsWith('/consent-compat.js')));assert.ok(legacy.gzipBytes>core.gzipBytes);
  const compiled=report.profiles.find(p=>p.id==='compiled-local'),required=report.profiles.find(p=>p.id==='compiled-required');
  assert.ok(compiled.withinBudget);assert.ok(compiled.inputs.some(path=>path.endsWith('/consent-engine.js')));assert.ok(compiled.inputs.every(path=>!/\/(?:config|consent-evidence|documents|rights-policy|content|consent-compile)\.js$/u.test(path)));assert.ok(required.inputs.some(path=>path.endsWith('/consent-evidence.js')));
  const react=report.profiles.find(p=>p.id==='react-compiled');assert.deepEqual(react.external,['react']);assert.ok(react.imports.some(i=>i.entry==='@notabenda/core/consent'));assert.ok(react.inputs.every(path=>!/(?:node_modules\/react|\/(?:config|consent-evidence|react-documents|react-form-permission))\.js$/u.test(path)));

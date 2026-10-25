@@ -1,7 +1,7 @@
 // @requirements REQ-PRODUCT-SCOPE-GUARDS
 // @requirements REQ-PRODUCT-CONFIG
 import {createConsent,mountControls} from '/assets/runtime/index.js';
-const config=await(await fetch(location.pathname.replace(/\/index\.html$/u,'/').replace(/\/?$/u,'/')+'site.json')).json(),values=new Map();
+const runtime=await(await fetch(location.pathname.replace(/\/index\.html$/u,'/').replace(/\/?$/u,'/')+'consent.json')).json(),config=runtime.inventory,values=new Map();
 const environment={storage:{getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)}};
 const show=(id,value)=>{document.getElementById(id).textContent=value;};
 let consent,ui,unsubscribe,revision=1,starts=0;
@@ -13,7 +13,7 @@ function paint(state){
  const list=document.getElementById('guard-requirements');list.replaceChildren();const ids=[...new Set(Object.values(guard.purposeRestrictions).flat().flatMap(reason=>reason.requirementIds))];for(const id of ids){const item=document.createElement('li'),link=document.createElement('a');link.href='/guide/requirements#'+id.toLowerCase();link.textContent=id;item.append(link);list.append(item);}if(!ids.length){const item=document.createElement('li');item.textContent='No restriction reason is declared in this scenario.';list.append(item);}
 }
 function mount(){
- starts=0;consent=createConsent(config,environment);for(const item of config.consent.services){const service=config.services.find(s=>s.id===item.id);consent.registerService(item.id,{purposes:service.purposeIds,start(){starts++;return()=>{};}});}
+ starts=0;consent=createConsent(runtime,environment);for(const item of config.consent.services){const service=config.services.find(s=>s.id===item.id);consent.registerService(item.id,{purposes:service.purposeIds,start(){starts++;return()=>{};}});}
  ui=mountControls(document.getElementById('privacy-controls'),{consent});unsubscribe=consent.subscribe(paint);
 }
 mount();

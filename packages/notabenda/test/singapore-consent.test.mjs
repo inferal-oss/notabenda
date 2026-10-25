@@ -1,8 +1,9 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-CONSENT-ROUTES REQ-SG-WITHDRAWAL REQ-SG-ACCOUNTABILITY
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM} from 'jsdom';
-import {createConsent,renderCollectionNotice} from '@notabenda/core';
+import {renderCollectionNotice} from '@notabenda/core';
 import {compileConsentRuntimeConfig,compileLegalDocuments,createCollectionNotice} from '@notabenda/core/content';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {createSetupPlan} from '@notabenda/core/setup';

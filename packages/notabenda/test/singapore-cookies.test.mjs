@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-SG-CONSENT-CONDITIONS REQ-SG-CONSENT-ROUTES REQ-SG-WITHDRAWAL REQ-SG-ACCOUNTABILITY
 // @requirements REQ-SG-COOKIE-DATA REQ-SG-BROWSER-CHOICE REQ-SG-COOKIE-TARGETING
 // @requirements REQ-PRODUCT-AGENT-INTEGRATION
@@ -8,7 +9,7 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {spawnSync} from 'node:child_process';
 import {JSDOM} from 'jsdom';
-import {createConsent,toPublicConfig,mountControls} from '@notabenda/core';
+import {toPublicConfig,mountControls} from '@notabenda/core';
 import {compileConsentRuntimeConfig,compileLegalDocuments} from '@notabenda/core/content';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {createSetupPlan,readSetupAnswers} from '@notabenda/core/setup';

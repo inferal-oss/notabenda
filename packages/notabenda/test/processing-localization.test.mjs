@@ -1,9 +1,10 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-PROCESSING-LOCALIZATION REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-PROCESSING-CHOICES REQ-PRODUCT-SAFE-CONTENT
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {createConsent,createProcessingChoices,mountProcessingChoices,normalizeProcessingNotice,toPublicConfig,validateSiteConfig} from '@notabenda/core';
+import {createProcessingChoices,mountProcessingChoices,normalizeProcessingNotice,toPublicConfig,validateSiteConfig} from '@notabenda/core';
 import {compileLegalDocuments,compileConsentRuntimeConfig,createProcessingNotice,createConsentNotice,canonicalJson,sha256} from '@notabenda/core/content';
 import {recordLegalRelease,registerProcessingNotice,recordProcessingRestriction,getProcessingHead,createProcessingRestrictionStore,renderRecordDetail} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';

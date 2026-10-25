@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-US-OR-GPC REQ-US-MN-GPC REQ-US-TX-AGENT-SIGNALS REQ-PRODUCT-AGENT-INTEGRATION
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
@@ -6,7 +7,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {JSDOM} from 'jsdom';
-import {createConsent,hasGlobalPrivacyControl,getPrivacySignalRestrictions,createProcessingChoices,toPublicConfig} from '@notabenda/core';
+import {hasGlobalPrivacyControl,getPrivacySignalRestrictions,createProcessingChoices,toPublicConfig} from '@notabenda/core';
 import {compileLegalDocuments,createProcessingNotice} from '@notabenda/core/content';
 import {recordLegalRelease,registerProcessingNotice,getProcessingHead,recordProcessingRestriction} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';

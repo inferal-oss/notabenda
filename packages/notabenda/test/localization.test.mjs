@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 import {normalizeConsentNotice} from '@notabenda/core';
 import {mountAstroConsent} from '@notabenda/core/astro/client';
 import {ConsentProvider,PreferencesButton} from '@notabenda/core/react/consent';
@@ -10,7 +11,7 @@ import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {createElement} from 'react';
-import {validateSiteConfig,renderLegalDocument,renderLegalPage,createConsent,mountControls,defaultConsentWording} from '@notabenda/core';
+import {validateSiteConfig,renderLegalDocument,renderLegalPage,mountControls,defaultConsentWording} from '@notabenda/core';
 import {LegalDocument} from '@notabenda/core/react/documents';
 import {compileLegalDocuments,compileConsentRuntimeConfig,createConsentNotice,canonicalJson,sha256,createTermsOffer,createCollectionNotice} from '@notabenda/core/content';
 import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead,createConsentEvidenceStore} from '@notabenda/cloudflare';

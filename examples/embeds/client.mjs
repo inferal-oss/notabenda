@@ -3,7 +3,7 @@ import {createConsent,createEmbedService,mountControls} from '/assets/runtime/in
 
 let consent;
 try{
-  const response=await fetch('/embeds/site.json');if(!response.ok)throw new Error('Example config unavailable.');
+  const response=await fetch('/embeds/consent.json');if(!response.ok)throw new Error('Example config unavailable.');
   consent=createConsent(await response.json());
   const media=createEmbedService({consent,serviceId:'sample-media'});
   media.mount(document.querySelector('#sample-frame'),{kind:'iframe',src:'/embeds/frame/',title:'Sample embedded page',description:'A local framed page that loads after permission.'});

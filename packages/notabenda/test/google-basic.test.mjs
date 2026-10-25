@@ -1,8 +1,9 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-GOOGLE-MODE REQ-PRODUCT-CONFIG REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-PRIVACY-SIGNALS
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {JSDOM,ResourceLoader,VirtualConsole} from 'jsdom';
-import {createConsent,toPublicConfig,validateSiteConfig} from '@notabenda/core';
+import {toPublicConfig,validateSiteConfig} from '@notabenda/core';
 import {registerGoogleBasic,createGoogleBasicBrowserEnvironment} from '@notabenda/core/google';
 import {compileLegalDocuments,createConsentNotice} from '@notabenda/core/content';
 import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,getConsentHead,recordConsentChoice} from '@notabenda/cloudflare';

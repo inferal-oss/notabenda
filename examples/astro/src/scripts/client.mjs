@@ -4,10 +4,10 @@ import {mountAstroConsent} from '@notabenda/core/astro/client';
 
 let controller;
 try {
-  const response=await fetch('/astro/site.json');
+  const response=await fetch('/astro/consent.json');
   if(!response.ok)throw new Error('Example configuration unavailable.');
-  const config=await response.json();
-  controller=createConsent(config);
+  const runtime=await response.json(),config=runtime.inventory;
+  controller=createConsent(runtime);
   let requests=0;
   for(const service of config.consent.services)controller.registerService(service.id,{
     purposes:config.services.find(s=>s.id===service.id).purposeIds,

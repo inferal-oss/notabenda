@@ -8,6 +8,7 @@ import {pathToFileURL,fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {readSiteConfig,formatConfigSource} from '@notabenda/core/config/node';
 import {compileConsentRuntimeConfig,createCollectionFlow,verifyCollectionFlow,createConsentNoticeFiles} from '@notabenda/core/content';
+import {createConsent as createPrimaryConsent} from '@notabenda/core';
 import {createConsentRuntime,mountControls} from '@notabenda/core/consent';
 import {renderCollectionFlow} from '@notabenda/core/collection/flow';
 import {compileAuthoredDocuments} from '@notabenda/authoring';
@@ -45,9 +46,11 @@ run(cli,['form-workbench','--artifact','authored/artifacts/'+id+'.json','--purpo
 assert.match(await readFile('form-editor/index.html','utf8'),new RegExp(id));checks.push('exact-authored-release-form-flow');
 const dom=new JSDOM('<!doctype html><html lang="en"><head><title>Candidate</title></head><body><main><h1>Candidate controls</h1><div id="controls"></div></main></body></html>',{url:'https://candidate.example.test/'}),values=new Map();let starts=0,stops=0;
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
-const controller=createConsentRuntime(descriptor,{storage:{getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},now:()=>Date.parse('2026-10-22T12:00:00Z'),schedule:()=>()=>{}}),controls=mountControls(dom.window.document.getElementById('controls'),{consent:controller});
+assert.equal(createPrimaryConsent,createConsentRuntime);
+assert.throws(()=>createPrimaryConsent(config,{}));
+const controller=createPrimaryConsent(descriptor,{storage:{getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v),removeItem:k=>values.delete(k)},now:()=>Date.parse('2026-10-22T12:00:00Z'),schedule:()=>()=>{}}),controls=mountControls(dom.window.document.getElementById('controls'),{consent:controller});
 try{controller.registerService('sample-metrics',{purposes:['audience-measurement'],start:()=>{starts++;return()=>{stops++;};}});await controller.settled();assert.equal(starts,0);controller.openPreferences();assert.equal(starts,0);assert.ok(dom.window.document.querySelector('dialog'));controller.acceptAll();await controller.settled();assert.equal(starts,1);assert.equal(controller.isServiceAllowed('sample-metrics'),true);controller.rejectAll();await controller.settled();assert.equal(stops,1);assert.equal(controller.isServiceAllowed('sample-metrics'),false);}finally{controls.destroy();controller.destroy();dom.window.close();}checks.push('native-controls-with-dom-dialog-shim-and-service-gating');
-await writeFile('browser-entry.mjs',"export {createConsentRuntime,mountControls} from '@notabenda/core/consent';\n");const browser=await bundle({entryPoints:['browser-entry.mjs'],outfile:'browser/consent.js',bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',metafile:true});
+await writeFile('browser-entry.mjs',"export {createConsent,mountControls} from '@notabenda/core';\n");const browser=await bundle({entryPoints:['browser-entry.mjs'],outfile:'browser/consent.js',bundle:true,write:false,platform:'browser',format:'esm',target:'es2022',metafile:true});
 for(const input of Object.keys(browser.metafile.inputs)){const path=resolve(input);assert.ok(path===join(cwd,'browser-entry.mjs')||path.startsWith(join(cwd,'node_modules')+'/'));assert.doesNotMatch(input,/node:|notabenda-authoring|notabenda-cf|content\.js|config-source\.js/);}
 await mkdir('browser');await writeFile('browser/consent.js',browser.outputFiles[0].contents);await writeFile('browser/consent.css',await readFile(fileURLToPath(import.meta.resolve('@notabenda/core/consent.css'))));checks.push('browser-bundle-boundary');
 const browserReview=await writeCandidateBrowserReview({directory:'browser-review',bundle:browser.outputFiles[0].contents,consentCss:await readFile('browser/consent.css'),documentCss:await readFile(fileURLToPath(import.meta.resolve('@notabenda/core/styles.css'))),descriptor,artifact});checks.push('installed-native-browser-review-prepared');

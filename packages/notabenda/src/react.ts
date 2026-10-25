@@ -8,7 +8,7 @@ import type {ReactConsentProviderProps} from './react-consent-bindings.js';
 import type {ConsentController} from './consent-types.js';
 export type {ReactConsentSnapshot,ConsentControlsProps,PreferencesButtonProps} from './react-consent-bindings.js';
 export type ConsentProviderProps=ReactConsentProviderProps<ConsentController>;
-/** Compatibility bindings retain the complete public configuration returned by the legacy hook. */
+/** Default bindings share the compiled cookie controller contract. */
 export const {ConsentProvider,ConsentControls,PreferencesButton,useConsentController,useConsentSnapshot,usePurposeAllowed,useServiceAllowed}=createReactConsentBindings<ConsentController>();
 export {LegalDocument,LegalLinks,CollectionNotice} from './react-documents.js';
 export type {LegalDocumentProps,LegalLinksProps,CollectionNoticeProps} from './react-documents.js';

@@ -81,7 +81,7 @@ Build a purpose/channel offer with `createFormPermissionOffer`, then use `create
 
 ## Cookie choices
 
-For a smaller browser bundle, build a descriptor with `compileConsentRuntimeConfig(config, {evidence: 'local'})` from `@notabenda/core/content`, then use `createConsentRuntime` and `mountControls` from `@notabenda/core/consent` with optional `@notabenda/core/consent.css`. Required receipts use explicit `evidence: 'required'` and `requiredConsentEvidence` from `@notabenda/core/consent/evidence`. The [consent guide](https://notabenda.org/guide/consent/) explains validation, adapter support and the conservative migration of older stored grants. React hosts can use `@notabenda/core/react/consent` with the compiled controller. Existing `createConsent` and `@notabenda/core/react` remain available with full config validation and the complete public getter.
+Browser cookie controllers require a descriptor built with `compileConsentRuntimeConfig(config, {evidence: 'local'})` from `@notabenda/core/content` in build/server code. Root/headless `createConsent` aliases `createConsentRuntime` from `@notabenda/core/consent` and returns `ConsentStateController`. Required receipts use explicit `evidence: 'required'` and `requiredConsentEvidence` from `@notabenda/core/consent/evidence`. Both React entries expose this narrow controller type. Keep full-site rendering and other workflows separate. The [browser configuration guide](https://notabenda.org/guide/browser-config/) covers CLI output, validation and delivery; [migration guidance](https://notabenda.org/guide/migration/#unreleased-browser-api-migration) explains the temporary `@notabenda/core/consent/compat` entry and its full getter/larger dependency graph.
 
 The [setup editor and interactive wizard](https://notabenda.org/guide/setup/#configure-cookie-control-settings) can author consent settings from your declared inventory. Custom operator tools can use `createConsentDraftPlan` from `@notabenda/core/setup/consent` or `mountConsentEditor` from `@notabenda/core/setup/consent/ui`. These prepare a local draft and preserve scope restrictions; the host still connects actual services and reviews publication.
 
@@ -101,7 +101,8 @@ These lifetimes are examples, not legal defaults. Include preference storage key
 
 ```ts
 import { createConsent, mountControls } from '@notabenda/core';
-const consent = createConsent(config);
+// runtimeConfig is build-produced consent-runtime.json, not the full site config.
+const consent = createConsent(runtimeConfig);
 consent.registerService('sample-metrics', {
   purposes: ['measurement'],
   async start({ signal }) {
@@ -173,7 +174,7 @@ React form permissions use a host-owned controller through `FormPermissionProvid
 
 An explicit `privacySignals.globalPrivacyControl` policy and exhaustive `services[].processingActivities` classification enable a separate GPC runtime restriction. `servicePermissions`/`isServiceAllowed` combine that restriction with cookie/receipt permission; saved cookie grants stay separate. `hasGlobalPrivacyControl` and `getPrivacySignalRestrictions` support host request processing. Account/profile opt-out retention and downstream enforcement belong to the host. See [privacy signals](https://notabenda.org/guide/privacy-signals/).
 
-Use [recorded processing opt-outs](https://notabenda.org/guide/processing-choices/) for a separate manual sale/sharing/targeted-advertising action, optional CF retention and pending-request recovery. Bind it through `createConsent(config, environment, {processingChoices})`; cookie grants cannot override its service restrictions. Host identity and downstream handling remain application responsibilities.
+Use [recorded processing opt-outs](https://notabenda.org/guide/processing-choices/) for a separate manual sale/sharing/targeted-advertising action, optional CF retention and pending-request recovery. Bind it through `createConsent(runtimeConfig, environment, {processingChoices})`; cookie grants cannot override its service restrictions. Host identity and downstream handling remain application responsibilities.
 
 Keep earlier pinned document URLs available in clean deployments with `createRetainedReleaseFiles` from `@notabenda/core/content`, or repeat `--retain-artifact FILE` with the CLI build. Supply trusted public compiler artifacts explicitly; private MD/MDX archives stay in backend history. See [retained releases](https://notabenda.org/guide/releases/).
 
@@ -204,19 +205,20 @@ The optional `@notabenda/core/contracts` subpath supplies explicit withdrawal/ca
 
 ## Choose browser delivery
 
-`@notabenda/core/headless` exposes the same cookie-choice controller, subscriptions, service lifecycles, scope guards, signal helpers and receipt types for a custom UI. It has no DOM mounting or document-rendering exports. Construction still validates the complete site configuration and supports the existing required-evidence options; the subpath does not bypass those checks. Other form/contract controllers retain their existing entry points.
+`@notabenda/core/headless` exposes the same cookie-choice controller, subscriptions, service lifecycles, scope guards, signal helpers and receipt types for a custom UI. It has no DOM mounting or document-rendering exports. Construction validates the bounded runtime descriptor; complete site validation runs in the build/SSR compiler. Required receipts use the separately imported evidence adapter. Other form/contract controllers retain their existing entry points.
 
 ```js
 import {createConsent} from '@notabenda/core/headless';
 import {mountControls} from '@notabenda/core'; // optional native UI
 import '@notabenda/core/consent.css';         // optional consent-only styles
-const consent = createConsent(publicConfig);
+// runtimeConfig is build-produced consent-runtime.json, not the full site config.
+const consent = createConsent(runtimeConfig);
 mountControls(document.querySelector('#privacy-controls'), {consent});
 ```
 
 Use `@notabenda/core/consent.css` for cookie controls, their privacy links and the package’s opt-in `.nb-page`/skip-link foundations. It uses the same tokens, focus rules, mobile drawer, reduced-motion and forced-color styling as `@notabenda/core/styles.css`. The latter remains the complete stylesheet for legal pages, setup, forms, contract actions and other components. The narrower stylesheet supplies no full legal-document or operator-UI layout.
 
-The repository’s `npm run size` reports measured browser/CSS sizes; `npm run size:check` additionally enforces the stated targets when you choose to run it. Current core JavaScript exceeds the 15 KiB gzip target, while consent-only CSS is below 5 KiB. See [delivery verification](https://notabenda.org/guide/verification/browser-delivery/). These are transfer sizes, not startup or accessibility certification.
+The repository’s `npm run size` reports measured browser/CSS sizes; `npm run size:check` additionally enforces the stated targets when you choose to run it. The primary API change requires fresh exact-source measurements against the unchanged 15 KiB JavaScript and 5 KiB consent-only CSS targets; earlier dated measurements describe their original entries and do not close this gate. See [delivery verification](https://notabenda.org/guide/verification/browser-delivery/). These are transfer sizes, not startup or accessibility certification.
 
 The optional [service catalog](https://notabenda.org/guide/service-catalog/) supplies offline provider/product search and static project discovery, including backend SDKs. Use `notabenda catalog search email --delivery backend` or `notabenda discover --project .` after installing the local preview. Results remain candidates for review; reference data and Node scanning stay outside ordinary consent bundles.
 

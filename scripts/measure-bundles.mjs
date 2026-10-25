@@ -32,8 +32,9 @@ export async function measureBundles({explain=false}={}){
   ['storage-exception-controls','@notabenda/core/storage-exceptions/ui','mountStorageExceptionControls,rejectAllOptionalActivity',null],
   ['headless','@notabenda/core/headless','createConsent',null],
   ['core-controls','@notabenda/core','createConsent,mountControls',15*1024],
+  ['compatibility-controls','@notabenda/core/consent/compat','createCompatibilityConsent',null],
  ]){
-  const additionalImports=id==='compiled-required'?[{entry:'@notabenda/core/consent/evidence',exports:['requiredConsentEvidence']}]:id==='react-compiled'?[{entry:'@notabenda/core/consent',exports:['createConsentRuntime']}]:[];
+  const additionalImports=id==='compiled-required'?[{entry:'@notabenda/core/consent/evidence',exports:['requiredConsentEvidence']}]:id==='react-compiled'?[{entry:'@notabenda/core/consent',exports:['createConsentRuntime']}]:id==='compatibility-controls'?[{entry:'@notabenda/core',exports:['mountControls']}]:[];
   const imports=[{entry,exports:exports.split(',')},...additionalImports],external=id==='react-compiled'?['react']:[];
   const measured=await measureJavaScript(id,imports,budgetBytes,external);
   profiles.push(measured.profile);if(id==='core-controls')coreContributions=measured.contributions;

@@ -1,6 +1,6 @@
 // @requirements REQ-PRODUCT-SOURCE-CANDIDATE
 // This file is copied beside a browser bundle built from the installed candidate archives.
-import {createConsentRuntime, mountControls} from './runtime.js';
+import {createConsent as createConsentRuntime, mountControls} from './runtime.js';
 
 const get = id => document.getElementById(id);
 const marker = 'notabenda-candidate-review-marker';

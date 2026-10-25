@@ -12,3 +12,5 @@ export {hasGlobalPrivacyControl,getPrivacySignalRestrictions} from './privacy-si
 export type {GlobalPrivacyControlStatus,PrivacySignalSnapshot} from './privacy-signals.js';
 export type {PromptPolicyDecision} from './prompt-policy.js';
 export type * from './types.js';
+
+export type {ConsentRuntimeConfig,ConsentRuntimeInventory} from './consent-runtime-config.js';

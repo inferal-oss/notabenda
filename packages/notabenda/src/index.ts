@@ -63,3 +63,5 @@ export type {CollectionLocalization,CollectionMessages} from './collection-local
 // @requirements REQ-PRODUCT-EMBED-LOCALIZATION
 export {normalizeEmbedLocalization,selectEmbedLocalization} from './embed-localization.js';
 export type {EmbedMessages,EmbedLocalization} from './embed-localization.js';
+
+export type {ConsentRuntimeConfig,ConsentRuntimeInventory} from './consent-runtime-config.js';

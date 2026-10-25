@@ -30,7 +30,7 @@ export async function astroFiles() {
     }
   }
   await checkInputs(generated);
-  const allowed=new Set(['agreement/astro/index.html','agreement/astro/review/index.html','form-permissions/astro/index.html','form-permissions/astro/review/index.html',...Object.keys(artifacts),'astro/site.css','astro/site.json','astro/optional-sample.json','assets/example-pages.css','assets/example-theme.css','assets/form-permissions.css',...['index','notes','privacy','cookies','terms','requests'].map(page=>page==='index'?'astro/index.html':`astro/${page}/index.html`)]);
+  const allowed=new Set(['agreement/astro/index.html','agreement/astro/review/index.html','form-permissions/astro/index.html','form-permissions/astro/review/index.html',...Object.keys(artifacts),'astro/site.css','astro/site.json','astro/consent.json','astro/optional-sample.json','assets/example-pages.css','assets/example-theme.css','assets/form-permissions.css',...['index','notes','privacy','cookies','terms','requests'].map(page=>page==='index'?'astro/index.html':`astro/${page}/index.html`)]);
   const asset=path=>/^_astro\/[a-zA-Z0-9_.-]+\.(?:js|css)$/u.test(path);
   const root=fileURLToPath(new URL('./',import.meta.url));
   await new Promise((done,reject)=>{

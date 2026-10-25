@@ -1,7 +1,8 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-IE-CONSENT-DURATION REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-CONSENT-EVIDENCE REQ-PRODUCT-CONFIG
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createConsent,validateSiteConfig,toPublicConfig,normalizeConsentNotice} from '@notabenda/core';
+import {validateSiteConfig,toPublicConfig,normalizeConsentNotice} from '@notabenda/core';
 import {compileLegalDocuments,createConsentNotice,compileConsentRuntimeConfig,canonicalJson,sha256} from '@notabenda/core/content';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {recordLegalRelease,registerConsentNotice,setActiveConsentNotice,recordConsentChoice,getConsentHead} from '@notabenda/cloudflare';

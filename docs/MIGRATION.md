@@ -3,6 +3,27 @@
 
 Start with the site’s actual processing and the choices it already holds. Replacing a banner is only one part of the change. Keep the old deployment recoverable while you connect and test the new one.
 
+## Unreleased browser API migration
+
+The unreleased primary browser API now requires a compiled descriptor. Replace `createConsent(fullSiteConfig)` from root/headless with `createConsent(runtimeConfig)` where `runtimeConfig` was emitted by `compileConsentRuntimeConfig` in build/SSR code or by `notabenda build --consent-runtime local|required`. Do not move the compiler into browser code. [Browser configuration](BROWSER-CONFIG.md) shows both paths.
+
+Wrap required-receipt options in `requiredConsentEvidence(...)` from `@notabenda/core/consent/evidence` and compile with `evidence: 'required'`. The primary factory rejects plain receipt options and rejects a required descriptor without its adapter. Local mode also rejects an adapter; there is no implicit downgrade.
+
+`createConsent` returns `ConsentStateController`, whose `getConfig()` contains only `ConsentRuntimeInventory`. Both React entries expose this narrow type. Keep full config separately in build/SSR code for legal documents and other workflows; select public dictionaries or descriptors for browser components that need them. Do not cast the smaller inventory to the full type. Keep provider and hooks/components from the same React entry.
+
+For a staged migration, explicitly opt into the older behavior:
+
+```js
+import {createCompatibilityConsent} from '@notabenda/core/consent/compat';
+const consent = createCompatibilityConsent(publicSiteConfig, environment, {
+  // evidence: plainRequiredReceiptOptions, when required receipts are used
+});
+```
+
+This subpath also exports `createConsent` as an alias. It validates full site configuration, preserves the full getter and accepts the previous plain evidence options. Its larger browser dependency graph is outside the primary small-runtime path; importing it does not satisfy the primary transfer-size gate. It does not waive production review, receipt binding, service cleanup or storage-migration requirements. Prefer completing the descriptor migration before shipping. Dated verification reports retain measurements for the API and source they tested; new primary-entry measurements must be verified separately.
+
+Preserve valid refusals, withdrawals, prompt memory and pending receipt recovery. See [stored-choice migration](CONSENT.md#stored-choice-migration) for the conservative treatment of older grants; changing the import does not authorize rewriting archived notices or releases.
+
 ## Record what is running
 
 Run [project discovery](DISCOVERY.md), inspect the browser and review backend processing. Include script loaders, embeds, preloads, tag managers, storage, audience exports and account-linked restrictions. Keep the private discovery report and setup justifications outside public assets and Git. Discovery findings need review; absence from a scan does not establish absence from the application.
@@ -20,7 +41,8 @@ While reviewing solicitation timing, the native controls can stay on demand:
 ```js
 import {createConsent, mountControls} from '@notabenda/core';
 
-const consent = createConsent(publicConfig);
+// Build-time descriptor, as described in browser configuration.
+const consent = createConsent(runtimeConfig);
 const controls = mountControls(container, {consent, noticeMode: 'on-demand'});
 // The persistent preferences trigger remains available. Opening it grants nothing.
 ```

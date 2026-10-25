@@ -1,9 +1,10 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-LOCALIZATION REQ-PRODUCT-TERMS-ACCEPTANCE REQ-PRODUCT-CF-HISTORY REQ-PRODUCT-A11Y
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {JSDOM} from 'jsdom';
-import {createConsent,createTermsAcceptance,mountTermsAcceptance,normalizeTermsOffer} from '@notabenda/core';
+import {createTermsAcceptance,mountTermsAcceptance,normalizeTermsOffer} from '@notabenda/core';
 import {compileLegalDocuments,compileConsentRuntimeConfig,createTermsOffer,createConsentNotice,canonicalJson,sha256} from '@notabenda/core/content';
 import {recordLegalRelease,registerTermsOffer,setActiveTermsOffer,recordTermsAcceptance,createTermsAcceptanceStore,createAdminWorker} from '@notabenda/cloudflare';
 import {createSyntheticStorage} from '../../notabenda-cf/examples/synthetic.mjs';

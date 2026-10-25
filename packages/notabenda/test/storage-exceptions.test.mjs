@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-PRODUCT-STORAGE-EXCEPTIONS
 // @requirements REQ-UK-EXCEPTIONS REQ-PRODUCT-CONFIG REQ-PRODUCT-CONSENT-RUNTIME REQ-PRODUCT-STORAGE-CLEANUP REQ-PRODUCT-MOBILE REQ-PRODUCT-A11Y
 import {test} from 'node:test';
@@ -6,7 +7,7 @@ import {JSDOM} from 'jsdom';
 import {IDBFactory} from 'fake-indexeddb';
 import {createStorageExceptions,createIndexedDBStorageExceptionJournal} from '@notabenda/core/storage-exceptions';
 import {mountStorageExceptionControls,rejectAllOptionalActivity} from '@notabenda/core/storage-exceptions/ui';
-import {createConsent,toPublicConfig,validateSiteConfig,registerStorageService,mountControls} from '@notabenda/core';
+import {toPublicConfig,validateSiteConfig,registerStorageService,mountControls} from '@notabenda/core';
 import {compileConsentRuntimeConfig} from '@notabenda/core/content';
 import {exceptionFixture,memoryJournal,deferred} from './storage-exception-helpers.mjs';
 const supported=c=>Object.values(c.getSnapshot().servicePermissions).some(Boolean);

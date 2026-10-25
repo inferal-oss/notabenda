@@ -2,9 +2,11 @@
 
 Use `registerStorageService` when one consent-managed optional producer owns exact browser storage items. The host keeps responsibility for stopping the producer; the adapter adds storage cleanup to that lifecycle. Try [the working example](/storage-cleanup).
 
+Cookie-controller examples below use `runtimeConfig`, a descriptor compiled in build/SSR code with `compileConsentRuntimeConfig` or `notabenda build --consent-runtime local|required`. Keep full configuration separate for other workflows. See [browser configuration](BROWSER-CONFIG.md).
+
 ```js
 import {createConsent, registerStorageService} from '@notabenda/core';
-const consent = createConsent(config);
+const consent = createConsent(runtimeConfig);
 const memory = registerStorageService({
   consent,
   serviceId: 'sample-memory',

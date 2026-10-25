@@ -126,7 +126,7 @@ See the [collection guide](COLLECTION.md#language-and-release-verification) and 
 
 ## Supported interfaces
 
-Gated-media placeholders accept `localization.embeds` with complete `preferencesLabel`, `waiting`, `allowed` and `error` messages. The full controller selects the dictionary automatically. Select it separately with `selectEmbedLocalization(config)` before compiling a cookie-only runtime, then pass it to the media group and SSR renderer. `lang` and `dir` follow its explicit metadata; titles, descriptions and image alternatives still need their own wording. Draft dictionaries need `allowPreview: true`. [Integration and example](EMBEDS.md#language-and-fixed-interface-messages).
+Gated-media placeholders accept `localization.embeds` with complete `preferencesLabel`, `waiting`, `allowed` and `error` messages. The explicit full-site compatibility controller selects the dictionary automatically. The default browser controller requires the selected dictionary separately. Select it separately with `selectEmbedLocalization(config)` before compiling a cookie-only runtime, then pass it to the media group and SSR renderer. `lang` and `dir` follow its explicit metadata; titles, descriptions and image alternatives still need their own wording. Draft dictionaries need `allowPreview: true`. [Integration and example](EMBEDS.md#language-and-fixed-interface-messages).
 
 This contract covers legal document pages/links, native consent controls and their React/Astro bridges, the native terms-acceptance widget, ordinary form-permission controls, static direct- and indirect-collection notices and the declared service directory. Custom React/Astro preference buttons may supply their own content; the default button uses the selected `triggerLabel`.
 

@@ -46,16 +46,16 @@ import PreferencesButton from '@notabenda/core/astro/PreferencesButton.astro';
 <script>
   import { createConsent } from '@notabenda/core';
   import { mountAstroConsent } from '@notabenda/core/astro/client';
-  import publicConfig from '../legal/notabenda.public.json';
+  import runtimeConfig from '../legal/consent-runtime.json';
 
-  const consent = createConsent(publicConfig);
+  const consent = createConsent(runtimeConfig);
   // Register declared optional services once here, before any optional work.
   // Use the same registerService/start/AbortSignal/cleanup contract as vanilla.
   const controls = mountAstroConsent({ consent });
 </script>
 ```
 
-Use a normal processed Astro script, so imports bundle locally and the module executes once. Do not turn this bootstrap into a rerunning inline script: that can create duplicate controllers or repeat service registration. Do not serialize private operator configuration into HTML or client bundles; use the public build projection.
+Use a normal processed Astro script, so imports bundle locally and the module executes once. Do not turn this bootstrap into a rerunning inline script: that can create duplicate controllers or repeat service registration. Do not serialize private operator configuration into HTML or client bundles; use the compiled `consent-runtime.json` descriptor in client scripts. Build it with `--consent-runtime local|required` or `compileConsentRuntimeConfig` in build/server code; keep full configuration in the static document build. See [browser configuration](BROWSER-CONFIG.md).
 
 `ConsentControls.astro` is a placeholder for the native compact notice and deliberate drawer. It accepts optional `class` and `preferencesLabel`. Mount one per page. `PreferencesButton.astro` accepts `class` and slot text; it stays hidden until the bridge provides a working controls surface. Additional preference buttons reopen the same controller.
 

@@ -20,7 +20,7 @@ test('packed React subpaths install only with explicitly supplied peers and expo
     await writeFile(join(cwd,'package.json'),'{"type":"module","private":true}');
     const installed=spawnSync('npm',['install','--offline','--ignore-scripts','--no-audit','--no-fund',join(cwd,manifest.filename),'react@19.3.1','react-dom@19.3.1','@types/react@19.3.0','@types/react-dom@19.3.0'],{cwd,encoding:'utf8',env});assert.equal(installed.status,0,installed.stderr);
     const run=spawnSync(process.execPath,['--input-type=module','-e',"import {TermsAcceptanceProvider,TermsAcceptanceControl,useTermsAcceptanceSnapshot} from '@notabenda/core/react/terms';import {ConsentProvider,useConsentSnapshot,FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot} from '@notabenda/core/react';import {LegalDocument,PaidOrderReview} from '@notabenda/core/react/documents';import {ConsentProvider as RuntimeProvider,useConsentController as runtimeController} from '@notabenda/core/react/consent';if([TermsAcceptanceProvider,TermsAcceptanceControl,useTermsAcceptanceSnapshot,RuntimeProvider,runtimeController,ConsentProvider,useConsentSnapshot,LegalDocument,PaidOrderReview,FormPermissionProvider,FormPermissionField,useFormPermissionSnapshot].some(v=>typeof v!=='function'))process.exit(1);"],{cwd,encoding:'utf8'});assert.equal(run.status,0,run.stderr);
-    await writeFile(join(cwd,'consumer.ts'),"import {createElement} from 'react';import {createConsent,type PublicSiteConfig} from '@notabenda/core';import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed,useServiceAllowed,type ReactConsentSnapshot} from '@notabenda/core/react';import {LegalDocument,LegalLinks} from '@notabenda/core/react/documents';declare const config:PublicSiteConfig;const controller=createConsent(config);createElement(ConsentProvider,{controller},createElement(ConsentControls));createElement(PreferencesButton,{className:'choice'},'Review');createElement(LegalDocument,{config,kind:'privacy'});createElement(LegalLinks,{config,mode:'preview'});function Probe(){const state:ReactConsentSnapshot=useConsentSnapshot();const allowed:boolean=usePurposeAllowed('optional');const service:boolean=useServiceAllowed('optional-service');void service;\n// @ts-expect-error snapshots are read-only\nstate.permissions.optional=true;return allowed?state.purposes.optional:null;}void Probe;");
+    await writeFile(join(cwd,'consumer.ts'),"import {createElement} from 'react';import {createConsent,type PublicSiteConfig} from '@notabenda/core';import {ConsentProvider,ConsentControls,PreferencesButton,useConsentSnapshot,usePurposeAllowed,useServiceAllowed,type ReactConsentSnapshot} from '@notabenda/core/react';import {LegalDocument,LegalLinks} from '@notabenda/core/react/documents';declare const config:PublicSiteConfig;const controller=createConsent(compileConsentRuntimeConfig(config,{evidence:'local'}));createElement(ConsentProvider,{controller},createElement(ConsentControls));createElement(PreferencesButton,{className:'choice'},'Review');createElement(LegalDocument,{config,kind:'privacy'});createElement(LegalLinks,{config,mode:'preview'});function Probe(){const state:ReactConsentSnapshot=useConsentSnapshot();const allowed:boolean=usePurposeAllowed('optional');const service:boolean=useServiceAllowed('optional-service');void service;\n// @ts-expect-error snapshots are read-only\nstate.permissions.optional=true;return allowed?state.purposes.optional:null;}void Probe;");
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+"\nimport {CollectionNotice} from '@notabenda/core/react/documents';createElement(CollectionNotice,{notice:{},idPrefix:'contact',headingLevel:3});\n");
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`
 import {type FormPermissionController} from '@notabenda/core';
@@ -42,7 +42,6 @@ import {ConsentProvider as CompiledProvider,ConsentControls as CompiledControls,
 const compiledController=createConsentRuntime(compileConsentRuntimeConfig(config,{evidence:'local'}));
 createElement(CompiledProvider,{controller:compiledController},createElement(CompiledControls));
 createElement(CompiledProvider,{controller});
-// @ts-expect-error compatibility provider keeps its full-config hook contract
 createElement(ConsentProvider,{controller:compiledController});
 function CompiledProbe(){const inventory:ConsentRuntimeInventory=useCompiledConsentController().getConfig();
 // @ts-expect-error compiled getters do not invent operator contacts
@@ -53,8 +52,10 @@ snapshot.promptDecision?.sourceIds.push('other');
 // @ts-expect-error nested prompt decisions are immutable
 if(snapshot.promptDecision)snapshot.promptDecision.allowsPrompt=true;
 return inventory.site.id;}
-function CompatibilityProbe(){const full:PublicSiteConfig=useLegacyConsentController().getConfig();return full.controller.email;}
-void [CompiledProbe,CompatibilityProbe];
+function PrimaryProbe(){const inventory:ConsentRuntimeInventory=useLegacyConsentController().getConfig();
+// @ts-expect-error primary hook does not contain operator contacts
+inventory.controller.email;return inventory.site.id;}
+void [CompiledProbe,PrimaryProbe];
 `);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`\nimport {PaidOrderReview} from '@notabenda/core/react/documents';createElement(PaidOrderReview,{review:{},idPrefix:'checkout',headingLevel:2});`);
     await writeFile(join(cwd,'consumer.ts'),await readFile(join(cwd,'consumer.ts'),'utf8')+`

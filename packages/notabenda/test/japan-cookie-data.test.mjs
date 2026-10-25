@@ -1,3 +1,4 @@
+import {createCompatibilityConsent as createConsent} from '@notabenda/core/consent/compat';
 // @requirements REQ-JP-RELATED-SCOPE REQ-JP-RECIPIENT-CONSENT REQ-JP-RELATED-FOREIGN
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -6,7 +7,7 @@ import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {spawnSync} from 'node:child_process';
 import {JSDOM} from 'jsdom';
-import {createConsent,toPublicConfig,mountControls} from '@notabenda/core';
+import {toPublicConfig,mountControls} from '@notabenda/core';
 import {compileConsentRuntimeConfig} from '@notabenda/core/content';
 import {createConsentRuntime} from '@notabenda/core/consent';
 import {createSetupPlan,readSetupAnswers} from '@notabenda/core/setup';
